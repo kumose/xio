@@ -13,6 +13,17 @@
 // limitations under the License.
 //
 
-#pragma once
+#include <xio/timer/timer.h>
+#include <xio/timer/wheel_timer.h>
+#include <xio/timer/btree_timer.h>
 
-inline int sub(int a, int b) { return a - b; }
+namespace xio {
+
+    std::unique_ptr<TimerBase> TimerBase::create_wheel_timer() {
+        return std::make_unique<WheelTimer>();
+    }
+
+    std::unique_ptr<TimerBase> TimerBase::create_btree_timer() {
+        return std::make_unique<BtreeTimer>();
+    }
+}  // namespace xio

@@ -47,18 +47,33 @@ endif ()
 
 if (KMCMAKE_BUILD_TEST)
     enable_testing()
-    #include(require_gtest)
-    #include(require_gmock)
-    #include(require_doctest)
 endif (KMCMAKE_BUILD_TEST)
 
 if (KMCMAKE_BUILD_BENCHMARK)
-    #include(require_benchmark)
 endif ()
 
 find_package(Threads REQUIRED)
 kmcmake_private_find_package(Threads REQUIRED)
 list(APPEND KMCMAKE_SYSTEM_DYLINK Threads::Threads)
+
+find_package(turbo REQUIRED)
+find_package(fermat REQUIRED)
+find_package(tally REQUIRED)
+
+find_package(ZLIB REQUIRED)
+find_package(lz4 CONFIG REQUIRED)
+find_package(Snappy CONFIG REQUIRED)
+find_package(zstd CONFIG REQUIRED)
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    find_path(URING_INCLUDE_DIR NAMES liburing.h)
+    find_library(URING_LIBRARY NAMES uring)
+    if (NOT URING_INCLUDE_DIR OR NOT URING_LIBRARY)
+        message(FATAL_ERROR "Could not find liburing. Please install liburing-dev (or similar) and ensure liburing.h and liburing.so are in standard paths.")
+    endif ()
+else ()
+    set(URING_LIBRARY)
+endif ()
 
 ############################################################
 #
@@ -67,7 +82,14 @@ list(APPEND KMCMAKE_SYSTEM_DYLINK Threads::Threads)
 # KMCMAKE_SYSTEM_DYLINK, using it for fun.
 ##########################################################
 set(KMCMAKE_DEPS_LINK
-        #${TURBO_LIB}
+        ${URING_LIBRARY}
+        fermat::fermat_static
+        tally::tally_static
+        turbo::turbo_static
+        ZLIB::ZLIB
+        lz4::lz4
+        Snappy::snappy
+        zstd::libzstd
         ${KMCMAKE_SYSTEM_DYLINK}
         )
 list(REMOVE_DUPLICATES KMCMAKE_DEPS_LINK)
@@ -80,6 +102,3 @@ set(KMCMAKE_STATIC_BIN_OPTION)
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     list(APPEND KMCMAKE_STATIC_BIN_OPTION -static-libgcc -static-libstdc++)
 endif ()
-
-
-

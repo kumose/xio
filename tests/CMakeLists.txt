@@ -158,3 +158,8 @@ kmcmake_cc_test(
         SOURCES raw_test.cc
         CXXOPTS ${KMCMAKE_CXX_OPTIONS}
 )
+
+add_subdirectory(event)
+add_subdirectory(io)
+add_subdirectory(timer)
+add_subdirectory(compress)

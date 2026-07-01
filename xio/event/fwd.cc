@@ -13,10 +13,11 @@
 // limitations under the License.
 //
 
-#include <xio/foo.h>
-#include <iostream>
+#include <turbo/base/macros.h>
+#include <xio/event/fwd.h>
 
-int main() {
-    std::cout<<foo( 10)<<std::endl;
-    return 0;
-}
+namespace xio {
+    void empty_data_releaser(void *data) {
+        TURBO_UNUSED(data);
+    }
+} // namespace xio

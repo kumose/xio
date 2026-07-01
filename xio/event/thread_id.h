@@ -12,8 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#include <xio/foo.h>
 
-int foo(int a) {
-    return  a +1;
-}
+#pragma once
+
+#include <atomic>
+#include <cstdint>
+
+namespace xio {
+
+    struct ThreadId {
+        static uint64_t get_id();
+    };
+}  // namespace xio

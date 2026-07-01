@@ -1,0 +1,22 @@
+{
+  "dependencies": [
+    "fermat",
+    {
+      "name": "liburing",
+      "platform": "linux"
+    },
+    "lz4",
+    {
+      "name": "snappy",
+      "features": [
+        "rtti"
+      ]
+    },
+    "tally",
+    "turbo",
+    "zlib",
+    "zstd",
+    "gtest",
+    "benchmark"
+  ]
+}

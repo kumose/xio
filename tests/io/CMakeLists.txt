@@ -13,17 +13,16 @@
 # limitations under the License.
 #
 
-file(GLOB_RECURSE SRC "event/*.cc" "io/*.cc" "timer/*.cc" "compress/*.cc")
+find_package(GTest REQUIRED)
 
-kmcmake_cc_library(
-        NAMESPACE ${PROJECT_NAME}
-        NAME xio
-        SOURCES
-        ${SRC}
+kmcmake_cc_test(
+        NAME tcp_socket_test
+        MODULE io
+        SOURCES tcp_socket_test.cc
         CXXOPTS
-        ${KMCMAKE_CXX_OPTIONS}
-        PLINKS
+        LINKS
+        xio::xio
+        GTest::gtest
+        GTest::gtest_main
         ${KMCMAKE_DEPS_LINK}
-        PUBLIC
 )
-

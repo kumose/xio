@@ -15,4 +15,11 @@
 
 #pragma once
 
-int foo(int a);
+#include <string>
+
+namespace testing {
+
+    inline std::string benchmark_root() {
+        return "/home/jeff/github/kumose/xio/benchmark";
+    }
+}  // namespace testing
