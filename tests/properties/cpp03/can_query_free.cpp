@@ -1,0 +1,48 @@
+//
+// cpp03/can_query_free.cpp
+// ~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#include <xio/query.h>
+#include <cassert>
+
+struct prop
+{
+};
+
+struct object
+{
+  friend int query(const object&, prop) { return 123; }
+};
+
+namespace xio {
+
+template<>
+struct is_applicable_property<object, prop>
+{
+  static const bool value = true;
+};
+
+namespace traits {
+
+template<>
+struct query_free<object, prop>
+{
+  static const bool is_valid = true;
+  static const bool is_noexcept = true;
+  typedef int result_type;
+};
+
+} // namespace traits
+} // namespace xio
+
+int main()
+{
+  assert((xio::can_query<object, prop>::value));
+  assert((xio::can_query<const object, prop>::value));
+}

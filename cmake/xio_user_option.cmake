@@ -27,5 +27,8 @@
 # set(KMCMAKE_BUILD_BENCHMARK OFF CACHE BOOL "" FORCE)
 #
 # list(APPEND KMCMAKE_CXX_OPTIONS "-fopenmp")
+
+option(XIO_ENABLE_URING "Enable io_uring support for disk async I/O (Linux only)" OFF)
+mark_as_advanced(XIO_ENABLE_URING)
 # ------------------------------------------------------------------------------
 

@@ -30,6 +30,9 @@
 #define @PROJECT_NAME_UP@_BUILD_SYSTEM_VERSION "@KMCMAKE_DISTRO_VERSION_ID@"
 
 
+// feature flags
+#cmakedefine XIO_ENABLE_URING
+
 // compiler gnu or clang
 #define @PROJECT_NAME_UP@_CXX_COMPILER_ID "@CMAKE_CXX_COMPILER_ID@"
 

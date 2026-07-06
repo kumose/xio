@@ -1,0 +1,45 @@
+//
+// detail/signal_blocker.hpp
+// ~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef ASIO_DETAIL_SIGNAL_BLOCKER_HPP
+#define ASIO_DETAIL_SIGNAL_BLOCKER_HPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+
+#include <xio/detail/config.h>
+
+#if !defined(ASIO_HAS_THREADS) || defined(ASIO_WINDOWS) \
+  || defined(ASIO_WINDOWS_RUNTIME) \
+  || defined(ASIO_CYGWIN_W32_SOCKETS) || defined(__SYMBIAN32__)
+#include <xio/detail/null_signal_blocker.h>
+#elif defined(ASIO_HAS_PTHREADS)
+#include <xio/detail/posix_signal_blocker.h>
+#else
+# error Only Windows and POSIX are supported!
+#endif
+
+namespace xio {
+    ASIO_INLINE_NAMESPACE_BEGIN
+
+    namespace detail {
+#if !defined(ASIO_HAS_THREADS) || defined(ASIO_WINDOWS) \
+  || defined(ASIO_WINDOWS_RUNTIME) \
+  || defined(ASIO_CYGWIN_W32_SOCKETS) || defined(__SYMBIAN32__)
+        typedef null_signal_blocker signal_blocker;
+#elif defined(ASIO_HAS_PTHREADS)
+        typedef posix_signal_blocker signal_blocker;
+#endif
+    } // namespace detail
+    ASIO_INLINE_NAMESPACE_END
+} // namespace xio
+
+#endif // ASIO_DETAIL_SIGNAL_BLOCKER_HPP

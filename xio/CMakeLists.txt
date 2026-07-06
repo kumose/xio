@@ -13,13 +13,15 @@
 # limitations under the License.
 #
 
-file(GLOB_RECURSE SRC "event/*.cc" "io/*.cc" "timer/*.cc" "compress/*.cc")
+file(GLOB_RECURSE SRC "*.cc")
 
 kmcmake_cc_library(
         NAMESPACE ${PROJECT_NAME}
         NAME xio
         SOURCES
         ${SRC}
+        DEFINES
+        -DASIO_DYN_LINK
         CXXOPTS
         ${KMCMAKE_CXX_OPTIONS}
         PLINKS

@@ -14,7 +14,7 @@
 #
 
 configure_file(${PROJECT_SOURCE_DIR}/benchmark/config.h.in ${PROJECT_SOURCE_DIR}/benchmark/config.h @ONLY)
-
+#[[
 find_package(benchmark REQUIRED)
 
 kmcmake_cc_bm(
@@ -44,3 +44,4 @@ kmcmake_cc_bm(
         benchmark::benchmark
         ${KMCMAKE_DEPS_LINK}
 )
+]]
