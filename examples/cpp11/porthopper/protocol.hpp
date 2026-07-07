@@ -11,7 +11,7 @@
 #ifndef PORTHOPPER_PROTOCOL_HPP
 #define PORTHOPPER_PROTOCOL_HPP
 
-#include <asio.hpp>
+#include <xio/xio.h>
 #include <array>
 #include <cstring>
 #include <iomanip>

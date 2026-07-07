@@ -67,7 +67,7 @@ namespace xio {
 
         template<typename T>
         char (&buffer_sequence_begin_helper(T *t,
-                                            enable_if_t<!is_same<
+                                            std::enable_if_t<!std::is_same<
                                                 decltype(xio::buffer_sequence_begin(*t)),
                                                 void>::value> *))[2];
 
@@ -76,7 +76,7 @@ namespace xio {
 
         template<typename T>
         char (&buffer_sequence_end_helper(T *t,
-                                          enable_if_t<!is_same<
+                                          std::enable_if_t<!std::is_same<
                                               decltype(xio::buffer_sequence_end(*t)),
                                               void>::value> *))[2];
 
@@ -166,7 +166,7 @@ namespace xio {
 
         template<typename T, typename Buffer>
         char buffer_sequence_element_type_helper(T *t,
-                                                 enable_if_t<is_convertible<
+                                                 std::enable_if_t<std::is_convertible<
                                                      decltype(*xio::buffer_sequence_begin(*t)),
                                                      Buffer>::value> *);
 
@@ -186,7 +186,7 @@ namespace xio {
 
         template<typename T, typename Buffer>
         struct is_buffer_sequence_class
-                : integral_constant<bool,
+                : std::integral_constant<bool,
                     sizeof(buffer_sequence_begin_helper<T>(0, 0)) != 1 &&
                     sizeof(buffer_sequence_end_helper<T>(0, 0)) != 1 &&
                     sizeof(buffer_sequence_element_type_helper<T, Buffer>(0, 0)) == 1> {
@@ -194,54 +194,54 @@ namespace xio {
 
         template<typename T, typename Buffer>
         struct is_buffer_sequence
-                : conditional<is_class<T>::value,
+                : std::conditional<std::is_class<T>::value,
                     is_buffer_sequence_class<T, Buffer>,
-                    false_type>::type {
+                    std::false_type>::type {
         };
 
         template<>
         struct is_buffer_sequence<mutable_buffer, mutable_buffer>
-                : true_type {
+                : std::true_type {
         };
 
         template<>
         struct is_buffer_sequence<mutable_buffer, const_buffer>
-                : true_type {
+                : std::true_type {
         };
 
         template<>
         struct is_buffer_sequence<const_buffer, const_buffer>
-                : true_type {
+                : std::true_type {
         };
 
         template<>
         struct is_buffer_sequence<const_buffer, mutable_buffer>
-                : false_type {
+                : std::false_type {
         };
 
         template<>
         struct is_buffer_sequence<mutable_registered_buffer, mutable_buffer>
-                : true_type {
+                : std::true_type {
         };
 
         template<>
         struct is_buffer_sequence<mutable_registered_buffer, const_buffer>
-                : true_type {
+                : std::true_type {
         };
 
         template<>
         struct is_buffer_sequence<const_registered_buffer, const_buffer>
-                : true_type {
+                : std::true_type {
         };
 
         template<>
         struct is_buffer_sequence<const_registered_buffer, mutable_buffer>
-                : false_type {
+                : std::false_type {
         };
 
         template<typename T>
         struct is_dynamic_buffer_class_v1
-                : integral_constant<bool,
+                : std::integral_constant<bool,
                     sizeof(size_memfn_helper<T>(0)) != 1 &&
                     sizeof(max_size_memfn_helper<T>(0)) != 1 &&
                     sizeof(capacity_memfn_helper<T>(0)) != 1 &&
@@ -255,14 +255,14 @@ namespace xio {
 
         template<typename T>
         struct is_dynamic_buffer_v1
-                : conditional<is_class<T>::value,
+                : std::conditional<std::is_class<T>::value,
                     is_dynamic_buffer_class_v1<T>,
-                    false_type>::type {
+                    std::false_type>::type {
         };
 
         template<typename T>
         struct is_dynamic_buffer_class_v2
-                : integral_constant<bool,
+                : std::integral_constant<bool,
                     sizeof(size_memfn_helper<T>(0)) != 1 &&
                     sizeof(max_size_memfn_helper<T>(0)) != 1 &&
                     sizeof(capacity_memfn_helper<T>(0)) != 1 &&
@@ -276,9 +276,9 @@ namespace xio {
 
         template<typename T>
         struct is_dynamic_buffer_v2
-                : conditional<is_class<T>::value,
+                : std::conditional<std::is_class<T>::value,
                     is_dynamic_buffer_class_v2<T>,
-                    false_type>::type {
+                    std::false_type>::type {
         };
     } // namespace detail
 

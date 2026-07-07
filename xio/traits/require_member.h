@@ -43,15 +43,15 @@ namespace xio {
         template<typename T, typename Property>
         struct require_member_trait<T, Property,
                     void_t<
-                        decltype(declval<T>().require(declval<Property>()))
+                        decltype(std::declval<T>().require(std::declval<Property>()))
                     > > {
             static constexpr bool is_valid = true;
 
             using result_type = decltype(
-                declval<T>().require(declval<Property>()));
+                std::declval<T>().require(std::declval<Property>()));
 
             static constexpr bool is_noexcept =
-                    noexcept(declval<T>().require(declval<Property>()));
+                    noexcept(std::declval<T>().require(std::declval<Property>()));
         };
 
     } // namespace detail

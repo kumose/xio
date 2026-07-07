@@ -36,20 +36,20 @@ namespace xio {
 
         template<typename T, typename Property, typename = void>
         struct query_static_constexpr_member_trait :
-                conditional_t<
-                    is_same<T, decay_t<T> >::value
-                    && is_same<Property, decay_t<Property> >::value,
+                std::conditional_t<
+                    std::is_same<T, std::decay_t<T> >::value
+                    && std::is_same<Property, std::decay_t<Property> >::value,
                     no_query_static_constexpr_member,
                     traits::query_static_constexpr_member<
-                        decay_t<T>,
-                        decay_t<Property> >
+                        std::decay_t<T>,
+                        std::decay_t<Property> >
                 > {
         };
 
 
         template<typename T, typename Property>
         struct query_static_constexpr_member_trait<T, Property,
-                    enable_if_t<
+                    std::enable_if_t<
                         (static_cast<void>(T::query(Property{})), true)
                     > > {
             static constexpr bool is_valid = true;

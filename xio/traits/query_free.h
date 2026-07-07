@@ -43,15 +43,15 @@ namespace xio {
         template<typename T, typename Property>
         struct query_free_trait<T, Property,
                     void_t<
-                        decltype(query(declval<T>(), declval<Property>()))
+                        decltype(query(std::declval<T>(), std::declval<Property>()))
                     > > {
             static constexpr bool is_valid = true;
 
             using result_type = decltype(
-                query(declval<T>(), declval<Property>()));
+                query(std::declval<T>(), std::declval<Property>()));
 
             static constexpr bool is_noexcept =
-                    noexcept(query(declval<T>(), declval<Property>()));
+                    noexcept(query(std::declval<T>(), std::declval<Property>()));
         };
 
     } // namespace detail

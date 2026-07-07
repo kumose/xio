@@ -8,12 +8,12 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <asio/detached.hpp>
-#include <asio/io_context.hpp>
-#include <asio/ip/tcp.hpp>
-#include <asio/spawn.hpp>
-#include <asio/steady_timer.hpp>
-#include <asio/write.hpp>
+#include <xio/detached.h>
+#include <xio/io_context.h>
+#include <xio/ip/tcp.h>
+#include <xio/spawn.h>
+#include <xio/steady_timer.h>
+#include <xio/write.h>
 #include <iostream>
 #include <memory>
 

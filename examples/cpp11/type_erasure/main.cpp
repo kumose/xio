@@ -11,13 +11,13 @@
 #include "line_reader.hpp"
 #include "sleep.hpp"
 #include "stdin_line_reader.hpp"
-#include <asio/coroutine.hpp>
-#include <asio/detached.hpp>
-#include <asio/io_context.hpp>
-#include <asio/use_awaitable.hpp>
+#include <xio/coroutine.h>
+#include <xio/detached.h>
+#include <xio/io_context.h>
+#include <xio/use_awaitable.h>
 #include <iostream>
 
-#include <asio/yield.hpp>
+#include <xio/yield.h>
 
 class read_loop : xio::coroutine
 {
@@ -49,7 +49,7 @@ private:
   int i;
 };
 
-#include <asio/unyield.hpp>
+#include <xio/unyield.h>
 
 int main()
 {

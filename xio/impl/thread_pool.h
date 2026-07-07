@@ -125,8 +125,8 @@ namespace xio {
     template<typename Allocator, unsigned int Bits>
     template<typename Function>
     void thread_pool::basic_executor_type<Allocator,
-        Bits>::do_execute(Function &&f, false_type) const {
-        typedef decay_t<Function> function_type;
+        Bits>::do_execute(Function &&f, std::false_type) const {
+        typedef std::decay_t<Function> function_type;
 
         // Invoke immediately if the blocking.possibly property is enabled and we are
         // already inside the thread pool.
@@ -172,7 +172,7 @@ namespace xio {
     template<typename Allocator, unsigned int Bits>
     template<typename Function>
     void thread_pool::basic_executor_type<Allocator,
-        Bits>::do_execute(Function &&f, true_type) const {
+        Bits>::do_execute(Function &&f, std::true_type) const {
         // Obtain a non-const instance of the function.
         detail::non_const_lvalue<Function> f2(f);
 
@@ -182,7 +182,7 @@ namespace xio {
             try {
 #endif // !defined(ASIO_NO_EXCEPTIONS)
                 detail::fenced_block b(detail::fenced_block::full);
-                static_cast<decay_t<Function> &&>(f2.value)();
+                static_cast<std::decay_t<Function> &&>(f2.value)();
                 return;
 #if !defined(ASIO_NO_EXCEPTIONS)
             } catch (...) {
@@ -192,7 +192,7 @@ namespace xio {
         }
 
         // Construct an operation to wrap the function.
-        typedef decay_t<Function> function_type;
+        typedef std::decay_t<Function> function_type;
         detail::blocking_executor_op<function_type> op(f2.value);
 
         ASIO_HANDLER_CREATION((*pool_, op,
@@ -225,7 +225,7 @@ namespace xio {
     template<typename Function, typename OtherAllocator>
     void thread_pool::basic_executor_type<Allocator, Bits>::dispatch(
         Function &&f, const OtherAllocator &a) const {
-        typedef decay_t<Function> function_type;
+        typedef std::decay_t<Function> function_type;
 
         // Invoke immediately if we are already inside the thread pool.
         if (pool_->scheduler_.can_dispatch()) {
@@ -253,7 +253,7 @@ namespace xio {
     template<typename Function, typename OtherAllocator>
     void thread_pool::basic_executor_type<Allocator, Bits>::post(
         Function &&f, const OtherAllocator &a) const {
-        typedef decay_t<Function> function_type;
+        typedef std::decay_t<Function> function_type;
 
         // Allocate and construct an operation to wrap the function.
         typedef detail::executor_op<function_type, OtherAllocator> op;
@@ -271,7 +271,7 @@ namespace xio {
     template<typename Function, typename OtherAllocator>
     void thread_pool::basic_executor_type<Allocator, Bits>::defer(
         Function &&f, const OtherAllocator &a) const {
-        typedef decay_t<Function> function_type;
+        typedef std::decay_t<Function> function_type;
 
         // Allocate and construct an operation to wrap the function.
         typedef detail::executor_op<function_type, OtherAllocator> op;

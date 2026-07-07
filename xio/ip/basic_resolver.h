@@ -110,7 +110,7 @@ namespace xio {
             template<typename ExecutionContext>
             explicit basic_resolver(ExecutionContext &context,
                                     constraint_t<
-                                        is_convertible<ExecutionContext &, execution_context &>::value
+                                        std::is_convertible<ExecutionContext &, execution_context &>::value
                                     > = 0)
                 : impl_(0, 0, context) {
             }
@@ -146,7 +146,7 @@ namespace xio {
             template<typename Executor1>
             basic_resolver(basic_resolver<InternetProtocol, Executor1> &&other,
                            constraint_t<
-                               is_convertible<Executor1, Executor>::value
+                               std::is_convertible<Executor1, Executor>::value
                            > = 0)
                 : impl_(std::move(other.impl_)) {
             }
@@ -182,7 +182,7 @@ namespace xio {
    */
             template<typename Executor1>
             constraint_t<
-                is_convertible<Executor1, Executor>::value,
+                std::is_convertible<Executor1, Executor>::value,
                 basic_resolver &> operator=(basic_resolver<InternetProtocol, Executor1> &&other) {
                 basic_resolver tmp(std::move(other));
                 impl_ = std::move(tmp.impl_);
@@ -627,8 +627,8 @@ namespace xio {
                 -> decltype(
                     xio::async_initiate<ResolveToken,
                         void(xio::error_code, results_type)>(
-                        declval<initiate_async_resolve>(), token,
-                        declval<basic_resolver_query<protocol_type> &>())) {
+                        std::declval<initiate_async_resolve>(), token,
+                        std::declval<basic_resolver_query<protocol_type> &>())) {
                 return async_resolve(host, service, resolver_base::flags(),
                                      static_cast<ResolveToken &&>(token));
             }
@@ -695,8 +695,8 @@ namespace xio {
                 -> decltype(
                     xio::async_initiate<ResolveToken,
                         void(xio::error_code, results_type)>(
-                        declval<initiate_async_resolve>(), token,
-                        declval<basic_resolver_query<protocol_type> &>())) {
+                        std::declval<initiate_async_resolve>(), token,
+                        std::declval<basic_resolver_query<protocol_type> &>())) {
                 basic_resolver_query<protocol_type> q(static_cast<std::string>(host),
                                                       static_cast<std::string>(service), resolve_flags);
 
@@ -765,8 +765,8 @@ namespace xio {
                 -> decltype(
                     xio::async_initiate<ResolveToken,
                         void(xio::error_code, results_type)>(
-                        declval<initiate_async_resolve>(), token,
-                        declval<basic_resolver_query<protocol_type> &>())) {
+                        std::declval<initiate_async_resolve>(), token,
+                        std::declval<basic_resolver_query<protocol_type> &>())) {
                 return async_resolve(protocol, host, service, resolver_base::flags(),
                                      static_cast<ResolveToken &&>(token));
             }
@@ -837,8 +837,8 @@ namespace xio {
                 -> decltype(
                     xio::async_initiate<ResolveToken,
                         void(xio::error_code, results_type)>(
-                        declval<initiate_async_resolve>(), token,
-                        declval<basic_resolver_query<protocol_type> &>())) {
+                        std::declval<initiate_async_resolve>(), token,
+                        std::declval<basic_resolver_query<protocol_type> &>())) {
                 basic_resolver_query<protocol_type> q(
                     protocol, static_cast<std::string>(host),
                     static_cast<std::string>(service), resolve_flags);
@@ -926,7 +926,7 @@ namespace xio {
                 -> decltype(
                     xio::async_initiate<ResolveToken,
                         void(xio::error_code, results_type)>(
-                        declval<initiate_async_resolve>(), token, e)) {
+                        std::declval<initiate_async_resolve>(), token, e)) {
                 return xio::async_initiate<ResolveToken,
                     void(xio::error_code, results_type)>(
                     initiate_async_resolve(this), token, e);

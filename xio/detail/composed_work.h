@@ -32,7 +32,7 @@ namespace xio {
         template<typename Executor, typename = void>
         class composed_work_guard {
         public:
-            typedef decay_t<
+            typedef std::decay_t<
                 prefer_result_t<Executor, execution::outstanding_work_t::tracked_t>
             > executor_type;
 
@@ -71,7 +71,7 @@ namespace xio {
 
         template<typename Executor>
         struct composed_work_guard<Executor,
-            enable_if_t <
+            std::enable_if_t <
             !execution::is_executor<Executor>::value
         >
         >
@@ -200,10 +200,10 @@ namespace xio {
         template<typename IoObject>
         inline typename IoObject::executor_type
         get_composed_io_executor(IoObject &io_object,
-                                 enable_if_t<
+                                 std::enable_if_t<
                                      !is_executor<IoObject>::value
                                  > * = 0,
-                                 enable_if_t<
+                                 std::enable_if_t<
                                      !execution::is_executor<IoObject>::value
                                  > * = 0) {
             return io_object.get_executor();
@@ -211,7 +211,7 @@ namespace xio {
 
         template<typename Executor>
         inline const Executor &get_composed_io_executor(const Executor &ex,
-                                                        enable_if_t<
+                                                        std::enable_if_t<
                                                             is_executor<Executor>::value
                                                             || execution::is_executor<Executor>::value
                                                         > * = 0) {

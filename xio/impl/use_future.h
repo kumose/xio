@@ -92,7 +92,7 @@ namespace xio {
 
         private:
             shared_ptr<std::promise<T> > p_;
-            decay_t<F> f_;
+            std::decay_t<F> f_;
         };
 
         // An executor that adapts the system_executor to capture any exception thrown
@@ -291,13 +291,13 @@ namespace xio {
 
         template<typename Arg>
         class promise_handler_selector<void(Arg),
-                    enable_if_t<is_disposition<Arg>::value> >
+                    std::enable_if_t<is_disposition<Arg>::value> >
                 : public promise_handler_d_0<Arg> {
         };
 
         template<typename Arg>
         class promise_handler_selector<void(Arg),
-            enable_if_t < !is_disposition<Arg>::value>
+            std::enable_if_t < !is_disposition<Arg>::value>
         >
         :
         public
@@ -306,13 +306,13 @@ namespace xio {
 
         template<typename Arg0, typename Arg1>
         class promise_handler_selector<void(Arg0, Arg1),
-                    enable_if_t<is_disposition<Arg0>::value> >
+                    std::enable_if_t<is_disposition<Arg0>::value> >
                 : public promise_handler_d_1<Arg0, Arg1> {
         };
 
         template<typename Arg0, typename... ArgN>
         class promise_handler_selector<void(Arg0, ArgN...),
-            enable_if_t < !is_disposition<Arg0>::value>
+            std::enable_if_t < !is_disposition<Arg0>::value>
         >
         :
         public
@@ -321,7 +321,7 @@ namespace xio {
 
         template<typename Arg0, typename... ArgN>
         class promise_handler_selector<void(Arg0, ArgN...),
-                    enable_if_t<is_disposition<Arg0>::value> >
+                    std::enable_if_t<is_disposition<Arg0>::value> >
                 : public promise_handler_d_n<Arg0, std::tuple<ArgN...> > {
         };
 
@@ -449,9 +449,9 @@ namespace xio {
 
     template<typename Allocator>
     template<typename Function>
-    inline detail::packaged_token<decay_t<Function>, Allocator>
+    inline detail::packaged_token<std::decay_t<Function>, Allocator>
     use_future_t<Allocator>::operator()(Function &&f) const {
-        return detail::packaged_token<decay_t<Function>, Allocator>(
+        return detail::packaged_token<std::decay_t<Function>, Allocator>(
             static_cast<Function &&>(f), allocator_);
     }
 
@@ -460,13 +460,13 @@ namespace xio {
     template<typename Allocator, typename Result, typename... Args>
     class async_result<use_future_t<Allocator>, Result(Args...)>
             : public detail::promise_async_result<
-                void(decay_t<Args>...), Allocator> {
+                void(std::decay_t<Args>...), Allocator> {
     public:
         explicit async_result(
-            typename detail::promise_async_result<void(decay_t<Args>...),
+            typename detail::promise_async_result<void(std::decay_t<Args>...),
                 Allocator>::completion_handler_type &h)
             : detail::promise_async_result<
-                void(decay_t<Args>...), Allocator>(h) {
+                void(std::decay_t<Args>...), Allocator>(h) {
         }
     };
 

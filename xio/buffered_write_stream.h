@@ -56,7 +56,7 @@ namespace xio {
             : private noncopyable {
     public:
         /// The type of the next layer.
-        typedef remove_reference_t<Stream> next_layer_type;
+        typedef std::remove_reference_t<Stream> next_layer_type;
 
         /// The type of the lowest layer.
         typedef typename next_layer_type::lowest_layer_type lowest_layer_type;
@@ -140,8 +140,8 @@ namespace xio {
             -> decltype(
                 async_initiate<WriteHandler,
                     void(xio::error_code, std::size_t)>(
-                    declval<detail::initiate_async_buffered_flush<Stream> >(),
-                    handler, declval<detail::buffered_stream_storage *>()));
+                    std::declval<detail::initiate_async_buffered_flush<Stream> >(),
+                    handler, std::declval<detail::buffered_stream_storage *>()));
 
         /// Write the given data to the stream. Returns the number of bytes written.
   /// Throws an exception on failure.
@@ -168,8 +168,8 @@ namespace xio {
             -> decltype(
                 async_initiate<WriteHandler,
                     void(xio::error_code, std::size_t)>(
-                    declval<detail::initiate_async_buffered_write_some<Stream> >(),
-                    handler, declval<detail::buffered_stream_storage *>(), buffers));
+                    std::declval<detail::initiate_async_buffered_write_some<Stream> >(),
+                    handler, std::declval<detail::buffered_stream_storage *>(), buffers));
 
         /// Read some data from the stream. Returns the number of bytes read. Throws
   /// an exception on failure.
@@ -198,7 +198,7 @@ namespace xio {
         auto async_read_some(const MutableBufferSequence &buffers,
                              ReadHandler &&handler = default_completion_token_t<executor_type>())
             -> decltype(
-                declval<conditional_t<true, Stream &, ReadHandler> >().async_read_some(
+                std::declval<std::conditional_t<true, Stream &, ReadHandler> >().async_read_some(
                     buffers, static_cast<ReadHandler &&>(handler))) {
             return next_layer_.async_read_some(buffers,
                                                static_cast<ReadHandler &&>(handler));

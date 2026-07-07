@@ -20,7 +20,7 @@
 #if defined(ASIO_HAS_DEV_POLL)
 
 #include <xio/detail/dev_poll_reactor.h>
-#include <xio/detail/assert.h>
+# include <cassert>
 #include <xio/detail/scheduler.h>
 #include <xio/detail/throw_error.h>
 #include <xio/error.h>

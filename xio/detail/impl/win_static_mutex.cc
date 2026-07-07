@@ -45,7 +45,7 @@ swprintf_s (
 #else // defined(ASIO_HAS_SECURE_RTL)
 _snwprintf (
 #endif // defined(ASIO_HAS_SECURE_RTL)
-mutex_name, 128, L"asio-58CCDC44-6264-4842-90C2-F3C545CB8AA7-%u-%p",
+mutex_name, 128, L"xio-58CCDC44-6264-4842-90C2-F3C545CB8AA7-%u-%p",
       static_cast<unsigned int>(::GetCurrentProcessId()), this);
 
 #if defined(ASIO_WINDOWS_APP)

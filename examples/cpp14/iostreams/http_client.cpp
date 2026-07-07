@@ -12,7 +12,7 @@
 #include <istream>
 #include <ostream>
 #include <string>
-#include <asio/ts/internet.hpp>
+#include <xio/ts/internet.h>
 
 using xio::ip::tcp;
 

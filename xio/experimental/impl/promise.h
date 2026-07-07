@@ -96,7 +96,7 @@ namespace xio {
                         auto h = std::move(handler);
 
                         using alloc_t = typename std::allocator_traits<
-                                    typename xio::decay<Alloc>::type>::template
+                                    typename std::decay<Alloc>::type>::template
                                 rebind_alloc<completion_impl>;
 
                         alloc_t alloc_{allocator};
@@ -122,9 +122,9 @@ namespace xio {
                         cancel_();
 
                     using impl_t = completion_impl<
-                        typename xio::decay<Alloc>::type, Handler>;
+                        typename std::decay<Alloc>::type, Handler>;
                     using alloc_t = typename std::allocator_traits<
-                        typename xio::decay<Alloc>::type>::template rebind_alloc<impl_t>;
+                        typename std::decay<Alloc>::type>::template rebind_alloc<impl_t>;
 
                     alloc_t alloc_{alloc};
                     auto p = std::allocator_traits<alloc_t>::allocate(alloc_, 1u);
@@ -217,7 +217,7 @@ namespace xio {
                     return promise<void(Ts...), executor_type, allocator_type>{impl_};
                 }
 
-                void operator()(std::remove_reference_t<Ts>... ts) {
+                void operator()(std::std::remove_reference_t<Ts>... ts) {
                     assert(impl_);
 
                     using result_type = typename promise_impl<

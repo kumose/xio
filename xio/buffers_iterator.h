@@ -19,7 +19,7 @@
 #include <cstddef>
 #include <iterator>
 #include <xio/buffer.h>
-#include <xio/detail/assert.h>
+# include <cassert>
 #include <xio/detail/type_traits.h>
 
 #include <xio/detail/push_options.h>
@@ -48,7 +48,7 @@ namespace xio {
 
             template<typename ByteType>
             struct byte_type {
-                typedef add_const_t<ByteType> type;
+                typedef std::add_const_t<ByteType> type;
             };
         };
 
@@ -65,7 +65,7 @@ namespace xio {
         template<typename BufferSequence, typename ByteType>
         struct buffers_iterator_types {
             enum {
-                is_mutable = is_convertible <
+                is_mutable = std::is_convertible <
                              typename BufferSequence::value_type,
                 mutable_buffer>::value
             };
@@ -86,7 +86,7 @@ namespace xio {
         template<typename ByteType>
         struct buffers_iterator_types<const_buffer, ByteType> {
             typedef const_buffer buffer_type;
-            typedef add_const_t<ByteType> byte_type;
+            typedef std::add_const_t<ByteType> byte_type;
             typedef const const_buffer *const_iterator;
         };
     } // namespace detail
@@ -313,7 +313,7 @@ namespace xio {
 
         // Increment the iterator.
         void increment() {
-            ASIO_ASSERT(current_ != end_ && "iterator out of bounds");
+            assert(current_ != end_ && "iterator out of bounds");
             ++position_;
 
             // Check if the increment can be satisfied by the current buffer.
@@ -334,7 +334,7 @@ namespace xio {
 
         // Decrement the iterator.
         void decrement() {
-            ASIO_ASSERT(position_ > 0 && "iterator out of bounds");
+            assert(position_ > 0 && "iterator out of bounds");
             --position_;
 
             // Check if the decrement can be satisfied by the current buffer.
@@ -361,7 +361,7 @@ namespace xio {
         // Advance the iterator by the specified distance.
         void advance(std::ptrdiff_t n) {
             if (n > 0) {
-                ASIO_ASSERT(current_ != end_ && "iterator out of bounds");
+                assert(current_ != end_ && "iterator out of bounds");
                 for (;;) {
                     std::ptrdiff_t current_buffer_balance
                             = current_buffer_.size() - current_buffer_position_;
@@ -380,7 +380,7 @@ namespace xio {
                     // Move to next buffer. If it is empty then it will be skipped on the
                     // next iteration of this loop.
                     if (++current_ == end_) {
-                        ASIO_ASSERT(n == 0 && "iterator out of bounds");
+                        assert(n == 0 && "iterator out of bounds");
                         current_buffer_ = buffer_type();
                         current_buffer_position_ = 0;
                         return;
@@ -390,7 +390,7 @@ namespace xio {
                 }
             } else if (n < 0) {
                 std::size_t abs_n = -n;
-                ASIO_ASSERT(position_ >= abs_n && "iterator out of bounds");
+                assert(position_ >= abs_n && "iterator out of bounds");
                 for (;;) {
                     // Check if the advance can be satisfied by the current buffer.
                     if (current_buffer_position_ >= abs_n) {
@@ -405,7 +405,7 @@ namespace xio {
 
                     // Check if we've reached the beginning of the buffers.
                     if (current_ == begin_) {
-                        ASIO_ASSERT(abs_n == 0 && "iterator out of bounds");
+                        assert(abs_n == 0 && "iterator out of bounds");
                         current_buffer_position_ = 0;
                         return;
                     }

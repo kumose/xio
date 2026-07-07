@@ -11,10 +11,10 @@
 #include "line_reader.hpp"
 #include "sleep.hpp"
 #include "stdin_line_reader.hpp"
-#include <asio/co_spawn.hpp>
-#include <asio/detached.hpp>
-#include <asio/io_context.hpp>
-#include <asio/use_awaitable.hpp>
+#include <xio/co_spawn.h>
+#include <xio/detached.h>
+#include <xio/io_context.h>
+#include <xio/use_awaitable.h>
 #include <iostream>
 
 xio::awaitable<void> do_read(line_reader& reader)

@@ -108,7 +108,7 @@ explicit basic_file(const executor_type &ex)
 template<typename ExecutionContext>
 explicit basic_file(ExecutionContext & context,
                     constraint_t<
-                        is_convertible<ExecutionContext &, execution_context &>::value,
+                        std::is_convertible<ExecutionContext &, execution_context &>::value,
                         defaulted_constraint
                     > = defaulted_constraint())
     : impl_(0, 0, context) {
@@ -179,7 +179,7 @@ template<typename ExecutionContext>
 explicit basic_file(ExecutionContext &context,
                     const char *path, file_base::flags open_flags,
                     constraint_t<
-                        is_convertible<ExecutionContext &, execution_context &>::value,
+                        std::is_convertible<ExecutionContext &, execution_context &>::value,
                         defaulted_constraint
                     > = defaulted_constraint())
     : impl_(0, 0, context) {
@@ -254,7 +254,7 @@ template<typename ExecutionContext>
 explicit basic_file(ExecutionContext &context,
                     const std::string &path, file_base::flags open_flags,
                     constraint_t<
-                        is_convertible<ExecutionContext &, execution_context &>::value,
+                        std::is_convertible<ExecutionContext &, execution_context &>::value,
                         defaulted_constraint
                     > = defaulted_constraint())
     : impl_(0, 0, context) {
@@ -298,7 +298,7 @@ basic_file(const executor_type &ex, const native_handle_type &native_file)
 template<typename ExecutionContext>
 basic_file(ExecutionContext &context, const native_handle_type &native_file,
            constraint_t<
-               is_convertible<ExecutionContext &, execution_context &>::value,
+               std::is_convertible<ExecutionContext &, execution_context &>::value,
                defaulted_constraint
            > = defaulted_constraint())
     : impl_(0, 0, context) {
@@ -354,7 +354,7 @@ friend class basic_file;
 template<typename Executor1>
 basic_file(basic_file<Executor1> && other,
            constraint_t<
-               is_convertible<Executor1, Executor>::value,
+               std::is_convertible<Executor1, Executor>::value,
                defaulted_constraint
            > = defaulted_constraint())
     : impl_(std::move(other.impl_)) {
@@ -372,7 +372,7 @@ basic_file(basic_file<Executor1> && other,
    */
 template<typename Executor1>
 constraint_t<
-    is_convertible<Executor1, Executor>::value,
+    std::is_convertible<Executor1, Executor>::value,
     basic_file &> operator=(basic_file<Executor1> &&other) {
     basic_file tmp(std::move(other));
     impl_ = std::move(tmp.impl_);

@@ -27,8 +27,8 @@ namespace xio {
 /// requirements.
     /**
  * Class template @c is_executor is a UnaryTypeTrait that is derived from @c
- * true_type if the type @c T meets the syntactic requirements for Executor,
- * otherwise @c false_type.
+ * std::true_type if the type @c T meets the syntactic requirements for Executor,
+ * otherwise @c std::false_type.
  */
 
 
@@ -37,7 +37,7 @@ namespace xio {
     template<typename T>
     struct is_executor
 #if defined(GENERATING_DOCUMENTATION)
-            : integral_constant<bool, automatically_determined>
+            : std::integral_constant<bool, automatically_determined>
 #else // defined(GENERATING_DOCUMENTATION)
             : xio::detail::is_executor<T>
 #endif // defined(GENERATING_DOCUMENTATION)

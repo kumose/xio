@@ -1,8 +1,8 @@
-#include <asio/any_io_executor.hpp>
-#include <asio/defer.hpp>
-#include <asio/post.hpp>
-#include <asio/strand.hpp>
-#include <asio/system_executor.hpp>
+#include <xio/any_io_executor.h>
+#include <xio/defer.h>
+#include <xio/post.h>
+#include <xio/strand.h>
+#include <xio/system_executor.h>
 #include <condition_variable>
 #include <deque>
 #include <memory>
@@ -213,7 +213,7 @@ private:
 
 //------------------------------------------------------------------------------
 
-#include <asio/thread_pool.hpp>
+#include <xio/thread_pool.h>
 #include <iostream>
 
 using xio::thread_pool;

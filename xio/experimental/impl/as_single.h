@@ -66,7 +66,7 @@ namespace xio {
             };
 
             template<typename Handler>
-            inline bool asio_handler_is_continuation(
+            inline bool xio_handler_is_continuation(
                 as_single_handler<Handler> *this_handler) {
                 return XIO_VERSIONED_NAME(handler_cont_helpers)
                 ::is_continuation(
@@ -90,7 +90,7 @@ namespace xio {
 
             template<typename R, typename... Args>
             struct as_single_signature<R(Args...)> {
-                typedef R type(std::tuple<decay_t<Args>...>);
+                typedef R type(std::tuple<std::decay_t<Args>...>);
             };
         } // namespace detail
     } // namespace experimental
@@ -106,7 +106,7 @@ namespace xio {
             template<typename Handler, typename... Args>
             void operator()(Handler &&handler, Args &&... args) && {
                 static_cast<Initiation &&>(*this)(
-                    experimental::detail::as_single_handler<decay_t<Handler> >(
+                    experimental::detail::as_single_handler<std::decay_t<Handler> >(
                         static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -114,7 +114,7 @@ namespace xio {
             template<typename Handler, typename... Args>
             void operator()(Handler &&handler, Args &&... args) const & {
                 static_cast<const Initiation &>(*this)(
-                    experimental::detail::as_single_handler<decay_t<Handler> >(
+                    experimental::detail::as_single_handler<std::decay_t<Handler> >(
                         static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -126,12 +126,12 @@ namespace xio {
             -> decltype(
                 async_initiate<CompletionToken,
                     typename experimental::detail::as_single_signature<Signature>::type>(
-                    init_wrapper<decay_t<Initiation> >(
+                    init_wrapper<std::decay_t<Initiation> >(
                         static_cast<Initiation &&>(initiation)),
                     token.token_, static_cast<Args &&>(args)...)) {
             return async_initiate<CompletionToken,
                 typename experimental::detail::as_single_signature<Signature>::type>(
-                init_wrapper<decay_t<Initiation> >(
+                init_wrapper<std::decay_t<Initiation> >(
                     static_cast<Initiation &&>(initiation)),
                 token.token_, static_cast<Args &&>(args)...);
         }

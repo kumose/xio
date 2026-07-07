@@ -8,10 +8,10 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <asio/io_context.hpp>
-#include <asio/ip/tcp.hpp>
-#include <asio/read.hpp>
-#include <asio/write.hpp>
+#include <xio/io_context.h>
+#include <xio/ip/tcp.h>
+#include <xio/read.h>
+#include <xio/write.h>
 #include <boost/shared_ptr.hpp>
 #include <cstdio>
 #include <cstdlib>
@@ -20,7 +20,7 @@
 
 using xio::ip::tcp;
 
-#include <asio/yield.hpp>
+#include <xio/yield.h>
 
 class tcp_server : xio::coroutine
 {
@@ -79,7 +79,7 @@ private:
   tcp::endpoint sender_;
 };
 
-#include <asio/unyield.hpp>
+#include <xio/unyield.h>
 
 int main(int argc, char* argv[])
 {

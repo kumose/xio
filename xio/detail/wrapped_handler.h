@@ -183,7 +183,7 @@ namespace xio {
         };
 
         template<typename Dispatcher, typename Handler, typename IsContinuation>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             wrapped_handler<Dispatcher, Handler, IsContinuation> *this_handler) {
             return IsContinuation()(this_handler->dispatcher_, this_handler->handler_);
         }

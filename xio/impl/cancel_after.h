@@ -36,7 +36,7 @@ namespace xio {
             void operator()(Handler &&handler,
                             const std::chrono::duration<Rep, Period> &timeout,
                             cancellation_type_t cancel_type, Args &&... args) && {
-                using op = detail::timed_cancel_op<decay_t<Handler>,
+                using op = detail::timed_cancel_op<std::decay_t<Handler>,
                     basic_waitable_timer<Clock, WaitTraits>, Signatures...>;
 
                 non_const_lvalue<Handler> handler2(handler);
@@ -58,7 +58,7 @@ namespace xio {
             void operator()(Handler &&handler,
                             const std::chrono::duration<Rep, Period> &timeout,
                             cancellation_type_t cancel_type, Args &&... args) const & {
-                using op = detail::timed_cancel_op<decay_t<Handler>,
+                using op = detail::timed_cancel_op<std::decay_t<Handler>,
                     basic_waitable_timer<Clock, WaitTraits>, Signatures...>;
 
                 non_const_lvalue<Handler> handler2(handler);
@@ -88,7 +88,7 @@ namespace xio {
                             basic_waitable_timer<Clock, WaitTraits, Executor> *timer,
                             const std::chrono::duration<Rep, Period> &timeout,
                             cancellation_type_t cancel_type, Args &&... args) && {
-                using op = detail::timed_cancel_op<decay_t<Handler>,
+                using op = detail::timed_cancel_op<std::decay_t<Handler>,
                     basic_waitable_timer<Clock, WaitTraits, Executor> &, Signatures...>;
 
                 non_const_lvalue<Handler> handler2(handler);
@@ -109,7 +109,7 @@ namespace xio {
                             basic_waitable_timer<Clock, WaitTraits, Executor> *timer,
                             const std::chrono::duration<Rep, Period> &timeout,
                             cancellation_type_t cancel_type, Args &&... args) const & {
-                using op = detail::timed_cancel_op<decay_t<Handler>,
+                using op = detail::timed_cancel_op<std::decay_t<Handler>,
                     basic_waitable_timer<Clock, WaitTraits, Executor> &, Signatures...>;
 
                 non_const_lvalue<Handler> handler2(handler);
@@ -140,21 +140,21 @@ namespace xio {
                              RawCompletionToken &&token, Args &&... args)
             -> decltype(
                 async_initiate<
-                    conditional_t<
-                        is_const<remove_reference_t<RawCompletionToken> >::value,
+                    std::conditional_t<
+                        std::is_const<std::remove_reference_t<RawCompletionToken> >::value,
                         const CompletionToken, CompletionToken>,
                     Signatures...>(
-                    declval<detail::initiate_cancel_after<
-                        decay_t<Initiation>, Clock, WaitTraits, Signatures...> >(),
+                    std::declval<detail::initiate_cancel_after<
+                        std::decay_t<Initiation>, Clock, WaitTraits, Signatures...> >(),
                     token.token_, token.timeout_, token.cancel_type_,
                     static_cast<Args &&>(args)...)) {
             return async_initiate<
-                conditional_t<
-                    is_const<remove_reference_t<RawCompletionToken> >::value,
+                std::conditional_t<
+                    std::is_const<std::remove_reference_t<RawCompletionToken> >::value,
                     const CompletionToken, CompletionToken>,
                 Signatures...>(
                 detail::initiate_cancel_after<
-                    decay_t<Initiation>, Clock, WaitTraits, Signatures...>(
+                    std::decay_t<Initiation>, Clock, WaitTraits, Signatures...>(
                     static_cast<Initiation &&>(initiation)),
                 token.token_, token.timeout_, token.cancel_type_,
                 static_cast<Args &&>(args)...);
@@ -172,21 +172,21 @@ namespace xio {
                              RawCompletionToken &&token, Args &&... args)
             -> decltype(
                 async_initiate<
-                    conditional_t<
-                        is_const<remove_reference_t<RawCompletionToken> >::value,
+                    std::conditional_t<
+                        std::is_const<std::remove_reference_t<RawCompletionToken> >::value,
                         const CompletionToken, CompletionToken>,
                     Signatures...>(
-                    declval<detail::initiate_cancel_after_timer<
-                        decay_t<Initiation>, Clock, WaitTraits, Executor, Signatures...> >(),
+                    std::declval<detail::initiate_cancel_after_timer<
+                        std::decay_t<Initiation>, Clock, WaitTraits, Executor, Signatures...> >(),
                     token.token_, &token.timer_, token.timeout_,
                     token.cancel_type_, static_cast<Args &&>(args)...)) {
             return async_initiate<
-                conditional_t<
-                    is_const<remove_reference_t<RawCompletionToken> >::value,
+                std::conditional_t<
+                    std::is_const<std::remove_reference_t<RawCompletionToken> >::value,
                     const CompletionToken, CompletionToken>,
                 Signatures...>(
                 detail::initiate_cancel_after_timer<
-                    decay_t<Initiation>, Clock, WaitTraits, Executor, Signatures...>(
+                    std::decay_t<Initiation>, Clock, WaitTraits, Executor, Signatures...>(
                     static_cast<Initiation &&>(initiation)),
                 token.token_, &token.timer_, token.timeout_,
                 token.cancel_type_, static_cast<Args &&>(args)...);

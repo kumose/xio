@@ -83,7 +83,7 @@ namespace xio {
             template<typename Executor, typename, typename>
             class channel_operation::handler_work_base {
             public:
-                typedef decay_t<
+                typedef std::decay_t<
                     prefer_result_t<Executor,
                         execution::outstanding_work_t::tracked_t
                     >
@@ -120,15 +120,15 @@ namespace xio {
 
             template<typename Executor>
             class channel_operation::handler_work_base<Executor,
-                        enable_if_t<
+                        std::enable_if_t<
                             execution::is_executor<Executor>::value
                         >,
-                        enable_if_t<
+                        std::enable_if_t<
                             can_require<Executor, execution::blocking_t::never_t>::value
                         >
                     > {
             public:
-                typedef decay_t<
+                typedef std::decay_t<
                     prefer_result_t<Executor,
                         execution::outstanding_work_t::tracked_t
                     >
@@ -171,7 +171,7 @@ namespace xio {
 
             template<typename Executor>
             class channel_operation::handler_work_base<Executor,
-                enable_if_t <
+                std::enable_if_t <
                 !execution::is_executor<Executor>::value
             >
             >
@@ -258,12 +258,12 @@ private:
 
                 template<typename Function>
                 void immediate(Function &function, Handler &,
-                               enable_if_t<
-                                   is_same <
+                               std::enable_if_t<
+                                   std::is_same <
                                    typename associated_immediate_executor <
-                                   conditional_t < false, Function, Handler>,
+                                   std::conditional_t < false, Function, Handler>,
                                typename base1_type::executor_type>::
-                               asio_associated_immediate_executor_is_unspecialised,
+                               xio_associated_immediate_executor_is_unspecialised,
                                void
         >::value
       >*) {
@@ -278,10 +278,10 @@ private:
             template<typename Handler, typename IoExecutor>
             class channel_operation::handler_work<
                         Handler, IoExecutor,
-                        enable_if_t<
-                            is_same<
+                        std::enable_if_t<
+                            std::is_same<
                                 typename associated_executor<Handler,
-                                    IoExecutor>::asio_associated_executor_is_unspecialised,
+                                    IoExecutor>::xio_associated_executor_is_unspecialised,
                                 void>::value
                         >
                     > : handler_work_base<IoExecutor> {
@@ -318,12 +318,12 @@ private:
 
                 template<typename Function>
                 void immediate(Function &function, Handler &handler,
-                               enable_if_t<
-                                   is_same <
+                               std::enable_if_t<
+                                   std::is_same <
                                    typename associated_immediate_executor <
-                                   conditional_t < false, Function, Handler>,
+                                   std::conditional_t < false, Function, Handler>,
                                typename base1_type::executor_type>::
-                               asio_associated_immediate_executor_is_unspecialised,
+                               xio_associated_immediate_executor_is_unspecialised,
                                void
         >::value
       >*) {

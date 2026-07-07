@@ -113,7 +113,7 @@ namespace xio {
             template<typename Executor, typename Function>
             static void execute(const implementation_type &impl, Executor &ex,
                                 Function &&function,
-                                enable_if_t<
+                                std::enable_if_t<
                                     can_query<Executor, execution::allocator_t<void> >::value
                                 > * = 0);
 
@@ -121,7 +121,7 @@ namespace xio {
             template<typename Executor, typename Function>
             static void execute(const implementation_type &impl, Executor &ex,
                                 Function &&function,
-                                enable_if_t<
+                                std::enable_if_t<
                                     !can_query<Executor, execution::allocator_t<void> >::value
                                 > * = 0);
 

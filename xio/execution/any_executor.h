@@ -18,7 +18,7 @@
 #include <xio/detail/config.h>
 #include <new>
 #include <typeinfo>
-#include <xio/detail/assert.h>
+# include <cassert>
 #include <xio/detail/atomic_count.h>
 #include <cstddef>
 #include <xio/detail/executor_function.h>
@@ -243,29 +243,29 @@ namespace xio {
             // formed.
 
             template<typename T, typename = void>
-            struct is_requirable : false_type {
+            struct is_requirable : std::false_type {
             };
 
             template<typename T>
-            struct is_requirable<T, enable_if_t<T::is_requirable> > : true_type {
+            struct is_requirable<T, std::enable_if_t<T::is_requirable> > : std::true_type {
             };
 
             template<typename T, typename = void>
-            struct is_preferable : false_type {
+            struct is_preferable : std::false_type {
             };
 
             template<typename T>
-            struct is_preferable<T, enable_if_t<T::is_preferable> > : true_type {
+            struct is_preferable<T, std::enable_if_t<T::is_preferable> > : std::true_type {
             };
 
             // Trait used to detect context_as property, for backward compatibility.
 
             template<typename T>
-            struct is_context_as : false_type {
+            struct is_context_as : std::false_type {
             };
 
             template<typename U>
-            struct is_context_as<context_as_t<U> > : true_type {
+            struct is_context_as<context_as_t<U> > : std::true_type {
             };
 
             // Helper template to:
@@ -278,7 +278,7 @@ namespace xio {
             template<std::size_t I, typename Prop>
             struct supportable_properties<I, void(Prop)> {
                 template<typename T>
-                struct is_valid_target : integral_constant<bool,
+                struct is_valid_target : std::integral_constant<bool,
                             (
                                 is_requirable<Prop>::value
                                     ? can_require<T, Prop>::value
@@ -312,8 +312,8 @@ namespace xio {
 
                 template<typename T>
                 struct find_convertible_property :
-                        conditional_t<
-                            is_same<T, Prop>::value || is_convertible<T, Prop>::value,
+                        std::conditional_t<
+                            std::is_same<T, Prop>::value || std::is_convertible<T, Prop>::value,
                             found,
                             not_found
                         > {
@@ -321,9 +321,9 @@ namespace xio {
 
                 template<typename T>
                 struct find_convertible_requirable_property :
-                        conditional_t<
+                        std::conditional_t<
                             is_requirable<Prop>::value
-                            && (is_same<T, Prop>::value || is_convertible<T, Prop>::value),
+                            && (std::is_same<T, Prop>::value || std::is_convertible<T, Prop>::value),
                             found,
                             not_found
                         > {
@@ -331,16 +331,16 @@ namespace xio {
 
                 template<typename T>
                 struct find_convertible_preferable_property :
-                        conditional_t<
+                        std::conditional_t<
                             is_preferable<Prop>::value
-                            && (is_same<T, Prop>::value || is_convertible<T, Prop>::value),
+                            && (std::is_same<T, Prop>::value || std::is_convertible<T, Prop>::value),
                             found,
                             not_found
                         > {
                 };
 
                 struct find_context_as_property :
-                        conditional_t<
+                        std::conditional_t<
                             is_context_as<Prop>::value,
                             found,
                             not_found
@@ -351,7 +351,7 @@ namespace xio {
             template<std::size_t I, typename Head, typename... Tail>
             struct supportable_properties<I, void(Head, Tail...)> {
                 template<typename T>
-                struct is_valid_target : integral_constant<bool,
+                struct is_valid_target : std::integral_constant<bool,
                             (
                                 supportable_properties<I,
                                     void(Head)>::template is_valid_target<T>::value
@@ -364,8 +364,8 @@ namespace xio {
 
                 template<typename T>
                 struct find_convertible_property :
-                        conditional_t<
-                            is_convertible<T, Head>::value,
+                        std::conditional_t<
+                            std::is_convertible<T, Head>::value,
                             typename supportable_properties<I, void(Head)>::found,
                             typename supportable_properties<I + 1,
                                 void(Tail...)>::template find_convertible_property<T>
@@ -374,9 +374,9 @@ namespace xio {
 
                 template<typename T>
                 struct find_convertible_requirable_property :
-                        conditional_t<
+                        std::conditional_t<
                             is_requirable<Head>::value
-                            && is_convertible<T, Head>::value,
+                            && std::is_convertible<T, Head>::value,
                             typename supportable_properties<I, void(Head)>::found,
                             typename supportable_properties<I + 1,
                                 void(Tail...)>::template find_convertible_requirable_property<T>
@@ -385,9 +385,9 @@ namespace xio {
 
                 template<typename T>
                 struct find_convertible_preferable_property :
-                        conditional_t<
+                        std::conditional_t<
                             is_preferable<Head>::value
-                            && is_convertible<T, Head>::value,
+                            && std::is_convertible<T, Head>::value,
                             typename supportable_properties<I, void(Head)>::found,
                             typename supportable_properties<I + 1,
                                 void(Tail...)>::template find_convertible_preferable_property<T>
@@ -395,7 +395,7 @@ namespace xio {
                 };
 
                 struct find_context_as_property :
-                        conditional_t<
+                        std::conditional_t<
                             is_context_as<Head>::value,
                             typename supportable_properties<I, void(Head)>::found,
                             typename supportable_properties<I + 1,
@@ -406,31 +406,31 @@ namespace xio {
 
             template<typename T, typename Props>
             struct is_valid_target_executor :
-                    conditional_t<
+                    std::conditional_t<
                         is_executor<T>::value,
                         typename supportable_properties<0, Props>::template is_valid_target<T>,
-                        false_type
+                        std::false_type
                     > {
             };
 
             template<typename Props>
-            struct is_valid_target_executor<int, Props> : false_type {
+            struct is_valid_target_executor<int, Props> : std::false_type {
             };
 
             class shared_target_executor {
             public:
                 template<typename E>
-                shared_target_executor(E &&e, decay_t<E> *&target) {
-                    impl<decay_t<E> > *i =
-                            new impl<decay_t<E> >(static_cast<E &&>(e));
+                shared_target_executor(E &&e, std::decay_t<E> *&target) {
+                    impl<std::decay_t<E> > *i =
+                            new impl<std::decay_t<E> >(static_cast<E &&>(e));
                     target = &i->ex_;
                     impl_ = i;
                 }
 
                 template<typename E>
-                shared_target_executor(std::nothrow_t, E &&e, decay_t<E> *&target) noexcept {
-                    impl<decay_t<E> > *i =
-                            new(std::nothrow) impl<decay_t<E> >(static_cast<E &&>(e));
+                shared_target_executor(std::nothrow_t, E &&e, std::decay_t<E> *&target) noexcept {
+                    impl<std::decay_t<E> > *i =
+                            new(std::nothrow) impl<std::decay_t<E> >(static_cast<E &&>(e));
                     target = i ? &i->ex_ : 0;
                     impl_ = i;
                 }
@@ -496,29 +496,29 @@ namespace xio {
                 }
 
                 template<ASIO_EXECUTION_EXECUTOR Executor>
-                any_executor_base(Executor ex, false_type)
+                any_executor_base(Executor ex, std::false_type)
                     : target_fns_(target_fns_table<Executor>(
                         any_executor_base::query_blocking(ex,
                                                           can_query<const Executor &, const execution::blocking_t &>())
                         == execution::blocking.always)) {
                     any_executor_base::construct_object(ex,
-                                                        integral_constant < bool,
+                                                        std::integral_constant < bool,
                                                         sizeof(Executor) <= sizeof(object_type)
-                                                        && alignment_of < Executor > ::value <= alignment_of<
+                                                        && std::alignment_of < Executor > ::value <= std::alignment_of<
                                                             object_type>::value
                                                         > ());
                 }
 
                 template<ASIO_EXECUTION_EXECUTOR Executor>
-                any_executor_base(std::nothrow_t, Executor ex, false_type) noexcept
+                any_executor_base(std::nothrow_t, Executor ex, std::false_type) noexcept
                     : target_fns_(target_fns_table<Executor>(
                         any_executor_base::query_blocking(ex,
                                                           can_query<const Executor &, const execution::blocking_t &>())
                         == execution::blocking.always)) {
                     any_executor_base::construct_object(std::nothrow, ex,
-                                                        integral_constant < bool,
+                                                        std::integral_constant < bool,
                                                         sizeof(Executor) <= sizeof(object_type)
-                                                        && alignment_of < Executor > ::value <= alignment_of<
+                                                        && std::alignment_of < Executor > ::value <= std::alignment_of<
                                                             object_type>::value
                                                         > ());
                     if (target_ == 0) {
@@ -528,7 +528,7 @@ namespace xio {
                 }
 
                 template<ASIO_EXECUTION_EXECUTOR Executor>
-                any_executor_base(Executor other, true_type)
+                any_executor_base(Executor other, std::true_type)
                     : object_fns_(object_fns_table<shared_target_executor>()),
                       target_fns_(other.target_fns_) {
                     Executor * p = 0;
@@ -539,7 +539,7 @@ namespace xio {
 
                 template<ASIO_EXECUTION_EXECUTOR Executor>
                 any_executor_base(std::nothrow_t,
-                                  Executor other, true_type) noexcept
+                                  Executor other, std::true_type) noexcept
                     : object_fns_(object_fns_table<shared_target_executor>()),
                       target_fns_(other.target_fns_) {
                     Executor * p = 0;
@@ -660,7 +660,7 @@ namespace xio {
 
                 template<typename Executor>
                 Executor *target() {
-                    return target_ && (is_same<Executor, void>::value
+                    return target_ && (std::is_same<Executor, void>::value
                                        || target_fns_->target_type() == target_type_ex<Executor>())
                                ? static_cast<Executor *>(target_)
                                : 0;
@@ -668,7 +668,7 @@ namespace xio {
 
                 template<typename Executor>
                 const Executor *target() const {
-                    return target_ && (is_same<Executor, void>::value
+                    return target_ && (std::is_same<Executor, void>::value
                                        || target_fns_->target_type() == target_type_ex<Executor>())
                                ? static_cast<const Executor *>(target_)
                                : 0;
@@ -758,8 +758,8 @@ namespace xio {
 
                 template<typename Obj>
                 static const object_fns *object_fns_table(
-                    enable_if_t<
-                        is_same<Obj, shared_target_executor>::value
+                    std::enable_if_t<
+                        std::is_same<Obj, shared_target_executor>::value
                     > * = 0) {
                     static const object_fns fns =
                     {
@@ -796,9 +796,9 @@ namespace xio {
 
                 template<typename Obj>
                 static const object_fns *object_fns_table(
-                    enable_if_t<
-                        !is_same<Obj, void>::value
-                        && !is_same<Obj, shared_target_executor>::value
+                    std::enable_if_t<
+                        !std::is_same<Obj, void>::value
+                        && !std::is_same<Obj, shared_target_executor>::value
                     > * = 0) {
                     static const object_fns fns =
                     {
@@ -864,8 +864,8 @@ namespace xio {
 
                 template<typename Ex>
                 static const target_fns *target_fns_table(bool is_always_blocking,
-                                                          enable_if_t<
-                                                              !is_same<Ex, void>::value
+                                                          std::enable_if_t<
+                                                              !std::is_same<Ex, void>::value
                                                           > * = 0) {
                     static const target_fns fns_with_execute =
                     {
@@ -898,9 +898,9 @@ namespace xio {
 
                 template<typename Ex, class Prop>
                 static void query_fn_non_void(void *, const void *ex, const void *prop,
-                                              enable_if_t<
+                                              std::enable_if_t<
                                                   xio::can_query<const Ex &, const Prop &>::value
-                                                  && is_same < typename Prop::polymorphic_query_result_type,
+                                                  && std::is_same < typename Prop::polymorphic_query_result_type,
                                                   void>::value
       >*) {
                     xio::query(*static_cast<const Ex *>(ex),
@@ -909,22 +909,22 @@ namespace xio {
 
                 template<typename Ex, class Prop>
                 static void query_fn_non_void(void *, const void *, const void *,
-                                              enable_if_t<
+                                              std::enable_if_t<
                                                   !xio::can_query<const Ex &, const Prop &>::value
-                                                  && is_same < typename Prop::polymorphic_query_result_type,
+                                                  && std::is_same < typename Prop::polymorphic_query_result_type,
                                                   void>::value
       >*) {
                 }
 
                 template<typename Ex, class Prop>
                 static void query_fn_non_void(void *result, const void *ex, const void *prop,
-                                              enable_if_t<
+                                              std::enable_if_t<
                                                   xio::can_query<const Ex &, const Prop &>::value
-                                                  && !is_same < typename Prop::polymorphic_query_result_type,
+                                                  && !std::is_same < typename Prop::polymorphic_query_result_type,
                                                   void>::value
-                                              &&is_reference<typename Prop::polymorphic_query_result_type>::value
+                                              &&std::is_reference<typename Prop::polymorphic_query_result_type>::value
       >*) {
-                    *static_cast<remove_reference_t<
+                    *static_cast<std::remove_reference_t<
                                 typename Prop::polymorphic_query_result_type> **>(result)
                             = &static_cast<typename Prop::polymorphic_query_result_type>(
                                 xio::query(*static_cast<const Ex *>(ex),
@@ -933,22 +933,22 @@ namespace xio {
 
                 template<typename Ex, class Prop>
                 static void query_fn_non_void(void *, const void *, const void *,
-                                              enable_if_t<
+                                              std::enable_if_t<
                                                   !xio::can_query<const Ex &, const Prop &>::value
-                                                  && !is_same < typename Prop::polymorphic_query_result_type,
+                                                  && !std::is_same < typename Prop::polymorphic_query_result_type,
                                                   void>::value
-                                              &&is_reference<typename Prop::polymorphic_query_result_type>::value
+                                              &&std::is_reference<typename Prop::polymorphic_query_result_type>::value
       >*) {
                     std::terminate(); // Combination should not be possible.
                 }
 
                 template<typename Ex, class Prop>
                 static void query_fn_non_void(void *result, const void *ex, const void *prop,
-                                              enable_if_t<
+                                              std::enable_if_t<
                                                   xio::can_query<const Ex &, const Prop &>::value
-                                                  && !is_same < typename Prop::polymorphic_query_result_type,
+                                                  && !std::is_same < typename Prop::polymorphic_query_result_type,
                                                   void>::value
-                                              &&is_scalar<typename Prop::polymorphic_query_result_type>::value
+                                              &&std::is_scalar<typename Prop::polymorphic_query_result_type>::value
       >*) {
                     *static_cast<typename Prop::polymorphic_query_result_type *>(result)
                             = static_cast<typename Prop::polymorphic_query_result_type>(
@@ -958,11 +958,11 @@ namespace xio {
 
                 template<typename Ex, class Prop>
                 static void query_fn_non_void(void *result, const void *, const void *,
-                                              enable_if_t<
+                                              std::enable_if_t<
                                                   !xio::can_query<const Ex &, const Prop &>::value
-                                                  && !is_same < typename Prop::polymorphic_query_result_type,
+                                                  && !std::is_same < typename Prop::polymorphic_query_result_type,
                                                   void>::value
-                                              &&is_scalar<typename Prop::polymorphic_query_result_type>::value
+                                              &&std::is_scalar<typename Prop::polymorphic_query_result_type>::value
       >*) {
                     *static_cast<typename Prop::polymorphic_query_result_type *>(result)
                             = typename Prop::polymorphic_query_result_type();
@@ -970,12 +970,12 @@ namespace xio {
 
                 template<typename Ex, class Prop>
                 static void query_fn_non_void(void *result, const void *ex, const void *prop,
-                                              enable_if_t<
+                                              std::enable_if_t<
                                                   xio::can_query<const Ex &, const Prop &>::value
-                                                  && !is_same < typename Prop::polymorphic_query_result_type,
+                                                  && !std::is_same < typename Prop::polymorphic_query_result_type,
                                                   void>::value
-                                              &&!is_reference<typename Prop::polymorphic_query_result_type>::value
-                                              &&!is_scalar<typename Prop::polymorphic_query_result_type>::value
+                                              &&!std::is_reference<typename Prop::polymorphic_query_result_type>::value
+                                              &&!std::is_scalar<typename Prop::polymorphic_query_result_type>::value
       >*) {
                     *static_cast<typename Prop::polymorphic_query_result_type **>(result)
                             = new typename Prop::polymorphic_query_result_type(
@@ -991,16 +991,16 @@ namespace xio {
 
                 template<typename Ex, class Prop>
                 static void query_fn_impl(void *result, const void *ex, const void *prop,
-                                          enable_if_t<
-                                              is_same<Ex, void>::value
+                                          std::enable_if_t<
+                                              std::is_same<Ex, void>::value
                                           > *) {
                     query_fn_void(result, ex, prop);
                 }
 
                 template<typename Ex, class Prop>
                 static void query_fn_impl(void *result, const void *ex, const void *prop,
-                                          enable_if_t<
-                                              !is_same<Ex, void>::value
+                                          std::enable_if_t<
+                                              !std::is_same<Ex, void>::value
                                           > *) {
                     query_fn_non_void<Ex, Prop>(result, ex, prop, 0);
                 }
@@ -1012,8 +1012,8 @@ namespace xio {
 
                 template<typename Poly, typename Ex, class Prop>
                 static Poly require_fn_impl(const void *, const void *,
-                                            enable_if_t<
-                                                is_same<Ex, void>::value
+                                            std::enable_if_t<
+                                                std::is_same<Ex, void>::value
                                             > *) {
                     bad_executor ex;
                     xio::detail::throw_exception(ex);
@@ -1022,8 +1022,8 @@ namespace xio {
 
                 template<typename Poly, typename Ex, class Prop>
                 static Poly require_fn_impl(const void *ex, const void *prop,
-                                            enable_if_t<
-                                                !is_same<Ex, void>::value && Prop::is_requirable
+                                            std::enable_if_t<
+                                                !std::is_same<Ex, void>::value && Prop::is_requirable
                                             > *) {
                     return xio::require(*static_cast<const Ex *>(ex),
                                         *static_cast<const Prop *>(prop));
@@ -1041,8 +1041,8 @@ namespace xio {
 
                 template<typename Poly, typename Ex, class Prop>
                 static Poly prefer_fn_impl(const void *, const void *,
-                                           enable_if_t<
-                                               is_same<Ex, void>::value
+                                           std::enable_if_t<
+                                               std::is_same<Ex, void>::value
                                            > *) {
                     bad_executor ex;
                     xio::detail::throw_exception(ex);
@@ -1051,8 +1051,8 @@ namespace xio {
 
                 template<typename Poly, typename Ex, class Prop>
                 static Poly prefer_fn_impl(const void *ex, const void *prop,
-                                           enable_if_t<
-                                               !is_same<Ex, void>::value && Prop::is_preferable
+                                           std::enable_if_t<
+                                               !std::is_same<Ex, void>::value && Prop::is_preferable
                                            > *) {
                     return xio::prefer(*static_cast<const Ex *>(ex),
                                        *static_cast<const Prop *>(prop));
@@ -1083,23 +1083,23 @@ namespace xio {
 
             private:
                 template<typename Executor>
-                static execution::blocking_t query_blocking(const Executor &ex, true_type) {
+                static execution::blocking_t query_blocking(const Executor &ex, std::true_type) {
                     return xio::query(ex, execution::blocking);
                 }
 
                 template<typename Executor>
-                static execution::blocking_t query_blocking(const Executor &, false_type) {
+                static execution::blocking_t query_blocking(const Executor &, std::false_type) {
                     return execution::blocking_t();
                 }
 
                 template<typename Executor>
-                void construct_object(Executor &ex, true_type) {
+                void construct_object(Executor &ex, std::true_type) {
                     object_fns_ = object_fns_table<Executor>();
                     target_ = new(&object_) Executor(static_cast<Executor &&>(ex));
                 }
 
                 template<typename Executor>
-                void construct_object(Executor &ex, false_type) {
+                void construct_object(Executor &ex, std::false_type) {
                     object_fns_ = object_fns_table<shared_target_executor>();
                     Executor *p = 0;
                     new(&object_) shared_target_executor(
@@ -1109,14 +1109,14 @@ namespace xio {
 
                 template<typename Executor>
                 void construct_object(std::nothrow_t,
-                                      Executor &ex, true_type) noexcept {
+                                      Executor &ex, std::true_type) noexcept {
                     object_fns_ = object_fns_table<Executor>();
                     target_ = new(&object_) Executor(static_cast<Executor &&>(ex));
                 }
 
                 template<typename Executor>
                 void construct_object(std::nothrow_t,
-                                      Executor &ex, false_type) noexcept {
+                                      Executor &ex, std::false_type) noexcept {
                     object_fns_ = object_fns_table<shared_target_executor>();
                     Executor *p = 0;
                     new(&object_) shared_target_executor(
@@ -1130,7 +1130,7 @@ namespace xio {
 
                 typedef aligned_storage<
                     sizeof(xio::detail::shared_ptr<void>) + sizeof(void *),
-                    alignment_of<xio::detail::shared_ptr<void> >::value
+                    std::alignment_of<xio::detail::shared_ptr<void> >::value
                 >::type object_type;
 
                 object_type object_;
@@ -1146,7 +1146,7 @@ namespace xio {
 #if !defined(ASIO_NO_TS_EXECUTORS)
 
             template<typename Derived, typename Property>
-            struct any_executor_context<Derived, Property, enable_if_t<Property::value> > {
+            struct any_executor_context<Derived, Property, std::enable_if_t<Property::value> > {
                 typename Property::query_result_type context() const {
                     return static_cast<const Derived *>(this)->query(typename Property::type());
                 }
@@ -1168,30 +1168,30 @@ namespace xio {
 
             template<typename Executor>
             any_executor(Executor ex,
-                         enable_if_t<
-                             conditional_t <
-                             !is_same<Executor, any_executor>::value
-                             && !is_base_of<detail::any_executor_base, Executor>::value,
+                         std::enable_if_t<
+                             std::conditional_t <
+                             !std::is_same<Executor, any_executor>::value
+                             && !std::is_base_of<detail::any_executor_base, Executor>::value,
                              is_executor<Executor>,
-                             false_type
+                             std::false_type
                          >::value
       >* = 0)
                 : detail::any_executor_base(
-                    static_cast<Executor &&>(ex), false_type()) {
+                    static_cast<Executor &&>(ex), std::false_type()) {
             }
 
             template<typename Executor>
             any_executor(std::nothrow_t, Executor ex,
-                         enable_if_t<
-                             conditional_t <
-                             !is_same<Executor, any_executor>::value
-                             && !is_base_of<detail::any_executor_base, Executor>::value,
+                         std::enable_if_t<
+                             std::conditional_t <
+                             !std::is_same<Executor, any_executor>::value
+                             && !std::is_base_of<detail::any_executor_base, Executor>::value,
                              is_executor<Executor>,
-                             false_type
+                             std::false_type
                          >::value
       >* = 0) noexcept
                 : detail::any_executor_base(std::nothrow,
-                                            static_cast<Executor &&>(ex), false_type()) {
+                                            static_cast<Executor &&>(ex), std::false_type()) {
             }
 
             template<typename... OtherSupportableProperties>
@@ -1267,47 +1267,47 @@ namespace xio {
             }
 
             template<typename AnyExecutor1, typename AnyExecutor2>
-            friend enable_if_t<
-                is_base_of<any_executor, AnyExecutor1>::value
-                || is_base_of<any_executor, AnyExecutor2>::value,
+            friend std::enable_if_t<
+                std::is_base_of<any_executor, AnyExecutor1>::value
+                || std::is_base_of<any_executor, AnyExecutor2>::value,
                 bool> operator==(const AnyExecutor1 &a,
                                  const AnyExecutor2 &b) noexcept {
                 return static_cast<const any_executor &>(a).equality_helper(b);
             }
 
             template<typename AnyExecutor>
-            friend enable_if_t<
-                is_same<AnyExecutor, any_executor>::value,
+            friend std::enable_if_t<
+                std::is_same<AnyExecutor, any_executor>::value,
                 bool> operator==(const AnyExecutor &a, nullptr_t) noexcept {
                 return !a;
             }
 
             template<typename AnyExecutor>
-            friend enable_if_t<
-                is_same<AnyExecutor, any_executor>::value,
+            friend std::enable_if_t<
+                std::is_same<AnyExecutor, any_executor>::value,
                 bool> operator==(nullptr_t, const AnyExecutor &b) noexcept {
                 return !b;
             }
 
             template<typename AnyExecutor1, typename AnyExecutor2>
-            friend enable_if_t<
-                is_base_of<any_executor, AnyExecutor1>::value
-                || is_base_of<any_executor, AnyExecutor2>::value,
+            friend std::enable_if_t<
+                std::is_base_of<any_executor, AnyExecutor1>::value
+                || std::is_base_of<any_executor, AnyExecutor2>::value,
                 bool> operator!=(const AnyExecutor1 &a,
                                  const AnyExecutor2 &b) noexcept {
                 return !static_cast<const any_executor &>(a).equality_helper(b);
             }
 
             template<typename AnyExecutor>
-            friend enable_if_t<
-                is_same<AnyExecutor, any_executor>::value,
+            friend std::enable_if_t<
+                std::is_same<AnyExecutor, any_executor>::value,
                 bool> operator!=(const AnyExecutor &a, nullptr_t) noexcept {
                 return !!a;
             }
 
             template<typename AnyExecutor>
-            friend enable_if_t<
-                is_same<AnyExecutor, any_executor>::value,
+            friend std::enable_if_t<
+                std::is_same<AnyExecutor, any_executor>::value,
                 bool> operator!=(nullptr_t, const AnyExecutor &b) noexcept {
                 return !!b;
             }
@@ -1337,33 +1337,33 @@ namespace xio {
 
             template<typename Executor>
             any_executor(Executor ex,
-                         enable_if_t<
-                             conditional_t <
-                             !is_same<Executor, any_executor>::value
-                             && !is_base_of<detail::any_executor_base, Executor>::value,
+                         std::enable_if_t<
+                             std::conditional_t <
+                             !std::is_same<Executor, any_executor>::value
+                             && !std::is_base_of<detail::any_executor_base, Executor>::value,
                              detail::is_valid_target_executor<
                                  Executor, void(SupportableProperties...)>,
-                             false_type
+                             std::false_type
                          >::value
       >* = 0)
                 : detail::any_executor_base(
-                      static_cast<Executor &&>(ex), false_type()),
+                      static_cast<Executor &&>(ex), std::false_type()),
                   prop_fns_(prop_fns_table<Executor>()) {
             }
 
             template<typename Executor>
             any_executor(std::nothrow_t, Executor ex,
-                         enable_if_t<
-                             conditional_t <
-                             !is_same<Executor, any_executor>::value
-                             && !is_base_of<detail::any_executor_base, Executor>::value,
+                         std::enable_if_t<
+                             std::conditional_t <
+                             !std::is_same<Executor, any_executor>::value
+                             && !std::is_base_of<detail::any_executor_base, Executor>::value,
                              detail::is_valid_target_executor<
                                  Executor, void(SupportableProperties...)>,
-                             false_type
+                             std::false_type
                          >::value
       >* = 0) noexcept
                 : detail::any_executor_base(std::nothrow,
-                                            static_cast<Executor &&>(ex), false_type()),
+                                            static_cast<Executor &&>(ex), std::false_type()),
                   prop_fns_(prop_fns_table<Executor>()) {
                 if (this->template target<void>() == 0)
                     prop_fns_ = prop_fns_table<void>();
@@ -1371,42 +1371,42 @@ namespace xio {
 
             template<typename... OtherSupportableProperties>
             any_executor(any_executor<OtherSupportableProperties...> other,
-                         enable_if_t<
-                             conditional_t <
-                             !is_same<
+                         std::enable_if_t<
+                             std::conditional_t <
+                             !std::is_same<
                                  any_executor<OtherSupportableProperties...>,
                                  any_executor
                              >::value,
                              typename detail::supportable_properties<
                                  0, void(SupportableProperties...)>::template is_valid_target<
                                  any_executor<OtherSupportableProperties...> >,
-                             false_type
+                             std::false_type
                          >::value
       >* = 0)
                 : detail::any_executor_base(
                       static_cast<any_executor<OtherSupportableProperties...> &&>(other),
-                      true_type()),
+                      std::true_type()),
                   prop_fns_(prop_fns_table<any_executor<OtherSupportableProperties...> >()) {
             }
 
             template<typename... OtherSupportableProperties>
             any_executor(std::nothrow_t,
                          any_executor<OtherSupportableProperties...> other,
-                         enable_if_t<
-                             conditional_t <
-                             !is_same<
+                         std::enable_if_t<
+                             std::conditional_t <
+                             !std::is_same<
                                  any_executor<OtherSupportableProperties...>,
                                  any_executor
                              >::value,
                              typename detail::supportable_properties<
                                  0, void(SupportableProperties...)>::template is_valid_target<
                                  any_executor<OtherSupportableProperties...> >,
-                             false_type
+                             std::false_type
                          >::value
       >* = 0) noexcept
                 : detail::any_executor_base(std::nothrow,
                                             static_cast<any_executor<OtherSupportableProperties...> &&>(other),
-                                            true_type()),
+                                            std::true_type()),
                   prop_fns_(prop_fns_table<any_executor<OtherSupportableProperties...> >()) {
                 if (this->template target<void>() == 0)
                     prop_fns_ = prop_fns_table<void>();
@@ -1486,47 +1486,47 @@ namespace xio {
             }
 
             template<typename AnyExecutor1, typename AnyExecutor2>
-            friend enable_if_t<
-                is_base_of<any_executor, AnyExecutor1>::value
-                || is_base_of<any_executor, AnyExecutor2>::value,
+            friend std::enable_if_t<
+                std::is_base_of<any_executor, AnyExecutor1>::value
+                || std::is_base_of<any_executor, AnyExecutor2>::value,
                 bool> operator==(const AnyExecutor1 &a,
                                  const AnyExecutor2 &b) noexcept {
                 return static_cast<const any_executor &>(a).equality_helper(b);
             }
 
             template<typename AnyExecutor>
-            friend enable_if_t<
-                is_same<AnyExecutor, any_executor>::value,
+            friend std::enable_if_t<
+                std::is_same<AnyExecutor, any_executor>::value,
                 bool> operator==(const AnyExecutor &a, nullptr_t) noexcept {
                 return !a;
             }
 
             template<typename AnyExecutor>
-            friend enable_if_t<
-                is_same<AnyExecutor, any_executor>::value,
+            friend std::enable_if_t<
+                std::is_same<AnyExecutor, any_executor>::value,
                 bool> operator==(nullptr_t, const AnyExecutor &b) noexcept {
                 return !b;
             }
 
             template<typename AnyExecutor1, typename AnyExecutor2>
-            friend enable_if_t<
-                is_base_of<any_executor, AnyExecutor1>::value
-                || is_base_of<any_executor, AnyExecutor2>::value,
+            friend std::enable_if_t<
+                std::is_base_of<any_executor, AnyExecutor1>::value
+                || std::is_base_of<any_executor, AnyExecutor2>::value,
                 bool> operator!=(const AnyExecutor1 &a,
                                  const AnyExecutor2 &b) noexcept {
                 return !static_cast<const any_executor &>(a).equality_helper(b);
             }
 
             template<typename AnyExecutor>
-            friend enable_if_t<
-                is_same<AnyExecutor, any_executor>::value,
+            friend std::enable_if_t<
+                std::is_same<AnyExecutor, any_executor>::value,
                 bool> operator!=(const AnyExecutor &a, nullptr_t) noexcept {
                 return !!a;
             }
 
             template<typename AnyExecutor>
-            friend enable_if_t<
-                is_same<AnyExecutor, any_executor>::value,
+            friend std::enable_if_t<
+                std::is_same<AnyExecutor, any_executor>::value,
                 bool> operator!=(nullptr_t, const AnyExecutor &b) noexcept {
                 return !!b;
             }
@@ -1540,8 +1540,8 @@ namespace xio {
 
             template<typename Property>
             void query(const Property &p,
-                       enable_if_t<
-                           is_same <
+                       std::enable_if_t<
+                           std::is_same <
                            typename find_convertible_property<Property>::query_result_type,
                            void>::value
       >* = 0) const {
@@ -1557,12 +1557,12 @@ namespace xio {
             template<typename Property>
             typename find_convertible_property<Property>::query_result_type
             query(const Property &p,
-                  enable_if_t<
-                      !is_same <
+                  std::enable_if_t<
+                      !std::is_same <
                       typename find_convertible_property<Property>::query_result_type,
                       void>::value
                   &&
-                  is_reference<
+                  std::is_reference<
                       typename find_convertible_property<Property>::query_result_type
                   >::value
       >* = 0) const {
@@ -1571,7 +1571,7 @@ namespace xio {
                     xio::detail::throw_exception(ex);
                 }
                 typedef find_convertible_property<Property> found;
-                remove_reference_t < typename found::query_result_type > *result = 0;
+                std::remove_reference_t < typename found::query_result_type > *result = 0;
                 prop_fns_[found::index].query(&result, object_fns_->target(*this),
                                               &static_cast<const typename found::type &>(p));
                 return *result;
@@ -1580,12 +1580,12 @@ namespace xio {
             template<typename Property>
             typename find_convertible_property<Property>::query_result_type
             query(const Property &p,
-                  enable_if_t<
-                      !is_same <
+                  std::enable_if_t<
+                      !std::is_same <
                       typename find_convertible_property<Property>::query_result_type,
                       void>::value
                   &&
-                  is_scalar<
+                  std::is_scalar<
                       typename find_convertible_property<Property>::query_result_type
                   >::value
       >* = 0) const {
@@ -1603,16 +1603,16 @@ namespace xio {
             template<typename Property>
             typename find_convertible_property<Property>::query_result_type
             query(const Property &p,
-                  enable_if_t<
-                      !is_same <
+                  std::enable_if_t<
+                      !std::is_same <
                       typename find_convertible_property<Property>::query_result_type,
                       void>::value
                   &&
-        !is_reference<
+        !std::is_reference<
                       typename find_convertible_property<Property>::query_result_type
                   >::value
                   &&
-        !is_scalar<
+        !std::is_scalar<
                       typename find_convertible_property<Property>::query_result_type
                   >::value
       >* = 0) const {
@@ -1637,7 +1637,7 @@ namespace xio {
 
             template<typename Property>
             any_executor require(const Property &p,
-                                 enable_if_t<
+                                 std::enable_if_t<
                                      find_convertible_requirable_property<Property>::value
                                  > * = 0) const {
                 if (!target_) {
@@ -1658,7 +1658,7 @@ namespace xio {
 
             template<typename Property>
             any_executor prefer(const Property &p,
-                                enable_if_t<
+                                std::enable_if_t<
                                     find_convertible_preferable_property<Property>::value
                                 > * = 0) const {
                 if (!target_) {

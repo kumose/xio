@@ -27,7 +27,7 @@ server::server(xio::io_context& io_context,
 }
 
 // Enable the pseudo-keywords reenter, yield and fork.
-#include <asio/yield.hpp>
+#include <xio/yield.h>
 
 void server::operator()(std::error_code ec, std::size_t length)
 {
@@ -116,7 +116,7 @@ void server::operator()(std::error_code ec, std::size_t length)
 }
 
 // Disable the pseudo-keywords reenter, yield and fork.
-#include <asio/unyield.hpp>
+#include <xio/unyield.h>
 
 } // namespace server4
 } // namespace http

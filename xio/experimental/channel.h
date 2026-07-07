@@ -41,7 +41,7 @@ namespace xio {
 
             template<typename ExecutorOrSignature>
             struct channel_type<ExecutorOrSignature,
-                enable_if_t <
+                std::enable_if_t <
                 is_executor<ExecutorOrSignature>::value
                 || execution::is_executor<ExecutorOrSignature>::value
             >

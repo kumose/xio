@@ -319,7 +319,7 @@ namespace xio {
             };
 
             template<typename Stream, typename Operation, typename Handler>
-            inline bool asio_handler_is_continuation(
+            inline bool xio_handler_is_continuation(
                 io_op<Stream, Operation, Handler> *this_handler) {
                 return this_handler->start_ == 0
                            ? true

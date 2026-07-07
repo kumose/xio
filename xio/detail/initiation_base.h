@@ -34,7 +34,7 @@ namespace xio {
         };
 
         template<typename Initiation>
-        class initiation_base<Initiation, enable_if_t < !is_class<Initiation>::value>
+        class initiation_base<Initiation, std::enable_if_t < !std::is_class<Initiation>::value>
         >
 {
 public:

@@ -8,7 +8,7 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <asio.hpp>
+#include <xio/xio.h>
 #include <array>
 #include <iostream>
 #include <memory>
@@ -73,7 +73,7 @@ private:
 
 } // namespace third_party_lib
 
-// The glue between asio's sockets and the third party library.
+// The glue between xio's sockets and the third party library.
 class connection
   : public std::enable_shared_from_this<connection>
 {

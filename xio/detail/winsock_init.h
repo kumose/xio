@@ -71,7 +71,7 @@ namespace xio {
             // example, where it is not safe to initialise Winsock from global object
             // constructors.
             //
-            // To prevent asio from initialising Winsock, the object must be constructed
+            // To prevent xio from initialising Winsock, the object must be constructed
             // before any Asio's own global objects. With MSVC, this may be accomplished
             // by adding the following code to the DLL:
             //

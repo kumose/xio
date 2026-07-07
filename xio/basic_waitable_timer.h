@@ -192,7 +192,7 @@ namespace xio {
         template<typename ExecutionContext>
         explicit basic_waitable_timer(ExecutionContext &context,
                                       constraint_t<
-                                          is_convertible<ExecutionContext &, execution_context &>::value
+                                          std::is_convertible<ExecutionContext &, execution_context &>::value
                                       > = 0)
             : impl_(0, 0, context) {
         }
@@ -229,7 +229,7 @@ namespace xio {
         explicit basic_waitable_timer(ExecutionContext &context,
                                       const time_point &expiry_time,
                                       constraint_t<
-                                          is_convertible<ExecutionContext &, execution_context &>::value
+                                          std::is_convertible<ExecutionContext &, execution_context &>::value
                                       > = 0)
             : impl_(0, 0, context) {
             xio::error_code ec;
@@ -270,7 +270,7 @@ namespace xio {
         explicit basic_waitable_timer(ExecutionContext &context,
                                       const duration &expiry_time,
                                       constraint_t<
-                                          is_convertible<ExecutionContext &, execution_context &>::value
+                                          std::is_convertible<ExecutionContext &, execution_context &>::value
                                       > = 0)
             : impl_(0, 0, context) {
             xio::error_code ec;
@@ -330,7 +330,7 @@ namespace xio {
         basic_waitable_timer(
             basic_waitable_timer<Clock, WaitTraits, Executor1> &&other,
             constraint_t<
-                is_convertible<Executor1, Executor>::value
+                std::is_convertible<Executor1, Executor>::value
             > = 0)
             : impl_(std::move(other.impl_)) {
         }
@@ -349,7 +349,7 @@ namespace xio {
    */
         template<typename Executor1>
         constraint_t<
-            is_convertible<Executor1, Executor>::value,
+            std::is_convertible<Executor1, Executor>::value,
             basic_waitable_timer &> operator=(basic_waitable_timer<Clock, WaitTraits, Executor1> &&other) {
             basic_waitable_timer tmp(std::move(other));
             impl_ = std::move(tmp.impl_);
@@ -570,7 +570,7 @@ namespace xio {
             WaitToken &&token = default_completion_token_t<executor_type>())
             -> decltype(
                 async_initiate<WaitToken, void(xio::error_code)>(
-                    declval<initiate_async_wait>(), token)) {
+                    std::declval<initiate_async_wait>(), token)) {
             return async_initiate<WaitToken, void(xio::error_code)>(
                 initiate_async_wait(this), token);
         }

@@ -32,11 +32,11 @@ namespace xio {
             struct has_signature;
 
             template<typename S>
-            struct has_signature<S> : false_type {
+            struct has_signature<S> : std::false_type {
             };
 
             template<typename S, typename... Signatures>
-            struct has_signature<S, S, Signatures...> : true_type {
+            struct has_signature<S, S, Signatures...> : std::true_type {
             };
 
             template<typename S, typename Head, typename... Tail>

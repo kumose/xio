@@ -29,14 +29,14 @@ namespace xio {
                 class channel_category : public xio::error_category {
                 public:
                     const char *name() const noexcept {
-                        return "asio.channel";
+                        return "xio.channel";
                     }
 
                     std::string message(int value) const {
                         switch (value) {
                             case channel_closed: return "Channel closed";
                             case channel_cancelled: return "Channel cancelled";
-                            default: return "asio.channel error";
+                            default: return "xio.channel error";
                         }
                     }
                 };

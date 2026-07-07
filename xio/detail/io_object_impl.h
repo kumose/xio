@@ -129,14 +129,14 @@ namespace xio {
             // Helper function to get an executor's context.
             template<typename T>
             static execution_context &get_context(const T &t,
-                                                  enable_if_t<execution::is_executor<T>::value> * = 0) {
+                                                  std::enable_if_t<execution::is_executor<T>::value> * = 0) {
                 return xio::query(t, execution::context);
             }
 
             // Helper function to get an executor's context.
             template<typename T>
             static execution_context &get_context(const T &t,
-                                                  enable_if_t<!execution::is_executor<T>::value> * = 0) {
+                                                  std::enable_if_t<!execution::is_executor<T>::value> * = 0) {
                 return t.context();
             }
 

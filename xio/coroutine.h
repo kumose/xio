@@ -50,11 +50,11 @@ namespace xio {
  * A coroutine is used in conjunction with certain "pseudo-keywords", which
  * are implemented as macros. These macros are defined by a header file:
  *
- * @code #include <asio/yield.hpp>@endcode
+ * @code #include <xio/yield.h>@endcode
  *
  * and may conversely be undefined as follows:
  *
- * @code #include <asio/unyield.hpp>@endcode
+ * @code #include <xio/unyield.h>@endcode
  *
  * <b>reenter</b>
  *

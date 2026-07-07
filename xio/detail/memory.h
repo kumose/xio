@@ -84,7 +84,7 @@ namespace xio {
 # define ASIO_USES_ALLOCATOR(t) \
   namespace std { \
     template <typename Allocator> \
-    struct uses_allocator<t, Allocator> : true_type {}; \
+    struct uses_allocator<t, Allocator> : std::true_type {}; \
   } \
   /**/
 # define ASIO_REBIND_ALLOC(alloc, t) \

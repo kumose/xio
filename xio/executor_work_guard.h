@@ -88,7 +88,7 @@ namespace xio {
 
     template<typename Executor>
     class executor_work_guard<Executor,
-                enable_if_t<
+                std::enable_if_t<
                     is_executor<Executor>::value
                 > > {
     public:
@@ -145,11 +145,11 @@ namespace xio {
 
     template<typename Executor>
     class executor_work_guard<Executor,
-        enable_if_t <
+        std::enable_if_t <
         !is_executor<Executor>::value
     >
     ,
-    enable_if_t<
+    std::enable_if_t<
         execution::is_executor<Executor>::value
     >
     >
@@ -219,7 +219,7 @@ private:
   // Disallow assignment.
   executor_work_guard& operator=(const executor_work_guard&);
 
-  typedef decay_t<
+  typedef std::decay_t<
       prefer_result_t<
         const executor_type&,
         execution::outstanding_work_t::tracked_t
@@ -227,7 +227,7 @@ private:
     > work_type;
 
   executor_type executor_;
-  aligned_storage_t<sizeof(work_type), alignment_of<work_type>::value> work_;
+  aligned_storage_t<sizeof(work_type), std::alignment_of<work_type>::value> work_;
   bool owns_;
 };
 
@@ -262,7 +262,7 @@ private:
 
     make_work_guard(ExecutionContext & ctx,
                     constraint_t<
-                        is_convertible<ExecutionContext &, execution_context &>::value
+                        std::is_convertible<ExecutionContext &, execution_context &>::value
                     > = 0) {
         return executor_work_guard<typename ExecutionContext::executor_type>(
             ctx.get_executor());
@@ -282,7 +282,7 @@ private:
         typename constraint_t <
         !is_executor<T>::value
         && !execution::is_executor<T>::value
-        && !is_convertible<T &, execution_context &>::value,
+        && !std::is_convertible<T &, execution_context &>::value,
         associated_executor<T>
     >::type
     >
@@ -339,10 +339,10 @@ private:
                         !execution::is_executor<T>::value
                     > = 0,
                     constraint_t<
-                        !is_convertible<T &, execution_context &>::value
+                        !std::is_convertible<T &, execution_context &>::value
                     > = 0,
                     constraint_t<
-                        is_convertible<ExecutionContext &, execution_context &>::value
+                        std::is_convertible<ExecutionContext &, execution_context &>::value
                     > = 0) {
         return executor_work_guard<
             associated_executor_t<T, typename ExecutionContext::executor_type> >(

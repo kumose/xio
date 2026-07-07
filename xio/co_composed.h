@@ -188,7 +188,7 @@ struct co_composed_state_default_cancellation_on_suspend_impl<Executors,
     using return_type = std::tuple<xio::error_code, Args...>;
 
     static constexpr void (*fn())(void *) {
-        if constexpr ((is_constructible<Args>::value && ...)) {
+        if constexpr ((std::is_constructible<Args>::value && ...)) {
             return [](void *p) {
                 auto &promise = *static_cast<promise_type *>(p);
 
@@ -219,7 +219,7 @@ struct co_composed_state_default_cancellation_on_suspend_impl<Executors,
     using return_type = std::tuple<std::exception_ptr, Args...>;
 
     static constexpr void (*fn())(void *) {
-        if constexpr ((is_constructible<Args>::value && ...)) {
+        if constexpr ((std::is_constructible<Args>::value && ...)) {
             return [](void *p) {
                 auto &promise = *static_cast<promise_type *>(p);
 
@@ -353,10 +353,10 @@ private:
 };
 
 template<typename Executors, typename Handler, typename Return>
-    requires is_same<
+    requires std::is_same<
         typename associated_cancellation_slot<
             Handler, cancellation_slot
-        >::asio_associated_cancellation_slot_is_unspecialised,
+        >::xio_associated_cancellation_slot_is_unspecialised,
         void>::value
 class co_composed_state_cancellation<Executors, Handler, Return> {
 public:
@@ -433,7 +433,7 @@ public:
 
     template<typename... Args>
     [[nodiscard]] co_composed_completion<Args...> complete(Args &&... args)
-        requires requires { declval<Handler>()(static_cast<Args &&>(args)...); } {
+        requires requires { std::declval<Handler>()(static_cast<Args &&>(args)...); } {
         return co_composed_completion<Args...>(static_cast<Args &&>(args)...);
     }
 
@@ -473,10 +473,10 @@ public:
 };
 
 template<typename Executors, typename Handler, typename Return>
-    requires is_same<
+    requires std::is_same<
         typename associated_cancellation_slot<
             Handler, cancellation_slot
-        >::asio_associated_cancellation_slot_is_unspecialised,
+        >::xio_associated_cancellation_slot_is_unspecialised,
         void>::value
 class co_composed_handler_cancellation<Executors, Handler, Return> {
 };
@@ -527,7 +527,7 @@ public:
     using co_composed_handler_base<Executors,
         Handler, Return>::co_composed_handler_base;
 
-    using result_type = std::tuple<decay_t<Args>...>;
+    using result_type = std::tuple<std::decay_t<Args>...>;
 
     template<typename... T>
     void operator()(T &&... args) {
@@ -555,7 +555,7 @@ public:
     using co_composed_handler_base<Executors,
         Handler, Return>::co_composed_handler_base;
 
-    using args_type = std::tuple<decay_t<Args>...>;
+    using args_type = std::tuple<std::decay_t<Args>...>;
     using result_type = std::tuple<xio::error_code, args_type>;
 
     template<typename... T>
@@ -585,7 +585,7 @@ public:
     using co_composed_handler_base<Executors,
         Handler, Return>::co_composed_handler_base;
 
-    using args_type = std::tuple<decay_t<Args>...>;
+    using args_type = std::tuple<std::decay_t<Args>...>;
     using result_type = std::tuple<std::exception_ptr, args_type>;
 
     template<typename... T>
@@ -866,7 +866,7 @@ auto yield_value(co_composed_completion<Args...> &&result) {
                             Return> composed_handler(a.promise_);
 
                         Handler handler(std::move(a.promise_.state_.handler_));
-                        std::tuple < decay_t<Args>
+                        std::tuple < std::decay_t<Args>
                         ...
                         >
                         result(
@@ -937,7 +937,7 @@ public:
 
     template<typename Handler, typename... InitArgs>
     void operator()(Handler &&handler, InitArgs &&... init_args) const & {
-        using handler_type = decay_t<Handler>;
+        using handler_type = std::decay_t<Handler>;
         using returns_type = co_composed_returns<Signatures...>;
         co_composed_on_suspend on_suspend{};
         implementation_(
@@ -950,7 +950,7 @@ public:
 
     template<typename Handler, typename... InitArgs>
     void operator()(Handler &&handler, InitArgs &&... init_args) && {
-        using handler_type = decay_t<Handler>;
+        using handler_type = std::decay_t<Handler>;
         using returns_type = co_composed_returns<Signatures...>;
         co_composed_on_suspend on_suspend{};
         std::move(implementation_)(
@@ -976,7 +976,7 @@ public:
 
     template<typename Handler, typename... InitArgs>
     void operator()(Handler &&handler, InitArgs &&... init_args) const & {
-        using handler_type = decay_t<Handler>;
+        using handler_type = std::decay_t<Handler>;
         using returns_type = co_composed_returns<Signatures...>;
         co_composed_on_suspend on_suspend{};
         implementation_(
@@ -990,7 +990,7 @@ public:
 
     template<typename Handler, typename... InitArgs>
     void operator()(Handler &&handler, InitArgs &&... init_args) && {
-        using handler_type = decay_t<Handler>;
+        using handler_type = std::decay_t<Handler>;
         using returns_type = co_composed_returns<Signatures...>;
         co_composed_on_suspend on_suspend{};
         std::move(implementation_)(
@@ -1007,11 +1007,11 @@ private:
 };
 
 template<typename... Signatures, typename Implementation, typename Executors>
-inline initiate_co_composed<decay_t<Implementation>, Executors, Signatures...>
+inline initiate_co_composed<std::decay_t<Implementation>, Executors, Signatures...>
 make_initiate_co_composed(Implementation &&implementation,
                           composed_io_executors<Executors> &&executors) {
     return initiate_co_composed<
-        decay_t<Implementation>, Executors, Signatures...>(
+        std::decay_t<Implementation>, Executors, Signatures...>(
         static_cast<Implementation &&>(implementation), std::move(executors));
 }
 

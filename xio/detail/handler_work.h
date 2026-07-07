@@ -84,7 +84,7 @@ namespace xio {
             }
 
         private:
-            typedef decay_t<
+            typedef std::decay_t<
                 prefer_result_t<Executor, execution::outstanding_work_t::tracked_t>
             > executor_type;
 
@@ -95,10 +95,10 @@ namespace xio {
             typename IoContext, typename PolymorphicExecutor>
         class handler_work_base<Executor, CandidateExecutor,
             IoContext, PolymorphicExecutor,
-            enable_if_t <
+            std::enable_if_t <
             !execution::is_executor<Executor>::value
-            && (!is_same<Executor, PolymorphicExecutor>::value
-                || !is_same<CandidateExecutor, void>::value)
+            && (!std::is_same<Executor, PolymorphicExecutor>::value
+                || !std::is_same<CandidateExecutor, void>::value)
         >
         >
 {
@@ -168,8 +168,8 @@ private:
 
         template<typename Executor, typename IoContext, typename PolymorphicExecutor>
         class handler_work_base<Executor, void, IoContext, PolymorphicExecutor,
-                    enable_if_t<
-                        is_same<
+                    std::enable_if_t<
+                        std::is_same<
                             Executor,
                             typename IoContext::executor_type
                         >::value
@@ -313,9 +313,9 @@ private:
         class handler_work_base<
             Executor, CandidateExecutor,
             IoContext, PolymorphicExecutor,
-            enable_if_t <
-            is_same<Executor, any_completion_executor>::value
-            || is_same<Executor, any_io_executor>::value
+            std::enable_if_t <
+            std::is_same<Executor, any_completion_executor>::value
+            || std::is_same<Executor, any_io_executor>::value
         >
         >
 {
@@ -409,10 +409,10 @@ private:
         template<typename Handler, typename IoExecutor>
         class handler_work<
                     Handler, IoExecutor,
-                    enable_if_t<
-                        is_same<
+                    std::enable_if_t<
+                        std::is_same<
                             typename associated_executor<Handler,
-                                IoExecutor>::asio_associated_executor_is_unspecialised,
+                                IoExecutor>::xio_associated_executor_is_unspecialised,
                             void>::value
                     >
                 > : handler_work_base<IoExecutor> {

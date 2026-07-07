@@ -180,7 +180,7 @@ namespace xio {
     template<typename Function>
     void io_context::basic_executor_type<Allocator, Bits>::execute(
         Function &&f) const {
-        typedef decay_t<Function> function_type;
+        typedef std::decay_t<Function> function_type;
 
         // Invoke immediately if the blocking.possibly property is enabled and we are
         // already inside the thread pool.
@@ -242,7 +242,7 @@ namespace xio {
     template<typename Function, typename OtherAllocator>
     void io_context::basic_executor_type<Allocator, Bits>::dispatch(
         Function &&f, const OtherAllocator &a) const {
-        typedef decay_t<Function> function_type;
+        typedef std::decay_t<Function> function_type;
 
         // Invoke immediately if we are already inside the thread pool.
         if (context_ptr()->impl_.can_dispatch()) {
@@ -272,7 +272,7 @@ namespace xio {
     void io_context::basic_executor_type<Allocator, Bits>::post(
         Function &&f, const OtherAllocator &a) const {
         // Allocate and construct an operation to wrap the function.
-        typedef detail::executor_op<decay_t<Function>,
+        typedef detail::executor_op<std::decay_t<Function>,
             OtherAllocator, detail::operation> op;
         typename op::ptr p = {detail::addressof(a), op::ptr::allocate(a), 0};
         p.p = new(p.v) op(static_cast<Function &&>(f), a);
@@ -289,7 +289,7 @@ namespace xio {
     void io_context::basic_executor_type<Allocator, Bits>::defer(
         Function &&f, const OtherAllocator &a) const {
         // Allocate and construct an operation to wrap the function.
-        typedef detail::executor_op<decay_t<Function>,
+        typedef detail::executor_op<std::decay_t<Function>,
             OtherAllocator, detail::operation> op;
         typename op::ptr p = {detail::addressof(a), op::ptr::allocate(a), 0};
         p.p = new(p.v) op(static_cast<Function &&>(f), a);

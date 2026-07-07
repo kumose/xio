@@ -114,7 +114,7 @@ namespace xio {
         template<typename ExecutionContext>
         explicit basic_datagram_socket(ExecutionContext &context,
                                        constraint_t<
-                                           is_convertible<ExecutionContext &, execution_context &>::value
+                                           std::is_convertible<ExecutionContext &, execution_context &>::value
                                        > = 0)
             : basic_socket<Protocol, Executor>(context) {
         }
@@ -150,7 +150,7 @@ namespace xio {
         basic_datagram_socket(ExecutionContext &context,
                               const protocol_type &protocol,
                               constraint_t<
-                                  is_convertible<ExecutionContext &, execution_context &>::value,
+                                  std::is_convertible<ExecutionContext &, execution_context &>::value,
                                   defaulted_constraint
                               > = defaulted_constraint())
             : basic_socket<Protocol, Executor>(context, protocol) {
@@ -195,7 +195,7 @@ namespace xio {
         basic_datagram_socket(ExecutionContext &context,
                               const endpoint_type &endpoint,
                               constraint_t<
-                                  is_convertible<ExecutionContext &, execution_context &>::value
+                                  std::is_convertible<ExecutionContext &, execution_context &>::value
                               > = 0)
             : basic_socket<Protocol, Executor>(context, endpoint) {
         }
@@ -238,7 +238,7 @@ namespace xio {
         basic_datagram_socket(ExecutionContext &context,
                               const protocol_type &protocol, const native_handle_type &native_socket,
                               constraint_t<
-                                  is_convertible<ExecutionContext &, execution_context &>::value
+                                  std::is_convertible<ExecutionContext &, execution_context &>::value
                               > = 0)
             : basic_socket<Protocol, Executor>(context, protocol, native_socket) {
         }
@@ -290,8 +290,8 @@ namespace xio {
         template<typename Protocol1, typename Executor1>
         basic_datagram_socket(basic_datagram_socket<Protocol1, Executor1> &&other,
                               constraint_t<
-                                  is_convertible<Protocol1, Protocol>::value
-                                  && is_convertible<Executor1, Executor>::value
+                                  std::is_convertible<Protocol1, Protocol>::value
+                                  && std::is_convertible<Executor1, Executor>::value
                               > = 0)
             : basic_socket<Protocol, Executor>(std::move(other)) {
         }
@@ -311,8 +311,8 @@ namespace xio {
    */
         template<typename Protocol1, typename Executor1>
         constraint_t<
-            is_convertible<Protocol1, Protocol>::value
-            && is_convertible<Executor1, Executor>::value,
+            std::is_convertible<Protocol1, Protocol>::value
+            && std::is_convertible<Executor1, Executor>::value,
             basic_datagram_socket &> operator=(basic_datagram_socket<Protocol1, Executor1> &&other) {
             basic_socket<Protocol, Executor>::operator=(std::move(other));
             return *this;
@@ -467,7 +467,7 @@ namespace xio {
             -> decltype(
                 async_initiate<WriteToken,
                     void(xio::error_code, std::size_t)>(
-                    declval<initiate_async_send>(), token,
+                    std::declval<initiate_async_send>(), token,
                     buffers, socket_base::message_flags(0))) {
             return async_initiate<WriteToken,
                 void(xio::error_code, std::size_t)>(
@@ -528,7 +528,7 @@ namespace xio {
             -> decltype(
                 async_initiate<WriteToken,
                     void(xio::error_code, std::size_t)>(
-                    declval<initiate_async_send>(), token, buffers, flags)) {
+                    std::declval<initiate_async_send>(), token, buffers, flags)) {
             return async_initiate<WriteToken,
                 void(xio::error_code, std::size_t)>(
                 initiate_async_send(this), token, buffers, flags);
@@ -681,7 +681,7 @@ namespace xio {
             -> decltype(
                 async_initiate<WriteToken,
                     void(xio::error_code, std::size_t)>(
-                    declval<initiate_async_send_to>(), token, buffers,
+                    std::declval<initiate_async_send_to>(), token, buffers,
                     destination, socket_base::message_flags(0))) {
             return async_initiate<WriteToken,
                 void(xio::error_code, std::size_t)>(
@@ -741,7 +741,7 @@ namespace xio {
             -> decltype(
                 async_initiate<WriteToken,
                     void(xio::error_code, std::size_t)>(
-                    declval<initiate_async_send_to>(), token,
+                    std::declval<initiate_async_send_to>(), token,
                     buffers, destination, flags)) {
             return async_initiate<WriteToken,
                 void(xio::error_code, std::size_t)>(
@@ -895,7 +895,7 @@ namespace xio {
             -> decltype(
                 async_initiate<ReadToken,
                     void(xio::error_code, std::size_t)>(
-                    declval<initiate_async_receive>(), token,
+                    std::declval<initiate_async_receive>(), token,
                     buffers, socket_base::message_flags(0))) {
             return async_initiate<ReadToken,
                 void(xio::error_code, std::size_t)>(
@@ -956,7 +956,7 @@ namespace xio {
             -> decltype(
                 async_initiate<ReadToken,
                     void(xio::error_code, std::size_t)>(
-                    declval<initiate_async_receive>(), token, buffers, flags)) {
+                    std::declval<initiate_async_receive>(), token, buffers, flags)) {
             return async_initiate<ReadToken,
                 void(xio::error_code, std::size_t)>(
                 initiate_async_receive(this), token, buffers, flags);
@@ -1109,7 +1109,7 @@ namespace xio {
             -> decltype(
                 async_initiate<ReadToken,
                     void(xio::error_code, std::size_t)>(
-                    declval<initiate_async_receive_from>(), token, buffers,
+                    std::declval<initiate_async_receive_from>(), token, buffers,
                     &sender_endpoint, socket_base::message_flags(0))) {
             return async_initiate<ReadToken,
                 void(xio::error_code, std::size_t)>(
@@ -1171,7 +1171,7 @@ namespace xio {
             -> decltype(
                 async_initiate<ReadToken,
                     void(xio::error_code, std::size_t)>(
-                    declval<initiate_async_receive_from>(), token,
+                    std::declval<initiate_async_receive_from>(), token,
                     buffers, &sender_endpoint, flags)) {
             return async_initiate<ReadToken,
                 void(xio::error_code, std::size_t)>(

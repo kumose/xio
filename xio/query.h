@@ -34,7 +34,7 @@ namespace xio {
  * The name <tt>query</tt> denotes a customization point object. The
  * expression <tt>xio::query(E, P)</tt> for some
  * subexpressions <tt>E</tt> and <tt>P</tt> (with types <tt>T =
- * decay_t<decltype(E)></tt> and <tt>Prop = decay_t<decltype(P)></tt>) is
+ * std::decay_t<decltype(E)></tt> and <tt>Prop = std::decay_t<decltype(P)></tt>) is
  * expression-equivalent to:
  *
  * @li If <tt>is_applicable_property_v<T, Prop></tt> is not a well-formed
@@ -60,24 +60,24 @@ namespace xio {
     /// A type trait that determines whether a @c query expression is well-formed.
     /**
  * Class template @c can_query is a trait that is derived from
- * @c true_type if the expression <tt>xio::query(std::declval<T>(),
- * std::declval<Property>())</tt> is well formed; otherwise @c false_type.
+ * @c std::true_type if the expression <tt>xio::query(std::declval<T>(),
+ * std::declval<Property>())</tt> is well formed; otherwise @c std::false_type.
  */
     template<typename T, typename Property>
     struct can_query :
-            integral_constant<bool, automatically_determined> {
+            std::integral_constant<bool, automatically_determined> {
     };
 
     /// A type trait that determines whether a @c query expression will
 /// not throw.
     /**
  * Class template @c is_nothrow_query is a trait that is derived from
- * @c true_type if the expression <tt>xio::query(std::declval<T>(),
- * std::declval<Property>())</tt> is @c noexcept; otherwise @c false_type.
+ * @c std::true_type if the expression <tt>xio::query(std::declval<T>(),
+ * std::declval<Property>())</tt> is @c noexcept; otherwise @c std::false_type.
  */
     template<typename T, typename Property>
     struct is_nothrow_query :
-            integral_constant<bool, automatically_determined> {
+            std::integral_constant<bool, automatically_determined> {
     };
 
     /// A type trait that determines the result type of a @c query expression.
@@ -98,10 +98,10 @@ namespace xio {
 #else // defined(GENERATING_DOCUMENTATION)
 
 namespace XIO_VERSIONED_NAME(query_fn) {
-    using xio::conditional_t;
-    using xio::decay_t;
-    using xio::declval;
-    using xio::enable_if_t;
+    using std::conditional_t;
+    using std::decay_t;
+    using std::declval;
+    using std::enable_if_t;
     using xio::is_applicable_property;
     using xio::traits::query_free;
     using xio::traits::query_member;
@@ -130,13 +130,13 @@ namespace XIO_VERSIONED_NAME(query_fn) {
     <
     typename Impl, typename T, typename Property >
     struct call_traits<Impl, T, void(Property),
-                enable_if_t<
+                std::enable_if_t<
                     is_applicable_property<
-                        decay_t<T>,
-                        decay_t<Property>
+                        std::decay_t<T>,
+                        std::decay_t<Property>
                     >::value
                 >,
-                enable_if_t<
+                std::enable_if_t<
                     static_query<T, Property>::is_valid
                 > > :
             static_query<T, Property> {
@@ -147,17 +147,17 @@ namespace XIO_VERSIONED_NAME(query_fn) {
     <
     typename Impl, typename T, typename Property >
     struct call_traits<Impl, T, void(Property),
-        enable_if_t<
+        std::enable_if_t<
             is_applicable_property<
-                decay_t<T>,
-                decay_t<Property>
+                std::decay_t<T>,
+                std::decay_t<Property>
             >::value
         >,
-        enable_if_t <
+        std::enable_if_t <
         !static_query<T, Property>::is_valid
     >
     ,
-    enable_if_t<
+    std::enable_if_t<
         query_member<typename Impl::template proxy<T>::type, Property>::is_valid
     > >
     :
@@ -172,20 +172,20 @@ namespace XIO_VERSIONED_NAME(query_fn) {
     <
     typename Impl, typename T, typename Property >
     struct call_traits<Impl, T, void(Property),
-        enable_if_t<
+        std::enable_if_t<
             is_applicable_property<
-                decay_t<T>,
-                decay_t<Property>
+                std::decay_t<T>,
+                std::decay_t<Property>
             >::value
         >,
-        enable_if_t <
+        std::enable_if_t <
         !static_query<T, Property>::is_valid
     >
     ,
-    enable_if_t <
+    std::enable_if_t <
             !query_member<typename Impl::template proxy<T>::type, Property>::is_valid
             >,
-            enable_if_t<
+            std::enable_if_t<
                 query_free<T, Property>::is_valid
             > >
     :
@@ -204,29 +204,29 @@ namespace XIO_VERSIONED_NAME(query_fn) {
                 auto query(P &&p)
                     noexcept(
                         noexcept(
-                            declval<conditional_t<true, T, P> >().query(static_cast<P &&>(p))
+                            std::declval<std::conditional_t<true, T, P> >().query(static_cast<P &&>(p))
                         )
                     )
                     -> decltype(
-                        declval<conditional_t<true, T, P> >().query(static_cast<P &&>(p))
+                        std::declval<std::conditional_t<true, T, P> >().query(static_cast<P &&>(p))
                     );
             };
 
         };
 
         template<typename T, typename Property>
-        [[nodiscard]] constexpr enable_if_t<
+        [[nodiscard]] constexpr std::enable_if_t<
             call_traits<impl, T, void(Property)>::overload == static_value,
             typename call_traits<impl, T, void(Property)>::result_type
         >
 
         operator()(T &&, Property &&) const
             noexcept(call_traits<impl, T, void(Property)>::is_noexcept) {
-            return static_query<decay_t<T>, decay_t<Property> >::value();
+            return static_query<std::decay_t<T>, std::decay_t<Property> >::value();
         }
 
         template<typename T, typename Property>
-        [[nodiscard]] constexpr enable_if_t<
+        [[nodiscard]] constexpr std::enable_if_t<
             call_traits<impl, T, void(Property)>::overload == call_member,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -237,7 +237,7 @@ namespace XIO_VERSIONED_NAME(query_fn) {
         }
 
         template<typename T, typename Property>
-        [[nodiscard]] constexpr enable_if_t<
+        [[nodiscard]] constexpr std::enable_if_t<
             call_traits<impl, T, void(Property)>::overload == call_free,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -271,7 +271,7 @@ namespace xio {
 
     template<typename T, typename Property>
     struct can_query :
-            integral_constant<bool,
+            std::integral_constant<bool,
                 XIO_VERSIONED_NAME(query_fn)::call_traits<
                                                  query_t, T, void(Property)>::overload !=
                                              XIO_VERSIONED_NAME(query_fn)::ill_formed> {
@@ -284,7 +284,7 @@ namespace xio {
 
     template<typename T, typename Property>
     struct is_nothrow_query :
-            integral_constant<bool,
+            std::integral_constant<bool,
                 XIO_VERSIONED_NAME(query_fn)::call_traits<
                     query_t, T, void(Property)>::is_noexcept> {
     };

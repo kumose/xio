@@ -116,15 +116,15 @@ namespace xio {
                      DynamicBuffer_v1 &&buffers,
                      CompletionCondition completion_condition, xio::error_code &ec,
                      constraint_t<
-                         is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                         is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                      >,
                      constraint_t<
-                         !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                         !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                      >,
                      constraint_t<
                          is_completion_condition<CompletionCondition>::value
                      >) {
-        decay_t<DynamicBuffer_v1> b(
+        std::decay_t<DynamicBuffer_v1> b(
             static_cast<DynamicBuffer_v1 &&>(buffers));
 
         ec = xio::error_code();
@@ -151,10 +151,10 @@ namespace xio {
     inline std::size_t read(SyncReadStream &s,
                             DynamicBuffer_v1 &&buffers,
                             constraint_t<
-                                is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                                is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                             >,
                             constraint_t<
-                                !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                                !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                             >) {
         xio::error_code ec;
         std::size_t bytes_transferred = read(s,
@@ -168,10 +168,10 @@ namespace xio {
                             DynamicBuffer_v1 &&buffers,
                             xio::error_code &ec,
                             constraint_t<
-                                is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                                is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                             >,
                             constraint_t<
-                                !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                                !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                             >) {
         return read(s, static_cast<DynamicBuffer_v1 &&>(buffers),
                     transfer_all(), ec);
@@ -183,10 +183,10 @@ namespace xio {
                             DynamicBuffer_v1 &&buffers,
                             CompletionCondition completion_condition,
                             constraint_t<
-                                is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                                is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                             >,
                             constraint_t<
-                                !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                                !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                             >,
                             constraint_t<
                                 is_completion_condition<CompletionCondition>::value
@@ -402,7 +402,7 @@ namespace xio {
         template<typename AsyncReadStream, typename MutableBufferSequence,
             typename MutableBufferIterator, typename CompletionCondition,
             typename ReadHandler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             read_op<AsyncReadStream, MutableBufferSequence, MutableBufferIterator,
                 CompletionCondition, ReadHandler> *this_handler) {
             return this_handler->start_ == 0
@@ -583,7 +583,7 @@ namespace xio {
 
         template<typename AsyncReadStream, typename DynamicBuffer_v1,
             typename CompletionCondition, typename ReadHandler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             read_dynbuf_v1_op<AsyncReadStream, DynamicBuffer_v1,
                 CompletionCondition, ReadHandler> *this_handler) {
             return this_handler->start_ == 0
@@ -618,8 +618,8 @@ namespace xio {
 
                 non_const_lvalue<ReadHandler> handler2(handler);
                 non_const_lvalue<CompletionCondition> completion_cond2(completion_cond);
-                read_dynbuf_v1_op<AsyncReadStream, decay_t<DynamicBuffer_v1>,
-                    CompletionCondition, decay_t<ReadHandler> >(
+                read_dynbuf_v1_op<AsyncReadStream, std::decay_t<DynamicBuffer_v1>,
+                    CompletionCondition, std::decay_t<ReadHandler> >(
                     stream_, static_cast<DynamicBuffer_v1 &&>(buffers),
                     completion_cond2.value, handler2.value)(
                     xio::error_code(), 0, 1);
@@ -760,7 +760,7 @@ namespace xio {
 
         template<typename AsyncReadStream, typename DynamicBuffer_v2,
             typename CompletionCondition, typename ReadHandler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             read_dynbuf_v2_op<AsyncReadStream, DynamicBuffer_v2,
                 CompletionCondition, ReadHandler> *this_handler) {
             return this_handler->start_ == 0
@@ -795,8 +795,8 @@ namespace xio {
 
                 non_const_lvalue<ReadHandler> handler2(handler);
                 non_const_lvalue<CompletionCondition> completion_cond2(completion_cond);
-                read_dynbuf_v2_op<AsyncReadStream, decay_t<DynamicBuffer_v2>,
-                    CompletionCondition, decay_t<ReadHandler> >(
+                read_dynbuf_v2_op<AsyncReadStream, std::decay_t<DynamicBuffer_v2>,
+                    CompletionCondition, std::decay_t<ReadHandler> >(
                     stream_, static_cast<DynamicBuffer_v2 &&>(buffers),
                     completion_cond2.value, handler2.value)(
                     xio::error_code(), 0, 1);

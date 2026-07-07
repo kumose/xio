@@ -34,18 +34,18 @@ namespace xio {
 
     namespace detail {
         template<typename T, typename = void>
-        struct has_immediate_executor_type : false_type {
+        struct has_immediate_executor_type : std::false_type {
         };
 
         template<typename T>
         struct has_immediate_executor_type<T,
                     void_t<typename T::immediate_executor_type> >
-                : true_type {
+                : std::true_type {
         };
 
         template<typename E, typename = void, typename = void>
         struct default_immediate_executor {
-            typedef decay_t<require_result_t<E, execution::blocking_t::never_t> > type;
+            typedef std::decay_t<require_result_t<E, execution::blocking_t::never_t> > type;
 
             static auto get(const E &e) noexcept
                 -> decltype(xio::require(e, execution::blocking.never)) {
@@ -55,11 +55,11 @@ namespace xio {
 
         template<typename E>
         struct default_immediate_executor<E,
-            enable_if_t <
+            std::enable_if_t <
             !execution::is_executor<E>::value
         >
         ,
-        enable_if_t<
+        std::enable_if_t<
             is_executor<E>::value
         >
         >
@@ -70,10 +70,10 @@ namespace xio {
     template <typename Executor1>
     explicit type(const Executor1& e,
         constraint_t<
-          conditional_t<
-            !is_same<Executor1, type>::value,
-            is_convertible<Executor1, E>,
-            false_type
+          std::conditional_t<
+            !std::is_same<Executor1, type>::value,
+            std::is_convertible<Executor1, E>,
+            std::false_type
           >::value
         > = 0) noexcept
       : E(e)
@@ -115,7 +115,7 @@ namespace xio {
 
         template<typename T, typename E, typename = void, typename = void>
         struct associated_immediate_executor_impl {
-            typedef void asio_associated_immediate_executor_is_unspecialised;
+            typedef void xio_associated_immediate_executor_is_unspecialised;
 
             typedef typename default_immediate_executor<E>::type type;
 
@@ -138,7 +138,7 @@ namespace xio {
 
         template<typename T, typename E>
         struct associated_immediate_executor_impl<T, E,
-            enable_if_t <
+            std::enable_if_t <
             !has_immediate_executor_type<T>::value
         >
         ,
@@ -216,7 +216,7 @@ namespace xio {
         typename ExecutionContext::executor_type>::type
     get_associated_immediate_executor(const T &t, ExecutionContext &ctx,
                                       constraint_t<
-                                          is_convertible<ExecutionContext &, execution_context &>::value
+                                          std::is_convertible<ExecutionContext &, execution_context &>::value
                                       > = 0) noexcept {
         return associated_immediate_executor<T,
             typename ExecutionContext::executor_type>::get(t, ctx.get_executor());
@@ -233,15 +233,15 @@ namespace xio {
 
         template<typename T, typename E>
         struct associated_immediate_executor_forwarding_base<T, E,
-            enable_if_t <
-            is_same <
+            std::enable_if_t <
+            std::is_same <
             typename associated_immediate_executor<T,
-                E>::asio_associated_immediate_executor_is_unspecialised,
+                E>::xio_associated_immediate_executor_is_unspecialised,
             void>::value
         >
         >
 {
-  typedef void asio_associated_immediate_executor_is_unspecialised;
+  typedef void xio_associated_immediate_executor_is_unspecialised;
 };
     } // namespace detail
 

@@ -35,8 +35,8 @@ namespace xio {
             class channel_send_functions<Derived, Executor, R(Args...)> {
             public:
                 template<typename... Args2>
-                enable_if_t<
-                    is_constructible < xio::detail::completion_message < R(Args...)>
+                std::enable_if_t<
+                    std::is_constructible < xio::detail::completion_message < R(Args...)>
                 ,
                 int
                 ,
@@ -55,8 +55,8 @@ namespace xio {
                 }
 
                 template<typename... Args2>
-                enable_if_t<
-                    is_constructible < xio::detail::completion_message < R(Args...)>
+                std::enable_if_t<
+                    std::is_constructible < xio::detail::completion_message < R(Args...)>
                 ,
                 int
                 ,
@@ -75,8 +75,8 @@ namespace xio {
                 }
 
                 template<typename... Args2>
-                enable_if_t<
-                    is_constructible < xio::detail::completion_message < R(Args...)>
+                std::enable_if_t<
+                    std::is_constructible < xio::detail::completion_message < R(Args...)>
                 ,
                 int
                 ,
@@ -95,8 +95,8 @@ namespace xio {
                 }
 
                 template<typename... Args2>
-                enable_if_t<
-                    is_constructible < xio::detail::completion_message < R(Args...)>
+                std::enable_if_t<
+                    std::is_constructible < xio::detail::completion_message < R(Args...)>
                 ,
                 int
                 ,
@@ -122,9 +122,9 @@ namespace xio {
                                 ASIO_DEFAULT_COMPLETION_TOKEN (Executor))
                     -> decltype(
                         async_initiate<CompletionToken, void(xio::error_code)>(
-                            declval < typename conditional_t < false, CompletionToken,
+                            std::declval < typename std::conditional_t < false, CompletionToken,
                             Derived > ::initiate_async_send > (), token,
-                            declval < typename conditional_t < false, CompletionToken,
+                            std::declval < typename std::conditional_t < false, CompletionToken,
                             Derived > ::payload_type > ())) {
                     typedef typename Derived::payload_type payload_type;
                     typedef xio::detail::completion_message<R(Args...)> message_type;
@@ -144,8 +144,8 @@ namespace xio {
                 using channel_send_functions<Derived, Executor, Signatures...>::async_send;
 
                 template<typename... Args2>
-                enable_if_t<
-                    is_constructible < xio::detail::completion_message < R(Args...)>
+                std::enable_if_t<
+                    std::is_constructible < xio::detail::completion_message < R(Args...)>
                 ,
                 int
                 ,
@@ -164,8 +164,8 @@ namespace xio {
                 }
 
                 template<typename... Args2>
-                enable_if_t<
-                    is_constructible < xio::detail::completion_message < R(Args...)>
+                std::enable_if_t<
+                    std::is_constructible < xio::detail::completion_message < R(Args...)>
                 ,
                 int
                 ,
@@ -184,8 +184,8 @@ namespace xio {
                 }
 
                 template<typename... Args2>
-                enable_if_t<
-                    is_constructible < xio::detail::completion_message < R(Args...)>
+                std::enable_if_t<
+                    std::is_constructible < xio::detail::completion_message < R(Args...)>
                 ,
                 int
                 ,
@@ -204,8 +204,8 @@ namespace xio {
                 }
 
                 template<typename... Args2>
-                enable_if_t<
-                    is_constructible < xio::detail::completion_message < R(Args...)>
+                std::enable_if_t<
+                    std::is_constructible < xio::detail::completion_message < R(Args...)>
                 ,
                 int
                 ,
@@ -231,9 +231,9 @@ namespace xio {
                                 ASIO_DEFAULT_COMPLETION_TOKEN (Executor))
                     -> decltype(
                         async_initiate<CompletionToken, void(xio::error_code)>(
-                            declval < typename conditional_t < false, CompletionToken,
+                            std::declval < typename std::conditional_t < false, CompletionToken,
                             Derived > ::initiate_async_send > (), token,
-                            declval < typename conditional_t < false, CompletionToken,
+                            std::declval < typename std::conditional_t < false, CompletionToken,
                             Derived > ::payload_type > ())) {
                     typedef typename Derived::payload_type payload_type;
                     typedef xio::detail::completion_message<R(Args...)> message_type;

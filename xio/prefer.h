@@ -37,7 +37,7 @@ namespace xio {
  * expression <tt>xio::prefer(E, P0, Pn...)</tt> for some subexpressions
  * <tt>E</tt> and <tt>P0</tt>, and where <tt>Pn...</tt> represents <tt>N</tt>
  * subexpressions (where <tt>N</tt> is 0 or more, and with types <tt>T =
- * decay_t<decltype(E)></tt> and <tt>Prop0 = decay_t<decltype(P0)></tt>) is
+ * std::decay_t<decltype(E)></tt> and <tt>Prop0 = std::decay_t<decltype(P0)></tt>) is
  * expression-equivalent to:
  *
  * @li If <tt>is_applicable_property_v<T, Prop0> && Prop0::is_preferable</tt> is
@@ -79,23 +79,23 @@ namespace xio {
     /// A type trait that determines whether a @c prefer expression is well-formed.
     /**
  * Class template @c can_prefer is a trait that is derived from
- * @c true_type if the expression <tt>xio::prefer(std::declval<T>(),
- * std::declval<Properties>()...)</tt> is well formed; otherwise @c false_type.
+ * @c std::true_type if the expression <tt>xio::prefer(std::declval<T>(),
+ * std::declval<Properties>()...)</tt> is well formed; otherwise @c std::false_type.
  */
     template<typename T, typename... Properties>
     struct can_prefer :
-            integral_constant<bool, automatically_determined> {
+            std::integral_constant<bool, automatically_determined> {
     };
 
     /// A type trait that determines whether a @c prefer expression will not throw.
     /**
  * Class template @c is_nothrow_prefer is a trait that is derived from
- * @c true_type if the expression <tt>xio::prefer(std::declval<T>(),
- * std::declval<Properties>()...)</tt> is @c noexcept; otherwise @c false_type.
+ * @c std::true_type if the expression <tt>xio::prefer(std::declval<T>(),
+ * std::declval<Properties>()...)</tt> is @c noexcept; otherwise @c std::false_type.
  */
     template<typename T, typename... Properties>
     struct is_nothrow_prefer :
-            integral_constant<bool, automatically_determined> {
+            std::integral_constant<bool, automatically_determined> {
     };
 
     /// A type trait that determines the result type of a @c prefer expression.
@@ -116,10 +116,10 @@ namespace xio {
 #else // defined(GENERATING_DOCUMENTATION)
 
 namespace XIO_VERSIONED_NAME(prefer_fn) {
-    using xio::conditional_t;
-    using xio::decay_t;
-    using xio::declval;
-    using xio::enable_if_t;
+    using std::conditional_t;
+    using std::decay_t;
+    using std::declval;
+    using std::enable_if_t;
     using xio::is_applicable_property;
     using xio::traits::prefer_free;
     using xio::traits::prefer_member;
@@ -156,16 +156,16 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
     <
     typename Impl, typename T, typename Property >
     struct call_traits<Impl, T, void(Property),
-                enable_if_t<
+                std::enable_if_t<
                     is_applicable_property<
-                        decay_t<T>,
-                        decay_t<Property>
+                        std::decay_t<T>,
+                        std::decay_t<Property>
                     >::value
                 >,
-                enable_if_t<
-                    decay_t<Property>::is_preferable
+                std::enable_if_t<
+                    std::decay_t<Property>::is_preferable
                 >,
-                enable_if_t<
+                std::enable_if_t<
                     static_require<T, Property>::is_valid
                 > > {
         static constexpr overload_type overload = identity;
@@ -178,20 +178,20 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
     <
     typename Impl, typename T, typename Property >
     struct call_traits<Impl, T, void(Property),
-        enable_if_t<
+        std::enable_if_t<
             is_applicable_property<
-                decay_t<T>,
-                decay_t<Property>
+                std::decay_t<T>,
+                std::decay_t<Property>
             >::value
         >,
-        enable_if_t<
-            decay_t<Property>::is_preferable
+        std::enable_if_t<
+            std::decay_t<Property>::is_preferable
         >,
-        enable_if_t <
+        std::enable_if_t <
         !static_require<T, Property>::is_valid
     >
     ,
-    enable_if_t<
+    std::enable_if_t<
         require_member<typename Impl::template proxy<T>::type, Property>::is_valid
     > >
     :
@@ -206,23 +206,23 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
     <
     typename Impl, typename T, typename Property >
     struct call_traits<Impl, T, void(Property),
-        enable_if_t<
+        std::enable_if_t<
             is_applicable_property<
-                decay_t<T>,
-                decay_t<Property>
+                std::decay_t<T>,
+                std::decay_t<Property>
             >::value
         >,
-        enable_if_t<
-            decay_t<Property>::is_preferable
+        std::enable_if_t<
+            std::decay_t<Property>::is_preferable
         >,
-        enable_if_t <
+        std::enable_if_t <
         !static_require<T, Property>::is_valid
     >
     ,
-    enable_if_t <
+    std::enable_if_t <
             !require_member<typename Impl::template proxy<T>::type, Property>::is_valid
             >,
-            enable_if_t<
+            std::enable_if_t<
                 require_free<T, Property>::is_valid
             > >
     :
@@ -237,26 +237,26 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
     <
     typename Impl, typename T, typename Property >
     struct call_traits<Impl, T, void(Property),
-        enable_if_t<
+        std::enable_if_t<
             is_applicable_property<
-                decay_t<T>,
-                decay_t<Property>
+                std::decay_t<T>,
+                std::decay_t<Property>
             >::value
         >,
-        enable_if_t<
-            decay_t<Property>::is_preferable
+        std::enable_if_t<
+            std::decay_t<Property>::is_preferable
         >,
-        enable_if_t <
+        std::enable_if_t <
         !static_require<T, Property>::is_valid
     >
     ,
-    enable_if_t <
+    std::enable_if_t <
             !require_member<typename Impl::template proxy<T>::type, Property>::is_valid
             >,
-            enable_if_t <
+            std::enable_if_t <
             !require_free<T, Property>::is_valid
             >,
-            enable_if_t<
+            std::enable_if_t<
                 prefer_member<typename Impl::template proxy<T>::type, Property>::is_valid
             > >
     :
@@ -271,29 +271,29 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
     <
     typename Impl, typename T, typename Property >
     struct call_traits<Impl, T, void(Property),
-        enable_if_t<
+        std::enable_if_t<
             is_applicable_property<
-                decay_t<T>,
-                decay_t<Property>
+                std::decay_t<T>,
+                std::decay_t<Property>
             >::value
         >,
-        enable_if_t<
-            decay_t<Property>::is_preferable
+        std::enable_if_t<
+            std::decay_t<Property>::is_preferable
         >,
-        enable_if_t <
+        std::enable_if_t <
         !static_require<T, Property>::is_valid
     >
     ,
-    enable_if_t <
+    std::enable_if_t <
             !require_member<typename Impl::template proxy<T>::type, Property>::is_valid
             >,
-            enable_if_t <
+            std::enable_if_t <
             !require_free<T, Property>::is_valid
             >,
-            enable_if_t <
+            std::enable_if_t <
             !prefer_member<typename Impl::template proxy<T>::type, Property>::is_valid
             >,
-            enable_if_t<
+            std::enable_if_t<
                 prefer_free<T, Property>::is_valid
             > >
     :
@@ -308,29 +308,29 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
     <
     typename Impl, typename T, typename Property >
     struct call_traits<Impl, T, void(Property),
-        enable_if_t<
+        std::enable_if_t<
             is_applicable_property<
-                decay_t<T>,
-                decay_t<Property>
+                std::decay_t<T>,
+                std::decay_t<Property>
             >::value
         >,
-        enable_if_t<
-            decay_t<Property>::is_preferable
+        std::enable_if_t<
+            std::decay_t<Property>::is_preferable
         >,
-        enable_if_t <
+        std::enable_if_t <
         !static_require<T, Property>::is_valid
     >
     ,
-    enable_if_t <
+    std::enable_if_t <
             !require_member<typename Impl::template proxy<T>::type, Property>::is_valid
             >,
-            enable_if_t <
+            std::enable_if_t <
             !require_free<T, Property>::is_valid
             >,
-            enable_if_t <
+            std::enable_if_t <
             !prefer_member<typename Impl::template proxy<T>::type, Property>::is_valid
             >,
-            enable_if_t <
+            std::enable_if_t <
             !prefer_free<T, Property>::is_valid
             >>
     {
@@ -344,11 +344,11 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
     <
     typename Impl, typename T, typename P0, typename P1 >
     struct call_traits<Impl, T, void(P0, P1),
-        enable_if_t <
+        std::enable_if_t <
         call_traits<Impl, T, void(P0)>::overload != ill_formed
     >
     ,
-    enable_if_t <
+    std::enable_if_t <
             call_traits<
                 Impl,
                 typename call_traits<Impl, T, void(P0)>::result_type,
@@ -369,7 +369,7 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
             >::is_noexcept
         );
 
-        typedef decay_t<
+        typedef std::decay_t<
             typename call_traits<
                 Impl,
                 typename call_traits<Impl, T, void(P0)>::result_type,
@@ -386,11 +386,11 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
     ...
     PN >
     struct call_traits<Impl, T, void(P0, P1, PN...),
-        enable_if_t <
+        std::enable_if_t <
         call_traits<Impl, T, void(P0)>::overload != ill_formed
     >
     ,
-    enable_if_t <
+    std::enable_if_t <
             call_traits<
                 Impl,
                 typename call_traits<Impl, T, void(P0)>::result_type,
@@ -411,7 +411,7 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
             >::is_noexcept
         );
 
-        typedef decay_t<
+        typedef std::decay_t<
             typename call_traits<
                 Impl,
                 typename call_traits<Impl, T, void(P0)>::result_type,
@@ -428,29 +428,29 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
                 auto require(P &&p)
                     noexcept(
                         noexcept(
-                            declval<conditional_t<true, T, P> >().require(static_cast<P &&>(p))
+                            std::declval<std::conditional_t<true, T, P> >().require(static_cast<P &&>(p))
                         )
                     )
                     -> decltype(
-                        declval<conditional_t<true, T, P> >().require(static_cast<P &&>(p))
+                        std::declval<std::conditional_t<true, T, P> >().require(static_cast<P &&>(p))
                     );
 
                 template<typename P>
                 auto prefer(P &&p)
                     noexcept(
                         noexcept(
-                            declval<conditional_t<true, T, P> >().prefer(static_cast<P &&>(p))
+                            std::declval<std::conditional_t<true, T, P> >().prefer(static_cast<P &&>(p))
                         )
                     )
                     -> decltype(
-                        declval<conditional_t<true, T, P> >().prefer(static_cast<P &&>(p))
+                        std::declval<std::conditional_t<true, T, P> >().prefer(static_cast<P &&>(p))
                     );
             };
 
         };
 
         template<typename T, typename Property>
-        [[nodiscard]] constexpr enable_if_t<
+        [[nodiscard]] constexpr std::enable_if_t<
             call_traits<impl, T, void(Property)>::overload == identity,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -461,7 +461,7 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
         }
 
         template<typename T, typename Property>
-        [[nodiscard]] constexpr enable_if_t<
+        [[nodiscard]] constexpr std::enable_if_t<
             call_traits<impl, T, void(Property)>::overload == call_require_member,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -472,7 +472,7 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
         }
 
         template<typename T, typename Property>
-        [[nodiscard]] constexpr enable_if_t<
+        [[nodiscard]] constexpr std::enable_if_t<
             call_traits<impl, T, void(Property)>::overload == call_require_free,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -483,7 +483,7 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
         }
 
         template<typename T, typename Property>
-        [[nodiscard]] constexpr enable_if_t<
+        [[nodiscard]] constexpr std::enable_if_t<
             call_traits<impl, T, void(Property)>::overload == call_prefer_member,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -494,7 +494,7 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
         }
 
         template<typename T, typename Property>
-        [[nodiscard]] constexpr enable_if_t<
+        [[nodiscard]] constexpr std::enable_if_t<
             call_traits<impl, T, void(Property)>::overload == call_prefer_free,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -505,7 +505,7 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
         }
 
         template<typename T, typename P0, typename P1>
-        [[nodiscard]] constexpr enable_if_t<
+        [[nodiscard]] constexpr std::enable_if_t<
             call_traits<impl, T, void(P0, P1)>::overload == two_props,
             typename call_traits<impl, T, void(P0, P1)>::result_type
         >
@@ -519,7 +519,7 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
 
         template<typename T, typename P0, typename P1,
             typename... PN>
-        [[nodiscard]] constexpr enable_if_t<
+        [[nodiscard]] constexpr std::enable_if_t<
             call_traits<impl, T, void(P0, P1, PN...)>::overload == n_props,
             typename call_traits<impl, T, void(P0, P1, PN...)>::result_type
         >
@@ -556,7 +556,7 @@ namespace xio {
 
     template<typename T, typename... Properties>
     struct can_prefer :
-            integral_constant<bool,
+            std::integral_constant<bool,
                 XIO_VERSIONED_NAME(prefer_fn)::call_traits<
                                                   prefer_t, T, void(Properties...)>::overload
                                               != XIO_VERSIONED_NAME(prefer_fn)::ill_formed> {
@@ -570,7 +570,7 @@ namespace xio {
 
     template<typename T, typename... Properties>
     struct is_nothrow_prefer :
-            integral_constant<bool,
+            std::integral_constant<bool,
                 XIO_VERSIONED_NAME(prefer_fn)::call_traits<
                     prefer_t, T, void(Properties...)>::is_noexcept> {
     };

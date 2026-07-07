@@ -33,7 +33,7 @@ namespace xio {
 
 
     template<typename T>
-    struct is_deferred : false_type {
+    struct is_deferred : std::false_type {
     };
 
     /// Helper type to wrap multiple completion signatures.
@@ -50,9 +50,9 @@ namespace xio {
 
         template<typename Tail, typename R, typename... Args, typename... Signatures>
         struct deferred_sequence_signatures<Tail, R(Args...), Signatures...>
-                : completion_signature_of<decltype(declval<Tail>()(declval<Args>()...))> {
+                : completion_signature_of<decltype(std::declval<Tail>()(std::declval<Args>()...))> {
             static_assert(
-                !is_same<decltype(declval<Tail>()(declval<Args>()...)), void>::value,
+                !std::is_same<decltype(std::declval<Tail>()(std::declval<Args>()...)), void>::value,
                 "deferred functions must produce a deferred return type");
         };
 
@@ -85,7 +85,7 @@ namespace xio {
                 template<typename Handler>
                 void operator()(Handler &&handler, Head head, Tail &&tail) {
                     static_cast<Head &&>(head)(
-                        deferred_sequence_handler<decay_t<Handler>, decay_t<Tail> >(
+                        deferred_sequence_handler<std::decay_t<Handler>, std::decay_t<Tail> >(
                             static_cast<Handler &&>(handler), static_cast<Tail &&>(tail)));
                 }
             };
@@ -154,7 +154,7 @@ namespace xio {
 
 #if !defined(GENERATING_DOCUMENTATION)
     template<>
-    struct is_deferred<deferred_noop> : true_type {
+    struct is_deferred<deferred_noop> : std::true_type {
     };
 #endif // !defined(GENERATING_DOCUMENTATION)
 
@@ -191,7 +191,7 @@ namespace xio {
 
 #if !defined(GENERATING_DOCUMENTATION)
     template<typename Function>
-    struct is_deferred<deferred_function<Function> > : true_type {
+    struct is_deferred<deferred_function<Function> > : std::true_type {
     };
 #endif // !defined(GENERATING_DOCUMENTATION)
 
@@ -262,7 +262,7 @@ namespace xio {
 
 #if !defined(GENERATING_DOCUMENTATION)
     template<typename... Values>
-    struct is_deferred<deferred_values<Values...> > : true_type {
+    struct is_deferred<deferred_values<Values...> > : std::true_type {
     };
 #endif // !defined(GENERATING_DOCUMENTATION)
 
@@ -270,9 +270,9 @@ namespace xio {
     template<typename Signature, typename Initiation, typename... InitArgs>
     class [[nodiscard]] deferred_async_operation {
     private:
-        typedef decay_t<Initiation> initiation_t;
+        typedef std::decay_t<Initiation> initiation_t;
         initiation_t initiation_;
-        typedef std::tuple<decay_t<InitArgs>...> init_args_t;
+        typedef std::tuple<std::decay_t<InitArgs>...> init_args_t;
         init_args_t init_args_;
 
         template<typename CompletionToken, std::size_t... I>
@@ -290,7 +290,7 @@ namespace xio {
         auto const_invoke_helper(CompletionToken &&token,
                                  std::index_sequence<I...>) const & -> decltype(
             async_initiate<CompletionToken, Signature>(
-                conditional_t < true, initiation_t, CompletionToken > (initiation_),
+                std::conditional_t < true, initiation_t, CompletionToken > (initiation_),
                 token, std::get < I > (init_args_)...)) {
             return async_initiate<CompletionToken, Signature>(
                 initiation_t(initiation_), token, std::get < I > (init_args_)...);
@@ -335,9 +335,9 @@ namespace xio {
         deferred_signatures<Signatures...>, Initiation, InitArgs...> {
         private
         :
-        typedef decay_t<Initiation> initiation_t;
+        typedef std::decay_t<Initiation> initiation_t;
         initiation_t initiation_;
-        typedef std::tuple<decay_t<InitArgs>...> init_args_t;
+        typedef std::tuple<std::decay_t<InitArgs>...> init_args_t;
         init_args_t init_args_;
 
         template
@@ -441,7 +441,7 @@ namespace xio {
 #if !defined(GENERATING_DOCUMENTATION)
     template<typename Signature, typename Initiation, typename... InitArgs>
     struct is_deferred<
-                deferred_async_operation<Signature, Initiation, InitArgs...> > : true_type {
+                deferred_async_operation<Signature, Initiation, InitArgs...> > : std::true_type {
     };
 #endif // !defined(GENERATING_DOCUMENTATION)
 
@@ -467,11 +467,11 @@ namespace xio {
 
 #if !defined(GENERATING_DOCUMENTATION)
     template<typename Head, typename Tail>
-    struct is_deferred<deferred_sequence<Head, Tail> > : true_type {
+    struct is_deferred<deferred_sequence<Head, Tail> > : std::true_type {
     };
 #endif // !defined(GENERATING_DOCUMENTATION)
 
-    /// Used to represent a deferred conditional branch.
+    /// Used to represent a deferred std::conditional branch.
     template<typename OnTrue = deferred_noop, typename OnFalse = deferred_noop>
     class [[nodiscard]] deferred_conditional {
     private:
@@ -491,7 +491,7 @@ namespace xio {
         bool bool_;
 
     public:
-        /// Construct a deferred conditional with the value to determine which branch
+        /// Construct a deferred std::conditional with the value to determine which branch
   /// will be executed.
         constexpr explicit deferred_conditional(bool b)
             : on_true_(),
@@ -499,7 +499,7 @@ namespace xio {
               bool_(b) {
         }
 
-        /// Invoke the conditional branch bsaed on the stored value.
+        /// Invoke the std::conditional branch bsaed on the stored value.
         template<typename... Args>
         auto operator(
         )(Args &&... args) && -> decltype(static_cast<OnTrue &&>(on_true_)(static_cast<Args &&>(args)...)) {
@@ -519,15 +519,15 @@ namespace xio {
             }
         }
 
-        /// Set the true branch of the conditional.
+        /// Set the true branch of the std::conditional.
         template<typename T>
         deferred_conditional<T, OnFalse> then(T on_true,
                                               constraint_t<
                                                   is_deferred<T>::value
                                               > * = 0,
                                               constraint_t<
-                                                  is_same <
-                                                  conditional_t < true, OnTrue, T>,
+                                                  std::is_same <
+                                                  std::conditional_t < true, OnTrue, T>,
                                               deferred_noop
         >::value
       >* = 0) && {
@@ -536,21 +536,21 @@ namespace xio {
                 static_cast<OnFalse &&>(on_false_));
         }
 
-        /// Set the false branch of the conditional.
+        /// Set the false branch of the std::conditional.
         template<typename T>
         deferred_conditional<OnTrue, T> otherwise(T on_false,
                                                   constraint_t<
                                                       is_deferred<T>::value
                                                   > * = 0,
                                                   constraint_t<
-                                                      !is_same <
-                                                      conditional_t < true, OnTrue, T>,
+                                                      !std::is_same <
+                                                      std::conditional_t < true, OnTrue, T>,
                                                   deferred_noop
         >::value
       >* = 0,
                                                   constraint_t<
-                                                      is_same <
-                                                      conditional_t < true, OnFalse, T>,
+                                                      std::is_same <
+                                                      std::conditional_t < true, OnFalse, T>,
                                                   deferred_noop
         >::value
       >* = 0) && {
@@ -562,7 +562,7 @@ namespace xio {
 
 #if !defined(GENERATING_DOCUMENTATION)
     template<typename OnTrue, typename OnFalse>
-    struct is_deferred<deferred_conditional<OnTrue, OnFalse> > : true_type {
+    struct is_deferred<deferred_conditional<OnTrue, OnFalse> > : std::true_type {
     };
 #endif // !defined(GENERATING_DOCUMENTATION)
 
@@ -602,10 +602,10 @@ namespace xio {
             template<typename InnerExecutor1>
             executor_with_default(const InnerExecutor1 &ex,
                                   constraint_t<
-                                      conditional_t <
-                                      !is_same<InnerExecutor1, executor_with_default>::value,
-                                      is_convertible<InnerExecutor1, InnerExecutor>,
-                                      false_type
+                                      std::conditional_t <
+                                      !std::is_same<InnerExecutor1, executor_with_default>::value,
+                                      std::is_convertible<InnerExecutor1, InnerExecutor>,
+                                      std::false_type
                                   >::value
         > = 0) noexcept
                 : InnerExecutor(ex) {
@@ -621,42 +621,42 @@ namespace xio {
         /// Function helper to adapt an I/O object to use @c deferred_t as its
   /// default completion token type.
         template<typename T>
-        static typename decay_t<T>::template rebind_executor<
-            executor_with_default<typename decay_t<T>::executor_type>
+        static typename std::decay_t<T>::template rebind_executor<
+            executor_with_default<typename std::decay_t<T>::executor_type>
         >::other
         as_default_on(T &&object) {
-            return typename decay_t<T>::template rebind_executor<
-                executor_with_default<typename decay_t<T>::executor_type>
+            return typename std::decay_t<T>::template rebind_executor<
+                executor_with_default<typename std::decay_t<T>::executor_type>
             >::other(static_cast<T &&>(object));
         }
 
         /// Creates a new deferred from a function.
         template<typename Function>
         constraint_t<
-            !is_deferred<decay_t<Function> >::value,
-            deferred_function<decay_t<Function> >
+            !is_deferred<std::decay_t<Function> >::value,
+            deferred_function<std::decay_t<Function> >
         > operator()(Function &&function) const {
-            return deferred_function<decay_t<Function> >(
+            return deferred_function<std::decay_t<Function> >(
                 deferred_init_tag{}, static_cast<Function &&>(function));
         }
 
         /// Passes through anything that is already deferred.
         template<typename T>
         constraint_t<
-            is_deferred<decay_t<T> >::value,
-            decay_t<T>
+            is_deferred<std::decay_t<T> >::value,
+            std::decay_t<T>
         > operator()(T &&t) const {
             return static_cast<T &&>(t);
         }
 
         /// Returns a deferred operation that returns the provided values.
         template<typename... Args>
-        static constexpr deferred_values<decay_t<Args>...> values(Args &&... args) {
-            return deferred_values<decay_t<Args>...>(
+        static constexpr deferred_values<std::decay_t<Args>...> values(Args &&... args) {
+            return deferred_values<std::decay_t<Args>...>(
                 deferred_init_tag{}, static_cast<Args &&>(args)...);
         }
 
-        /// Creates a conditional object for branching deferred operations.
+        /// Creates a std::conditional object for branching deferred operations.
         static constexpr deferred_conditional<> when(bool b) {
             return deferred_conditional<>(b);
         }

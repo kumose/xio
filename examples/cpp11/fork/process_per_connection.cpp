@@ -8,10 +8,10 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <asio/io_context.hpp>
-#include <asio/ip/tcp.hpp>
-#include <asio/signal_set.hpp>
-#include <asio/write.hpp>
+#include <xio/io_context.h>
+#include <xio/ip/tcp.h>
+#include <xio/signal_set.h>
+#include <xio/write.h>
 #include <cstdlib>
 #include <iostream>
 #include <sys/types.h>

@@ -101,7 +101,7 @@ namespace xio {
 #if defined(GENERATING_DOCUMENTATION)
 unspecified
 #else // defined(GENERATING_DOCUMENTATION)
-detail::packaged_token<decay_t<Function>, Allocator>
+detail::packaged_token<std::decay_t<Function>, Allocator>
 #endif // defined(GENERATING_DOCUMENTATION)
 operator()(Function &&f) const;
 
@@ -117,8 +117,8 @@ struct std_allocator_void {
     }
 };
 
-conditional_t<
-    is_same<std::allocator<void>, Allocator>::value,
+std::conditional_t<
+    std::is_same<std::allocator<void>, Allocator>::value,
     std_allocator_void, Allocator> allocator_;
 };
 

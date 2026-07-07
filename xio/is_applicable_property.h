@@ -23,17 +23,17 @@ namespace xio {
 
     namespace detail {
         template<typename T, typename Property, typename = void>
-        struct is_applicable_property_trait : false_type {
+        struct is_applicable_property_trait : std::false_type {
         };
 
 
         template<typename T, typename Property>
         struct is_applicable_property_trait<T, Property,
             void_t <
-            enable_if_t <
+            std::enable_if_t <
             !!Property::template is_applicable_property_v<T>
         >
-  >> : true_type {
+  >> : std::true_type {
         };
 
     } // namespace detail

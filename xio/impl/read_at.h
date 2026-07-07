@@ -256,7 +256,7 @@ namespace xio {
         template<typename AsyncRandomAccessReadDevice,
             typename MutableBufferSequence, typename MutableBufferIterator,
             typename CompletionCondition, typename ReadHandler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             read_at_op<AsyncRandomAccessReadDevice, MutableBufferSequence,
                 MutableBufferIterator, CompletionCondition, ReadHandler> *this_handler) {
             return this_handler->start_ == 0
@@ -437,7 +437,7 @@ namespace xio {
 
         template<typename AsyncRandomAccessReadDevice, typename Allocator,
             typename CompletionCondition, typename ReadHandler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             read_at_streambuf_op<AsyncRandomAccessReadDevice, Allocator,
                 CompletionCondition, ReadHandler> *this_handler) {
             return this_handler->start_ == 0
@@ -474,7 +474,7 @@ namespace xio {
                 non_const_lvalue<ReadHandler> handler2(handler);
                 non_const_lvalue<CompletionCondition> completion_cond2(completion_cond);
                 read_at_streambuf_op<AsyncRandomAccessReadDevice, Allocator,
-                    CompletionCondition, decay_t<ReadHandler> >(
+                    CompletionCondition, std::decay_t<ReadHandler> >(
                     device_, offset, *b, completion_cond2.value, handler2.value)(
                     xio::error_code(), 0, 1);
             }

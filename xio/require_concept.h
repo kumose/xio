@@ -35,7 +35,7 @@ namespace xio {
  * The name <tt>require_concept</tt> denotes a customization point object. The
  * expression <tt>xio::require_concept(E, P)</tt> for some
  * subexpressions <tt>E</tt> and <tt>P</tt> (with types <tt>T =
- * decay_t<decltype(E)></tt> and <tt>Prop = decay_t<decltype(P)></tt>) is
+ * std::decay_t<decltype(E)></tt> and <tt>Prop = std::decay_t<decltype(P)></tt>) is
  * expression-equivalent to:
  *
  * @li If <tt>is_applicable_property_v<T, Prop> &&
@@ -63,26 +63,26 @@ namespace xio {
 /// well-formed.
     /**
  * Class template @c can_require_concept is a trait that is derived from
- * @c true_type if the expression
+ * @c std::true_type if the expression
  * <tt>xio::require_concept(std::declval<T>(),
- * std::declval<Property>())</tt> is well formed; otherwise @c false_type.
+ * std::declval<Property>())</tt> is well formed; otherwise @c std::false_type.
  */
     template<typename T, typename Property>
     struct can_require_concept :
-            integral_constant<bool, automatically_determined> {
+            std::integral_constant<bool, automatically_determined> {
     };
 
     /// A type trait that determines whether a @c require_concept expression will
 /// not throw.
     /**
  * Class template @c is_nothrow_require_concept is a trait that is derived from
- * @c true_type if the expression
+ * @c std::true_type if the expression
  * <tt>xio::require_concept(std::declval<T>(),
- * std::declval<Property>())</tt> is @c noexcept; otherwise @c false_type.
+ * std::declval<Property>())</tt> is @c noexcept; otherwise @c std::false_type.
  */
     template<typename T, typename Property>
     struct is_nothrow_require_concept :
-            integral_constant<bool, automatically_determined> {
+            std::integral_constant<bool, automatically_determined> {
     };
 
     /// A type trait that determines the result type of a @c require_concept
@@ -105,10 +105,10 @@ namespace xio {
 #else // defined(GENERATING_DOCUMENTATION)
 
 namespace XIO_VERSIONED_NAME(require_concept_fn) {
-    using xio::conditional_t;
-    using xio::decay_t;
-    using xio::declval;
-    using xio::enable_if_t;
+    using std::conditional_t;
+    using std::decay_t;
+    using std::declval;
+    using std::enable_if_t;
     using xio::is_applicable_property;
     using xio::traits::require_concept_free;
     using xio::traits::require_concept_member;
@@ -137,16 +137,16 @@ namespace XIO_VERSIONED_NAME(require_concept_fn) {
     <
     typename Impl, typename T, typename Property >
     struct call_traits<Impl, T, void(Property),
-                enable_if_t<
+                std::enable_if_t<
                     is_applicable_property<
-                        decay_t<T>,
-                        decay_t<Property>
+                        std::decay_t<T>,
+                        std::decay_t<Property>
                     >::value
                 >,
-                enable_if_t<
-                    decay_t<Property>::is_requirable_concept
+                std::enable_if_t<
+                    std::decay_t<Property>::is_requirable_concept
                 >,
-                enable_if_t<
+                std::enable_if_t<
                     static_require_concept<T, Property>::is_valid
                 > > {
         static constexpr overload_type overload = identity;
@@ -158,20 +158,20 @@ namespace XIO_VERSIONED_NAME(require_concept_fn) {
     <
     typename Impl, typename T, typename Property >
     struct call_traits<Impl, T, void(Property),
-        enable_if_t<
+        std::enable_if_t<
             is_applicable_property<
-                decay_t<T>,
-                decay_t<Property>
+                std::decay_t<T>,
+                std::decay_t<Property>
             >::value
         >,
-        enable_if_t<
-            decay_t<Property>::is_requirable_concept
+        std::enable_if_t<
+            std::decay_t<Property>::is_requirable_concept
         >,
-        enable_if_t <
+        std::enable_if_t <
         !static_require_concept<T, Property>::is_valid
     >
     ,
-    enable_if_t<
+    std::enable_if_t<
         require_concept_member<
             typename Impl::template proxy<T>::type,
             Property
@@ -192,26 +192,26 @@ namespace XIO_VERSIONED_NAME(require_concept_fn) {
     <
     typename Impl, typename T, typename Property >
     struct call_traits<Impl, T, void(Property),
-        enable_if_t<
+        std::enable_if_t<
             is_applicable_property<
-                decay_t<T>,
-                decay_t<Property>
+                std::decay_t<T>,
+                std::decay_t<Property>
             >::value
         >,
-        enable_if_t<
-            decay_t<Property>::is_requirable_concept
+        std::enable_if_t<
+            std::decay_t<Property>::is_requirable_concept
         >,
-        enable_if_t <
+        std::enable_if_t <
         !static_require_concept<T, Property>::is_valid
     >
     ,
-    enable_if_t <
+    std::enable_if_t <
             !require_concept_member<
                 typename Impl::template proxy<T>::type,
                 Property
             >::is_valid
             >,
-            enable_if_t<
+            std::enable_if_t<
                 require_concept_free<T, Property>::is_valid
             > >
     :
@@ -230,12 +230,12 @@ namespace XIO_VERSIONED_NAME(require_concept_fn) {
                 auto require_concept(P &&p)
                     noexcept(
                         noexcept(
-                            declval<conditional_t<true, T, P> >().require_concept(
+                            std::declval<std::conditional_t<true, T, P> >().require_concept(
                                 static_cast<P &&>(p))
                         )
                     )
                     -> decltype(
-                        declval<conditional_t<true, T, P> >().require_concept(
+                        std::declval<std::conditional_t<true, T, P> >().require_concept(
                             static_cast<P &&>(p))
                     );
             };
@@ -243,7 +243,7 @@ namespace XIO_VERSIONED_NAME(require_concept_fn) {
         };
 
         template<typename T, typename Property>
-        [[nodiscard]] constexpr enable_if_t<
+        [[nodiscard]] constexpr std::enable_if_t<
             call_traits<impl, T, void(Property)>::overload == identity,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -254,7 +254,7 @@ namespace XIO_VERSIONED_NAME(require_concept_fn) {
         }
 
         template<typename T, typename Property>
-        [[nodiscard]] constexpr enable_if_t<
+        [[nodiscard]] constexpr std::enable_if_t<
             call_traits<impl, T, void(Property)>::overload == call_member,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -265,7 +265,7 @@ namespace XIO_VERSIONED_NAME(require_concept_fn) {
         }
 
         template<typename T, typename Property>
-        [[nodiscard]] constexpr enable_if_t<
+        [[nodiscard]] constexpr std::enable_if_t<
             call_traits<impl, T, void(Property)>::overload == call_free,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -302,7 +302,7 @@ namespace xio {
 
     template<typename T, typename Property>
     struct can_require_concept :
-            integral_constant<bool,
+            std::integral_constant<bool,
                 XIO_VERSIONED_NAME(require_concept_fn)::call_traits<
                                                            require_concept_t, T, void(Property)>::overload !=
                                                        XIO_VERSIONED_NAME(require_concept_fn)::ill_formed> {
@@ -315,7 +315,7 @@ namespace xio {
 
     template<typename T, typename Property>
     struct is_nothrow_require_concept :
-            integral_constant<bool,
+            std::integral_constant<bool,
                 XIO_VERSIONED_NAME(require_concept_fn)::call_traits<
                     require_concept_t, T, void(Property)>::is_noexcept> {
     };

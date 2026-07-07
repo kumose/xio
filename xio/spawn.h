@@ -180,7 +180,7 @@ namespace xio {
         template<typename OtherExecutor>
         basic_yield_context(const basic_yield_context<OtherExecutor> &other,
                             constraint_t<
-                                is_convertible<OtherExecutor, Executor>::value
+                                std::is_convertible<OtherExecutor, Executor>::value
                             > = 0)
             : spawned_thread_(other.spawned_thread_),
               executor_(other.executor_),
@@ -382,7 +382,7 @@ namespace xio {
             async_initiate<CompletionToken,
                 typename detail::spawn_signature<
                     result_of_t<F(basic_yield_context<Executor>)> >::type>(
-                declval<detail::initiate_spawn<Executor> >(),
+                std::declval<detail::initiate_spawn<Executor> >(),
                 token, static_cast<F &&>(function)));
 
     /// Start a new stackful coroutine that executes on a given execution context.
@@ -424,7 +424,7 @@ namespace xio {
                CompletionToken && token
                = default_completion_token_t<typename ExecutionContext::executor_type>(),
                constraint_t<
-                   is_convertible<ExecutionContext &, execution_context &>::value
+                   std::is_convertible<ExecutionContext &, execution_context &>::value
                > = 0)
     ->
     decltype(
@@ -432,7 +432,7 @@ namespace xio {
             typename detail::spawn_signature<
                 result_of_t<F(basic_yield_context<
                     typename ExecutionContext::executor_type>)> >::type>(
-            declval<detail::initiate_spawn<
+            std::declval<detail::initiate_spawn<
                 typename ExecutionContext::executor_type> >(),
             token, static_cast<F &&>(function)));
 
@@ -480,7 +480,7 @@ namespace xio {
             async_initiate<CompletionToken,
                 typename detail::spawn_signature<
                     result_of_t<F(basic_yield_context<Executor>)> >::type>(
-                declval<detail::initiate_spawn<Executor> >(),
+                std::declval<detail::initiate_spawn<Executor> >(),
                 token, static_cast<F &&>(function)));
 
     /*@}*/

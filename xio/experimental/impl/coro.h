@@ -1025,8 +1025,8 @@ namespace xio {
                     coro_->cancel->slot = get_associated_cancellation_slot(handler));
                 xio::dispatch(get_executor(),
                               handle(exec, std::forward<WaitHandler>(handler),
-                                     std::integral_constant<bool, is_noexcept>{},
-                                     std::is_void<result_type>{}));
+                                     std::std::integral_constant<bool, is_noexcept>{},
+                                     std::std::is_void<result_type>{}));
             }
 
             template<typename WaitHandler, typename Input>
@@ -1040,8 +1040,8 @@ namespace xio {
                     coro_->cancel->slot = get_associated_cancellation_slot(handler));
                 xio::dispatch(get_executor(),
                               [h = handle(exec, std::forward<WaitHandler>(handler),
-                                          std::integral_constant<bool, is_noexcept>{},
-                                          std::is_void<result_type>{}),
+                                          std::std::integral_constant<bool, is_noexcept>{},
+                                          std::std::is_void<result_type>{}),
                                   in = std::forward<Input>(input), the_coro = coro_]() mutable {
                                   the_coro->input_ = std::move(in);
                                   std::move(h)();

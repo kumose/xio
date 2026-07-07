@@ -38,25 +38,25 @@ namespace xio {
             namespace detail {
                 template<typename T, typename Executor>
                 awaitable<T, Executor> awaitable_wrap(awaitable<T, Executor> a,
-                                                      constraint_t<is_constructible<T>::value> * = 0) {
+                                                      constraint_t<std::is_constructible<T>::value> * = 0) {
                     return a;
                 }
 
                 template<typename T, typename Executor>
                 awaitable<std::optional<T>, Executor> awaitable_wrap(awaitable<T, Executor> a,
-                                                                     constraint_t<!is_constructible<T>::value> * = 0) {
+                                                                     constraint_t<!std::is_constructible<T>::value> * = 0) {
                     co_return std::optional<T>(co_await std::move(a));
                 }
 
                 template<typename T>
-                T &awaitable_unwrap(conditional_t<true, T, void> &r,
-                                    constraint_t<is_constructible<T>::value> * = 0) {
+                T &awaitable_unwrap(std::conditional_t<true, T, void> &r,
+                                    constraint_t<std::is_constructible<T>::value> * = 0) {
                     return r;
                 }
 
                 template<typename T>
-                T &awaitable_unwrap(std::optional<conditional_t<true, T, void> > &r,
-                                    constraint_t<!is_constructible<T>::value> * = 0) {
+                T &awaitable_unwrap(std::optional<std::conditional_t<true, T, void> > &r,
+                                    constraint_t<!std::is_constructible<T>::value> * = 0) {
                     return *r;
                 }
             } // namespace detail
@@ -119,9 +119,9 @@ namespace xio {
 
             /// Wait for both operations to succeed.
             /**
- * If one operations fails, the other is cancelled as the AND-condition can no
- * longer be satisfied.
- */
+             * If one operations fails, the other is cancelled as the AND-condition can no
+             * longer be satisfied.
+             */
             template<typename T, typename Executor>
             awaitable<T, Executor> operator&&(
                 awaitable<T, Executor> t, awaitable<void, Executor> u) {
@@ -147,9 +147,9 @@ namespace xio {
 
             /// Wait for both operations to succeed.
             /**
- * If one operations fails, the other is cancelled as the AND-condition can no
- * longer be satisfied.
- */
+             * If one operations fails, the other is cancelled as the AND-condition can no
+             * longer be satisfied.
+             */
             template<typename T, typename U, typename Executor>
             awaitable<std::tuple<T, U>, Executor> operator&&(
                 awaitable<T, Executor> t, awaitable<U, Executor> u) {

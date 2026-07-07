@@ -82,7 +82,7 @@ namespace xio {
             // completion handler.
             template<typename Handler, typename... Ops>
             struct parallel_group_completion_handler {
-                typedef decay_t<
+                typedef std::decay_t<
                     prefer_result_t<
                         associated_executor_t<Handler>,
                         execution::outstanding_work_t::tracked_t
@@ -289,10 +289,10 @@ namespace xio {
             // Specialised launcher for operations that specify no executor.
             template<std::size_t I, typename Op>
             struct parallel_group_op_launcher<I, Op,
-                        enable_if_t<
-                            is_same<
+                        std::enable_if_t<
+                            std::is_same<
                                 typename associated_executor<
-                                    Op>::asio_associated_executor_is_unspecialised,
+                                    Op>::xio_associated_executor_is_unspecialised,
                                 void>::value
                         > > {
                 template<typename Condition, typename Handler, typename... Ops>
@@ -368,7 +368,7 @@ namespace xio {
             // user's completion handler.
             template<typename Handler, typename Op, typename Allocator>
             struct ranged_parallel_group_completion_handler {
-                typedef decay_t<
+                typedef std::decay_t<
                     prefer_result_t<
                         associated_executor_t<Handler>,
                         execution::outstanding_work_t::tracked_t
@@ -643,7 +643,7 @@ namespace xio {
                         = xio::get_associated_cancellation_slot(handler);
 
                 // The type of the asynchronous operation.
-                typedef decay_t<decltype(*declval<typename Range::iterator>())> op_type;
+                typedef std::decay_t<decltype(*std::declval<typename Range::iterator>())> op_type;
 
                 // Create the shared state for the operation.
                 typedef ranged_parallel_group_state<Condition,

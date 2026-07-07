@@ -114,15 +114,15 @@ namespace xio {
                       DynamicBuffer_v1 &&buffers,
                       CompletionCondition completion_condition, xio::error_code &ec,
                       constraint_t<
-                          is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                          is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                       >,
                       constraint_t<
-                          !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                          !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                       >,
                       constraint_t<
                           is_completion_condition<CompletionCondition>::value
                       >) {
-        decay_t<DynamicBuffer_v1> b(
+        std::decay_t<DynamicBuffer_v1> b(
             static_cast<DynamicBuffer_v1 &&>(buffers));
 
         std::size_t bytes_transferred = write(s, b.data(),
@@ -135,10 +135,10 @@ namespace xio {
     inline std::size_t write(SyncWriteStream &s,
                              DynamicBuffer_v1 &&buffers,
                              constraint_t<
-                                 is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                                 is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                              >,
                              constraint_t<
-                                 !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                                 !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                              >) {
         xio::error_code ec;
         std::size_t bytes_transferred = write(s,
@@ -153,10 +153,10 @@ namespace xio {
                              DynamicBuffer_v1 &&buffers,
                              xio::error_code &ec,
                              constraint_t<
-                                 is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                                 is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                              >,
                              constraint_t<
-                                 !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                                 !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                              >) {
         return write(s, static_cast<DynamicBuffer_v1 &&>(buffers),
                      transfer_all(), ec);
@@ -168,10 +168,10 @@ namespace xio {
                              DynamicBuffer_v1 &&buffers,
                              CompletionCondition completion_condition,
                              constraint_t<
-                                 is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                                 is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                              >,
                              constraint_t<
-                                 !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                                 !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                              >,
                              constraint_t<
                                  is_completion_condition<CompletionCondition>::value
@@ -369,7 +369,7 @@ namespace xio {
         template<typename AsyncWriteStream, typename ConstBufferSequence,
             typename ConstBufferIterator, typename CompletionCondition,
             typename WriteHandler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             write_op<AsyncWriteStream, ConstBufferSequence, ConstBufferIterator,
                 CompletionCondition, WriteHandler> *this_handler) {
             return this_handler->start_ == 0
@@ -512,7 +512,7 @@ namespace xio {
 
         template<typename AsyncWriteStream, typename DynamicBuffer_v1,
             typename CompletionCondition, typename WriteHandler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             write_dynbuf_v1_op<AsyncWriteStream, DynamicBuffer_v1,
                 CompletionCondition, WriteHandler> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
@@ -546,8 +546,8 @@ namespace xio {
                 non_const_lvalue<WriteHandler> handler2(handler);
                 non_const_lvalue<CompletionCondition> completion_cond2(completion_cond);
                 write_dynbuf_v1_op<AsyncWriteStream,
-                    decay_t<DynamicBuffer_v1>,
-                    CompletionCondition, decay_t<WriteHandler> >(
+                    std::decay_t<DynamicBuffer_v1>,
+                    CompletionCondition, std::decay_t<WriteHandler> >(
                     stream_, static_cast<DynamicBuffer_v1 &&>(buffers),
                     completion_cond2.value, handler2.value)(
                     xio::error_code(), 0, 1);
@@ -644,7 +644,7 @@ namespace xio {
 
         template<typename AsyncWriteStream, typename DynamicBuffer_v2,
             typename CompletionCondition, typename WriteHandler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             write_dynbuf_v2_op<AsyncWriteStream, DynamicBuffer_v2,
                 CompletionCondition, WriteHandler> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
@@ -677,8 +677,8 @@ namespace xio {
 
                 non_const_lvalue<WriteHandler> handler2(handler);
                 non_const_lvalue<CompletionCondition> completion_cond2(completion_cond);
-                write_dynbuf_v2_op<AsyncWriteStream, decay_t<DynamicBuffer_v2>,
-                    CompletionCondition, decay_t<WriteHandler> >(
+                write_dynbuf_v2_op<AsyncWriteStream, std::decay_t<DynamicBuffer_v2>,
+                    CompletionCondition, std::decay_t<WriteHandler> >(
                     stream_, static_cast<DynamicBuffer_v2 &&>(buffers),
                     completion_cond2.value, handler2.value)(
                     xio::error_code(), 0, 1);

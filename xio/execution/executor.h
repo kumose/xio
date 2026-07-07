@@ -30,44 +30,44 @@ namespace xio {
             template<typename T, typename F,
                 typename = void, typename = void, typename = void, typename = void,
                 typename = void, typename = void, typename = void, typename = void>
-            struct is_executor_of_impl : false_type {
+            struct is_executor_of_impl : std::false_type {
             };
 
             template<typename T, typename F>
             struct is_executor_of_impl<T, F,
-                enable_if_t<
-                    traits::execute_member<add_const_t<T>, F>::is_valid
+                std::enable_if_t<
+                    traits::execute_member<std::add_const_t<T>, F>::is_valid
                 >,
                 void_t <
-                result_of_t < decay_t<F> & ()>
+                result_of_t < std::decay_t<F> & ()>
             >
             ,
-            enable_if_t<
-                is_constructible<decay_t<F>, F>::value
+            std::enable_if_t<
+                std::is_constructible<std::decay_t<F>, F>::value
             >
             ,
-            enable_if_t<
-                is_move_constructible<decay_t<F> >::value
+            std::enable_if_t<
+                std::is_move_constructible<std::decay_t<F> >::value
             >
             ,
-            enable_if_t<
-                is_nothrow_copy_constructible<T>::value
+            std::enable_if_t<
+                std::is_nothrow_copy_constructible<T>::value
             >
             ,
-            enable_if_t<
-                is_nothrow_destructible<T>::value
+            std::enable_if_t<
+                std::is_nothrow_destructible<T>::value
             >
             ,
-            enable_if_t<
+            std::enable_if_t<
                 traits::equality_comparable<T>::is_valid
             >
             ,
-            enable_if_t<
+            std::enable_if_t<
                 traits::equality_comparable<T>::is_noexcept
             >
             >
             :
-            true_type {
+            std::true_type {
             };
         } // namespace detail
 
@@ -75,13 +75,13 @@ namespace xio {
 /// execution::executor concept.
         /**
  * Class template @c is_executor is a UnaryTypeTrait that is derived from @c
- * true_type if the type @c T meets the concept definition for an executor,
- * otherwise @c false_type.
+ * std::true_type if the type @c T meets the concept definition for an executor,
+ * otherwise @c std::false_type.
  */
         template<typename T>
         struct is_executor :
 #if defined(GENERATING_DOCUMENTATION)
-                integral_constant<bool, automatically_determined>
+                std::integral_constant<bool, automatically_determined>
 #else // defined(GENERATING_DOCUMENTATION)
                 detail::is_executor_of_impl<T, invocable_archetype>
 #endif // defined(GENERATING_DOCUMENTATION)

@@ -589,10 +589,10 @@ namespace xio {
         }
 
         /// Construct an @c any_completion_handler to contain the specified target.
-        template<typename H, typename Handler = decay_t<H> >
+        template<typename H, typename Handler = std::decay_t<H> >
         any_completion_handler(H &&h,
                                constraint_t<
-                                   !is_same<decay_t<H>, any_completion_handler>::value
+                                   !std::is_same<std::decay_t<H>, any_completion_handler>::value
                                > = 0)
             : fn_table_(
                   &detail::any_completion_handler_fn_table_instance<

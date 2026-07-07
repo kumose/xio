@@ -20,15 +20,6 @@
 
 namespace xio {
 
-    using std::add_const;
-
-    template<typename T>
-    using add_const_t = typename std::add_const<T>::type;
-
-    using std::add_lvalue_reference;
-
-    template<typename T>
-    using add_lvalue_reference_t = typename std::add_lvalue_reference<T>::type;
 
     template<std::size_t N, std::size_t A>
     struct aligned_storage {
@@ -40,79 +31,6 @@ namespace xio {
     template<std::size_t N, std::size_t A>
     using aligned_storage_t = typename aligned_storage<N, A>::type;
 
-    using std::alignment_of;
-
-    using std::conditional;
-
-    template<bool C, typename T, typename U>
-    using conditional_t = typename std::conditional<C, T, U>::type;
-
-    using std::decay;
-
-    template<typename T>
-    using decay_t = typename std::decay<T>::type;
-
-    using std::declval;
-
-    using std::enable_if;
-
-    template<bool C, typename T = void>
-    using enable_if_t = typename std::enable_if<C, T>::type;
-
-    using std::false_type;
-
-    using std::integral_constant;
-
-    using std::is_base_of;
-
-    using std::is_class;
-
-    using std::is_const;
-
-    using std::is_constructible;
-
-    using std::is_convertible;
-
-    using std::is_copy_constructible;
-
-    using std::is_nothrow_default_constructible;
-
-    using std::is_destructible;
-
-    using std::is_function;
-
-    using std::is_integral;
-
-    using std::is_move_constructible;
-
-    using std::is_nothrow_copy_constructible;
-
-    using std::is_nothrow_copy_assignable;
-
-    using std::is_nothrow_destructible;
-
-    using std::is_nothrow_move_constructible;
-
-    using std::is_nothrow_move_assignable;
-
-    using std::is_object;
-
-    using std::is_pointer;
-
-    using std::is_reference;
-
-    using std::is_same;
-
-    using std::is_scalar;
-
-    using std::is_unsigned;
-
-    using std::is_void;
-
-    using std::remove_cv;
-
-    template<typename T>
-    using remove_cv_t = typename std::remove_cv<T>::type;
 
     template<typename T>
     struct remove_cvref :
@@ -122,15 +40,6 @@ namespace xio {
     template<typename T>
     using remove_cvref_t = typename remove_cvref<T>::type;
 
-    using std::remove_pointer;
-
-    template<typename T>
-    using remove_pointer_t = typename std::remove_pointer<T>::type;
-
-    using std::remove_reference;
-
-    template<typename T>
-    using remove_reference_t = typename std::remove_reference<T>::type;
 
     template<typename>
     struct result_of;
@@ -144,8 +53,6 @@ namespace xio {
 
 
 
-    using std::true_type;
-
     template<typename>
     struct void_type {
         typedef void type;
@@ -155,7 +62,7 @@ namespace xio {
     using void_t = typename void_type<T>::type;
 
     template<typename...>
-    struct conjunction : true_type {
+    struct conjunction : std::true_type {
     };
 
     template<typename T>
@@ -164,7 +71,7 @@ namespace xio {
 
     template<typename Head, typename... Tail>
     struct conjunction<Head, Tail...> :
-            conditional_t<Head::value, conjunction<Tail...>, Head> {
+            std::conditional_t<Head::value, conjunction<Tail...>, Head> {
     };
 
     struct defaulted_constraint {

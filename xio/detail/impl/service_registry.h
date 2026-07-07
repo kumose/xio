@@ -73,7 +73,7 @@ namespace xio {
 #if !defined(ASIO_NO_TYPEID)
         template<typename Service>
         void service_registry::init_key(execution_context::service::key & key,
-                                        enable_if_t < is_base_of < typename Service::key_type, Service > ::value > *) {
+                                        std::enable_if_t < std::is_base_of < typename Service::key_type, Service > ::value > *) {
             key.type_info_ = &typeid(typeid_wrapper<Service>);
             key.id_ = 0;
         }

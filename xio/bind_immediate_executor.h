@@ -255,8 +255,8 @@ namespace xio {
         template<typename U, typename OtherExecutor>
         immediate_executor_binder(
             const immediate_executor_binder<U, OtherExecutor> &other,
-            constraint_t<is_constructible<Executor, OtherExecutor>::value> = 0,
-            constraint_t<is_constructible<T, U>::value> = 0)
+            constraint_t<std::is_constructible<Executor, OtherExecutor>::value> = 0,
+            constraint_t<std::is_constructible<T, U>::value> = 0)
             : executor_(other.get_immediate_executor()),
               target_(other.get()) {
         }
@@ -270,7 +270,7 @@ namespace xio {
         template<typename U, typename OtherExecutor>
         immediate_executor_binder(const immediate_executor_type &e,
                                   const immediate_executor_binder<U, OtherExecutor> &other,
-                                  constraint_t<is_constructible<T, U>::value> = 0)
+                                  constraint_t<std::is_constructible<T, U>::value> = 0)
             : executor_(e),
               target_(other.get()) {
         }
@@ -294,8 +294,8 @@ namespace xio {
         template<typename U, typename OtherExecutor>
         immediate_executor_binder(
             immediate_executor_binder<U, OtherExecutor> &&other,
-            constraint_t<is_constructible<Executor, OtherExecutor>::value> = 0,
-            constraint_t<is_constructible<T, U>::value> = 0)
+            constraint_t<std::is_constructible<Executor, OtherExecutor>::value> = 0,
+            constraint_t<std::is_constructible<T, U>::value> = 0)
             : executor_(static_cast<OtherExecutor &&>(
                   other.get_immediate_executor())),
               target_(static_cast<U &&>(other.get())) {
@@ -306,7 +306,7 @@ namespace xio {
         template<typename U, typename OtherExecutor>
         immediate_executor_binder(const immediate_executor_type &e,
                                   immediate_executor_binder<U, OtherExecutor> &&other,
-                                  constraint_t<is_constructible<T, U>::value> = 0)
+                                  constraint_t<std::is_constructible<T, U>::value> = 0)
             : executor_(e),
               target_(static_cast<U &&>(other.get())) {
         }
@@ -372,10 +372,10 @@ namespace xio {
   /// should have the executor as its associated immediate executor.
         template<typename CompletionToken>
         [[nodiscard]] inline
-        constexpr immediate_executor_binder<decay_t<CompletionToken>, Executor>
+        constexpr immediate_executor_binder<std::decay_t<CompletionToken>, Executor>
 
         operator()(CompletionToken &&completion_token) const {
-            return immediate_executor_binder<decay_t<CompletionToken>, Executor>(
+            return immediate_executor_binder<std::decay_t<CompletionToken>, Executor>(
                 static_cast<CompletionToken &&>(completion_token), executor_);
         }
 
@@ -394,11 +394,11 @@ namespace xio {
     /// Associate an object of type @c T with a immediate executor of type
 /// @c Executor.
     template<typename Executor, typename T>
-    [[nodiscard]] inline immediate_executor_binder<decay_t<T>, Executor>
+    [[nodiscard]] inline immediate_executor_binder<std::decay_t<T>, Executor>
 
     bind_immediate_executor(const Executor &e, T &&t) {
         return immediate_executor_binder<
-            decay_t<T>, Executor>(
+            std::decay_t<T>, Executor>(
             e, static_cast<T &&>(t));
     }
 
@@ -471,7 +471,7 @@ namespace xio {
             void operator()(Handler &&handler, const Executor &e, Args &&... args) && {
                 static_cast<Initiation &&>(*this)(
                     immediate_executor_binder<
-                        decay_t<Handler>, Executor>(
+                        std::decay_t<Handler>, Executor>(
                         e, static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -481,7 +481,7 @@ namespace xio {
                             const Executor &e, Args &&... args) const & {
                 static_cast<const Initiation &>(*this)(
                     immediate_executor_binder<
-                        decay_t<Handler>, Executor>(
+                        std::decay_t<Handler>, Executor>(
                         e, static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -492,17 +492,17 @@ namespace xio {
                              RawCompletionToken &&token, Args &&... args)
             -> decltype(
                 async_initiate<
-                    conditional_t<
-                        is_const<remove_reference_t<RawCompletionToken> >::value, const T, T>,
+                    std::conditional_t<
+                        std::is_const<std::remove_reference_t<RawCompletionToken> >::value, const T, T>,
                     Signature>(
-                    declval<init_wrapper<decay_t<Initiation> > >(),
+                    std::declval<init_wrapper<std::decay_t<Initiation> > >(),
                     token.get(), token.get_immediate_executor(),
                     static_cast<Args &&>(args)...)) {
             return async_initiate<
-                conditional_t<
-                    is_const<remove_reference_t<RawCompletionToken> >::value, const T, T>,
+                std::conditional_t<
+                    std::is_const<std::remove_reference_t<RawCompletionToken> >::value, const T, T>,
                 Signature>(
-                init_wrapper<decay_t<Initiation> >(
+                init_wrapper<std::decay_t<Initiation> >(
                     static_cast<Initiation &&>(initiation)),
                 token.get(), token.get_immediate_executor(),
                 static_cast<Args &&>(args)...);

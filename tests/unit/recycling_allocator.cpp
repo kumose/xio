@@ -20,25 +20,25 @@
 void recycling_allocator_test()
 {
   ASIO_CHECK((
-      xio::is_same<
+      std::is_same<
         xio::recycling_allocator<int>::value_type,
         int
       >::value));
 
   ASIO_CHECK((
-      xio::is_same<
+      std::is_same<
         xio::recycling_allocator<void>::value_type,
         void
       >::value));
 
   ASIO_CHECK((
-      xio::is_same<
+      std::is_same<
         xio::recycling_allocator<int>::rebind<char>::other,
         xio::recycling_allocator<char>
       >::value));
 
   ASIO_CHECK((
-      xio::is_same<
+      std::is_same<
         xio::recycling_allocator<void>::rebind<char>::other,
         xio::recycling_allocator<char>
       >::value));

@@ -42,74 +42,63 @@
 #endif // !defined(ASIO_TEST_IOSTREAM)
 
 namespace xio {
+    namespace detail {
+        inline const char *&test_name() {
+            static const char *name = 0;
+            return name;
+        }
 
-namespace detail {
+        inline atomic_count &test_errors() {
+            static atomic_count errors(0);
+            return errors;
+        }
 
-inline const char*& test_name()
-{
-  static const char* name = 0;
-  return name;
-}
+        inline void begin_test_suite(const char *name) {
+            xio::detail::test_name();
+            xio::detail::test_errors();
+            ASIO_TEST_IOSTREAM << name << " test suite begins" << std::endl;
+        }
 
-inline atomic_count& test_errors()
-{
-  static atomic_count errors(0);
-  return errors;
-}
+        inline int end_test_suite(const char *name) {
+            ASIO_TEST_IOSTREAM << name << " test suite ends" << std::endl;
+            ASIO_TEST_IOSTREAM << "\n*** ";
+            long errors = xio::detail::test_errors();
+            if (errors == 0)
+                ASIO_TEST_IOSTREAM << "No errors detected.";
+            else if (errors == 1)
+                ASIO_TEST_IOSTREAM << "1 error detected.";
+            else
+                ASIO_TEST_IOSTREAM << errors << " errors detected." << std::endl;
+            ASIO_TEST_IOSTREAM << std::endl;
+            return errors == 0 ? 0 : 1;
+        }
 
-inline void begin_test_suite(const char* name)
-{
-  xio::detail::test_name();
-  xio::detail::test_errors();
-  ASIO_TEST_IOSTREAM << name << " test suite begins" << std::endl;
-}
+        template<void (*Test)()>
+        inline void run_test(const char *name) {
+            test_name() = name;
+            long errors_before = xio::detail::test_errors();
+            Test();
+            if (test_errors() == errors_before)
+                ASIO_TEST_IOSTREAM << name << " passed" << std::endl;
+            else
+                ASIO_TEST_IOSTREAM << name << " failed" << std::endl;
+        }
 
-inline int end_test_suite(const char* name)
-{
-  ASIO_TEST_IOSTREAM << name << " test suite ends" << std::endl;
-  ASIO_TEST_IOSTREAM << "\n*** ";
-  long errors = xio::detail::test_errors();
-  if (errors == 0)
-    ASIO_TEST_IOSTREAM << "No errors detected.";
-  else if (errors == 1)
-    ASIO_TEST_IOSTREAM << "1 error detected.";
-  else
-    ASIO_TEST_IOSTREAM << errors << " errors detected." << std::endl;
-  ASIO_TEST_IOSTREAM << std::endl;
-  return errors == 0 ? 0 : 1;
-}
-
-template <void (*Test)()>
-inline void run_test(const char* name)
-{
-  test_name() = name;
-  long errors_before = xio::detail::test_errors();
-  Test();
-  if (test_errors() == errors_before)
-    ASIO_TEST_IOSTREAM << name << " passed" << std::endl;
-  else
-    ASIO_TEST_IOSTREAM << name << " failed" << std::endl;
-}
-
-template <void (*)()>
-inline void compile_test(const char* name)
-{
-  ASIO_TEST_IOSTREAM << name << " passed" << std::endl;
-}
+        template<void (*)()>
+        inline void compile_test(const char *name) {
+            ASIO_TEST_IOSTREAM << name << " passed" << std::endl;
+        }
 
 #if defined(ASIO_NO_EXCEPTIONS)
 
-template <typename T>
-void throw_exception(const T& t)
-{
-  ASIO_TEST_IOSTREAM << "Exception: " << t.what() << std::endl;
-  std::abort();
-}
+        template<typename T>
+        void throw_exception(const T &t) {
+            ASIO_TEST_IOSTREAM << "Exception: " << t.what() << std::endl;
+            std::abort();
+        }
 
 #endif // defined(ASIO_NO_EXCEPTIONS)
-
-} // namespace detail
-
+    } // namespace detail
 } // namespace xio
 
 #define ASIO_CHECK(expr) \
@@ -172,15 +161,13 @@ void throw_exception(const T& t)
 #define ASIO_COMPILE_TEST_CASE(test) \
   xio::detail::compile_test<&test>(#test);
 
-inline void null_test()
-{
+inline void null_test() {
 }
 
 #if defined(__GNUC__) && defined(_AIX)
 
-// AIX needs this symbol defined in asio, even if it doesn't do anything.
-int test_main(int, char**)
-{
+// AIX needs this symbol defined in xio, even if it doesn't do anything.
+int test_main(int, char **) {
 }
 
 #endif // defined(__GNUC__) && defined(_AIX)

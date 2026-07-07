@@ -8,13 +8,13 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <asio/co_spawn.hpp>
-#include <asio/deferred.hpp>
-#include <asio/detached.hpp>
-#include <asio/io_context.hpp>
-#include <asio/ip/tcp.hpp>
-#include <asio/signal_set.hpp>
-#include <asio/write.hpp>
+#include <xio/co_spawn.h>
+#include <xio/deferred.h>
+#include <xio/detached.h>
+#include <xio/io_context.h>
+#include <xio/ip/tcp.h>
+#include <xio/signal_set.h>
+#include <xio/write.h>
 #include <cstdio>
 
 using xio::ip::tcp;

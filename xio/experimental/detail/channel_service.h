@@ -288,13 +288,13 @@ namespace xio {
                 typedef typename Traits::template rebind<Signatures...>::other traits_type;
 
                 // Type of an element stored in the buffer.
-                typedef conditional_t<
+                typedef std::conditional_t<
                     has_signature <
                     typename traits_type::receive_cancelled_signature,
                     Signatures...
                 >::value
                 ,
-                conditional_t<
+                std::conditional_t<
                     has_signature <
                     typename traits_type::receive_closed_signature,
                     Signatures...
@@ -308,7 +308,7 @@ namespace xio {
                 >
                 >
                 ,
-                conditional_t<
+                std::conditional_t<
                     has_signature <
                     typename traits_type::receive_closed_signature,
                     Signatures...,
@@ -384,13 +384,13 @@ namespace xio {
                 typedef typename Traits::template rebind<R()>::other traits_type;
 
                 // Type of an element stored in the buffer.
-                typedef conditional_t<
+                typedef std::conditional_t<
                     has_signature <
                     typename traits_type::receive_cancelled_signature,
                     R()
                 >::value
                 ,
-                conditional_t<
+                std::conditional_t<
                     has_signature <
                     typename traits_type::receive_closed_signature,
                     R()
@@ -404,7 +404,7 @@ namespace xio {
                 >
                 >
                 ,
-                conditional_t<
+                std::conditional_t<
                     has_signature <
                     typename traits_type::receive_closed_signature,
                     R(),
@@ -485,13 +485,13 @@ namespace xio {
                 traits_type;
 
                 // Type of an element stored in the buffer.
-                typedef conditional_t<
+                typedef std::conditional_t<
                     has_signature <
                     typename traits_type::receive_cancelled_signature,
                     R(xio::error_code)
                 >::value
                 ,
-                conditional_t<
+                std::conditional_t<
                     has_signature <
                     typename traits_type::receive_closed_signature,
                     R(xio::error_code)
@@ -505,7 +505,7 @@ namespace xio {
                 >
                 >
                 ,
-                conditional_t<
+                std::conditional_t<
                     has_signature <
                     typename traits_type::receive_closed_signature,
                     R(xio::error_code),

@@ -105,10 +105,10 @@ struct executor_with_default : InnerExecutor {
     template<typename InnerExecutor1>
     executor_with_default(const InnerExecutor1 &ex,
                           constraint_t<
-                              conditional_t <
-                              !is_same<InnerExecutor1, executor_with_default>::value,
-                              is_convertible<InnerExecutor1, InnerExecutor>,
-                              false_type
+                              std::conditional_t <
+                              !std::is_same<InnerExecutor1, executor_with_default>::value,
+                              std::is_convertible<InnerExecutor1, InnerExecutor>,
+                              std::false_type
                           >::value
         > = 0) noexcept
         : InnerExecutor(ex) {
@@ -124,12 +124,12 @@ using as_default_on_t = typename T::template rebind_executor<
 /// Function helper to adapt an I/O object to use @c use_awaitable_t as its
   /// default completion token type.
 template<typename T>
-static typename decay_t<T>::template rebind_executor<
-    executor_with_default<typename decay_t<T>::executor_type>
+static typename std::decay_t<T>::template rebind_executor<
+    executor_with_default<typename std::decay_t<T>::executor_type>
 >::other
 as_default_on(T &&object) {
-    return typename decay_t<T>::template rebind_executor<
-        executor_with_default<typename decay_t<T>::executor_type>
+    return typename std::decay_t<T>::template rebind_executor<
+        executor_with_default<typename std::decay_t<T>::executor_type>
     >::other(static_cast<T &&>(object));
 }
 

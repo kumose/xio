@@ -9,8 +9,8 @@
 //
 
 #include "stdin_line_reader.hpp"
-#include <asio/deferred.hpp>
-#include <asio/read_until.hpp>
+#include <xio/deferred.h>
+#include <xio/read_until.h>
 #include <iostream>
 
 stdin_line_reader::stdin_line_reader(xio::any_io_executor ex)

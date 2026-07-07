@@ -23,7 +23,7 @@
 #include <cstring>
 #include <cerrno>
 #include <new>
-#include <xio/detail/assert.h>
+# include <cassert>
 #include <xio/detail/socket_ops.h>
 #include <xio/error.h>
 
@@ -2642,7 +2642,7 @@ namespace xio {
                     case NO_DATA:
                         return xio::error::no_data;
                     default:
-                        ASIO_ASSERT(false);
+                        assert(false);
                         return xio::error::invalid_argument;
                 }
             }

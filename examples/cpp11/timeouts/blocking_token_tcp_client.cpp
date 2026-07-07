@@ -24,7 +24,7 @@ using xio::ip::tcp;
 
 // NOTE: This example uses the new form of the xio::async_result trait.
 // For an example that works with the Networking TS style of completion tokens,
-// please see an older version of asio.
+// please see an older version of xio.
 
 // We will use our sockets only with an io_context.
 using tcp_socket = xio::basic_stream_socket<

@@ -78,7 +78,7 @@ namespace xio {
 
         template<typename T>
         struct has_subspan_memfn :
-                integral_constant<bool, sizeof(subspan_memfn_helper<T>(0)) != 1> {
+                std::integral_constant<bool, sizeof(subspan_memfn_helper<T>(0)) != 1> {
         };
 
 #endif // defined(ASIO_MSVC)
@@ -125,7 +125,7 @@ namespace xio {
             typename T, std::size_t Extent>
         mutable_buffer(const Span<T, Extent> &span,
                        constraint_t<
-                           !is_const<T>::value,
+                           !std::is_const<T>::value,
                            defaulted_constraint
                        > = defaulted_constraint(),
                        constraint_t<
@@ -136,7 +136,7 @@ namespace xio {
 #if defined(ASIO_MSVC)
                            detail::has_subspan_memfn<Span<T, Extent> >::value,
 #else // defined(ASIO_MSVC)
-                           is_same<
+                           std::is_same<
                                decltype(span.subspan(0, 0)),
                                Span<T, static_cast<std::size_t>(-1)>
                            >::value,
@@ -246,7 +246,7 @@ namespace xio {
 #if defined(ASIO_MSVC)
                          detail::has_subspan_memfn<Span<T, Extent> >::value,
 #else // defined(ASIO_MSVC)
-                         is_same<
+                         std::is_same<
                              decltype(span.subspan(0, 0)),
                              Span<T, static_cast<std::size_t>(-1)>
                          >::value,
@@ -344,7 +344,7 @@ namespace xio {
     template<typename MutableBuffer>
     inline const mutable_buffer *buffer_sequence_begin(const MutableBuffer &b,
                                                        constraint_t<
-                                                           is_convertible<const MutableBuffer *, const mutable_buffer
+                                                           std::is_convertible<const MutableBuffer *, const mutable_buffer
                                                                *>::value
                                                        > = 0) noexcept {
         return static_cast<const mutable_buffer *>(detail::addressof(b));
@@ -354,7 +354,7 @@ namespace xio {
     template<typename ConstBuffer>
     inline const const_buffer *buffer_sequence_begin(const ConstBuffer &b,
                                                      constraint_t<
-                                                         is_convertible<const ConstBuffer *, const const_buffer
+                                                         std::is_convertible<const ConstBuffer *, const const_buffer
                                                              *>::value
                                                      > = 0) noexcept {
         return static_cast<const const_buffer *>(detail::addressof(b));
@@ -365,14 +365,14 @@ namespace xio {
     inline const ConvertibleToBuffer *buffer_sequence_begin(
         const ConvertibleToBuffer &b,
         constraint_t<
-            !is_convertible<const ConvertibleToBuffer *, const mutable_buffer *>::value
+            !std::is_convertible<const ConvertibleToBuffer *, const mutable_buffer *>::value
         > = 0,
         constraint_t<
-            !is_convertible<const ConvertibleToBuffer *, const const_buffer *>::value
+            !std::is_convertible<const ConvertibleToBuffer *, const const_buffer *>::value
         > = 0,
         constraint_t<
-            is_convertible<ConvertibleToBuffer, mutable_buffer>::value
-            || is_convertible<ConvertibleToBuffer, const_buffer>::value
+            std::is_convertible<ConvertibleToBuffer, mutable_buffer>::value
+            || std::is_convertible<ConvertibleToBuffer, const_buffer>::value
         > = 0) noexcept {
         return detail::addressof(b);
     }
@@ -381,16 +381,16 @@ namespace xio {
     template<typename C>
     inline auto buffer_sequence_begin(C &c,
                                       constraint_t<
-                                          !is_convertible<const C *, const mutable_buffer *>::value
+                                          !std::is_convertible<const C *, const mutable_buffer *>::value
                                       > = 0,
                                       constraint_t<
-                                          !is_convertible<const C *, const const_buffer *>::value
+                                          !std::is_convertible<const C *, const const_buffer *>::value
                                       > = 0,
                                       constraint_t<
-                                          !is_convertible<C, mutable_buffer>::value
+                                          !std::is_convertible<C, mutable_buffer>::value
                                       > = 0,
                                       constraint_t<
-                                          !is_convertible<C, const_buffer>::value
+                                          !std::is_convertible<C, const_buffer>::value
                                       > = 0)
         noexcept
         ->
@@ -402,16 +402,16 @@ namespace xio {
     template<typename C>
     inline auto buffer_sequence_begin(const C &c,
                                       constraint_t<
-                                          !is_convertible<const C *, const mutable_buffer *>::value
+                                          !std::is_convertible<const C *, const mutable_buffer *>::value
                                       > = 0,
                                       constraint_t<
-                                          !is_convertible<const C *, const const_buffer *>::value
+                                          !std::is_convertible<const C *, const const_buffer *>::value
                                       > = 0,
                                       constraint_t<
-                                          !is_convertible<C, mutable_buffer>::value
+                                          !std::is_convertible<C, mutable_buffer>::value
                                       > = 0,
                                       constraint_t<
-                                          !is_convertible<C, const_buffer>::value
+                                          !std::is_convertible<C, const_buffer>::value
                                       > = 0) noexcept -> decltype(c.begin()) {
         return c.begin();
     }
@@ -429,7 +429,7 @@ namespace xio {
     template<typename MutableBuffer>
     inline const mutable_buffer *buffer_sequence_end(const MutableBuffer &b,
                                                      constraint_t<
-                                                         is_convertible<const MutableBuffer *, const mutable_buffer
+                                                         std::is_convertible<const MutableBuffer *, const mutable_buffer
                                                              *>::value
                                                      > = 0) noexcept {
         return static_cast<const mutable_buffer *>(detail::addressof(b)) + 1;
@@ -439,7 +439,7 @@ namespace xio {
     template<typename ConstBuffer>
     inline const const_buffer *buffer_sequence_end(const ConstBuffer &b,
                                                    constraint_t<
-                                                       is_convertible<const ConstBuffer *, const const_buffer *>::value
+                                                       std::is_convertible<const ConstBuffer *, const const_buffer *>::value
                                                    > = 0) noexcept {
         return static_cast<const const_buffer *>(detail::addressof(b)) + 1;
     }
@@ -449,14 +449,14 @@ namespace xio {
     inline const ConvertibleToBuffer *buffer_sequence_end(
         const ConvertibleToBuffer &b,
         constraint_t<
-            !is_convertible<const ConvertibleToBuffer *, const mutable_buffer *>::value
+            !std::is_convertible<const ConvertibleToBuffer *, const mutable_buffer *>::value
         > = 0,
         constraint_t<
-            !is_convertible<const ConvertibleToBuffer *, const const_buffer *>::value
+            !std::is_convertible<const ConvertibleToBuffer *, const const_buffer *>::value
         > = 0,
         constraint_t<
-            is_convertible<ConvertibleToBuffer, mutable_buffer>::value
-            || is_convertible<ConvertibleToBuffer, const_buffer>::value
+            std::is_convertible<ConvertibleToBuffer, mutable_buffer>::value
+            || std::is_convertible<ConvertibleToBuffer, const_buffer>::value
         > = 0) noexcept {
         return detail::addressof(b) + 1;
     }
@@ -465,16 +465,16 @@ namespace xio {
     template<typename C>
     inline auto buffer_sequence_end(C &c,
                                     constraint_t<
-                                        !is_convertible<const C *, const mutable_buffer *>::value
+                                        !std::is_convertible<const C *, const mutable_buffer *>::value
                                     > = 0,
                                     constraint_t<
-                                        !is_convertible<const C *, const const_buffer *>::value
+                                        !std::is_convertible<const C *, const const_buffer *>::value
                                     > = 0,
                                     constraint_t<
-                                        !is_convertible<C, mutable_buffer>::value
+                                        !std::is_convertible<C, mutable_buffer>::value
                                     > = 0,
                                     constraint_t<
-                                        !is_convertible<C, const_buffer>::value
+                                        !std::is_convertible<C, const_buffer>::value
                                     > = 0)
         noexcept
         ->
@@ -486,16 +486,16 @@ namespace xio {
     template<typename C>
     inline auto buffer_sequence_end(const C &c,
                                     constraint_t<
-                                        !is_convertible<const C *, const mutable_buffer *>::value
+                                        !std::is_convertible<const C *, const mutable_buffer *>::value
                                     > = 0,
                                     constraint_t<
-                                        !is_convertible<const C *, const const_buffer *>::value
+                                        !std::is_convertible<const C *, const const_buffer *>::value
                                     > = 0,
                                     constraint_t<
-                                        !is_convertible<C, mutable_buffer>::value
+                                        !std::is_convertible<C, mutable_buffer>::value
                                     > = 0,
                                     constraint_t<
-                                        !is_convertible<C, const_buffer>::value
+                                        !std::is_convertible<C, const_buffer>::value
                                     > = 0) noexcept -> decltype(c.end()) {
         return c.end();
     }
@@ -513,9 +513,9 @@ namespace xio {
         // Helper trait to detect single buffers.
         template<typename BufferSequence>
         struct buffer_sequence_cardinality :
-                conditional_t<
-                    is_same<BufferSequence, mutable_buffer>::value
-                    || is_same<BufferSequence, const_buffer>::value,
+                std::conditional_t<
+                    std::is_same<BufferSequence, mutable_buffer>::value
+                    || std::is_same<BufferSequence, const_buffer>::value,
                     one_buffer, multiple_buffers> {
         };
 
@@ -1296,16 +1296,16 @@ private:
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            !is_convertible<T, const_buffer>::value,
+            !std::is_convertible<T, const_buffer>::value,
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            !is_convertible<T, mutable_buffer>::value,
+            !std::is_convertible<T, mutable_buffer>::value,
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            !is_const<
-                remove_reference_t<
+            !std::is_const<
+                std::remove_reference_t<
                     typename std::iterator_traits<typename T::iterator>::reference
                 >
             >::value,
@@ -1334,16 +1334,16 @@ private:
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            !is_convertible<T, const_buffer>::value,
+            !std::is_convertible<T, const_buffer>::value,
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            !is_convertible<T, mutable_buffer>::value,
+            !std::is_convertible<T, mutable_buffer>::value,
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            !is_const<
-                remove_reference_t<
+            !std::is_const<
+                std::remove_reference_t<
                     typename std::iterator_traits<typename T::iterator>::reference
                 >
             >::value,
@@ -1371,16 +1371,16 @@ private:
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            !is_convertible<T, const_buffer>::value,
+            !std::is_convertible<T, const_buffer>::value,
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            !is_convertible<T, mutable_buffer>::value,
+            !std::is_convertible<T, mutable_buffer>::value,
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            is_const<
-                remove_reference_t<
+            std::is_const<
+                std::remove_reference_t<
                     typename std::iterator_traits<typename T::iterator>::reference
                 >
             >::value,
@@ -1409,16 +1409,16 @@ private:
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            !is_convertible<T, const_buffer>::value,
+            !std::is_convertible<T, const_buffer>::value,
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            !is_convertible<T, mutable_buffer>::value,
+            !std::is_convertible<T, mutable_buffer>::value,
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            is_const<
-                remove_reference_t<
+            std::is_const<
+                std::remove_reference_t<
                     typename std::iterator_traits<typename T::iterator>::reference
                 >
             >::value,
@@ -1446,11 +1446,11 @@ private:
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            !is_convertible<T, const_buffer>::value,
+            !std::is_convertible<T, const_buffer>::value,
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            !is_convertible<T, mutable_buffer>::value,
+            !std::is_convertible<T, mutable_buffer>::value,
             defaulted_constraint
         > = defaulted_constraint()) noexcept {
         return const_buffer(
@@ -1475,11 +1475,11 @@ private:
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            !is_convertible<T, const_buffer>::value,
+            !std::is_convertible<T, const_buffer>::value,
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            !is_convertible<T, mutable_buffer>::value,
+            !std::is_convertible<T, mutable_buffer>::value,
             defaulted_constraint
         > = defaulted_constraint()) noexcept {
         return const_buffer(
@@ -1498,7 +1498,7 @@ private:
     [[nodiscard]] inline mutable_buffer buffer(
         const Span<T, Extent> &span,
         constraint_t<
-            !is_const<T>::value,
+            !std::is_const<T>::value,
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
@@ -1509,7 +1509,7 @@ private:
 #if defined(ASIO_MSVC)
             detail::has_subspan_memfn<Span<T, Extent> >::value,
 #else // defined(ASIO_MSVC)
-            is_same<
+            std::is_same<
                 decltype(span.subspan(0, 0)),
                 Span<T, static_cast<std::size_t>(-1)>
             >::value,
@@ -1533,7 +1533,7 @@ private:
         const Span<T, Extent> &span,
         std::size_t max_size_in_bytes,
         constraint_t<
-            !is_const<T>::value,
+            !std::is_const<T>::value,
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
@@ -1544,7 +1544,7 @@ private:
 #if defined(ASIO_MSVC)
             detail::has_subspan_memfn<Span<T, Extent> >::value,
 #else // defined(ASIO_MSVC)
-            is_same<
+            std::is_same<
                 decltype(span.subspan(0, 0)),
                 Span<T, static_cast<std::size_t>(-1)>
             >::value,
@@ -1570,7 +1570,7 @@ private:
 #if defined(ASIO_MSVC)
             detail::has_subspan_memfn<Span<const T, Extent> >::value,
 #else // defined(ASIO_MSVC)
-            is_same<
+            std::is_same<
                 decltype(span.subspan(0, 0)),
                 Span<T, static_cast<std::size_t>(-1)>
             >::value,
@@ -1601,7 +1601,7 @@ private:
 #if defined(ASIO_MSVC)
             detail::has_subspan_memfn<Span<const T, Extent> >::value,
 #else // defined(ASIO_MSVC)
-            is_same<
+            std::is_same<
                 decltype(span.subspan(0, 0)),
                 Span<T, static_cast<std::size_t>(-1)>
             >::value,
@@ -2447,7 +2447,7 @@ namespace xio {
     template<typename T>
     struct is_mutable_buffer_sequence
 #if defined(GENERATING_DOCUMENTATION)
-            : integral_constant<bool, automatically_determined>
+            : std::integral_constant<bool, automatically_determined>
 #else // defined(GENERATING_DOCUMENTATION)
             : xio::detail::is_buffer_sequence<T, mutable_buffer>
 #endif // defined(GENERATING_DOCUMENTATION)
@@ -2459,7 +2459,7 @@ namespace xio {
     template<typename T>
     struct is_const_buffer_sequence
 #if defined(GENERATING_DOCUMENTATION)
-            : integral_constant<bool, automatically_determined>
+            : std::integral_constant<bool, automatically_determined>
 #else // defined(GENERATING_DOCUMENTATION)
             : xio::detail::is_buffer_sequence<T, const_buffer>
 #endif // defined(GENERATING_DOCUMENTATION)
@@ -2472,7 +2472,7 @@ namespace xio {
     template<typename T>
     struct is_dynamic_buffer_v1
 #if defined(GENERATING_DOCUMENTATION)
-            : integral_constant<bool, automatically_determined>
+            : std::integral_constant<bool, automatically_determined>
 #else // defined(GENERATING_DOCUMENTATION)
             : xio::detail::is_dynamic_buffer_v1<T>
 #endif // defined(GENERATING_DOCUMENTATION)
@@ -2485,7 +2485,7 @@ namespace xio {
     template<typename T>
     struct is_dynamic_buffer_v2
 #if defined(GENERATING_DOCUMENTATION)
-            : integral_constant<bool, automatically_determined>
+            : std::integral_constant<bool, automatically_determined>
 #else // defined(GENERATING_DOCUMENTATION)
             : xio::detail::is_dynamic_buffer_v2<T>
 #endif // defined(GENERATING_DOCUMENTATION)
@@ -2502,7 +2502,7 @@ namespace xio {
     template<typename T>
     struct is_dynamic_buffer
 #if defined(GENERATING_DOCUMENTATION)
-            : integral_constant<bool, automatically_determined>
+            : std::integral_constant<bool, automatically_determined>
 #elif defined(ASIO_NO_DYNAMIC_BUFFER_V1)
             : xio::is_dynamic_buffer_v2<T>
 #else // defined(ASIO_NO_DYNAMIC_BUFFER_V1)

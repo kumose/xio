@@ -163,11 +163,11 @@ namespace xio {
 #endif // !defined(ASIO_NO_EXCEPTIONS)
             {
                 detail::non_const_lvalue<Function> f2(f);
-                static_cast<decay_t<Function> &&>(f2.value)();
+                static_cast<std::decay_t<Function> &&>(f2.value)();
             }
 #if !defined(ASIO_NO_EXCEPTIONS)
             catch (...) {
-                if (is_same<InlineExceptionHandling,
+                if (std::is_same<InlineExceptionHandling,
                     execution::inline_exception_handling_t::terminate_t>::value) {
                     std::terminate();
                 } else {

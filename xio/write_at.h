@@ -509,7 +509,7 @@ namespace xio {
         -> decltype(
             async_initiate<WriteToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_write_at<
+                std::declval<detail::initiate_async_write_at<
                     AsyncRandomAccessWriteDevice> >(),
                 token, offset, buffers, transfer_all())) {
         return async_initiate<WriteToken,
@@ -622,7 +622,7 @@ namespace xio {
         -> decltype(
             async_initiate<WriteToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_write_at<
+                std::declval<detail::initiate_async_write_at<
                     AsyncRandomAccessWriteDevice> >(),
                 token, offset, buffers,
                 static_cast<CompletionCondition &&>(completion_condition))) {
@@ -712,7 +712,7 @@ namespace xio {
         -> decltype(
             async_initiate<WriteToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_write_at_streambuf<
+                std::declval<detail::initiate_async_write_at_streambuf<
                     AsyncRandomAccessWriteDevice> >(),
                 token, offset, &b, transfer_all())) {
         return async_initiate<WriteToken,
@@ -813,7 +813,7 @@ namespace xio {
         -> decltype(
             async_initiate<WriteToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_write_at_streambuf<
+                std::declval<detail::initiate_async_write_at_streambuf<
                     AsyncRandomAccessWriteDevice> >(),
                 token, offset, &b,
                 static_cast<CompletionCondition &&>(completion_condition))) {

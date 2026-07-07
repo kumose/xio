@@ -125,7 +125,7 @@ namespace xio {
         private:
             template<typename Executor>
             static win_iocp_io_context *get_iocp_service(const Executor &ex,
-                                                         enable_if_t<
+                                                         std::enable_if_t<
                                                              can_query<const Executor &, execution::context_t>::value
                                                          > * = 0) {
                 return &use_service<win_iocp_io_context>(
@@ -134,7 +134,7 @@ namespace xio {
 
             template<typename Executor>
             static win_iocp_io_context *get_iocp_service(const Executor &ex,
-                                                         enable_if_t<
+                                                         std::enable_if_t<
                                                              !can_query<const Executor &, execution::context_t>::value
                                                          > * = 0) {
                 return &use_service<win_iocp_io_context>(ex.context());

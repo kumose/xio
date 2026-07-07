@@ -303,7 +303,7 @@ namespace xio {
     } // namespace detail
 
     config_from_env::config_from_env()
-        : prefix_("asio") {
+        : prefix_("xio") {
     }
 
     void config_from_env::make(execution_context &ctx) const {

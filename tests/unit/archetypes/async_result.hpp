@@ -34,7 +34,7 @@ struct concrete_handler<R(Arg1)>
   {
   }
 
-  void operator()(typename xio::decay<Arg1>::type)
+  void operator()(typename std::decay<Arg1>::type)
   {
   }
 
@@ -50,8 +50,8 @@ struct concrete_handler<R(Arg1, Arg2)>
   {
   }
 
-  void operator()(typename xio::decay<Arg1>::type,
-      typename xio::decay<Arg2>::type)
+  void operator()(typename std::decay<Arg1>::type,
+      typename std::decay<Arg2>::type)
   {
   }
 };

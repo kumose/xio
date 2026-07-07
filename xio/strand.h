@@ -52,10 +52,10 @@ namespace xio {
         template<typename Executor1>
         explicit strand(const Executor1 &e,
                         constraint_t<
-                            conditional_t <
-                            !is_same<Executor1, strand>::value,
-                            is_convertible<Executor1, Executor>,
-                            false_type
+                            std::conditional_t <
+                            !std::is_same<Executor1, strand>::value,
+                            std::is_convertible<Executor1, Executor>,
+                            std::false_type
                         >::value
       > = 0)
             : executor_(e),
@@ -159,15 +159,15 @@ namespace xio {
         template<typename Property>
         constraint_t<
             can_query<const Executor &, Property>::value,
-            conditional_t<
-                is_convertible<Property, execution::blocking_t>::value,
+            std::conditional_t<
+                std::is_convertible<Property, execution::blocking_t>::value,
                 execution::blocking_t,
                 query_result_t<const Executor &, Property>
             >
         > query(const Property &p) const
             noexcept(is_nothrow_query<const Executor &, Property>::value) {
             return this->query_helper(
-                is_convertible<Property, execution::blocking_t>(), p);
+                std::is_convertible<Property, execution::blocking_t>(), p);
         }
 
         /// Forward a requirement to the underlying executor.
@@ -183,11 +183,11 @@ namespace xio {
         template<typename Property>
         constraint_t<
             can_require<const Executor &, Property>::value
-            && !is_convertible<Property, execution::blocking_t::always_t>::value,
-            strand<decay_t<require_result_t<const Executor &, Property> > >
+            && !std::is_convertible<Property, execution::blocking_t::always_t>::value,
+            strand<std::decay_t<require_result_t<const Executor &, Property> > >
         > require(const Property &p) const
             noexcept(is_nothrow_require<const Executor &, Property>::value) {
-            return strand<decay_t<require_result_t<const Executor &, Property> > >(
+            return strand<std::decay_t<require_result_t<const Executor &, Property> > >(
                 xio::require(executor_, p), impl_);
         }
 
@@ -204,11 +204,11 @@ namespace xio {
         template<typename Property>
         constraint_t<
             can_prefer<const Executor &, Property>::value
-            && !is_convertible<Property, execution::blocking_t::always_t>::value,
-            strand<decay_t<prefer_result_t<const Executor &, Property> > >
+            && !std::is_convertible<Property, execution::blocking_t::always_t>::value,
+            strand<std::decay_t<prefer_result_t<const Executor &, Property> > >
         > prefer(const Property &p) const
             noexcept(is_nothrow_prefer<const Executor &, Property>::value) {
-            return strand<decay_t<prefer_result_t<const Executor &, Property> > >(
+            return strand<std::decay_t<prefer_result_t<const Executor &, Property> > >(
                 xio::prefer(executor_, p), impl_);
         }
 
@@ -373,12 +373,12 @@ namespace xio {
 
         template<typename Property>
         query_result_t<const Executor &, Property> query_helper(
-            false_type, const Property &property) const {
+            std::false_type, const Property &property) const {
             return xio::query(executor_, property);
         }
 
         template<typename Property>
-        execution::blocking_t query_helper(true_type, const Property &property) const {
+        execution::blocking_t query_helper(std::true_type, const Property &property) const {
             execution::blocking_t result = xio::query(executor_, property);
             return result == execution::blocking.always
                        ? execution::blocking.possibly
@@ -421,7 +421,7 @@ namespace xio {
     inline strand<typename ExecutionContext::executor_type>
     make_strand(ExecutionContext & ctx,
                 constraint_t<
-                    is_convertible<ExecutionContext &, execution_context &>::value
+                    std::is_convertible<ExecutionContext &, execution_context &>::value
                 > = 0) {
         return strand<typename ExecutionContext::executor_type>(ctx.get_executor());
     }

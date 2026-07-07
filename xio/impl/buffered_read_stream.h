@@ -89,7 +89,7 @@ namespace xio {
         };
 
         template<typename ReadHandler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             buffered_fill_handler<ReadHandler> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
@@ -99,11 +99,11 @@ namespace xio {
         template<typename Stream>
         class initiate_async_buffered_fill {
         public:
-            typedef typename remove_reference_t<
+            typedef typename std::remove_reference_t<
                 Stream>::lowest_layer_type::executor_type executor_type;
 
             explicit initiate_async_buffered_fill(
-                remove_reference_t<Stream> &next_layer)
+                std::remove_reference_t<Stream> &next_layer)
                 : next_layer_(next_layer) {
             }
 
@@ -126,12 +126,12 @@ namespace xio {
                     buffer(
                         storage->data() + previous_size,
                         storage->size() - previous_size),
-                    buffered_fill_handler<decay_t<ReadHandler> >(
+                    buffered_fill_handler<std::decay_t<ReadHandler> >(
                         *storage, previous_size, handler2.value));
             }
 
         private:
-            remove_reference_t<Stream> &next_layer_;
+            std::remove_reference_t<Stream> &next_layer_;
         };
     } // namespace detail
 
@@ -165,8 +165,8 @@ namespace xio {
         -> decltype(
             async_initiate<ReadHandler,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_buffered_fill<Stream> >(),
-                handler, declval<detail::buffered_stream_storage *>())) {
+                std::declval<detail::initiate_async_buffered_fill<Stream> >(),
+                handler, std::declval<detail::buffered_stream_storage *>())) {
         return async_initiate<ReadHandler,
             void(xio::error_code, std::size_t)>(
             detail::initiate_async_buffered_fill<Stream>(next_layer_),
@@ -245,7 +245,7 @@ namespace xio {
         };
 
         template<typename MutableBufferSequence, typename ReadHandler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             buffered_read_some_handler<
                 MutableBufferSequence, ReadHandler> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
@@ -256,11 +256,11 @@ namespace xio {
         template<typename Stream>
         class initiate_async_buffered_read_some {
         public:
-            typedef typename remove_reference_t<
+            typedef typename std::remove_reference_t<
                 Stream>::lowest_layer_type::executor_type executor_type;
 
             explicit initiate_async_buffered_read_some(
-                remove_reference_t<Stream> &next_layer)
+                std::remove_reference_t<Stream> &next_layer)
                 : next_layer_(next_layer) {
             }
 
@@ -282,19 +282,19 @@ namespace xio {
                 if (buffer_size(buffers) == 0 || !storage->empty()) {
                     next_layer_.async_read_some(mutable_buffer(0, 0),
                                                 buffered_read_some_handler<MutableBufferSequence,
-                                                    decay_t<ReadHandler> >(
+                                                    std::decay_t<ReadHandler> >(
                                                     *storage, buffers, handler2.value));
                 } else {
                     initiate_async_buffered_fill<Stream>(this->next_layer_)(
                         buffered_read_some_handler<MutableBufferSequence,
-                            decay_t<ReadHandler> >(
+                            std::decay_t<ReadHandler> >(
                             *storage, buffers, handler2.value),
                         storage);
                 }
             }
 
         private:
-            remove_reference_t<Stream> &next_layer_;
+            std::remove_reference_t<Stream> &next_layer_;
         };
     } // namespace detail
 
@@ -333,8 +333,8 @@ namespace xio {
         -> decltype(
             async_initiate<ReadHandler,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_buffered_read_some<Stream> >(),
-                handler, declval<detail::buffered_stream_storage *>(), buffers)) {
+                std::declval<detail::initiate_async_buffered_read_some<Stream> >(),
+                handler, std::declval<detail::buffered_stream_storage *>(), buffers)) {
         return async_initiate<ReadHandler,
             void(xio::error_code, std::size_t)>(
             detail::initiate_async_buffered_read_some<Stream>(next_layer_),

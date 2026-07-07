@@ -72,10 +72,10 @@ namespace xio {
         template<typename Executor, typename T>
         class awaitable_handler<Executor, T>
                 : public awaitable_handler_base<Executor,
-                    conditional_t<is_disposition<T>::value, void, T> > {
+                    std::conditional_t<is_disposition<T>::value, void, T> > {
         public:
             using awaitable_handler_base<Executor,
-                        conditional_t<is_disposition<T>::value, void, T> >
+                        std::conditional_t<is_disposition<T>::value, void, T> >
                     ::awaitable_handler_base;
 
             template<typename Arg>
@@ -97,10 +97,10 @@ namespace xio {
         template<typename Executor, typename T0, typename T1>
         class awaitable_handler<Executor, T0, T1>
                 : public awaitable_handler_base<Executor,
-                    conditional_t<is_disposition<T0>::value, T1, std::tuple<T0, T1> > > {
+                    std::conditional_t<is_disposition<T0>::value, T1, std::tuple<T0, T1> > > {
         public:
             using awaitable_handler_base<Executor,
-                        conditional_t<is_disposition<T0>::value, T1, std::tuple<T0, T1> > >
+                        std::conditional_t<is_disposition<T0>::value, T1, std::tuple<T0, T1> > >
                     ::awaitable_handler_base;
 
             template<typename Arg0, typename Arg1>
@@ -124,12 +124,12 @@ namespace xio {
         template<typename Executor, typename T0, typename... Ts>
         class awaitable_handler<Executor, T0, Ts...>
                 : public awaitable_handler_base<Executor,
-                      conditional_t<is_disposition<T0>::value,
+                      std::conditional_t<is_disposition<T0>::value,
                           std::tuple < Ts...>, std::tuple<T0, Ts...> >>
                 {
         public:
             using awaitable_handler_base<Executor,
-                conditional_t<is_disposition<T0>::value,
+                std::conditional_t<is_disposition<T0>::value,
                     std::tuple < Ts...>, std::tuple<T0, Ts...> >
             >
             ::awaitable_handler_base;
@@ -170,7 +170,7 @@ namespace xio {
     class async_result<use_awaitable_t<Executor>, R(Args...)> {
     public:
         typedef typename detail::awaitable_handler<
-            Executor, decay_t<Args>...> handler_type;
+            Executor, std::decay_t<Args>...> handler_type;
         typedef typename handler_type::awaitable_type return_type;
 
         template<typename Initiation, typename... InitArgs>

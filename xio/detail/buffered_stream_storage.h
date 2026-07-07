@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 #include <xio/buffer.h>
-#include <xio/detail/assert.h>
+# include <cassert>
 #include <cstddef>
 #include <cstring>
 #include <vector>
@@ -71,7 +71,7 @@ namespace xio {
 
             // Resize the buffer to the specified length.
             void resize(size_type length) {
-                ASIO_ASSERT(length <= capacity());
+                assert(length <= capacity());
                 if (begin_offset_ + length <= capacity()) {
                     end_offset_ = begin_offset_ + length;
                 } else {
@@ -89,7 +89,7 @@ namespace xio {
 
             // Consume multiple bytes from the beginning of the buffer.
             void consume(size_type count) {
-                ASIO_ASSERT(begin_offset_ + count <= end_offset_);
+                assert(begin_offset_ + count <= end_offset_);
                 begin_offset_ += count;
                 if (empty())
                     clear();

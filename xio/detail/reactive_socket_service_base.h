@@ -593,12 +593,12 @@ namespace xio {
             void start_op(base_implementation_type &impl, int op_type,
                           Op *op, bool is_continuation, bool allow_speculative,
                           bool noop, bool needs_non_blocking, const void *,
-                          enable_if_t<
-                              is_same <
+                          std::enable_if_t<
+                              std::is_same <
                               typename associated_immediate_executor <
                               typename Op::handler_type,
                               typename Op::io_executor_type
-                          >::asio_associated_immediate_executor_is_unspecialised,
+                          >::xio_associated_immediate_executor_is_unspecialised,
                           void
         >::value
       >*) {
@@ -627,12 +627,12 @@ namespace xio {
             template<typename Op>
             void start_accept_op(base_implementation_type &impl, Op *op,
                                  bool is_continuation, bool peer_is_open, const void *,
-                                 enable_if_t<
-                                     is_same <
+                                 std::enable_if_t<
+                                     std::is_same <
                                      typename associated_immediate_executor <
                                      typename Op::handler_type,
                                      typename Op::io_executor_type
-                                 >::asio_associated_immediate_executor_is_unspecialised,
+                                 >::xio_associated_immediate_executor_is_unspecialised,
                                  void
         >::value
       >*) {
@@ -661,12 +661,12 @@ namespace xio {
             template<typename Op>
             void start_connect_op(base_implementation_type &impl, Op *op,
                                   bool is_continuation, const void *addr, size_t addrlen, const void *,
-                                  enable_if_t<
-                                      is_same <
+                                  std::enable_if_t<
+                                      std::is_same <
                                       typename associated_immediate_executor <
                                       typename Op::handler_type,
                                       typename Op::io_executor_type
-                                  >::asio_associated_immediate_executor_is_unspecialised,
+                                  >::xio_associated_immediate_executor_is_unspecialised,
                                   void
         >::value
       >*) {

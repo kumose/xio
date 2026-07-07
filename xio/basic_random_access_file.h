@@ -106,7 +106,7 @@ explicit basic_random_access_file(const executor_type &ex)
 template<typename ExecutionContext>
 explicit basic_random_access_file(ExecutionContext & context,
                                   constraint_t<
-                                      is_convertible<ExecutionContext &, execution_context &>::value,
+                                      std::is_convertible<ExecutionContext &, execution_context &>::value,
                                       defaulted_constraint
                                   > = defaulted_constraint())
     : basic_file<Executor>(context) {
@@ -150,7 +150,7 @@ template<typename ExecutionContext>
 basic_random_access_file(ExecutionContext &context,
                          const char *path, file_base::flags open_flags,
                          constraint_t<
-                             is_convertible<ExecutionContext &, execution_context &>::value,
+                             std::is_convertible<ExecutionContext &, execution_context &>::value,
                              defaulted_constraint
                          > = defaulted_constraint())
     : basic_file<Executor>(context, path, open_flags) {
@@ -194,7 +194,7 @@ template<typename ExecutionContext>
 basic_random_access_file(ExecutionContext &context,
                          const std::string &path, file_base::flags open_flags,
                          constraint_t<
-                             is_convertible<ExecutionContext &, execution_context &>::value,
+                             std::is_convertible<ExecutionContext &, execution_context &>::value,
                              defaulted_constraint
                          > = defaulted_constraint())
     : basic_file<Executor>(context, path, open_flags) {
@@ -234,7 +234,7 @@ template<typename ExecutionContext>
 basic_random_access_file(ExecutionContext &context,
                          const native_handle_type &native_file,
                          constraint_t<
-                             is_convertible<ExecutionContext &, execution_context &>::value,
+                             std::is_convertible<ExecutionContext &, execution_context &>::value,
                              defaulted_constraint
                          > = defaulted_constraint())
     : basic_file<Executor>(context, native_file) {
@@ -287,7 +287,7 @@ basic_random_access_file &operator=(basic_random_access_file &&other) {
 template<typename Executor1>
 basic_random_access_file(basic_random_access_file<Executor1> && other,
                          constraint_t<
-                             is_convertible<Executor1, Executor>::value,
+                             std::is_convertible<Executor1, Executor>::value,
                              defaulted_constraint
                          > = defaulted_constraint())
     : basic_file<Executor>(std::move(other)) {
@@ -308,7 +308,7 @@ basic_random_access_file(basic_random_access_file<Executor1> && other,
    */
 template<typename Executor1>
 constraint_t<
-    is_convertible<Executor1, Executor>::value,
+    std::is_convertible<Executor1, Executor>::value,
     basic_random_access_file &> operator=(basic_random_access_file<Executor1> &&other) {
     basic_file<Executor>::operator=(std::move(other));
     return *this;
@@ -446,7 +446,7 @@ auto async_write_some_at(uint64_t offset, const ConstBufferSequence &buffers,
     -> decltype(
         async_initiate<WriteToken,
             void(xio::error_code, std::size_t)>(
-            declval<initiate_async_write_some_at>(), token, offset, buffers)) {
+            std::declval<initiate_async_write_some_at>(), token, offset, buffers)) {
     return async_initiate<WriteToken,
         void(xio::error_code, std::size_t)>(
         initiate_async_write_some_at(this), token, offset, buffers);
@@ -579,7 +579,7 @@ auto async_read_some_at(uint64_t offset, const MutableBufferSequence &buffers,
     -> decltype(
         async_initiate<ReadToken,
             void(xio::error_code, std::size_t)>(
-            declval<initiate_async_read_some_at>(), token, offset, buffers)) {
+            std::declval<initiate_async_read_some_at>(), token, offset, buffers)) {
     return async_initiate<ReadToken,
         void(xio::error_code, std::size_t)>(
         initiate_async_read_some_at(this), token, offset, buffers);

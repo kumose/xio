@@ -8,13 +8,13 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <asio/compose.hpp>
-#include <asio/deferred.hpp>
-#include <asio/io_context.hpp>
-#include <asio/ip/tcp.hpp>
-#include <asio/steady_timer.hpp>
-#include <asio/use_future.hpp>
-#include <asio/write.hpp>
+#include <xio/compose.h>
+#include <xio/deferred.h>
+#include <xio/io_context.h>
+#include <xio/ip/tcp.h>
+#include <xio/steady_timer.h>
+#include <xio/use_future.h>
+#include <xio/write.h>
 #include <functional>
 #include <iostream>
 #include <memory>
@@ -27,7 +27,7 @@ using xio::ip::tcp;
 
 // NOTE: This example requires the new xio::async_compose function. For
 // an example that works with the Networking TS style of completion tokens,
-// please see an older version of asio.
+// please see an older version of xio.
 
 //------------------------------------------------------------------------------
 

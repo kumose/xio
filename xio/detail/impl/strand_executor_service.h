@@ -63,7 +63,7 @@ namespace xio {
 
         template<typename Executor>
         class strand_executor_service::invoker<Executor,
-                    enable_if_t<
+                    std::enable_if_t<
                         execution::is_executor<Executor>::value
                     > > {
         public:
@@ -108,7 +108,7 @@ namespace xio {
             }
 
         private:
-            typedef decay_t<
+            typedef std::decay_t<
                 prefer_result_t<
                     Executor,
                     execution::outstanding_work_t::tracked_t
@@ -123,7 +123,7 @@ namespace xio {
 
         template<typename Executor>
         class strand_executor_service::invoker<Executor,
-            enable_if_t <
+            std::enable_if_t <
             !execution::is_executor<Executor>::value
         >
         >
@@ -181,7 +181,7 @@ private:
         template<typename Executor, typename Function>
         inline void strand_executor_service::execute(const implementation_type &impl,
                                                      Executor &ex, Function &&function,
-                                                     enable_if_t<
+                                                     std::enable_if_t<
                                                          can_query<Executor, execution::allocator_t<void> >::value
                                                      > *) {
             return strand_executor_service::do_execute(impl, ex,
@@ -192,7 +192,7 @@ private:
         template<typename Executor, typename Function>
         inline void strand_executor_service::execute(const implementation_type &impl,
                                                      Executor &ex, Function &&function,
-                                                     enable_if_t<
+                                                     std::enable_if_t<
                                                          !can_query<Executor, execution::allocator_t<void> >::value
                                                      > *) {
             return strand_executor_service::do_execute(impl, ex,
@@ -203,7 +203,7 @@ private:
         template<typename Executor, typename Function, typename Allocator>
         void strand_executor_service::do_execute(const implementation_type &impl,
                                                  Executor &ex, Function &&function, const Allocator &a) {
-            typedef decay_t<Function> function_type;
+            typedef std::decay_t<Function> function_type;
 
             // If the executor is not never-blocking, and we are already in the strand,
             // then the function can run immediately.
@@ -236,7 +236,7 @@ private:
         template<typename Executor, typename Function, typename Allocator>
         void strand_executor_service::dispatch(const implementation_type &impl,
                                                Executor &ex, Function &&function, const Allocator &a) {
-            typedef decay_t<Function> function_type;
+            typedef std::decay_t<Function> function_type;
 
             // If we are already in the strand then the function can run immediately.
             if (running_in_this_thread(impl)) {
@@ -270,7 +270,7 @@ private:
         template<typename Executor, typename Function, typename Allocator>
         void strand_executor_service::post(const implementation_type &impl,
                                            Executor &ex, Function &&function, const Allocator &a) {
-            typedef decay_t<Function> function_type;
+            typedef std::decay_t<Function> function_type;
 
             // Allocate and construct an operation to wrap the function.
             typedef executor_op<function_type, Allocator> op;
@@ -294,7 +294,7 @@ private:
         template<typename Executor, typename Function, typename Allocator>
         void strand_executor_service::defer(const implementation_type &impl,
                                             Executor &ex, Function &&function, const Allocator &a) {
-            typedef decay_t<Function> function_type;
+            typedef std::decay_t<Function> function_type;
 
             // Allocate and construct an operation to wrap the function.
             typedef executor_op<function_type, Allocator> op;

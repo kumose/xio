@@ -275,10 +275,10 @@ namespace xio {
     std::size_t read(SyncReadStream & s,
                      DynamicBuffer_v1 && buffers,
                      constraint_t<
-                         is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                         is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                      > = 0,
                      constraint_t <
-                     !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                     !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                      > = 0);
 
     /// Attempt to read a certain amount of data from a stream before returning.
@@ -312,10 +312,10 @@ namespace xio {
                      DynamicBuffer_v1 && buffers,
                      xio::error_code & ec,
                      constraint_t<
-                         is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                         is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                      > = 0,
                      constraint_t <
-                     !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                     !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                      > = 0);
 
     /// Attempt to read a certain amount of data from a stream before returning.
@@ -360,10 +360,10 @@ namespace xio {
                      DynamicBuffer_v1 &&buffers,
                      CompletionCondition completion_condition,
                      constraint_t<
-                         is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                         is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                      > = 0,
                      constraint_t<
-                         !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                         !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                      > = 0,
                      constraint_t<
                          is_completion_condition<CompletionCondition>::value
@@ -412,10 +412,10 @@ namespace xio {
                      DynamicBuffer_v1 &&buffers,
                      CompletionCondition completion_condition, xio::error_code &ec,
                      constraint_t<
-                         is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                         is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                      > = 0,
                      constraint_t<
-                         !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                         !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                      > = 0,
                      constraint_t<
                          is_completion_condition<CompletionCondition>::value
@@ -836,7 +836,7 @@ namespace xio {
         -> decltype(
             async_initiate<ReadToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_read<AsyncReadStream> >(),
+                std::declval<detail::initiate_async_read<AsyncReadStream> >(),
                 token, buffers, transfer_all())) {
         return async_initiate<ReadToken,
             void(xio::error_code, std::size_t)>(
@@ -941,7 +941,7 @@ namespace xio {
         -> decltype(
             async_initiate<ReadToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_read<AsyncReadStream> >(),
+                std::declval<detail::initiate_async_read<AsyncReadStream> >(),
                 token, buffers,
                 static_cast<CompletionCondition &&>(completion_condition))) {
         return async_initiate<ReadToken,
@@ -1026,10 +1026,10 @@ namespace xio {
                            ReadToken && token = default_completion_token_t<
                                typename AsyncReadStream::executor_type>(),
                            constraint_t<
-                               is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                               is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                            > = 0,
                            constraint_t <
-                           !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                           !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                            > = 0,
                            constraint_t <
                            !is_completion_condition<ReadToken>::value
@@ -1038,7 +1038,7 @@ namespace xio {
     decltype(
         async_initiate<ReadToken,
             void(xio::error_code, std::size_t)>(
-            declval<detail::initiate_async_read_dynbuf_v1<AsyncReadStream> >(),
+            std::declval<detail::initiate_async_read_dynbuf_v1<AsyncReadStream> >(),
             token, static_cast<DynamicBuffer_v1 &&>(buffers), transfer_all())) {
         return async_initiate<ReadToken,
             void(xio::error_code, std::size_t)>(
@@ -1130,10 +1130,10 @@ namespace xio {
                            ReadToken &&token = default_completion_token_t<
                                typename AsyncReadStream::executor_type>(),
                            constraint_t<
-                               is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                               is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                            > = 0,
                            constraint_t<
-                               !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                               !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                            > = 0,
                            constraint_t<
                                is_completion_condition<CompletionCondition>::value
@@ -1141,7 +1141,7 @@ namespace xio {
         -> decltype(
             async_initiate<ReadToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_read_dynbuf_v1<AsyncReadStream> >(),
+                std::declval<detail::initiate_async_read_dynbuf_v1<AsyncReadStream> >(),
                 token, static_cast<DynamicBuffer_v1 &&>(buffers),
                 static_cast<CompletionCondition &&>(completion_condition))) {
         return async_initiate<ReadToken,
@@ -1232,7 +1232,7 @@ namespace xio {
     decltype(
         async_initiate<ReadToken,
             void(xio::error_code, std::size_t)>(
-            declval<detail::initiate_async_read_dynbuf_v1<AsyncReadStream> >(),
+            std::declval<detail::initiate_async_read_dynbuf_v1<AsyncReadStream> >(),
             token, basic_streambuf_ref<Allocator>(b), transfer_all())) {
         return async_initiate<ReadToken,
             void(xio::error_code, std::size_t)>(
@@ -1327,7 +1327,7 @@ namespace xio {
         -> decltype(
             async_initiate<ReadToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_read_dynbuf_v1<AsyncReadStream> >(),
+                std::declval<detail::initiate_async_read_dynbuf_v1<AsyncReadStream> >(),
                 token, basic_streambuf_ref<Allocator>(b),
                 static_cast<CompletionCondition &&>(completion_condition))) {
         return async_initiate<ReadToken,
@@ -1423,7 +1423,7 @@ namespace xio {
         -> decltype(
             async_initiate<ReadToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_read_dynbuf_v2<AsyncReadStream> >(),
+                std::declval<detail::initiate_async_read_dynbuf_v2<AsyncReadStream> >(),
                 token, static_cast<DynamicBuffer_v2 &&>(buffers), transfer_all())) {
         return async_initiate<ReadToken,
             void(xio::error_code, std::size_t)>(
@@ -1523,7 +1523,7 @@ namespace xio {
         -> decltype(
             async_initiate<ReadToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_read_dynbuf_v2<AsyncReadStream> >(),
+                std::declval<detail::initiate_async_read_dynbuf_v2<AsyncReadStream> >(),
                 token, static_cast<DynamicBuffer_v2 &&>(buffers),
                 static_cast<CompletionCondition &&>(completion_condition))) {
         return async_initiate<ReadToken,

@@ -287,8 +287,8 @@ namespace xio {
    */
         template<typename U, typename OtherExecutor>
         executor_binder(const executor_binder<U, OtherExecutor> &other,
-                        constraint_t<is_constructible<Executor, OtherExecutor>::value> = 0,
-                        constraint_t<is_constructible<T, U>::value> = 0)
+                        constraint_t<std::is_constructible<Executor, OtherExecutor>::value> = 0,
+                        constraint_t<std::is_constructible<T, U>::value> = 0)
             : base_type(other.get_executor(), other.get()) {
         }
 
@@ -301,7 +301,7 @@ namespace xio {
         template<typename U, typename OtherExecutor>
         executor_binder(executor_arg_t, const executor_type &e,
                         const executor_binder<U, OtherExecutor> &other,
-                        constraint_t<is_constructible<T, U>::value> = 0)
+                        constraint_t<std::is_constructible<T, U>::value> = 0)
             : base_type(e, other.get()) {
         }
 
@@ -320,8 +320,8 @@ namespace xio {
         /// Move construct from a different executor wrapper type.
         template<typename U, typename OtherExecutor>
         executor_binder(executor_binder<U, OtherExecutor> &&other,
-                        constraint_t<is_constructible<Executor, OtherExecutor>::value> = 0,
-                        constraint_t<is_constructible<T, U>::value> = 0)
+                        constraint_t<std::is_constructible<Executor, OtherExecutor>::value> = 0,
+                        constraint_t<std::is_constructible<T, U>::value> = 0)
             : base_type(static_cast<OtherExecutor &&>(other.get_executor()),
                         static_cast<U &&>(other.get())) {
         }
@@ -331,7 +331,7 @@ namespace xio {
         template<typename U, typename OtherExecutor>
         executor_binder(executor_arg_t, const executor_type &e,
                         executor_binder<U, OtherExecutor> &&other,
-                        constraint_t<is_constructible<T, U>::value> = 0)
+                        constraint_t<std::is_constructible<T, U>::value> = 0)
             : base_type(e, static_cast<U &&>(other.get())) {
         }
 
@@ -396,10 +396,10 @@ namespace xio {
   /// should have the executor as its associated executor.
         template<typename CompletionToken>
         [[nodiscard]] inline
-        constexpr executor_binder<decay_t<CompletionToken>, Executor>
+        constexpr executor_binder<std::decay_t<CompletionToken>, Executor>
 
         operator()(CompletionToken &&completion_token) const {
-            return executor_binder<decay_t<CompletionToken>, Executor>(executor_arg_t(),
+            return executor_binder<std::decay_t<CompletionToken>, Executor>(executor_arg_t(),
                                                                        static_cast<CompletionToken &&>(
                                                                            completion_token), executor_);
         }
@@ -421,13 +421,13 @@ namespace xio {
 
     /// Associate an object of type @c T with an executor of type @c Executor.
     template<typename Executor, typename T>
-    [[nodiscard]] inline executor_binder<decay_t<T>, Executor>
+    [[nodiscard]] inline executor_binder<std::decay_t<T>, Executor>
 
     bind_executor(const Executor &ex, T &&t,
                   constraint_t<
                       is_executor<Executor>::value || execution::is_executor<Executor>::value
                   > = 0) {
-        return executor_binder<decay_t<T>, Executor>(
+        return executor_binder<std::decay_t<T>, Executor>(
             executor_arg_t(), ex, static_cast<T &&>(t));
     }
 
@@ -439,7 +439,7 @@ namespace xio {
 
     bind_executor(ExecutionContext & ctx,
                   constraint_t<
-                      is_convertible<ExecutionContext &, execution_context &>::value
+                      std::is_convertible<ExecutionContext &, execution_context &>::value
                   > = 0) {
         return partial_executor_binder<typename ExecutionContext::executor_type>(
             ctx.get_executor());
@@ -447,14 +447,14 @@ namespace xio {
 
     /// Associate an object of type @c T with an execution context's executor.
     template<typename ExecutionContext, typename T>
-    [[nodiscard]] inline executor_binder<decay_t<T>,
+    [[nodiscard]] inline executor_binder<std::decay_t<T>,
         typename ExecutionContext::executor_type>
 
     bind_executor(ExecutionContext & ctx, T && t,
                   constraint_t<
-                      is_convertible<ExecutionContext &, execution_context &>::value
+                      std::is_convertible<ExecutionContext &, execution_context &>::value
                   > = 0) {
-        return executor_binder<decay_t<T>, typename ExecutionContext::executor_type>(
+        return executor_binder<std::decay_t<T>, typename ExecutionContext::executor_type>(
             executor_arg_t(), ctx.get_executor(), static_cast<T &&>(t));
     }
 
@@ -462,7 +462,7 @@ namespace xio {
 
     template<typename T, typename Executor>
     struct uses_executor<executor_binder<T, Executor>, Executor>
-            : true_type {
+            : std::true_type {
     };
 
     namespace detail {
@@ -526,7 +526,7 @@ namespace xio {
             template<typename Handler, typename... Args>
             void operator()(Handler &&handler, const Executor &e, Args &&... args) && {
                 static_cast<Initiation &&>(*this)(
-                    executor_binder<decay_t<Handler>, Executor>(
+                    executor_binder<std::decay_t<Handler>, Executor>(
                         executor_arg_t(), e, static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -535,7 +535,7 @@ namespace xio {
             void operator()(Handler &&handler,
                             const Executor &e, Args &&... args) const & {
                 static_cast<const Initiation &>(*this)(
-                    executor_binder<decay_t<Handler>, Executor>(
+                    executor_binder<std::decay_t<Handler>, Executor>(
                         executor_arg_t(), e, static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -546,16 +546,16 @@ namespace xio {
                              RawCompletionToken &&token, Args &&... args)
             -> decltype(
                 async_initiate<
-                    conditional_t<
-                        is_const<remove_reference_t<RawCompletionToken> >::value, const T, T>,
+                    std::conditional_t<
+                        std::is_const<std::remove_reference_t<RawCompletionToken> >::value, const T, T>,
                     Signature>(
-                    declval<init_wrapper<decay_t<Initiation> > >(),
+                    std::declval<init_wrapper<std::decay_t<Initiation> > >(),
                     token.get(), token.get_executor(), static_cast<Args &&>(args)...)) {
             return async_initiate<
-                conditional_t<
-                    is_const<remove_reference_t<RawCompletionToken> >::value, const T, T>,
+                std::conditional_t<
+                    std::is_const<std::remove_reference_t<RawCompletionToken> >::value, const T, T>,
                 Signature>(
-                init_wrapper<decay_t<Initiation> >(
+                init_wrapper<std::decay_t<Initiation> >(
                     static_cast<Initiation &&>(initiation)),
                 token.get(), token.get_executor(), static_cast<Args &&>(args)...);
         }

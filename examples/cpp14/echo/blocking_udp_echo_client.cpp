@@ -11,8 +11,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <asio/ts/buffer.hpp>
-#include <asio/ts/internet.hpp>
+#include <xio/ts/buffer.h>
+#include <xio/ts/internet.h>
 
 using xio::ip::udp;
 

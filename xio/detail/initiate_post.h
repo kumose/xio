@@ -35,15 +35,15 @@ namespace xio {
         public:
             template<typename CompletionHandler>
             void operator()(CompletionHandler &&handler,
-                            enable_if_t<
+                            std::enable_if_t<
                                 execution::is_executor<
-                                    associated_executor_t<decay_t<CompletionHandler> >
+                                    associated_executor_t<std::decay_t<CompletionHandler> >
                                 >::value
                             > * = 0) const {
-                associated_executor_t<decay_t<CompletionHandler> > ex(
+                associated_executor_t<std::decay_t<CompletionHandler> > ex(
                     (get_associated_executor)(handler));
 
-                associated_allocator_t<decay_t<CompletionHandler> > alloc(
+                associated_allocator_t<std::decay_t<CompletionHandler> > alloc(
                     (get_associated_allocator)(handler));
 
                 xio::prefer(
@@ -57,15 +57,15 @@ namespace xio {
 
             template<typename CompletionHandler>
             void operator()(CompletionHandler &&handler,
-                            enable_if_t<
+                            std::enable_if_t<
                                 !execution::is_executor<
-                                    associated_executor_t<decay_t<CompletionHandler> >
+                                    associated_executor_t<std::decay_t<CompletionHandler> >
                                 >::value
                             > * = 0) const {
-                associated_executor_t<decay_t<CompletionHandler> > ex(
+                associated_executor_t<std::decay_t<CompletionHandler> > ex(
                     (get_associated_executor)(handler));
 
-                associated_allocator_t<decay_t<CompletionHandler> > alloc(
+                associated_allocator_t<std::decay_t<CompletionHandler> > alloc(
                     (get_associated_allocator)(handler));
 
                 ex.post(xio::detail::bind_handler(
@@ -88,19 +88,19 @@ namespace xio {
 
             template<typename CompletionHandler, typename Function>
             void operator()(CompletionHandler &&handler, Function &&,
-                            enable_if_t<
+                            std::enable_if_t<
                                 execution::is_executor<
-                                    conditional_t<true, executor_type, CompletionHandler>
+                                    std::conditional_t<true, executor_type, CompletionHandler>
                                 >::value
                             > * = 0,
-                            enable_if_t<
+                            std::enable_if_t<
                                 !is_work_dispatcher_required<
-                                    decay_t<Function>,
-                                    decay_t<CompletionHandler>,
+                                    std::decay_t<Function>,
+                                    std::decay_t<CompletionHandler>,
                                     Executor
                                 >::value
                             > * = 0) const {
-                associated_allocator_t<decay_t<CompletionHandler> > alloc(
+                associated_allocator_t<std::decay_t<CompletionHandler> > alloc(
                     (get_associated_allocator)(handler));
 
                 xio::prefer(
@@ -114,20 +114,20 @@ namespace xio {
 
             template<typename CompletionHandler, typename Function>
             void operator()(CompletionHandler &&handler, Function &&function,
-                            enable_if_t<
+                            std::enable_if_t<
                                 execution::is_executor<
-                                    conditional_t<true, executor_type, CompletionHandler>
+                                    std::conditional_t<true, executor_type, CompletionHandler>
                                 >::value
                             > * = 0,
-                            enable_if_t<
+                            std::enable_if_t<
                                 is_work_dispatcher_required<
-                                    decay_t<Function>,
-                                    decay_t<CompletionHandler>,
+                                    std::decay_t<Function>,
+                                    std::decay_t<CompletionHandler>,
                                     Executor
                                 >::value
                             > * = 0) const {
-                typedef decay_t<CompletionHandler> handler_t;
-                typedef decay_t<Function> function_t;
+                typedef std::decay_t<CompletionHandler> handler_t;
+                typedef std::decay_t<Function> function_t;
 
                 typedef associated_executor_t<handler_t, Executor> handler_ex_t;
                 handler_ex_t handler_ex((get_associated_executor)(handler, ex_));
@@ -147,19 +147,19 @@ namespace xio {
 
             template<typename CompletionHandler, typename Function>
             void operator()(CompletionHandler &&handler, Function &&,
-                            enable_if_t<
+                            std::enable_if_t<
                                 !execution::is_executor<
-                                    conditional_t<true, executor_type, CompletionHandler>
+                                    std::conditional_t<true, executor_type, CompletionHandler>
                                 >::value
                             > * = 0,
-                            enable_if_t<
+                            std::enable_if_t<
                                 !is_work_dispatcher_required<
-                                    decay_t<Function>,
-                                    decay_t<CompletionHandler>,
+                                    std::decay_t<Function>,
+                                    std::decay_t<CompletionHandler>,
                                     Executor
                                 >::value
                             > * = 0) const {
-                associated_allocator_t<decay_t<CompletionHandler> > alloc(
+                associated_allocator_t<std::decay_t<CompletionHandler> > alloc(
                     (get_associated_allocator)(handler));
 
                 ex_.post(xio::detail::bind_handler(
@@ -168,20 +168,20 @@ namespace xio {
 
             template<typename CompletionHandler, typename Function>
             void operator()(CompletionHandler &&handler, Function &&function,
-                            enable_if_t<
+                            std::enable_if_t<
                                 !execution::is_executor<
-                                    conditional_t<true, executor_type, CompletionHandler>
+                                    std::conditional_t<true, executor_type, CompletionHandler>
                                 >::value
                             > * = 0,
-                            enable_if_t<
+                            std::enable_if_t<
                                 is_work_dispatcher_required<
-                                    decay_t<Function>,
-                                    decay_t<CompletionHandler>,
+                                    std::decay_t<Function>,
+                                    std::decay_t<CompletionHandler>,
                                     Executor
                                 >::value
                             > * = 0) const {
-                typedef decay_t<CompletionHandler> handler_t;
-                typedef decay_t<Function> function_t;
+                typedef std::decay_t<CompletionHandler> handler_t;
+                typedef std::decay_t<Function> function_t;
 
                 typedef associated_executor_t<handler_t, Executor> handler_ex_t;
                 handler_ex_t handler_ex((get_associated_executor)(handler, ex_));

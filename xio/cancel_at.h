@@ -105,10 +105,10 @@ namespace xio {
   /// arguments should be combined into a single tuple argument.
         template<typename CompletionToken>
         [[nodiscard]] inline
-        constexpr cancel_at_t<decay_t<CompletionToken>, Clock, WaitTraits>
+        constexpr cancel_at_t<std::decay_t<CompletionToken>, Clock, WaitTraits>
 
         operator()(CompletionToken &&completion_token) const {
-            return cancel_at_t<decay_t<CompletionToken>, Clock, WaitTraits>(
+            return cancel_at_t<std::decay_t<CompletionToken>, Clock, WaitTraits>(
                 static_cast<CompletionToken &&>(completion_token),
                 expiry_, cancel_type_);
         }
@@ -143,10 +143,10 @@ namespace xio {
   /// arguments should be combined into a single tuple argument.
         template<typename CompletionToken>
         [[nodiscard]] inline
-        cancel_at_timer<decay_t<CompletionToken>, Clock, WaitTraits, Executor>
+        cancel_at_timer<std::decay_t<CompletionToken>, Clock, WaitTraits, Executor>
 
         operator()(CompletionToken &&completion_token) const {
-            return cancel_at_timer<decay_t<CompletionToken>,
+            return cancel_at_timer<std::decay_t<CompletionToken>,
                 Clock, WaitTraits, Executor>(
                 static_cast<CompletionToken &&>(completion_token),
                 timer_, expiry_, cancel_type_);
@@ -208,11 +208,11 @@ namespace xio {
  * asynchronous operation is performed within an implicit or explicit strand.
  */
     template<typename CompletionToken, typename Clock, typename Duration>
-    [[nodiscard]] inline cancel_at_t<decay_t<CompletionToken>, Clock>
+    [[nodiscard]] inline cancel_at_t<std::decay_t<CompletionToken>, Clock>
 
     cancel_at(const std::chrono::time_point<Clock, Duration> &expiry,
               CompletionToken &&completion_token) {
-        return cancel_at_t<decay_t<CompletionToken>, Clock>(
+        return cancel_at_t<std::decay_t<CompletionToken>, Clock>(
             static_cast<CompletionToken &&>(completion_token),
             expiry, cancellation_type::terminal);
     }
@@ -228,11 +228,11 @@ namespace xio {
  * asynchronous operation is performed within an implicit or explicit strand.
  */
     template<typename CompletionToken, typename Clock, typename Duration>
-    [[nodiscard]] inline cancel_at_t<decay_t<CompletionToken>, Clock>
+    [[nodiscard]] inline cancel_at_t<std::decay_t<CompletionToken>, Clock>
 
     cancel_at(const std::chrono::time_point<Clock, Duration> &expiry,
               cancellation_type_t cancel_type, CompletionToken &&completion_token) {
-        return cancel_at_t<decay_t<CompletionToken>, Clock>(
+        return cancel_at_t<std::decay_t<CompletionToken>, Clock>(
             static_cast<CompletionToken &&>(completion_token), expiry, cancel_type);
     }
 
@@ -249,12 +249,12 @@ namespace xio {
     template<typename CompletionToken, typename Clock,
         typename WaitTraits, typename Executor, typename Duration>
     [[nodiscard]] inline
-    cancel_at_timer<decay_t<CompletionToken>, Clock, WaitTraits, Executor>
+    cancel_at_timer<std::decay_t<CompletionToken>, Clock, WaitTraits, Executor>
 
     cancel_at(basic_waitable_timer<Clock, WaitTraits, Executor> &timer,
               const std::chrono::time_point<Clock, Duration> &expiry,
               CompletionToken &&completion_token) {
-        return cancel_at_timer<decay_t<CompletionToken>, Clock, WaitTraits, Executor>(
+        return cancel_at_timer<std::decay_t<CompletionToken>, Clock, WaitTraits, Executor>(
             static_cast<CompletionToken &&>(completion_token),
             timer, expiry, cancellation_type::terminal);
     }
@@ -272,12 +272,12 @@ namespace xio {
     template<typename CompletionToken, typename Clock,
         typename WaitTraits, typename Executor, typename Duration>
     [[nodiscard]] inline
-    cancel_at_timer<decay_t<CompletionToken>, Clock, WaitTraits, Executor>
+    cancel_at_timer<std::decay_t<CompletionToken>, Clock, WaitTraits, Executor>
 
     cancel_at(basic_waitable_timer<Clock, WaitTraits, Executor> &timer,
               const std::chrono::time_point<Clock, Duration> &expiry,
               cancellation_type_t cancel_type, CompletionToken &&completion_token) {
-        return cancel_at_timer<decay_t<CompletionToken>, Clock, WaitTraits, Executor>(
+        return cancel_at_timer<std::decay_t<CompletionToken>, Clock, WaitTraits, Executor>(
             static_cast<CompletionToken &&>(completion_token),
             timer, expiry, cancel_type);
     }

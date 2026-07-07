@@ -189,10 +189,10 @@ inline constexpr cancellation_state_t cancellation_state;
 
         template<typename Filter>
         [[nodiscard]] inline constexpr reset_cancellation_state_1_t<
-            decay_t<Filter> >
+            std::decay_t<Filter> >
 
         reset_cancellation_state(Filter &&filter) {
-            return reset_cancellation_state_1_t<decay_t<Filter> >(
+            return reset_cancellation_state_1_t<std::decay_t<Filter> >(
                 static_cast<Filter &&>(filter));
         }
 
@@ -211,10 +211,10 @@ inline constexpr cancellation_state_t cancellation_state;
 
         template<typename InFilter, typename OutFilter>
         [[nodiscard]] inline constexpr
-        reset_cancellation_state_2_t<decay_t<InFilter>, decay_t<OutFilter> >
+        reset_cancellation_state_2_t<std::decay_t<InFilter>, std::decay_t<OutFilter> >
 
         reset_cancellation_state(InFilter &&in_filter, OutFilter &&out_filter) {
-            return reset_cancellation_state_2_t<decay_t<InFilter>, decay_t<OutFilter> >(
+            return reset_cancellation_state_2_t<std::decay_t<InFilter>, std::decay_t<OutFilter> >(
                 static_cast<InFilter &&>(in_filter),
                 static_cast<OutFilter &&>(out_filter));
         }

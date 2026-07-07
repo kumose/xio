@@ -8,11 +8,11 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <asio/deferred.hpp>
-#include <asio/io_context.hpp>
-#include <asio/ip/tcp.hpp>
-#include <asio/use_future.hpp>
-#include <asio/write.hpp>
+#include <xio/deferred.h>
+#include <xio/io_context.h>
+#include <xio/ip/tcp.h>
+#include <xio/use_future.h>
+#include <xio/write.h>
 #include <cstring>
 #include <iostream>
 #include <string>

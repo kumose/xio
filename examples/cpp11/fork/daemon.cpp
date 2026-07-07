@@ -8,9 +8,9 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <asio/io_context.hpp>
-#include <asio/ip/udp.hpp>
-#include <asio/signal_set.hpp>
+#include <xio/io_context.h>
+#include <xio/ip/udp.h>
+#include <xio/signal_set.h>
 #include <array>
 #include <ctime>
 #include <iostream>
@@ -155,7 +155,7 @@ int main()
     }
 
     // Send standard output to a log file.
-    const char* output = "/tmp/asio.daemon.out";
+    const char* output = "/tmp/xio.daemon.out";
     const int flags = O_WRONLY | O_CREAT | O_APPEND;
     const mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
     if (open(output, flags, mode) < 0)

@@ -21,7 +21,7 @@
 
 #include <xio/detail/push_options.h>
 
-// Calls to asio_handler_is_continuation must be made from a namespace that
+// Calls to xio_handler_is_continuation must be made from a namespace that
 // does not contain overloads of this function. This namespace is defined here
 // for that purpose.
 namespace XIO_VERSIONED_NAME(handler_cont_helpers){
@@ -32,8 +32,8 @@ inline bool is_continuation(Context & context)
 #if !defined(ASIO_HAS_HANDLER_HOOKS)
   return false;
 #else
-        using xio::asio_handler_is_continuation;
-  return asio_handler_is_continuation(
+        using xio::xio_handler_is_continuation;
+  return xio_handler_is_continuation(
             xio::detail::addressof(context));
 #endif
 

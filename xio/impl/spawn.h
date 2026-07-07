@@ -204,7 +204,7 @@ namespace xio {
 
         template<typename Executor, typename R, typename Disposition>
         class spawn_handler<Executor, R(Disposition),
-                    enable_if_t<is_disposition<Disposition>::value>
+                    std::enable_if_t<is_disposition<Disposition>::value>
                 > : public spawn_handler_base<Executor> {
         public:
             typedef void return_type;
@@ -231,7 +231,7 @@ namespace xio {
 
         template<typename Executor, typename R, typename T>
         class spawn_handler<Executor, R(T),
-            enable_if_t < !is_disposition<T>::value>
+            std::enable_if_t < !is_disposition<T>::value>
         >
         :
         public
@@ -302,7 +302,7 @@ namespace xio {
 
         template<typename Executor, typename R, typename Disposition, typename T>
         class spawn_handler<Executor, R(Disposition, T),
-                    enable_if_t<is_disposition<Disposition>::value>
+                    std::enable_if_t<is_disposition<Disposition>::value>
                 > : public spawn_handler_base<Executor> {
         public:
             typedef T return_type;
@@ -337,7 +337,7 @@ namespace xio {
 
         template<typename Executor, typename R, typename T, typename... Ts>
         class spawn_handler<Executor, R(T, Ts...),
-            enable_if_t < !is_disposition<T>::value>
+            std::enable_if_t < !is_disposition<T>::value>
         >
         :
         public
@@ -421,7 +421,7 @@ namespace xio {
 
         template<typename Executor, typename R, typename Disposition, typename... Ts>
         class spawn_handler<Executor, R(Disposition, Ts...),
-                    enable_if_t<is_disposition<Disposition>::value>
+                    std::enable_if_t<is_disposition<Disposition>::value>
                 > : public spawn_handler_base<Executor> {
         public:
             typedef std::tuple<Ts...> return_type;
@@ -457,7 +457,7 @@ namespace xio {
         };
 
         template<typename Executor, typename Signature>
-        inline bool asio_handler_is_continuation(spawn_handler<Executor, Signature> *) {
+        inline bool xio_handler_is_continuation(spawn_handler<Executor, Signature> *) {
             return true;
         }
     } // namespace detail
@@ -600,10 +600,10 @@ namespace xio {
 
         template<typename Handler, typename Executor>
         class spawn_cancellation_handler<Handler, Executor,
-                    enable_if_t<
-                        is_same<
+                    std::enable_if_t<
+                        std::is_same<
                             typename associated_executor<Handler,
-                                Executor>::asio_associated_executor_is_unspecialised,
+                                Executor>::xio_associated_executor_is_unspecialised,
                             void>::value
                     > > {
         public:
@@ -638,8 +638,8 @@ namespace xio {
             template<typename Handler, typename F>
             void operator()(Handler &&handler,
                             F &&f) const {
-                typedef decay_t<Handler> handler_type;
-                typedef decay_t<F> function_type;
+                typedef std::decay_t<Handler> handler_type;
+                typedef std::decay_t<F> function_type;
                 typedef spawn_cancellation_handler<
                     handler_type, Executor> cancel_handler_type;
 
@@ -683,7 +683,7 @@ namespace xio {
             async_initiate<CompletionToken,
                 typename detail::spawn_signature<
                     result_of_t<F(basic_yield_context<Executor>)> >::type>(
-                declval<detail::initiate_spawn<Executor> >(),
+                std::declval<detail::initiate_spawn<Executor> >(),
                 token, static_cast<F &&>(function))) {
         return async_initiate<CompletionToken,
             typename detail::spawn_signature<
@@ -698,14 +698,14 @@ namespace xio {
                           typename ExecutionContext::executor_type >)> >::type) CompletionToken>
     inline auto spawn(ExecutionContext &ctx, F &&function, CompletionToken &&token,
                       constraint_t<
-                          is_convertible<ExecutionContext &, execution_context &>::value
+                          std::is_convertible<ExecutionContext &, execution_context &>::value
                       >)
         -> decltype(
             async_initiate<CompletionToken,
                 typename detail::spawn_signature <
                 result_of_t<F(basic_yield_context <
                               typename ExecutionContext::executor_type >)>>::type > (
-                declval<detail::initiate_spawn<
+                std::declval<detail::initiate_spawn<
                     typename ExecutionContext::executor_type> >(),
                 token, static_cast<F &&>(function))) {
         return (spawn)(ctx.get_executor(), static_cast<F &&>(function),
@@ -725,7 +725,7 @@ namespace xio {
             async_initiate<CompletionToken,
                 typename detail::spawn_signature<
                     result_of_t<F(basic_yield_context<Executor>)> >::type>(
-                declval<detail::initiate_spawn<Executor> >(),
+                std::declval<detail::initiate_spawn<Executor> >(),
                 token, static_cast<F &&>(function))) {
         return (spawn)(ctx.get_executor(), static_cast<F &&>(function),
                        static_cast<CompletionToken &&>(token));

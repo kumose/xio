@@ -50,7 +50,7 @@ namespace xio {
             : private noncopyable {
     public:
         /// The type of the next layer.
-        typedef remove_reference_t<Stream> next_layer_type;
+        typedef std::remove_reference_t<Stream> next_layer_type;
 
         /// The type of the lowest layer.
         typedef typename next_layer_type::lowest_layer_type lowest_layer_type;
@@ -129,7 +129,7 @@ namespace xio {
         auto async_flush(
             WriteHandler &&handler = default_completion_token_t<executor_type>())
             -> decltype(
-                declval<buffered_write_stream<Stream> &>().async_flush(
+                std::declval<buffered_write_stream<Stream> &>().async_flush(
                     static_cast<WriteHandler &&>(handler))) {
             return stream_impl_.next_layer().async_flush(
                 static_cast<WriteHandler &&>(handler));
@@ -162,7 +162,7 @@ namespace xio {
         auto async_write_some(const ConstBufferSequence &buffers,
                               WriteHandler &&handler = default_completion_token_t<executor_type>())
             -> decltype(
-                declval<Stream &>().async_write_some(buffers,
+                std::declval<Stream &>().async_write_some(buffers,
                                                      static_cast<WriteHandler &&>(handler))) {
             return stream_impl_.async_write_some(buffers,
                                                  static_cast<WriteHandler &&>(handler));
@@ -191,7 +191,7 @@ namespace xio {
         auto async_fill(
             ReadHandler &&handler = default_completion_token_t<executor_type>())
             -> decltype(
-                declval<buffered_read_stream<
+                std::declval<buffered_read_stream<
                     buffered_write_stream<Stream> > &>().async_fill(
                     static_cast<ReadHandler &&>(handler))) {
             return stream_impl_.async_fill(static_cast<ReadHandler &&>(handler));
@@ -224,7 +224,7 @@ namespace xio {
         auto async_read_some(const MutableBufferSequence &buffers,
                              ReadHandler &&handler = default_completion_token_t<executor_type>())
             -> decltype(
-                declval<Stream &>().async_read_some(buffers,
+                std::declval<Stream &>().async_read_some(buffers,
                                                     static_cast<ReadHandler &&>(handler))) {
             return stream_impl_.async_read_some(buffers,
                                                 static_cast<ReadHandler &&>(handler));

@@ -35,7 +35,7 @@ namespace xio {
         template<typename Executor, typename = void>
         class co_spawn_work_guard {
         public:
-            typedef decay_t<
+            typedef std::decay_t<
                 prefer_result_t<Executor,
                     execution::outstanding_work_t::tracked_t
                 >
@@ -57,7 +57,7 @@ namespace xio {
 
         template<typename Executor>
         struct co_spawn_work_guard<Executor,
-            enable_if_t <
+            std::enable_if_t <
             !execution::is_executor<Executor>::value
         >
         >
@@ -91,10 +91,10 @@ namespace xio {
 
         template<typename Handler, typename Executor, typename Function>
         struct co_spawn_state<Handler, Executor, Function,
-                    enable_if_t<
-                        is_same<
+                    std::enable_if_t<
+                        std::is_same<
                             typename associated_executor<Handler,
-                                Executor>::asio_associated_executor_is_unspecialised,
+                                Executor>::xio_associated_executor_is_unspecialised,
                             void>::value
                     > > {
             template<typename H, typename F>
@@ -245,10 +245,10 @@ namespace xio {
 
         template<typename Handler, typename Executor>
         class co_spawn_cancellation_handler<Handler, Executor,
-                    enable_if_t<
-                        is_same<
+                    std::enable_if_t<
+                        std::is_same<
                             typename associated_executor<Handler,
-                                Executor>::asio_associated_executor_is_unspecialised,
+                                Executor>::xio_associated_executor_is_unspecialised,
                             void>::value
                     > > {
         public:
@@ -284,8 +284,8 @@ namespace xio {
             template<typename Handler, typename F>
             void operator()(Handler &&handler, F &&f) const {
                 typedef result_of_t<F()> awaitable_type;
-                typedef decay_t<Handler> handler_type;
-                typedef decay_t<F> function_type;
+                typedef std::decay_t<Handler> handler_type;
+                typedef std::decay_t<F> function_type;
                 typedef co_spawn_cancellation_handler<
                     handler_type, Executor> cancel_handler_type;
 
@@ -323,7 +323,7 @@ namespace xio {
              awaitable<T, AwaitableExecutor> a, CompletionToken &&token,
              constraint_t<
                  (is_executor<Executor>::value || execution::is_executor<Executor>::value)
-                 && is_convertible<Executor, AwaitableExecutor>::value
+                 && std::is_convertible<Executor, AwaitableExecutor>::value
              >) {
         return async_initiate<CompletionToken, void(std::exception_ptr, T)>(
             detail::initiate_co_spawn<AwaitableExecutor>(AwaitableExecutor(ex)),
@@ -340,7 +340,7 @@ namespace xio {
              awaitable<void, AwaitableExecutor> a, CompletionToken &&token,
              constraint_t<
                  (is_executor<Executor>::value || execution::is_executor<Executor>::value)
-                 && is_convertible<Executor, AwaitableExecutor>::value
+                 && std::is_convertible<Executor, AwaitableExecutor>::value
              >) {
         return async_initiate<CompletionToken, void(std::exception_ptr)>(
             detail::initiate_co_spawn<AwaitableExecutor>(AwaitableExecutor(ex)),
@@ -357,8 +357,8 @@ namespace xio {
     co_spawn(ExecutionContext &ctx,
              awaitable<T, AwaitableExecutor> a, CompletionToken &&token,
              constraint_t<
-                 is_convertible<ExecutionContext &, execution_context &>::value
-                 && is_convertible<typename ExecutionContext::executor_type,
+                 std::is_convertible<ExecutionContext &, execution_context &>::value
+                 && std::is_convertible<typename ExecutionContext::executor_type,
                      AwaitableExecutor>::value
              >) {
         return (co_spawn)(ctx.get_executor(), std::move(a),
@@ -374,8 +374,8 @@ namespace xio {
     co_spawn(ExecutionContext &ctx,
              awaitable<void, AwaitableExecutor> a, CompletionToken &&token,
              constraint_t<
-                 is_convertible<ExecutionContext &, execution_context &>::value
-                 && is_convertible<typename ExecutionContext::executor_type,
+                 std::is_convertible<ExecutionContext &, execution_context &>::value
+                 && std::is_convertible<typename ExecutionContext::executor_type,
                      AwaitableExecutor>::value
              >) {
         return (co_spawn)(ctx.get_executor(), std::move(a),
@@ -407,7 +407,7 @@ namespace xio {
 
     co_spawn(ExecutionContext &ctx, F &&f, CompletionToken &&token,
              constraint_t<
-                 is_convertible<ExecutionContext &, execution_context &>::value
+                 std::is_convertible<ExecutionContext &, execution_context &>::value
              >) {
         return (co_spawn)(ctx.get_executor(), std::forward<F>(f),
                           std::forward<CompletionToken>(token));

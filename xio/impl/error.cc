@@ -111,7 +111,7 @@ namespace xio {
             class netdb_category : public xio::error_category {
             public:
                 const char *name() const noexcept {
-                    return "asio.netdb";
+                    return "xio.netdb";
                 }
 
                 std::string message(int value) const {
@@ -123,7 +123,7 @@ namespace xio {
                         return "The query is valid, but it does not have associated data";
                     if (value == error::no_recovery)
                         return "A non-recoverable error occurred during database lookup";
-                    return "asio.netdb error";
+                    return "xio.netdb error";
                 }
             };
         } // namespace detail
@@ -137,7 +137,7 @@ namespace xio {
             class addrinfo_category : public xio::error_category {
             public:
                 const char *name() const noexcept {
-                    return "asio.addrinfo";
+                    return "xio.addrinfo";
                 }
 
                 std::string message(int value) const {
@@ -145,7 +145,7 @@ namespace xio {
                         return "Service not found";
                     if (value == error::socket_type_not_supported)
                         return "Socket type not supported";
-                    return "asio.addrinfo error";
+                    return "xio.addrinfo error";
                 }
             };
         } // namespace detail
@@ -162,7 +162,7 @@ namespace xio {
             class misc_category : public xio::error_category {
             public:
                 const char *name() const noexcept {
-                    return "asio.misc";
+                    return "xio.misc";
                 }
 
                 std::string message(int value) const {
@@ -174,7 +174,7 @@ namespace xio {
                         return "Element not found";
                     if (value == error::fd_set_failure)
                         return "The descriptor does not fit into the select call's fd_set";
-                    return "asio.misc error";
+                    return "xio.misc error";
                 }
             };
         } // namespace detail

@@ -30,16 +30,16 @@ namespace xio {
 
     namespace detail {
         template<typename T, typename = void>
-        struct has_allocator_type : false_type {
+        struct has_allocator_type : std::false_type {
         };
 
         template<typename T>
-        struct has_allocator_type<T, void_t<typename T::allocator_type> > : true_type {
+        struct has_allocator_type<T, void_t<typename T::allocator_type> > : std::true_type {
         };
 
         template<typename T, typename A, typename = void, typename = void>
         struct associated_allocator_impl {
-            typedef void asio_associated_allocator_is_unspecialised;
+            typedef void xio_associated_allocator_is_unspecialised;
 
             typedef A type;
 
@@ -69,7 +69,7 @@ namespace xio {
 
         template<typename T, typename A>
         struct associated_allocator_impl<T, A,
-                    enable_if_t<
+                    std::enable_if_t<
                         !has_allocator_type<T>::value
                     >
                     ,
@@ -157,14 +157,14 @@ namespace xio {
 
         template<typename T, typename A>
         struct associated_allocator_forwarding_base<T, A,
-                    enable_if_t<
-                        is_same<
+                    std::enable_if_t<
+                        std::is_same<
                             typename associated_allocator<T,
-                                A>::asio_associated_allocator_is_unspecialised,
+                                A>::xio_associated_allocator_is_unspecialised,
                             void>::value
                     >
                 > {
-            typedef void asio_associated_allocator_is_unspecialised;
+            typedef void xio_associated_allocator_is_unspecialised;
         };
     } // namespace detail
 

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <asio/io_context.hpp>
-#include <asio/ip/udp.hpp>
+#include <xio/io_context.h>
+#include <xio/ip/udp.h>
 #include <boost/shared_ptr.hpp>
 #include <cstdio>
 #include <cstdlib>
@@ -19,7 +19,7 @@
 
 using xio::ip::udp;
 
-#include <asio/yield.hpp>
+#include <xio/yield.h>
 
 class udp_server : xio::coroutine
 {
@@ -47,12 +47,12 @@ public:
     }
   }
 
-  friend void* asio_handler_allocate(std::size_t n, udp_server* s)
+  friend void* xio_handler_allocate(std::size_t n, udp_server* s)
   {
     return s->allocator_.allocate(n);
   }
 
-  friend void asio_handler_deallocate(void* p, std::size_t, udp_server* s)
+  friend void xio_handler_deallocate(void* p, std::size_t, udp_server* s)
   {
     s->allocator_.deallocate(p);
   }
@@ -72,14 +72,14 @@ public:
   private:
     udp_server* p_;
 
-    friend void* asio_handler_allocate(std::size_t n, ref* r)
+    friend void* xio_handler_allocate(std::size_t n, ref* r)
     {
-      return asio_handler_allocate(n, r->p_);
+      return xio_handler_allocate(n, r->p_);
     }
 
-    friend void asio_handler_deallocate(void* p, std::size_t n, ref* r)
+    friend void xio_handler_deallocate(void* p, std::size_t n, ref* r)
     {
-      asio_handler_deallocate(p, n, r->p_);
+      xio_handler_deallocate(p, n, r->p_);
     }
   };
 
@@ -90,7 +90,7 @@ private:
   allocator allocator_;
 };
 
-#include <asio/unyield.hpp>
+#include <xio/unyield.h>
 
 int main(int argc, char* argv[])
 {

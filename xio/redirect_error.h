@@ -67,10 +67,10 @@ namespace xio {
   /// should capture error_code values to a variable.
         template<typename CompletionToken>
         [[nodiscard]] inline
-        constexpr redirect_error_t<decay_t<CompletionToken> >
+        constexpr redirect_error_t<std::decay_t<CompletionToken> >
 
         operator()(CompletionToken &&completion_token) const {
-            return redirect_error_t<decay_t<CompletionToken> >(
+            return redirect_error_t<std::decay_t<CompletionToken> >(
                 static_cast<CompletionToken &&>(completion_token), ec_);
         }
 
@@ -88,11 +88,11 @@ namespace xio {
 
     /// Adapt a @ref completion_token to capture error_code values to a variable.
     template<typename CompletionToken>
-    [[nodiscard]] inline redirect_error_t<decay_t<CompletionToken> >
+    [[nodiscard]] inline redirect_error_t<std::decay_t<CompletionToken> >
 
     redirect_error(CompletionToken &&completion_token,
                    xio::error_code &ec) {
-        return redirect_error_t<decay_t<CompletionToken> >(
+        return redirect_error_t<std::decay_t<CompletionToken> >(
             static_cast<CompletionToken &&>(completion_token), ec);
     }
 

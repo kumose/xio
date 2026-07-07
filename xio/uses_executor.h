@@ -50,14 +50,14 @@ inline constexpr executor_arg_t executor_arg;
 /// that is convertible from type Executor.
     /**
  * Meets the BinaryTypeTrait requirements. The Asio library provides a
- * definition that is derived from false_type. A program may specialize this
- * template to derive from true_type for a user-defined type T that can be
+ * definition that is derived from std::false_type. A program may specialize this
+ * template to derive from std::true_type for a user-defined type T that can be
  * constructed with an executor, where the first argument of a constructor has
  * type executor_arg_t and the second argument is convertible from type
  * Executor.
  */
     template<typename T, typename Executor>
-    struct uses_executor : false_type {
+    struct uses_executor : std::false_type {
     };
 
 

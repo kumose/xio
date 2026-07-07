@@ -102,7 +102,7 @@ explicit basic_stream_handle(const executor_type &ex)
 template<typename ExecutionContext>
 explicit basic_stream_handle(ExecutionContext & context,
                              constraint_t<
-                                 is_convertible<ExecutionContext &, execution_context &>::value,
+                                 std::is_convertible<ExecutionContext &, execution_context &>::value,
                                  defaulted_constraint
                              > = defaulted_constraint())
     : basic_overlapped_handle<Executor>(context) {
@@ -142,7 +142,7 @@ template<typename ExecutionContext>
 basic_stream_handle(ExecutionContext &context,
                     const native_handle_type &handle,
                     constraint_t<
-                        is_convertible<ExecutionContext &, execution_context &>::value
+                        std::is_convertible<ExecutionContext &, execution_context &>::value
                     > = 0)
     : basic_overlapped_handle<Executor>(context, handle) {
 }
@@ -192,7 +192,7 @@ basic_stream_handle &operator=(basic_stream_handle &&other) {
 template<typename Executor1>
 basic_stream_handle(basic_stream_handle<Executor1> && other,
                     constraint_t<
-                        is_convertible<Executor1, Executor>::value,
+                        std::is_convertible<Executor1, Executor>::value,
                         defaulted_constraint
                     > = defaulted_constraint())
     : basic_overlapped_handle<Executor>(std::move(other)) {
@@ -211,7 +211,7 @@ basic_stream_handle(basic_stream_handle<Executor1> && other,
    */
 template<typename Executor1>
 constraint_t<
-    is_convertible<Executor1, Executor>::value,
+    std::is_convertible<Executor1, Executor>::value,
     basic_stream_handle &> operator=(basic_stream_handle<Executor1> &&other) {
     basic_overlapped_handle<Executor>::operator=(std::move(other));
     return *this;
@@ -335,7 +335,7 @@ auto async_write_some(const ConstBufferSequence &buffers,
     -> decltype(
         async_initiate<WriteToken,
             void(xio::error_code, std::size_t)>(
-            declval<initiate_async_write_some>(), token, buffers)) {
+            std::declval<initiate_async_write_some>(), token, buffers)) {
     return async_initiate<WriteToken,
         void(xio::error_code, std::size_t)>(
         initiate_async_write_some(this), token, buffers);
@@ -462,7 +462,7 @@ auto async_read_some(const MutableBufferSequence &buffers,
     -> decltype(
         async_initiate<ReadToken,
             void(xio::error_code, std::size_t)>(
-            declval<initiate_async_read_some>(), token, buffers)) {
+            std::declval<initiate_async_read_some>(), token, buffers)) {
     return async_initiate<ReadToken,
         void(xio::error_code, std::size_t)>(
         initiate_async_read_some(this), token, buffers);

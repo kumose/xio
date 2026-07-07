@@ -8,7 +8,7 @@
 /**
 \page tutdaytime1 Daytime.1 - A synchronous TCP daytime client
 
-This tutorial program shows how to use asio to implement a client application
+This tutorial program shows how to use xio to implement a client application
 with TCP.
 
 \dontinclude daytime1/client.cpp
@@ -16,14 +16,14 @@ with TCP.
 
 We start by including the necessary header files.
 
-\until asio.hpp
+\until xio.hpp
 
 The purpose of this application is to access a daytime service,
 so we need the user to specify the server.
 
 \until }
 
-All programs that use asio need to have at least one I/O execution context,
+All programs that use xio need to have at least one I/O execution context,
 such as an xio::io_context object.
 
 \until xio::io_context
@@ -87,7 +87,7 @@ Return to \ref tutdaytime1
 /**
 \page tutdaytime2 Daytime.2 - A synchronous TCP daytime server
 
-This tutorial program shows how to use asio to implement a server application
+This tutorial program shows how to use xio to implement a server application
 with TCP.
 
 \dontinclude daytime2/server.cpp
@@ -255,7 +255,7 @@ Return to \ref tutdaytime3
 /**
 \page tutdaytime4 Daytime.4 - A synchronous UDP daytime client
 
-This tutorial program shows how to use asio to implement a client application
+This tutorial program shows how to use xio to implement a client application
 with UDP.
 
 \dontinclude daytime4/client.cpp
@@ -308,7 +308,7 @@ Return to \ref tutdaytime4
 /**
 \page tutdaytime5 Daytime.5 - A synchronous UDP daytime server
 
-This tutorial program shows how to use asio to implement a server application
+This tutorial program shows how to use xio to implement a server application
 with UDP.
 
 \dontinclude daytime5/server.cpp

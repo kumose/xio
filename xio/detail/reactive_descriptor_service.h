@@ -475,12 +475,12 @@ namespace xio {
             void start_op(implementation_type &impl, int op_type,
                           Op *op, bool is_continuation, bool allow_speculative,
                           bool noop, bool needs_non_blocking, const void *,
-                          enable_if_t<
-                              is_same <
+                          std::enable_if_t<
+                              std::is_same <
                               typename associated_immediate_executor <
                               typename Op::handler_type,
                               typename Op::io_executor_type
-                          >::asio_associated_immediate_executor_is_unspecialised,
+                          >::xio_associated_immediate_executor_is_unspecialised,
                           void
         >::value
       >*) {

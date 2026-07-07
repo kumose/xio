@@ -42,15 +42,15 @@ namespace xio {
         template<typename T, typename Property>
         struct prefer_member_trait<T, Property,
                     void_t<
-                        decltype(declval<T>().prefer(declval<Property>()))
+                        decltype(std::declval<T>().prefer(std::declval<Property>()))
                     > > {
             static constexpr bool is_valid = true;
 
             using result_type = decltype(
-                declval<T>().prefer(declval<Property>()));
+                std::declval<T>().prefer(std::declval<Property>()));
 
             static constexpr bool is_noexcept =
-                    noexcept(declval<T>().prefer(declval<Property>()));
+                    noexcept(std::declval<T>().prefer(std::declval<Property>()));
         };
 
     } // namespace detail

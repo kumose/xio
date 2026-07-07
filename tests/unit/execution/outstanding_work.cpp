@@ -48,7 +48,7 @@ namespace xio {
 namespace execution {
 
 template <>
-struct is_executor<ex_nq_nr> : xio::true_type
+struct is_executor<ex_nq_nr> : std::true_type
 {
 };
 
@@ -88,7 +88,7 @@ namespace execution {
 
 template <typename ResultType, typename ParamType, typename Result>
 struct is_executor<ex_cq_nr<ResultType, ParamType, Result> >
-  : xio::true_type
+  : std::true_type
 {
 };
 
@@ -106,8 +106,8 @@ template <typename ResultType, typename ParamType,
   typename Result, typename Param>
 struct query_static_constexpr_member<
   ex_cq_nr<ResultType, ParamType, Result>, Param,
-  typename xio::enable_if<
-    xio::is_convertible<Param, ParamType>::value
+  typename std::enable_if<
+    std::is_convertible<Param, ParamType>::value
   >::type>
 {
   static constexpr bool is_valid = true;
@@ -157,7 +157,7 @@ namespace execution {
 
 template <typename ResultType, typename ParamType, typename Result>
 struct is_executor<ex_mq_nr<ResultType, ParamType, Result> >
-  : xio::true_type
+  : std::true_type
 {
 };
 
@@ -175,8 +175,8 @@ template <typename ResultType, typename ParamType,
   typename Result, typename Param>
 struct query_member<
   ex_mq_nr<ResultType, ParamType, Result>, Param,
-  typename xio::enable_if<
-    xio::is_convertible<Param, ParamType>::value
+  typename std::enable_if<
+    std::is_convertible<Param, ParamType>::value
   >::type>
 {
   static constexpr bool is_valid = true;
@@ -221,7 +221,7 @@ namespace execution {
 
 template <typename ResultType, typename ParamType, typename Result>
 struct is_executor<ex_fq_nr<ResultType, ParamType, Result> >
-  : xio::true_type
+  : std::true_type
 {
 };
 
@@ -239,8 +239,8 @@ template <typename ResultType, typename ParamType,
   typename Result, typename Param>
 struct query_free<
   ex_fq_nr<ResultType, ParamType, Result>, Param,
-  typename xio::enable_if<
-    xio::is_convertible<Param, ParamType>::value
+  typename std::enable_if<
+    std::is_convertible<Param, ParamType>::value
   >::type>
 {
   static constexpr bool is_valid = true;
@@ -332,7 +332,7 @@ namespace execution {
 
 template <typename CurrentType, typename OtherType>
 struct is_executor<ex_mq_mr<CurrentType, OtherType> >
-  : xio::true_type
+  : std::true_type
 {
 };
 
@@ -349,9 +349,9 @@ namespace traits {
 template <typename CurrentType, typename OtherType, typename Param>
 struct query_member<
   ex_mq_mr<CurrentType, OtherType>, Param,
-  typename xio::enable_if<
-    xio::is_convertible<Param, CurrentType>::value
-      || xio::is_convertible<Param, OtherType>::value
+  typename std::enable_if<
+    std::is_convertible<Param, CurrentType>::value
+      || std::is_convertible<Param, OtherType>::value
   >::type>
 {
   static constexpr bool is_valid = true;
@@ -367,8 +367,8 @@ struct query_member<
 template <typename CurrentType, typename OtherType, typename Param>
 struct require_member<
   ex_mq_mr<CurrentType, OtherType>, Param,
-  typename xio::enable_if<
-    xio::is_convertible<Param, CurrentType>::value
+  typename std::enable_if<
+    std::is_convertible<Param, CurrentType>::value
   >::type>
 {
   static constexpr bool is_valid = true;
@@ -380,9 +380,9 @@ struct require_member<
 template <typename CurrentType, typename OtherType, typename Param>
 struct require_member<
   ex_mq_mr<CurrentType, OtherType>, Param,
-  typename xio::enable_if<
-    xio::is_convertible<Param, OtherType>::value
-      && !xio::is_same<CurrentType, OtherType>::value
+  typename std::enable_if<
+    std::is_convertible<Param, OtherType>::value
+      && !std::is_same<CurrentType, OtherType>::value
   >::type>
 {
   static constexpr bool is_valid = true;
@@ -492,7 +492,7 @@ namespace execution {
 
 template <typename CurrentType, typename OtherType>
 struct is_executor<ex_fq_fr<CurrentType, OtherType> >
-  : xio::true_type
+  : std::true_type
 {
 };
 
@@ -509,9 +509,9 @@ namespace traits {
 template <typename CurrentType, typename OtherType, typename Param>
 struct query_free<
   ex_fq_fr<CurrentType, OtherType>, Param,
-  typename xio::enable_if<
-    xio::is_convertible<Param, CurrentType>::value
-      || xio::is_convertible<Param, OtherType>::value
+  typename std::enable_if<
+    std::is_convertible<Param, CurrentType>::value
+      || std::is_convertible<Param, OtherType>::value
   >::type>
 {
   static constexpr bool is_valid = true;
@@ -527,8 +527,8 @@ struct query_free<
 template <typename CurrentType, typename OtherType, typename Param>
 struct require_free<
   ex_fq_fr<CurrentType, OtherType>, Param,
-  typename xio::enable_if<
-    xio::is_convertible<Param, CurrentType>::value
+  typename std::enable_if<
+    std::is_convertible<Param, CurrentType>::value
   >::type>
 {
   static constexpr bool is_valid = true;
@@ -540,9 +540,9 @@ struct require_free<
 template <typename CurrentType, typename OtherType, typename Param>
 struct require_free<
   ex_fq_fr<CurrentType, OtherType>, Param,
-  typename xio::enable_if<
-    xio::is_convertible<Param, OtherType>::value
-      && !xio::is_same<CurrentType, OtherType>::value
+  typename std::enable_if<
+    std::is_convertible<Param, OtherType>::value
+      && !std::is_same<CurrentType, OtherType>::value
   >::type>
 {
   static constexpr bool is_valid = true;
@@ -558,8 +558,8 @@ struct require_free<
 template <typename CurrentType, typename OtherType, typename Param>
 struct prefer_free<
   ex_fq_fr<CurrentType, OtherType>, Param,
-  typename xio::enable_if<
-    xio::is_convertible<Param, CurrentType>::value
+  typename std::enable_if<
+    std::is_convertible<Param, CurrentType>::value
   >::type>
 {
   static constexpr bool is_valid = true;
@@ -571,9 +571,9 @@ struct prefer_free<
 template <typename CurrentType, typename OtherType, typename Param>
 struct prefer_free<
   ex_fq_fr<CurrentType, OtherType>, Param,
-  typename xio::enable_if<
-    xio::is_convertible<Param, OtherType>::value
-      && !xio::is_same<CurrentType, OtherType>::value
+  typename std::enable_if<
+    std::is_convertible<Param, OtherType>::value
+      && !std::is_same<CurrentType, OtherType>::value
   >::type>
 {
   static constexpr bool is_valid = true;

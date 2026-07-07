@@ -69,7 +69,7 @@ namespace xio {
 
             template<typename InnerProperty>
             struct prefer_only_is_preferable<InnerProperty,
-                        enable_if_t<
+                        std::enable_if_t<
                             InnerProperty::is_preferable
                         >
                     > {
@@ -102,7 +102,7 @@ namespace xio {
             template<typename InnerProperty>
             struct prefer_only_property<InnerProperty,
                         void_t<
-                            decltype(xio::declval<const InnerProperty>().value())
+                            decltype(std::declval<const InnerProperty>().value())
                         >
                     > {
                 InnerProperty property;
@@ -112,8 +112,8 @@ namespace xio {
                 }
 
                 constexpr auto value() const
-                    noexcept(noexcept(xio::declval<const InnerProperty>().value()))
-                    -> decltype(xio::declval<const InnerProperty>().value()) {
+                    noexcept(noexcept(std::declval<const InnerProperty>().value()))
+                    -> decltype(std::declval<const InnerProperty>().value()) {
                     return property.value();
                 }
             };
@@ -148,10 +148,10 @@ namespace xio {
             friend constexpr
             prefer_result_t<const Executor &, const InnerProperty &>
             prefer(const Executor &ex, const prefer_only<Property> &p,
-                   enable_if_t<
-                       is_same<Property, InnerProperty>::value
+                   std::enable_if_t<
+                       std::is_same<Property, InnerProperty>::value
                    > * = 0,
-                   enable_if_t<
+                   std::enable_if_t<
                        can_prefer<const Executor &, const InnerProperty &>::value
                    > * = 0)
 #if !defined(ASIO_MSVC) \
@@ -167,10 +167,10 @@ namespace xio {
             friend constexpr
             query_result_t<const Executor &, const InnerProperty &>
             query(const Executor &ex, const prefer_only<Property> &p,
-                  enable_if_t<
-                      is_same<Property, InnerProperty>::value
+                  std::enable_if_t<
+                      std::is_same<Property, InnerProperty>::value
                   > * = 0,
-                  enable_if_t<
+                  std::enable_if_t<
                       can_query<const Executor &, const InnerProperty &>::value
                   > * = 0)
 #if !defined(ASIO_MSVC) \

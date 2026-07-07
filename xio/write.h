@@ -275,10 +275,10 @@ namespace xio {
     std::size_t write(SyncWriteStream & s,
                       DynamicBuffer_v1 && buffers,
                       constraint_t<
-                          is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                          is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                       > = 0,
                       constraint_t <
-                      !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                      !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                       > = 0);
 
     /// Write all of the supplied data to a stream before returning.
@@ -313,10 +313,10 @@ namespace xio {
                       DynamicBuffer_v1 && buffers,
                       xio::error_code & ec,
                       constraint_t<
-                          is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                          is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                       > = 0,
                       constraint_t <
-                      !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                      !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                       > = 0);
 
     /// Write a certain amount of data to a stream before returning.
@@ -361,10 +361,10 @@ namespace xio {
                       DynamicBuffer_v1 &&buffers,
                       CompletionCondition completion_condition,
                       constraint_t<
-                          is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                          is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                       > = 0,
                       constraint_t<
-                          !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                          !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                       > = 0,
                       constraint_t<
                           is_completion_condition<CompletionCondition>::value
@@ -413,10 +413,10 @@ namespace xio {
                       DynamicBuffer_v1 &&buffers,
                       CompletionCondition completion_condition, xio::error_code &ec,
                       constraint_t<
-                          is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                          is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                       > = 0,
                       constraint_t<
-                          !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                          !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                       > = 0,
                       constraint_t<
                           is_completion_condition<CompletionCondition>::value
@@ -824,12 +824,12 @@ namespace xio {
                                 is_const_buffer_sequence<ConstBufferSequence>::value
                             > = 0,
                             constraint_t<
-                                !is_completion_condition<decay_t<WriteToken> >::value
+                                !is_completion_condition<std::decay_t<WriteToken> >::value
                             > = 0)
         -> decltype(
             async_initiate<WriteToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_write<AsyncWriteStream> >(),
+                std::declval<detail::initiate_async_write<AsyncWriteStream> >(),
                 token, buffers, transfer_all())) {
         return async_initiate<WriteToken,
             void(xio::error_code, std::size_t)>(
@@ -937,7 +937,7 @@ namespace xio {
         -> decltype(
             async_initiate<WriteToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_write<AsyncWriteStream> >(),
+                std::declval<detail::initiate_async_write<AsyncWriteStream> >(),
                 token, buffers,
                 static_cast<CompletionCondition &&>(completion_condition))) {
         return async_initiate<WriteToken,
@@ -1015,19 +1015,19 @@ namespace xio {
                             WriteToken && token
                             = default_completion_token_t<typename AsyncWriteStream::executor_type>(),
                             constraint_t<
-                                is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                                is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                             > = 0,
                             constraint_t <
-                            !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                            !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                             > = 0,
                             constraint_t <
-                            !is_completion_condition<decay_t<WriteToken> >::value
+                            !is_completion_condition<std::decay_t<WriteToken> >::value
                             > = 0)
     ->
     decltype(
         async_initiate<WriteToken,
             void(xio::error_code, std::size_t)>(
-            declval<detail::initiate_async_write_dynbuf_v1<AsyncWriteStream> >(),
+            std::declval<detail::initiate_async_write_dynbuf_v1<AsyncWriteStream> >(),
             token, static_cast<DynamicBuffer_v1 &&>(buffers),
             transfer_all())) {
         return async_initiate<WriteToken,
@@ -1119,10 +1119,10 @@ namespace xio {
                             WriteToken &&token
                                     = default_completion_token_t<typename AsyncWriteStream::executor_type>(),
                             constraint_t<
-                                is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
+                                is_dynamic_buffer_v1<std::decay_t<DynamicBuffer_v1> >::value
                             > = 0,
                             constraint_t<
-                                !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
+                                !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                             > = 0,
                             constraint_t<
                                 is_completion_condition<CompletionCondition>::value
@@ -1130,7 +1130,7 @@ namespace xio {
         -> decltype(
             async_initiate<WriteToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_write_dynbuf_v1<AsyncWriteStream> >(),
+                std::declval<detail::initiate_async_write_dynbuf_v1<AsyncWriteStream> >(),
                 token, static_cast<DynamicBuffer_v1 &&>(buffers),
                 static_cast<CompletionCondition &&>(completion_condition))) {
         return async_initiate<WriteToken,
@@ -1207,13 +1207,13 @@ namespace xio {
                             WriteToken && token
                             = default_completion_token_t<typename AsyncWriteStream::executor_type>(),
                             constraint_t <
-                            !is_completion_condition<decay_t<WriteToken> >::value
+                            !is_completion_condition<std::decay_t<WriteToken> >::value
                             > = 0)
     ->
     decltype(
         async_initiate<WriteToken,
             void(xio::error_code, std::size_t)>(
-            declval<detail::initiate_async_write_dynbuf_v1<AsyncWriteStream> >(),
+            std::declval<detail::initiate_async_write_dynbuf_v1<AsyncWriteStream> >(),
             token, basic_streambuf_ref<Allocator>(b), transfer_all())) {
         return async_initiate<WriteToken,
             void(xio::error_code, std::size_t)>(
@@ -1306,7 +1306,7 @@ namespace xio {
         -> decltype(
             async_initiate<WriteToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_write_dynbuf_v1<AsyncWriteStream> >(),
+                std::declval<detail::initiate_async_write_dynbuf_v1<AsyncWriteStream> >(),
                 token, basic_streambuf_ref<Allocator>(b),
                 static_cast<CompletionCondition &&>(completion_condition))) {
         return async_initiate<WriteToken,
@@ -1389,12 +1389,12 @@ namespace xio {
                                 is_dynamic_buffer_v2<DynamicBuffer_v2>::value
                             > = 0,
                             constraint_t<
-                                !is_completion_condition<decay_t<WriteToken> >::value
+                                !is_completion_condition<std::decay_t<WriteToken> >::value
                             > = 0)
         -> decltype(
             async_initiate<WriteToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_write_dynbuf_v2<AsyncWriteStream> >(),
+                std::declval<detail::initiate_async_write_dynbuf_v2<AsyncWriteStream> >(),
                 token, static_cast<DynamicBuffer_v2 &&>(buffers),
                 transfer_all())) {
         return async_initiate<WriteToken,
@@ -1494,7 +1494,7 @@ namespace xio {
         -> decltype(
             async_initiate<WriteToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_write_dynbuf_v2<AsyncWriteStream> >(),
+                std::declval<detail::initiate_async_write_dynbuf_v2<AsyncWriteStream> >(),
                 token, static_cast<DynamicBuffer_v2 &&>(buffers),
                 static_cast<CompletionCondition &&>(completion_condition))) {
         return async_initiate<WriteToken,

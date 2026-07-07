@@ -254,9 +254,9 @@ namespace xio {
         template<typename U, typename OtherCancellationSlot>
         cancellation_slot_binder(
             const cancellation_slot_binder<U, OtherCancellationSlot> &other,
-            constraint_t<is_constructible<CancellationSlot,
+            constraint_t<std::is_constructible<CancellationSlot,
                 OtherCancellationSlot>::value> = 0,
-            constraint_t<is_constructible<T, U>::value> = 0)
+            constraint_t<std::is_constructible<T, U>::value> = 0)
             : slot_(other.get_cancellation_slot()),
               target_(other.get()) {
         }
@@ -270,7 +270,7 @@ namespace xio {
         template<typename U, typename OtherCancellationSlot>
         cancellation_slot_binder(const cancellation_slot_type &s,
                                  const cancellation_slot_binder<U, OtherCancellationSlot> &other,
-                                 constraint_t<is_constructible<T, U>::value> = 0)
+                                 constraint_t<std::is_constructible<T, U>::value> = 0)
             : slot_(s),
               target_(other.get()) {
         }
@@ -294,9 +294,9 @@ namespace xio {
         template<typename U, typename OtherCancellationSlot>
         cancellation_slot_binder(
             cancellation_slot_binder<U, OtherCancellationSlot> &&other,
-            constraint_t<is_constructible<CancellationSlot,
+            constraint_t<std::is_constructible<CancellationSlot,
                 OtherCancellationSlot>::value> = 0,
-            constraint_t<is_constructible<T, U>::value> = 0)
+            constraint_t<std::is_constructible<T, U>::value> = 0)
             : slot_(static_cast<OtherCancellationSlot &&>(
                   other.get_cancellation_slot())),
               target_(static_cast<U &&>(other.get())) {
@@ -307,7 +307,7 @@ namespace xio {
         template<typename U, typename OtherCancellationSlot>
         cancellation_slot_binder(const cancellation_slot_type &s,
                                  cancellation_slot_binder<U, OtherCancellationSlot> &&other,
-                                 constraint_t<is_constructible<T, U>::value> = 0)
+                                 constraint_t<std::is_constructible<T, U>::value> = 0)
             : slot_(s),
               target_(static_cast<U &&>(other.get())) {
         }
@@ -373,10 +373,10 @@ namespace xio {
   /// should have the cancellation slot as its associated cancellation slot.
         template<typename CompletionToken>
         [[nodiscard]] inline
-        constexpr cancellation_slot_binder<decay_t<CompletionToken>, CancellationSlot>
+        constexpr cancellation_slot_binder<std::decay_t<CompletionToken>, CancellationSlot>
 
         operator()(CompletionToken &&completion_token) const {
-            return cancellation_slot_binder<decay_t<CompletionToken>, CancellationSlot>(
+            return cancellation_slot_binder<std::decay_t<CompletionToken>, CancellationSlot>(
                 static_cast<CompletionToken &&>(completion_token), cancellation_slot_);
         }
 
@@ -396,10 +396,10 @@ namespace xio {
 /// @c CancellationSlot.
     template<typename CancellationSlot, typename T>
     [[nodiscard]] inline
-    cancellation_slot_binder<decay_t<T>, CancellationSlot>
+    cancellation_slot_binder<std::decay_t<T>, CancellationSlot>
 
     bind_cancellation_slot(const CancellationSlot &s, T &&t) {
-        return cancellation_slot_binder<decay_t<T>, CancellationSlot>(
+        return cancellation_slot_binder<std::decay_t<T>, CancellationSlot>(
             s, static_cast<T &&>(t));
     }
 
@@ -468,7 +468,7 @@ namespace xio {
             void operator()(Handler &&handler,
                             const CancellationSlot &slot, Args &&... args) && {
                 static_cast<Initiation &&>(*this)(
-                    cancellation_slot_binder<decay_t<Handler>, CancellationSlot>(
+                    cancellation_slot_binder<std::decay_t<Handler>, CancellationSlot>(
                         slot, static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -477,7 +477,7 @@ namespace xio {
             void operator()(Handler &&handler,
                             const CancellationSlot &slot, Args &&... args) const & {
                 static_cast<const Initiation &>(*this)(
-                    cancellation_slot_binder<decay_t<Handler>, CancellationSlot>(
+                    cancellation_slot_binder<std::decay_t<Handler>, CancellationSlot>(
                         slot, static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -488,17 +488,17 @@ namespace xio {
                              RawCompletionToken &&token, Args &&... args)
             -> decltype(
                 async_initiate<
-                    conditional_t<
-                        is_const<remove_reference_t<RawCompletionToken> >::value, const T, T>,
+                    std::conditional_t<
+                        std::is_const<std::remove_reference_t<RawCompletionToken> >::value, const T, T>,
                     Signature>(
-                    declval<init_wrapper<decay_t<Initiation> > >(),
+                    std::declval<init_wrapper<std::decay_t<Initiation> > >(),
                     token.get(), token.get_cancellation_slot(),
                     static_cast<Args &&>(args)...)) {
             return async_initiate<
-                conditional_t<
-                    is_const<remove_reference_t<RawCompletionToken> >::value, const T, T>,
+                std::conditional_t<
+                    std::is_const<std::remove_reference_t<RawCompletionToken> >::value, const T, T>,
                 Signature>(
-                init_wrapper<decay_t<Initiation> >(
+                init_wrapper<std::decay_t<Initiation> >(
                     static_cast<Initiation &&>(initiation)),
                 token.get(), token.get_cancellation_slot(),
                 static_cast<Args &&>(args)...);

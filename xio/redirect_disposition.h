@@ -69,10 +69,10 @@ namespace xio {
   /// should capture disposition values to a variable.
         template<typename CompletionToken>
         [[nodiscard]] inline
-        constexpr redirect_disposition_t<decay_t<CompletionToken>, Disposition>
+        constexpr redirect_disposition_t<std::decay_t<CompletionToken>, Disposition>
 
         operator()(CompletionToken &&completion_token) const {
-            return redirect_disposition_t<decay_t<CompletionToken>, Disposition>(
+            return redirect_disposition_t<std::decay_t<CompletionToken>, Disposition>(
                 static_cast<CompletionToken &&>(completion_token), d_);
         }
 
@@ -100,10 +100,10 @@ namespace xio {
  */
     template<typename CompletionToken, ASIO_DISPOSITION Disposition>
     [[nodiscard]] inline
-    redirect_disposition_t<decay_t<CompletionToken>, Disposition>
+    redirect_disposition_t<std::decay_t<CompletionToken>, Disposition>
 
     redirect_disposition(CompletionToken &&completion_token, Disposition &d) {
-        return redirect_disposition_t<decay_t<CompletionToken>, Disposition>(
+        return redirect_disposition_t<std::decay_t<CompletionToken>, Disposition>(
             static_cast<CompletionToken &&>(completion_token), d);
     }
 

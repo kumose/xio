@@ -1035,7 +1035,7 @@ namespace xio {
 
     namespace execution {
         template<>
-        struct is_executor<io_context> : false_type {
+        struct is_executor<io_context> : std::false_type {
         };
     } // namespace execution
 

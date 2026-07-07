@@ -44,7 +44,7 @@ namespace xio {
         inline Iterator call_connect_condition(ConnectCondition &connect_condition,
                                                const xio::error_code &ec, Iterator next, Iterator end,
                                                constraint_t<
-                                                   is_same <
+                                                   std::is_same <
                                                    result_of_t < ConnectCondition(xio::error_code, Iterator)>,
                                                Iterator
         >::value
@@ -58,9 +58,9 @@ namespace xio {
         inline Iterator call_connect_condition(ConnectCondition &connect_condition,
                                                const xio::error_code &ec, Iterator next, Iterator end,
                                                constraint_t<
-                                                   is_same <
+                                                   std::is_same <
                                                    result_of_t < ConnectCondition(xio::error_code,
-                                                       decltype(*declval<Iterator>()))>,
+                                                       decltype(*std::declval<Iterator>()))>,
                                                bool
         >::value
       > = 0) {
@@ -118,7 +118,7 @@ namespace xio {
                                         >,
                                         constraint_t<
                                             is_connect_condition<ConnectCondition,
-                                                decltype(declval<const EndpointSequence &>().begin())>::value
+                                                decltype(std::declval<const EndpointSequence &>().begin())>::value
                                         >) {
         xio::error_code ec;
         typename Protocol::endpoint result = connect(
@@ -137,7 +137,7 @@ namespace xio {
                                         >,
                                         constraint_t<
                                             is_connect_condition<ConnectCondition,
-                                                decltype(declval<const EndpointSequence &>().begin())>::value
+                                                decltype(std::declval<const EndpointSequence &>().begin())>::value
                                         >) {
         return detail::deref_connect_result<Protocol>(
             connect(s, endpoints.begin(), endpoints.end(),
@@ -334,7 +334,7 @@ namespace xio {
 
         template<typename Protocol, typename Executor, typename EndpointSequence,
             typename ConnectCondition, typename RangeConnectHandler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             range_connect_op<Protocol, Executor, EndpointSequence,
                 ConnectCondition, RangeConnectHandler> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
@@ -369,7 +369,7 @@ namespace xio {
 
                 non_const_lvalue<RangeConnectHandler> handler2(handler);
                 range_connect_op<Protocol, Executor, EndpointSequence, ConnectCondition,
-                    decay_t<RangeConnectHandler> >(socket_, endpoints,
+                    std::decay_t<RangeConnectHandler> >(socket_, endpoints,
                                                    connect_condition, handler2.value)(xio::error_code(), 1);
             }
 
@@ -480,7 +480,7 @@ namespace xio {
 
         template<typename Protocol, typename Executor, typename Iterator,
             typename ConnectCondition, typename IteratorConnectHandler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             iterator_connect_op<Protocol, Executor, Iterator,
                 ConnectCondition, IteratorConnectHandler> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
@@ -516,7 +516,7 @@ namespace xio {
 
                 non_const_lvalue<IteratorConnectHandler> handler2(handler);
                 iterator_connect_op<Protocol, Executor, Iterator, ConnectCondition,
-                    decay_t<IteratorConnectHandler> >(socket_, begin, end,
+                    std::decay_t<IteratorConnectHandler> >(socket_, begin, end,
                                                       connect_condition, handler2.value)(xio::error_code(), 1);
             }
 

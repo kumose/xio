@@ -29,17 +29,17 @@ namespace xio {
 
     namespace detail {
         template<typename T, typename = void>
-        struct has_cancellation_slot_type : false_type {
+        struct has_cancellation_slot_type : std::false_type {
         };
 
         template<typename T>
         struct has_cancellation_slot_type<T, void_t<typename T::cancellation_slot_type> >
-                : true_type {
+                : std::true_type {
         };
 
         template<typename T, typename S, typename = void, typename = void>
         struct associated_cancellation_slot_impl {
-            typedef void asio_associated_cancellation_slot_is_unspecialised;
+            typedef void xio_associated_cancellation_slot_is_unspecialised;
 
             typedef S type;
 
@@ -70,7 +70,7 @@ namespace xio {
 
         template<typename T, typename S>
         struct associated_cancellation_slot_impl<T, S,
-                    enable_if_t<
+                    std::enable_if_t<
                         !has_cancellation_slot_type<T>::value
                     >
                     ,
@@ -162,14 +162,14 @@ namespace xio {
 
         template<typename T, typename S>
         struct associated_cancellation_slot_forwarding_base<T, S,
-                    enable_if_t<
-                        is_same<
+                    std::enable_if_t<
+                        std::is_same<
                             typename associated_cancellation_slot<T,
-                                S>::asio_associated_cancellation_slot_is_unspecialised,
+                                S>::xio_associated_cancellation_slot_is_unspecialised,
                             void>::value
                     >
                 > {
-            typedef void asio_associated_cancellation_slot_is_unspecialised;
+            typedef void xio_associated_cancellation_slot_is_unspecialised;
         };
     } // namespace detail
 

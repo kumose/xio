@@ -11,7 +11,7 @@
 #ifndef SERVICES_BASIC_LOGGER_HPP
 #define SERVICES_BASIC_LOGGER_HPP
 
-#include <asio.hpp>
+#include <xio/xio.h>
 #include <string>
 
 namespace services {

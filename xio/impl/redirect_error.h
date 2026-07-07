@@ -54,8 +54,8 @@ namespace xio {
             }
 
             template<typename Arg, typename... Args>
-            enable_if_t<
-                !is_same<decay_t<Arg>, xio::error_code>::value
+            std::enable_if_t<
+                !std::is_same<std::decay_t<Arg>, xio::error_code>::value
             >
             operator()(Arg &&arg, Args &&... args) {
                 static_cast<Handler &&>(handler_)(
@@ -75,7 +75,7 @@ namespace xio {
         };
 
         template<typename Handler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             redirect_error_handler<Handler> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
@@ -172,7 +172,7 @@ namespace xio {
             void operator()(Handler &&handler,
                             xio::error_code *ec, Args &&... args) && {
                 static_cast<Initiation &&>(*this)(
-                    detail::redirect_error_handler<decay_t<Handler> >(
+                    detail::redirect_error_handler<std::decay_t<Handler> >(
                         *ec, static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -181,7 +181,7 @@ namespace xio {
             void operator()(Handler &&handler,
                             xio::error_code *ec, Args &&... args) const & {
                 static_cast<const Initiation &>(*this)(
-                    detail::redirect_error_handler<decay_t<Handler> >(
+                    detail::redirect_error_handler<std::decay_t<Handler> >(
                         *ec, static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -192,18 +192,18 @@ namespace xio {
                              RawCompletionToken &&token, Args &&... args)
             -> decltype(
                 async_initiate<
-                    conditional_t<
-                        is_const<remove_reference_t<RawCompletionToken> >::value,
+                    std::conditional_t<
+                        std::is_const<std::remove_reference_t<RawCompletionToken> >::value,
                         const CompletionToken, CompletionToken>,
                     typename detail::redirect_error_signature<Signature>::type>(
-                    declval<init_wrapper<decay_t<Initiation> > >(),
+                    std::declval<init_wrapper<std::decay_t<Initiation> > >(),
                     token.token_, &token.ec_, static_cast<Args &&>(args)...)) {
             return async_initiate<
-                conditional_t<
-                    is_const<remove_reference_t<RawCompletionToken> >::value,
+                std::conditional_t<
+                    std::is_const<std::remove_reference_t<RawCompletionToken> >::value,
                     const CompletionToken, CompletionToken>,
                 typename detail::redirect_error_signature<Signature>::type>(
-                init_wrapper<decay_t<Initiation> >(
+                init_wrapper<std::decay_t<Initiation> >(
                     static_cast<Initiation &&>(initiation)),
                 token.token_, &token.ec_, static_cast<Args &&>(args)...);
         }

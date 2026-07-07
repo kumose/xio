@@ -28,7 +28,7 @@ namespace xio {
  * control flow associated with the current handler. The implementation can use
  * this knowledge to optimise scheduling of the handler.
  *
- * Implement asio_handler_is_continuation for your own handlers to indicate
+ * Implement xio_handler_is_continuation for your own handlers to indicate
  * when a handler represents a continuation.
  *
  * The default implementation of the continuation hook returns <tt>false</tt>.
@@ -37,13 +37,13 @@ namespace xio {
  * @code
  * class my_handler;
  *
- * bool asio_handler_is_continuation(my_handler* context)
+ * bool xio_handler_is_continuation(my_handler* context)
  * {
  *   return true;
  * }
  * @endcode
  */
-    inline bool asio_handler_is_continuation(...) {
+    inline bool xio_handler_is_continuation(...) {
         return false;
     }
 

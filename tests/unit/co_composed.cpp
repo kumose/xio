@@ -517,19 +517,19 @@ void test_no_signatures_detached()
           }
         }), xio::detached, std::ref(ctx), std::ref(count1), std::ref(count2));
 
-  ASIO_ASSERT(count1 == 1);
-  ASIO_ASSERT(count2 == 0);
+  assert(count1 == 1);
+  assert(count2 == 0);
 
   ctx.run_one();
 
-  ASIO_ASSERT(count1 == 2);
-  ASIO_ASSERT(count2 == 1);
+  assert(count1 == 2);
+  assert(count2 == 1);
 
   ctx.restart();
   ctx.run_one();
 
-  ASIO_ASSERT(count1 == 3);
-  ASIO_ASSERT(count2 == 2);
+  assert(count1 == 3);
+  assert(count2 == 2);
 }
 
 ASIO_TEST_SUITE

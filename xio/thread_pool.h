@@ -614,7 +614,7 @@ namespace xio {
         template<typename Function>
         void execute(Function &&f) const {
             this->do_execute(static_cast<Function &&>(f),
-                             integral_constant<bool, (Bits & blocking_always) != 0>());
+                             std::integral_constant<bool, (Bits & blocking_always) != 0>());
         }
 
     public:
@@ -719,11 +719,11 @@ namespace xio {
 
         /// Execution helper implementation for possibly and never blocking.
         template<typename Function>
-        void do_execute(Function &&f, false_type) const;
+        void do_execute(Function &&f, std::false_type) const;
 
         /// Execution helper implementation for always blocking.
         template<typename Function>
-        void do_execute(Function &&f, true_type) const;
+        void do_execute(Function &&f, std::true_type) const;
 
         // The underlying thread pool.
         thread_pool *pool_;
@@ -739,7 +739,7 @@ namespace xio {
 
     namespace execution {
         template<>
-        struct is_executor<thread_pool> : false_type {
+        struct is_executor<thread_pool> : std::false_type {
         };
     } // namespace execution
 

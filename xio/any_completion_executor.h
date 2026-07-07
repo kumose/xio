@@ -97,14 +97,14 @@ namespace xio {
         template<typename OtherAnyExecutor>
         any_completion_executor(OtherAnyExecutor e,
                                 constraint_t<
-                                    conditional<
-                                        !is_same<OtherAnyExecutor, any_completion_executor>::value
-                                        && is_base_of<execution::detail::any_executor_base,
+                                    std::conditional<
+                                        !std::is_same<OtherAnyExecutor, any_completion_executor>::value
+                                        && std::is_base_of<execution::detail::any_executor_base,
                                             OtherAnyExecutor>::value,
                                         typename execution::detail::supportable_properties<
                                             0, supportable_properties_type>::template
                                         is_valid_target<OtherAnyExecutor>,
-                                        false_type
+                                        std::false_type
                                     >::type::value
                                 > = 0)
             : base_type(static_cast<OtherAnyExecutor &&>(e)) {
@@ -120,14 +120,14 @@ namespace xio {
         template<typename OtherAnyExecutor>
         any_completion_executor(std::nothrow_t, OtherAnyExecutor e,
                                 constraint_t<
-                                    conditional<
-                                        !is_same<OtherAnyExecutor, any_completion_executor>::value
-                                        && is_base_of<execution::detail::any_executor_base,
+                                    std::conditional<
+                                        !std::is_same<OtherAnyExecutor, any_completion_executor>::value
+                                        && std::is_base_of<execution::detail::any_executor_base,
                                             OtherAnyExecutor>::value,
                                         typename execution::detail::supportable_properties<
                                             0, supportable_properties_type>::template
                                         is_valid_target<OtherAnyExecutor>,
-                                        false_type
+                                        std::false_type
                                     >::type::value
                                 > = 0) noexcept
             : base_type(std::nothrow, static_cast<OtherAnyExecutor &&>(e)) {
@@ -150,13 +150,13 @@ namespace xio {
         template<ASIO_EXECUTION_EXECUTOR Executor>
         any_completion_executor(Executor e,
                                 constraint_t<
-                                    conditional<
-                                        !is_same<Executor, any_completion_executor>::value
-                                        && !is_base_of<execution::detail::any_executor_base,
+                                    std::conditional<
+                                        !std::is_same<Executor, any_completion_executor>::value
+                                        && !std::is_base_of<execution::detail::any_executor_base,
                                             Executor>::value,
                                         execution::detail::is_valid_target_executor<
                                             Executor, supportable_properties_type>,
-                                        false_type
+                                        std::false_type
                                     >::type::value
                                 > = 0)
             : base_type(static_cast<Executor &&>(e)) {
@@ -171,13 +171,13 @@ namespace xio {
         template<ASIO_EXECUTION_EXECUTOR Executor>
         any_completion_executor(std::nothrow_t, Executor e,
                                 constraint_t<
-                                    conditional<
-                                        !is_same<Executor, any_completion_executor>::value
-                                        && !is_base_of<execution::detail::any_executor_base,
+                                    std::conditional<
+                                        !std::is_same<Executor, any_completion_executor>::value
+                                        && !std::is_base_of<execution::detail::any_executor_base,
                                             Executor>::value,
                                         execution::detail::is_valid_target_executor<
                                             Executor, supportable_properties_type>,
-                                        false_type
+                                        std::false_type
                                     >::type::value
                                 > = 0) noexcept
             : base_type(std::nothrow, static_cast<Executor &&>(e)) {

@@ -14,7 +14,6 @@
 
 set(XIO_TEST_INCLUDES
         ${PROJECT_SOURCE_DIR}/tests
-        ${PROJECT_SOURCE_DIR}/refs/asio/include
 )
 
 set(XIO_TEST_DEFINES

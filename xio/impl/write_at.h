@@ -242,7 +242,7 @@ namespace xio {
         template<typename AsyncRandomAccessWriteDevice,
             typename ConstBufferSequence, typename ConstBufferIterator,
             typename CompletionCondition, typename WriteHandler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             write_at_op<AsyncRandomAccessWriteDevice, ConstBufferSequence,
                 ConstBufferIterator, CompletionCondition, WriteHandler> *this_handler) {
             return this_handler->start_ == 0
@@ -366,7 +366,7 @@ namespace xio {
         };
 
         template<typename Allocator, typename WriteHandler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             write_at_streambuf_op<Allocator, WriteHandler> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
@@ -400,7 +400,7 @@ namespace xio {
                 non_const_lvalue<WriteHandler> handler2(handler);
                 async_write_at(device_, offset, b->data(),
                                static_cast<CompletionCondition &&>(completion_condition),
-                               write_at_streambuf_op<Allocator, decay_t<WriteHandler> >(
+                               write_at_streambuf_op<Allocator, std::decay_t<WriteHandler> >(
                                    *b, handler2.value));
             }
 

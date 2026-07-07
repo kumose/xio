@@ -92,11 +92,11 @@ namespace xio {
 
         template<typename Handler>
         class base_from_cancellation_state<Handler,
-                    enable_if_t<
-                        is_same<
+                    std::enable_if_t<
+                        std::is_same<
                             typename associated_cancellation_slot<
                                 Handler, cancellation_slot
-                            >::asio_associated_cancellation_slot_is_unspecialised,
+                            >::xio_associated_cancellation_slot_is_unspecialised,
                             void>::value
                     >
                 > {

@@ -13,7 +13,7 @@
 #include <iomanip>
 #include <ostream>
 #include <string>
-#include <asio.hpp>
+#include <xio/xio.h>
 #include "socks4.hpp"
 
 using xio::ip::tcp;

@@ -116,7 +116,7 @@ namespace xio {
                 CompletionToken &&token)
                 -> decltype(
                     async_initiate<CompletionToken, PayloadSignatures...>(
-                        declval<initiate_async_receive>(), token)) {
+                        std::declval<initiate_async_receive>(), token)) {
                 return async_initiate<CompletionToken, PayloadSignatures...>(
                     initiate_async_receive(this), token);
             }
@@ -169,7 +169,7 @@ namespace xio {
             basic_concurrent_channel(ExecutionContext &context,
                                      std::size_t max_buffer_size = 0,
                                      constraint_t<
-                                         is_convertible<ExecutionContext &, execution_context &>::value,
+                                         std::is_convertible<ExecutionContext &, execution_context &>::value,
                                          defaulted_constraint
                                      > = defaulted_constraint())
                 : service_(&xio::use_service<service_type>(context)),
@@ -237,7 +237,7 @@ namespace xio {
             basic_concurrent_channel(
                 basic_concurrent_channel<Executor1, Traits, Signatures...> &&other,
                 constraint_t<
-                    is_convertible<Executor1, Executor>::value
+                    std::is_convertible<Executor1, Executor>::value
                 > = 0)
                 : service_(other.service_),
                   executor_(other.executor_) {
@@ -259,7 +259,7 @@ namespace xio {
    */
             template<typename Executor1>
             constraint_t<
-                is_convertible<Executor1, Executor>::value,
+                std::is_convertible<Executor1, Executor>::value,
                 basic_concurrent_channel &> operator=(
                 basic_concurrent_channel<Executor1, Traits, Signatures...> &&other) {
                 if (this != &other) {
@@ -408,14 +408,14 @@ namespace xio {
             // Helper function to get an executor's context.
             template<typename T>
             static execution_context &get_context(const T &t,
-                                                  enable_if_t<execution::is_executor<T>::value> * = 0) {
+                                                  std::enable_if_t<execution::is_executor<T>::value> * = 0) {
                 return xio::query(t, execution::context);
             }
 
             // Helper function to get an executor's context.
             template<typename T>
             static execution_context &get_context(const T &t,
-                                                  enable_if_t<!execution::is_executor<T>::value> * = 0) {
+                                                  std::enable_if_t<!execution::is_executor<T>::value> * = 0) {
                 return t.context();
             }
 

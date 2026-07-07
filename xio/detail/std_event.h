@@ -18,7 +18,7 @@
 #include <xio/detail/config.h>
 #include <chrono>
 #include <condition_variable>
-#include <xio/detail/assert.h>
+# include <cassert>
 #include <xio/detail/noncopyable.h>
 
 #include <xio/detail/push_options.h>
@@ -48,7 +48,7 @@ namespace xio {
             // Signal all waiters.
             template<typename Lock>
             void signal_all(Lock &lock) {
-                ASIO_ASSERT(lock.locked());
+                assert(lock.locked());
                 (void) lock;
                 state_ |= 1;
                 cond_.notify_all();
@@ -57,7 +57,7 @@ namespace xio {
             // Unlock the mutex and signal one waiter.
             template<typename Lock>
             void unlock_and_signal_one(Lock &lock) {
-                ASIO_ASSERT(lock.locked());
+                assert(lock.locked());
                 state_ |= 1;
                 bool have_waiters = (state_ > 1);
                 lock.unlock();
@@ -68,7 +68,7 @@ namespace xio {
             // Unlock the mutex and signal one waiter who may destroy us.
             template<typename Lock>
             void unlock_and_signal_one_for_destruction(Lock &lock) {
-                ASIO_ASSERT(lock.locked());
+                assert(lock.locked());
                 state_ |= 1;
                 bool have_waiters = (state_ > 1);
                 if (have_waiters)
@@ -79,7 +79,7 @@ namespace xio {
             // If there's a waiter, unlock the mutex and signal it.
             template<typename Lock>
             bool maybe_unlock_and_signal_one(Lock &lock) {
-                ASIO_ASSERT(lock.locked());
+                assert(lock.locked());
                 state_ |= 1;
                 if (state_ > 1) {
                     lock.unlock();
@@ -92,7 +92,7 @@ namespace xio {
             // Reset the event.
             template<typename Lock>
             void clear(Lock &lock) {
-                ASIO_ASSERT(lock.locked());
+                assert(lock.locked());
                 (void) lock;
                 state_ &= ~std::size_t(1);
             }
@@ -100,7 +100,7 @@ namespace xio {
             // Wait for the event to become signalled.
             template<typename Lock>
             void wait(Lock &lock) {
-                ASIO_ASSERT(lock.locked());
+                assert(lock.locked());
                 unique_lock_adapter u_lock(lock);
                 while ((state_ & 1) == 0) {
                     waiter w(state_);
@@ -111,7 +111,7 @@ namespace xio {
             // Timed wait for the event to become signalled.
             template<typename Lock>
             bool wait_for_usec(Lock &lock, long usec) {
-                ASIO_ASSERT(lock.locked());
+                assert(lock.locked());
                 unique_lock_adapter u_lock(lock);
                 if ((state_ & 1) == 0) {
                     waiter w(state_);

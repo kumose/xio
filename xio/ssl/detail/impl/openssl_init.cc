@@ -18,7 +18,7 @@
 
 #include <xio/detail/config.h>
 #include <vector>
-#include <xio/detail/assert.h>
+# include <cassert>
 #include <xio/detail/mutex.h>
 #include <xio/detail/tss_ptr.h>
 #include <xio/ssl/detail/openssl_init.h>
@@ -112,7 +112,7 @@ namespace xio {
                     return ::GetCurrentThreadId();
 #else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
                     void *id = &errno;
-                    ASIO_ASSERT(sizeof(unsigned long) >= sizeof(void *));
+                    assert(sizeof(unsigned long) >= sizeof(void *));
                     return reinterpret_cast<unsigned long>(id);
 #endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
                 }

@@ -83,7 +83,7 @@ namespace xio {
                                 > = 0)
         -> decltype(
             async_initiate<NullaryToken, void()>(
-                declval<detail::initiate_immediate<Executor> >(), token)) {
+                std::declval<detail::initiate_immediate<Executor> >(), token)) {
         return async_initiate<NullaryToken, void()>(
             detail::initiate_immediate<Executor>(ex), token);
     }
@@ -116,12 +116,12 @@ namespace xio {
                                 NullaryToken && token = default_completion_token_t<
                                     typename ExecutionContext::executor_type>(),
                                 constraint_t<
-                                    is_convertible<ExecutionContext &, execution_context &>::value
+                                    std::is_convertible<ExecutionContext &, execution_context &>::value
                                 > = 0)
     ->
     decltype(
         async_initiate<NullaryToken, void()>(
-            declval<detail::initiate_immediate<
+            std::declval<detail::initiate_immediate<
                 typename ExecutionContext::executor_type> >(), token)) {
         return async_initiate<NullaryToken, void()>(
             detail::initiate_immediate<

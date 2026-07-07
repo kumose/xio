@@ -211,8 +211,8 @@ namespace xio {
             }
 
             template<typename... Args2>
-            enable_if_t<
-                is_constructible < completion_message < R(Args...)>
+            std::enable_if_t<
+                std::is_constructible < completion_message < R(Args...)>
             ,
             int
             ,
@@ -240,8 +240,8 @@ namespace xio {
             using timed_cancel_op_handler<Op, Signatures...>::operator();
 
             template<typename... Args2>
-            enable_if_t<
-                is_constructible < completion_message < R(Args...)>
+            std::enable_if_t<
+                std::is_constructible < completion_message < R(Args...)>
             ,
             int
             ,

@@ -12,7 +12,7 @@
 #define STDIN_LINE_READER_HPP
 
 #include "line_reader.hpp"
-#include <asio/posix/stream_descriptor.hpp>
+#include <xio/posix/stream_descriptor.h>
 
 class stdin_line_reader : public line_reader
 {

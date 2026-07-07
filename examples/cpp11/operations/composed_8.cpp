@@ -8,13 +8,13 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <asio/compose.hpp>
-#include <asio/deferred.hpp>
-#include <asio/io_context.hpp>
-#include <asio/ip/tcp.hpp>
-#include <asio/steady_timer.hpp>
-#include <asio/use_future.hpp>
-#include <asio/write.hpp>
+#include <xio/compose.h>
+#include <xio/deferred.h>
+#include <xio/io_context.h>
+#include <xio/ip/tcp.h>
+#include <xio/steady_timer.h>
+#include <xio/use_future.h>
+#include <xio/write.h>
 #include <functional>
 #include <iostream>
 #include <memory>
@@ -27,19 +27,19 @@ using xio::ip::tcp;
 
 // NOTE: This example requires the new xio::async_compose function. For
 // an example that works with the Networking TS style of completion tokens,
-// please see an older version of asio.
+// please see an older version of xio.
 
 //------------------------------------------------------------------------------
 
 // This composed operation shows composition of multiple underlying operations,
-// using asio's stackless coroutines support to express the flow of control. It
+// using xio's stackless coroutines support to express the flow of control. It
 // automatically serialises a message, using its I/O streams insertion
 // operator, before sending it N times on the socket. To do this, it must
 // allocate a buffer for the encoded message and ensure this buffer's validity
 // until all underlying async_write operation complete. A one second delay is
 // inserted prior to each write operation, using a steady_timer.
 
-#include <asio/yield.hpp>
+#include <xio/yield.h>
 
 // In this example, the composed operation's logic is implemented as a state
 // machine within a hand-crafted function object.
@@ -108,7 +108,7 @@ struct async_write_messages_implementation
   }
 };
 
-#include <asio/unyield.hpp>
+#include <xio/unyield.h>
 
 template <typename T, typename CompletionToken>
 auto async_write_messages(tcp::socket& socket,

@@ -159,7 +159,7 @@ namespace xio {
    */
         template<typename Function, typename Allocator>
         void dispatch(Function &&f, const Allocator &a) const {
-            decay_t<Function> tmp(static_cast<Function &&>(f));
+            std::decay_t<Function> tmp(static_cast<Function &&>(f));
             service_.dispatch(impl_, tmp);
             (void) a;
         }
@@ -179,7 +179,7 @@ namespace xio {
    */
         template<typename Function, typename Allocator>
         void post(Function &&f, const Allocator &a) const {
-            decay_t<Function> tmp(static_cast<Function &&>(f));
+            std::decay_t<Function> tmp(static_cast<Function &&>(f));
             service_.post(impl_, tmp);
             (void) a;
         }
@@ -199,7 +199,7 @@ namespace xio {
    */
         template<typename Function, typename Allocator>
         void defer(Function &&f, const Allocator &a) const {
-            decay_t<Function> tmp(static_cast<Function &&>(f));
+            std::decay_t<Function> tmp(static_cast<Function &&>(f));
             service_.post(impl_, tmp);
             (void) a;
         }

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <asio.hpp>
-#include <asio/experimental/awaitable_operators.hpp>
+#include <xio/xio.h>
+#include <xio/experimental/awaitable_operators.h>
 
 using namespace xio;
 using namespace xio::experimental::awaitable_operators;

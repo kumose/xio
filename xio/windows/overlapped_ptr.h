@@ -52,7 +52,7 @@ namespace xio {
             explicit overlapped_ptr(ExecutionContext &context,
                                     Handler &&handler,
                                     constraint_t<
-                                        is_convertible<ExecutionContext &, execution_context &>::value
+                                        std::is_convertible<ExecutionContext &, execution_context &>::value
                                     > = 0)
                 : impl_(context.get_executor(), static_cast<Handler &&>(handler)) {
             }
@@ -82,7 +82,7 @@ namespace xio {
             template<typename ExecutionContext, typename Handler>
             void reset(ExecutionContext &context, Handler &&handler,
                        constraint_t<
-                           is_convertible<ExecutionContext &, execution_context &>::value
+                           std::is_convertible<ExecutionContext &, execution_context &>::value
                        > = 0) {
                 impl_.reset(context.get_executor(), static_cast<Handler &&>(handler));
             }

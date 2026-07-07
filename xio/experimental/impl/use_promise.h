@@ -42,10 +42,10 @@ namespace xio {
         template<typename Initiation, typename... InitArgs>
         static auto initiate(Initiation initiation,
                              experimental::use_promise_t<Allocator> up, InitArgs... args)
-            -> experimental::promise<void(decay_t<Args>...),
+            -> experimental::promise<void(std::decay_t<Args>...),
                 xio::associated_executor_t<Initiation>, Allocator> {
             using handler_type = experimental::detail::promise_handler<
-                void(decay_t<Args>...),
+                void(std::decay_t<Args>...),
                 xio::associated_executor_t<Initiation>, Allocator>;
 
             handler_type ht{up.get_allocator(), get_associated_executor(initiation)};

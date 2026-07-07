@@ -71,7 +71,7 @@ namespace xio {
 
         /// Retrieve an integral configuration value.
         template<typename T>
-        constraint_t<is_integral<T>::value, T>
+        constraint_t<std::is_integral<T>::value, T>
         get(const char *section, const char *key_name, T default_value) const;
 
     private:
@@ -125,7 +125,7 @@ namespace xio {
  */
     class config_from_string : public execution_context::service_maker {
     public:
-        /// Construct with the default prefix "asio".
+        /// Construct with the default prefix "xio".
         explicit config_from_string(std::string s)
             : string_(static_cast<std::string &&>(s)),
               prefix_() {
@@ -157,7 +157,7 @@ namespace xio {
  */
     class config_from_env : public execution_context::service_maker {
     public:
-        /// Construct with the default prefix "asio".
+        /// Construct with the default prefix "xio".
         ASIO_DECL config_from_env();
 
         /// Construct with a specified prefix.

@@ -57,7 +57,7 @@ namespace xio {
         };
 
         template<typename Handler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             as_tuple_handler<Handler> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
@@ -69,34 +69,34 @@ namespace xio {
 
         template<typename R, typename... Args>
         struct as_tuple_signature<R(Args...)> {
-            typedef R type(std::tuple<decay_t<Args>...>);
+            typedef R type(std::tuple<std::decay_t<Args>...>);
         };
 
         template<typename R, typename... Args>
         struct as_tuple_signature<R(Args...) &> {
-            typedef R type(std::tuple<decay_t<Args>...>) &;
+            typedef R type(std::tuple<std::decay_t<Args>...>) &;
         };
 
         template<typename R, typename... Args>
         struct as_tuple_signature<R(Args...) &&> {
-            typedef R type(std::tuple<decay_t<Args>...>) &&;
+            typedef R type(std::tuple<std::decay_t<Args>...>) &&;
         };
 
 #if defined(ASIO_HAS_NOEXCEPT_FUNCTION_TYPE)
 
         template<typename R, typename... Args>
         struct as_tuple_signature<R(Args...) noexcept> {
-            typedef R type(std::tuple<decay_t<Args>...>) noexcept;
+            typedef R type(std::tuple<std::decay_t<Args>...>) noexcept;
         };
 
         template<typename R, typename... Args>
         struct as_tuple_signature<R(Args...) & noexcept> {
-            typedef R type(std::tuple<decay_t<Args>...>) & noexcept;
+            typedef R type(std::tuple<std::decay_t<Args>...>) & noexcept;
         };
 
         template<typename R, typename... Args>
         struct as_tuple_signature<R(Args...) && noexcept> {
-            typedef R type(std::tuple<decay_t<Args>...>) && noexcept;
+            typedef R type(std::tuple<std::decay_t<Args>...>) && noexcept;
         };
 
 #endif // defined(ASIO_HAS_NOEXCEPT_FUNCTION_TYPE)
@@ -115,7 +115,7 @@ namespace xio {
             template<typename Handler, typename... Args>
             void operator()(Handler &&handler, Args &&... args) && {
                 static_cast<Initiation &&>(*this)(
-                    detail::as_tuple_handler<decay_t<Handler> >(
+                    detail::as_tuple_handler<std::decay_t<Handler> >(
                         static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -123,7 +123,7 @@ namespace xio {
             template<typename Handler, typename... Args>
             void operator()(Handler &&handler, Args &&... args) const & {
                 static_cast<const Initiation &>(*this)(
-                    detail::as_tuple_handler<decay_t<Handler> >(
+                    detail::as_tuple_handler<std::decay_t<Handler> >(
                         static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -134,19 +134,19 @@ namespace xio {
                              RawCompletionToken &&token, Args &&... args)
             -> decltype(
                 async_initiate<
-                    conditional_t<
-                        is_const<remove_reference_t<RawCompletionToken> >::value,
+                    std::conditional_t<
+                        std::is_const<std::remove_reference_t<RawCompletionToken> >::value,
                         const CompletionToken, CompletionToken>,
                     typename detail::as_tuple_signature<Signatures>::type...>(
-                    init_wrapper<decay_t<Initiation> >(
+                    init_wrapper<std::decay_t<Initiation> >(
                         static_cast<Initiation &&>(initiation)),
                     token.token_, static_cast<Args &&>(args)...)) {
             return async_initiate<
-                conditional_t<
-                    is_const<remove_reference_t<RawCompletionToken> >::value,
+                std::conditional_t<
+                    std::is_const<std::remove_reference_t<RawCompletionToken> >::value,
                     const CompletionToken, CompletionToken>,
                 typename detail::as_tuple_signature<Signatures>::type...>(
-                init_wrapper<decay_t<Initiation> >(
+                init_wrapper<std::decay_t<Initiation> >(
                     static_cast<Initiation &&>(initiation)),
                 token.token_, static_cast<Args &&>(args)...);
         }
@@ -167,7 +167,7 @@ namespace xio {
             template<typename Handler, typename... Args>
             void operator()(Handler &&handler, Args &&... args) && {
                 static_cast<Initiation &&>(*this)(
-                    detail::as_tuple_handler<decay_t<Handler> >(
+                    detail::as_tuple_handler<std::decay_t<Handler> >(
                         static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -175,7 +175,7 @@ namespace xio {
             template<typename Handler, typename... Args>
             void operator()(Handler &&handler, Args &&... args) const & {
                 static_cast<const Initiation &>(*this)(
-                    detail::as_tuple_handler<decay_t<Handler> >(
+                    detail::as_tuple_handler<std::decay_t<Handler> >(
                         static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -186,19 +186,19 @@ namespace xio {
                              RawCompletionToken &&token, Args &&... args)
             -> decltype(
                 async_initiate<
-                    conditional_t<
-                        is_const<remove_reference_t<RawCompletionToken> >::value,
+                    std::conditional_t<
+                        std::is_const<std::remove_reference_t<RawCompletionToken> >::value,
                         const CompletionToken, CompletionToken>,
                     typename detail::as_tuple_signature<Signature>::type>(
-                    init_wrapper<decay_t<Initiation> >(
+                    init_wrapper<std::decay_t<Initiation> >(
                         static_cast<Initiation &&>(initiation)),
                     token.token_, static_cast<Args &&>(args)...)) {
             return async_initiate<
-                conditional_t<
-                    is_const<remove_reference_t<RawCompletionToken> >::value,
+                std::conditional_t<
+                    std::is_const<std::remove_reference_t<RawCompletionToken> >::value,
                     const CompletionToken, CompletionToken>,
                 typename detail::as_tuple_signature<Signature>::type>(
-                init_wrapper<decay_t<Initiation> >(
+                init_wrapper<std::decay_t<Initiation> >(
                     static_cast<Initiation &&>(initiation)),
                 token.token_, static_cast<Args &&>(args)...);
         }

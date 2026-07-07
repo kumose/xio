@@ -1,12 +1,12 @@
 AUTOMAKE_OPTIONS = subdir-objects
 
 if SEPARATE_COMPILATION
-noinst_LIBRARIES = libasio.a
-libasio_a_SOURCES = ../../asio.cpp
+noinst_LIBRARIES = libxio.a
+libxio_a_SOURCES = ../../xio.cpp
 if HAVE_OPENSSL
-libasio_a_SOURCES += ../../asio_ssl.cpp
+libxio_a_SOURCES += ../../xio_ssl.cpp
 endif
-LDADD = libasio.a
+LDADD = libxio.a
 endif
 
 noinst_PROGRAMS = \

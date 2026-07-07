@@ -34,28 +34,28 @@ namespace xio {
         class initiate_async_iterator_connect;
 
         template<typename T, typename = void, typename = void>
-        struct is_endpoint_sequence_helper : false_type {
+        struct is_endpoint_sequence_helper : std::false_type {
         };
 
         template<typename T>
         struct is_endpoint_sequence_helper<T,
                     void_t<
-                        decltype(declval<T>().begin())
+                        decltype(std::declval<T>().begin())
                     >,
                     void_t<
-                        decltype(declval<T>().end())
+                        decltype(std::declval<T>().end())
                     >
-                > : true_type {
+                > : std::true_type {
         };
 
         template<typename T, typename Iterator, typename = void>
-        struct is_connect_condition_helper : false_type {
+        struct is_connect_condition_helper : std::false_type {
         };
 
         template<typename T, typename Iterator>
         struct is_connect_condition_helper<T, Iterator,
-            enable_if_t <
-            is_same <
+            std::enable_if_t <
+            std::is_same <
             result_of_t < T(xio::error_code, Iterator)>
         ,
         Iterator
@@ -64,15 +64,15 @@ namespace xio {
         >
         >
         :
-        true_type {
+        std::true_type {
         };
 
         template<typename T, typename Iterator>
         struct is_connect_condition_helper<T, Iterator,
-            enable_if_t <
-            is_same <
+            std::enable_if_t <
+            std::is_same <
             result_of_t < T(xio::error_code,
-                            decltype(*declval<Iterator>()))>
+                            decltype(*std::declval<Iterator>()))>
         ,
         bool
         >
@@ -80,7 +80,7 @@ namespace xio {
         >
         >
         :
-        true_type {
+        std::true_type {
         };
 
         struct default_connect_condition {
@@ -325,7 +325,7 @@ namespace xio {
                                         > = 0,
                                         constraint_t<
                                             is_connect_condition<ConnectCondition,
-                                                decltype(declval<const EndpointSequence &>().begin())>::value
+                                                decltype(std::declval<const EndpointSequence &>().begin())>::value
                                         > = 0);
 
     /// Establishes a socket connection by trying each endpoint in a sequence.
@@ -398,7 +398,7 @@ namespace xio {
                                         > = 0,
                                         constraint_t<
                                             is_connect_condition<ConnectCondition,
-                                                decltype(declval<const EndpointSequence &>().begin())>::value
+                                                decltype(std::declval<const EndpointSequence &>().begin())>::value
                                         > = 0);
 
     /// Establishes a socket connection by trying each endpoint in a sequence.
@@ -633,13 +633,13 @@ namespace xio {
                               > = 0,
                               constraint_t<
                                   !is_connect_condition<RangeConnectToken,
-                                      decltype(declval<const EndpointSequence &>().begin())>::value
+                                      decltype(std::declval<const EndpointSequence &>().begin())>::value
                               > = 0)
         -> decltype(
             async_initiate<RangeConnectToken,
                 void(xio::error_code, typename Protocol::endpoint)>(
-                declval<detail::initiate_async_range_connect<Protocol, Executor> >(),
-                token, endpoints, declval<detail::default_connect_condition>())) {
+                std::declval<detail::initiate_async_range_connect<Protocol, Executor> >(),
+                token, endpoints, std::declval<detail::default_connect_condition>())) {
         return async_initiate<RangeConnectToken,
             void(xio::error_code, typename Protocol::endpoint)>(
             detail::initiate_async_range_connect<Protocol, Executor>(s),
@@ -723,8 +723,8 @@ namespace xio {
         -> decltype(
             async_initiate<IteratorConnectToken,
                 void(xio::error_code, Iterator)>(
-                declval<detail::initiate_async_iterator_connect<Protocol, Executor> >(),
-                token, begin, end, declval<detail::default_connect_condition>())) {
+                std::declval<detail::initiate_async_iterator_connect<Protocol, Executor> >(),
+                token, begin, end, std::declval<detail::default_connect_condition>())) {
         return async_initiate<IteratorConnectToken,
             void(xio::error_code, Iterator)>(
             detail::initiate_async_iterator_connect<Protocol, Executor>(s),
@@ -854,12 +854,12 @@ namespace xio {
                               > = 0,
                               constraint_t<
                                   is_connect_condition<ConnectCondition,
-                                      decltype(declval<const EndpointSequence &>().begin())>::value
+                                      decltype(std::declval<const EndpointSequence &>().begin())>::value
                               > = 0)
         -> decltype(
             async_initiate<RangeConnectToken,
                 void(xio::error_code, typename Protocol::endpoint)>(
-                declval<detail::initiate_async_range_connect<Protocol, Executor> >(),
+                std::declval<detail::initiate_async_range_connect<Protocol, Executor> >(),
                 token, endpoints, connect_condition)) {
         return async_initiate<RangeConnectToken,
             void(xio::error_code, typename Protocol::endpoint)>(
@@ -994,7 +994,7 @@ namespace xio {
         -> decltype(
             async_initiate<IteratorConnectToken,
                 void(xio::error_code, Iterator)>(
-                declval<detail::initiate_async_iterator_connect<Protocol, Executor> >(),
+                std::declval<detail::initiate_async_iterator_connect<Protocol, Executor> >(),
                 token, begin, end, connect_condition)) {
         return async_initiate<IteratorConnectToken,
             void(xio::error_code, Iterator)>(

@@ -87,7 +87,7 @@ namespace xio {
 
             template<typename... Args>
             auto complete(Args &&... args)
-                -> decltype(declval<Handler>()(static_cast<Args &&>(args)...)) {
+                -> decltype(std::declval<Handler>()(static_cast<Args &&>(args)...)) {
                 return static_cast<Handler &&>(this->handler_)(static_cast<Args &&>(args)...);
             }
 
@@ -165,7 +165,7 @@ namespace xio {
         };
 
         template<typename Impl, typename Work, typename Handler, typename Signature>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             composed_op<Impl, Work, Handler, Signature> *this_handler) {
             return this_handler->invocations_ > 1
                        ? true
@@ -191,16 +191,16 @@ namespace xio {
 
             template<typename Handler, typename... Args>
             void operator()(Handler &&handler, Args &&... args) const & {
-                composed_op<decay_t<Implementation>, composed_work<Executors>,
-                    decay_t<Handler>, Signatures...>(implementation_,
+                composed_op<std::decay_t<Implementation>, composed_work<Executors>,
+                    std::decay_t<Handler>, Signatures...>(implementation_,
                                                      composed_work<Executors>(executors_),
                                                      static_cast<Handler &&>(handler))(static_cast<Args &&>(args)...);
             }
 
             template<typename Handler, typename... Args>
             void operator()(Handler &&handler, Args &&... args) && {
-                composed_op<decay_t<Implementation>, composed_work<Executors>,
-                    decay_t<Handler>, Signatures...>(
+                composed_op<std::decay_t<Implementation>, composed_work<Executors>,
+                    std::decay_t<Handler>, Signatures...>(
                     static_cast<Implementation &&>(implementation_),
                     composed_work<Executors>(executors_),
                     static_cast<Handler &&>(handler))(static_cast<Args &&>(args)...);
@@ -221,8 +221,8 @@ namespace xio {
 
             template<typename Handler, typename... Args>
             void operator()(Handler &&handler, Args &&... args) const & {
-                composed_op<decay_t<Implementation>, composed_work < void()>,
-                        decay_t<Handler>, Signatures
+                composed_op<std::decay_t<Implementation>, composed_work < void()>,
+                        std::decay_t<Handler>, Signatures
                 ...
                 >
                 (implementation_,
@@ -232,8 +232,8 @@ namespace xio {
 
             template<typename Handler, typename... Args>
             void operator()(Handler &&handler, Args &&... args) && {
-                composed_op<decay_t<Implementation>, composed_work < void()>,
-                        decay_t<Handler>, Signatures
+                composed_op<std::decay_t<Implementation>, composed_work < void()>,
+                        std::decay_t<Handler>, Signatures
                 ...
                 >
                 (
@@ -250,7 +250,7 @@ namespace xio {
         inline initiate_composed<Implementation, Executors, Signatures...>
         make_initiate_composed(Implementation &&implementation,
                                composed_io_executors<Executors> &&executors) {
-            return initiate_composed<decay_t<Implementation>, Executors, Signatures...>(
+            return initiate_composed<std::decay_t<Implementation>, Executors, Signatures...>(
                 static_cast<Implementation &&>(implementation),
                 static_cast<composed_io_executors<Executors> &&>(executors));
         }

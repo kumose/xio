@@ -93,13 +93,13 @@ namespace xio {
         };
 
         template<typename T, typename = void>
-        struct is_completion_condition_helper : false_type {
+        struct is_completion_condition_helper : std::false_type {
         };
 
         template<typename T>
         struct is_completion_condition_helper<T,
-            enable_if_t <
-            is_same <
+            std::enable_if_t <
+            std::is_same <
             result_of_t < T(xio::error_code, std::size_t)>
         ,
         bool
@@ -108,13 +108,13 @@ namespace xio {
         >
         >
         :
-        true_type {
+        std::true_type {
         };
 
         template<typename T>
         struct is_completion_condition_helper<T,
-            enable_if_t <
-            is_same <
+            std::enable_if_t <
+            std::is_same <
             result_of_t < T(xio::error_code, std::size_t)>
         ,
         std::size_t
@@ -123,7 +123,7 @@ namespace xio {
         >
         >
         :
-        true_type {
+        std::true_type {
         };
     } // namespace detail
 

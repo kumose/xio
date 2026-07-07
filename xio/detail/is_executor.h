@@ -103,7 +103,7 @@ namespace xio {
 
         template<typename T>
         struct is_executor_class
-                : integral_constant<bool,
+                : std::integral_constant<bool,
                     sizeof(context_memfn_helper<T>(0)) != 1 &&
                     sizeof(on_work_started_memfn_helper<T>(0)) != 1 &&
                     sizeof(on_work_finished_memfn_helper<T>(0)) != 1 &&
@@ -114,9 +114,9 @@ namespace xio {
 
         template<typename T>
         struct is_executor
-                : conditional<is_class<T>::value,
+                : std::conditional<std::is_class<T>::value,
                     is_executor_class<T>,
-                    false_type>::type {
+                    std::false_type>::type {
         };
     } // namespace detail
 

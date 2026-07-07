@@ -176,11 +176,11 @@ namespace xio {
                         auto query(P &&p) const
                             noexcept(
                                 noexcept(
-                                    declval<conditional_t<true, T, P> >().query(static_cast<P &&>(p))
+                                    std::declval<std::conditional_t<true, T, P> >().query(static_cast<P &&>(p))
                                 )
                             )
                             -> decltype(
-                                declval<conditional_t<true, T, P> >().query(static_cast<P &&>(p))
+                                std::declval<std::conditional_t<true, T, P> >().query(static_cast<P &&>(p))
                             );
                     };
 
@@ -193,11 +193,11 @@ namespace xio {
                         static constexpr auto query(P &&p)
                             noexcept(
                                 noexcept(
-                                    conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                    std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
                                 )
                             )
                             -> decltype(
-                                conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
                             ) {
                             return T::query(static_cast<P &&>(p));
                         }
@@ -228,13 +228,13 @@ namespace xio {
                 static constexpr
                 typename traits::static_query<T, untracked_t>::result_type
                 static_query(
-                    enable_if_t<
+                    std::enable_if_t<
                         !query_static_constexpr_member<T>::is_valid
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         !query_member<T>::is_valid
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         traits::static_query<T, untracked_t>::is_valid
                     > * = 0) noexcept {
                     return traits::static_query<T, untracked_t>::value();
@@ -244,16 +244,16 @@ namespace xio {
                 static constexpr
                 typename traits::static_query<T, tracked_t>::result_type
                 static_query(
-                    enable_if_t<
+                    std::enable_if_t<
                         !query_static_constexpr_member<T>::is_valid
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         !query_member<T>::is_valid
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         !traits::static_query<T, untracked_t>::is_valid
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         traits::static_query<T, tracked_t>::is_valid
                     > * = 0) noexcept {
                     return traits::static_query<T, tracked_t>::value();
@@ -282,7 +282,7 @@ namespace xio {
                 template<typename Executor>
                 friend constexpr outstanding_work_t query(
                     const Executor &ex, convertible_from_outstanding_work_t,
-                    enable_if_t<
+                    std::enable_if_t<
                         can_query<const Executor &, untracked_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
@@ -300,10 +300,10 @@ namespace xio {
                 template<typename Executor>
                 friend constexpr outstanding_work_t query(
                     const Executor &ex, convertible_from_outstanding_work_t,
-                    enable_if_t<
+                    std::enable_if_t<
                         !can_query<const Executor &, untracked_t>::value
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         can_query<const Executor &, tracked_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
@@ -375,16 +375,16 @@ namespace xio {
 
                     template<typename T>
                     static constexpr untracked_t static_query(
-                        enable_if_t<
+                        std::enable_if_t<
                             !query_static_constexpr_member<T>::is_valid
                         > * = 0,
-                        enable_if_t<
+                        std::enable_if_t<
                             !query_member<T>::is_valid
                         > * = 0,
-                        enable_if_t<
+                        std::enable_if_t<
                             !traits::query_free<T, untracked_t>::is_valid
                         > * = 0,
-                        enable_if_t<
+                        std::enable_if_t<
                             !can_query<T, tracked_t<I> >::value
                         > * = 0) noexcept {
                         return untracked_t();

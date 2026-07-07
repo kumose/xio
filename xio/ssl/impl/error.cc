@@ -29,7 +29,7 @@ namespace xio {
             class ssl_category : public xio::error_category {
             public:
                 const char *name() const noexcept {
-                    return "asio.ssl";
+                    return "xio.ssl";
                 }
 
                 std::string message(int value) const {
@@ -54,7 +54,7 @@ namespace xio {
                         }
                         return result;
                     }
-                    return "asio.ssl error";
+                    return "xio.ssl error";
                 }
             };
         } // namespace detail
@@ -78,7 +78,7 @@ namespace xio {
                 class stream_category : public xio::error_category {
                 public:
                     const char *name() const noexcept {
-                        return "asio.ssl.stream";
+                        return "xio.ssl.stream";
                     }
 
                     std::string message(int value) const {
@@ -86,7 +86,7 @@ namespace xio {
                             case stream_truncated: return "stream truncated";
                             case unspecified_system_error: return "unspecified system error";
                             case unexpected_result: return "unexpected result";
-                            default: return "asio.ssl.stream error";
+                            default: return "xio.ssl.stream error";
                         }
                     }
                 };

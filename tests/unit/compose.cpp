@@ -241,7 +241,7 @@ public:
     switch (state_)
     {
     case starting:
-      if (!xio::is_same<CancellationFilter, default_filter>::value)
+      if (!std::is_same<CancellationFilter, default_filter>::value)
         self.reset_cancellation_state(cancellation_filter_);
       state_ = waiting;
       timer_.expires_after(std::chrono::milliseconds(100));

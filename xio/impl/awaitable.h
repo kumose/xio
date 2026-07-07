@@ -183,7 +183,7 @@ namespace xio {
                         throw_error(xio::error::operation_aborted, "co_await");
 
                 return awaitable_async_op<
-                    completion_signature_of_t<Op>, decay_t<Op>, Executor>{
+                    completion_signature_of_t<Op>, std::decay_t<Op>, Executor>{
                     std::forward<Op>(op), this
 #if defined(ASIO_ENABLE_HANDLER_TRACKING)
 # if defined(ASIO_HAS_SOURCE_LOCATION)
@@ -361,8 +361,8 @@ namespace xio {
             // race condition.
             template<typename Function>
             auto await_transform(Function f,
-                                 enable_if_t<
-                                     is_convertible <
+                                 std::enable_if_t<
+                                     std::is_convertible <
                                      result_of_t < Function(awaitable_frame_base *)>,
                                  awaitable_thread<Executor> *
         >::value
@@ -725,7 +725,7 @@ namespace xio {
 
         template<typename R, typename T, typename Executor>
         class awaitable_async_op_handler<R(T), Executor,
-            enable_if_t < !is_disposition<T>::value>
+            std::enable_if_t < !is_disposition<T>::value>
         >
         :
         public
@@ -762,7 +762,7 @@ namespace xio {
 
         template<typename R, typename Disposition, typename Executor>
         class awaitable_async_op_handler<R(Disposition), Executor,
-                    enable_if_t<is_disposition<Disposition>::value> >
+                    std::enable_if_t<is_disposition<Disposition>::value> >
                 : public awaitable_thread<Executor> {
         public:
             typedef Disposition *result_type;
@@ -793,7 +793,7 @@ namespace xio {
 
         template<typename R, typename Disposition, typename T, typename Executor>
         class awaitable_async_op_handler<R(Disposition, T), Executor,
-                    enable_if_t<is_disposition<Disposition>::value> >
+                    std::enable_if_t<is_disposition<Disposition>::value> >
                 : public awaitable_thread<Executor> {
         public:
             struct result_type {
@@ -829,7 +829,7 @@ namespace xio {
 
         template<typename R, typename T, typename... Ts, typename Executor>
         class awaitable_async_op_handler<R(T, Ts...), Executor,
-            enable_if_t < !is_disposition<T>::value>
+            std::enable_if_t < !is_disposition<T>::value>
         >
         :
         public
@@ -875,7 +875,7 @@ namespace xio {
 
         template<typename R, typename Disposition, typename... Ts, typename Executor>
         class awaitable_async_op_handler<R(Disposition, Ts...), Executor,
-                    enable_if_t<is_disposition<Disposition>::value> >
+                    std::enable_if_t<is_disposition<Disposition>::value> >
                 : public awaitable_thread<Executor> {
         public:
             struct result_type {

@@ -60,12 +60,12 @@ namespace xio {
 
 #else
 
-        inline constexpr decay_t<decltype(std::placeholders::_1)> error;
-        inline constexpr decay_t<decltype(std::placeholders::_2)> bytes_transferred;
-        inline constexpr decay_t<decltype(std::placeholders::_2)> iterator;
-        inline constexpr decay_t<decltype(std::placeholders::_2)> results;
-        inline constexpr decay_t<decltype(std::placeholders::_2)> endpoint;
-        inline constexpr decay_t<decltype(std::placeholders::_2)> signal_number;
+        inline constexpr std::decay_t<decltype(std::placeholders::_1)> error;
+        inline constexpr std::decay_t<decltype(std::placeholders::_2)> bytes_transferred;
+        inline constexpr std::decay_t<decltype(std::placeholders::_2)> iterator;
+        inline constexpr std::decay_t<decltype(std::placeholders::_2)> results;
+        inline constexpr std::decay_t<decltype(std::placeholders::_2)> endpoint;
+        inline constexpr std::decay_t<decltype(std::placeholders::_2)> signal_number;
 
 
 #endif

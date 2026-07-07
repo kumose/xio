@@ -30,7 +30,7 @@ namespace xio {
     /// Traits type to adapt arbitrary error types as dispositions.
     /**
  * This type may be specialised for user-defined types, to allow them to be
- * treated as a disposition by asio.
+ * treated as a disposition by xio.
  *
  * The primary trait is not defined.
  */
@@ -56,34 +56,34 @@ namespace xio {
     namespace detail {
         template<typename T, typename = void, typename = void,
             typename = void, typename = void, typename = void, typename = void>
-        struct is_disposition_impl : false_type {
+        struct is_disposition_impl : std::false_type {
         };
 
         template<typename T>
         struct is_disposition_impl<T,
-                    enable_if_t<
-                        is_nothrow_default_constructible<T>::value
+                    std::enable_if_t<
+                        std::is_nothrow_default_constructible<T>::value
                     >,
-                    enable_if_t<
-                        is_nothrow_move_constructible<T>::value
+                    std::enable_if_t<
+                        std::is_nothrow_move_constructible<T>::value
                     >,
-                    enable_if_t<
-                        is_nothrow_move_assignable<T>::value
+                    std::enable_if_t<
+                        std::is_nothrow_move_assignable<T>::value
                     >,
-                    enable_if_t<
-                        is_same<
-                            decltype(disposition_traits<T>::not_an_error(declval<const T &>())),
+                    std::enable_if_t<
+                        std::is_same<
+                            decltype(disposition_traits<T>::not_an_error(std::declval<const T &>())),
                             bool>::value
                     >,
                     void_t<
-                        decltype(disposition_traits<T>::throw_exception(declval<T>()))
+                        decltype(disposition_traits<T>::throw_exception(std::declval<T>()))
                     >,
-                    enable_if_t<
-                        is_same<
-                            decltype(disposition_traits<T>::to_exception_ptr(declval<T>())),
+                    std::enable_if_t<
+                        std::is_same<
+                            decltype(disposition_traits<T>::to_exception_ptr(std::declval<T>())),
                             std::exception_ptr
                         >::value
-                    > > : true_type {
+                    > > : std::true_type {
         };
     } // namespace detail
 
@@ -105,7 +105,7 @@ namespace xio {
     template<typename T>
     struct is_disposition :
 #if defined(GENERATING_DOCUMENTATION)
-            integral_constant<bool, automatically_determined>
+            std::integral_constant<bool, automatically_determined>
 #else // defined(GENERATING_DOCUMENTATION)
             detail::is_disposition_impl<T>
 #endif // defined(GENERATING_DOCUMENTATION)
@@ -235,18 +235,18 @@ inline constexpr no_error_t no_error;
     /// Helper function to throw an exception arising from a disposition.
     template<typename Disposition>
     inline void throw_exception(Disposition && d,
-                                constraint_t < is_disposition<decay_t<Disposition> >::value > = 0) {
-        disposition_traits<decay_t<Disposition> >::throw_exception(
+                                constraint_t < is_disposition<std::decay_t<Disposition> >::value > = 0) {
+        disposition_traits<std::decay_t<Disposition> >::throw_exception(
             static_cast<Disposition &&>(d));
     }
 
     /// Helper function to convert a disposition to an @c exception_ptr.
     template<typename Disposition>
     inline std::exception_ptr to_exception_ptr(Disposition && d,
-                                               constraint_t < is_disposition<decay_t<Disposition> >::value > = 0)
+                                               constraint_t < is_disposition<std::decay_t<Disposition> >::value > = 0)
     noexcept
 {
-  return disposition_traits<decay_t<Disposition>>::to_exception_ptr(
+  return disposition_traits<std::decay_t<Disposition>>::to_exception_ptr(
       static_cast<Disposition&&>(d));
 }
 

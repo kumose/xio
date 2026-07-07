@@ -144,12 +144,12 @@ namespace xio {
   \
   typedef ASIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code, std::size_t)) \
-    asio_true_handler_type; \
+    xio_true_handler_type; \
   \
   ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::two_arg_handler_test( \
           xio::detail::rvref< \
-            asio_true_handler_type>(), \
+            xio_true_handler_type>(), \
           static_cast<const xio::error_code*>(0), \
           static_cast<const std::size_t*>(0))) == 1, \
       "ReadHandler type requirements not met") \
@@ -158,10 +158,10 @@ namespace xio {
       sizeof( \
         xio::detail::argbyv( \
           xio::detail::rvref< \
-            asio_true_handler_type>())) + \
+            xio_true_handler_type>())) + \
       sizeof( \
         xio::detail::rorlvref< \
-          asio_true_handler_type>()( \
+          xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>(), \
             xio::detail::lvref<const std::size_t>()), \
         char(0))> ASIO_UNUSED_TYPEDEF
@@ -171,12 +171,12 @@ namespace xio {
   \
   typedef ASIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code, std::size_t)) \
-    asio_true_handler_type; \
+    xio_true_handler_type; \
   \
   ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::two_arg_handler_test( \
           xio::detail::rvref< \
-            asio_true_handler_type>(), \
+            xio_true_handler_type>(), \
           static_cast<const xio::error_code*>(0), \
           static_cast<const std::size_t*>(0))) == 1, \
       "WriteHandler type requirements not met") \
@@ -185,10 +185,10 @@ namespace xio {
       sizeof( \
         xio::detail::argbyv( \
           xio::detail::rvref< \
-            asio_true_handler_type>())) + \
+            xio_true_handler_type>())) + \
       sizeof( \
         xio::detail::rorlvref< \
-          asio_true_handler_type>()( \
+          xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>(), \
             xio::detail::lvref<const std::size_t>()), \
         char(0))> ASIO_UNUSED_TYPEDEF
@@ -198,12 +198,12 @@ namespace xio {
   \
   typedef ASIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code)) \
-    asio_true_handler_type; \
+    xio_true_handler_type; \
   \
   ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::one_arg_handler_test( \
           xio::detail::rvref< \
-            asio_true_handler_type>(), \
+            xio_true_handler_type>(), \
           static_cast<const xio::error_code*>(0))) == 1, \
       "AcceptHandler type requirements not met") \
   \
@@ -211,10 +211,10 @@ namespace xio {
       sizeof( \
         xio::detail::argbyv( \
           xio::detail::rvref< \
-            asio_true_handler_type>())) + \
+            xio_true_handler_type>())) + \
       sizeof( \
         xio::detail::rorlvref< \
-          asio_true_handler_type>()( \
+          xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>()), \
         char(0))> ASIO_UNUSED_TYPEDEF
 
@@ -223,12 +223,12 @@ namespace xio {
   \
   typedef ASIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code, socket_type)) \
-    asio_true_handler_type; \
+    xio_true_handler_type; \
   \
   ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::two_arg_move_handler_test( \
           xio::detail::rvref< \
-            asio_true_handler_type>(), \
+            xio_true_handler_type>(), \
           static_cast<const xio::error_code*>(0), \
           static_cast<socket_type*>(0))) == 1, \
       "MoveAcceptHandler type requirements not met") \
@@ -237,10 +237,10 @@ namespace xio {
       sizeof( \
         xio::detail::argbyv( \
           xio::detail::rvref< \
-            asio_true_handler_type>())) + \
+            xio_true_handler_type>())) + \
       sizeof( \
         xio::detail::rorlvref< \
-          asio_true_handler_type>()( \
+          xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>(), \
             xio::detail::rvref<socket_type>()), \
         char(0))> ASIO_UNUSED_TYPEDEF
@@ -250,12 +250,12 @@ namespace xio {
   \
   typedef ASIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code)) \
-    asio_true_handler_type; \
+    xio_true_handler_type; \
   \
   ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::one_arg_handler_test( \
           xio::detail::rvref< \
-            asio_true_handler_type>(), \
+            xio_true_handler_type>(), \
           static_cast<const xio::error_code*>(0))) == 1, \
       "ConnectHandler type requirements not met") \
   \
@@ -263,10 +263,10 @@ namespace xio {
       sizeof( \
         xio::detail::argbyv( \
           xio::detail::rvref< \
-            asio_true_handler_type>())) + \
+            xio_true_handler_type>())) + \
       sizeof( \
         xio::detail::rorlvref< \
-          asio_true_handler_type>()( \
+          xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>()), \
         char(0))> ASIO_UNUSED_TYPEDEF
 
@@ -275,12 +275,12 @@ namespace xio {
   \
   typedef ASIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code, endpoint_type)) \
-    asio_true_handler_type; \
+    xio_true_handler_type; \
   \
   ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::two_arg_handler_test( \
           xio::detail::rvref< \
-            asio_true_handler_type>(), \
+            xio_true_handler_type>(), \
           static_cast<const xio::error_code*>(0), \
           static_cast<const endpoint_type*>(0))) == 1, \
       "RangeConnectHandler type requirements not met") \
@@ -289,10 +289,10 @@ namespace xio {
       sizeof( \
         xio::detail::argbyv( \
           xio::detail::rvref< \
-            asio_true_handler_type>())) + \
+            xio_true_handler_type>())) + \
       sizeof( \
         xio::detail::rorlvref< \
-          asio_true_handler_type>()( \
+          xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>(), \
             xio::detail::lvref<const endpoint_type>()), \
         char(0))> ASIO_UNUSED_TYPEDEF
@@ -302,12 +302,12 @@ namespace xio {
   \
   typedef ASIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code, iter_type)) \
-    asio_true_handler_type; \
+    xio_true_handler_type; \
   \
   ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::two_arg_handler_test( \
           xio::detail::rvref< \
-            asio_true_handler_type>(), \
+            xio_true_handler_type>(), \
           static_cast<const xio::error_code*>(0), \
           static_cast<const iter_type*>(0))) == 1, \
       "IteratorConnectHandler type requirements not met") \
@@ -316,10 +316,10 @@ namespace xio {
       sizeof( \
         xio::detail::argbyv( \
           xio::detail::rvref< \
-            asio_true_handler_type>())) + \
+            xio_true_handler_type>())) + \
       sizeof( \
         xio::detail::rorlvref< \
-          asio_true_handler_type>()( \
+          xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>(), \
             xio::detail::lvref<const iter_type>()), \
         char(0))> ASIO_UNUSED_TYPEDEF
@@ -329,12 +329,12 @@ namespace xio {
   \
   typedef ASIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code, range_type)) \
-    asio_true_handler_type; \
+    xio_true_handler_type; \
   \
   ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::two_arg_handler_test( \
           xio::detail::rvref< \
-            asio_true_handler_type>(), \
+            xio_true_handler_type>(), \
           static_cast<const xio::error_code*>(0), \
           static_cast<const range_type*>(0))) == 1, \
       "ResolveHandler type requirements not met") \
@@ -343,10 +343,10 @@ namespace xio {
       sizeof( \
         xio::detail::argbyv( \
           xio::detail::rvref< \
-            asio_true_handler_type>())) + \
+            xio_true_handler_type>())) + \
       sizeof( \
         xio::detail::rorlvref< \
-          asio_true_handler_type>()( \
+          xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>(), \
             xio::detail::lvref<const range_type>()), \
         char(0))> ASIO_UNUSED_TYPEDEF
@@ -356,12 +356,12 @@ namespace xio {
   \
   typedef ASIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code)) \
-    asio_true_handler_type; \
+    xio_true_handler_type; \
   \
   ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::one_arg_handler_test( \
           xio::detail::rvref< \
-            asio_true_handler_type>(), \
+            xio_true_handler_type>(), \
           static_cast<const xio::error_code*>(0))) == 1, \
       "WaitHandler type requirements not met") \
   \
@@ -369,10 +369,10 @@ namespace xio {
       sizeof( \
         xio::detail::argbyv( \
           xio::detail::rvref< \
-            asio_true_handler_type>())) + \
+            xio_true_handler_type>())) + \
       sizeof( \
         xio::detail::rorlvref< \
-          asio_true_handler_type>()( \
+          xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>()), \
         char(0))> ASIO_UNUSED_TYPEDEF
 
@@ -381,12 +381,12 @@ namespace xio {
   \
   typedef ASIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code, int)) \
-    asio_true_handler_type; \
+    xio_true_handler_type; \
   \
   ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::two_arg_handler_test( \
           xio::detail::rvref< \
-            asio_true_handler_type>(), \
+            xio_true_handler_type>(), \
           static_cast<const xio::error_code*>(0), \
           static_cast<const int*>(0))) == 1, \
       "SignalHandler type requirements not met") \
@@ -395,10 +395,10 @@ namespace xio {
       sizeof( \
         xio::detail::argbyv( \
           xio::detail::rvref< \
-            asio_true_handler_type>())) + \
+            xio_true_handler_type>())) + \
       sizeof( \
         xio::detail::rorlvref< \
-          asio_true_handler_type>()( \
+          xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>(), \
             xio::detail::lvref<const int>()), \
         char(0))> ASIO_UNUSED_TYPEDEF
@@ -408,12 +408,12 @@ namespace xio {
   \
   typedef ASIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code)) \
-    asio_true_handler_type; \
+    xio_true_handler_type; \
   \
   ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::one_arg_handler_test( \
           xio::detail::rvref< \
-            asio_true_handler_type>(), \
+            xio_true_handler_type>(), \
           static_cast<const xio::error_code*>(0))) == 1, \
       "HandshakeHandler type requirements not met") \
   \
@@ -421,10 +421,10 @@ namespace xio {
       sizeof( \
         xio::detail::argbyv( \
           xio::detail::rvref< \
-            asio_true_handler_type>())) + \
+            xio_true_handler_type>())) + \
       sizeof( \
         xio::detail::rorlvref< \
-          asio_true_handler_type>()( \
+          xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>()), \
         char(0))> ASIO_UNUSED_TYPEDEF
 
@@ -433,12 +433,12 @@ namespace xio {
   \
   typedef ASIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code, std::size_t)) \
-    asio_true_handler_type; \
+    xio_true_handler_type; \
   \
   ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::two_arg_handler_test( \
           xio::detail::rvref< \
-            asio_true_handler_type>(), \
+            xio_true_handler_type>(), \
           static_cast<const xio::error_code*>(0), \
           static_cast<const std::size_t*>(0))) == 1, \
       "BufferedHandshakeHandler type requirements not met") \
@@ -447,10 +447,10 @@ namespace xio {
       sizeof( \
         xio::detail::argbyv( \
           xio::detail::rvref< \
-            asio_true_handler_type>())) + \
+            xio_true_handler_type>())) + \
       sizeof( \
         xio::detail::rorlvref< \
-          asio_true_handler_type>()( \
+          xio_true_handler_type>()( \
           xio::detail::lvref<const xio::error_code>(), \
           xio::detail::lvref<const std::size_t>()), \
         char(0))> ASIO_UNUSED_TYPEDEF
@@ -460,12 +460,12 @@ namespace xio {
   \
   typedef ASIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code)) \
-    asio_true_handler_type; \
+    xio_true_handler_type; \
   \
   ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::one_arg_handler_test( \
           xio::detail::rvref< \
-            asio_true_handler_type>(), \
+            xio_true_handler_type>(), \
           static_cast<const xio::error_code*>(0))) == 1, \
       "ShutdownHandler type requirements not met") \
   \
@@ -473,10 +473,10 @@ namespace xio {
       sizeof( \
         xio::detail::argbyv( \
           xio::detail::rvref< \
-            asio_true_handler_type>())) + \
+            xio_true_handler_type>())) + \
       sizeof( \
         xio::detail::rorlvref< \
-          asio_true_handler_type>()( \
+          xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>()), \
         char(0))> ASIO_UNUSED_TYPEDEF
 

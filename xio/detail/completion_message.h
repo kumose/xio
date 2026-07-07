@@ -56,7 +56,7 @@ namespace xio {
             }
 
         private:
-            typedef decay_t<Arg0> arg0_type;
+            typedef std::decay_t<Arg0> arg0_type;
             arg0_type arg0_;
         };
 
@@ -77,9 +77,9 @@ namespace xio {
             }
 
         private:
-            typedef decay_t<Arg0> arg0_type;
+            typedef std::decay_t<Arg0> arg0_type;
             arg0_type arg0_;
-            typedef decay_t<Arg1> arg1_type;
+            typedef std::decay_t<Arg1> arg1_type;
             arg1_type arg1_;
         };
 
@@ -103,7 +103,7 @@ namespace xio {
                     std::get < I > (static_cast<args_type &&>(args_))...);
             }
 
-            typedef std::tuple<decay_t<Args>...> args_type;
+            typedef std::tuple<std::decay_t<Args>...> args_type;
             args_type args_;
         };
     } // namespace detail

@@ -94,10 +94,10 @@ namespace xio {
             template<typename Executor, typename U>
             friend constexpr U query(
                 const Executor &ex, const context_as_t<U> &,
-                enable_if_t<
-                    is_same<T, U>::value
+                std::enable_if_t<
+                    std::is_same<T, U>::value
                 > * = 0,
-                enable_if_t<
+                std::enable_if_t<
                     can_query<const Executor &, const context_t &>::value
                 > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.

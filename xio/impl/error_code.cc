@@ -43,7 +43,7 @@ namespace xio {
         class system_category : public error_category {
         public:
             const char *name() const noexcept {
-                return "asio.system";
+                return "xio.system";
             }
 
             std::string message(int value) const {
@@ -68,11 +68,11 @@ namespace xio {
                                                            wmsg.c_str(), static_cast<int>(wlength),
                                                            &msg[0], static_cast<int>(wlength * 2), 0, 0);
                         if (length <= 0)
-                            return "asio.system error";
+                            return "xio.system error";
                         msg.resize(static_cast<std::size_t>(length));
                         return msg;
                     } else
-                        return "asio.system error";
+                        return "xio.system error";
                 }
 #elif defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
                 char *msg = 0;
@@ -88,7 +88,7 @@ namespace xio {
                 if (length)
                     return msg;
                 else
-                    return "asio.system error";
+                    return "xio.system error";
 #else // defined(ASIO_WINDOWS_DESKTOP)
                 //   || defined(ASIO_CYGWIN_W32_SOCKETS)
 #if !defined(__sun)

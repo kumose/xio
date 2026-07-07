@@ -33,17 +33,17 @@ namespace xio {
 
     namespace detail {
         template<typename T, typename = void>
-        struct has_executor_type : false_type {
+        struct has_executor_type : std::false_type {
         };
 
         template<typename T>
         struct has_executor_type<T, void_t<typename T::executor_type> >
-                : true_type {
+                : std::true_type {
         };
 
         template<typename T, typename E, typename = void, typename = void>
         struct associated_executor_impl {
-            typedef void asio_associated_executor_is_unspecialised;
+            typedef void xio_associated_executor_is_unspecialised;
 
             typedef E type;
 
@@ -73,7 +73,7 @@ namespace xio {
 
         template<typename T, typename E>
         struct associated_executor_impl<T, E,
-            enable_if_t <
+            std::enable_if_t <
             !has_executor_type<T>::value
         >
         ,
@@ -165,7 +165,7 @@ namespace xio {
     typename associated_executor<T,
         typename ExecutionContext::executor_type>::type
     get_associated_executor(const T &t, ExecutionContext &ctx,
-                            constraint_t<is_convertible<ExecutionContext &,
+                            constraint_t<std::is_convertible<ExecutionContext &,
                                 execution_context &>::value> = 0) noexcept {
         return associated_executor<T,
             typename ExecutionContext::executor_type>::get(t, ctx.get_executor());
@@ -181,15 +181,15 @@ namespace xio {
 
         template<typename T, typename E>
         struct associated_executor_forwarding_base<T, E,
-            enable_if_t <
-            is_same <
+            std::enable_if_t <
+            std::is_same <
             typename associated_executor<T,
-                E>::asio_associated_executor_is_unspecialised,
+                E>::xio_associated_executor_is_unspecialised,
             void>::value
         >
         >
 {
-  typedef void asio_associated_executor_is_unspecialised;
+  typedef void xio_associated_executor_is_unspecialised;
 };
     } // namespace detail
 

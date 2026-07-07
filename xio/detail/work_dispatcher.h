@@ -30,8 +30,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace detail {
         struct empty_work_function {
             void operator()() const noexcept {
@@ -43,34 +41,33 @@ namespace xio {
         };
 
         template<typename Function>
-        struct work_result<Function, void_t < result_of_t < decay_t<Function>()>
-        >
-        >
-{
-  typedef decay_t<result_of_t<decay_t<Function>()>> type;
-};
+        struct work_result<Function, void_t<result_of_t<std::decay_t<Function>()>
+                    >
+                > {
+            typedef std::decay_t<result_of_t<std::decay_t<Function>()> > type;
+        };
 
         template<typename Function>
         using work_result_t = typename work_result<Function>::type;
 
         template<typename Function, typename Handler,
             typename Executor, typename = void>
-        struct is_work_dispatcher_required : true_type {
+        struct is_work_dispatcher_required : std::true_type {
         };
 
         template<typename Handler, typename Executor>
         struct is_work_dispatcher_required<empty_work_function, Handler, Executor,
-                    enable_if_t<
-                        is_same<
+                    std::enable_if_t<
+                        std::is_same<
                             typename associated_executor<Handler,
-                                Executor>::asio_associated_executor_is_unspecialised,
+                                Executor>::xio_associated_executor_is_unspecialised,
                             void>::value
-                    > > : false_type {
+                    > > : std::false_type {
         };
 
         template<typename Function,
-            bool IsVoid = is_void<result_of_t<Function()> >::value,
-            bool IsClass = is_class<Function>::value>
+            bool IsVoid = std::is_void<result_of_t<Function()> >::value,
+            bool IsClass = std::is_class<Function>::value>
         class work_dispatcher_function {
             Function function_;
 
@@ -84,7 +81,7 @@ namespace xio {
                 : function_(other.function_) {
             }
 
-            work_dispatcher_function(work_dispatcher_function &&other)
+            work_dispatcher_function(work_dispatcher_function &&other) noexcept
                 : function_(static_cast<Function &&>(other.function_)) {
             }
 
@@ -112,7 +109,7 @@ namespace xio {
                 : Function(static_cast<const Function &>(other)) {
             }
 
-            work_dispatcher_function(work_dispatcher_function &&other)
+            work_dispatcher_function(work_dispatcher_function &&other) noexcept
                 : Function(static_cast<Function &&>(other)) {
             }
 
@@ -142,7 +139,7 @@ namespace xio {
                 : function_(other.function_) {
             }
 
-            work_dispatcher_function(work_dispatcher_function &&other)
+            work_dispatcher_function(work_dispatcher_function &&other) noexcept
                 : function_(static_cast<Function &&>(other.function_)) {
             }
 
@@ -168,7 +165,7 @@ namespace xio {
                 : Function(static_cast<const Function &>(other)) {
             }
 
-            work_dispatcher_function(work_dispatcher_function &&other)
+            work_dispatcher_function(work_dispatcher_function &&other) noexcept
                 : Function(static_cast<Function &&>(other)) {
             }
 
@@ -201,7 +198,7 @@ namespace xio {
                   executor_(other.executor_) {
             }
 
-            work_dispatcher(work_dispatcher &&other)
+            work_dispatcher(work_dispatcher &&other) noexcept
                 : work_dispatcher_function<Function>(
                       static_cast<work_dispatcher_function<Function> &&>(other)),
                   handler_(static_cast<Handler &&>(other.handler_)),
@@ -215,7 +212,7 @@ namespace xio {
             }
 
         private:
-            typedef decay_t<
+            typedef std::decay_t<
                 prefer_result_t<const Executor &,
                     execution::outstanding_work_t::tracked_t
                 >
@@ -229,61 +226,53 @@ namespace xio {
 
         template<typename Function, typename Handler, typename Executor>
         class work_dispatcher<Function, Handler, Executor,
-            enable_if_t < !execution::is_executor<Executor>::value>
-        >
+                    std::enable_if_t<!execution::is_executor<Executor>::value>
+                >
+                :
+                work_dispatcher_function<Function> {
+        public
         :
-        work_dispatcher_function<Function> {
-            public
-            :
             template
             <
-            typename F, typename CompletionHandler >
-                    work_dispatcher(F && function, CompletionHandler && handler,
+                typename F, typename CompletionHandler>
+            work_dispatcher(F &&function, CompletionHandler &&handler,
 
 
-            const Executor &handler_ex
+                            const Executor &handler_ex
             )
-            :
-            work_dispatcher_function<Function>(static_cast<F &&>(function)),
-                    work_(handler_ex),
-                    handler_(static_cast<CompletionHandler &&>(handler))
-            {
+                : work_dispatcher_function<Function>(static_cast<F &&>(function)),
+                  work_(handler_ex),
+                  handler_(static_cast<CompletionHandler &&>(handler)) {
             }
 
-            work_dispatcher(const work_dispatcher & other)
-            :
-            work_dispatcher_function<Function> (other),
-                    work_(other.work_),
-                    handler_(other.handler_)
-            {
+            work_dispatcher(const work_dispatcher &other)
+                : work_dispatcher_function<Function>(other),
+                  work_(other.work_),
+                  handler_(other.handler_) {
             }
 
-            work_dispatcher(work_dispatcher && other)
-            :
-            work_dispatcher_function<Function>(
-                        static_cast<work_dispatcher_function<Function> &&>(*this)),
-                    work_(static_cast<executor_work_guard<Executor> &&>(other.work_)),
-                    handler_(static_cast<Handler &&>(other.handler_))
-            {
+            work_dispatcher(work_dispatcher &&other) noexcept
+                : work_dispatcher_function<Function>(
+                      static_cast<work_dispatcher_function<Function> &&>(*this)),
+                  work_(static_cast<executor_work_guard<Executor> &&>(other.work_)),
+                  handler_(static_cast<Handler &&>(other.handler_)) {
             }
 
-            void operator()()
-            {
+            void operator()() {
                 associated_allocator_t<Handler> alloc((get_associated_allocator)(handler_));
                 work_.get_executor().dispatch(
                     this->bind_result(static_cast<Handler &&>(handler_)), alloc);
                 work_.reset();
             }
 
-            private
-            :
+        private
+        :
             executor_work_guard<Executor> work_;
             Handler handler_;
         };
 
 #endif // !defined(ASIO_NO_TS_EXECUTORS)
     } // namespace detail
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

@@ -26,7 +26,7 @@ namespace xio {
     typedef std::error_category error_category;
     typedef std::error_code error_code;
 
-    /// Returns the error category used for the system errors produced by asio.
+    /// Returns the error category used for the system errors produced by xio.
     extern ASIO_DECL const error_category &system_category();
 
 

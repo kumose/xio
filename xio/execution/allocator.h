@@ -86,11 +86,11 @@ namespace xio {
                     static constexpr auto query(P &&p)
                         noexcept(
                             noexcept(
-                                conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
                             )
                         )
                         -> decltype(
-                            conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                            std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
                         ) {
                         return T::query(static_cast<P &&>(p));
                     }
@@ -154,11 +154,11 @@ namespace xio {
                     static constexpr auto query(P &&p)
                         noexcept(
                             noexcept(
-                                conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
                             )
                         )
                         -> decltype(
-                            conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                            std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
                         ) {
                         return T::query(static_cast<P &&>(p));
                     }

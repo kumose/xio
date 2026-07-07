@@ -39,7 +39,7 @@ namespace xio {
 
             template<typename R, typename... Args>
             struct parallel_op_signature_as_tuple<R(Args...)> {
-                typedef std::tuple<decay_t<Args>...> type;
+                typedef std::tuple<std::decay_t<Args>...> type;
             };
 
             // Helper trait for concatenating completion signatures.
@@ -192,7 +192,7 @@ namespace xio {
                             CompletionToken &&token)
                 -> decltype(
                     xio::async_initiate<CompletionToken, signature>(
-                        declval<initiate_async_wait>(), token,
+                        std::declval<initiate_async_wait>(), token,
                         std::move(cancellation_condition), std::move(ops_))) {
                 return xio::async_initiate<CompletionToken, signature>(
                     initiate_async_wait(), token,
@@ -316,7 +316,7 @@ namespace xio {
             /// The completion signature for the group of operations.
             typedef typename detail::ranged_parallel_group_signature<
                 completion_signature_of_t<
-                    decay_t<decltype(*std::declval<typename Range::iterator>())> >,
+                    std::decay_t<decltype(*std::declval<typename Range::iterator>())> >,
                 Allocator>::type signature;
 
             /// Initiate an asynchronous wait for the group of operations.
@@ -348,7 +348,7 @@ namespace xio {
                             CompletionToken &&token)
                 -> decltype(
                     xio::async_initiate<CompletionToken, signature>(
-                        declval<initiate_async_wait>(), token,
+                        std::declval<initiate_async_wait>(), token,
                         std::move(cancellation_condition),
                         std::move(range_), allocator_)) {
                 return xio::async_initiate<CompletionToken, signature>(
@@ -392,13 +392,13 @@ namespace xio {
  * @endcode
  */
         template<typename Range>
-        [[nodiscard]] inline ranged_parallel_group<decay_t<Range> >
+        [[nodiscard]] inline ranged_parallel_group<std::decay_t<Range> >
 
         make_parallel_group(Range && range,
                             constraint_t <
-                            is_async_operation_range<decay_t<Range> >::value
+                            is_async_operation_range<std::decay_t<Range> >::value
                             > = 0) {
-            return ranged_parallel_group<decay_t<Range> >(std::forward<Range>(range));
+            return ranged_parallel_group<std::decay_t<Range> >(std::forward<Range>(range));
         }
 
         /// Create a group of operations that may be launched in parallel.
@@ -441,13 +441,13 @@ namespace xio {
  * @endcode
  */
         template<typename Allocator, typename Range>
-        [[nodiscard]] inline ranged_parallel_group<decay_t<Range>, Allocator>
+        [[nodiscard]] inline ranged_parallel_group<std::decay_t<Range>, Allocator>
 
         make_parallel_group(allocator_arg_t, const Allocator &allocator, Range &&range,
                             constraint_t<
-                                is_async_operation_range<decay_t<Range> >::value
+                                is_async_operation_range<std::decay_t<Range> >::value
                             > = 0) {
-            return ranged_parallel_group<decay_t<Range>, Allocator>(
+            return ranged_parallel_group<std::decay_t<Range>, Allocator>(
                 std::forward<Range>(range), allocator);
         }
     } // namespace experimental

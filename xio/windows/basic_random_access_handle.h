@@ -99,7 +99,7 @@ explicit basic_random_access_handle(const executor_type &ex)
 template<typename ExecutionContext>
 explicit basic_random_access_handle(ExecutionContext & context,
                                     constraint_t<
-                                        is_convertible<ExecutionContext &, execution_context &>::value,
+                                        std::is_convertible<ExecutionContext &, execution_context &>::value,
                                         defaulted_constraint
                                     > = defaulted_constraint())
     : basic_overlapped_handle<Executor>(context) {
@@ -140,7 +140,7 @@ template<typename ExecutionContext>
 basic_random_access_handle(ExecutionContext &context,
                            const native_handle_type &handle,
                            constraint_t<
-                               is_convertible<ExecutionContext &, execution_context &>::value
+                               std::is_convertible<ExecutionContext &, execution_context &>::value
                            > = 0)
     : basic_overlapped_handle<Executor>(context, handle) {
 }
@@ -192,7 +192,7 @@ basic_random_access_handle &operator=(basic_random_access_handle &&other) {
 template<typename Executor1>
 basic_random_access_handle(basic_random_access_handle<Executor1> && other,
                            constraint_t<
-                               is_convertible<Executor1, Executor>::value,
+                               std::is_convertible<Executor1, Executor>::value,
                                defaulted_constraint
                            > = defaulted_constraint())
     : basic_overlapped_handle<Executor>(std::move(other)) {
@@ -213,7 +213,7 @@ basic_random_access_handle(basic_random_access_handle<Executor1> && other,
    */
 template<typename Executor1>
 constraint_t<
-    is_convertible<Executor1, Executor>::value,
+    std::is_convertible<Executor1, Executor>::value,
     basic_random_access_handle &> operator=(basic_random_access_handle<Executor1> &&other) {
     basic_overlapped_handle<Executor>::operator=(std::move(other));
     return *this;
@@ -344,7 +344,7 @@ auto async_write_some_at(uint64_t offset, const ConstBufferSequence &buffers,
     -> decltype(
         async_initiate<WriteToken,
             void(xio::error_code, std::size_t)>(
-            declval<initiate_async_write_some_at>(), token, offset, buffers)) {
+            std::declval<initiate_async_write_some_at>(), token, offset, buffers)) {
     return async_initiate<WriteToken,
         void(xio::error_code, std::size_t)>(
         initiate_async_write_some_at(this), token, offset, buffers);
@@ -478,7 +478,7 @@ auto async_read_some_at(uint64_t offset, const MutableBufferSequence &buffers,
     -> decltype(
         async_initiate<ReadToken,
             void(xio::error_code, std::size_t)>(
-            declval<initiate_async_read_some_at>(), token, offset, buffers)) {
+            std::declval<initiate_async_read_some_at>(), token, offset, buffers)) {
     return async_initiate<ReadToken,
         void(xio::error_code, std::size_t)>(
         initiate_async_read_some_at(this), token, offset, buffers);

@@ -107,7 +107,7 @@ explicit basic_object_handle(const executor_type &ex)
 template<typename ExecutionContext>
 explicit basic_object_handle(ExecutionContext & context,
                              constraint_t<
-                                 is_convertible<ExecutionContext &, execution_context &>::value,
+                                 std::is_convertible<ExecutionContext &, execution_context &>::value,
                                  defaulted_constraint
                              > = defaulted_constraint())
     : impl_(0, 0, context) {
@@ -151,7 +151,7 @@ template<typename ExecutionContext>
 basic_object_handle(ExecutionContext &context,
                     const native_handle_type &native_handle,
                     constraint_t<
-                        is_convertible<ExecutionContext &, execution_context &>::value
+                        std::is_convertible<ExecutionContext &, execution_context &>::value
                     > = 0)
     : impl_(0, 0, context) {
     xio::error_code ec;
@@ -208,7 +208,7 @@ friend class basic_object_handle;
 template<typename Executor1>
 basic_object_handle(basic_object_handle<Executor1> && other,
                     constraint_t<
-                        is_convertible<Executor1, Executor>::value,
+                        std::is_convertible<Executor1, Executor>::value,
                         defaulted_constraint
                     > = defaulted_constraint())
     : impl_(std::move(other.impl_)) {
@@ -227,7 +227,7 @@ basic_object_handle(basic_object_handle<Executor1> && other,
    */
 template<typename Executor1>
 constraint_t<
-    is_convertible<Executor1, Executor>::value,
+    std::is_convertible<Executor1, Executor>::value,
     basic_object_handle &> operator=(basic_object_handle<Executor1> &&other) {
     impl_ = std::move(other.impl_);
     return *this;
@@ -416,7 +416,7 @@ auto async_wait(
     WaitToken && token = default_completion_token_t<executor_type>())
     -> decltype(
     async_initiate<WaitToken, void(xio::error_code)>(
-        declval<initiate_async_wait>(), token)) {
+        std::declval<initiate_async_wait>(), token)) {
     return async_initiate<WaitToken, void(xio::error_code)>(
         initiate_async_wait(this), token);
 }

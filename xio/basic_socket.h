@@ -132,7 +132,7 @@ namespace xio {
         template<typename ExecutionContext>
         explicit basic_socket(ExecutionContext &context,
                               constraint_t<
-                                  is_convertible<ExecutionContext &, execution_context &>::value
+                                  std::is_convertible<ExecutionContext &, execution_context &>::value
                               > = 0)
             : impl_(0, 0, context) {
         }
@@ -170,7 +170,7 @@ namespace xio {
         template<typename ExecutionContext>
         basic_socket(ExecutionContext &context, const protocol_type &protocol,
                      constraint_t<
-                         is_convertible<ExecutionContext &, execution_context &>::value,
+                         std::is_convertible<ExecutionContext &, execution_context &>::value,
                          defaulted_constraint
                      > = defaulted_constraint())
             : impl_(0, 0, context) {
@@ -223,7 +223,7 @@ namespace xio {
         template<typename ExecutionContext>
         basic_socket(ExecutionContext &context, const endpoint_type &endpoint,
                      constraint_t<
-                         is_convertible<ExecutionContext &, execution_context &>::value
+                         std::is_convertible<ExecutionContext &, execution_context &>::value
                      > = 0)
             : impl_(0, 0, context) {
             xio::error_code ec;
@@ -274,7 +274,7 @@ namespace xio {
         basic_socket(ExecutionContext &context, const protocol_type &protocol,
                      const native_handle_type &native_socket,
                      constraint_t<
-                         is_convertible<ExecutionContext &, execution_context &>::value
+                         std::is_convertible<ExecutionContext &, execution_context &>::value
                      > = 0)
             : impl_(0, 0, context) {
             xio::error_code ec;
@@ -329,8 +329,8 @@ namespace xio {
         template<typename Protocol1, typename Executor1>
         basic_socket(basic_socket<Protocol1, Executor1> &&other,
                      constraint_t<
-                         is_convertible<Protocol1, Protocol>::value
-                         && is_convertible<Executor1, Executor>::value
+                         std::is_convertible<Protocol1, Protocol>::value
+                         && std::is_convertible<Executor1, Executor>::value
                      > = 0)
             : impl_(std::move(other.impl_)) {
         }
@@ -347,8 +347,8 @@ namespace xio {
    */
         template<typename Protocol1, typename Executor1>
         constraint_t<
-            is_convertible<Protocol1, Protocol>::value
-            && is_convertible<Executor1, Executor>::value,
+            std::is_convertible<Protocol1, Protocol>::value
+            && std::is_convertible<Executor1, Executor>::value,
             basic_socket &> operator=(basic_socket<Protocol1, Executor1> &&other) {
             basic_socket tmp(std::move(other));
             impl_ = std::move(tmp.impl_);
@@ -604,7 +604,7 @@ namespace xio {
    * For portable cancellation, consider using one of the following
    * alternatives:
    *
-   * @li Disable asio's I/O completion port backend by defining
+   * @li Disable xio's I/O completion port backend by defining
    * ASIO_DISABLE_IOCP.
    *
    * @li Use the close() function to simultaneously cancel the outstanding
@@ -651,7 +651,7 @@ namespace xio {
    * For portable cancellation, consider using one of the following
    * alternatives:
    *
-   * @li Disable asio's I/O completion port backend by defining
+   * @li Disable xio's I/O completion port backend by defining
    * ASIO_DISABLE_IOCP.
    *
    * @li Use the close() function to simultaneously cancel the outstanding
@@ -929,8 +929,8 @@ namespace xio {
                            ConnectToken &&token = default_completion_token_t<executor_type>())
             -> decltype(
                 async_initiate<ConnectToken, void(xio::error_code)>(
-                    declval<initiate_async_connect>(), token,
-                    peer_endpoint, declval<xio::error_code &>())) {
+                    std::declval<initiate_async_connect>(), token,
+                    peer_endpoint, std::declval<xio::error_code &>())) {
             xio::error_code open_ec;
             if (!is_open()) {
                 const protocol_type protocol = peer_endpoint.protocol();
@@ -1758,7 +1758,7 @@ namespace xio {
                         WaitToken &&token = default_completion_token_t<executor_type>())
             -> decltype(
                 async_initiate<WaitToken, void(xio::error_code)>(
-                    declval<initiate_async_wait>(), token, w)) {
+                    std::declval<initiate_async_wait>(), token, w)) {
             return async_initiate<WaitToken, void(xio::error_code)>(
                 initiate_async_wait(this), token, w);
         }

@@ -458,7 +458,7 @@ namespace xio {
                         lock.unlock();
                         xio::detail::non_const_lvalue<Handler> handler2(handler);
                         xio::detail::completion_payload_handler<
-                            payload_type, decay_t<Handler> >(
+                            payload_type, std::decay_t<Handler> >(
                             static_cast<payload_type &&>(payload), handler2.value)();
                         return true;
                     }
@@ -473,7 +473,7 @@ namespace xio {
                         lock.unlock();
                         xio::detail::non_const_lvalue<Handler> handler2(handler);
                         xio::detail::completion_payload_handler<
-                            payload_type, decay_t<Handler> >(
+                            payload_type, std::decay_t<Handler> >(
                             static_cast<payload_type &&>(payload), handler2.value)();
                         return true;
                     }

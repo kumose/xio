@@ -52,7 +52,7 @@ namespace xio {
         };
 
         template<typename Handler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             consign_handler<Handler> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
@@ -73,7 +73,7 @@ namespace xio {
             void operator()(Handler &&handler,
                             std::tuple<Values...> values, Args &&... args) && {
                 static_cast<Initiation &&>(*this)(
-                    detail::consign_handler<decay_t<Handler>, Values...>(
+                    detail::consign_handler<std::decay_t<Handler>, Values...>(
                         static_cast<Handler &&>(handler),
                         static_cast<std::tuple<Values...> &&>(values)),
                     static_cast<Args &&>(args)...);
@@ -83,7 +83,7 @@ namespace xio {
             void operator()(Handler &&handler,
                             std::tuple<Values...> values, Args &&... args) const & {
                 static_cast<const Initiation &>(*this)(
-                    detail::consign_handler<decay_t<Handler>, Values...>(
+                    detail::consign_handler<std::decay_t<Handler>, Values...>(
                         static_cast<Handler &&>(handler),
                         static_cast<std::tuple<Values...> &&>(values)),
                     static_cast<Args &&>(args)...);
@@ -95,12 +95,12 @@ namespace xio {
                              RawCompletionToken &&token, Args &&... args)
             -> decltype(
                 async_initiate<CompletionToken, Signatures...>(
-                    init_wrapper<decay_t<Initiation> >(
+                    init_wrapper<std::decay_t<Initiation> >(
                         static_cast<Initiation &&>(initiation)),
                     token.token_, static_cast<std::tuple<Values...> &&>(token.values_),
                     static_cast<Args &&>(args)...)) {
             return async_initiate<CompletionToken, Signatures...>(
-                init_wrapper<decay_t<Initiation> >(
+                init_wrapper<std::decay_t<Initiation> >(
                     static_cast<Initiation &&>(initiation)),
                 token.token_, static_cast<std::tuple<Values...> &&>(token.values_),
                 static_cast<Args &&>(args)...);

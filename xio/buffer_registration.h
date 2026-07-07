@@ -103,7 +103,7 @@ namespace xio {
                             const MutableBufferSequence &buffer_sequence,
                             const allocator_type &alloc = allocator_type(),
                             constraint_t<
-                                is_convertible<ExecutionContext &, execution_context &>::value
+                                std::is_convertible<ExecutionContext &, execution_context &>::value
                             > = 0)
             : buffer_sequence_(buffer_sequence),
               buffers_(
@@ -191,14 +191,14 @@ namespace xio {
         // Helper function to get an executor's context.
         template<typename T>
         static execution_context &get_context(const T &t,
-                                              enable_if_t<execution::is_executor<T>::value> * = 0) {
+                                              std::enable_if_t<execution::is_executor<T>::value> * = 0) {
             return xio::query(t, execution::context);
         }
 
         // Helper function to get an executor's context.
         template<typename T>
         static execution_context &get_context(const T &t,
-                                              enable_if_t<!execution::is_executor<T>::value> * = 0) {
+                                              std::enable_if_t<!execution::is_executor<T>::value> * = 0) {
             return t.context();
         }
 
@@ -280,7 +280,7 @@ namespace xio {
     register_buffers(ExecutionContext &ctx,
                      const MutableBufferSequence &buffer_sequence,
                      constraint_t<
-                         is_convertible<ExecutionContext &, execution_context &>::value
+                         std::is_convertible<ExecutionContext &, execution_context &>::value
                      > = 0) {
         return buffer_registration<MutableBufferSequence>(ctx, buffer_sequence);
     }
@@ -294,7 +294,7 @@ namespace xio {
     register_buffers(ExecutionContext &ctx,
                      const MutableBufferSequence &buffer_sequence, const Allocator &alloc,
                      constraint_t<
-                         is_convertible<ExecutionContext &, execution_context &>::value
+                         std::is_convertible<ExecutionContext &, execution_context &>::value
                      > = 0) {
         return buffer_registration<MutableBufferSequence, Allocator>(
             ctx, buffer_sequence, alloc);

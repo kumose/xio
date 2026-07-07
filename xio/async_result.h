@@ -25,44 +25,44 @@ namespace xio {
 
     namespace detail {
         template<typename T>
-        struct is_completion_signature : false_type {
+        struct is_completion_signature : std::false_type {
         };
 
         template<typename R, typename... Args>
-        struct is_completion_signature<R(Args...)> : true_type {
+        struct is_completion_signature<R(Args...)> : std::true_type {
         };
 
         template<typename R, typename... Args>
-        struct is_completion_signature<R(Args...) &> : true_type {
+        struct is_completion_signature<R(Args...) &> : std::true_type {
         };
 
         template<typename R, typename... Args>
-        struct is_completion_signature<R(Args...) &&> : true_type {
+        struct is_completion_signature<R(Args...) &&> : std::true_type {
         };
 
 # if defined(ASIO_HAS_NOEXCEPT_FUNCTION_TYPE)
 
         template<typename R, typename... Args>
-        struct is_completion_signature<R(Args...) noexcept> : true_type {
+        struct is_completion_signature<R(Args...) noexcept> : std::true_type {
         };
 
         template<typename R, typename... Args>
-        struct is_completion_signature<R(Args...) & noexcept> : true_type {
+        struct is_completion_signature<R(Args...) & noexcept> : std::true_type {
         };
 
         template<typename R, typename... Args>
-        struct is_completion_signature<R(Args...) && noexcept> : true_type {
+        struct is_completion_signature<R(Args...) && noexcept> : std::true_type {
         };
 
 # endif // defined(ASIO_HAS_NOEXCEPT_FUNCTION_TYPE)
 
         template<typename... T>
-        struct are_completion_signatures : false_type {
+        struct are_completion_signatures : std::false_type {
         };
 
         template<>
         struct are_completion_signatures<>
-                : true_type {
+                : std::true_type {
         };
 
         template<typename T0>
@@ -72,7 +72,7 @@ namespace xio {
 
         template<typename T0, typename... TN>
         struct are_completion_signatures<T0, TN...>
-                : integral_constant<bool, (
+                : std::integral_constant<bool, (
                     is_completion_signature<T0>::value
                     && are_completion_signatures<TN...>::value)> {
         };
@@ -88,46 +88,46 @@ namespace xio {
         };
 
         template<typename T, typename... Signatures>
-        struct is_completion_handler_for : false_type {
+        struct is_completion_handler_for : std::false_type {
         };
 
         template<typename T, typename R, typename... Args>
         struct is_completion_handler_for<T, R(Args...)>
-                : integral_constant<bool, (callable_with<decay_t<T>, Args...>)> {
+                : std::integral_constant<bool, (callable_with<std::decay_t<T>, Args...>)> {
         };
 
         template<typename T, typename R, typename... Args>
         struct is_completion_handler_for<T, R(Args...) &>
-                : integral_constant<bool, (callable_with<decay_t<T> &, Args...>)> {
+                : std::integral_constant<bool, (callable_with<std::decay_t<T> &, Args...>)> {
         };
 
         template<typename T, typename R, typename... Args>
         struct is_completion_handler_for<T, R(Args...) &&>
-                : integral_constant<bool, (callable_with<decay_t<T> &&, Args...>)> {
+                : std::integral_constant<bool, (callable_with<std::decay_t<T> &&, Args...>)> {
         };
 
 # if defined(ASIO_HAS_NOEXCEPT_FUNCTION_TYPE)
 
     template<typename T, typename R, typename... Args>
     struct is_completion_handler_for<T, R(Args...) noexcept>
-            : integral_constant<bool, (callable_with<decay_t<T>, Args...>)> {
+            : std::integral_constant<bool, (callable_with<std::decay_t<T>, Args...>)> {
     };
 
     template<typename T, typename R, typename... Args>
     struct is_completion_handler_for<T, R(Args...) & noexcept>
-            : integral_constant<bool, (callable_with<decay_t<T> &, Args...>)> {
+            : std::integral_constant<bool, (callable_with<std::decay_t<T> &, Args...>)> {
     };
 
     template<typename T, typename R, typename... Args>
     struct is_completion_handler_for<T, R(Args...) && noexcept>
-            : integral_constant<bool, (callable_with<decay_t<T> &&, Args...>)> {
+            : std::integral_constant<bool, (callable_with<std::decay_t<T> &&, Args...>)> {
     };
 
 # endif // defined(ASIO_HAS_NOEXCEPT_FUNCTION_TYPE)
 
     template<typename T, typename Signature0, typename... SignatureN>
     struct is_completion_handler_for<T, Signature0, SignatureN...>
-            : integral_constant<bool, (
+            : std::integral_constant<bool, (
                 is_completion_handler_for<T, Signature0>::value
                 && is_completion_handler_for<T, SignatureN...>::value)> {
     };
@@ -164,23 +164,23 @@ namespace xio {
 
     namespace detail {
         template<typename T>
-        struct is_lvalue_completion_signature : false_type {
+        struct is_lvalue_completion_signature : std::false_type {
         };
 
         template<typename R, typename... Args>
-        struct is_lvalue_completion_signature<R(Args...) &> : true_type {
+        struct is_lvalue_completion_signature<R(Args...) &> : std::true_type {
         };
 
 # if defined(ASIO_HAS_NOEXCEPT_FUNCTION_TYPE)
 
         template<typename R, typename... Args>
-        struct is_lvalue_completion_signature<R(Args...) & noexcept> : true_type {
+        struct is_lvalue_completion_signature<R(Args...) & noexcept> : std::true_type {
         };
 
 # endif // defined(ASIO_HAS_NOEXCEPT_FUNCTION_TYPE)
 
         template<typename... Signatures>
-        struct are_any_lvalue_completion_signatures : false_type {
+        struct are_any_lvalue_completion_signatures : std::false_type {
         };
 
         template<typename Sig0>
@@ -190,29 +190,29 @@ namespace xio {
 
         template<typename Sig0, typename... SigN>
         struct are_any_lvalue_completion_signatures<Sig0, SigN...>
-                : integral_constant<bool, (
+                : std::integral_constant<bool, (
                     is_lvalue_completion_signature<Sig0>::value
                     || are_any_lvalue_completion_signatures<SigN...>::value)> {
         };
 
         template<typename T>
-        struct is_rvalue_completion_signature : false_type {
+        struct is_rvalue_completion_signature : std::false_type {
         };
 
         template<typename R, typename... Args>
-        struct is_rvalue_completion_signature<R(Args...) &&> : true_type {
+        struct is_rvalue_completion_signature<R(Args...) &&> : std::true_type {
         };
 
 # if defined(ASIO_HAS_NOEXCEPT_FUNCTION_TYPE)
 
         template<typename R, typename... Args>
-        struct is_rvalue_completion_signature<R(Args...) && noexcept> : true_type {
+        struct is_rvalue_completion_signature<R(Args...) && noexcept> : std::true_type {
         };
 
 # endif // defined(ASIO_HAS_NOEXCEPT_FUNCTION_TYPE)
 
         template<typename... Signatures>
-        struct are_any_rvalue_completion_signatures : false_type {
+        struct are_any_rvalue_completion_signatures : std::false_type {
         };
 
         template<typename Sig0>
@@ -222,7 +222,7 @@ namespace xio {
 
         template<typename Sig0, typename... SigN>
         struct are_any_rvalue_completion_signatures<Sig0, SigN...>
-                : integral_constant<bool, (
+                : std::integral_constant<bool, (
                     is_rvalue_completion_signature<Sig0>::value
                     || are_any_rvalue_completion_signatures<SigN...>::value)> {
         };
@@ -379,7 +379,7 @@ namespace xio {
     template<typename CompletionToken,
         ASIO_COMPLETION_SIGNATURE... Signatures>
     class async_result :
-            public conditional_t<
+            public std::conditional_t<
                 detail::are_any_lvalue_completion_signatures<Signatures...>::value
                 || !detail::are_any_rvalue_completion_signatures<Signatures...>::value,
                 detail::completion_handler_async_result<CompletionToken, Signatures...>,
@@ -387,7 +387,7 @@ namespace xio {
                     typename detail::simple_completion_signature<Signatures>::type...>
             > {
     public:
-        typedef conditional_t<
+        typedef std::conditional_t<
             detail::are_any_lvalue_completion_signatures<Signatures...>::value
             || !detail::are_any_rvalue_completion_signatures<Signatures...>::value,
             detail::completion_handler_async_result<CompletionToken, Signatures...>,
@@ -418,7 +418,7 @@ namespace xio {
     struct async_completion {
         /// The real handler type to be used for the asynchronous operation.
         typedef typename xio::async_result<
-            decay_t<CompletionToken>, Signatures...>::completion_handler_type
+            std::decay_t<CompletionToken>, Signatures...>::completion_handler_type
         completion_handler_type;
 
         /// Constructor.
@@ -427,19 +427,19 @@ namespace xio {
    * between the handler and the asynchronous result.
    */
         explicit async_completion(CompletionToken &token)
-            : completion_handler(static_cast<conditional_t<
-                  is_same<CompletionToken, completion_handler_type>::value,
+            : completion_handler(static_cast<std::conditional_t<
+                  std::is_same<CompletionToken, completion_handler_type>::value,
                   completion_handler_type &, CompletionToken &&>>(token)),
               result(completion_handler) {
         }
 
         /// A copy of, or reference to, a real handler object.
-        conditional_t<
-            is_same<CompletionToken, completion_handler_type>::value,
+        std::conditional_t<
+            std::is_same<CompletionToken, completion_handler_type>::value,
             completion_handler_type &, completion_handler_type> completion_handler;
 
         /// The result of the asynchronous operation's initiating function.
-        async_result<decay_t<CompletionToken>, Signatures...> result;
+        async_result<std::decay_t<CompletionToken>, Signatures...> result;
     };
 
     namespace detail {
@@ -468,8 +468,8 @@ namespace xio {
         template<typename CompletionToken,
             ASIO_COMPLETION_SIGNATURE... Signatures>
         struct async_result_has_initiate_memfn
-                : integral_constant<bool, sizeof(async_result_initiate_memfn_helper<
-                                              async_result<decay_t<CompletionToken>, Signatures...>
+                : std::integral_constant<bool, sizeof(async_result_initiate_memfn_helper<
+                                              async_result<std::decay_t<CompletionToken>, Signatures...>
                                           >(0)) != 1> {
         };
     } // namespace detail
@@ -484,23 +484,23 @@ namespace xio {
 #else
 # define ASIO_INITFN_RESULT_TYPE(ct, sig) \
   typename ::xio::async_result< \
-    typename ::xio::decay<ct>::type, sig>::return_type
+    typename ::std::decay<ct>::type, sig>::return_type
 # define ASIO_INITFN_RESULT_TYPE2(ct, sig0, sig1) \
   typename ::xio::async_result< \
-    typename ::xio::decay<ct>::type, sig0, sig1>::return_type
+    typename ::std::decay<ct>::type, sig0, sig1>::return_type
 # define ASIO_INITFN_RESULT_TYPE3(ct, sig0, sig1, sig2) \
   typename ::xio::async_result< \
-    typename ::xio::decay<ct>::type, sig0, sig1, sig2>::return_type
+    typename ::std::decay<ct>::type, sig0, sig1, sig2>::return_type
 #define ASIO_HANDLER_TYPE(ct, sig) \
   typename ::xio::async_result< \
-    typename ::xio::decay<ct>::type, sig>::completion_handler_type
+    typename ::std::decay<ct>::type, sig>::completion_handler_type
 #define ASIO_HANDLER_TYPE2(ct, sig0, sig1) \
   typename ::xio::async_result< \
-    typename ::xio::decay<ct>::type, \
+    typename ::std::decay<ct>::type, \
       sig0, sig1>::completion_handler_type
 #define ASIO_HANDLER_TYPE3(ct, sig0, sig1, sig2) \
   typename ::xio::async_result< \
-    typename ::xio::decay<ct>::type, \
+    typename ::std::decay<ct>::type, \
       sig0, sig1, sig2>::completion_handler_type
 #endif
 
@@ -601,16 +601,16 @@ namespace xio {
         typename Initiation, typename... Args>
     inline auto async_initiate(Initiation &&initiation,
                                type_identity_t<CompletionToken> &token, Args &&... args)
-        -> decltype(enable_if_t <
-                    enable_if_t <
+        -> decltype(std::enable_if_t <
+                    std::enable_if_t <
                     detail::are_completion_signatures<Signatures...>::value,
                     detail::async_result_has_initiate_memfn<
                         CompletionToken, Signatures...> > ::value,
-                    async_result<decay_t<CompletionToken>, Signatures...> > ::initiate(
+                    async_result<std::decay_t<CompletionToken>, Signatures...> > ::initiate(
                         static_cast<Initiation &&>(initiation),
                         static_cast<CompletionToken &&>(token),
                         static_cast<Args &&>(args)...)) {
-        return async_result<decay_t<CompletionToken>, Signatures...>::initiate(
+        return async_result<std::decay_t<CompletionToken>, Signatures...>::initiate(
             static_cast<Initiation &&>(initiation),
             static_cast<CompletionToken &&>(token),
             static_cast<Args &&>(args)...);
@@ -621,16 +621,16 @@ namespace xio {
         typename CompletionToken, typename Initiation, typename... Args>
     inline auto async_initiate(Initiation &&initiation,
                                CompletionToken &&token, Args &&... args)
-        -> decltype(enable_if_t <
-                    enable_if_t <
+        -> decltype(std::enable_if_t <
+                    std::enable_if_t <
                     detail::are_completion_signatures<Signatures...>::value,
                     detail::async_result_has_initiate_memfn<
                         CompletionToken, Signatures...> > ::value,
-                    async_result<decay_t<CompletionToken>, Signatures...> > ::initiate(
+                    async_result<std::decay_t<CompletionToken>, Signatures...> > ::initiate(
                         static_cast<Initiation &&>(initiation),
                         static_cast<CompletionToken &&>(token),
                         static_cast<Args &&>(args)...)) {
-        return async_result<decay_t<CompletionToken>, Signatures...>::initiate(
+        return async_result<std::decay_t<CompletionToken>, Signatures...>::initiate(
             static_cast<Initiation &&>(initiation),
             static_cast<CompletionToken &&>(token),
             static_cast<Args &&>(args)...);
@@ -639,13 +639,13 @@ namespace xio {
     template<typename CompletionToken,
         ASIO_COMPLETION_SIGNATURE... Signatures,
         typename Initiation, typename... Args>
-    inline typename enable_if_t<
-        !enable_if_t <
+    inline typename std::enable_if_t<
+        !std::enable_if_t <
         detail::are_completion_signatures<Signatures...>::value,
         detail::async_result_has_initiate_memfn<
             CompletionToken, Signatures...> >::value
     ,
-    async_result<decay_t<CompletionToken>, Signatures...>
+    async_result<std::decay_t<CompletionToken>, Signatures...>
     >
     ::return_type
     async_initiate(Initiation &&initiation,
@@ -654,7 +654,7 @@ namespace xio {
 
         static_cast<Initiation &&>(initiation)(
             static_cast<
-                typename async_result<decay_t<CompletionToken>,
+                typename async_result<std::decay_t<CompletionToken>,
                     Signatures...>::completion_handler_type &&>(
                 completion.completion_handler),
             static_cast<Args &&>(args)...);
@@ -664,13 +664,13 @@ namespace xio {
 
     template<ASIO_COMPLETION_SIGNATURE... Signatures,
         typename CompletionToken, typename Initiation, typename... Args>
-    inline typename enable_if_t<
-        !enable_if_t <
+    inline typename std::enable_if_t<
+        !std::enable_if_t <
         detail::are_completion_signatures<Signatures...>::value,
         detail::async_result_has_initiate_memfn<
             CompletionToken, Signatures...> >::value
     ,
-    async_result<decay_t<CompletionToken>, Signatures...>
+    async_result<std::decay_t<CompletionToken>, Signatures...>
     >
     ::return_type
     async_initiate(Initiation &&initiation, CompletionToken &&token, Args &&... args) {
@@ -678,7 +678,7 @@ namespace xio {
 
         static_cast<Initiation &&>(initiation)(
             static_cast<
-                typename async_result<decay_t<CompletionToken>,
+                typename async_result<std::decay_t<CompletionToken>,
                     Signatures...>::completion_handler_type &&>(
                 completion.completion_handler),
             static_cast<Args &&>(args)...);
@@ -731,20 +731,20 @@ namespace xio {
         };
 
         template<typename Call, typename = void>
-        struct is_async_operation_call : false_type {
+        struct is_async_operation_call : std::false_type {
         };
 
         template<typename Call>
         struct is_async_operation_call<Call,
                     void_t<
-                        enable_if_t<
-                            is_same<
+                        std::enable_if_t<
+                            std::is_same<
                                 result_of_t<Call>,
                                 async_operation_probe_result
                             >::value
                         >
                     >
-                > : true_type {
+                > : std::true_type {
         };
     } // namespace detail
 
@@ -769,13 +769,13 @@ namespace xio {
     /// The is_async_operation trait detects whether a type @c T and arguments
 /// @c Args... may be used to initiate an asynchronous operation.
     /**
- * Class template @c is_async_operation is a trait is derived from @c true_type
+ * Class template @c is_async_operation is a trait is derived from @c std::true_type
  * if the expression <tt>T(Args..., token)</tt> initiates an asynchronous
  * operation, where @c token is an unspecified completion token type. Otherwise,
- * @c is_async_operation is derived from @c false_type.
+ * @c is_async_operation is derived from @c std::false_type.
  */
     template<typename T, typename... Args>
-    struct is_async_operation : integral_constant<bool, automatically_determined> {
+    struct is_async_operation : std::integral_constant<bool, automatically_determined> {
     };
 
 #else // defined(GENERATING_DOCUMENTATION)

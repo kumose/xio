@@ -66,8 +66,8 @@ swprintf_s (
 _snwprintf (
 #endif // defined(ASIO_HAS_SECURE_RTL)
 pipe_name, 128,
-// Include address of static to discriminate asio instances in DLLs.
-      L"\\\\.\\pipe\\asio-A0812896-741A-484D-AF23-BE51BF620E22-%u-%p-%ld-%ld",
+// Include address of static to discriminate xio instances in DLLs.
+      L"\\\\.\\pipe\\xio-A0812896-741A-484D-AF23-BE51BF620E22-%u-%p-%ld-%ld",
       static_cast<unsigned int>(::GetCurrentProcessId()), &counter1, n1, n2);
 
 p [0] = ::CreateNamedPipeW(pipe_name,

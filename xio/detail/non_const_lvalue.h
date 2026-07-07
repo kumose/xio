@@ -27,11 +27,11 @@ namespace xio {
         template<typename T>
         struct non_const_lvalue {
             explicit non_const_lvalue(T &t)
-                : value(static_cast<conditional_t<
-                    is_same<T, decay_t<T> >::value, decay_t<T> &, T &&>>(t)) {
+                : value(static_cast<std::conditional_t<
+                    std::is_same<T, std::decay_t<T> >::value, std::decay_t<T> &, T &&>>(t)) {
             }
 
-            conditional_t<is_same<T, decay_t<T> >::value, decay_t<T> &, decay_t<T> > value;
+            std::conditional_t<std::is_same<T, std::decay_t<T> >::value, std::decay_t<T> &, std::decay_t<T> > value;
         };
     } // namespace detail
 

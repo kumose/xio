@@ -44,18 +44,18 @@ namespace xio {
                     void_t<
                         decltype(
                             static_cast<void>(
-                                static_cast<bool>(declval<const T>() == declval<const T>())
+                                static_cast<bool>(std::declval<const T>() == std::declval<const T>())
                             ),
                             static_cast<void>(
-                                static_cast<bool>(declval<const T>() != declval<const T>())
+                                static_cast<bool>(std::declval<const T>() != std::declval<const T>())
                             )
                         )
                     > > {
             static constexpr bool is_valid = true;
 
             static constexpr bool is_noexcept =
-                    noexcept(declval<const T>() == declval<const T>())
-                    && noexcept(declval<const T>() != declval<const T>());
+                    noexcept(std::declval<const T>() == std::declval<const T>())
+                    && noexcept(std::declval<const T>() != std::declval<const T>());
         };
 
     } // namespace detail

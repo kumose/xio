@@ -63,7 +63,7 @@ namespace xio {
                 template<typename OtherExecutor>
                 executor_with_default(const OtherExecutor &ex,
                                       constraint_t<
-                                          is_convertible<OtherExecutor, InnerExecutor>::value
+                                          std::is_convertible<OtherExecutor, InnerExecutor>::value
                                       > = 0) noexcept
                     : InnerExecutor(ex) {
                 }
@@ -72,12 +72,12 @@ namespace xio {
             /// Function helper to adapt an I/O object to use @c use_promise_t as its
   /// default completion token type.
             template<typename T>
-            static typename decay_t<T>::template rebind_executor<
-                executor_with_default<typename decay_t<T>::executor_type>
+            static typename std::decay_t<T>::template rebind_executor<
+                executor_with_default<typename std::decay_t<T>::executor_type>
             >::other
             as_default_on(T &&object) {
-                return typename decay_t<T>::template rebind_executor<
-                    executor_with_default<typename decay_t<T>::executor_type>
+                return typename std::decay_t<T>::template rebind_executor<
+                    executor_with_default<typename std::decay_t<T>::executor_type>
                 >::other(static_cast<T &&>(object));
             }
 

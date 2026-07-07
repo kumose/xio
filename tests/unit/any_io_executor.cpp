@@ -106,8 +106,8 @@ struct query_member<fat_executor, execution::context_t>
 
 template <typename Property>
 struct query_static_constexpr_member<fat_executor, Property,
-    typename xio::enable_if<
-      xio::is_convertible<
+    typename std::enable_if<
+      std::is_convertible<
         Property,
         xio::execution::blocking_t
       >::value

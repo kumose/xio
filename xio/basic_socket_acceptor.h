@@ -149,7 +149,7 @@ namespace xio {
         template<typename ExecutionContext>
         explicit basic_socket_acceptor(ExecutionContext &context,
                                        constraint_t<
-                                           is_convertible<ExecutionContext &, execution_context &>::value
+                                           std::is_convertible<ExecutionContext &, execution_context &>::value
                                        > = 0)
             : impl_(0, 0, context) {
         }
@@ -189,7 +189,7 @@ namespace xio {
         basic_socket_acceptor(ExecutionContext &context,
                               const protocol_type &protocol,
                               constraint_t<
-                                  is_convertible<ExecutionContext &, execution_context &>::value,
+                                  std::is_convertible<ExecutionContext &, execution_context &>::value,
                                   defaulted_constraint
                               > = defaulted_constraint())
             : impl_(0, 0, context) {
@@ -275,7 +275,7 @@ namespace xio {
         basic_socket_acceptor(ExecutionContext &context,
                               const endpoint_type &endpoint, bool reuse_addr = true,
                               constraint_t<
-                                  is_convertible<ExecutionContext &, execution_context &>::value
+                                  std::is_convertible<ExecutionContext &, execution_context &>::value
                               > = 0)
             : impl_(0, 0, context) {
             xio::error_code ec;
@@ -337,7 +337,7 @@ namespace xio {
         basic_socket_acceptor(ExecutionContext &context,
                               const protocol_type &protocol, const native_handle_type &native_acceptor,
                               constraint_t<
-                                  is_convertible<ExecutionContext &, execution_context &>::value
+                                  std::is_convertible<ExecutionContext &, execution_context &>::value
                               > = 0)
             : impl_(0, 0, context) {
             xio::error_code ec;
@@ -396,8 +396,8 @@ namespace xio {
         template<typename Protocol1, typename Executor1>
         basic_socket_acceptor(basic_socket_acceptor<Protocol1, Executor1> &&other,
                               constraint_t<
-                                  is_convertible<Protocol1, Protocol>::value
-                                  && is_convertible<Executor1, Executor>::value
+                                  std::is_convertible<Protocol1, Protocol>::value
+                                  && std::is_convertible<Executor1, Executor>::value
                               > = 0)
             : impl_(std::move(other.impl_)) {
         }
@@ -416,8 +416,8 @@ namespace xio {
    */
         template<typename Protocol1, typename Executor1>
         constraint_t<
-            is_convertible<Protocol1, Protocol>::value
-            && is_convertible<Executor1, Executor>::value,
+            std::is_convertible<Protocol1, Protocol>::value
+            && std::is_convertible<Executor1, Executor>::value,
             basic_socket_acceptor &> operator=(basic_socket_acceptor<Protocol1, Executor1> &&other) {
             basic_socket_acceptor tmp(std::move(other));
             impl_ = std::move(tmp.impl_);
@@ -1206,7 +1206,7 @@ namespace xio {
                         WaitToken &&token = default_completion_token_t<executor_type>())
             -> decltype(
                 async_initiate<WaitToken, void(xio::error_code)>(
-                    declval<initiate_async_wait>(), token, w)) {
+                    std::declval<initiate_async_wait>(), token, w)) {
             return async_initiate<WaitToken, void(xio::error_code)>(
                 initiate_async_wait(this), token, w);
         }
@@ -1233,7 +1233,7 @@ namespace xio {
         template<typename Protocol1, typename Executor1>
         void accept(basic_socket<Protocol1, Executor1> &peer,
                     constraint_t<
-                        is_convertible<Protocol, Protocol1>::value
+                        std::is_convertible<Protocol, Protocol1>::value
                     > = 0) {
             xio::error_code ec;
             impl_.get_service().accept(impl_.get_implementation(),
@@ -1268,7 +1268,7 @@ namespace xio {
         ASIO_SYNC_OP_VOID accept(
             basic_socket<Protocol1, Executor1> &peer, xio::error_code &ec,
             constraint_t<
-                is_convertible<Protocol, Protocol1>::value
+                std::is_convertible<Protocol, Protocol1>::value
             > = 0) {
             impl_.get_service().accept(impl_.get_implementation(),
                                        peer, static_cast<endpoint_type *>(0), ec);
@@ -1336,11 +1336,11 @@ namespace xio {
         auto async_accept(basic_socket<Protocol1, Executor1> &peer,
                           AcceptToken &&token = default_completion_token_t<executor_type>(),
                           constraint_t<
-                              is_convertible<Protocol, Protocol1>::value
+                              std::is_convertible<Protocol, Protocol1>::value
                           > = 0)
             -> decltype(
                 async_initiate<AcceptToken, void(xio::error_code)>(
-                    declval<initiate_async_accept>(), token,
+                    std::declval<initiate_async_accept>(), token,
                     &peer, static_cast<endpoint_type *>(0))) {
             return async_initiate<AcceptToken, void(xio::error_code)>(
                 initiate_async_accept(this), token,
@@ -1465,7 +1465,7 @@ namespace xio {
                           AcceptToken &&token = default_completion_token_t<executor_type>())
             -> decltype(
                 async_initiate<AcceptToken, void(xio::error_code)>(
-                    declval<initiate_async_accept>(), token, &peer, &peer_endpoint)) {
+                    std::declval<initiate_async_accept>(), token, &peer, &peer_endpoint)) {
             return async_initiate<AcceptToken, void(xio::error_code)>(
                 initiate_async_accept(this), token, &peer, &peer_endpoint);
         }
@@ -1604,8 +1604,8 @@ namespace xio {
                 async_initiate<MoveAcceptToken,
                     void(xio::error_code, typename Protocol::socket::template
                          rebind_executor<executor_type>::other)>(
-                    declval<initiate_async_move_accept>(), token,
-                    declval<const executor_type &>(), static_cast<endpoint_type *>(0),
+                    std::declval<initiate_async_move_accept>(), token,
+                    std::declval<const executor_type &>(), static_cast<endpoint_type *>(0),
                     static_cast<typename Protocol::socket::template
                         rebind_executor<executor_type>::other *>(0))) {
             return async_initiate<MoveAcceptToken,
@@ -1683,7 +1683,7 @@ namespace xio {
             typename ExecutionContext::executor_type>::other
         accept(ExecutionContext &context,
                constraint_t<
-                   is_convertible<ExecutionContext &, execution_context &>::value
+                   std::is_convertible<ExecutionContext &, execution_context &>::value
                > = 0) {
             xio::error_code ec;
             typename Protocol::socket::template rebind_executor<
@@ -1767,7 +1767,7 @@ namespace xio {
             typename ExecutionContext::executor_type>::other
         accept(ExecutionContext &context, xio::error_code &ec,
                constraint_t<
-                   is_convertible<ExecutionContext &, execution_context &>::value
+                   std::is_convertible<ExecutionContext &, execution_context &>::value
                > = 0) {
             typename Protocol::socket::template rebind_executor<
                 typename ExecutionContext::executor_type>::other peer(context);
@@ -1863,7 +1863,7 @@ namespace xio {
                     void(xio::error_code,
                          typename Protocol::socket::template rebind_executor<
                              Executor1>::other)>(
-                    declval<initiate_async_move_accept>(), token,
+                    std::declval<initiate_async_move_accept>(), token,
                     ex, static_cast<endpoint_type *>(0),
                     static_cast<typename Protocol::socket::template
                         rebind_executor<Executor1>::other *>(0))) {
@@ -1948,14 +1948,14 @@ namespace xio {
         auto async_accept(ExecutionContext &context,
                           MoveAcceptToken &&token = default_completion_token_t<executor_type>(),
                           constraint_t<
-                              is_convertible<ExecutionContext &, execution_context &>::value
+                              std::is_convertible<ExecutionContext &, execution_context &>::value
                           > = 0)
             -> decltype(
                 async_initiate<MoveAcceptToken,
                     void(xio::error_code,
                          typename Protocol::socket::template rebind_executor<
                              typename ExecutionContext::executor_type>::other)>(
-                    declval<initiate_async_move_accept>(), token,
+                    std::declval<initiate_async_move_accept>(), token,
                     context.get_executor(), static_cast<endpoint_type *>(0),
                     static_cast<typename Protocol::socket::template rebind_executor<
                         typename ExecutionContext::executor_type>::other *>(0))) {
@@ -2118,8 +2118,8 @@ namespace xio {
                 async_initiate<MoveAcceptToken,
                     void(xio::error_code, typename Protocol::socket::template
                          rebind_executor<executor_type>::other)>(
-                    declval<initiate_async_move_accept>(), token,
-                    declval<const executor_type &>(), &peer_endpoint,
+                    std::declval<initiate_async_move_accept>(), token,
+                    std::declval<const executor_type &>(), &peer_endpoint,
                     static_cast<typename Protocol::socket::template
                         rebind_executor<executor_type>::other *>(0))) {
             return async_initiate<MoveAcceptToken,
@@ -2208,7 +2208,7 @@ namespace xio {
             typename ExecutionContext::executor_type>::other
         accept(ExecutionContext &context, endpoint_type &peer_endpoint,
                constraint_t<
-                   is_convertible<ExecutionContext &, execution_context &>::value
+                   std::is_convertible<ExecutionContext &, execution_context &>::value
                > = 0) {
             xio::error_code ec;
             typename Protocol::socket::template rebind_executor<
@@ -2306,7 +2306,7 @@ namespace xio {
         accept(ExecutionContext &context,
                endpoint_type &peer_endpoint, xio::error_code &ec,
                constraint_t<
-                   is_convertible<ExecutionContext &, execution_context &>::value
+                   std::is_convertible<ExecutionContext &, execution_context &>::value
                > = 0) {
             typename Protocol::socket::template rebind_executor<
                 typename ExecutionContext::executor_type>::other peer(context);
@@ -2409,7 +2409,7 @@ namespace xio {
                     void(xio::error_code,
                          typename Protocol::socket::template rebind_executor<
                              Executor1>::other)>(
-                    declval<initiate_async_move_accept>(), token, ex, &peer_endpoint,
+                    std::declval<initiate_async_move_accept>(), token, ex, &peer_endpoint,
                     static_cast<typename Protocol::socket::template
                         rebind_executor<Executor1>::other *>(0))) {
             return async_initiate<MoveAcceptToken,
@@ -2498,14 +2498,14 @@ namespace xio {
         auto async_accept(ExecutionContext &context, endpoint_type &peer_endpoint,
                           MoveAcceptToken &&token = default_completion_token_t<executor_type>(),
                           constraint_t<
-                              is_convertible<ExecutionContext &, execution_context &>::value
+                              std::is_convertible<ExecutionContext &, execution_context &>::value
                           > = 0)
             -> decltype(
                 async_initiate<MoveAcceptToken,
                     void(xio::error_code,
                          typename Protocol::socket::template rebind_executor<
                              typename ExecutionContext::executor_type>::other)>(
-                    declval<initiate_async_move_accept>(), token,
+                    std::declval<initiate_async_move_accept>(), token,
                     context.get_executor(), &peer_endpoint,
                     static_cast<typename Protocol::socket::template rebind_executor<
                         typename ExecutionContext::executor_type>::other *>(0))) {

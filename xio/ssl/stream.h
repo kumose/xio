@@ -83,7 +83,7 @@ namespace xio {
             };
 
             /// The type of the next layer.
-            typedef remove_reference_t<Stream> next_layer_type;
+            typedef std::remove_reference_t<Stream> next_layer_type;
 
             /// The type of the lowest layer.
             typedef typename next_layer_type::lowest_layer_type lowest_layer_type;
@@ -506,7 +506,7 @@ namespace xio {
                 -> decltype(
                     async_initiate<HandshakeToken,
                         void(xio::error_code)>(
-                        declval<initiate_async_handshake>(), token, type)) {
+                        std::declval<initiate_async_handshake>(), token, type)) {
                 return async_initiate<HandshakeToken,
                     void(xio::error_code)>(
                     initiate_async_handshake(this), token, type);
@@ -566,7 +566,7 @@ namespace xio {
                 -> decltype(
                     async_initiate<BufferedHandshakeToken,
                         void(xio::error_code, std::size_t)>(
-                        declval<initiate_async_buffered_handshake>(), token, type, buffers)) {
+                        std::declval<initiate_async_buffered_handshake>(), token, type, buffers)) {
                 return async_initiate<BufferedHandshakeToken,
                     void(xio::error_code, std::size_t)>(
                     initiate_async_buffered_handshake(this), token, type, buffers);
@@ -638,7 +638,7 @@ namespace xio {
                 -> decltype(
                     async_initiate<ShutdownToken,
                         void(xio::error_code)>(
-                        declval<initiate_async_shutdown>(), token)) {
+                        std::declval<initiate_async_shutdown>(), token)) {
                 return async_initiate<ShutdownToken,
                     void(xio::error_code)>(
                     initiate_async_shutdown(this), token);
@@ -743,7 +743,7 @@ namespace xio {
                 -> decltype(
                     async_initiate<WriteToken,
                         void(xio::error_code, std::size_t)>(
-                        declval<initiate_async_write_some>(), token, buffers)) {
+                        std::declval<initiate_async_write_some>(), token, buffers)) {
                 return async_initiate<WriteToken,
                     void(xio::error_code, std::size_t)>(
                     initiate_async_write_some(this), token, buffers);
@@ -848,7 +848,7 @@ namespace xio {
                 -> decltype(
                     async_initiate<ReadToken,
                         void(xio::error_code, std::size_t)>(
-                        declval<initiate_async_read_some>(), token, buffers)) {
+                        std::declval<initiate_async_read_some>(), token, buffers)) {
                 return async_initiate<ReadToken,
                     void(xio::error_code, std::size_t)>(
                     initiate_async_read_some(this), token, buffers);

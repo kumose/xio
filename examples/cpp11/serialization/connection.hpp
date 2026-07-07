@@ -11,7 +11,7 @@
 #ifndef SERIALIZATION_CONNECTION_HPP
 #define SERIALIZATION_CONNECTION_HPP
 
-#include <asio.hpp>
+#include <xio/xio.h>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 #include <functional>

@@ -115,9 +115,9 @@ namespace xio {
                  current_location; current_location = current_location->next_) {
                 write_line(
 #if defined(ASIO_WINDOWS)
-"@asio|%I64u.%06I64u|%I64u^%I64u|%s%s%.80s%s(%.80s:%d)\n",
+"@xio|%I64u.%06I64u|%I64u^%I64u|%s%s%.80s%s(%.80s:%d)\n",
 #else // defined(ASIO_WINDOWS)
-"@asio|%llu.%06llu|%llu^%llu|%s%s%.80s%s(%.80s:%d)\n",
+"@xio|%llu.%06llu|%llu^%llu|%s%s%.80s%s(%.80s:%d)\n",
 #endif // defined(ASIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 current_id, h.id_,
@@ -130,9 +130,9 @@ current_location->file_, current_location->line_);
 
 write_line (
 #if defined(ASIO_WINDOWS)
-"@asio|%I64u.%06I64u|%I64u*%I64u|%.20s@%p.%.50s\n",
+"@xio|%I64u.%06I64u|%I64u*%I64u|%.20s@%p.%.50s\n",
 #else // defined(ASIO_WINDOWS)
-"@asio|%llu.%06llu|%llu*%llu|%.20s@%p.%.50s\n",
+"@xio|%llu.%06llu|%llu*%llu|%.20s@%p.%.50s\n",
 #endif // defined(ASIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 current_id, h.id_, object_type, object, op_name);
@@ -152,9 +152,9 @@ handler_tracking::completion::~completion() {
 
         write_line(
 #if defined(ASIO_WINDOWS)
-"@asio|%I64u.%06I64u|%c%I64u|\n",
+"@xio|%I64u.%06I64u|%c%I64u|\n",
 #else // defined(ASIO_WINDOWS)
-"@asio|%llu.%06llu|%c%llu|\n",
+"@xio|%llu.%06llu|%c%llu|\n",
 #endif // defined(ASIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 invoked_? '!' : '~', id_);
@@ -168,9 +168,9 @@ void handler_tracking::completion::invocation_begin() {
 
     write_line(
 #if defined(ASIO_WINDOWS)
-"@asio|%I64u.%06I64u|>%I64u|\n",
+"@xio|%I64u.%06I64u|>%I64u|\n",
 #else // defined(ASIO_WINDOWS)
-"@asio|%llu.%06llu|>%llu|\n",
+"@xio|%llu.%06llu|>%llu|\n",
 #endif // defined(ASIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds, id_);
 
@@ -183,9 +183,9 @@ void handler_tracking::completion::invocation_begin(
 
     write_line(
 #if defined(ASIO_WINDOWS)
-"@asio|%I64u.%06I64u|>%I64u|ec=%.20s:%d\n",
+"@xio|%I64u.%06I64u|>%I64u|ec=%.20s:%d\n",
 #else // defined(ASIO_WINDOWS)
-"@asio|%llu.%06llu|>%llu|ec=%.20s:%d\n",
+"@xio|%llu.%06llu|>%llu|ec=%.20s:%d\n",
 #endif // defined(ASIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 id_, ec.category().name(), ec.value());
@@ -199,9 +199,9 @@ void handler_tracking::completion::invocation_begin(
 
     write_line(
 #if defined(ASIO_WINDOWS)
-"@asio|%I64u.%06I64u|>%I64u|ec=%.20s:%d,bytes_transferred=%I64u\n",
+"@xio|%I64u.%06I64u|>%I64u|ec=%.20s:%d,bytes_transferred=%I64u\n",
 #else // defined(ASIO_WINDOWS)
-"@asio|%llu.%06llu|>%llu|ec=%.20s:%d,bytes_transferred=%llu\n",
+"@xio|%llu.%06llu|>%llu|ec=%.20s:%d,bytes_transferred=%llu\n",
 #endif // defined(ASIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 id_, ec.category().name(), ec.value(),
@@ -216,9 +216,9 @@ void handler_tracking::completion::invocation_begin(
 
     write_line(
 #if defined(ASIO_WINDOWS)
-"@asio|%I64u.%06I64u|>%I64u|ec=%.20s:%d,signal_number=%d\n",
+"@xio|%I64u.%06I64u|>%I64u|ec=%.20s:%d,signal_number=%d\n",
 #else // defined(ASIO_WINDOWS)
-"@asio|%llu.%06llu|>%llu|ec=%.20s:%d,signal_number=%d\n",
+"@xio|%llu.%06llu|>%llu|ec=%.20s:%d,signal_number=%d\n",
 #endif // defined(ASIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 id_, ec.category().name(), ec.value(), signal_number);
@@ -232,9 +232,9 @@ void handler_tracking::completion::invocation_begin(
 
     write_line(
 #if defined(ASIO_WINDOWS)
-"@asio|%I64u.%06I64u|>%I64u|ec=%.20s:%d,%.50s\n",
+"@xio|%I64u.%06I64u|>%I64u|ec=%.20s:%d,%.50s\n",
 #else // defined(ASIO_WINDOWS)
-"@asio|%llu.%06llu|>%llu|ec=%.20s:%d,%.50s\n",
+"@xio|%llu.%06llu|>%llu|ec=%.20s:%d,%.50s\n",
 #endif // defined(ASIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 id_, ec.category().name(), ec.value(), arg);
@@ -248,9 +248,9 @@ void handler_tracking::completion::invocation_end() {
 
         write_line(
 #if defined(ASIO_WINDOWS)
-"@asio|%I64u.%06I64u|<%I64u|\n",
+"@xio|%I64u.%06I64u|<%I64u|\n",
 #else // defined(ASIO_WINDOWS)
-"@asio|%llu.%06llu|<%llu|\n",
+"@xio|%llu.%06llu|<%llu|\n",
 #endif // defined(ASIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds, id_);
 
@@ -271,9 +271,9 @@ void handler_tracking::operation(execution_context &,
 
     write_line(
 #if defined(ASIO_WINDOWS)
-"@asio|%I64u.%06I64u|%I64u|%.20s@%p.%.50s\n",
+"@xio|%I64u.%06I64u|%I64u|%.20s@%p.%.50s\n",
 #else // defined(ASIO_WINDOWS)
-"@asio|%llu.%06llu|%llu|%.20s@%p.%.50s\n",
+"@xio|%llu.%06llu|%llu|%.20s@%p.%.50s\n",
 #endif // defined(ASIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 current_id, object_type, object, op_name);
@@ -298,9 +298,9 @@ void handler_tracking::reactor_operation(
 
     write_line(
 #if defined(ASIO_WINDOWS)
-"@asio|%I64u.%06I64u|.%I64u|%s,ec=%.20s:%d\n",
+"@xio|%I64u.%06I64u|.%I64u|%s,ec=%.20s:%d\n",
 #else // defined(ASIO_WINDOWS)
-"@asio|%llu.%06llu|.%llu|%s,ec=%.20s:%d\n",
+"@xio|%llu.%06llu|.%llu|%s,ec=%.20s:%d\n",
 #endif // defined(ASIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 h.id_, op_name, ec.category().name(), ec.value());
@@ -313,9 +313,9 @@ void handler_tracking::reactor_operation(
 
     write_line(
 #if defined(ASIO_WINDOWS)
-"@asio|%I64u.%06I64u|.%I64u|%s,ec=%.20s:%d,bytes_transferred=%I64u\n",
+"@xio|%I64u.%06I64u|.%I64u|%s,ec=%.20s:%d,bytes_transferred=%I64u\n",
 #else // defined(ASIO_WINDOWS)
-"@asio|%llu.%06llu|.%llu|%s,ec=%.20s:%d,bytes_transferred=%llu\n",
+"@xio|%llu.%06llu|.%llu|%s,ec=%.20s:%d,bytes_transferred=%llu\n",
 #endif // defined(ASIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 h.id_, op_name, ec.category().name(), ec.value(),

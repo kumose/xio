@@ -161,8 +161,8 @@ namespace xio {
    * @returns A reference to the newly installed handler.
    */
         template<typename CancellationHandler>
-        decay_t<CancellationHandler> &assign(CancellationHandler &&handler) {
-            return this->emplace<decay_t<CancellationHandler> >(
+        std::decay_t<CancellationHandler> &assign(CancellationHandler &&handler) {
+            return this->emplace<std::decay_t<CancellationHandler> >(
                 static_cast<CancellationHandler &&>(handler));
         }
 

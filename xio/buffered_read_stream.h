@@ -56,7 +56,7 @@ namespace xio {
             : private noncopyable {
     public:
         /// The type of the next layer.
-        typedef remove_reference_t<Stream> next_layer_type;
+        typedef std::remove_reference_t<Stream> next_layer_type;
 
         /// The type of the lowest layer.
         typedef typename next_layer_type::lowest_layer_type lowest_layer_type;
@@ -144,7 +144,7 @@ namespace xio {
         auto async_write_some(const ConstBufferSequence &buffers,
                               WriteHandler &&handler = default_completion_token_t<executor_type>())
             -> decltype(
-                declval<conditional_t<true, Stream &, WriteHandler> >().async_write_some(
+                std::declval<std::conditional_t<true, Stream &, WriteHandler> >().async_write_some(
                     buffers, static_cast<WriteHandler &&>(handler))) {
             return next_layer_.async_write_some(buffers,
                                                 static_cast<WriteHandler &&>(handler));
@@ -171,8 +171,8 @@ namespace xio {
             -> decltype(
                 async_initiate<ReadHandler,
                     void(xio::error_code, std::size_t)>(
-                    declval<detail::initiate_async_buffered_fill<Stream> >(),
-                    handler, declval<detail::buffered_stream_storage *>()));
+                    std::declval<detail::initiate_async_buffered_fill<Stream> >(),
+                    handler, std::declval<detail::buffered_stream_storage *>()));
 
         /// Read some data from the stream. Returns the number of bytes read. Throws
   /// an exception on failure.
@@ -199,8 +199,8 @@ namespace xio {
             -> decltype(
                 async_initiate<ReadHandler,
                     void(xio::error_code, std::size_t)>(
-                    declval<detail::initiate_async_buffered_read_some<Stream> >(),
-                    handler, declval<detail::buffered_stream_storage *>(), buffers));
+                    std::declval<detail::initiate_async_buffered_read_some<Stream> >(),
+                    handler, std::declval<detail::buffered_stream_storage *>(), buffers));
 
         /// Peek at the incoming data on the stream. Returns the number of bytes read.
   /// Throws an exception on failure.

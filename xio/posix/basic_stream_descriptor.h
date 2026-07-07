@@ -106,7 +106,7 @@ public:
     template<typename ExecutionContext>
     explicit basic_stream_descriptor(ExecutionContext &context,
                                      constraint_t<
-                                         is_convertible<ExecutionContext &, execution_context &>::value,
+                                         std::is_convertible<ExecutionContext &, execution_context &>::value,
                                          defaulted_constraint
                                      > = defaulted_constraint())
         : basic_descriptor<Executor>(context) {
@@ -147,7 +147,7 @@ public:
     basic_stream_descriptor(ExecutionContext &context,
                             const native_handle_type &native_descriptor,
                             constraint_t<
-                                is_convertible<ExecutionContext &, execution_context &>::value
+                                std::is_convertible<ExecutionContext &, execution_context &>::value
                             > = 0)
         : basic_descriptor<Executor>(context, native_descriptor) {
     }
@@ -199,7 +199,7 @@ public:
     template<typename Executor1>
     basic_stream_descriptor(basic_stream_descriptor<Executor1> &&other,
                             constraint_t<
-                                is_convertible<Executor1, Executor>::value,
+                                std::is_convertible<Executor1, Executor>::value,
                                 defaulted_constraint
                             > = defaulted_constraint())
         : basic_descriptor<Executor>(std::move(other)) {
@@ -219,7 +219,7 @@ public:
    */
     template<typename Executor1>
     constraint_t<
-        is_convertible<Executor1, Executor>::value,
+        std::is_convertible<Executor1, Executor>::value,
         basic_stream_descriptor &> operator=(basic_stream_descriptor<Executor1> &&other) {
         basic_descriptor<Executor>::operator=(std::move(other));
         return *this;
@@ -470,7 +470,7 @@ public:
         -> decltype(
             async_initiate<ReadToken,
                 void(xio::error_code, std::size_t)>(
-                declval<initiate_async_read_some>(), token, buffers)) {
+                std::declval<initiate_async_read_some>(), token, buffers)) {
         return async_initiate<ReadToken,
             void(xio::error_code, std::size_t)>(
             initiate_async_read_some(this), token, buffers);

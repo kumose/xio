@@ -87,7 +87,7 @@ namespace xio {
     ->
     decltype(
         async_initiate<NullaryToken, void()>(
-            declval<detail::initiate_defer>(), token)) {
+            std::declval<detail::initiate_defer>(), token)) {
         return async_initiate<NullaryToken, void()>(
             detail::initiate_defer(), token);
     }
@@ -175,7 +175,7 @@ namespace xio {
                       > = 0)
         -> decltype(
             async_initiate<NullaryToken, void()>(
-                declval<detail::initiate_defer_with_executor<Executor> >(),
+                std::declval<detail::initiate_defer_with_executor<Executor> >(),
                 token, detail::empty_work_function())) {
         return async_initiate<NullaryToken, void()>(
             detail::initiate_defer_with_executor<Executor>(ex),
@@ -202,12 +202,12 @@ namespace xio {
                       NullaryToken && token = default_completion_token_t<
                           typename ExecutionContext::executor_type>(),
                       constraint_t<
-                          is_convertible<ExecutionContext &, execution_context &>::value
+                          std::is_convertible<ExecutionContext &, execution_context &>::value
                       > = 0)
     ->
     decltype(
         async_initiate<NullaryToken, void()>(
-            declval<detail::initiate_defer_with_executor<
+            std::declval<detail::initiate_defer_with_executor<
                 typename ExecutionContext::executor_type> >(),
             token, detail::empty_work_function())) {
         return async_initiate<NullaryToken, void()>(
@@ -327,7 +327,7 @@ namespace xio {
     inline auto defer(Function &&function, const Executor &ex,
                       NullaryToken &&token = default_completion_token_t<Executor>(),
                       constraint_t<
-                          is_void < result_of_t < decay_t<Function>()>>::value
+                          std::is_void < result_of_t < std::decay_t<Function>()>>::value
     > = 0,
                       constraint_t<
                           (execution::is_executor<Executor>::value
@@ -336,7 +336,7 @@ namespace xio {
                       > = 0)
         -> decltype(
             async_initiate<NullaryToken, void()>(
-                declval<detail::initiate_defer_with_executor<Executor> >(),
+                std::declval<detail::initiate_defer_with_executor<Executor> >(),
                 token, static_cast<Function &&>(function))) {
         return async_initiate<NullaryToken, void()>(
             detail::initiate_defer_with_executor<Executor>(ex),
@@ -363,7 +363,7 @@ namespace xio {
  *
  * @param token The @ref completion_token that will be used to produce a
  * completion handler. The function signature of the completion handler must be:
- * @code void handler(decay_t<result_of_t<decay_t<Function>()>>); @endcode
+ * @code void handler(std::decay_t<result_of_t<std::decay_t<Function>()>>); @endcode
  *
  * @returns This function returns <tt>async_initiate<CompletionToken,
  * void()>(Init{ex}, token)</tt>, where @c Init is a function object type
@@ -448,11 +448,11 @@ namespace xio {
  * } @endcode
  *
  * @par Completion Signature
- * @code void(decay_t<result_of_t<decay_t<Function>()>>) @endcode
+ * @code void(std::decay_t<result_of_t<std::decay_t<Function>()>>) @endcode
  */
     template<typename Function, typename Executor,
         ASIO_COMPLETION_TOKEN_FOR(
-        void(decay_t<result_of_t < decay_t<Function>()> >
+        void(std::decay_t<result_of_t < std::decay_t<Function>()> >
 
 
     )
@@ -465,7 +465,7 @@ namespace xio {
     inline auto defer(Function &&function, const Executor &ex,
                       CompletionToken &&token = default_completion_token_t<Executor>(),
                       constraint_t<
-                          !is_void < result_of_t < decay_t<Function>()>>::value
+                          !std::is_void < result_of_t < std::decay_t<Function>()>>::value
     > = 0,
                       constraint_t<
                           (execution::is_executor<Executor>::value
@@ -474,7 +474,7 @@ namespace xio {
                       > = 0)
         -> decltype(
             async_initiate<CompletionToken, void(detail::work_result_t<Function>)>(
-                declval<detail::initiate_defer_with_executor<Executor> >(),
+                std::declval<detail::initiate_defer_with_executor<Executor> >(),
                 token, static_cast<Function &&>(function))) {
         return async_initiate<CompletionToken, void(detail::work_result_t<Function>)>(
             detail::initiate_defer_with_executor<Executor>(ex),
@@ -511,15 +511,15 @@ namespace xio {
                       NullaryToken && token = default_completion_token_t<
                           typename ExecutionContext::executor_type>(),
                       constraint_t <
-                      is_void < result_of_t < decay_t<Function>() >> ::value
+                      std::is_void < result_of_t < std::decay_t<Function>() >> ::value
                       > = 0,
                       constraint_t<
-                          is_convertible<ExecutionContext &, execution_context &>::value
+                          std::is_convertible<ExecutionContext &, execution_context &>::value
                       > = 0)
     ->
     decltype(
         async_initiate<NullaryToken, void()>(
-            declval<detail::initiate_defer_with_executor<
+            std::declval<detail::initiate_defer_with_executor<
                 typename ExecutionContext::executor_type> >(),
             token, static_cast<Function &&>(function))) {
         return async_initiate<NullaryToken, void()>(
@@ -549,11 +549,11 @@ namespace xio {
  * xio::thread_pool will call @c std::terminate.
  *
  * @par Completion Signature
- * @code void(decay_t<result_of_t<decay_t<Function>()>>) @endcode
+ * @code void(std::decay_t<result_of_t<std::decay_t<Function>()>>) @endcode
  */
     template<typename Function, typename ExecutionContext,
         ASIO_COMPLETION_TOKEN_FOR(
-        void(decay_t<result_of_t < decay_t<Function>()> >
+        void(std::decay_t<result_of_t < std::decay_t<Function>()> >
 
 
     )
@@ -567,15 +567,15 @@ namespace xio {
                       CompletionToken && token = default_completion_token_t<
                           typename ExecutionContext::executor_type>(),
                       constraint_t <
-                      !is_void < result_of_t < decay_t<Function>() >> ::value
+                      !std::is_void < result_of_t < std::decay_t<Function>() >> ::value
                       > = 0,
                       constraint_t<
-                          is_convertible<ExecutionContext &, execution_context &>::value
+                          std::is_convertible<ExecutionContext &, execution_context &>::value
                       > = 0)
     ->
     decltype(
         async_initiate<CompletionToken, void(detail::work_result_t<Function>)>(
-            declval<detail::initiate_defer_with_executor<
+            std::declval<detail::initiate_defer_with_executor<
                 typename ExecutionContext::executor_type> >(),
             token, static_cast<Function &&>(function))) {
         return async_initiate<CompletionToken, void(detail::work_result_t<Function>)>(

@@ -512,7 +512,7 @@ namespace xio {
         -> decltype(
             async_initiate<ReadToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_read_at<AsyncRandomAccessReadDevice> >(),
+                std::declval<detail::initiate_async_read_at<AsyncRandomAccessReadDevice> >(),
                 token, offset, buffers, transfer_all())) {
         return async_initiate<ReadToken,
             void(xio::error_code, std::size_t)>(
@@ -618,7 +618,7 @@ namespace xio {
         -> decltype(
             async_initiate<ReadToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_read_at<AsyncRandomAccessReadDevice> >(),
+                std::declval<detail::initiate_async_read_at<AsyncRandomAccessReadDevice> >(),
                 token, offset, buffers,
                 static_cast<CompletionCondition &&>(completion_condition))) {
         return async_initiate<ReadToken,
@@ -707,7 +707,7 @@ namespace xio {
         -> decltype(
             async_initiate<ReadToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_read_at_streambuf<
+                std::declval<detail::initiate_async_read_at_streambuf<
                     AsyncRandomAccessReadDevice> >(),
                 token, offset, &b, transfer_all())) {
         return async_initiate<ReadToken,
@@ -801,7 +801,7 @@ namespace xio {
         -> decltype(
             async_initiate<ReadToken,
                 void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_read_at_streambuf<
+                std::declval<detail::initiate_async_read_at_streambuf<
                     AsyncRandomAccessReadDevice> >(),
                 token, offset, &b,
                 static_cast<CompletionCondition &&>(completion_condition))) {

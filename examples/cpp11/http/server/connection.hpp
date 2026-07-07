@@ -11,7 +11,7 @@
 #ifndef HTTP_CONNECTION_HPP
 #define HTTP_CONNECTION_HPP
 
-#include <asio.hpp>
+#include <xio/xio.h>
 #include <array>
 #include <memory>
 #include "reply.hpp"

@@ -142,7 +142,7 @@ namespace xio {
         template<typename ExecutionContext>
         explicit basic_signal_set(ExecutionContext &context,
                                   constraint_t<
-                                      is_convertible<ExecutionContext &, execution_context &>::value,
+                                      std::is_convertible<ExecutionContext &, execution_context &>::value,
                                       defaulted_constraint
                                   > = defaulted_constraint())
             : impl_(0, 0, context) {
@@ -186,7 +186,7 @@ namespace xio {
         template<typename ExecutionContext>
         basic_signal_set(ExecutionContext &context, int signal_number_1,
                          constraint_t<
-                             is_convertible<ExecutionContext &, execution_context &>::value,
+                             std::is_convertible<ExecutionContext &, execution_context &>::value,
                              defaulted_constraint
                          > = defaulted_constraint())
             : impl_(0, 0, context) {
@@ -243,7 +243,7 @@ namespace xio {
         basic_signal_set(ExecutionContext &context, int signal_number_1,
                          int signal_number_2,
                          constraint_t<
-                             is_convertible<ExecutionContext &, execution_context &>::value,
+                             std::is_convertible<ExecutionContext &, execution_context &>::value,
                              defaulted_constraint
                          > = defaulted_constraint())
             : impl_(0, 0, context) {
@@ -310,7 +310,7 @@ namespace xio {
         basic_signal_set(ExecutionContext &context, int signal_number_1,
                          int signal_number_2, int signal_number_3,
                          constraint_t<
-                             is_convertible<ExecutionContext &, execution_context &>::value,
+                             std::is_convertible<ExecutionContext &, execution_context &>::value,
                              defaulted_constraint
                          > = defaulted_constraint())
             : impl_(0, 0, context) {
@@ -588,7 +588,7 @@ namespace xio {
             SignalToken &&token = default_completion_token_t<executor_type>())
             -> decltype(
                 async_initiate<SignalToken, void(xio::error_code, int)>(
-                    declval<initiate_async_wait>(), token)) {
+                    std::declval<initiate_async_wait>(), token)) {
             return async_initiate<SignalToken, void(xio::error_code, int)>(
                 initiate_async_wait(this), token);
         }

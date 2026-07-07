@@ -12,7 +12,7 @@
 #define IPV4_HEADER_HPP
 
 #include <algorithm>
-#include <asio/ip/address_v4.hpp>
+#include <xio/ip/address_v4.h>
 
 // Packet header for IPv4.
 //

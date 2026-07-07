@@ -13,8 +13,8 @@
 
 #include <array>
 #include <string>
-#include <asio/buffer.hpp>
-#include <asio/ip/tcp.hpp>
+#include <xio/buffer.h>
+#include <xio/ip/tcp.h>
 
 namespace socks4 {
 

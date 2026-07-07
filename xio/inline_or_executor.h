@@ -67,10 +67,10 @@ namespace xio {
         template<typename Executor1>
         explicit inline_or_executor(const Executor1 &e,
                                     constraint_t<
-                                        conditional_t <
-                                        !is_same<Executor1, inline_or_executor>::value,
-                                        is_convertible<Executor1, Executor>,
-                                        false_type
+                                        std::conditional_t <
+                                        !std::is_same<Executor1, inline_or_executor>::value,
+                                        std::is_convertible<Executor1, Executor>,
+                                        std::false_type
                                     >::value
       > = 0)
             : executor_(e) {
@@ -282,21 +282,21 @@ namespace xio {
    *     xio::execution::relationship.continuation); @endcode
    */
         template<typename Property>
-        inline_or_executor<decay_t<require_result_t<const Executor &, Property> >,
+        inline_or_executor<std::decay_t<require_result_t<const Executor &, Property> >,
             Blocking, InlineExceptionHandling>
         require(const Property &p,
                 constraint_t<
                     can_require<const Executor &, Property>::value
                 > = 0,
                 constraint_t<
-                    !is_convertible<Property, execution::blocking_t>::value
+                    !std::is_convertible<Property, execution::blocking_t>::value
                 > = 0,
                 constraint_t<
-                    !is_convertible<Property, execution::inline_exception_handling_t>::value
+                    !std::is_convertible<Property, execution::inline_exception_handling_t>::value
                 > = 0) const
             noexcept(is_nothrow_require<const Executor &, Property>::value) {
             return inline_or_executor<
-                decay_t<require_result_t<const Executor &, Property> >,
+                std::decay_t<require_result_t<const Executor &, Property> >,
                 Blocking, InlineExceptionHandling>(xio::require(executor_, p));
         }
 
@@ -311,21 +311,21 @@ namespace xio {
    *     xio::execution::relationship.continuation); @endcode
    */
         template<typename Property>
-        inline_or_executor<decay_t<prefer_result_t<const Executor &, Property> >,
+        inline_or_executor<std::decay_t<prefer_result_t<const Executor &, Property> >,
             Blocking, InlineExceptionHandling>
         prefer(const Property &p,
                constraint_t<
                    can_prefer<const Executor &, Property>::value
                > = 0,
                constraint_t<
-                   !is_convertible<Property, execution::blocking_t>::value
+                   !std::is_convertible<Property, execution::blocking_t>::value
                > = 0,
                constraint_t<
-                   !is_convertible<Property, execution::inline_exception_handling_t>::value
+                   !std::is_convertible<Property, execution::inline_exception_handling_t>::value
                > = 0) const
             noexcept(is_nothrow_prefer<const Executor &, Property>::value) {
             return inline_or_executor<
-                decay_t<prefer_result_t<const Executor &, Property> >,
+                std::decay_t<prefer_result_t<const Executor &, Property> >,
                 Blocking, InlineExceptionHandling>(xio::prefer(executor_, p));
         }
 
@@ -386,10 +386,10 @@ namespace xio {
                                                              can_query<const Executor &, Property>::value
                                                          > = 0,
                                                          constraint_t<
-                                                             !is_convertible<Property, execution::blocking_t>::value
+                                                             !std::is_convertible<Property, execution::blocking_t>::value
                                                          > = 0,
                                                          constraint_t<
-                                                             !is_convertible<Property,
+                                                             !std::is_convertible<Property,
                                                                  execution::inline_exception_handling_t>::value
                                                          > = 0) const
             noexcept(is_nothrow_query<const Executor &, Property>::value) {
@@ -431,7 +431,7 @@ namespace xio {
         void dispatch(Function &&f, const Allocator &a) const {
             (void) a;
             detail::non_const_lvalue<Function> f2(f);
-            static_cast<decay_t<Function> &&>(f2.value)();
+            static_cast<std::decay_t<Function> &&>(f2.value)();
         }
 
         /// Request the inline_or_executor to invoke the given function object.
@@ -499,11 +499,11 @@ namespace xio {
 #endif // !defined(ASIO_NO_EXCEPTIONS)
             {
                 detail::non_const_lvalue<Function> f2(f);
-                static_cast<decay_t<Function> &&>(f2.value)();
+                static_cast<std::decay_t<Function> &&>(f2.value)();
             }
 #if !defined(ASIO_NO_EXCEPTIONS)
             catch (...) {
-                if (is_same<InlineExceptionHandling,
+                if (std::is_same<InlineExceptionHandling,
                     execution::inline_exception_handling_t::terminate_t>::value) {
                     std::terminate();
                 } else {
@@ -561,7 +561,7 @@ namespace xio {
     inline inline_or_executor<typename ExecutionContext::executor_type>
     inline_or(ExecutionContext & ctx,
               constraint_t<
-                  is_convertible<ExecutionContext &, execution_context &>::value
+                  std::is_convertible<ExecutionContext &, execution_context &>::value
               > = 0) {
         return inline_or_executor<typename ExecutionContext::executor_type>(
             ctx.get_executor());

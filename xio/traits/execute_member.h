@@ -43,15 +43,15 @@ namespace xio {
         template<typename T, typename F>
         struct execute_member_trait<T, F,
                     void_t<
-                        decltype(declval<T>().execute(declval<F>()))
+                        decltype(std::declval<T>().execute(std::declval<F>()))
                     > > {
             static constexpr bool is_valid = true;
 
             using result_type = decltype(
-                declval<T>().execute(declval<F>()));
+                std::declval<T>().execute(std::declval<F>()));
 
             static constexpr bool is_noexcept =
-                    noexcept(declval<T>().execute(declval<F>()));
+                    noexcept(std::declval<T>().execute(std::declval<F>()));
         };
 
     } // namespace detail

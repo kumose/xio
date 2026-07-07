@@ -251,8 +251,8 @@ namespace xio {
    */
         template<typename U, typename OtherAllocator>
         allocator_binder(const allocator_binder<U, OtherAllocator> &other,
-                         constraint_t<is_constructible<Allocator, OtherAllocator>::value> = 0,
-                         constraint_t<is_constructible<T, U>::value> = 0)
+                         constraint_t<std::is_constructible<Allocator, OtherAllocator>::value> = 0,
+                         constraint_t<std::is_constructible<T, U>::value> = 0)
             : allocator_(other.get_allocator()),
               target_(other.get()) {
         }
@@ -266,7 +266,7 @@ namespace xio {
         template<typename U, typename OtherAllocator>
         allocator_binder(const allocator_type &s,
                          const allocator_binder<U, OtherAllocator> &other,
-                         constraint_t<is_constructible<T, U>::value> = 0)
+                         constraint_t<std::is_constructible<T, U>::value> = 0)
             : allocator_(s),
               target_(other.get()) {
         }
@@ -289,8 +289,8 @@ namespace xio {
         template<typename U, typename OtherAllocator>
         allocator_binder(
             allocator_binder<U, OtherAllocator> &&other,
-            constraint_t<is_constructible<Allocator, OtherAllocator>::value> = 0,
-            constraint_t<is_constructible<T, U>::value> = 0)
+            constraint_t<std::is_constructible<Allocator, OtherAllocator>::value> = 0,
+            constraint_t<std::is_constructible<T, U>::value> = 0)
             : allocator_(static_cast<OtherAllocator &&>(
                   other.get_allocator())),
               target_(static_cast<U &&>(other.get())) {
@@ -301,7 +301,7 @@ namespace xio {
         template<typename U, typename OtherAllocator>
         allocator_binder(const allocator_type &s,
                          allocator_binder<U, OtherAllocator> &&other,
-                         constraint_t<is_constructible<T, U>::value> = 0)
+                         constraint_t<std::is_constructible<T, U>::value> = 0)
             : allocator_(s),
               target_(static_cast<U &&>(other.get())) {
         }
@@ -367,10 +367,10 @@ namespace xio {
   /// should have the allocator as its associated allocator.
         template<typename CompletionToken>
         [[nodiscard]] inline
-        constexpr allocator_binder<decay_t<CompletionToken>, Allocator>
+        constexpr allocator_binder<std::decay_t<CompletionToken>, Allocator>
 
         operator()(CompletionToken &&completion_token) const {
-            return allocator_binder<decay_t<CompletionToken>, Allocator>(
+            return allocator_binder<std::decay_t<CompletionToken>, Allocator>(
                 allocator_, static_cast<CompletionToken &&>(completion_token));
         }
 
@@ -389,10 +389,10 @@ namespace xio {
     /// Associate an object of type @c T with an allocator of type
 /// @c Allocator.
     template<typename Allocator, typename T>
-    [[nodiscard]] inline allocator_binder<decay_t<T>, Allocator>
+    [[nodiscard]] inline allocator_binder<std::decay_t<T>, Allocator>
 
     bind_allocator(const Allocator &s, T &&t) {
-        return allocator_binder<decay_t<T>, Allocator>(s, static_cast<T &&>(t));
+        return allocator_binder<std::decay_t<T>, Allocator>(s, static_cast<T &&>(t));
     }
 
 #if !defined(GENERATING_DOCUMENTATION)
@@ -458,7 +458,7 @@ namespace xio {
             template<typename Handler, typename... Args>
             void operator()(Handler &&handler, const Allocator &a, Args &&... args) && {
                 static_cast<Initiation &&>(*this)(
-                    allocator_binder<decay_t<Handler>, Allocator>(
+                    allocator_binder<std::decay_t<Handler>, Allocator>(
                         a, static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -467,7 +467,7 @@ namespace xio {
             void operator()(Handler &&handler,
                             const Allocator &a, Args &&... args) const & {
                 static_cast<const Initiation &>(*this)(
-                    allocator_binder<decay_t<Handler>, Allocator>(
+                    allocator_binder<std::decay_t<Handler>, Allocator>(
                         a, static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -478,16 +478,16 @@ namespace xio {
                              RawCompletionToken &&token, Args &&... args)
             -> decltype(
                 async_initiate<
-                    conditional_t<
-                        is_const<remove_reference_t<RawCompletionToken> >::value, const T, T>,
+                    std::conditional_t<
+                        std::is_const<std::remove_reference_t<RawCompletionToken> >::value, const T, T>,
                     Signature>(
-                    declval<init_wrapper<decay_t<Initiation> > >(),
+                    std::declval<init_wrapper<std::decay_t<Initiation> > >(),
                     token.get(), token.get_allocator(), static_cast<Args &&>(args)...)) {
             return async_initiate<
-                conditional_t<
-                    is_const<remove_reference_t<RawCompletionToken> >::value, const T, T>,
+                std::conditional_t<
+                    std::is_const<std::remove_reference_t<RawCompletionToken> >::value, const T, T>,
                 Signature>(
-                init_wrapper<decay_t<Initiation> >(
+                init_wrapper<std::decay_t<Initiation> >(
                     static_cast<Initiation &&>(initiation)),
                 token.get(), token.get_allocator(), static_cast<Args &&>(args)...);
         }

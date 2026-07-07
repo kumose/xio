@@ -42,15 +42,15 @@ namespace xio {
         template<typename T, typename Property>
         struct require_concept_free_trait<T, Property,
                     void_t<
-                        decltype(require_concept(declval<T>(), declval<Property>()))
+                        decltype(require_concept(std::declval<T>(), std::declval<Property>()))
                     > > {
             static constexpr bool is_valid = true;
 
             using result_type = decltype(
-                require_concept(declval<T>(), declval<Property>()));
+                require_concept(std::declval<T>(), std::declval<Property>()));
 
             static constexpr bool is_noexcept =
-                    noexcept(require_concept(declval<T>(), declval<Property>()));
+                    noexcept(require_concept(std::declval<T>(), std::declval<Property>()));
         };
 
     } // namespace detail

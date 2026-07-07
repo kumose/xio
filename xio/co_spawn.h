@@ -114,7 +114,7 @@ namespace xio {
              ASIO_DEFAULT_COMPLETION_TOKEN (Executor),
              constraint_t<
                  (is_executor < Executor > ::value || execution::is_executor < Executor > ::value)
-                 && is_convertible < Executor, AwaitableExecutor>::value
+                 && std::is_convertible < Executor, AwaitableExecutor>::value
     > = 0);
 
     /// Spawn a new coroutined-based thread of execution.
@@ -179,7 +179,7 @@ namespace xio {
              ASIO_DEFAULT_COMPLETION_TOKEN (Executor),
              constraint_t<
                  (is_executor < Executor > ::value || execution::is_executor < Executor > ::value)
-                 && is_convertible < Executor, AwaitableExecutor>::value
+                 && std::is_convertible < Executor, AwaitableExecutor>::value
     > = 0);
 
     /// Spawn a new coroutined-based thread of execution.
@@ -253,8 +253,8 @@ namespace xio {
              ASIO_DEFAULT_COMPLETION_TOKEN (
                  typename ExecutionContext::executor_type),
              constraint_t<
-                 is_convertible<ExecutionContext &, execution_context &>::value
-                 && is_convertible<typename ExecutionContext::executor_type,
+                 std::is_convertible<ExecutionContext &, execution_context &>::value
+                 && std::is_convertible<typename ExecutionContext::executor_type,
                      AwaitableExecutor>::value
              > = 0);
 
@@ -321,8 +321,8 @@ namespace xio {
              ASIO_DEFAULT_COMPLETION_TOKEN (
                  typename ExecutionContext::executor_type),
              constraint_t<
-                 is_convertible<ExecutionContext &, execution_context &>::value
-                 && is_convertible<typename ExecutionContext::executor_type,
+                 std::is_convertible<ExecutionContext &, execution_context &>::value
+                 && std::is_convertible<typename ExecutionContext::executor_type,
                      AwaitableExecutor>::value
              > = 0);
 
@@ -512,7 +512,7 @@ namespace xio {
              ASIO_DEFAULT_COMPLETION_TOKEN(
                  typename ExecutionContext::executor_type),
              constraint_t<
-                 is_convertible<ExecutionContext &, execution_context &>::value
+                 std::is_convertible<ExecutionContext &, execution_context &>::value
              > = 0);
 
 

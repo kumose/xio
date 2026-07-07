@@ -53,8 +53,8 @@ namespace xio {
             }
 
             template<typename Arg, typename... Args>
-            enable_if_t<
-                !is_same<decay_t<Arg>, Disposition>::value
+            std::enable_if_t<
+                !std::is_same<std::decay_t<Arg>, Disposition>::value
             >
             operator()(Arg &&arg, Args &&... args) {
                 static_cast<Handler &&>(handler_)(
@@ -96,8 +96,8 @@ namespace xio {
             }
 
             template<typename Arg, typename... Args>
-            enable_if_t<
-                !is_disposition<decay_t<Arg> >::value
+            std::enable_if_t<
+                !is_disposition<std::decay_t<Arg> >::value
             >
             operator()(Arg &&arg, Args &&... args) {
                 static_cast<Handler &&>(handler_)(
@@ -106,7 +106,7 @@ namespace xio {
             }
 
             template<typename Disposition, typename... Args>
-            enable_if_t<
+            std::enable_if_t<
                 is_disposition<Disposition>::value
             >
             operator()(const Disposition &d, Args &&... args) {
@@ -120,7 +120,7 @@ namespace xio {
         };
 
         template<typename Disposition, typename Handler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             redirect_disposition_handler<Disposition, Handler> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
@@ -211,42 +211,42 @@ namespace xio {
         template<typename Disposition, typename R, typename... Args>
         struct redirect_disposition_signature<
                     std::exception_ptr, R(Disposition, Args...),
-                    enable_if_t<is_disposition<Disposition>::value> > {
+                    std::enable_if_t<is_disposition<Disposition>::value> > {
             typedef R type(Args...);
         };
 
         template<typename Disposition, typename R, typename... Args>
         struct redirect_disposition_signature<
                     std::exception_ptr, R(const Disposition &, Args...),
-                    enable_if_t<is_disposition<Disposition>::value> > {
+                    std::enable_if_t<is_disposition<Disposition>::value> > {
             typedef R type(Args...);
         };
 
         template<typename Disposition, typename R, typename... Args>
         struct redirect_disposition_signature<
                     std::exception_ptr, R(Disposition, Args...) &,
-                    enable_if_t<is_disposition<Disposition>::value> > {
+                    std::enable_if_t<is_disposition<Disposition>::value> > {
             typedef R type(Args...) &;
         };
 
         template<typename Disposition, typename R, typename... Args>
         struct redirect_disposition_signature<
                     std::exception_ptr, R(const Disposition &, Args...) &,
-                    enable_if_t<is_disposition<Disposition>::value> > {
+                    std::enable_if_t<is_disposition<Disposition>::value> > {
             typedef R type(Args...) &;
         };
 
         template<typename Disposition, typename R, typename... Args>
         struct redirect_disposition_signature<
                     std::exception_ptr, R(Disposition, Args...) &&,
-                    enable_if_t<is_disposition<Disposition>::value> > {
+                    std::enable_if_t<is_disposition<Disposition>::value> > {
             typedef R type(Args...) &&;
         };
 
         template<typename Disposition, typename R, typename... Args>
         struct redirect_disposition_signature<
                     std::exception_ptr, R(const Disposition &, Args...) &&,
-                    enable_if_t<is_disposition<Disposition>::value> > {
+                    std::enable_if_t<is_disposition<Disposition>::value> > {
             typedef R type(Args...) &&;
         };
 
@@ -255,42 +255,42 @@ namespace xio {
         template<typename Disposition, typename R, typename... Args>
         struct redirect_disposition_signature<
                     std::exception_ptr, R(Disposition, Args...) noexcept,
-                    enable_if_t<is_disposition<Disposition>::value> > {
+                    std::enable_if_t<is_disposition<Disposition>::value> > {
             typedef R type(Args...) & noexcept;
         };
 
         template<typename Disposition, typename R, typename... Args>
         struct redirect_disposition_signature<
                     std::exception_ptr, R(const Disposition &, Args...) noexcept,
-                    enable_if_t<is_disposition<Disposition>::value> > {
+                    std::enable_if_t<is_disposition<Disposition>::value> > {
             typedef R type(Args...) & noexcept;
         };
 
         template<typename Disposition, typename R, typename... Args>
         struct redirect_disposition_signature<
                     std::exception_ptr, R(Disposition, Args...) & noexcept,
-                    enable_if_t<is_disposition<Disposition>::value> > {
+                    std::enable_if_t<is_disposition<Disposition>::value> > {
             typedef R type(Args...) & noexcept;
         };
 
         template<typename Disposition, typename R, typename... Args>
         struct redirect_disposition_signature<
                     std::exception_ptr, R(const Disposition &, Args...) & noexcept,
-                    enable_if_t<is_disposition<Disposition>::value> > {
+                    std::enable_if_t<is_disposition<Disposition>::value> > {
             typedef R type(Args...) & noexcept;
         };
 
         template<typename Disposition, typename R, typename... Args>
         struct redirect_disposition_signature<
                     std::exception_ptr, R(Disposition, Args...) && noexcept,
-                    enable_if_t<is_disposition<Disposition>::value> > {
+                    std::enable_if_t<is_disposition<Disposition>::value> > {
             typedef R type(Args...) && noexcept;
         };
 
         template<typename Disposition, typename R, typename... Args>
         struct redirect_disposition_signature<
                     std::exception_ptr, R(const Disposition &, Args...) && noexcept,
-                    enable_if_t<is_disposition<Disposition>::value> > {
+                    std::enable_if_t<is_disposition<Disposition>::value> > {
             typedef R type(Args...) && noexcept;
         };
 
@@ -313,7 +313,7 @@ namespace xio {
             void operator()(Handler &&handler,
                             Disposition *d, Args &&... args) && {
                 static_cast<Initiation &&>(*this)(
-                    detail::redirect_disposition_handler<Disposition, decay_t<Handler> >(
+                    detail::redirect_disposition_handler<Disposition, std::decay_t<Handler> >(
                         *d, static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -322,7 +322,7 @@ namespace xio {
             void operator()(Handler &&handler,
                             Disposition *d, Args &&... args) const & {
                 static_cast<const Initiation &>(*this)(
-                    detail::redirect_disposition_handler<Disposition, decay_t<Handler> >(
+                    detail::redirect_disposition_handler<Disposition, std::decay_t<Handler> >(
                         *d, static_cast<Handler &&>(handler)),
                     static_cast<Args &&>(args)...);
             }
@@ -333,20 +333,20 @@ namespace xio {
                              RawCompletionToken &&token, Args &&... args)
             -> decltype(
                 async_initiate<
-                    conditional_t<
-                        is_const<remove_reference_t<RawCompletionToken> >::value,
+                    std::conditional_t<
+                        std::is_const<std::remove_reference_t<RawCompletionToken> >::value,
                         const CompletionToken, CompletionToken>,
                     typename detail::redirect_disposition_signature<
                         Disposition, Signature>::type>(
-                    declval<init_wrapper<decay_t<Initiation> > >(),
+                    std::declval<init_wrapper<std::decay_t<Initiation> > >(),
                     token.token_, &token.d_, static_cast<Args &&>(args)...)) {
             return async_initiate<
-                conditional_t<
-                    is_const<remove_reference_t<RawCompletionToken> >::value,
+                std::conditional_t<
+                    std::is_const<std::remove_reference_t<RawCompletionToken> >::value,
                     const CompletionToken, CompletionToken>,
                 typename detail::redirect_disposition_signature<
                     Disposition, Signature>::type>(
-                init_wrapper<decay_t<Initiation> >(
+                init_wrapper<std::decay_t<Initiation> >(
                     static_cast<Initiation &&>(initiation)),
                 token.token_, &token.d_, static_cast<Args &&>(args)...);
         }

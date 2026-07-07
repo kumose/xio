@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#include <asio.hpp>
-#include <asio/experimental/parallel_group.hpp>
+#include <xio/xio.h>
+#include <xio/experimental/parallel_group.h>
 #include <iostream>
 
 #if defined(ASIO_HAS_POSIX_STREAM_DESCRIPTOR)

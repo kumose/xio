@@ -59,7 +59,7 @@ namespace xio {
         };
 
         template<typename Handler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             binder0<Handler> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
@@ -67,9 +67,9 @@ namespace xio {
         }
 
         template<typename Handler>
-        inline binder0<decay_t<Handler> > bind_handler(
+        inline binder0<std::decay_t<Handler> > bind_handler(
             Handler &&handler) {
-            return binder0<decay_t<Handler> >(
+            return binder0<std::decay_t<Handler> >(
                 0, static_cast<Handler &&>(handler));
         }
 
@@ -112,7 +112,7 @@ namespace xio {
         };
 
         template<typename Handler, typename Arg1>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             binder1<Handler, Arg1> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
@@ -120,9 +120,9 @@ namespace xio {
         }
 
         template<typename Handler, typename Arg1>
-        inline binder1<decay_t<Handler>, Arg1> bind_handler(
+        inline binder1<std::decay_t<Handler>, Arg1> bind_handler(
             Handler &&handler, const Arg1 &arg1) {
-            return binder1<decay_t<Handler>, Arg1>(0,
+            return binder1<std::decay_t<Handler>, Arg1>(0,
                                                    static_cast<Handler &&>(handler), arg1);
         }
 
@@ -172,7 +172,7 @@ namespace xio {
         };
 
         template<typename Handler, typename Arg1, typename Arg2>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             binder2<Handler, Arg1, Arg2> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
@@ -180,9 +180,9 @@ namespace xio {
         }
 
         template<typename Handler, typename Arg1, typename Arg2>
-        inline binder2<decay_t<Handler>, Arg1, Arg2> bind_handler(
+        inline binder2<std::decay_t<Handler>, Arg1, Arg2> bind_handler(
             Handler &&handler, const Arg1 &arg1, const Arg2 &arg2) {
-            return binder2<decay_t<Handler>, Arg1, Arg2>(0,
+            return binder2<std::decay_t<Handler>, Arg1, Arg2>(0,
                                                          static_cast<Handler &&>(handler), arg1, arg2);
         }
 
@@ -239,7 +239,7 @@ namespace xio {
         };
 
         template<typename Handler, typename Arg1, typename Arg2, typename Arg3>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             binder3<Handler, Arg1, Arg2, Arg3> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
@@ -247,10 +247,10 @@ namespace xio {
         }
 
         template<typename Handler, typename Arg1, typename Arg2, typename Arg3>
-        inline binder3<decay_t<Handler>, Arg1, Arg2, Arg3> bind_handler(
+        inline binder3<std::decay_t<Handler>, Arg1, Arg2, Arg3> bind_handler(
             Handler &&handler, const Arg1 &arg1, const Arg2 &arg2,
             const Arg3 &arg3) {
-            return binder3<decay_t<Handler>, Arg1, Arg2, Arg3>(0,
+            return binder3<std::decay_t<Handler>, Arg1, Arg2, Arg3>(0,
                                                                static_cast<Handler &&>(handler), arg1, arg2, arg3);
         }
 
@@ -315,7 +315,7 @@ namespace xio {
 
         template<typename Handler, typename Arg1,
             typename Arg2, typename Arg3, typename Arg4>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             binder4<Handler, Arg1, Arg2, Arg3, Arg4> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
@@ -324,10 +324,10 @@ namespace xio {
 
         template<typename Handler, typename Arg1,
             typename Arg2, typename Arg3, typename Arg4>
-        inline binder4<decay_t<Handler>, Arg1, Arg2, Arg3, Arg4>
+        inline binder4<std::decay_t<Handler>, Arg1, Arg2, Arg3, Arg4>
         bind_handler(Handler &&handler, const Arg1 &arg1,
                      const Arg2 &arg2, const Arg3 &arg3, const Arg4 &arg4) {
-            return binder4<decay_t<Handler>, Arg1, Arg2, Arg3, Arg4>(0,
+            return binder4<std::decay_t<Handler>, Arg1, Arg2, Arg3, Arg4>(0,
                                                                      static_cast<Handler &&>(handler), arg1, arg2, arg3,
                                                                      arg4);
         }
@@ -399,7 +399,7 @@ namespace xio {
 
         template<typename Handler, typename Arg1, typename Arg2,
             typename Arg3, typename Arg4, typename Arg5>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             binder5<Handler, Arg1, Arg2, Arg3, Arg4, Arg5> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
@@ -408,10 +408,10 @@ namespace xio {
 
         template<typename Handler, typename Arg1, typename Arg2,
             typename Arg3, typename Arg4, typename Arg5>
-        inline binder5<decay_t<Handler>, Arg1, Arg2, Arg3, Arg4, Arg5>
+        inline binder5<std::decay_t<Handler>, Arg1, Arg2, Arg3, Arg4, Arg5>
         bind_handler(Handler &&handler, const Arg1 &arg1,
                      const Arg2 &arg2, const Arg3 &arg3, const Arg4 &arg4, const Arg5 &arg5) {
-            return binder5<decay_t<Handler>, Arg1, Arg2, Arg3, Arg4, Arg5>(0,
+            return binder5<std::decay_t<Handler>, Arg1, Arg2, Arg3, Arg4, Arg5>(0,
                                                                            static_cast<Handler &&>(handler), arg1, arg2,
                                                                            arg3, arg4, arg5);
         }
@@ -441,15 +441,15 @@ namespace xio {
         };
 
         template<typename Handler, typename Arg1>
-        inline move_binder1<decay_t<Handler>, decay_t<Arg1> > move_bind_handler(
+        inline move_binder1<std::decay_t<Handler>, std::decay_t<Arg1> > move_bind_handler(
             Handler &&handler, Arg1 &&arg1) {
-            return move_binder1<decay_t<Handler>, decay_t<Arg1> >(0,
+            return move_binder1<std::decay_t<Handler>, std::decay_t<Arg1> >(0,
                                                                   static_cast<Handler &&>(handler),
                                                                   static_cast<Arg1 &&>(arg1));
         }
 
         template<typename Handler, typename Arg1>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             move_binder1<Handler, Arg1> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
@@ -485,7 +485,7 @@ namespace xio {
         };
 
         template<typename Handler, typename Arg1, typename Arg2>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             move_binder2<Handler, Arg1, Arg2> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(

@@ -61,7 +61,7 @@ namespace xio {
         };
 
         template<typename Handler>
-        inline bool asio_handler_is_continuation(
+        inline bool xio_handler_is_continuation(
             append_handler<Handler> *this_handler) {
             return XIO_VERSIONED_NAME(handler_cont_helpers)
                     ::is_continuation(
@@ -73,7 +73,7 @@ namespace xio {
 
         template<typename R, typename... Args, typename... Values>
         struct append_signature<R(Args...), Values...> {
-            typedef R type(decay_t<Args>..., Values...);
+            typedef R type(std::decay_t<Args>..., Values...);
         };
     } // namespace detail
 
@@ -95,7 +95,7 @@ namespace xio {
             void operator()(Handler &&handler,
                             std::tuple<Values...> values, Args &&... args) && {
                 static_cast<Initiation &&>(*this)(
-                    detail::append_handler<decay_t<Handler>, Values...>(
+                    detail::append_handler<std::decay_t<Handler>, Values...>(
                         static_cast<Handler &&>(handler),
                         static_cast<std::tuple<Values...> &&>(values)),
                     static_cast<Args &&>(args)...);
@@ -105,7 +105,7 @@ namespace xio {
             void operator()(Handler &&handler,
                             std::tuple<Values...> values, Args &&... args) const & {
                 static_cast<const Initiation &>(*this)(
-                    detail::append_handler<decay_t<Handler>, Values...>(
+                    detail::append_handler<std::decay_t<Handler>, Values...>(
                         static_cast<Handler &&>(handler),
                         static_cast<std::tuple<Values...> &&>(values)),
                     static_cast<Args &&>(args)...);
@@ -117,12 +117,12 @@ namespace xio {
                              RawCompletionToken &&token, Args &&... args)
             -> decltype(
                 async_initiate<CompletionToken, signature>(
-                    declval<init_wrapper<decay_t<Initiation> > >(),
+                    std::declval<init_wrapper<std::decay_t<Initiation> > >(),
                     token.token_,
                     static_cast<std::tuple<Values...> &&>(token.values_),
                     static_cast<Args &&>(args)...)) {
             return async_initiate<CompletionToken, signature>(
-                init_wrapper<decay_t<Initiation> >(
+                init_wrapper<std::decay_t<Initiation> >(
                     static_cast<Initiation &&>(initiation)),
                 token.token_,
                 static_cast<std::tuple<Values...> &&>(token.values_),

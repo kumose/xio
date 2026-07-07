@@ -131,8 +131,8 @@ struct equality_comparable<never_blocking_executor>
 template <typename Param>
 struct query_static_constexpr_member<
   never_blocking_executor, Param,
-  typename xio::enable_if<
-    xio::is_convertible<Param, execution::blocking_t>::value
+  typename std::enable_if<
+    std::is_convertible<Param, execution::blocking_t>::value
   >::type>
 {
   static constexpr bool is_valid = true;
@@ -228,8 +228,8 @@ struct equality_comparable<either_blocking_executor>
 template <typename Param>
 struct query_member<
   either_blocking_executor, Param,
-  typename xio::enable_if<
-    xio::is_convertible<Param, execution::blocking_t>::value
+  typename std::enable_if<
+    std::is_convertible<Param, execution::blocking_t>::value
   >::type>
 {
   static constexpr bool is_valid = true;
@@ -245,8 +245,8 @@ struct query_member<
 template <typename Param>
 struct require_member<
   either_blocking_executor, Param,
-  typename xio::enable_if<
-    xio::is_convertible<Param, execution::blocking_t>::value
+  typename std::enable_if<
+    std::is_convertible<Param, execution::blocking_t>::value
   >::type>
 {
   static constexpr bool is_valid = true;

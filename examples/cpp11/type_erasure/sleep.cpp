@@ -9,8 +9,8 @@
 //
 
 #include "sleep.hpp"
-#include <asio/consign.hpp>
-#include <asio/steady_timer.hpp>
+#include <xio/consign.h>
+#include <xio/steady_timer.h>
 #include <memory>
 
 void async_sleep_impl(

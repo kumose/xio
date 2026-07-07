@@ -117,7 +117,7 @@ explicit basic_writable_pipe(const executor_type &ex)
 template<typename ExecutionContext>
 explicit basic_writable_pipe(ExecutionContext & context,
                              constraint_t<
-                                 is_convertible<ExecutionContext &, execution_context &>::value,
+                                 std::is_convertible<ExecutionContext &, execution_context &>::value,
                                  defaulted_constraint
                              > = defaulted_constraint())
     : impl_(0, 0, context) {
@@ -162,7 +162,7 @@ template<typename ExecutionContext>
 basic_writable_pipe(ExecutionContext &context,
                     const native_handle_type &native_pipe,
                     constraint_t<
-                        is_convertible<ExecutionContext &, execution_context &>::value
+                        std::is_convertible<ExecutionContext &, execution_context &>::value
                     > = 0)
     : impl_(0, 0, context) {
     xio::error_code ec;
@@ -220,7 +220,7 @@ friend class basic_writable_pipe;
 template<typename Executor1>
 basic_writable_pipe(basic_writable_pipe<Executor1> && other,
                     constraint_t<
-                        is_convertible<Executor1, Executor>::value,
+                        std::is_convertible<Executor1, Executor>::value,
                         defaulted_constraint
                     > = defaulted_constraint())
     : impl_(std::move(other.impl_)) {
@@ -239,7 +239,7 @@ basic_writable_pipe(basic_writable_pipe<Executor1> && other,
    */
 template<typename Executor1>
 constraint_t<
-    is_convertible<Executor1, Executor>::value,
+    std::is_convertible<Executor1, Executor>::value,
     basic_writable_pipe &> operator=(basic_writable_pipe<Executor1> &&other) {
     basic_writable_pipe tmp(std::move(other));
     impl_ = std::move(tmp.impl_);
@@ -541,7 +541,7 @@ auto async_write_some(const ConstBufferSequence &buffers,
     -> decltype(
         async_initiate<WriteToken,
             void(xio::error_code, std::size_t)>(
-            declval<initiate_async_write_some>(), token, buffers)) {
+            std::declval<initiate_async_write_some>(), token, buffers)) {
     return async_initiate<WriteToken,
         void(xio::error_code, std::size_t)>(
         initiate_async_write_some(this), token, buffers);

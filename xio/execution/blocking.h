@@ -229,11 +229,11 @@ namespace xio {
                         auto query(P &&p) const
                             noexcept(
                                 noexcept(
-                                    declval<conditional_t<true, T, P> >().query(static_cast<P &&>(p))
+                                    std::declval<std::conditional_t<true, T, P> >().query(static_cast<P &&>(p))
                                 )
                             )
                             -> decltype(
-                                declval<conditional_t<true, T, P> >().query(static_cast<P &&>(p))
+                                std::declval<std::conditional_t<true, T, P> >().query(static_cast<P &&>(p))
                             );
                     };
 
@@ -246,11 +246,11 @@ namespace xio {
                         static constexpr auto query(P &&p)
                             noexcept(
                                 noexcept(
-                                    conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                    std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
                                 )
                             )
                             -> decltype(
-                                conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
                             ) {
                             return T::query(static_cast<P &&>(p));
                         }
@@ -281,13 +281,13 @@ namespace xio {
                 static constexpr
                 typename traits::static_query<T, possibly_t>::result_type
                 static_query(
-                    enable_if_t<
+                    std::enable_if_t<
                         !query_static_constexpr_member<T>::is_valid
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         !query_member<T>::is_valid
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         traits::static_query<T, possibly_t>::is_valid
                     > * = 0) noexcept {
                     return traits::static_query<T, possibly_t>::value();
@@ -297,16 +297,16 @@ namespace xio {
                 static constexpr
                 typename traits::static_query<T, always_t>::result_type
                 static_query(
-                    enable_if_t<
+                    std::enable_if_t<
                         !query_static_constexpr_member<T>::is_valid
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         !query_member<T>::is_valid
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         !traits::static_query<T, possibly_t>::is_valid
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         traits::static_query<T, always_t>::is_valid
                     > * = 0) noexcept {
                     return traits::static_query<T, always_t>::value();
@@ -316,19 +316,19 @@ namespace xio {
                 static constexpr
                 typename traits::static_query<T, never_t>::result_type
                 static_query(
-                    enable_if_t<
+                    std::enable_if_t<
                         !query_static_constexpr_member<T>::is_valid
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         !query_member<T>::is_valid
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         !traits::static_query<T, possibly_t>::is_valid
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         !traits::static_query<T, always_t>::is_valid
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         traits::static_query<T, never_t>::is_valid
                     > * = 0) noexcept {
                     return traits::static_query<T, never_t>::value();
@@ -357,7 +357,7 @@ namespace xio {
                 template<typename Executor>
                 friend constexpr blocking_t query(
                     const Executor &ex, convertible_from_blocking_t,
-                    enable_if_t<
+                    std::enable_if_t<
                         can_query<const Executor &, possibly_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
@@ -374,10 +374,10 @@ namespace xio {
                 template<typename Executor>
                 friend constexpr blocking_t query(
                     const Executor &ex, convertible_from_blocking_t,
-                    enable_if_t<
+                    std::enable_if_t<
                         !can_query<const Executor &, possibly_t>::value
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         can_query<const Executor &, always_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
@@ -394,13 +394,13 @@ namespace xio {
                 template<typename Executor>
                 friend constexpr blocking_t query(
                     const Executor &ex, convertible_from_blocking_t,
-                    enable_if_t<
+                    std::enable_if_t<
                         !can_query<const Executor &, possibly_t>::value
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         !can_query<const Executor &, always_t>::value
                     > * = 0,
-                    enable_if_t<
+                    std::enable_if_t<
                         can_query<const Executor &, never_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
@@ -474,19 +474,19 @@ namespace xio {
 
                     template<typename T>
                     static constexpr possibly_t static_query(
-                        enable_if_t<
+                        std::enable_if_t<
                             !query_static_constexpr_member<T>::is_valid
                         > * = 0,
-                        enable_if_t<
+                        std::enable_if_t<
                             !query_member<T>::is_valid
                         > * = 0,
-                        enable_if_t<
+                        std::enable_if_t<
                             !traits::query_free<T, possibly_t>::is_valid
                         > * = 0,
-                        enable_if_t<
+                        std::enable_if_t<
                             !can_query<T, always_t<I> >::value
                         > * = 0,
-                        enable_if_t<
+                        std::enable_if_t<
                             !can_query<T, never_t<I> >::value
                         > * = 0) noexcept {
                         return possibly_t();
@@ -574,7 +574,7 @@ namespace xio {
                     }
 
                     template<typename Property>
-                    enable_if_t<
+                    std::enable_if_t<
                         can_query<const Executor &, Property>::value,
                         query_result_t<const Executor &, Property>
                     > query(const Property &p) const
@@ -583,7 +583,7 @@ namespace xio {
                     }
 
                     template<int I>
-                    enable_if_t<
+                    std::enable_if_t<
                         can_require<const Executor &, possibly_t<I> >::value,
                         require_result_t<const Executor &, possibly_t<I> >
                     > require(possibly_t<I>) const noexcept {
@@ -591,7 +591,7 @@ namespace xio {
                     }
 
                     template<int I>
-                    enable_if_t<
+                    std::enable_if_t<
                         can_require<const Executor &, never_t<I> >::value,
                         require_result_t<const Executor &, never_t<I> >
                     > require(never_t<I>) const noexcept {
@@ -599,27 +599,27 @@ namespace xio {
                     }
 
                     template<typename Property>
-                    enable_if_t<
+                    std::enable_if_t<
                         can_require<const Executor &, Property>::value,
-                        adapter<decay_t<require_result_t<const Executor &, Property> > >
+                        adapter<std::decay_t<require_result_t<const Executor &, Property> > >
                     > require(const Property &p) const
                         noexcept(is_nothrow_require<const Executor &, Property>::value) {
-                        return adapter<decay_t<require_result_t<const Executor &, Property> > >(
+                        return adapter<std::decay_t<require_result_t<const Executor &, Property> > >(
                             0, xio::require(executor_, p));
                     }
 
                     template<typename Property>
-                    enable_if_t<
+                    std::enable_if_t<
                         can_prefer<const Executor &, Property>::value,
-                        adapter<decay_t<prefer_result_t<const Executor &, Property> > >
+                        adapter<std::decay_t<prefer_result_t<const Executor &, Property> > >
                     > prefer(const Property &p) const
                         noexcept(is_nothrow_prefer<const Executor &, Property>::value) {
-                        return adapter<decay_t<prefer_result_t<const Executor &, Property> > >(
+                        return adapter<std::decay_t<prefer_result_t<const Executor &, Property> > >(
                             0, xio::prefer(executor_, p));
                     }
 
                     template<typename Function>
-                    enable_if_t<
+                    std::enable_if_t<
                         traits::execute_member<const Executor &, Function>::is_valid
                     > execute(Function &&f) const {
                         blocking_adaptation::blocking_execute(
@@ -710,10 +710,10 @@ namespace xio {
                     template<typename Executor>
                     friend adapter<Executor> require(
                         const Executor &e, const always_t &,
-                        enable_if_t<
+                        std::enable_if_t<
                             is_executor<Executor>::value
                         > * = 0,
-                        enable_if_t<
+                        std::enable_if_t<
                             traits::static_require<
                                 const Executor &,
                                 blocking_adaptation::allowed_t<0>
