@@ -20,7 +20,7 @@
 #include <stdexcept>
 #include <typeinfo>
 #include <xio/async_result.h>
-#include <xio/detail/chrono.h>
+#include <chrono>
 #include <xio/detail/concurrency_hint.h>
 #include <cstdint>
 #include <xio/detail/wrapped_handler.h>
@@ -355,7 +355,7 @@ namespace xio {
    * @return The number of handlers that were executed.
    */
         template<typename Rep, typename Period>
-        std::size_t run_for(const chrono::duration<Rep, Period> &rel_time);
+        std::size_t run_for(const std::chrono::duration<Rep, Period> &rel_time);
 
         /// Run the io_context object's event processing loop until a specified time.
         /**
@@ -368,7 +368,7 @@ namespace xio {
    * @return The number of handlers that were executed.
    */
         template<typename Clock, typename Duration>
-        std::size_t run_until(const chrono::time_point<Clock, Duration> &abs_time);
+        std::size_t run_until(const std::chrono::time_point<Clock, Duration> &abs_time);
 
         /// Run the io_context object's event processing loop to execute at most one
   /// handler.
@@ -401,7 +401,7 @@ namespace xio {
    * @return The number of handlers that were executed.
    */
         template<typename Rep, typename Period>
-        std::size_t run_one_for(const chrono::duration<Rep, Period> &rel_time);
+        std::size_t run_one_for(const std::chrono::duration<Rep, Period> &rel_time);
 
         /// Run the io_context object's event processing loop until a specified time
   /// to execute at most one handler.
@@ -416,7 +416,7 @@ namespace xio {
    */
         template<typename Clock, typename Duration>
         std::size_t run_one_until(
-            const chrono::time_point<Clock, Duration> &abs_time);
+            const std::chrono::time_point<Clock, Duration> &abs_time);
 
         /// Run the io_context object's event processing loop to execute ready
   /// handlers.

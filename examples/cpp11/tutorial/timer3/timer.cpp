@@ -20,7 +20,7 @@ void print(const std::error_code& /*e*/,
     std::cout << *count << std::endl;
     ++(*count);
 
-    t->expires_at(t->expiry() + xio::chrono::seconds(1));
+    t->expires_at(t->expiry() + std::chrono::seconds(1));
     t->async_wait(std::bind(print,
           xio::placeholders::error, t, count));
   }
@@ -31,7 +31,7 @@ int main()
   xio::io_context io;
 
   int count = 0;
-  xio::steady_timer t(io, xio::chrono::seconds(1));
+  xio::steady_timer t(io, std::chrono::seconds(1));
   t.async_wait(std::bind(print,
         xio::placeholders::error, &t, &count));
 

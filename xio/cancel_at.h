@@ -18,7 +18,7 @@
 #include <xio/detail/config.h>
 #include <xio/basic_waitable_timer.h>
 #include <xio/cancellation_type.h>
-#include <xio/detail/chrono.h>
+#include <chrono>
 #include <xio/detail/type_traits.h>
 #include <xio/wait_traits.h>
 
@@ -171,7 +171,7 @@ namespace xio {
     template<typename Clock, typename Duration>
     [[nodiscard]] inline partial_cancel_at<Clock>
 
-    cancel_at(const chrono::time_point<Clock, Duration> &expiry,
+    cancel_at(const std::chrono::time_point<Clock, Duration> &expiry,
               cancellation_type_t cancel_type = cancellation_type::terminal) {
         return partial_cancel_at<Clock>(expiry, cancel_type);
     }
@@ -191,7 +191,7 @@ namespace xio {
     [[nodiscard]] inline partial_cancel_at_timer<Clock, WaitTraits, Executor>
 
     cancel_at(basic_waitable_timer<Clock, WaitTraits, Executor> &timer,
-              const chrono::time_point<Clock, Duration> &expiry,
+              const std::chrono::time_point<Clock, Duration> &expiry,
               cancellation_type_t cancel_type = cancellation_type::terminal) {
         return partial_cancel_at_timer<Clock, WaitTraits, Executor>(
             timer, expiry, cancel_type);
@@ -210,7 +210,7 @@ namespace xio {
     template<typename CompletionToken, typename Clock, typename Duration>
     [[nodiscard]] inline cancel_at_t<decay_t<CompletionToken>, Clock>
 
-    cancel_at(const chrono::time_point<Clock, Duration> &expiry,
+    cancel_at(const std::chrono::time_point<Clock, Duration> &expiry,
               CompletionToken &&completion_token) {
         return cancel_at_t<decay_t<CompletionToken>, Clock>(
             static_cast<CompletionToken &&>(completion_token),
@@ -230,7 +230,7 @@ namespace xio {
     template<typename CompletionToken, typename Clock, typename Duration>
     [[nodiscard]] inline cancel_at_t<decay_t<CompletionToken>, Clock>
 
-    cancel_at(const chrono::time_point<Clock, Duration> &expiry,
+    cancel_at(const std::chrono::time_point<Clock, Duration> &expiry,
               cancellation_type_t cancel_type, CompletionToken &&completion_token) {
         return cancel_at_t<decay_t<CompletionToken>, Clock>(
             static_cast<CompletionToken &&>(completion_token), expiry, cancel_type);
@@ -252,7 +252,7 @@ namespace xio {
     cancel_at_timer<decay_t<CompletionToken>, Clock, WaitTraits, Executor>
 
     cancel_at(basic_waitable_timer<Clock, WaitTraits, Executor> &timer,
-              const chrono::time_point<Clock, Duration> &expiry,
+              const std::chrono::time_point<Clock, Duration> &expiry,
               CompletionToken &&completion_token) {
         return cancel_at_timer<decay_t<CompletionToken>, Clock, WaitTraits, Executor>(
             static_cast<CompletionToken &&>(completion_token),
@@ -275,7 +275,7 @@ namespace xio {
     cancel_at_timer<decay_t<CompletionToken>, Clock, WaitTraits, Executor>
 
     cancel_at(basic_waitable_timer<Clock, WaitTraits, Executor> &timer,
-              const chrono::time_point<Clock, Duration> &expiry,
+              const std::chrono::time_point<Clock, Duration> &expiry,
               cancellation_type_t cancel_type, CompletionToken &&completion_token) {
         return cancel_at_timer<decay_t<CompletionToken>, Clock, WaitTraits, Executor>(
             static_cast<CompletionToken &&>(completion_token),

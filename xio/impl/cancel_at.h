@@ -34,7 +34,7 @@ namespace xio {
 
             template<typename Handler, typename Duration, typename... Args>
             void operator()(Handler &&handler,
-                            const chrono::time_point<Clock, Duration> &expiry,
+                            const std::chrono::time_point<Clock, Duration> &expiry,
                             cancellation_type_t cancel_type, Args &&... args) && {
                 using op = detail::timed_cancel_op<decay_t<Handler>,
                     basic_waitable_timer<Clock, WaitTraits>, Signatures...>;
@@ -56,7 +56,7 @@ namespace xio {
 
             template<typename Handler, typename Duration, typename... Args>
             void operator()(Handler &&handler,
-                            const chrono::time_point<Clock, Duration> &expiry,
+                            const std::chrono::time_point<Clock, Duration> &expiry,
                             cancellation_type_t cancel_type, Args &&... args) const & {
                 using op = detail::timed_cancel_op<decay_t<Handler>,
                     basic_waitable_timer<Clock, WaitTraits>, Signatures...>;
@@ -86,7 +86,7 @@ namespace xio {
             template<typename Handler, typename Duration, typename... Args>
             void operator()(Handler &&handler,
                             basic_waitable_timer<Clock, WaitTraits, Executor> *timer,
-                            const chrono::time_point<Clock, Duration> &expiry,
+                            const std::chrono::time_point<Clock, Duration> &expiry,
                             cancellation_type_t cancel_type, Args &&... args) && {
                 using op = detail::timed_cancel_op<decay_t<Handler>,
                     basic_waitable_timer<Clock, WaitTraits, Executor> &, Signatures...>;
@@ -107,7 +107,7 @@ namespace xio {
             template<typename Handler, typename Duration, typename... Args>
             void operator()(Handler &&handler,
                             basic_waitable_timer<Clock, WaitTraits, Executor> *timer,
-                            const chrono::time_point<Clock, Duration> &expiry,
+                            const std::chrono::time_point<Clock, Duration> &expiry,
                             cancellation_type_t cancel_type, Args &&... args) const & {
                 using op = detail::timed_cancel_op<decay_t<Handler>,
                     basic_waitable_timer<Clock, WaitTraits, Executor> &, Signatures...>;

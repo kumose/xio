@@ -19,7 +19,7 @@
 #include <functional>
 #include <string>
 #include <xio/detail/throw_exception.h>
-#include <xio/detail/string_view.h>
+#include <string_view>
 #include <xio/detail/type_traits.h>
 #include <xio/error_code.h>
 #include <xio/ip/address_v4.h>
@@ -183,14 +183,14 @@ namespace xio {
         /**
  * @relates address
  */
-        ASIO_DECL address make_address(string_view str);
+        ASIO_DECL address make_address(std::string_view str);
 
         /// Create an address from an IPv4 address string in dotted decimal form,
 /// or from an IPv6 address in hexadecimal notation.
         /**
  * @relates address
  */
-        ASIO_DECL address make_address(string_view str,
+        ASIO_DECL address make_address(std::string_view str,
                                        xio::error_code &ec) noexcept;
 
 

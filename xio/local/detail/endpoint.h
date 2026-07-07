@@ -23,7 +23,7 @@
 #include <cstddef>
 #include <string>
 #include <xio/detail/socket_types.h>
-#include <xio/detail/string_view.h>
+#include <string_view>
 
 #include <xio/detail/push_options.h>
 
@@ -45,7 +45,7 @@ namespace xio {
                 ASIO_DECL endpoint(const std::string &path_name);
 
 // Construct an endpoint using the specified path name.
-ASIO_DECL endpoint(string_view path_name);
+ASIO_DECL endpoint(std::string_view path_name);
 
 // Copy constructor.
 endpoint(const endpoint &other) noexcept

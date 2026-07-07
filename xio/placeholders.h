@@ -16,7 +16,7 @@
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include <xio/detail/config.h>
-#include <xio/detail/functional.h>
+#include <functional>
 #include <xio/detail/type_traits.h>
 
 #include <xio/detail/push_options.h>

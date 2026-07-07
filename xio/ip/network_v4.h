@@ -18,7 +18,7 @@
 
 #include <xio/detail/config.h>
 #include <string>
-#include <xio/detail/string_view.h>
+#include <string_view>
 #include <xio/error_code.h>
 #include <xio/ip/address_v4_range.h>
 
@@ -192,7 +192,7 @@ namespace xio {
         /**
  * @relates network_v4
  */
-        ASIO_DECL network_v4 make_network_v4(string_view str);
+        ASIO_DECL network_v4 make_network_v4(std::string_view str);
 
         /// Create an IPv4 network from a string containing IP address and prefix
 /// length.
@@ -200,7 +200,7 @@ namespace xio {
  * @relates network_v4
  */
         ASIO_DECL network_v4 make_network_v4(
-            string_view str, xio::error_code &ec);
+            std::string_view str, xio::error_code &ec);
 
 
 #if !defined(ASIO_NO_IOSTREAM)

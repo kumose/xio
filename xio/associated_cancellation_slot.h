@@ -18,13 +18,12 @@
 #include <xio/detail/config.h>
 #include <xio/associator.h>
 #include <xio/cancellation_signal.h>
-#include <xio/detail/functional.h>
+#include <functional>
 #include <xio/detail/type_traits.h>
 
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
     template<typename T, typename CancellationSlot>
     struct associated_cancellation_slot;
 
@@ -71,16 +70,16 @@ namespace xio {
 
         template<typename T, typename S>
         struct associated_cancellation_slot_impl<T, S,
-            enable_if_t <
-            !has_cancellation_slot_type<T>::value
-        >
-        ,
-        void_t<
-            typename associator<associated_cancellation_slot, T, S>::type
-        >
-        >
-        :
-        associator<associated_cancellation_slot, T, S> {
+                    enable_if_t<
+                        !has_cancellation_slot_type<T>::value
+                    >
+                    ,
+                    void_t<
+                        typename associator<associated_cancellation_slot, T, S>::type
+                    >
+                >
+                :
+                associator<associated_cancellation_slot, T, S> {
         };
     } // namespace detail
 
@@ -146,7 +145,7 @@ namespace xio {
  * CancellationSlot>::get(t, st)</tt>
  */
     template<typename T, typename CancellationSlot>
-[[nodiscard]] inline auto get_associated_cancellation_slot(
+    [[nodiscard]] inline auto get_associated_cancellation_slot(
         const T &t, const CancellationSlot &st) noexcept
         -> decltype(associated_cancellation_slot<T, CancellationSlot>::get(t, st)) {
         return associated_cancellation_slot<T, CancellationSlot>::get(t, st);
@@ -163,22 +162,21 @@ namespace xio {
 
         template<typename T, typename S>
         struct associated_cancellation_slot_forwarding_base<T, S,
-            enable_if_t <
-            is_same <
-            typename associated_cancellation_slot<T,
-                S>::asio_associated_cancellation_slot_is_unspecialised,
-            void>::value
-        >
-        >
-{
-  typedef void asio_associated_cancellation_slot_is_unspecialised;
-};
+                    enable_if_t<
+                        is_same<
+                            typename associated_cancellation_slot<T,
+                                S>::asio_associated_cancellation_slot_is_unspecialised,
+                            void>::value
+                    >
+                > {
+            typedef void asio_associated_cancellation_slot_is_unspecialised;
+        };
     } // namespace detail
 
     /// Specialisation of associated_cancellation_slot for @c
 /// std::reference_wrapper.
     template<typename T, typename CancellationSlot>
-    struct associated_cancellation_slot<reference_wrapper<T>, CancellationSlot>
+    struct associated_cancellation_slot<std::reference_wrapper<T>, CancellationSlot>
 #if !defined(GENERATING_DOCUMENTATION)
             : detail::associated_cancellation_slot_forwarding_base<T, CancellationSlot>
 #endif // !defined(GENERATING_DOCUMENTATION)
@@ -188,21 +186,19 @@ namespace xio {
         typedef typename associated_cancellation_slot<T, CancellationSlot>::type type;
 
         /// Forwards the request to get the cancellation slot to the associator
-  /// specialisation for the unwrapped type @c T.
-        static type get(reference_wrapper<T> t) noexcept {
+        /// specialisation for the unwrapped type @c T.
+        static type get(std::reference_wrapper<T> t) noexcept {
             return associated_cancellation_slot<T, CancellationSlot>::get(t.get());
         }
 
         /// Forwards the request to get the cancellation slot to the associator
   /// specialisation for the unwrapped type @c T.
-        static auto get(reference_wrapper<T> t, const CancellationSlot &s) noexcept
+        static auto get(std::reference_wrapper<T> t, const CancellationSlot &s) noexcept
             -> decltype(
                 associated_cancellation_slot<T, CancellationSlot>::get(t.get(), s)) {
             return associated_cancellation_slot<T, CancellationSlot>::get(t.get(), s);
         }
     };
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

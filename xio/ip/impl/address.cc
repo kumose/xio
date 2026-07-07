@@ -124,11 +124,11 @@ namespace xio {
         }
 
 
-        address make_address(string_view str) {
+        address make_address(std::string_view str) {
             return make_address(static_cast<std::string>(str));
         }
 
-        address make_address(string_view str,
+        address make_address(std::string_view str,
                              xio::error_code &ec) noexcept {
             return make_address(static_cast<std::string>(str), ec);
         }

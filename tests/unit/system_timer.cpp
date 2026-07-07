@@ -41,7 +41,7 @@ void decrement_to_zero(xio::system_timer* t, int* count)
 
     int before_value = *count;
 
-    t->expires_at(t->expiry() + xio::chrono::seconds(1));
+    t->expires_at(t->expiry() + std::chrono::seconds(1));
     t->async_wait(bindns::bind(decrement_to_zero, t, count));
 
     // Completion cannot nest, so count value should remain unchanged.
@@ -75,8 +75,8 @@ xio::system_timer::time_point now()
 
 void system_timer_test()
 {
-  using xio::chrono::seconds;
-  using xio::chrono::microseconds;
+  using std::chrono::seconds;
+  using std::chrono::microseconds;
   using bindns::placeholders::_1;
   using bindns::placeholders::_2;
 
@@ -374,13 +374,13 @@ void system_timer_thread_test()
 
   xio::thread th(bindns::bind(io_context_run, &ioc));
 
-  t2.expires_after(xio::chrono::seconds(2));
+  t2.expires_after(std::chrono::seconds(2));
   t2.wait();
 
-  t1.expires_after(xio::chrono::seconds(2));
+  t1.expires_after(std::chrono::seconds(2));
   t1.async_wait(bindns::bind(increment, &count));
 
-  t2.expires_after(xio::chrono::seconds(4));
+  t2.expires_after(std::chrono::seconds(4));
   t2.wait();
 
   ioc.stop();
@@ -392,7 +392,7 @@ void system_timer_thread_test()
 xio::system_timer make_timer(xio::io_context& ioc, int* count)
 {
   xio::system_timer t(ioc);
-  t.expires_after(xio::chrono::seconds(1));
+  t.expires_after(std::chrono::seconds(1));
   t.async_wait(bindns::bind(increment, count));
   return t;
 }
@@ -405,7 +405,7 @@ typedef xio::basic_waitable_timer<
 io_context_system_timer make_convertible_timer(xio::io_context& ioc, int* count)
 {
   io_context_system_timer t(ioc);
-  t.expires_after(xio::chrono::seconds(1));
+  t.expires_after(std::chrono::seconds(1));
   t.async_wait(bindns::bind(increment, count));
   return t;
 }
@@ -453,7 +453,7 @@ void system_timer_op_cancel_test()
   xio::io_context ioc;
   int count = 0;
 
-  xio::system_timer timer(ioc, xio::chrono::seconds(10));
+  xio::system_timer timer(ioc, std::chrono::seconds(10));
 
   timer.async_wait(bindns::bind(increment, &count));
 

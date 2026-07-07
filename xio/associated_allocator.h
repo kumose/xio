@@ -18,7 +18,7 @@
 #include <xio/detail/config.h>
 #include <memory>
 #include <xio/associator.h>
-#include <xio/detail/functional.h>
+#include <functional>
 #include <xio/detail/type_traits.h>
 
 #include <xio/detail/push_options.h>
@@ -170,7 +170,7 @@ namespace xio {
 
     /// Specialisation of associated_allocator for @c std::reference_wrapper.
     template<typename T, typename Allocator>
-    struct associated_allocator<reference_wrapper<T>, Allocator>
+    struct associated_allocator<std::reference_wrapper<T>, Allocator>
 #if !defined(GENERATING_DOCUMENTATION)
             : detail::associated_allocator_forwarding_base<T, Allocator>
 #endif // !defined(GENERATING_DOCUMENTATION)
@@ -181,13 +181,13 @@ namespace xio {
 
         /// Forwards the request to get the allocator to the associator specialisation
   /// for the unwrapped type @c T.
-        static type get(reference_wrapper<T> t) noexcept {
+        static type get(std::reference_wrapper<T> t) noexcept {
             return associated_allocator<T, Allocator>::get(t.get());
         }
 
         /// Forwards the request to get the allocator to the associator specialisation
   /// for the unwrapped type @c T.
-        static auto get(reference_wrapper<T> t, const Allocator &a) noexcept
+        static auto get(std::reference_wrapper<T> t, const Allocator &a) noexcept
             -> decltype(associated_allocator<T, Allocator>::get(t.get(), a)) {
             return associated_allocator<T, Allocator>::get(t.get(), a);
         }

@@ -25,7 +25,7 @@
 
 #include <cstdarg>
 #include <cstdio>
-#include <xio/detail/chrono.h>
+#include <chrono>
 #include <xio/detail/chrono_time_traits.h>
 #include <xio/detail/handler_tracking.h>
 #include <xio/wait_traits.h>

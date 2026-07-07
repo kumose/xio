@@ -44,7 +44,7 @@ void redirect_disposition_test()
   xio::error_code ec = xio::error::would_block;
   int count = 0;
 
-  timer1.expires_after(xio::chrono::seconds(0));
+  timer1.expires_after(std::chrono::seconds(0));
   timer1.async_wait(
       xio::redirect_disposition(
         xio::bind_executor(io2.get_executor(),
@@ -119,7 +119,7 @@ void partial_redirect_disposition_test()
   xio::error_code ec = xio::error::would_block;
   int count = 0;
 
-  timer1.expires_after(xio::chrono::seconds(0));
+  timer1.expires_after(std::chrono::seconds(0));
   timer1.async_wait(xio::redirect_disposition(ec))(
       xio::bind_executor(io2.get_executor(),
         redirect_disposition_handler(&count)));
@@ -208,7 +208,7 @@ void redirect_disposition_to_exception_ptr_test()
   std::exception_ptr ex = nullptr;
   int count = 0;
 
-  timer1.expires_after(xio::chrono::seconds(100));
+  timer1.expires_after(std::chrono::seconds(100));
   timer1.async_wait(
       xio::redirect_disposition(
         xio::bind_executor(io2.get_executor(),
@@ -306,7 +306,7 @@ void partial_redirect_disposition_to_exception_ptr_test()
   std::exception_ptr ex = nullptr;
   int count = 0;
 
-  timer1.expires_after(xio::chrono::seconds(100));
+  timer1.expires_after(std::chrono::seconds(100));
   timer1.async_wait(xio::redirect_disposition(ex))(
       xio::bind_executor(io2.get_executor(),
         redirect_disposition_handler(&count)));

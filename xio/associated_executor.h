@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 #include <xio/associator.h>
-#include <xio/detail/functional.h>
+#include <functional>
 #include <xio/detail/type_traits.h>
 #include <xio/execution/executor.h>
 #include <xio/execution_context.h>
@@ -195,7 +195,7 @@ namespace xio {
 
     /// Specialisation of associated_executor for @c std::reference_wrapper.
     template<typename T, typename Executor>
-    struct associated_executor<reference_wrapper<T>, Executor>
+    struct associated_executor<std::reference_wrapper<T>, Executor>
 #if !defined(GENERATING_DOCUMENTATION)
             : detail::associated_executor_forwarding_base<T, Executor>
 #endif // !defined(GENERATING_DOCUMENTATION)
@@ -206,13 +206,13 @@ namespace xio {
 
         /// Forwards the request to get the executor to the associator specialisation
   /// for the unwrapped type @c T.
-        static type get(reference_wrapper<T> t) noexcept {
+        static type get(std::reference_wrapper<T> t) noexcept {
             return associated_executor<T, Executor>::get(t.get());
         }
 
         /// Forwards the request to get the executor to the associator specialisation
   /// for the unwrapped type @c T.
-        static auto get(reference_wrapper<T> t, const Executor &ex) noexcept
+        static auto get(std::reference_wrapper<T> t, const Executor &ex) noexcept
             -> decltype(associated_executor<T, Executor>::get(t.get(), ex)) {
             return associated_executor<T, Executor>::get(t.get(), ex);
         }

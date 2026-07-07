@@ -21,7 +21,7 @@
 #include <array>
 #include <cstdint>
 #include <xio/detail/socket_types.h>
-#include <xio/detail/string_view.h>
+#include <string_view>
 #include <xio/detail/winsock_init.h>
 #include <xio/error_code.h>
 
@@ -288,13 +288,13 @@ ASIO_DECL address_v4 make_address_v4(const std::string &str,
         /**
  * @relates address_v4
  */
-ASIO_DECL address_v4 make_address_v4(string_view str);
+ASIO_DECL address_v4 make_address_v4(std::string_view str);
 
         /// Create an IPv4 address from an IP address string in dotted decimal form.
         /**
  * @relates address_v4
  */
-ASIO_DECL address_v4 make_address_v4(string_view str,
+ASIO_DECL address_v4 make_address_v4(std::string_view str,
                                      xio::error_code &ec) noexcept;
 
 

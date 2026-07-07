@@ -23,7 +23,7 @@
 #include <xio/detail/handler_type_requirements.h>
 #include <xio/detail/io_object_impl.h>
 #include <xio/detail/non_const_lvalue.h>
-#include <xio/detail/string_view.h>
+#include <string_view>
 #include <xio/detail/throw_error.h>
 #include <xio/error.h>
 #include <xio/execution_context.h>
@@ -246,8 +246,8 @@ namespace xio {
    * <tt>c:\\windows\\system32\\drivers\\etc\\services</tt>. Operating systems
    * may use additional locations when resolving service names.
    */
-            results_type resolve(ASIO_STRING_VIEW_PARAM host,
-                                 ASIO_STRING_VIEW_PARAM service) {
+            results_type resolve(std::string_view host,
+                                 std::string_view service) {
                 return resolve(host, service, resolver_base::flags());
             }
 
@@ -284,8 +284,8 @@ namespace xio {
    * <tt>c:\\windows\\system32\\drivers\\etc\\services</tt>. Operating systems
    * may use additional locations when resolving service names.
    */
-            results_type resolve(ASIO_STRING_VIEW_PARAM host,
-                                 ASIO_STRING_VIEW_PARAM service, xio::error_code &ec) {
+            results_type resolve(std::string_view host,
+                                 std::string_view service, xio::error_code &ec) {
                 return resolve(host, service, resolver_base::flags(), ec);
             }
 
@@ -327,8 +327,8 @@ namespace xio {
    * <tt>c:\\windows\\system32\\drivers\\etc\\services</tt>. Operating systems
    * may use additional locations when resolving service names.
    */
-            results_type resolve(ASIO_STRING_VIEW_PARAM host,
-                                 ASIO_STRING_VIEW_PARAM service, resolver_base::flags resolve_flags) {
+            results_type resolve(std::string_view host,
+                                 std::string_view service, resolver_base::flags resolve_flags) {
                 xio::error_code ec;
                 basic_resolver_query<protocol_type> q(static_cast<std::string>(host),
                                                       static_cast<std::string>(service), resolve_flags);
@@ -376,8 +376,8 @@ namespace xio {
    * <tt>c:\\windows\\system32\\drivers\\etc\\services</tt>. Operating systems
    * may use additional locations when resolving service names.
    */
-            results_type resolve(ASIO_STRING_VIEW_PARAM host,
-                                 ASIO_STRING_VIEW_PARAM service, resolver_base::flags resolve_flags,
+            results_type resolve(std::string_view host,
+                                 std::string_view service, resolver_base::flags resolve_flags,
                                  xio::error_code &ec) {
                 basic_resolver_query<protocol_type> q(static_cast<std::string>(host),
                                                       static_cast<std::string>(service), resolve_flags);
@@ -421,7 +421,7 @@ namespace xio {
    * may use additional locations when resolving service names.
    */
             results_type resolve(const protocol_type &protocol,
-                                 ASIO_STRING_VIEW_PARAM host, ASIO_STRING_VIEW_PARAM service) {
+                                 std::string_view host, std::string_view service) {
                 return resolve(protocol, host, service, resolver_base::flags());
             }
 
@@ -462,7 +462,7 @@ namespace xio {
    * may use additional locations when resolving service names.
    */
             results_type resolve(const protocol_type &protocol,
-                                 ASIO_STRING_VIEW_PARAM host, ASIO_STRING_VIEW_PARAM service,
+                                 std::string_view host, std::string_view service,
                                  xio::error_code &ec) {
                 return resolve(protocol, host, service, resolver_base::flags(), ec);
             }
@@ -509,7 +509,7 @@ namespace xio {
    * may use additional locations when resolving service names.
    */
             results_type resolve(const protocol_type &protocol,
-                                 ASIO_STRING_VIEW_PARAM host, ASIO_STRING_VIEW_PARAM service,
+                                 std::string_view host, std::string_view service,
                                  resolver_base::flags resolve_flags) {
                 xio::error_code ec;
                 basic_resolver_query<protocol_type> q(
@@ -563,7 +563,7 @@ namespace xio {
    * may use additional locations when resolving service names.
    */
             results_type resolve(const protocol_type &protocol,
-                                 ASIO_STRING_VIEW_PARAM host, ASIO_STRING_VIEW_PARAM service,
+                                 std::string_view host, std::string_view service,
                                  resolver_base::flags resolve_flags, xio::error_code &ec) {
                 basic_resolver_query<protocol_type> q(
                     protocol, static_cast<std::string>(host),
@@ -621,8 +621,8 @@ namespace xio {
             template<
                 ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
                 results_type)) ResolveToken = default_completion_token_t<executor_type> >
-            auto async_resolve(ASIO_STRING_VIEW_PARAM host,
-                               ASIO_STRING_VIEW_PARAM service,
+            auto async_resolve(std::string_view host,
+                               std::string_view service,
                                ResolveToken &&token = default_completion_token_t<executor_type>())
                 -> decltype(
                     xio::async_initiate<ResolveToken,
@@ -689,8 +689,8 @@ namespace xio {
             template<
                 ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
                 results_type)) ResolveToken = default_completion_token_t<executor_type> >
-            auto async_resolve(ASIO_STRING_VIEW_PARAM host,
-                               ASIO_STRING_VIEW_PARAM service, resolver_base::flags resolve_flags,
+            auto async_resolve(std::string_view host,
+                               std::string_view service, resolver_base::flags resolve_flags,
                                ResolveToken &&token = default_completion_token_t<executor_type>())
                 -> decltype(
                     xio::async_initiate<ResolveToken,
@@ -760,7 +760,7 @@ namespace xio {
                 ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
                 results_type)) ResolveToken = default_completion_token_t<executor_type> >
             auto async_resolve(const protocol_type &protocol,
-                               ASIO_STRING_VIEW_PARAM host, ASIO_STRING_VIEW_PARAM service,
+                               std::string_view host, std::string_view service,
                                ResolveToken &&token = default_completion_token_t<executor_type>())
                 -> decltype(
                     xio::async_initiate<ResolveToken,
@@ -831,7 +831,7 @@ namespace xio {
                 ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
                 results_type)) ResolveToken = default_completion_token_t<executor_type> >
             auto async_resolve(const protocol_type &protocol,
-                               ASIO_STRING_VIEW_PARAM host, ASIO_STRING_VIEW_PARAM service,
+                               std::string_view host, std::string_view service,
                                resolver_base::flags resolve_flags,
                                ResolveToken &&token = default_completion_token_t<executor_type>())
                 -> decltype(

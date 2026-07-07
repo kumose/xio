@@ -175,11 +175,11 @@ namespace xio {
         }
 
 
-        network_v4 make_network_v4(string_view str) {
+        network_v4 make_network_v4(std::string_view str) {
             return make_network_v4(static_cast<std::string>(str));
         }
 
-        network_v4 make_network_v4(string_view str,
+        network_v4 make_network_v4(std::string_view str,
                                    xio::error_code &ec) {
             return make_network_v4(static_cast<std::string>(str), ec);
         }

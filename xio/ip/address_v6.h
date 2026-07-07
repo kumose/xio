@@ -21,7 +21,7 @@
 #include <array>
 #include <cstdint>
 #include <xio/detail/socket_types.h>
-#include <xio/detail/string_view.h>
+#include <string_view>
 #include <xio/detail/winsock_init.h>
 #include <xio/error_code.h>
 #include <xio/ip/address_v4.h>
@@ -264,13 +264,13 @@ ASIO_DECL address_v6 make_address_v6(const std::string &str,
         /**
  * @relates address_v6
  */
-ASIO_DECL address_v6 make_address_v6(string_view str);
+ASIO_DECL address_v6 make_address_v6(std::string_view str);
 
         /// Create an IPv6 address from an IP address string.
         /**
  * @relates address_v6
  */
-ASIO_DECL address_v6 make_address_v6(string_view str,
+ASIO_DECL address_v6 make_address_v6(std::string_view str,
                                      xio::error_code &ec) noexcept;
 
 

@@ -97,7 +97,7 @@ void test()
 # if defined(ASIO_HAS_STD_STRING_VIEW)
     std::string_view string_view_value("127.0.0.1");
 # elif defined(ASIO_HAS_STD_EXPERIMENTAL_STRING_VIEW)
-    std::experimental::string_view string_view_value("127.0.0.1");
+    std::experimental::std::string_view string_view_value("127.0.0.1");
 # endif // defined(ASIO_HAS_STD_EXPERIMENTAL_STRING_VIEW)
     addr1 = ip::make_address(string_view_value);
     addr1 = ip::make_address(string_view_value, ec);

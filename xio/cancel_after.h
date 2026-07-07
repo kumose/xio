@@ -18,7 +18,7 @@
 #include <xio/detail/config.h>
 #include <xio/basic_waitable_timer.h>
 #include <xio/cancellation_type.h>
-#include <xio/detail/chrono.h>
+#include <chrono>
 #include <xio/detail/type_traits.h>
 #include <xio/wait_traits.h>
 
@@ -171,11 +171,11 @@ namespace xio {
  * asynchronous operation is performed within an implicit or explicit strand.
  */
     template<typename Rep, typename Period>
-    [[nodiscard]] inline partial_cancel_after<chrono::steady_clock>
+    [[nodiscard]] inline partial_cancel_after<std::chrono::steady_clock>
 
-    cancel_after(const chrono::duration<Rep, Period> &timeout,
+    cancel_after(const std::chrono::duration<Rep, Period> &timeout,
                  cancellation_type_t cancel_type = cancellation_type::terminal) {
-        return partial_cancel_after<chrono::steady_clock>(timeout, cancel_type);
+        return partial_cancel_after<std::chrono::steady_clock>(timeout, cancel_type);
     }
 
     /// Create a partial completion token adapter that cancels an operation if not
@@ -194,7 +194,7 @@ namespace xio {
     partial_cancel_after_timer<Clock, WaitTraits, Executor>
 
     cancel_after(basic_waitable_timer<Clock, WaitTraits, Executor> &timer,
-                 const chrono::duration<Rep, Period> &timeout,
+                 const std::chrono::duration<Rep, Period> &timeout,
                  cancellation_type_t cancel_type = cancellation_type::terminal) {
         return partial_cancel_after_timer<Clock, WaitTraits, Executor>(
             timer, timeout, cancel_type);
@@ -212,11 +212,11 @@ namespace xio {
  */
     template<typename Rep, typename Period, typename CompletionToken>
     [[nodiscard]] inline
-    cancel_after_t<decay_t<CompletionToken>, chrono::steady_clock>
+    cancel_after_t<decay_t<CompletionToken>, std::chrono::steady_clock>
 
-    cancel_after(const chrono::duration<Rep, Period> &timeout,
+    cancel_after(const std::chrono::duration<Rep, Period> &timeout,
                  CompletionToken &&completion_token) {
-        return cancel_after_t<decay_t<CompletionToken>, chrono::steady_clock>(
+        return cancel_after_t<decay_t<CompletionToken>, std::chrono::steady_clock>(
             static_cast<CompletionToken &&>(completion_token),
             timeout, cancellation_type::terminal);
     }
@@ -233,11 +233,11 @@ namespace xio {
  */
     template<typename Rep, typename Period, typename CompletionToken>
     [[nodiscard]] inline
-    cancel_after_t<decay_t<CompletionToken>, chrono::steady_clock>
+    cancel_after_t<decay_t<CompletionToken>, std::chrono::steady_clock>
 
-    cancel_after(const chrono::duration<Rep, Period> &timeout,
+    cancel_after(const std::chrono::duration<Rep, Period> &timeout,
                  cancellation_type_t cancel_type, CompletionToken &&completion_token) {
-        return cancel_after_t<decay_t<CompletionToken>, chrono::steady_clock>(
+        return cancel_after_t<decay_t<CompletionToken>, std::chrono::steady_clock>(
             static_cast<CompletionToken &&>(completion_token), timeout, cancel_type);
     }
 
@@ -257,7 +257,7 @@ namespace xio {
     cancel_after_timer<decay_t<CompletionToken>, Clock, WaitTraits, Executor>
 
     cancel_after(basic_waitable_timer<Clock, WaitTraits, Executor> &timer,
-                 const chrono::duration<Rep, Period> &timeout,
+                 const std::chrono::duration<Rep, Period> &timeout,
                  CompletionToken &&completion_token) {
         return cancel_after_timer<decay_t<CompletionToken>,
             Clock, WaitTraits, Executor>(
@@ -281,7 +281,7 @@ namespace xio {
     cancel_after_timer<decay_t<CompletionToken>, Clock, WaitTraits, Executor>
 
     cancel_after(basic_waitable_timer<Clock, WaitTraits, Executor> &timer,
-                 const chrono::duration<Rep, Period> &timeout,
+                 const std::chrono::duration<Rep, Period> &timeout,
                  cancellation_type_t cancel_type, CompletionToken &&completion_token) {
         return cancel_after_timer<decay_t<CompletionToken>,
             Clock, WaitTraits, Executor>(

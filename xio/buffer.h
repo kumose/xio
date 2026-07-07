@@ -24,7 +24,7 @@
 #include <vector>
 #include <array>
 #include <xio/detail/memory.h>
-#include <xio/detail/string_view.h>
+#include <string_view>
 #include <xio/detail/throw_exception.h>
 #include <xio/detail/type_traits.h>
 #include <xio/is_contiguous_iterator.h>
@@ -46,7 +46,7 @@
 #endif // defined(__GNUC__)
 
 #if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
-#include <xio/detail/functional.h>
+#include <functional>
 #endif // ASIO_ENABLE_BUFFER_DEBUGGING
 
 #include <xio/detail/push_options.h>
@@ -1239,19 +1239,19 @@ private:
     }
 
 
-    /// Create a new non-modifiable buffer that represents the given string_view.
+    /// Create a new non-modifiable buffer that represents the given std::string_view.
     /**
  * @returns <tt>mutable_buffer(data.size() ? &data[0] : 0,
  * data.size() * sizeof(Elem))</tt>.
  */
     template<typename Elem, typename Traits>
     [[nodiscard]] inline const_buffer buffer(
-        basic_string_view<Elem, Traits> data) noexcept {
+        std::basic_string_view<Elem, Traits> data) noexcept {
         return const_buffer(data.size() ? &data[0] : 0,
                             data.size() * sizeof(Elem)
 #if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
     , detail::buffer_debug_check <
-      typename basic_string_view<Elem, Traits>::iterator
+      typename std::basic_string_view<Elem, Traits>::iterator
       > (data.begin())
 #endif // ASIO_ENABLE_BUFFER_DEBUGGING
         );
@@ -1266,7 +1266,7 @@ private:
  */
     template<typename Elem, typename Traits>
     [[nodiscard]] inline const_buffer buffer(
-        basic_string_view<Elem, Traits> data,
+        std::basic_string_view<Elem, Traits> data,
         std::size_t max_size_in_bytes) noexcept {
         return const_buffer(data.size() ? &data[0] : 0,
                             data.size() * sizeof(Elem) < max_size_in_bytes
@@ -1274,7 +1274,7 @@ private:
                                 : max_size_in_bytes
 #if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
     , detail::buffer_debug_check <
-      typename basic_string_view<Elem, Traits>::iterator
+      typename std::basic_string_view<Elem, Traits>::iterator
       > (data.begin())
 #endif // ASIO_ENABLE_BUFFER_DEBUGGING
         );

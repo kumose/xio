@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 #include <string>
-#include <xio/detail/string_view.h>
+#include <string_view>
 
 #include <xio/detail/push_options.h>
 
@@ -49,7 +49,7 @@ namespace xio {
 
             /// Construct with specified endpoint, host name and service name.
             basic_resolver_entry(const endpoint_type &ep,
-                                 ASIO_STRING_VIEW_PARAM host, ASIO_STRING_VIEW_PARAM service)
+                                 std::string_view host, std::string_view service)
                 : endpoint_(ep),
                   host_name_(static_cast<std::string>(host)),
                   service_name_(static_cast<std::string>(service)) {

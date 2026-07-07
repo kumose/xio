@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 #include <xio/basic_waitable_timer.h>
-#include <xio/detail/chrono.h>
+#include <chrono>
 
 namespace xio {
 
@@ -32,7 +32,7 @@ namespace xio {
  * @endcode
  */
     typedef basic_waitable_timer<
-        chrono::high_resolution_clock>
+        std::chrono::high_resolution_clock>
     high_resolution_timer;
 
 

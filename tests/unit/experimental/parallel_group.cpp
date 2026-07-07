@@ -42,7 +42,7 @@ struct wait_for_cancel_initiation
   void operator()(Handler&& handler, xio::steady_timer* timer) const
   {
     auto slot = xio::get_associated_cancellation_slot(handler);
-    timer->expires_after(xio::chrono::hours(1));
+    timer->expires_after(std::chrono::hours(1));
     if (slot.is_connected())
       slot.assign(wait_for_cancel_filter{timer, react_to_});
 
@@ -96,7 +96,7 @@ void non_terminal_group_cancellation_test()
 
   cancel_signal.emit(xio::cancellation_type::partial);
 
-  ioc.run_for(xio::chrono::seconds(5));
+  ioc.run_for(std::chrono::seconds(5));
 
   ASIO_CHECK(called == 1);
   ASIO_CHECK(order[0] == 0);

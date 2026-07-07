@@ -244,7 +244,7 @@ public:
       if (!xio::is_same<CancellationFilter, default_filter>::value)
         self.reset_cancellation_state(cancellation_filter_);
       state_ = waiting;
-      timer_.expires_after(xio::chrono::milliseconds(100));
+      timer_.expires_after(std::chrono::milliseconds(100));
       timer_.async_wait(static_cast<Self&&>(self));
       break;
     case waiting:

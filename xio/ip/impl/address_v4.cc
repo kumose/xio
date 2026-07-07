@@ -114,11 +114,11 @@ namespace xio {
             return make_address_v4(str.c_str(), ec);
         }
 
-        address_v4 make_address_v4(string_view str) {
+        address_v4 make_address_v4(std::string_view str) {
             return make_address_v4(static_cast<std::string>(str));
         }
 
-        address_v4 make_address_v4(string_view str,
+        address_v4 make_address_v4(std::string_view str,
                                    xio::error_code &ec) noexcept {
             return make_address_v4(static_cast<std::string>(str), ec);
         }

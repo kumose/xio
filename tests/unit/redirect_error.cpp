@@ -39,7 +39,7 @@ void redirect_error_test() {
     xio::error_code ec = xio::error::would_block;
     int count = 0;
 
-    timer1.expires_after(xio::chrono::seconds(0));
+    timer1.expires_after(std::chrono::seconds(0));
     timer1.async_wait(
         xio::redirect_error(
             xio::bind_executor(io2.get_executor(),
@@ -111,7 +111,7 @@ void partial_redirect_error_test() {
     xio::error_code ec = xio::error::would_block;
     int count = 0;
 
-    timer1.expires_after(xio::chrono::seconds(0));
+    timer1.expires_after(std::chrono::seconds(0));
     timer1.async_wait(xio::redirect_error(ec))(
         xio::bind_executor(io2.get_executor(),
                            redirect_error_handler(&count)));

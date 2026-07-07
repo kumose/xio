@@ -70,7 +70,7 @@ namespace xio {
 
     // Forward declaration with defaulted arguments.
     template<typename Protocol,
-        typename Clock = chrono::steady_clock,
+        typename Clock = std::chrono::steady_clock,
         typename WaitTraits = wait_traits<Clock> >
     class basic_socket_streambuf;
 

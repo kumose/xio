@@ -138,7 +138,7 @@ namespace xio {
     template<typename SyncReadStream, typename DynamicBuffer_v1>
     inline std::size_t read_until(SyncReadStream &s,
                                   DynamicBuffer_v1 &&buffers,
-                                  ASIO_STRING_VIEW_PARAM delim,
+                                  std::string_view delim,
                                   constraint_t<
                                       is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
                                   >,
@@ -155,7 +155,7 @@ namespace xio {
     template<typename SyncReadStream, typename DynamicBuffer_v1>
     std::size_t read_until(SyncReadStream &s,
                            DynamicBuffer_v1 &&buffers,
-                           ASIO_STRING_VIEW_PARAM delim, xio::error_code &ec,
+                           std::string_view delim, xio::error_code &ec,
                            constraint_t<
                                is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
                            >,
@@ -307,14 +307,14 @@ namespace xio {
     template<typename SyncReadStream, typename Allocator>
     inline std::size_t read_until(SyncReadStream &s,
                                   xio::basic_streambuf<Allocator> &b,
-                                  ASIO_STRING_VIEW_PARAM delim) {
+                                  std::string_view delim) {
         return read_until(s, basic_streambuf_ref<Allocator>(b), delim);
     }
 
     template<typename SyncReadStream, typename Allocator>
     inline std::size_t read_until(SyncReadStream &s,
                                   xio::basic_streambuf<Allocator> &b,
-                                  ASIO_STRING_VIEW_PARAM delim, xio::error_code &ec) {
+                                  std::string_view delim, xio::error_code &ec) {
         return read_until(s, basic_streambuf_ref<Allocator>(b), delim, ec);
     }
 
@@ -403,7 +403,7 @@ namespace xio {
 
     template<typename SyncReadStream, typename DynamicBuffer_v2>
     inline std::size_t read_until(SyncReadStream &s,
-                                  DynamicBuffer_v2 buffers, ASIO_STRING_VIEW_PARAM delim,
+                                  DynamicBuffer_v2 buffers, std::string_view delim,
                                   constraint_t<
                                       is_dynamic_buffer_v2<DynamicBuffer_v2>::value
                                   >) {
@@ -416,7 +416,7 @@ namespace xio {
 
     template<typename SyncReadStream, typename DynamicBuffer_v2>
     std::size_t read_until(SyncReadStream &s, DynamicBuffer_v2 buffers,
-                           ASIO_STRING_VIEW_PARAM delim, xio::error_code &ec,
+                           std::string_view delim, xio::error_code &ec,
                            constraint_t<
                                is_dynamic_buffer_v2<DynamicBuffer_v2>::value
                            >) {

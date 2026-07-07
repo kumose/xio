@@ -18,7 +18,7 @@
 
 using xio::ip::icmp;
 using xio::steady_timer;
-namespace chrono = xio::chrono;
+namespace chrono = std::chrono;
 
 class pinger
 {

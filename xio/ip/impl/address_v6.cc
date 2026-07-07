@@ -208,11 +208,11 @@ namespace xio {
         }
 
 
-        address_v6 make_address_v6(string_view str) {
+        address_v6 make_address_v6(std::string_view str) {
             return make_address_v6(static_cast<std::string>(str));
         }
 
-        address_v6 make_address_v6(string_view str,
+        address_v6 make_address_v6(std::string_view str,
                                    xio::error_code &ec) noexcept {
             return make_address_v6(static_cast<std::string>(str), ec);
         }

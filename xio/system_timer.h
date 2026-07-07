@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 #include <xio/basic_waitable_timer.h>
-#include <xio/detail/chrono.h>
+#include <chrono>
 
 namespace xio {
 
@@ -28,10 +28,10 @@ namespace xio {
  * available. Otherwise, it may use the Boost.Chrono library. To explicitly
  * utilise Boost.Chrono, use the basic_waitable_timer template directly:
  * @code
- * typedef basic_waitable_timer<boost::chrono::system_clock> timer;
+ * typedef basic_waitable_timer<boost::std::chrono::system_clock> timer;
  * @endcode
  */
-    typedef basic_waitable_timer<chrono::system_clock> system_timer;
+    typedef basic_waitable_timer<std::chrono::system_clock> system_timer;
 
 
 } // namespace xio

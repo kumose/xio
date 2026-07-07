@@ -26,7 +26,7 @@ void as_tuple_test() {
     xio::system_timer timer1(io1);
     int count = 0;
 
-    timer1.expires_after(xio::chrono::seconds(0));
+    timer1.expires_after(std::chrono::seconds(0));
     timer1.async_wait(
         xio::as_tuple(
             xio::bind_executor(io2.get_executor(),
@@ -109,7 +109,7 @@ void partial_as_tuple_test() {
     xio::system_timer timer1(io1);
     int count = 0;
 
-    timer1.expires_after(xio::chrono::seconds(0));
+    timer1.expires_after(std::chrono::seconds(0));
     timer1.async_wait(xio::as_tuple)(
         xio::bind_executor(io2.get_executor(),
                            [&count](std::tuple<xio::error_code>) {

@@ -46,7 +46,7 @@ namespace xio {
                 init(path_name.data(), path_name.length());
             }
 
-endpoint::endpoint(string_view path_name) {
+endpoint::endpoint(std::string_view path_name) {
     init(path_name.data(), path_name.length());
 }
 

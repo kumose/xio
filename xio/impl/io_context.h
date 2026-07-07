@@ -77,13 +77,13 @@ namespace xio {
 
     template<typename Rep, typename Period>
     std::size_t io_context::run_for(
-        const chrono::duration<Rep, Period> &rel_time) {
-        return this->run_until(chrono::steady_clock::now() + rel_time);
+        const std::chrono::duration<Rep, Period> &rel_time) {
+        return this->run_until(std::chrono::steady_clock::now() + rel_time);
     }
 
     template<typename Clock, typename Duration>
     std::size_t io_context::run_until(
-        const chrono::time_point<Clock, Duration> &abs_time) {
+        const std::chrono::time_point<Clock, Duration> &abs_time) {
         std::size_t n = 0;
         while (this->run_one_until(abs_time))
             if (n != (std::numeric_limits<std::size_t>::max)())
@@ -93,23 +93,23 @@ namespace xio {
 
     template<typename Rep, typename Period>
     std::size_t io_context::run_one_for(
-        const chrono::duration<Rep, Period> &rel_time) {
-        return this->run_one_until(chrono::steady_clock::now() + rel_time);
+        const std::chrono::duration<Rep, Period> &rel_time) {
+        return this->run_one_until(std::chrono::steady_clock::now() + rel_time);
     }
 
     template<typename Clock, typename Duration>
     std::size_t io_context::run_one_until(
-        const chrono::time_point<Clock, Duration> &abs_time) {
+        const std::chrono::time_point<Clock, Duration> &abs_time) {
         typename Clock::time_point now = Clock::now();
         while (now < abs_time) {
             typename Clock::duration rel_time = abs_time - now;
-            if (rel_time > chrono::seconds(1))
-                rel_time = chrono::seconds(1);
+            if (rel_time > std::chrono::seconds(1))
+                rel_time = std::chrono::seconds(1);
 
             xio::error_code ec;
             std::size_t s = impl_.wait_one(
-                static_cast<long>(chrono::duration_cast<
-                    chrono::microseconds>(rel_time).count()), ec);
+                static_cast<long>(std::chrono::duration_cast<
+                    std::chrono::microseconds>(rel_time).count()), ec);
             xio::detail::throw_error(ec);
 
             if (s || impl_.stopped())

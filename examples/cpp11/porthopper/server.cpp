@@ -42,7 +42,7 @@ public:
           xio::placeholders::error, new_socket));
 
     // Start the timer used to generate outgoing frames.
-    timer_.expires_after(xio::chrono::milliseconds(100));
+    timer_.expires_after(std::chrono::milliseconds(100));
     timer_.async_wait(std::bind(&server::handle_timer, this));
   }
 
@@ -74,7 +74,7 @@ public:
       // Delay handling of the control request to simulate network latency.
       timer_ptr delay_timer(
           new xio::steady_timer(acceptor_.get_executor()));
-      delay_timer->expires_after(xio::chrono::seconds(2));
+      delay_timer->expires_after(std::chrono::seconds(2));
       delay_timer->async_wait(
           std::bind(&server::handle_control_request_timer, this,
             socket, request, delay_timer));
@@ -140,7 +140,7 @@ public:
     }
 
     // Wait for next timeout.
-    timer_.expires_after(xio::chrono::milliseconds(100));
+    timer_.expires_after(std::chrono::milliseconds(100));
     timer_.async_wait(std::bind(&server::handle_timer, this));
   }
 

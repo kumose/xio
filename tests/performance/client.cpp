@@ -198,7 +198,7 @@ public:
       sessions_(),
       stats_()
   {
-    stop_timer_.expires_after(xio::chrono::seconds(timeout));
+    stop_timer_.expires_after(std::chrono::seconds(timeout));
     stop_timer_.async_wait(std::bind(&client::handle_timeout, this));
 
     for (size_t i = 0; i < session_count; ++i)

@@ -20,7 +20,7 @@ int main()
 {
   xio::io_context io;
 
-  xio::steady_timer t(io, xio::chrono::seconds(5));
+  xio::steady_timer t(io, std::chrono::seconds(5));
   t.async_wait(&print);
 
   io.run();

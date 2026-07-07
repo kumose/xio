@@ -15,7 +15,7 @@
 # pragma once
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
-#include <xio/detail/chrono.h>
+#include <chrono>
 
 #include <xio/wait_traits.h>
 #include <xio/basic_waitable_timer.h>

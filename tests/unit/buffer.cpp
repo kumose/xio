@@ -105,7 +105,7 @@ void test()
 #if defined(ASIO_HAS_STD_STRING_VIEW)
     std::string_view string_view_data(string_data);
 #elif defined(ASIO_HAS_STD_EXPERIMENTAL_STRING_VIEW)
-    std::experimental::string_view string_view_data(string_data);
+    std::experimental::std::string_view string_view_data(string_data);
 #endif // defined(ASIO_HAS_STD_EXPERIMENTAL_STRING_VIEW)
     mutable_contiguous_container<char> mutable_contiguous_data;
     const mutable_contiguous_container<char> const_mutable_contiguous_data;

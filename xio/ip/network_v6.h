@@ -18,7 +18,7 @@
 
 #include <xio/detail/config.h>
 #include <string>
-#include <xio/detail/string_view.h>
+#include <string_view>
 #include <xio/error_code.h>
 #include <xio/ip/address_v6_range.h>
 
@@ -171,7 +171,7 @@ ASIO_DECL network_v6 make_network_v6(
         /**
  * @relates network_v6
  */
-ASIO_DECL network_v6 make_network_v6(string_view str);
+ASIO_DECL network_v6 make_network_v6(std::string_view str);
 
         /// Create an IPv6 network from a string containing IP address and prefix
 /// length.
@@ -179,7 +179,7 @@ ASIO_DECL network_v6 make_network_v6(string_view str);
  * @relates network_v6
  */
 ASIO_DECL network_v6 make_network_v6(
-            string_view str, xio::error_code &ec);
+            std::string_view str, xio::error_code &ec);
 
 #if !defined(ASIO_NO_IOSTREAM)
 

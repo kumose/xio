@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 #include <xio/basic_waitable_timer.h>
-#include <xio/detail/chrono.h>
+#include <chrono>
 
 namespace xio {
 
@@ -31,7 +31,7 @@ namespace xio {
  * typedef basic_waitable_timer<boost::chrono::steady_clock> timer;
  * @endcode
  */
-    typedef basic_waitable_timer<chrono::steady_clock> steady_timer;
+    typedef basic_waitable_timer<std::chrono::steady_clock> steady_timer;
 
 
 } // namespace xio

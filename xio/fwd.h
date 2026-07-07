@@ -16,7 +16,7 @@
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include <xio/detail/config.h>
-#include <xio/detail/chrono.h>
+#include <chrono>
 #include <xio/basic_streambuf_fwd.h>
 #include <xio/buffered_read_stream_fwd.h>
 #include <xio/buffered_stream_fwd.h>
@@ -148,7 +148,7 @@ namespace xio {
 
     // Forward declaration with defaulted arguments.
     template<typename Protocol,
-        typename Clock = chrono::steady_clock,
+        typename Clock = std::chrono::steady_clock,
         typename WaitTraits = wait_traits<Clock> >
     class basic_socket_streambuf;
 
@@ -159,7 +159,7 @@ namespace xio {
 
     // Forward declaration with defaulted arguments.
     template<typename Protocol,
-        typename Clock = chrono::steady_clock,
+        typename Clock = std::chrono::steady_clock,
         typename WaitTraits = wait_traits<Clock> >
     class basic_socket_iostream;
 
@@ -244,11 +244,11 @@ namespace xio {
 
 #endif // !defined(ASIO_BASIC_WAITABLE_TIMER_FWD_DECL)
 
-    typedef basic_waitable_timer<chrono::system_clock> system_timer;
+    typedef basic_waitable_timer<std::chrono::system_clock> system_timer;
 
-    typedef basic_waitable_timer<chrono::steady_clock> steady_timer;
+    typedef basic_waitable_timer<std::chrono::steady_clock> steady_timer;
 
-    typedef basic_waitable_timer<chrono::high_resolution_clock>
+    typedef basic_waitable_timer<std::chrono::high_resolution_clock>
     high_resolution_timer;
 
     typedef basic_streambuf<> streambuf;

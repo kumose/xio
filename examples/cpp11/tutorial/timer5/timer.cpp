@@ -18,8 +18,8 @@ class printer
 public:
   printer(xio::io_context& io)
     : strand_(xio::make_strand(io)),
-      timer1_(io, xio::chrono::seconds(1)),
-      timer2_(io, xio::chrono::seconds(1)),
+      timer1_(io, std::chrono::seconds(1)),
+      timer2_(io, std::chrono::seconds(1)),
       count_(0)
   {
     timer1_.async_wait(xio::bind_executor(strand_,
@@ -41,7 +41,7 @@ public:
       std::cout << "Timer 1: " << count_ << std::endl;
       ++count_;
 
-      timer1_.expires_at(timer1_.expiry() + xio::chrono::seconds(1));
+      timer1_.expires_at(timer1_.expiry() + std::chrono::seconds(1));
 
       timer1_.async_wait(xio::bind_executor(strand_,
             std::bind(&printer::print1, this)));
@@ -55,7 +55,7 @@ public:
       std::cout << "Timer 2: " << count_ << std::endl;
       ++count_;
 
-      timer2_.expires_at(timer2_.expiry() + xio::chrono::seconds(1));
+      timer2_.expires_at(timer2_.expiry() + std::chrono::seconds(1));
 
       timer2_.async_wait(xio::bind_executor(strand_,
             std::bind(&printer::print2, this)));

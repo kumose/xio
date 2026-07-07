@@ -144,11 +144,11 @@ namespace xio {
         }
 
 
-        network_v6 make_network_v6(string_view str) {
+        network_v6 make_network_v6(std::string_view str) {
             return make_network_v6(static_cast<std::string>(str));
         }
 
-        network_v6 make_network_v6(string_view str,
+        network_v6 make_network_v6(std::string_view str,
                                    xio::error_code &ec) {
             return make_network_v6(static_cast<std::string>(str), ec);
         }
