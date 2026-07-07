@@ -17,30 +17,5 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_NO_DEPRECATED)
-
-#if defined(ASIO_HAS_BOOST_DATE_TIME) \
-  || defined(GENERATING_DOCUMENTATION)
-
-#include <xio/detail/socket_types.h> // Must come before posix_time.
-#include <xio/basic_deadline_timer.h>
-
-#include <boost/date_time/posix_time/posix_time_types.hpp>
-
-namespace xio {
-
-
-    /// (Deprecated: Use system_timer.) Typedef for the typical usage of timer. Uses
-/// a UTC clock.
-    ASIO_DEPRECATED_MSG("Use system_timer")
-    typedef basic_deadline_timer<boost::posix_time::ptime> deadline_timer;
-
-
-} // namespace xio
-
-#endif // defined(ASIO_HAS_BOOST_DATE_TIME)
-// || defined(GENERATING_DOCUMENTATION)
-
-#endif // !defined(ASIO_NO_DEPRECATED)
 
 #endif // ASIO_DEADLINE_TIMER_HPP

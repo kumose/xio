@@ -423,8 +423,6 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
     struct impl {
         template<typename T>
         struct proxy {
-#if defined(ASIO_HAS_DEDUCED_REQUIRE_MEMBER_TRAIT) \
-  && defined(ASIO_HAS_DEDUCED_PREFER_MEMBER_TRAIT)
             struct type {
                 template<typename P>
                 auto require(P &&p)
@@ -448,11 +446,7 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
                         declval<conditional_t<true, T, P> >().prefer(static_cast<P &&>(p))
                     );
             };
-#else // defined(ASIO_HAS_DEDUCED_REQUIRE_MEMBER_TRAIT)
-            //   && defined(ASIO_HAS_DEDUCED_PREFER_MEMBER_TRAIT)
-            typedef T type;
-#endif // defined(ASIO_HAS_DEDUCED_REQUIRE_MEMBER_TRAIT)
-            //   && defined(ASIO_HAS_DEDUCED_PREFER_MEMBER_TRAIT)
+
         };
 
         template<typename T, typename Property>
@@ -555,18 +549,8 @@ namespace XIO_VERSIONED_NAME(prefer_fn) {
 namespace xio {
 
 
-#if defined(ASIO_HAS_INLINE_VARIABLES)
     inline constexpr XIO_VERSIONED_NAME (prefer_fn)::impl prefer{};
-#else // defined(ASIO_HAS_INLINE_VARIABLES)
 
-
-
-
-    namespace {
-        static constexpr const XIO_VERSIONED_NAME (prefer_fn)::impl&
-                        prefer = XIO_VERSIONED_NAME(prefer_fn)::static_instance<>::instance;
-    } // namespace
-#endif // defined(ASIO_HAS_INLINE_VARIABLES)
 
     typedef XIO_VERSIONED_NAME (prefer_fn)::impl prefer_t;
 
@@ -578,13 +562,11 @@ namespace xio {
                                               != XIO_VERSIONED_NAME(prefer_fn)::ill_formed> {
     };
 
-#if defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
     template<typename T, typename... Properties>
     constexpr bool can_prefer_v
             = can_prefer<T, Properties...>::value;
 
-#endif // defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
     template<typename T, typename... Properties>
     struct is_nothrow_prefer :
@@ -593,12 +575,9 @@ namespace xio {
                     prefer_t, T, void(Properties...)>::is_noexcept> {
     };
 
-#if defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
     template<typename T, typename... Properties>
     constexpr bool is_nothrow_prefer_v = is_nothrow_prefer<T, Properties...>::value;
-
-#endif // defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
     template<typename T, typename... Properties>
     struct prefer_result {

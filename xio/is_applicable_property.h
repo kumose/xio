@@ -26,7 +26,6 @@ namespace xio {
         struct is_applicable_property_trait : false_type {
         };
 
-#if defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
         template<typename T, typename Property>
         struct is_applicable_property_trait<T, Property,
@@ -37,7 +36,6 @@ namespace xio {
   >> : true_type {
         };
 
-#endif // defined(ASIO_HAS_VARIABLE_TEMPLATES)
     } // namespace detail
 
     template<typename T, typename Property, typename = void>
@@ -45,13 +43,10 @@ namespace xio {
             detail::is_applicable_property_trait<T, Property> {
     };
 
-#if defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
     template<typename T, typename Property>
     constexpr const bool is_applicable_property_v
             = is_applicable_property<T, Property>::value;
-
-#endif // defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
 
 } // namespace xio

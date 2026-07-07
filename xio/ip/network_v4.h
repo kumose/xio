@@ -25,8 +25,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace ip {
         /// Represents an IPv4 network.
         /**
@@ -91,7 +89,7 @@ namespace xio {
             }
 
             /// Obtain the netmask that was specified when the network object was created.
-  ASIO_DECL address_v4 netmask() const noexcept;
+            ASIO_DECL address_v4 netmask() const noexcept;
 
             /// Obtain an address object that represents the network address.
             address_v4 network() const noexcept {
@@ -104,7 +102,7 @@ namespace xio {
             }
 
             /// Obtain an address range corresponding to the hosts in the network.
-  ASIO_DECL address_v4_range hosts() const noexcept;
+            ASIO_DECL address_v4_range hosts() const noexcept;
 
             /// Obtain the true network address, omitting any host bits.
             network_v4 canonical() const noexcept {
@@ -117,7 +115,7 @@ namespace xio {
             }
 
             /// Test if a network is a real subnet of another network.
-  ASIO_DECL bool is_subnet_of(const network_v4 &other) const;
+            ASIO_DECL bool is_subnet_of(const network_v4 &other) const;
 
             /// Get the network as an address in dotted decimal format.
             ASIO_DECL std::string to_string() const;
@@ -163,14 +161,14 @@ namespace xio {
         /**
  * @relates network_v4
  */
-ASIO_DECL network_v4 make_network_v4(const char *str);
+        ASIO_DECL network_v4 make_network_v4(const char *str);
 
         /// Create an IPv4 network from a string containing IP address and prefix
 /// length.
         /**
  * @relates network_v4
  */
-ASIO_DECL network_v4 make_network_v4(
+        ASIO_DECL network_v4 make_network_v4(
             const char *str, xio::error_code &ec);
 
         /// Create an IPv4 network from a string containing IP address and prefix
@@ -178,36 +176,32 @@ ASIO_DECL network_v4 make_network_v4(
         /**
  * @relates network_v4
  */
-ASIO_DECL network_v4 make_network_v4(const std::string &str);
+        ASIO_DECL network_v4 make_network_v4(const std::string &str);
 
         /// Create an IPv4 network from a string containing IP address and prefix
 /// length.
         /**
  * @relates network_v4
  */
-ASIO_DECL network_v4 make_network_v4(
+        ASIO_DECL network_v4 make_network_v4(
             const std::string &str, xio::error_code &ec);
 
-#if defined(ASIO_HAS_STRING_VIEW) \
-  || defined(GENERATING_DOCUMENTATION)
 
         /// Create an IPv4 network from a string containing IP address and prefix
 /// length.
         /**
  * @relates network_v4
  */
-ASIO_DECL network_v4 make_network_v4(string_view str);
+        ASIO_DECL network_v4 make_network_v4(string_view str);
 
         /// Create an IPv4 network from a string containing IP address and prefix
 /// length.
         /**
  * @relates network_v4
  */
-ASIO_DECL network_v4 make_network_v4(
+        ASIO_DECL network_v4 make_network_v4(
             string_view str, xio::error_code &ec);
 
-#endif // defined(ASIO_HAS_STRING_VIEW)
-        //  || defined(GENERATING_DOCUMENTATION)
 
 #if !defined(ASIO_NO_IOSTREAM)
 
@@ -229,7 +223,6 @@ ASIO_DECL network_v4 make_network_v4(
 
 #endif // !defined(ASIO_NO_IOSTREAM)
     } // namespace ip
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

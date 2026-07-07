@@ -269,58 +269,6 @@ namespace xio {
     ASIO_DECL any_io_executor any_io_executor::prefer(
         const execution::relationship_t::continuation_t &, int) const;
 
-    namespace traits {
-#if !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
-
-        template<>
-        struct equality_comparable<any_io_executor> {
-            static const bool is_valid = true;
-            static const bool is_noexcept = true;
-        };
-
-#endif // !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
-
-#if !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
-
-        template<typename F>
-        struct execute_member<any_io_executor, F> {
-            static const bool is_valid = true;
-            static const bool is_noexcept = false;
-            typedef void result_type;
-        };
-
-#endif // !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
-
-#if !defined(ASIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
-
-        template<typename Prop>
-        struct query_member<any_io_executor, Prop> :
-                query_member<any_io_executor::base_type, Prop> {
-        };
-
-#endif // !defined(ASIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
-
-#if !defined(ASIO_HAS_DEDUCED_REQUIRE_MEMBER_TRAIT)
-
-        template<typename Prop>
-        struct require_member<any_io_executor, Prop> :
-                require_member<any_io_executor::base_type, Prop> {
-            typedef any_io_executor result_type;
-        };
-
-#endif // !defined(ASIO_HAS_DEDUCED_REQUIRE_MEMBER_TRAIT)
-
-#if !defined(ASIO_HAS_DEDUCED_PREFER_MEMBER_TRAIT)
-
-        template<typename Prop>
-        struct prefer_member<any_io_executor, Prop> :
-                prefer_member<any_io_executor::base_type, Prop> {
-            typedef any_io_executor result_type;
-        };
-
-#endif // !defined(ASIO_HAS_DEDUCED_PREFER_MEMBER_TRAIT)
-    } // namespace traits
-
 #endif // !defined(GENERATING_DOCUMENTATION)
 
 #endif // defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)

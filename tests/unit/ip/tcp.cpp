@@ -8,10 +8,7 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// Disable autolinking for unit tests.
-#if !defined(BOOST_ALL_NO_LIB)
-#define BOOST_ALL_NO_LIB 1
-#endif // !defined(BOOST_ALL_NO_LIB)
+
 
 // Enable cancel() support on Windows.
 #define ASIO_ENABLE_CANCELIO 1
@@ -30,11 +27,8 @@
 #include "../archetypes/io_control_command.hpp"
 #include "../archetypes/settable_socket_option.hpp"
 
-#if defined(ASIO_HAS_BOOST_ARRAY)
-# include <boost/array.hpp>
-#else // defined(ASIO_HAS_BOOST_ARRAY)
-# include <array>
-#endif // defined(ASIO_HAS_BOOST_ARRAY)
+
+#include <array>
 
 //------------------------------------------------------------------------------
 
@@ -191,11 +185,8 @@ private:
 
 void test()
 {
-#if defined(ASIO_HAS_BOOST_ARRAY)
-  using boost::array;
-#else // defined(ASIO_HAS_BOOST_ARRAY)
+
   using std::array;
-#endif // defined(ASIO_HAS_BOOST_ARRAY)
 
   using namespace xio;
   namespace ip = xio::ip;

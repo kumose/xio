@@ -38,7 +38,7 @@ namespace xio {
             ASIO_DECL
             const xio::error_category &get_channel_category();
 
-            ASIO_INLINE_OR_STATIC_VARIABLE const xio::error_category &
+            inline const xio::error_category &
   channel_category ASIO_UNUSED_VARIABLE
                     = xio::experimental::error::get_channel_category();
         } // namespace error

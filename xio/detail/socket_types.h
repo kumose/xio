@@ -99,8 +99,8 @@ namespace xio {
 
     namespace detail {
 #if defined(ASIO_WINDOWS_RUNTIME)
-ASIO_INLINE_VARIABLE const int max_addr_v4_str_len = 256;
-ASIO_INLINE_VARIABLE const int max_addr_v6_str_len = 256;
+inline const int max_addr_v4_str_len = 256;
+inline const int max_addr_v6_str_len = 256;
         typedef unsigned __int32 u_long_type;
         typedef unsigned __int16 u_short_type;
         struct in4_addr_type {
@@ -211,10 +211,10 @@ ASIO_INLINE_VARIABLE const int max_addr_v6_str_len = 256;
 # define ASIO_OS_DEF_SA_NOCLDWAIT 0x4
 #elif defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
         typedef SOCKET socket_type;
-ASIO_INLINE_VARIABLE const SOCKET invalid_socket = INVALID_SOCKET;
-ASIO_INLINE_VARIABLE const int socket_error_retval = SOCKET_ERROR;
-ASIO_INLINE_VARIABLE const int max_addr_v4_str_len = 256;
-ASIO_INLINE_VARIABLE const int max_addr_v6_str_len = 256;
+inline const SOCKET invalid_socket = INVALID_SOCKET;
+inline const int socket_error_retval = SOCKET_ERROR;
+inline const int max_addr_v4_str_len = 256;
+inline const int max_addr_v6_str_len = 256;
         typedef sockaddr socket_addr_type;
         typedef in_addr in4_addr_type;
         typedef ip_mreq in4_mreq_type;
@@ -321,23 +321,23 @@ ASIO_INLINE_VARIABLE const int max_addr_v6_str_len = 256;
 #  define ASIO_OS_DEF_AI_ADDRCONFIG 0
 # endif
 # if defined (_WIN32_WINNT)
-ASIO_INLINE_VARIABLE const int max_iov_len = 64;
+inline const int max_iov_len = 64;
 # else
-ASIO_INLINE_VARIABLE const int max_iov_len = 16;
+inline const int max_iov_len = 16;
 # endif
 # define ASIO_OS_DEF_SA_RESTART 0x1
 # define ASIO_OS_DEF_SA_NOCLDSTOP 0x2
 # define ASIO_OS_DEF_SA_NOCLDWAIT 0x4
 #else
         typedef int socket_type;
-ASIO_INLINE_VARIABLE const int invalid_socket = -1;
-ASIO_INLINE_VARIABLE const int socket_error_retval = -1;
-ASIO_INLINE_VARIABLE const int max_addr_v4_str_len = INET_ADDRSTRLEN;
+inline const int invalid_socket = -1;
+inline const int socket_error_retval = -1;
+inline const int max_addr_v4_str_len = INET_ADDRSTRLEN;
 #if defined(INET6_ADDRSTRLEN)
-ASIO_INLINE_VARIABLE const int max_addr_v6_str_len =
+inline const int max_addr_v6_str_len =
                 INET6_ADDRSTRLEN + 1 + IF_NAMESIZE;
 #else // defined(INET6_ADDRSTRLEN)
-ASIO_INLINE_VARIABLE const int max_addr_v6_str_len = 256;
+inline const int max_addr_v6_str_len = 256;
 #endif // defined(INET6_ADDRSTRLEN)
         typedef sockaddr socket_addr_type;
         typedef in_addr in4_addr_type;
@@ -451,10 +451,10 @@ ASIO_INLINE_VARIABLE const int max_addr_v6_str_len = 256;
 #  define ASIO_OS_DEF_AI_ADDRCONFIG 0
 # endif
 # if defined(IOV_MAX)
-ASIO_INLINE_VARIABLE const int max_iov_len = IOV_MAX;
+inline const int max_iov_len = IOV_MAX;
 # else
         // POSIX platforms are not required to define IOV_MAX.
-ASIO_INLINE_VARIABLE const int max_iov_len = 16;
+inline const int max_iov_len = 16;
 # endif
 # define ASIO_OS_DEF_SA_RESTART SA_RESTART
 # define ASIO_OS_DEF_SA_NOCLDSTOP SA_NOCLDSTOP
@@ -464,9 +464,9 @@ ASIO_INLINE_VARIABLE const int max_iov_len = 16;
 #  define ASIO_OS_DEF_SA_NOCLDWAIT 0
 # endif // defined(SA_NOCLDWAIT)
 #endif
-ASIO_INLINE_VARIABLE const int custom_socket_option_level = 0xA5100000;
-ASIO_INLINE_VARIABLE const int enable_connection_aborted_option = 1;
-ASIO_INLINE_VARIABLE const int always_fail_option = 2;
+inline const int custom_socket_option_level = 0xA5100000;
+inline const int enable_connection_aborted_option = 1;
+inline const int always_fail_option = 2;
     } // namespace detail
 
 } // namespace xio

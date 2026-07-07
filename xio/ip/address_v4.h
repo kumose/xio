@@ -283,8 +283,6 @@ ASIO_DECL address_v4 make_address_v4(const std::string &str);
 ASIO_DECL address_v4 make_address_v4(const std::string &str,
                                      xio::error_code &ec) noexcept;
 
-#if defined(ASIO_HAS_STRING_VIEW) \
-  || defined(GENERATING_DOCUMENTATION)
 
         /// Create an IPv4 address from an IP address string in dotted decimal form.
         /**
@@ -299,8 +297,6 @@ ASIO_DECL address_v4 make_address_v4(string_view str);
 ASIO_DECL address_v4 make_address_v4(string_view str,
                                      xio::error_code &ec) noexcept;
 
-#endif // defined(ASIO_HAS_STRING_VIEW)
-        //  || defined(GENERATING_DOCUMENTATION)
 
 #if !defined(ASIO_NO_IOSTREAM)
 

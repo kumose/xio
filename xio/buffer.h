@@ -1350,8 +1350,6 @@ private:
         );
     }
 
-#if defined(ASIO_HAS_STRING_VIEW) \
-  || defined(GENERATING_DOCUMENTATION)
 
     /// Create a new non-modifiable buffer that represents the given string_view.
     /**
@@ -1394,8 +1392,6 @@ private:
     );
 }
 
-#endif // defined(ASIO_HAS_STRING_VIEW)
-    //  || defined(GENERATING_DOCUMENTATION)
 
     /// Create a new modifiable buffer from a contiguous container.
     /**

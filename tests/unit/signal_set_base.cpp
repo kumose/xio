@@ -8,10 +8,7 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// Disable autolinking for unit tests.
-#if !defined(BOOST_ALL_NO_LIB)
-#define BOOST_ALL_NO_LIB 1
-#endif // !defined(BOOST_ALL_NO_LIB)
+
 
 // Prevent link dependency on the Boost.System library.
 #if !defined(BOOST_SYSTEM_NO_DEPRECATED)

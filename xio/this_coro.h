@@ -31,7 +31,7 @@ namespace xio {
         };
 
         /// Awaitable object that returns the executor of the current coroutine.
-ASIO_INLINE_VARIABLE constexpr executor_t executor;
+inline constexpr executor_t executor;
 
         /// Awaitable type that returns the cancellation state of the current coroutine.
         struct cancellation_state_t {
@@ -54,7 +54,7 @@ ASIO_INLINE_VARIABLE constexpr executor_t executor;
  *     // ...
  * } @endcode
  */
-ASIO_INLINE_VARIABLE constexpr cancellation_state_t cancellation_state;
+inline constexpr cancellation_state_t cancellation_state;
 
 #if defined(GENERATING_DOCUMENTATION)
 

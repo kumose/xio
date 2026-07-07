@@ -20,13 +20,6 @@
 #include <xio/execution/invocable_archetype.h>
 #include <xio/traits/equality_comparable.h>
 #include <xio/traits/execute_member.h>
-
-#if defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT) \
-  && defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
-# define ASIO_HAS_DEDUCED_EXECUTION_IS_EXECUTOR_TRAIT 1
-#endif // defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
-//   && defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
-
 #include <xio/detail/push_options.h>
 
 namespace xio {
@@ -95,12 +88,10 @@ namespace xio {
         {
         };
 
-#if defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
         template<typename T>
         constexpr const bool is_executor_v = is_executor<T>::value;
 
-#endif // defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
 #if defined(ASIO_HAS_CONCEPTS)
 

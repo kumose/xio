@@ -32,8 +32,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace detail {
         char (&has_result_type_helper(...))[2];
 
@@ -50,10 +48,7 @@ namespace xio {
         class initiate_async_read_until_delim_v1;
         template<typename>
         class initiate_async_read_until_delim_string_v1;
-#if defined(ASIO_HAS_BOOST_REGEX)
-        template<typename>
-        class initiate_async_read_until_expr_v1;
-#endif // defined(ASIO_HAS_BOOST_REGEX)
+
         template<typename>
         class initiate_async_read_until_match_v1;
 #endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
@@ -61,10 +56,7 @@ namespace xio {
         class initiate_async_read_until_delim_v2;
         template<typename>
         class initiate_async_read_until_delim_string_v2;
-#if defined(ASIO_HAS_BOOST_REGEX)
-        template<typename>
-        class initiate_async_read_until_expr_v2;
-#endif // defined(ASIO_HAS_BOOST_REGEX)
+
         template<typename>
         class initiate_async_read_until_match_v2;
     } // namespace detail
@@ -313,121 +305,6 @@ namespace xio {
                            > = 0);
 
 #if !defined(ASIO_NO_EXTENSIONS)
-#if defined(ASIO_HAS_BOOST_REGEX) \
-  || defined(GENERATING_DOCUMENTATION)
-
-    /// Read data into a dynamic buffer sequence until some part of the data it
-/// contains matches a regular expression.
-    /**
- * This function is used to read data into the specified dynamic buffer
- * sequence until the dynamic buffer sequence's get area contains some data
- * that matches a regular expression. The call will block until one of the
- * following conditions is true:
- *
- * @li A substring of the dynamic buffer sequence's get area matches the
- * regular expression.
- *
- * @li An error occurred.
- *
- * This operation is implemented in terms of zero or more calls to the stream's
- * read_some function. If the dynamic buffer sequence's get area already
- * contains data that matches the regular expression, the function returns
- * immediately.
- *
- * @param s The stream from which the data is to be read. The type must support
- * the SyncReadStream concept.
- *
- * @param buffers A dynamic buffer sequence into which the data will be read.
- *
- * @param expr The regular expression.
- *
- * @returns The number of bytes in the dynamic buffer sequence's get area up to
- * and including the substring that matches the regular expression.
- *
- * @throws xio::system_error Thrown on failure.
- *
- * @note After a successful read_until operation, the dynamic buffer sequence
- * may contain additional data beyond that which matched the regular
- * expression. An application will typically leave that data in the dynamic
- * buffer sequence for a subsequent read_until operation to examine.
- *
- * @par Example
- * To read data into a @c std::string until a CR-LF sequence is encountered:
- * @code std::string data;
- * std::size_t n = xio::read_until(s,
- *     xio::dynamic_buffer(data), boost::regex("\r\n"));
- * std::string line = data.substr(0, n);
- * data.erase(0, n); @endcode
- * After the @c read_until operation completes successfully, the string @c data
- * contains the delimiter:
- * @code { 'a', 'b', ..., 'c', '\r', '\n', 'd', 'e', ... } @endcode
- * The call to @c substr then extracts the data up to and including the
- * delimiter, so that the string @c line contains:
- * @code { 'a', 'b', ..., 'c', '\r', '\n' } @endcode
- * After the call to @c erase, the remaining data is left in the buffer @c b as
- * follows:
- * @code { 'd', 'e', ... } @endcode
- * This data may be the start of a new line, to be extracted by a subsequent
- * @c read_until operation.
- */
-    template<typename SyncReadStream, typename DynamicBuffer_v1, typename Traits>
-    std::size_t read_until(SyncReadStream &s, DynamicBuffer_v1 &&buffers,
-                           const boost::basic_regex<char, Traits> &expr,
-                           constraint_t<
-                               is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
-                           > = 0,
-                           constraint_t<
-                               !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
-                           > = 0);
-
-    /// Read data into a dynamic buffer sequence until some part of the data it
-/// contains matches a regular expression.
-    /**
- * This function is used to read data into the specified dynamic buffer
- * sequence until the dynamic buffer sequence's get area contains some data
- * that matches a regular expression. The call will block until one of the
- * following conditions is true:
- *
- * @li A substring of the dynamic buffer sequence's get area matches the
- * regular expression.
- *
- * @li An error occurred.
- *
- * This operation is implemented in terms of zero or more calls to the stream's
- * read_some function. If the dynamic buffer sequence's get area already
- * contains data that matches the regular expression, the function returns
- * immediately.
- *
- * @param s The stream from which the data is to be read. The type must support
- * the SyncReadStream concept.
- *
- * @param buffers A dynamic buffer sequence into which the data will be read.
- *
- * @param expr The regular expression.
- *
- * @param ec Set to indicate what error occurred, if any.
- *
- * @returns The number of bytes in the dynamic buffer sequence's get area up to
- * and including the substring that matches the regular expression. Returns 0
- * if an error occurred.
- *
- * @note After a successful read_until operation, the dynamic buffer sequence
- * may contain additional data beyond that which matched the regular
- * expression. An application will typically leave that data in the dynamic
- * buffer sequence for a subsequent read_until operation to examine.
- */
-    template<typename SyncReadStream, typename DynamicBuffer_v1, typename Traits>
-    std::size_t read_until(SyncReadStream &s, DynamicBuffer_v1 &&buffers,
-                           const boost::basic_regex<char, Traits> &expr, xio::error_code &ec,
-                           constraint_t<
-                               is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
-                           > = 0,
-                           constraint_t<
-                               !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
-                           > = 0);
-
-#endif // defined(ASIO_HAS_BOOST_REGEX)
-    // || defined(GENERATING_DOCUMENTATION)
 
     /// Read data into a dynamic buffer sequence until a function object indicates a
 /// match.
@@ -791,105 +668,6 @@ namespace xio {
                            xio::basic_streambuf<Allocator> &b,
                            ASIO_STRING_VIEW_PARAM delim, xio::error_code &ec);
 
-#if defined(ASIO_HAS_BOOST_REGEX) \
-  || defined(GENERATING_DOCUMENTATION)
-
-    /// Read data into a streambuf until some part of the data it contains matches
-/// a regular expression.
-    /**
- * This function is used to read data into the specified streambuf until the
- * streambuf's get area contains some data that matches a regular expression.
- * The call will block until one of the following conditions is true:
- *
- * @li A substring of the streambuf's get area matches the regular expression.
- *
- * @li An error occurred.
- *
- * This operation is implemented in terms of zero or more calls to the stream's
- * read_some function. If the streambuf's get area already contains data that
- * matches the regular expression, the function returns immediately.
- *
- * @param s The stream from which the data is to be read. The type must support
- * the SyncReadStream concept.
- *
- * @param b A streambuf object into which the data will be read.
- *
- * @param expr The regular expression.
- *
- * @returns The number of bytes in the streambuf's get area up to and including
- * the substring that matches the regular expression.
- *
- * @throws xio::system_error Thrown on failure.
- *
- * @note After a successful read_until operation, the streambuf may contain
- * additional data beyond that which matched the regular expression. An
- * application will typically leave that data in the streambuf for a subsequent
- * read_until operation to examine.
- *
- * @par Example
- * To read data into a streambuf until a CR-LF sequence is encountered:
- * @code xio::streambuf b;
- * xio::read_until(s, b, boost::regex("\r\n"));
- * std::istream is(&b);
- * std::string line;
- * std::getline(is, line); @endcode
- * After the @c read_until operation completes successfully, the buffer @c b
- * contains the data which matched the regular expression:
- * @code { 'a', 'b', ..., 'c', '\r', '\n', 'd', 'e', ... } @endcode
- * The call to @c std::getline then extracts the data up to and including the
- * newline (which is discarded), so that the string @c line contains:
- * @code { 'a', 'b', ..., 'c', '\r' } @endcode
- * The remaining data is left in the buffer @c b as follows:
- * @code { 'd', 'e', ... } @endcode
- * This data may be the start of a new line, to be extracted by a subsequent
- * @c read_until operation.
- */
-    template<typename SyncReadStream, typename Allocator, typename Traits>
-    std::size_t read_until(SyncReadStream &s,
-                           xio::basic_streambuf<Allocator> &b,
-                           const boost::basic_regex<char, Traits> &expr);
-
-    /// Read data into a streambuf until some part of the data it contains matches
-/// a regular expression.
-    /**
- * This function is used to read data into the specified streambuf until the
- * streambuf's get area contains some data that matches a regular expression.
- * The call will block until one of the following conditions is true:
- *
- * @li A substring of the streambuf's get area matches the regular expression.
- *
- * @li An error occurred.
- *
- * This operation is implemented in terms of zero or more calls to the stream's
- * read_some function. If the streambuf's get area already contains data that
- * matches the regular expression, the function returns immediately.
- *
- * @param s The stream from which the data is to be read. The type must support
- * the SyncReadStream concept.
- *
- * @param b A streambuf object into which the data will be read.
- *
- * @param expr The regular expression.
- *
- * @param ec Set to indicate what error occurred, if any.
- *
- * @returns The number of bytes in the streambuf's get area up to and including
- * the substring that matches the regular expression. Returns 0 if an error
- * occurred.
- *
- * @note After a successful read_until operation, the streambuf may contain
- * additional data beyond that which matched the regular expression. An
- * application will typically leave that data in the streambuf for a subsequent
- * read_until operation to examine.
- */
-    template<typename SyncReadStream, typename Allocator, typename Traits>
-    std::size_t read_until(SyncReadStream &s,
-                           xio::basic_streambuf<Allocator> &b,
-                           const boost::basic_regex<char, Traits> &expr,
-                           xio::error_code &ec);
-
-#endif // defined(ASIO_HAS_BOOST_REGEX)
-    // || defined(GENERATING_DOCUMENTATION)
 
     /// Read data into a streambuf until a function object indicates a match.
     /**
@@ -1257,115 +1035,6 @@ namespace xio {
                            > = 0);
 
 #if !defined(ASIO_NO_EXTENSIONS)
-#if defined(ASIO_HAS_BOOST_REGEX) \
-  || defined(GENERATING_DOCUMENTATION)
-
-    /// Read data into a dynamic buffer sequence until some part of the data it
-/// contains matches a regular expression.
-    /**
- * This function is used to read data into the specified dynamic buffer
- * sequence until the dynamic buffer sequence's get area contains some data
- * that matches a regular expression. The call will block until one of the
- * following conditions is true:
- *
- * @li A substring of the dynamic buffer sequence's get area matches the
- * regular expression.
- *
- * @li An error occurred.
- *
- * This operation is implemented in terms of zero or more calls to the stream's
- * read_some function. If the dynamic buffer sequence's get area already
- * contains data that matches the regular expression, the function returns
- * immediately.
- *
- * @param s The stream from which the data is to be read. The type must support
- * the SyncReadStream concept.
- *
- * @param buffers A dynamic buffer sequence into which the data will be read.
- *
- * @param expr The regular expression.
- *
- * @returns The number of bytes in the dynamic buffer sequence's get area up to
- * and including the substring that matches the regular expression.
- *
- * @throws xio::system_error Thrown on failure.
- *
- * @note After a successful read_until operation, the dynamic buffer sequence
- * may contain additional data beyond that which matched the regular
- * expression. An application will typically leave that data in the dynamic
- * buffer sequence for a subsequent read_until operation to examine.
- *
- * @par Example
- * To read data into a @c std::string until a CR-LF sequence is encountered:
- * @code std::string data;
- * std::size_t n = xio::read_until(s,
- *     xio::dynamic_buffer(data), boost::regex("\r\n"));
- * std::string line = data.substr(0, n);
- * data.erase(0, n); @endcode
- * After the @c read_until operation completes successfully, the string @c data
- * contains the delimiter:
- * @code { 'a', 'b', ..., 'c', '\r', '\n', 'd', 'e', ... } @endcode
- * The call to @c substr then extracts the data up to and including the
- * delimiter, so that the string @c line contains:
- * @code { 'a', 'b', ..., 'c', '\r', '\n' } @endcode
- * After the call to @c erase, the remaining data is left in the buffer @c b as
- * follows:
- * @code { 'd', 'e', ... } @endcode
- * This data may be the start of a new line, to be extracted by a subsequent
- * @c read_until operation.
- */
-    template<typename SyncReadStream, typename DynamicBuffer_v2, typename Traits>
-    std::size_t read_until(SyncReadStream &s, DynamicBuffer_v2 buffers,
-                           const boost::basic_regex<char, Traits> &expr,
-                           constraint_t<
-                               is_dynamic_buffer_v2<DynamicBuffer_v2>::value
-                           > = 0);
-
-    /// Read data into a dynamic buffer sequence until some part of the data it
-/// contains matches a regular expression.
-    /**
- * This function is used to read data into the specified dynamic buffer
- * sequence until the dynamic buffer sequence's get area contains some data
- * that matches a regular expression. The call will block until one of the
- * following conditions is true:
- *
- * @li A substring of the dynamic buffer sequence's get area matches the
- * regular expression.
- *
- * @li An error occurred.
- *
- * This operation is implemented in terms of zero or more calls to the stream's
- * read_some function. If the dynamic buffer sequence's get area already
- * contains data that matches the regular expression, the function returns
- * immediately.
- *
- * @param s The stream from which the data is to be read. The type must support
- * the SyncReadStream concept.
- *
- * @param buffers A dynamic buffer sequence into which the data will be read.
- *
- * @param expr The regular expression.
- *
- * @param ec Set to indicate what error occurred, if any.
- *
- * @returns The number of bytes in the dynamic buffer sequence's get area up to
- * and including the substring that matches the regular expression. Returns 0
- * if an error occurred.
- *
- * @note After a successful read_until operation, the dynamic buffer sequence
- * may contain additional data beyond that which matched the regular
- * expression. An application will typically leave that data in the dynamic
- * buffer sequence for a subsequent read_until operation to examine.
- */
-    template<typename SyncReadStream, typename DynamicBuffer_v2, typename Traits>
-    std::size_t read_until(SyncReadStream &s, DynamicBuffer_v2 buffers,
-                           const boost::basic_regex<char, Traits> &expr, xio::error_code &ec,
-                           constraint_t<
-                               is_dynamic_buffer_v2<DynamicBuffer_v2>::value
-                           > = 0);
-
-#endif // defined(ASIO_HAS_BOOST_REGEX)
-    // || defined(GENERATING_DOCUMENTATION)
 
     /// Read data into a dynamic buffer sequence until a function object indicates a
 /// match.
@@ -1658,7 +1327,7 @@ namespace xio {
  */
     template<typename AsyncReadStream, typename DynamicBuffer_v1,
         ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) ReadToken = default_completion_token_t<
+            std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s,
                                  DynamicBuffer_v1 &&buffers, char delim,
@@ -1780,7 +1449,7 @@ namespace xio {
  */
     template<typename AsyncReadStream, typename DynamicBuffer_v1,
         ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) ReadToken = default_completion_token_t<
+            std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s,
                                  DynamicBuffer_v1 &&buffers,
@@ -1808,138 +1477,6 @@ namespace xio {
     }
 
 #if !defined(ASIO_NO_EXTENSIONS)
-#if defined(ASIO_HAS_BOOST_REGEX) \
-  || defined(GENERATING_DOCUMENTATION)
-
-    /// Start an asynchronous operation to read data into a dynamic buffer sequence
-/// until some part of its data matches a regular expression.
-    /**
- * This function is used to asynchronously read data into the specified dynamic
- * buffer sequence until the dynamic buffer sequence's get area contains some
- * data that matches a regular expression. It is an initiating function for an
- * @ref asynchronous_operation, and always returns immediately. The
- * asynchronous operation will continue until one of the following conditions
- * is true:
- *
- * @li A substring of the dynamic buffer sequence's get area matches the regular
- * expression.
- *
- * @li An error occurred.
- *
- * This operation is implemented in terms of zero or more calls to the stream's
- * async_read_some function, and is known as a <em>composed operation</em>. If
- * the dynamic buffer sequence's get area already contains data that matches
- * the regular expression, this asynchronous operation completes immediately.
- * The program must ensure that the stream performs no other read operations
- * (such as async_read, async_read_until, the stream's async_read_some
- * function, or any other composed operations that perform reads) until this
- * operation completes.
- *
- * @param s The stream from which the data is to be read. The type must support
- * the AsyncReadStream concept.
- *
- * @param buffers The dynamic buffer sequence into which the data will be read.
- * Although the buffers object may be copied as necessary, ownership of the
- * underlying memory blocks is retained by the caller, which must guarantee
- * that they remain valid until the completion handler is called.
- *
- * @param expr The regular expression.
- *
- * @param token The @ref completion_token that will be used to produce a
- * completion handler, which will be called when the read completes.
- * Potential completion tokens include @ref use_future, @ref use_awaitable,
- * @ref yield_context, or a function object with the correct completion
- * signature. The function signature of the completion handler must be:
- * @code void handler(
- *   // Result of operation.
- *   const xio::error_code& error,
- *
- *   // The number of bytes in the dynamic buffer
- *   // sequence's get area up to and including the
- *   // substring that matches the regular expression.
- *   // 0 if an error occurred.
- *   std::size_t bytes_transferred
- * ); @endcode
- * Regardless of whether the asynchronous operation completes immediately or
- * not, the completion handler will not be invoked from within this function.
- * On immediate completion, invocation of the handler will be performed in a
- * manner equivalent to using xio::async_immediate().
- *
- * @par Completion Signature
- * @code void(xio::error_code, std::size_t) @endcode
- *
- * @note After a successful async_read_until operation, the dynamic buffer
- * sequence may contain additional data beyond that which matched the regular
- * expression. An application will typically leave that data in the dynamic
- * buffer sequence for a subsequent async_read_until operation to examine.
- *
- * @par Example
- * To asynchronously read data into a @c std::string until a CR-LF sequence is
- * encountered:
- * @code std::string data;
- * ...
- * void handler(const xio::error_code& e, std::size_t size)
- * {
- *   if (!e)
- *   {
- *     std::string line = data.substr(0, n);
- *     data.erase(0, n);
- *     ...
- *   }
- * }
- * ...
- * xio::async_read_until(s, data,
- *     boost::regex("\r\n"), handler); @endcode
- * After the @c async_read_until operation completes successfully, the string
- * @c data contains the data which matched the regular expression:
- * @code { 'a', 'b', ..., 'c', '\r', '\n', 'd', 'e', ... } @endcode
- * The call to @c substr then extracts the data up to and including the match,
- * so that the string @c line contains:
- * @code { 'a', 'b', ..., 'c', '\r', '\n' } @endcode
- * After the call to @c erase, the remaining data is left in the string @c data
- * as follows:
- * @code { 'd', 'e', ... } @endcode
- * This data may be the start of a new line, to be extracted by a subsequent
- * @c async_read_until operation.
- *
- * @par Per-Operation Cancellation
- * This asynchronous operation supports cancellation for the following
- * xio::cancellation_type values:
- *
- * @li @c cancellation_type::terminal
- *
- * @li @c cancellation_type::partial
- *
- * if they are also supported by the @c AsyncReadStream type's
- * @c async_read_some operation.
- */
-    template<typename AsyncReadStream, typename DynamicBuffer_v1, typename Traits,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) ReadToken = default_completion_token_t<
-            typename AsyncReadStream::executor_type> >
-    inline auto async_read_until(AsyncReadStream &s, DynamicBuffer_v1 &&buffers,
-                                 const boost::basic_regex<char, Traits> &expr,
-                                 ReadToken &&token = default_completion_token_t<
-                                     typename AsyncReadStream::executor_type>(),
-                                 constraint_t<
-                                     is_dynamic_buffer_v1<decay_t<DynamicBuffer_v1> >::value
-                                 > = 0,
-                                 constraint_t<
-                                     !is_dynamic_buffer_v2<decay_t<DynamicBuffer_v1> >::value
-                                 > = 0)
-        -> decltype(
-            async_initiate<ReadToken,
-                void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_read_until_expr_v1<AsyncReadStream> >(),
-                token, static_cast<DynamicBuffer_v1 &&>(buffers), expr)) {
-        return async_initiate<ReadToken,
-            void(xio::error_code, std::size_t)>(
-            detail::initiate_async_read_until_expr_v1<AsyncReadStream>(s),
-            token, static_cast<DynamicBuffer_v1 &&>(buffers), expr);
-    }
-
-#endif // defined(ASIO_HAS_BOOST_REGEX)
-    // || defined(GENERATING_DOCUMENTATION)
 
     /// Start an asynchronous operation to read data into a dynamic buffer sequence
 /// until a function object indicates a match.
@@ -2088,7 +1625,7 @@ namespace xio {
     template<typename AsyncReadStream,
         typename DynamicBuffer_v1, typename MatchCondition,
         ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) ReadToken = default_completion_token_t<
+            std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s,
                                  DynamicBuffer_v1 &&buffers, MatchCondition match_condition,
@@ -2215,7 +1752,7 @@ namespace xio {
  */
     template<typename AsyncReadStream, typename Allocator,
         ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) ReadToken = default_completion_token_t<
+            std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s,
                                  xio::basic_streambuf<Allocator> &b, char delim,
@@ -2329,7 +1866,7 @@ namespace xio {
  */
     template<typename AsyncReadStream, typename Allocator,
         ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) ReadToken = default_completion_token_t<
+            std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s,
                                  xio::basic_streambuf<Allocator> &b,
@@ -2350,129 +1887,6 @@ namespace xio {
             static_cast<std::string>(delim));
     }
 
-#if defined(ASIO_HAS_BOOST_REGEX) \
-  || defined(GENERATING_DOCUMENTATION)
-
-    /// Start an asynchronous operation to read data into a streambuf until some
-/// part of its data matches a regular expression.
-    /**
- * This function is used to asynchronously read data into the specified
- * streambuf until the streambuf's get area contains some data that matches a
- * regular expression. It is an initiating function for an @ref
- * asynchronous_operation, and always returns immediately. The asynchronous
- * operation will continue until one of the following conditions is true:
- *
- * @li A substring of the streambuf's get area matches the regular expression.
- *
- * @li An error occurred.
- *
- * This operation is implemented in terms of zero or more calls to the stream's
- * async_read_some function, and is known as a <em>composed operation</em>. If
- * the streambuf's get area already contains data that matches the regular
- * expression, this asynchronous operation completes immediately. The program
- * must ensure that the stream performs no other read operations (such as
- * async_read, async_read_until, the stream's async_read_some function, or any
- * other composed operations that perform reads) until this operation
- * completes.
- *
- * @param s The stream from which the data is to be read. The type must support
- * the AsyncReadStream concept.
- *
- * @param b A streambuf object into which the data will be read. Ownership of
- * the streambuf is retained by the caller, which must guarantee that it remains
- * valid until the completion handler is called.
- *
- * @param expr The regular expression.
- *
- * @param token The @ref completion_token that will be used to produce a
- * completion handler, which will be called when the read completes.
- * Potential completion tokens include @ref use_future, @ref use_awaitable,
- * @ref yield_context, or a function object with the correct completion
- * signature. The function signature of the completion handler must be:
- * @code void handler(
- *   // Result of operation.
- *   const xio::error_code& error,
- *
- *   // The number of bytes in the streambuf's get
- *   // area up to and including the substring
- *   // that matches the regular. expression.
- *   // 0 if an error occurred.
- *   std::size_t bytes_transferred
- * ); @endcode
- * Regardless of whether the asynchronous operation completes immediately or
- * not, the completion handler will not be invoked from within this function.
- * On immediate completion, invocation of the handler will be performed in a
- * manner equivalent to using xio::async_immediate().
- *
- * @par Completion Signature
- * @code void(xio::error_code, std::size_t) @endcode
- *
- * @note After a successful async_read_until operation, the streambuf may
- * contain additional data beyond that which matched the regular expression. An
- * application will typically leave that data in the streambuf for a subsequent
- * async_read_until operation to examine.
- *
- * @par Example
- * To asynchronously read data into a streambuf until a CR-LF sequence is
- * encountered:
- * @code xio::streambuf b;
- * ...
- * void handler(const xio::error_code& e, std::size_t size)
- * {
- *   if (!e)
- *   {
- *     std::istream is(&b);
- *     std::string line;
- *     std::getline(is, line);
- *     ...
- *   }
- * }
- * ...
- * xio::async_read_until(s, b, boost::regex("\r\n"), handler); @endcode
- * After the @c async_read_until operation completes successfully, the buffer
- * @c b contains the data which matched the regular expression:
- * @code { 'a', 'b', ..., 'c', '\r', '\n', 'd', 'e', ... } @endcode
- * The call to @c std::getline then extracts the data up to and including the
- * newline (which is discarded), so that the string @c line contains:
- * @code { 'a', 'b', ..., 'c', '\r' } @endcode
- * The remaining data is left in the buffer @c b as follows:
- * @code { 'd', 'e', ... } @endcode
- * This data may be the start of a new line, to be extracted by a subsequent
- * @c async_read_until operation.
- *
- * @par Per-Operation Cancellation
- * This asynchronous operation supports cancellation for the following
- * xio::cancellation_type values:
- *
- * @li @c cancellation_type::terminal
- *
- * @li @c cancellation_type::partial
- *
- * if they are also supported by the @c AsyncReadStream type's
- * @c async_read_some operation.
- */
-    template<typename AsyncReadStream, typename Allocator, typename Traits,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) ReadToken = default_completion_token_t<
-            typename AsyncReadStream::executor_type> >
-    inline auto async_read_until(AsyncReadStream &s,
-                                 xio::basic_streambuf<Allocator> &b,
-                                 const boost::basic_regex<char, Traits> &expr,
-                                 ReadToken &&token = default_completion_token_t<
-                                     typename AsyncReadStream::executor_type>())
-        -> decltype(
-            async_initiate<ReadToken,
-                void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_read_until_expr_v1<AsyncReadStream> >(),
-                token, basic_streambuf_ref<Allocator>(b), expr)) {
-        return async_initiate<ReadToken,
-            void(xio::error_code, std::size_t)>(
-            detail::initiate_async_read_until_expr_v1<AsyncReadStream>(s),
-            token, basic_streambuf_ref<Allocator>(b), expr);
-    }
-
-#endif // defined(ASIO_HAS_BOOST_REGEX)
-    // || defined(GENERATING_DOCUMENTATION)
 
     /// Start an asynchronous operation to read data into a streambuf until a
 /// function object indicates a match.
@@ -2616,7 +2030,7 @@ namespace xio {
  */
     template<typename AsyncReadStream, typename Allocator, typename MatchCondition,
         ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) ReadToken = default_completion_token_t<
+            std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s,
                                  xio::basic_streambuf<Allocator> &b, MatchCondition match_condition,
@@ -2738,7 +2152,7 @@ namespace xio {
  */
     template<typename AsyncReadStream, typename DynamicBuffer_v2,
         ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) ReadToken = default_completion_token_t<
+            std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s,
                                  DynamicBuffer_v2 buffers, char delim,
@@ -2857,7 +2271,7 @@ namespace xio {
  */
     template<typename AsyncReadStream, typename DynamicBuffer_v2,
         ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) ReadToken = default_completion_token_t<
+            std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s, DynamicBuffer_v2 buffers,
                                  ASIO_STRING_VIEW_PARAM delim,
@@ -2881,136 +2295,6 @@ namespace xio {
     }
 
 #if !defined(ASIO_NO_EXTENSIONS)
-#if defined(ASIO_HAS_BOOST_REGEX) \
-  || defined(GENERATING_DOCUMENTATION)
-
-    /// Start an asynchronous operation to read data into a dynamic buffer sequence
-/// until some part of its data matches a regular expression.
-    /**
- * This function is used to asynchronously read data into the specified dynamic
- * buffer sequence until the dynamic buffer sequence's get area contains some
- * data that matches a regular expression. It is an initiating function for an
- * @ref asynchronous_operation, and always returns immediately. The
- * asynchronous operation will continue until one of the following conditions
- * is true:
- *
- * @li A substring of the dynamic buffer sequence's get area matches the regular
- * expression.
- *
- * @li An error occurred.
- *
- * This operation is implemented in terms of zero or more calls to the stream's
- * async_read_some function, and is known as a <em>composed operation</em>. If
- * the dynamic buffer sequence's get area already contains data that matches
- * the regular expression, this asynchronous operation completes immediately.
- * The program must ensure that the stream performs no other read operations
- * (such as async_read, async_read_until, the stream's async_read_some
- * function, or any other composed operations that perform reads) until this
- * operation completes.
- *
- * @param s The stream from which the data is to be read. The type must support
- * the AsyncReadStream concept.
- *
- * @param buffers The dynamic buffer sequence into which the data will be read.
- * Although the buffers object may be copied as necessary, ownership of the
- * underlying memory blocks is retained by the caller, which must guarantee
- * that they remain valid until the completion handler is called.
- *
- * @param expr The regular expression.
- *
- * @param token The @ref completion_token that will be used to produce a
- * completion handler, which will be called when the read completes.
- * Potential completion tokens include @ref use_future, @ref use_awaitable,
- * @ref yield_context, or a function object with the correct completion
- * signature. The function signature of the completion handler must be:
- * @code void handler(
- *   // Result of operation.
- *   const xio::error_code& error,
- *
- *   // The number of bytes in the dynamic buffer
- *   // sequence's get area up to and including the
- *   // substring that matches the regular expression.
- *   // 0 if an error occurred.
- *   std::size_t bytes_transferred
- * ); @endcode
- * Regardless of whether the asynchronous operation completes immediately or
- * not, the completion handler will not be invoked from within this function.
- * On immediate completion, invocation of the handler will be performed in a
- * manner equivalent to using xio::async_immediate().
- *
- * @par Completion Signature
- * @code void(xio::error_code, std::size_t) @endcode
- *
- * @note After a successful async_read_until operation, the dynamic buffer
- * sequence may contain additional data beyond that which matched the regular
- * expression. An application will typically leave that data in the dynamic
- * buffer sequence for a subsequent async_read_until operation to examine.
- *
- * @par Example
- * To asynchronously read data into a @c std::string until a CR-LF sequence is
- * encountered:
- * @code std::string data;
- * ...
- * void handler(const xio::error_code& e, std::size_t size)
- * {
- *   if (!e)
- *   {
- *     std::string line = data.substr(0, n);
- *     data.erase(0, n);
- *     ...
- *   }
- * }
- * ...
- * xio::async_read_until(s, data,
- *     boost::regex("\r\n"), handler); @endcode
- * After the @c async_read_until operation completes successfully, the string
- * @c data contains the data which matched the regular expression:
- * @code { 'a', 'b', ..., 'c', '\r', '\n', 'd', 'e', ... } @endcode
- * The call to @c substr then extracts the data up to and including the match,
- * so that the string @c line contains:
- * @code { 'a', 'b', ..., 'c', '\r', '\n' } @endcode
- * After the call to @c erase, the remaining data is left in the string @c data
- * as follows:
- * @code { 'd', 'e', ... } @endcode
- * This data may be the start of a new line, to be extracted by a subsequent
- * @c async_read_until operation.
- *
- * @par Per-Operation Cancellation
- * This asynchronous operation supports cancellation for the following
- * xio::cancellation_type values:
- *
- * @li @c cancellation_type::terminal
- *
- * @li @c cancellation_type::partial
- *
- * if they are also supported by the @c AsyncReadStream type's
- * @c async_read_some operation.
- */
-    template<typename AsyncReadStream, typename DynamicBuffer_v2, typename Traits,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) ReadToken = default_completion_token_t<
-            typename AsyncReadStream::executor_type> >
-    inline auto async_read_until(AsyncReadStream &s, DynamicBuffer_v2 buffers,
-                                 const boost::basic_regex<char, Traits> &expr,
-                                 ReadToken &&token = default_completion_token_t<
-                                     typename AsyncReadStream::executor_type>(),
-                                 constraint_t<
-                                     is_dynamic_buffer_v2<DynamicBuffer_v2>::value
-                                 > = 0)
-        -> decltype(
-            async_initiate<ReadToken,
-                void(xio::error_code, std::size_t)>(
-                declval<detail::initiate_async_read_until_expr_v2<AsyncReadStream> >(),
-                token, static_cast<DynamicBuffer_v2 &&>(buffers), expr)) {
-        return async_initiate<ReadToken,
-            void(xio::error_code, std::size_t)>(
-            detail::initiate_async_read_until_expr_v2<AsyncReadStream>(s),
-            token, static_cast<DynamicBuffer_v2 &&>(buffers), expr);
-    }
-
-#endif // defined(ASIO_HAS_BOOST_REGEX)
-    // || defined(GENERATING_DOCUMENTATION)
-
     /// Start an asynchronous operation to read data into a dynamic buffer sequence
 /// until a function object indicates a match.
     /**
@@ -3158,7 +2442,7 @@ namespace xio {
     template<typename AsyncReadStream,
         typename DynamicBuffer_v2, typename MatchCondition,
         ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) ReadToken = default_completion_token_t<
+            std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s,
                                  DynamicBuffer_v2 buffers, MatchCondition match_condition,
@@ -3185,8 +2469,6 @@ namespace xio {
 #endif // !defined(ASIO_NO_EXTENSIONS)
 
     /*@}*/
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

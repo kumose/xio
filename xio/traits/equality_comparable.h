@@ -18,10 +18,6 @@
 #include <xio/detail/config.h>
 #include <xio/detail/type_traits.h>
 
-#if defined(ASIO_HAS_WORKING_EXPRESSION_SFINAE)
-# define ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT 1
-#endif // defined(ASIO_HAS_WORKING_EXPRESSION_SFINAE)
-
 namespace xio {
 
 
@@ -38,7 +34,6 @@ namespace xio {
             static constexpr bool is_noexcept = false;
         };
 
-#if defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
         template<typename T, typename = void>
         struct equality_comparable_trait : no_equality_comparable {
@@ -63,18 +58,6 @@ namespace xio {
                     && noexcept(declval<const T>() != declval<const T>());
         };
 
-#else // defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
-
-        template<typename T, typename = void>
-        struct equality_comparable_trait :
-                conditional_t<
-                    is_same<T, decay_t<T> >::value,
-                    no_equality_comparable,
-                    traits::equality_comparable<decay_t<T> >
-                > {
-        };
-
-#endif // defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
     } // namespace detail
     namespace traits {
         template<typename T, typename>

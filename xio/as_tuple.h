@@ -139,7 +139,7 @@ namespace xio {
  * asynchronous operation's default completion token (or xio::deferred
  * if no default is available).
  */
-ASIO_INLINE_VARIABLE constexpr partial_as_tuple as_tuple;
+inline constexpr partial_as_tuple as_tuple;
 
 
 } // namespace xio

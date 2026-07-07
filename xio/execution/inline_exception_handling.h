@@ -194,10 +194,8 @@ namespace xio {
 
             template<int I = 0>
             struct inline_exception_handling_t {
-#if defined(ASIO_HAS_VARIABLE_TEMPLATES)
                 template<typename T>
                 static constexpr bool is_applicable_property_v = is_executor<T>::value;
-#endif // defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
                 static constexpr bool is_requirable = false;
                 static constexpr bool is_preferable = false;
@@ -225,7 +223,6 @@ namespace xio {
 
                 template<typename T>
                 struct proxy {
-#if defined(ASIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
                     struct type {
                         template<typename P>
                         auto query(P &&p) const
@@ -238,14 +235,11 @@ namespace xio {
                                 declval<conditional_t<true, T, P> >().query(static_cast<P &&>(p))
                             );
                     };
-#else // defined(ASIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
-                    typedef T type;
-#endif // defined(ASIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
+
                 };
 
                 template<typename T>
                 struct static_proxy {
-#if defined(ASIO_HAS_DEDUCED_QUERY_STATIC_CONSTEXPR_MEMBER_TRAIT)
                     struct type {
                         template<typename P>
                         static constexpr auto query(P &&p)
@@ -260,9 +254,7 @@ namespace xio {
                             return T::query(static_cast<P &&>(p));
                         }
                     };
-#else // defined(ASIO_HAS_DEDUCED_QUERY_STATIC_CONSTEXPR_MEMBER_TRAIT)
-                    typedef T type;
-#endif // defined(ASIO_HAS_DEDUCED_QUERY_STATIC_CONSTEXPR_MEMBER_TRAIT)
+
                 };
 
                 template<typename T>
@@ -277,8 +269,6 @@ namespace xio {
                             typename static_proxy<T>::type, inline_exception_handling_t> {
                 };
 
-#if defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT) \
-  && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
                 template<typename T>
                 static constexpr
                 typename query_static_constexpr_member<T>::result_type
@@ -348,8 +338,7 @@ namespace xio {
                     typename T = decltype(inline_exception_handling_t::static_query<E>())>
                 static constexpr const T static_query_v
                         = inline_exception_handling_t::static_query<E>();
-#endif // defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT)
-                //   && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
+
 
                 friend constexpr bool operator==(const inline_exception_handling_t &a,
                                                  const inline_exception_handling_t &b) {
@@ -440,13 +429,11 @@ namespace xio {
                 int value_;
             };
 
-#if defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT) \
-  && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
+
             template<int I>
             template<typename E, typename T>
             const T inline_exception_handling_t<I>::static_query_v;
-#endif // defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT)
-            //   && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
+
 
             template<int I>
             const typename inline_exception_handling_t<I>::propagate_t
@@ -463,10 +450,8 @@ namespace xio {
             namespace inline_exception_handling {
                 template<int I = 0>
                 struct propagate_t {
-#if defined(ASIO_HAS_VARIABLE_TEMPLATES)
                     template<typename T>
                     static constexpr bool is_applicable_property_v = is_executor<T>::value;
-#endif // defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
                     static constexpr bool is_requirable = true;
                     static constexpr bool is_preferable = true;
@@ -489,8 +474,7 @@ namespace xio {
                                 static_proxy<T>::type, propagate_t> {
                     };
 
-#if defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT) \
-  && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
+
                     template<typename T>
                     static constexpr
                     typename query_static_constexpr_member<T>::result_type
@@ -522,8 +506,7 @@ namespace xio {
                     template<typename E, typename T = decltype(propagate_t::static_query<E>())>
                     static constexpr const T static_query_v
                             = propagate_t::static_query<E>();
-#endif // defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
-                    //   && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
+
 
                     static constexpr inline_exception_handling_t<I> value() {
                         return propagate_t();
@@ -560,20 +543,15 @@ namespace xio {
                     }
                 };
 
-#if defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT) \
-  && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
                 template<int I>
                 template<typename E, typename T>
                 const T propagate_t<I>::static_query_v;
-#endif // defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT)
-                //   && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
+
 
                 template<int I = 0>
                 struct capture_t {
-#if defined(ASIO_HAS_VARIABLE_TEMPLATES)
                     template<typename T>
                     static constexpr bool is_applicable_property_v = is_executor<T>::value;
-#endif // defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
                     static constexpr bool is_requirable = true;
                     static constexpr bool is_preferable = false;
@@ -596,8 +574,6 @@ namespace xio {
                                 static_proxy<T>::type, capture_t> {
                     };
 
-#if defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT) \
-  && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
                     template<typename T>
                     static constexpr typename query_static_constexpr_member<T>::result_type
                     static_query()
@@ -607,8 +583,7 @@ namespace xio {
 
                     template<typename E, typename T = decltype(capture_t::static_query<E>())>
                     static constexpr const T static_query_v = capture_t::static_query<E>();
-#endif // defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
-                    //   && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
+
 
                     static constexpr inline_exception_handling_t<I> value() {
                         return capture_t();
@@ -645,20 +620,15 @@ namespace xio {
                     }
                 };
 
-#if defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT) \
-  && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
                 template<int I>
                 template<typename E, typename T>
                 const T capture_t<I>::static_query_v;
-#endif // defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT)
-                //   && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
+
 
                 template<int I>
                 struct terminate_t {
-#if defined(ASIO_HAS_VARIABLE_TEMPLATES)
                     template<typename T>
                     static constexpr bool is_applicable_property_v = is_executor<T>::value;
-#endif // defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
                     static constexpr bool is_requirable = true;
                     static constexpr bool is_preferable = true;
@@ -681,8 +651,6 @@ namespace xio {
                                 static_proxy<T>::type, terminate_t> {
                     };
 
-#if defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT) \
-  && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
                     template<typename T>
                     static constexpr
                     typename query_static_constexpr_member<T>::result_type
@@ -694,8 +662,7 @@ namespace xio {
                     template<typename E, typename T = decltype(terminate_t::static_query<E>())>
                     static constexpr const T static_query_v
                             = terminate_t::static_query<E>();
-#endif // defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT)
-                    //   && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
+
 
                     static constexpr inline_exception_handling_t<I> value() {
                         return terminate_t();
@@ -726,297 +693,18 @@ namespace xio {
                     }
                 };
 
-#if defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT) \
-  && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
                 template<int I>
                 template<typename E, typename T>
                 const T terminate_t<I>::static_query_v;
-#endif // defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
             } // namespace inline_exception_handling
         } // namespace detail
 
         typedef detail::inline_exception_handling_t<> inline_exception_handling_t;
 
-        ASIO_INLINE_VARIABLE
+        inline
         constexpr
         inline_exception_handling_t inline_exception_handling;
     } // namespace execution
-
-#if !defined(ASIO_HAS_VARIABLE_TEMPLATES)
-
-    template<typename T>
-    struct is_applicable_property<T, execution::inline_exception_handling_t>
-            : integral_constant<bool, execution::is_executor<T>::value> {
-    };
-
-    template<typename T>
-    struct is_applicable_property<T,
-                execution::inline_exception_handling_t::propagate_t>
-            : integral_constant<bool, execution::is_executor<T>::value> {
-    };
-
-    template<typename T>
-    struct is_applicable_property<T,
-                execution::inline_exception_handling_t::capture_t>
-            : integral_constant<bool, execution::is_executor<T>::value> {
-    };
-
-    template<typename T>
-    struct is_applicable_property<T,
-                execution::inline_exception_handling_t::terminate_t>
-            : integral_constant<bool, execution::is_executor<T>::value> {
-    };
-
-#endif // !defined(ASIO_HAS_VARIABLE_TEMPLATES)
-
-    namespace traits {
-#if !defined(ASIO_HAS_DEDUCED_QUERY_FREE_TRAIT)
-
-        template<typename T>
-        struct query_free_default<T, execution::inline_exception_handling_t,
-                    enable_if_t<
-                        can_query<T, execution::inline_exception_handling_t::propagate_t>::value
-                    > > {
-            static constexpr bool is_valid = true;
-            static constexpr bool is_noexcept = is_nothrow_query<T,
-                execution::inline_exception_handling_t::propagate_t>::value;
-
-            typedef execution::inline_exception_handling_t result_type;
-        };
-
-        template<typename T>
-        struct query_free_default<T, execution::inline_exception_handling_t,
-            enable_if_t <
-            !can_query<T, execution::inline_exception_handling_t::propagate_t>::value
-            && can_query<T, execution::inline_exception_handling_t::capture_t>::value
-        >
-        >
-{
-  static constexpr bool is_valid = true;
-  static constexpr bool is_noexcept = is_nothrow_query<T,
-      execution::inline_exception_handling_t::capture_t>::value;
-
-  typedef execution::inline_exception_handling_t result_type;
-};
-
-        template<typename T>
-        struct query_free_default<T, execution::inline_exception_handling_t,
-            enable_if_t <
-            !can_query<T,
-                execution::inline_exception_handling_t::propagate_t>::value
-            && !can_query<T,
-                execution::inline_exception_handling_t::capture_t>::value
-            && can_query<T,
-                execution::inline_exception_handling_t::terminate_t>::value
-        >
-        >
-{
-  static constexpr bool is_valid = true;
-  static constexpr bool is_noexcept = is_nothrow_query<T,
-      execution::inline_exception_handling_t::terminate_t>::value;
-
-  typedef execution::inline_exception_handling_t result_type;
-};
-
-#endif // !defined(ASIO_HAS_DEDUCED_QUERY_FREE_TRAIT)
-
-#if !defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT) \
-  || !defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
-
-        template<typename T>
-        struct static_query<T, execution::inline_exception_handling_t,
-                    enable_if_t<
-                        execution::detail::inline_exception_handling_t<0>::
-                        query_static_constexpr_member<T>::is_valid
-                    > > {
-            static constexpr bool is_valid = true;
-            static constexpr bool is_noexcept = true;
-
-            typedef typename execution::detail::inline_exception_handling_t<0>::
-            query_static_constexpr_member<T>::result_type result_type;
-
-            static constexpr result_type value() {
-                return execution::inline_exception_handling_t::
-                        query_static_constexpr_member<T>::value();
-            }
-        };
-
-        template<typename T>
-        struct static_query<T, execution::inline_exception_handling_t,
-            enable_if_t <
-            !execution::detail::inline_exception_handling_t<0>::
-            query_static_constexpr_member<T>::is_valid
-            && !execution::detail::inline_exception_handling_t<0>::
-            query_member<T>::is_valid
-            && traits::static_query<T,
-                execution::inline_exception_handling_t::propagate_t>::is_valid
-        >
-        >
-{
-  static constexpr bool is_valid = true;
-  static constexpr bool is_noexcept = true;
-
-  typedef typename traits::static_query<T,
-    execution::inline_exception_handling_t::propagate_t>::result_type
-      result_type;
-
-  static constexpr result_type value()
-  {
-    return traits::static_query<T,
-        execution::inline_exception_handling_t::propagate_t>::value();
-  }
-};
-
-        template<typename T>
-        struct static_query<T, execution::inline_exception_handling_t,
-            enable_if_t <
-            !execution::detail::inline_exception_handling_t<0>::
-            query_static_constexpr_member<T>::is_valid
-            && !execution::detail::inline_exception_handling_t<0>::
-            query_member<T>::is_valid
-            && !traits::static_query<T,
-                execution::inline_exception_handling_t::propagate_t>::is_valid
-            && traits::static_query<T,
-                execution::inline_exception_handling_t::capture_t>::is_valid
-        >
-        >
-{
-  static constexpr bool is_valid = true;
-  static constexpr bool is_noexcept = true;
-
-  typedef typename traits::static_query<T,
-    execution::inline_exception_handling_t::capture_t>::result_type result_type;
-
-  static constexpr result_type value()
-  {
-    return traits::static_query<T,
-        execution::inline_exception_handling_t::capture_t>::value();
-  }
-};
-
-        template<typename T>
-        struct static_query<T, execution::inline_exception_handling_t,
-            enable_if_t <
-            !execution::detail::inline_exception_handling_t<0>::
-            query_static_constexpr_member<T>::is_valid
-            && !execution::detail::inline_exception_handling_t<0>::
-            query_member<T>::is_valid
-            && !traits::static_query<T,
-                execution::inline_exception_handling_t::propagate_t>::is_valid
-            && !traits::static_query<T,
-                execution::inline_exception_handling_t::capture_t>::is_valid
-            && traits::static_query<T,
-                execution::inline_exception_handling_t::terminate_t>::is_valid
-        >
-        >
-{
-  static constexpr bool is_valid = true;
-  static constexpr bool is_noexcept = true;
-
-  typedef typename traits::static_query<T,
-    execution::inline_exception_handling_t::terminate_t>::result_type
-      result_type;
-
-  static constexpr result_type value()
-  {
-    return traits::static_query<T,
-        execution::inline_exception_handling_t::terminate_t>::value();
-  }
-};
-
-        template<typename T>
-        struct static_query<T, execution::inline_exception_handling_t::propagate_t,
-            enable_if_t <
-            execution::detail::inline_exception_handling::propagate_t<0>::
-            query_static_constexpr_member<T>::is_valid
-        >
-        >
-{
-  static constexpr bool is_valid = true;
-  static constexpr bool is_noexcept = true;
-
-  typedef typename execution::detail::inline_exception_handling::
-    propagate_t<0>::query_static_constexpr_member<T>::result_type result_type;
-
-  static constexpr result_type value()
-  {
-    return execution::detail::inline_exception_handling::propagate_t<0>::
-      query_static_constexpr_member<T>::value();
-  }
-};
-
-        template<typename T>
-        struct static_query<T, execution::inline_exception_handling_t::propagate_t,
-            enable_if_t <
-            !execution::detail::inline_exception_handling::propagate_t<0>::
-            query_static_constexpr_member<T>::is_valid
-            && !execution::detail::inline_exception_handling::propagate_t<0>::
-            query_member<T>::is_valid
-            && !traits::query_free<T,
-                execution::inline_exception_handling_t::propagate_t>::is_valid
-            && !can_query<T,
-                execution::inline_exception_handling_t::capture_t>::value
-            && !can_query<T,
-                execution::inline_exception_handling_t::terminate_t>::value
-        >
-        >
-{
-  static constexpr bool is_valid = true;
-  static constexpr bool is_noexcept = true;
-
-  typedef execution::inline_exception_handling_t::propagate_t result_type;
-
-  static constexpr result_type value()
-  {
-    return result_type();
-  }
-};
-
-        template<typename T>
-        struct static_query<T, execution::inline_exception_handling_t::capture_t,
-            enable_if_t <
-            execution::detail::inline_exception_handling::capture_t<0>::
-            query_static_constexpr_member<T>::is_valid
-        >
-        >
-{
-  static constexpr bool is_valid = true;
-  static constexpr bool is_noexcept = true;
-
-  typedef typename execution::detail::inline_exception_handling::
-    capture_t<0>::query_static_constexpr_member<T>::result_type result_type;
-
-  static constexpr result_type value()
-  {
-    return execution::detail::inline_exception_handling::capture_t<0>::
-      query_static_constexpr_member<T>::value();
-  }
-};
-
-        template<typename T>
-        struct static_query<T, execution::inline_exception_handling_t::terminate_t,
-            enable_if_t <
-            execution::detail::inline_exception_handling::terminate_t<0>::
-            query_static_constexpr_member<T>::is_valid
-        >
-        >
-{
-  static constexpr bool is_valid = true;
-  static constexpr bool is_noexcept = true;
-
-  typedef typename execution::detail::inline_exception_handling::
-    terminate_t<0>::query_static_constexpr_member<T>::result_type result_type;
-
-  static constexpr result_type value()
-  {
-    return execution::detail::inline_exception_handling::terminate_t<0>::
-      query_static_constexpr_member<T>::value();
-  }
-};
-
-#endif // !defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT)
-        //   || !defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
-    } // namespace traits
 
 #endif // defined(GENERATING_DOCUMENTATION)
 

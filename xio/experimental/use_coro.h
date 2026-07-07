@@ -165,9 +165,9 @@ namespace xio {
  * See the documentation for xio::use_coro_t for a usage example.
  */
 #if defined(GENERATING_DOCUMENTATION)
-        ASIO_INLINE_VARIABLE constexpr use_coro_t<> use_coro;
+        inline constexpr use_coro_t<> use_coro;
 #else
-        ASIO_INLINE_VARIABLE constexpr use_coro_t<> use_coro(0, 0, 0);
+        inline constexpr use_coro_t<> use_coro(0, 0, 0);
 #endif
     } // namespace experimental
 

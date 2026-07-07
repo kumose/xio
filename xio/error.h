@@ -65,8 +65,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace error {
         enum basic_errors {
             /// Permission denied.
@@ -224,35 +222,10 @@ namespace xio {
             fd_set_failure
         };
 
-        // boostify: non-boost code starts here
 #if !defined(ASIO_ERROR_LOCATION)
 # define ASIO_ERROR_LOCATION(e) (void)0
 #endif // !defined(ASIO_ERROR_LOCATION)
 
-        // boostify: non-boost code ends here
-#if !defined(ASIO_ERROR_LOCATION) \
-  && !defined(ASIO_DISABLE_ERROR_LOCATION) \
-  && defined(ASIO_HAS_BOOST_CONFIG) \
-  && (BOOST_VERSION >= 107900)
-
-# define ASIO_ERROR_LOCATION(e) \
-  do { \
-    BOOST_STATIC_CONSTEXPR boost::source_location loc \
-      = BOOST_CURRENT_LOCATION; \
-    (e).assign((e), &loc); \
-  } while (false)
-
-#else // !defined(ASIO_ERROR_LOCATION)
-        //   && !defined(ASIO_DISABLE_ERROR_LOCATION)
-        //   && defined(ASIO_HAS_BOOST_CONFIG)
-        //   && (BOOST_VERSION >= 107900)
-
-# define ASIO_ERROR_LOCATION(e) (void)0
-
-#endif // !defined(ASIO_ERROR_LOCATION)
-        //   && !defined(ASIO_DISABLE_ERROR_LOCATION)
-        //   && defined(ASIO_HAS_BOOST_CONFIG)
-        //   && (BOOST_VERSION >= 107900)
 
         inline void clear(xio::error_code &ec) {
             ec.assign(0, ec.category());
@@ -294,20 +267,19 @@ namespace xio {
         ASIO_DECL
         const xio::error_category &get_misc_category();
 
-        ASIO_INLINE_OR_STATIC_VARIABLE const xio::error_category &
-  system_category ASIO_UNUSED_VARIABLE
+        inline const xio::error_category &
+                system_category ASIO_UNUSED_VARIABLE
                 = xio::error::get_system_category();
-        ASIO_INLINE_OR_STATIC_VARIABLE const xio::error_category &
-  netdb_category ASIO_UNUSED_VARIABLE
+        inline const xio::error_category &
+                netdb_category ASIO_UNUSED_VARIABLE
                 = xio::error::get_netdb_category();
-        ASIO_INLINE_OR_STATIC_VARIABLE const xio::error_category &
-  addrinfo_category ASIO_UNUSED_VARIABLE
+        inline const xio::error_category &
+                addrinfo_category ASIO_UNUSED_VARIABLE
                 = xio::error::get_addrinfo_category();
-        ASIO_INLINE_OR_STATIC_VARIABLE const xio::error_category &
-  misc_category ASIO_UNUSED_VARIABLE
+        inline const xio::error_category &
+                misc_category ASIO_UNUSED_VARIABLE
                 = xio::error::get_misc_category();
     } // namespace error
-
 } // namespace xio
 
 namespace std {
@@ -333,8 +305,6 @@ namespace std {
 } // namespace std
 
 namespace xio {
-
-
     namespace error {
         inline xio::error_code make_error_code(basic_errors e) {
             return xio::error_code(
@@ -378,7 +348,6 @@ namespace xio {
         const error::netdb_errors try_again = error::host_not_found_try_again;
         using error::service_not_found;
     } // namespace resolver_errc
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

@@ -8,10 +8,7 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// Disable autolinking for unit tests.
-#if !defined(BOOST_ALL_NO_LIB)
-#define BOOST_ALL_NO_LIB 1
-#endif // !defined(BOOST_ALL_NO_LIB)
+
 
 // Test that header file is self-contained.
 #include <xio/buffered_write_stream.h>
@@ -25,11 +22,7 @@
 #include <xio/system_error.h>
 #include "unit_test.hpp"
 
-#if defined(ASIO_HAS_BOOST_ARRAY)
-# include <boost/array.hpp>
-#else // defined(ASIO_HAS_BOOST_ARRAY)
 # include <array>
-#endif // defined(ASIO_HAS_BOOST_ARRAY)
 
 typedef xio::buffered_write_stream<
     xio::ip::tcp::socket> stream_type;
@@ -48,11 +41,7 @@ void read_some_handler(const xio::error_code&, std::size_t)
 
 void test_compile()
 {
-#if defined(ASIO_HAS_BOOST_ARRAY)
-  using boost::array;
-#else // defined(ASIO_HAS_BOOST_ARRAY)
   using std::array;
-#endif // defined(ASIO_HAS_BOOST_ARRAY)
 
   using namespace xio;
 

@@ -130,7 +130,7 @@ conditional_t<
 /**
  * See the documentation for xio::use_future_t for a usage example.
  */
-ASIO_INLINE_VARIABLE constexpr use_future_t<> use_future;
+inline constexpr use_future_t<> use_future;
 
 } // namespace xio
 

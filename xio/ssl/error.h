@@ -33,7 +33,7 @@ namespace xio {
         ASIO_DECL
         const xio::error_category &get_ssl_category();
 
-        ASIO_INLINE_OR_STATIC_VARIABLE const xio::error_category &
+        inline const xio::error_category &
                 ssl_category ASIO_UNUSED_VARIABLE
                 = xio::error::get_ssl_category();
     } // namespace error
@@ -68,7 +68,7 @@ namespace xio {
             ASIO_DECL
             const xio::error_category &get_stream_category();
 
-            ASIO_INLINE_OR_STATIC_VARIABLE const xio::error_category &
+            inline const xio::error_category &
                     stream_category ASIO_UNUSED_VARIABLE
                     = xio::ssl::error::get_stream_category();
         } // namespace error

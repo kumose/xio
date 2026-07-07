@@ -60,10 +60,8 @@ namespace xio {
         namespace detail {
             template<int I = 0>
             struct occupancy_t {
-#if defined(ASIO_HAS_VARIABLE_TEMPLATES)
                 template<typename T>
                 static constexpr bool is_applicable_property_v = is_executor<T>::value;
-#endif // defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
                 static constexpr bool is_requirable = false;
                 static constexpr bool is_preferable = false;
@@ -74,7 +72,6 @@ namespace xio {
 
                 template<typename T>
                 struct static_proxy {
-#if defined(ASIO_HAS_DEDUCED_QUERY_STATIC_CONSTEXPR_MEMBER_TRAIT)
                     struct type {
                         template<typename P>
                         static constexpr auto query(P &&p)
@@ -89,9 +86,6 @@ namespace xio {
                             return T::query(static_cast<P &&>(p));
                         }
                     };
-#else // defined(ASIO_HAS_DEDUCED_QUERY_STATIC_CONSTEXPR_MEMBER_TRAIT)
-                    typedef T type;
-#endif // defined(ASIO_HAS_DEDUCED_QUERY_STATIC_CONSTEXPR_MEMBER_TRAIT)
                 };
 
                 template<typename T>
@@ -100,8 +94,6 @@ namespace xio {
                             typename static_proxy<T>::type, occupancy_t> {
                 };
 
-#if defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT) \
-  && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
                 template<typename T>
                 static constexpr typename query_static_constexpr_member<T>::result_type
                 static_query()
@@ -111,61 +103,23 @@ namespace xio {
 
                 template<typename E, typename T = decltype(occupancy_t::static_query<E>())>
                 static constexpr const T static_query_v = occupancy_t::static_query<E>();
-#endif // defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT)
-                //   && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
+
             };
 
-#if defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT) \
-  && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
+
             template<int I>
             template<typename E, typename T>
             const T occupancy_t<I>::static_query_v;
-#endif // defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT)
-            //   && defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
+
         } // namespace detail
 
         typedef detail::occupancy_t<> occupancy_t;
 
-ASIO_INLINE_VARIABLE constexpr occupancy_t occupancy;
+inline constexpr occupancy_t occupancy;
     } // namespace execution
 
-#if !defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
-    template<typename T>
-    struct is_applicable_property<T, execution::occupancy_t>
-            : integral_constant<bool, execution::is_executor<T>::value> {
-    };
 
-#endif // !defined(ASIO_HAS_VARIABLE_TEMPLATES)
-
-    namespace traits {
-#if !defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT) \
-  || !defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
-
-        template<typename T>
-        struct static_query<T, execution::occupancy_t,
-            enable_if_t <
-            execution::detail::occupancy_t<0>::
-            query_static_constexpr_member<T>::is_valid
-        >
-        >
-{
-  static constexpr bool is_valid = true;
-  static constexpr bool is_noexcept = true;
-
-  typedef typename execution::detail::occupancy_t<0>::
-    query_static_constexpr_member<T>::result_type result_type;
-
-  static constexpr result_type value()
-  {
-    return execution::detail::occupancy_t<0>::
-      query_static_constexpr_member<T>::value();
-  }
-};
-
-#endif // !defined(ASIO_HAS_DEDUCED_STATIC_QUERY_TRAIT)
-        //   || !defined(ASIO_HAS_SFINAE_VARIABLE_TEMPLATES)
-    } // namespace traits
 
 #endif // defined(GENERATING_DOCUMENTATION)
 

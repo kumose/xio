@@ -26,18 +26,16 @@ namespace xio {
 
     namespace detail {
         void do_throw_error(
-            const xio::error_code &err
-            ASIO_SOURCE_LOCATION_PARAM) {
+            const xio::error_code &err) {
             xio::system_error e(err);
-            xio::detail::throw_exception(e ASIO_SOURCE_LOCATION_ARG);
+            xio::detail::throw_exception(e);
         }
 
         void do_throw_error(
             const xio::error_code &err,
-            const char *location
-            ASIO_SOURCE_LOCATION_PARAM) {
+            const char *location) {
             xio::system_error e(err, location);
-            xio::detail::throw_exception(e ASIO_SOURCE_LOCATION_ARG);
+            xio::detail::throw_exception(e);
         }
     } // namespace detail
 

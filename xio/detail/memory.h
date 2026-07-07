@@ -23,12 +23,6 @@
 #include <xio/detail/cstdint.h>
 #include <xio/detail/throw_exception.h>
 
-#if !defined(ASIO_HAS_STD_ALIGNED_ALLOC) \
-  && defined(ASIO_HAS_BOOST_ALIGN)
-# include <boost/align/aligned_alloc.hpp>
-#endif // !defined(ASIO_HAS_STD_ALIGNED_ALLOC)
-//   && defined(ASIO_HAS_BOOST_ALIGN)
-
 namespace xio {
 
 
@@ -107,15 +101,6 @@ namespace xio {
             xio::detail::throw_exception(ex);
         }
         return ptr;
-#elif defined(ASIO_HAS_BOOST_ALIGN)
-        align = (align < ASIO_DEFAULT_ALIGN) ? ASIO_DEFAULT_ALIGN : align;
-        size = (size % align == 0) ? size : size + (align - size % align);
-        void *ptr = boost::alignment::aligned_alloc(align, size);
-        if (!ptr) {
-            std::bad_alloc ex;
-            xio::detail::throw_exception(ex);
-        }
-        return ptr;
 #elif defined(ASIO_MSVC)
         align = (align < ASIO_DEFAULT_ALIGN) ? ASIO_DEFAULT_ALIGN : align;
         size = (size % align == 0) ? size : size + (align - size % align);
@@ -134,8 +119,6 @@ namespace xio {
     inline void aligned_delete(void *ptr) {
 #if defined(ASIO_HAS_STD_ALIGNED_ALLOC)
         std::free(ptr);
-#elif defined(ASIO_HAS_BOOST_ALIGN)
-        boost::alignment::aligned_free(ptr);
 #elif defined(ASIO_MSVC)
         _aligned_free(ptr);
 #else // defined(ASIO_MSVC)

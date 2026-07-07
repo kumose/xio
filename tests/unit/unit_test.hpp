@@ -42,7 +42,7 @@
 #endif // !defined(ASIO_TEST_IOSTREAM)
 
 namespace xio {
-ASIO_INLINE_NAMESPACE_BEGIN
+
 namespace detail {
 
 inline const char*& test_name()
@@ -109,7 +109,7 @@ void throw_exception(const T& t)
 #endif // defined(ASIO_NO_EXCEPTIONS)
 
 } // namespace detail
-ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #define ASIO_CHECK(expr) \

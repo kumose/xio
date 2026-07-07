@@ -17,11 +17,6 @@
 
 #include <xio/detail/config.h>
 #include <xio/detail/type_traits.h>
-
-#if defined(ASIO_HAS_WORKING_EXPRESSION_SFINAE)
-# define ASIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT 1
-#endif // defined(ASIO_HAS_WORKING_EXPRESSION_SFINAE)
-
 #include <xio/detail/push_options.h>
 
 namespace xio {
@@ -40,7 +35,6 @@ namespace xio {
             static constexpr bool is_noexcept = false;
         };
 
-#if defined(ASIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
 
         template<typename T, typename Property, typename = void>
         struct query_member_trait : no_query_member {
@@ -60,21 +54,6 @@ namespace xio {
                     noexcept(declval<T>().query(declval<Property>()));
         };
 
-#else // defined(ASIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
-
-        template<typename T, typename Property, typename = void>
-        struct query_member_trait :
-                conditional_t<
-                    is_same<T, decay_t<T> >::value
-                    && is_same<Property, decay_t<Property> >::value,
-                    no_query_member,
-                    traits::query_member<
-                        decay_t<T>,
-                        decay_t<Property> >
-                > {
-        };
-
-#endif // defined(ASIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
     } // namespace detail
     namespace traits {
         template<typename T, typename Property, typename>

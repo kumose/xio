@@ -299,7 +299,6 @@ namespace XIO_VERSIONED_NAME(require_fn) {
     struct impl {
         template<typename T>
         struct proxy {
-#if defined(ASIO_HAS_DEDUCED_REQUIRE_MEMBER_TRAIT)
             struct type {
                 template<typename P>
                 auto require(P &&p)
@@ -312,9 +311,6 @@ namespace XIO_VERSIONED_NAME(require_fn) {
                         declval<conditional_t<true, T, P> >().require(static_cast<P &&>(p))
                     );
             };
-#else // defined(ASIO_HAS_DEDUCED_REQUIRE_MEMBER_TRAIT)
-            typedef T type;
-#endif // defined(ASIO_HAS_DEDUCED_REQUIRE_MEMBER_TRAIT)
         };
 
         template<typename T, typename Property>
@@ -395,18 +391,7 @@ namespace XIO_VERSIONED_NAME(require_fn) {
 namespace xio {
 
 
-#if defined(ASIO_HAS_INLINE_VARIABLES)
     inline constexpr XIO_VERSIONED_NAME (require_fn)::impl require{};
-#else // defined(ASIO_HAS_INLINE_VARIABLES)
-
-
-
-
-    namespace {
-        static constexpr const XIO_VERSIONED_NAME (require_fn)::impl&
-                        require = XIO_VERSIONED_NAME(require_fn)::static_instance<>::instance;
-    } // namespace
-#endif // defined(ASIO_HAS_INLINE_VARIABLES)
 
     typedef XIO_VERSIONED_NAME (require_fn)::impl require_t;
 
@@ -418,13 +403,11 @@ namespace xio {
                                                != XIO_VERSIONED_NAME(require_fn)::ill_formed> {
     };
 
-#if defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
     template<typename T, typename... Properties>
     constexpr bool can_require_v
             = can_require<T, Properties...>::value;
 
-#endif // defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
     template<typename T, typename... Properties>
     struct is_nothrow_require :
@@ -433,13 +416,9 @@ namespace xio {
                     require_t, T, void(Properties...)>::is_noexcept> {
     };
 
-#if defined(ASIO_HAS_VARIABLE_TEMPLATES)
-
     template<typename T, typename... Properties>
     constexpr bool is_nothrow_require_v
             = is_nothrow_require<T, Properties...>::value;
-
-#endif // defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
     template<typename T, typename... Properties>
     struct require_result {

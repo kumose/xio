@@ -44,7 +44,7 @@ namespace xio {
  * See xio::executor_arg_t and xio::uses_executor
  * for more information.
  */
-ASIO_INLINE_VARIABLE constexpr executor_arg_t executor_arg;
+inline constexpr executor_arg_t executor_arg;
 
     /// The uses_executor trait detects whether a type T has an associated executor
 /// that is convertible from type Executor.

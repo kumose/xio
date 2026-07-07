@@ -19,12 +19,8 @@
 #include <xio/detail/type_traits.h>
 #include <xio/error_code.h>
 #include <xio/detail/completion_message.h>
+#include <variant>
 
-#if defined(ASIO_HAS_STD_VARIANT)
-# include <variant>
-#else // defined(ASIO_HAS_STD_VARIANT)
-# include <new>
-#endif // defined(ASIO_HAS_STD_VARIANT)
 
 #include <xio/detail/push_options.h>
 
@@ -64,8 +60,6 @@ namespace xio {
             completion_message<Signature> message_;
         };
 
-#if defined(ASIO_HAS_STD_VARIANT)
-
         template<typename... Signatures>
         class completion_payload {
         public:
@@ -86,113 +80,6 @@ namespace xio {
             std::variant<completion_message<Signatures>...> message_;
         };
 
-#else // defined(ASIO_HAS_STD_VARIANT)
-
-        template<typename R1, typename R2>
-        class completion_payload<R1(), R2(xio::error_code)> {
-        public:
-            typedef completion_message<R1()> void_message_type;
-            typedef completion_message<R2(xio::error_code)> error_message_type;
-
-            completion_payload(void_message_type &&)
-                : message_(0, xio::error_code()),
-                  empty_(true) {
-            }
-
-            completion_payload(error_message_type &&m)
-                : message_(static_cast<error_message_type &&>(m)),
-                  empty_(false) {
-            }
-
-            template<typename Handler>
-            void receive(Handler &handler) {
-                if (empty_)
-                    completion_message < R1() > (0).receive(handler);
-                else
-                    message_.receive(handler);
-            }
-
-        private:
-            error_message_type message_;
-            bool empty_;
-        };
-
-        template<typename Sig1, typename Sig2>
-        class completion_payload<Sig1, Sig2> {
-        public:
-            typedef completion_message<Sig1> message_1_type;
-            typedef completion_message<Sig2> message_2_type;
-
-            completion_payload(message_1_type &&m)
-                : index_(1) {
-                new(&storage_.message_1_) message_1_type(static_cast<message_1_type &&>(m));
-            }
-
-            completion_payload(message_2_type &&m)
-                : index_(2) {
-                new(&storage_.message_2_) message_2_type(static_cast<message_2_type &&>(m));
-            }
-
-            completion_payload(completion_payload &&other)
-                : index_(other.index_) {
-                switch (index_) {
-                    case 1:
-                        new(&storage_.message_1_) message_1_type(
-                            static_cast<message_1_type &&>(other.storage_.message_1_));
-                        break;
-                    case 2:
-                        new(&storage_.message_2_) message_2_type(
-                            static_cast<message_2_type &&>(other.storage_.message_2_));
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            ~completion_payload() {
-                switch (index_) {
-                    case 1:
-                        storage_.message_1_.~message_1_type();
-                        break;
-                    case 2:
-                        storage_.message_2_.~message_2_type();
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            template<typename Handler>
-            void receive(Handler &handler) {
-                switch (index_) {
-                    case 1:
-                        storage_.message_1_.receive(handler);
-                        break;
-                    case 2:
-                        storage_.message_2_.receive(handler);
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-        private:
-            union storage {
-                storage() {
-                }
-
-                ~storage() {
-                }
-
-                char dummy_;
-                message_1_type message_1_;
-                message_2_type message_2_;
-            } storage_;
-
-            unsigned char index_;
-        };
-
-#endif // defined(ASIO_HAS_STD_VARIANT)
     } // namespace detail
 
 } // namespace xio

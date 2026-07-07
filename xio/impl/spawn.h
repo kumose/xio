@@ -33,9 +33,6 @@
 #include <xio/error.h>
 #include <xio/system_error.h>
 
-#if defined(ASIO_HAS_BOOST_CONTEXT_FIBER)
-# include <boost/context/fiber.hpp>
-#endif // defined(ASIO_HAS_BOOST_CONTEXT_FIBER)
 
 #include <xio/detail/push_options.h>
 
@@ -50,130 +47,7 @@ namespace xio {
         }
 #endif // !defined(ASIO_NO_EXCEPTIONS)
 
-#if defined(ASIO_HAS_BOOST_CONTEXT_FIBER)
-
-        // Spawned thread implementation using Boost.Context's fiber.
-        class spawned_fiber_thread : public spawned_thread_base {
-        public:
-            typedef boost::context::fiber fiber_type;
-
-            spawned_fiber_thread(fiber_type &&caller)
-                : caller_(static_cast<fiber_type &&>(caller)),
-                  on_suspend_fn_(0),
-                  on_suspend_arg_(0) {
-            }
-
-            template<typename StackAllocator, typename F>
-            static spawned_thread_base *spawn(allocator_arg_t,
-                                              StackAllocator &&stack_allocator,
-                                              F &&f,
-                                              cancellation_slot parent_cancel_slot = cancellation_slot(),
-                                              cancellation_state cancel_state = cancellation_state()) {
-                spawned_fiber_thread *spawned_thread = 0;
-                fiber_type callee(allocator_arg_t(),
-                                  static_cast<StackAllocator &&>(stack_allocator),
-                                  entry_point<decay_t<F> >(
-                                      static_cast<F &&>(f), &spawned_thread));
-                callee = fiber_type(static_cast<fiber_type &&>(callee)).resume();
-                spawned_thread->callee_ = static_cast<fiber_type &&>(callee);
-                spawned_thread->parent_cancellation_slot_ = parent_cancel_slot;
-                spawned_thread->cancellation_state_ = cancel_state;
-                return spawned_thread;
-            }
-
-            template<typename F>
-            static spawned_thread_base *spawn(F &&f,
-                                              cancellation_slot parent_cancel_slot = cancellation_slot(),
-                                              cancellation_state cancel_state = cancellation_state()) {
-                return spawn(allocator_arg_t(), boost::context::fixedsize_stack(),
-                             static_cast<F &&>(f), parent_cancel_slot, cancel_state);
-            }
-
-            void resume() {
-                callee_ = fiber_type(static_cast<fiber_type &&>(callee_)).resume();
-                if (on_suspend_fn_) {
-                    void (*fn)(void *) = on_suspend_fn_;
-                    void *arg = on_suspend_arg_;
-                    on_suspend_fn_ = 0;
-                    fn(arg);
-                }
-            }
-
-            void suspend_with(void (*fn)(void *), void *arg) {
-                if (throw_if_cancelled_)
-                    if (!!cancellation_state_.cancelled())
-                        throw_error(xio::error::operation_aborted, "yield");
-                has_context_switched_ = true;
-                on_suspend_fn_ = fn;
-                on_suspend_arg_ = arg;
-                caller_ = fiber_type(static_cast<fiber_type &&>(caller_)).resume();
-            }
-
-            void destroy() {
-                fiber_type callee = static_cast<fiber_type &&>(callee_);
-                if (terminal_)
-                    fiber_type(static_cast<fiber_type &&>(callee)).resume();
-            }
-
-        private:
-            template<typename Function>
-            class entry_point {
-            public:
-                template<typename F>
-                entry_point(F &&f,
-                            spawned_fiber_thread **spawned_thread_out)
-                    : function_(static_cast<F &&>(f)),
-                      spawned_thread_out_(spawned_thread_out) {
-                }
-
-                fiber_type operator()(fiber_type &&caller) {
-                    Function function(static_cast<Function &&>(function_));
-                    spawned_fiber_thread spawned_thread(
-                        static_cast<fiber_type &&>(caller));
-                    *spawned_thread_out_ = &spawned_thread;
-                    spawned_thread_out_ = 0;
-                    spawned_thread.suspend();
-#if !defined(ASIO_NO_EXCEPTIONS)
-        try
-#endif // !defined(ASIO_NO_EXCEPTIONS)
-        {
-        function(&spawned_thread);
-        spawned_thread.terminal_ = true;
-        spawned_thread.suspend();
-      }
-#if !defined(ASIO_NO_EXCEPTIONS)
-        catch (const boost::context::detail::forced_unwind &)
-      {
-        throw;
-      }
-      catch (...)
-      {
-        exception_ptr ex = current_exception();
-        spawned_thread.terminal_ = true;
-        spawned_thread.suspend_with(spawned_thread_rethrow, &ex);
-      }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
-        return static_cast<fiber_type &&>(spawned_thread.caller_);
-    }
-
-  private:
-        Function function_;
-        spawned_fiber_thread **spawned_thread_out_;
-  };
-
-        fiber_type caller_;
-        fiber_type callee_;
-        void (*on_suspend_fn_)(void *);
-        void *on_suspend_arg_;
-};
-
-#endif // defined(ASIO_HAS_BOOST_CONTEXT_FIBER)
-
-#if defined(ASIO_HAS_BOOST_CONTEXT_FIBER)
-        typedef spawned_fiber_thread default_spawned_thread_type;
-#else
 # error No spawn() implementation available
-#endif
 
         // Helper class to perform the initial resume on the correct executor.
         class spawned_thread_resumer {
@@ -596,7 +470,6 @@ namespace xio {
         typedef typename detail::spawn_handler<Executor, Signature> handler_type;
         typedef typename handler_type::return_type return_type;
 
-#if defined(ASIO_HAS_VARIADIC_LAMBDA_CAPTURES)
 
         template<typename Initiation, typename... InitArgs>
         static return_type initiate(Initiation &&init,
@@ -615,47 +488,6 @@ namespace xio {
             return handler_type::on_resume(result);
         }
 
-#else // defined(ASIO_HAS_VARIADIC_LAMBDA_CAPTURES)
-
-        template<typename Initiation, typename... InitArgs>
-        struct suspend_with_helper {
-            typename handler_type::result_type &result_;
-            Initiation &&init_;
-            const basic_yield_context<Executor> &yield_;
-            std::tuple<InitArgs &&...> init_args_;
-
-            template<std::size_t... I>
-            void do_invoke(detail::index_sequence<I...>) {
-                static_cast<Initiation &&>(init_)(
-                    handler_type(yield_, result_),
-                    static_cast<InitArgs &&>(std::get < I > (init_args_))...);
-            }
-
-            void operator()() {
-                this->do_invoke(detail::make_index_sequence<sizeof...(InitArgs)>());
-            }
-        };
-
-        template<typename Initiation, typename... InitArgs>
-        static return_type initiate(Initiation &&init,
-                                    const basic_yield_context<Executor> &yield,
-                                    InitArgs &&... init_args) {
-            typename handler_type::result_type result
-                    = typename handler_type::result_type();
-
-            yield.spawned_thread_->suspend_with(
-                suspend_with_helper<Initiation, InitArgs...>{
-                    result, static_cast<Initiation &&>(init), yield,
-                    std::tuple < InitArgs &&...>(
-                        static_cast<InitArgs &&>(init_args)...
-)
-
-                });
-
-            return handler_type::on_resume(result);
-        }
-
-#endif // defined(ASIO_HAS_VARIADIC_LAMBDA_CAPTURES)
     };
 
 #endif // !defined(GENERATING_DOCUMENTATION)
@@ -693,14 +525,7 @@ namespace xio {
                     work_.complete(handler, handler.handler_);
                 }
 #if !defined(ASIO_NO_EXCEPTIONS)
-# if defined(ASIO_HAS_BOOST_CONTEXT_FIBER)
-    catch (const boost::context::detail::forced_unwind &)
-                {
-                    throw;
 
-
-                }
-# endif // defined(ASIO_HAS_BOOST_CONTEXT_FIBER)
                 catch (...) {
                     exception_ptr ex = current_exception();
                     if (!yield.spawned_thread_->has_context_switched())
@@ -726,14 +551,6 @@ namespace xio {
                     work_.complete(handler, handler.handler_);
                 }
 #if !defined(ASIO_NO_EXCEPTIONS)
-# if defined(ASIO_HAS_BOOST_CONTEXT_FIBER)
-    catch (const boost::context::detail::forced_unwind &)
-                {
-                    throw;
-
-
-                }
-# endif // defined(ASIO_HAS_BOOST_CONTEXT_FIBER)
                 catch (...) {
                     exception_ptr ex = current_exception();
                     if (!yield.spawned_thread_->has_context_switched())
@@ -850,44 +667,6 @@ namespace xio {
                                    proxy_slot, cancel_state)));
             }
 
-#if defined(ASIO_HAS_BOOST_CONTEXT_FIBER)
-
-            template<typename Handler, typename StackAllocator, typename F>
-            void operator()(Handler &&handler, allocator_arg_t,
-                            StackAllocator &&stack_allocator,
-                            F &&f) const {
-                typedef decay_t<Handler> handler_type;
-                typedef decay_t<F> function_type;
-                typedef spawn_cancellation_handler<
-                    handler_type, Executor> cancel_handler_type;
-
-                associated_cancellation_slot_t<handler_type> slot
-                        = xio::get_associated_cancellation_slot(handler);
-
-                cancel_handler_type *cancel_handler = slot.is_connected()
-                                                          ? &slot.template emplace<cancel_handler_type>(
-                                                              handler, executor_)
-                                                          : 0;
-
-                cancellation_slot proxy_slot(
-                    cancel_handler
-                        ? cancel_handler->slot()
-                        : cancellation_slot());
-
-                cancellation_state cancel_state(proxy_slot);
-
-                (dispatch)(executor_,
-                           spawned_thread_resumer(
-                               spawned_fiber_thread::spawn(allocator_arg_t(),
-                                                           static_cast<StackAllocator &&>(stack_allocator),
-                                                           spawn_entry_point<Executor, function_type, handler_type>(
-                                                               executor_, static_cast<F &&>(f),
-                                                               static_cast<Handler &&>(handler)),
-                                                           proxy_slot, cancel_state)));
-            }
-
-#endif // defined(ASIO_HAS_BOOST_CONTEXT_FIBER)
-
         private:
             executor_type executor_;
         };
@@ -952,78 +731,6 @@ namespace xio {
                        static_cast<CompletionToken &&>(token));
     }
 
-#if defined(ASIO_HAS_BOOST_CONTEXT_FIBER)
-
-    template<typename Executor, typename StackAllocator, typename F,
-        ASIO_COMPLETION_TOKEN_FOR(typename detail::spawn_signature<
-            result_of_t<F(basic_yield_context<Executor>)> >::type)
-        CompletionToken>
-    inline auto spawn(const Executor &ex, allocator_arg_t,
-                      StackAllocator &&stack_allocator, F &&function, CompletionToken &&token,
-                      constraint_t<
-                          is_executor<Executor>::value || execution::is_executor<Executor>::value
-                      >)
-        -> decltype(
-            async_initiate<CompletionToken,
-                typename detail::spawn_signature<
-                    result_of_t<F(basic_yield_context<Executor>)> >::type>(
-                declval<detail::initiate_spawn<Executor> >(),
-                token, allocator_arg_t(),
-                static_cast<StackAllocator &&>(stack_allocator),
-                static_cast<F &&>(function))) {
-        return async_initiate<CompletionToken,
-            typename detail::spawn_signature<
-                result_of_t<F(basic_yield_context<Executor>)> >::type>(
-            detail::initiate_spawn<Executor>(ex), token, allocator_arg_t(),
-            static_cast<StackAllocator &&>(stack_allocator),
-            static_cast<F &&>(function));
-    }
-
-    template<typename ExecutionContext, typename StackAllocator, typename F,
-        ASIO_COMPLETION_TOKEN_FOR(typename detail::spawn_signature<
-            result_of_t<F(basic_yield_context <
-                          typename ExecutionContext::executor_type >)> >::type) CompletionToken>
-    inline auto spawn(ExecutionContext &ctx, allocator_arg_t,
-                      StackAllocator &&stack_allocator, F &&function, CompletionToken &&token,
-                      constraint_t<
-                          is_convertible<ExecutionContext &, execution_context &>::value
-                      >)
-        -> decltype(
-            async_initiate<CompletionToken,
-                typename detail::spawn_signature <
-                result_of_t<F(basic_yield_context <
-                              typename ExecutionContext::executor_type >)>>::type > (
-                declval<detail::initiate_spawn<
-                    typename ExecutionContext::executor_type> >(),
-                token, allocator_arg_t(),
-                static_cast<StackAllocator &&>(stack_allocator),
-                static_cast<F &&>(function))) {
-        return (spawn)(ctx.get_executor(), allocator_arg_t(),
-                       static_cast<StackAllocator &&>(stack_allocator),
-                       static_cast<F &&>(function), static_cast<CompletionToken &&>(token));
-    }
-
-    template<typename Executor, typename StackAllocator, typename F,
-        ASIO_COMPLETION_TOKEN_FOR(typename detail::spawn_signature<
-            result_of_t<F(basic_yield_context<Executor>)> >::type) CompletionToken>
-    inline auto spawn(const basic_yield_context<Executor> &ctx, allocator_arg_t,
-                      StackAllocator &&stack_allocator, F &&function, CompletionToken &&token,
-                      constraint_t<
-                          is_executor<Executor>::value || execution::is_executor<Executor>::value
-                      >)
-        -> decltype(
-            async_initiate<CompletionToken,
-                typename detail::spawn_signature<
-                    result_of_t<F(basic_yield_context<Executor>)> >::type>(
-                declval<detail::initiate_spawn<Executor> >(), token,
-                allocator_arg_t(), static_cast<StackAllocator &&>(stack_allocator),
-                static_cast<F &&>(function))) {
-        return (spawn)(ctx.get_executor(), allocator_arg_t(),
-                       static_cast<StackAllocator &&>(stack_allocator),
-                       static_cast<F &&>(function), static_cast<CompletionToken &&>(token));
-    }
-
-#endif // defined(ASIO_HAS_BOOST_CONTEXT_FIBER)
 
 
 } // namespace xio

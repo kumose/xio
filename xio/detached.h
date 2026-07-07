@@ -89,7 +89,7 @@ namespace xio {
     /**
  * See the documentation for xio::detached_t for a usage example.
  */
-ASIO_INLINE_VARIABLE constexpr detached_t detached;
+inline constexpr detached_t detached;
 
 
 } // namespace xio

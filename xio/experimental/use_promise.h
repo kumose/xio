@@ -91,7 +91,7 @@ namespace xio {
             Allocator allocator_;
         };
 
-        ASIO_INLINE_VARIABLE constexpr use_promise_t<> use_promise;
+        inline constexpr use_promise_t<> use_promise;
     } // namespace experimental
 
 } // namespace xio

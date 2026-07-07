@@ -677,7 +677,7 @@ namespace xio {
     /**
  * See the documentation for xio::deferred_t for a usage example.
  */
-ASIO_INLINE_VARIABLE constexpr deferred_t deferred;
+inline constexpr deferred_t deferred;
 
 
 } // namespace xio

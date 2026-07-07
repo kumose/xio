@@ -8,10 +8,7 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// Disable autolinking for unit tests.
-#if !defined(BOOST_ALL_NO_LIB)
-#define BOOST_ALL_NO_LIB 1
-#endif // !defined(BOOST_ALL_NO_LIB)
+
 
 // Test that header file is self-contained.
 #include <xio/buffer.h>
@@ -19,10 +16,6 @@
 #include <array>
 #include <cstring>
 #include "unit_test.hpp"
-
-#if defined(ASIO_HAS_BOOST_ARRAY)
-# include <boost/array.hpp>
-#endif // defined(ASIO_HAS_BOOST_ARRAY)
 
 //------------------------------------------------------------------------------
 
@@ -100,11 +93,6 @@ void test()
     const void* const_void_ptr_data = const_raw_data;
     span<char, 1> span_1;
     span<const char, 1> span_2;
-#if defined(ASIO_HAS_BOOST_ARRAY)
-    boost::array<char, 1024> array_data;
-    const boost::array<char, 1024>& const_array_data_1 = array_data;
-    boost::array<const char, 1024> const_array_data_2 = { { 0 } };
-#endif // defined(ASIO_HAS_BOOST_ARRAY)
     std::array<char, 1024> std_array_data;
     const std::array<char, 1024>& const_std_array_data_1 = std_array_data;
     std::array<const char, 1024> const_std_array_data_2 = { { 0 } };
@@ -201,14 +189,6 @@ void test()
     mb1 = buffer(span_1, 128);
     cb1 = buffer(span_2);
     cb1 = buffer(span_2, 128);
-#if defined(ASIO_HAS_BOOST_ARRAY)
-    mb1 = buffer(array_data);
-    mb1 = buffer(array_data, 1024);
-    cb1 = buffer(const_array_data_1);
-    cb1 = buffer(const_array_data_1, 1024);
-    cb1 = buffer(const_array_data_2);
-    cb1 = buffer(const_array_data_2, 1024);
-#endif // defined(ASIO_HAS_BOOST_ARRAY)
     mb1 = buffer(std_array_data);
     mb1 = buffer(std_array_data, 1024);
     cb1 = buffer(const_std_array_data_1);

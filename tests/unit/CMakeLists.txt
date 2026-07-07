@@ -23,7 +23,6 @@ set(XIO_TEST_DEFINES
 )
 
 find_package(OpenSSL QUIET)
-find_package(Boost QUIET COMPONENTS context)
 
 # Core tests
 set(CORE_TESTS
@@ -269,15 +268,6 @@ if(CMAKE_CXX_STANDARD GREATER_EQUAL 20)
     endforeach()
 endif()
 
-# Boost.Coroutine (spawn)
-if(Boost_context_FOUND)
-    kmcmake_cc_test(NAME spawn MODULE unit
-            SOURCES spawn.cpp
-            INCLUDES ${XIO_TEST_INCLUDES}
-            DEFINES ${XIO_TEST_DEFINES}
-            LINKS xio::xio_static Boost::context
-    )
-endif()
 
 # OpenSSL tests
 if(OpenSSL_FOUND)

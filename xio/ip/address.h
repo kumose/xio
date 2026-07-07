@@ -33,8 +33,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace ip {
         /// Implements version-independent IP addresses.
         /**
@@ -65,17 +63,17 @@ namespace xio {
             ASIO_DECL address(address &&other) noexcept;
 
             /// Assign from another address.
-  ASIO_DECL address &operator=(const address &other) noexcept;
+            ASIO_DECL address &operator=(const address &other) noexcept;
 
             /// Move-assign from another address.
-  ASIO_DECL address &operator=(address &&other) noexcept;
+            ASIO_DECL address &operator=(address &&other) noexcept;
 
             /// Assign from an IPv4 address.
-  ASIO_DECL address &operator=(
+            ASIO_DECL address &operator=(
                 const xio::ip::address_v4 &ipv4_address) noexcept;
 
             /// Assign from an IPv6 address.
-  ASIO_DECL address &operator=(
+            ASIO_DECL address &operator=(
                 const xio::ip::address_v6 &ipv6_address) noexcept;
 
             /// Get whether the address is an IP version 4 address.
@@ -98,17 +96,17 @@ namespace xio {
             ASIO_DECL std::string to_string() const;
 
             /// Determine whether the address is a loopback address.
-  ASIO_DECL bool is_loopback() const noexcept;
+            ASIO_DECL bool is_loopback() const noexcept;
 
             /// Determine whether the address is unspecified.
-  ASIO_DECL bool is_unspecified() const noexcept;
+            ASIO_DECL bool is_unspecified() const noexcept;
 
             /// Determine whether the address is a multicast address.
-  ASIO_DECL bool is_multicast() const noexcept;
+            ASIO_DECL bool is_multicast() const noexcept;
 
             /// Compare two addresses for equality.
-  ASIO_DECL friend bool operator==(const address &a1,
-                                   const address &a2) noexcept;
+            ASIO_DECL friend bool operator==(const address &a1,
+                                             const address &a2) noexcept;
 
             /// Compare two addresses for inequality.
             friend bool operator!=(const address &a1,
@@ -117,8 +115,8 @@ namespace xio {
             }
 
             /// Compare addresses for ordering.
-  ASIO_DECL friend bool operator<(const address &a1,
-                                  const address &a2) noexcept;
+            ASIO_DECL friend bool operator<(const address &a1,
+                                            const address &a2) noexcept;
 
             /// Compare addresses for ordering.
             friend bool operator>(const address &a1,
@@ -154,51 +152,47 @@ namespace xio {
         /**
  * @relates address
  */
-ASIO_DECL address make_address(const char *str);
+        ASIO_DECL address make_address(const char *str);
 
         /// Create an address from an IPv4 address string in dotted decimal form,
 /// or from an IPv6 address in hexadecimal notation.
         /**
  * @relates address
  */
-ASIO_DECL address make_address(const char *str,
-                               xio::error_code &ec) noexcept;
+        ASIO_DECL address make_address(const char *str,
+                                       xio::error_code &ec) noexcept;
 
         /// Create an address from an IPv4 address string in dotted decimal form,
 /// or from an IPv6 address in hexadecimal notation.
         /**
  * @relates address
  */
-ASIO_DECL address make_address(const std::string &str);
+        ASIO_DECL address make_address(const std::string &str);
 
         /// Create an address from an IPv4 address string in dotted decimal form,
 /// or from an IPv6 address in hexadecimal notation.
         /**
  * @relates address
  */
-ASIO_DECL address make_address(const std::string &str,
-                               xio::error_code &ec) noexcept;
+        ASIO_DECL address make_address(const std::string &str,
+                                       xio::error_code &ec) noexcept;
 
-#if defined(ASIO_HAS_STRING_VIEW) \
-  || defined(GENERATING_DOCUMENTATION)
 
         /// Create an address from an IPv4 address string in dotted decimal form,
 /// or from an IPv6 address in hexadecimal notation.
         /**
  * @relates address
  */
-ASIO_DECL address make_address(string_view str);
+        ASIO_DECL address make_address(string_view str);
 
         /// Create an address from an IPv4 address string in dotted decimal form,
 /// or from an IPv6 address in hexadecimal notation.
         /**
  * @relates address
  */
-ASIO_DECL address make_address(string_view str,
-                               xio::error_code &ec) noexcept;
+        ASIO_DECL address make_address(string_view str,
+                                       xio::error_code &ec) noexcept;
 
-#endif // defined(ASIO_HAS_STRING_VIEW)
-        //  || defined(GENERATING_DOCUMENTATION)
 
 #if !defined(ASIO_NO_IOSTREAM)
 
@@ -220,7 +214,6 @@ ASIO_DECL address make_address(string_view str,
 
 #endif // !defined(ASIO_NO_IOSTREAM)
     } // namespace ip
-
 } // namespace xio
 
 namespace std {

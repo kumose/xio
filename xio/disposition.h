@@ -112,12 +112,10 @@ namespace xio {
     {
     };
 
-#if defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
     template<typename T>
     constexpr const bool is_disposition_v = is_disposition<T>::value;
 
-#endif // defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
 #if defined(ASIO_HAS_CONCEPTS)
 
@@ -217,7 +215,7 @@ namespace xio {
     };
 
     /// A special value used to indicate the absence of an error.
-ASIO_INLINE_VARIABLE constexpr no_error_t no_error;
+inline constexpr no_error_t no_error;
 
     /// Specialisation of @c disposition_traits for @c no_error_t.
     template<>

@@ -44,10 +44,8 @@ namespace xio {
                 // Construct an endpoint using the specified path name.
                 ASIO_DECL endpoint(const std::string &path_name);
 
-#if defined(ASIO_HAS_STRING_VIEW)
 // Construct an endpoint using the specified path name.
 ASIO_DECL endpoint(string_view path_name);
-#endif // defined(ASIO_HAS_STRING_VIEW)
 
 // Copy constructor.
 endpoint(const endpoint &other) noexcept

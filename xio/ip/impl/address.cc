@@ -123,7 +123,6 @@ namespace xio {
             return make_address(str.c_str(), ec);
         }
 
-#if defined(ASIO_HAS_STRING_VIEW)
 
         address make_address(string_view str) {
             return make_address(static_cast<std::string>(str));
@@ -134,7 +133,6 @@ namespace xio {
             return make_address(static_cast<std::string>(str), ec);
         }
 
-#endif // defined(ASIO_HAS_STRING_VIEW)
 
         xio::ip::address_v4 address::to_v4() const {
             if (type_ != ipv4) {

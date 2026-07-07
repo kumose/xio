@@ -46,11 +46,9 @@ namespace xio {
                 init(path_name.data(), path_name.length());
             }
 
-#if defined(ASIO_HAS_STRING_VIEW)
 endpoint::endpoint(string_view path_name) {
     init(path_name.data(), path_name.length());
 }
-#endif // defined(ASIO_HAS_STRING_VIEW)
 
 void endpoint::resize(std::size_t new_size) {
     if (new_size > sizeof(xio::detail::sockaddr_un_type)) {

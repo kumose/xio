@@ -165,8 +165,6 @@ ASIO_DECL network_v6 make_network_v6(const std::string &str);
 ASIO_DECL network_v6 make_network_v6(
             const std::string &str, xio::error_code &ec);
 
-#if defined(ASIO_HAS_STRING_VIEW) \
-  || defined(GENERATING_DOCUMENTATION)
 
         /// Create an IPv6 network from a string containing IP address and prefix
 /// length.
@@ -182,9 +180,6 @@ ASIO_DECL network_v6 make_network_v6(string_view str);
  */
 ASIO_DECL network_v6 make_network_v6(
             string_view str, xio::error_code &ec);
-
-#endif // defined(ASIO_HAS_STRING_VIEW)
-        //  || defined(GENERATING_DOCUMENTATION)
 
 #if !defined(ASIO_NO_IOSTREAM)
 

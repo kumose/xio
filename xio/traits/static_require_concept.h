@@ -50,7 +50,6 @@ namespace xio {
                 > {
         };
 
-#if defined(ASIO_HAS_WORKING_EXPRESSION_SFINAE)
 
         template<typename T, typename Property>
         struct static_require_concept_trait<T, Property,
@@ -61,35 +60,7 @@ namespace xio {
   static constexpr bool is_valid = true;
 };
 
-#else // defined(ASIO_HAS_WORKING_EXPRESSION_SFINAE)
 
-        false_type static_require_concept_test(...);
-
-        template<typename T, typename Property>
-        true_type static_require_concept_test(T *, Property *,
-                                              enable_if_t<
-                                                  Property::value() == traits::static_query<T, Property>::value()
-                                              > * = 0);
-
-        template<typename T, typename Property>
-        struct has_static_require_concept {
-            static constexpr bool value =
-                    decltype((static_require_concept_test)(
-                        static_cast<T *>(0), static_cast<Property *>(0)))::value;
-        };
-
-        template<typename T, typename Property>
-        struct static_require_concept_trait<T, Property,
-            enable_if_t <
-            has_static_require_concept<decay_t<T>,
-                decay_t<Property> >::value
-        >
-        >
-{
-  static constexpr bool is_valid = true;
-};
-
-#endif // defined(ASIO_HAS_WORKING_EXPRESSION_SFINAE)
     } // namespace detail
     namespace traits {
         template<typename T, typename Property, typename>

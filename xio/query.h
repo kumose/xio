@@ -199,7 +199,6 @@ namespace XIO_VERSIONED_NAME(query_fn) {
     struct impl {
         template<typename T>
         struct proxy {
-#if defined(ASIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
             struct type {
                 template<typename P>
                 auto query(P &&p)
@@ -212,9 +211,7 @@ namespace XIO_VERSIONED_NAME(query_fn) {
                         declval<conditional_t<true, T, P> >().query(static_cast<P &&>(p))
                     );
             };
-#else // defined(ASIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
-            typedef T type;
-#endif // defined(ASIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
+
         };
 
         template<typename T, typename Property>
@@ -268,18 +265,7 @@ namespace XIO_VERSIONED_NAME(query_fn) {
 namespace xio {
 
 
-#if defined(ASIO_HAS_INLINE_VARIABLES)
     inline constexpr XIO_VERSIONED_NAME (query_fn)::impl query{};
-#else // defined(ASIO_HAS_INLINE_VARIABLES)
-
-
-
-
-    namespace {
-        static constexpr const XIO_VERSIONED_NAME (query_fn)::impl&
-                        query = XIO_VERSIONED_NAME(query_fn)::static_instance<>::instance;
-    } // namespace
-#endif // defined(ASIO_HAS_INLINE_VARIABLES)
 
     typedef XIO_VERSIONED_NAME (query_fn)::impl query_t;
 
@@ -291,12 +277,10 @@ namespace xio {
                                              XIO_VERSIONED_NAME(query_fn)::ill_formed> {
     };
 
-#if defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
     template<typename T, typename Property>
     constexpr bool can_query_v = can_query<T, Property>::value;
 
-#endif // defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
     template<typename T, typename Property>
     struct is_nothrow_query :
@@ -305,12 +289,10 @@ namespace xio {
                     query_t, T, void(Property)>::is_noexcept> {
     };
 
-#if defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
     template<typename T, typename Property>
     constexpr bool is_nothrow_query_v = is_nothrow_query<T, Property>::value;
 
-#endif // defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
     template<typename T, typename Property>
     struct query_result {

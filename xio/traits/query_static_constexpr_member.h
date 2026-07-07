@@ -17,13 +17,6 @@
 
 #include <xio/detail/config.h>
 #include <xio/detail/type_traits.h>
-
-#if defined(ASIO_HAS_CONSTANT_EXPRESSION_SFINAE) \
-  && defined(ASIO_HAS_WORKING_EXPRESSION_SFINAE)
-# define ASIO_HAS_DEDUCED_QUERY_STATIC_CONSTEXPR_MEMBER_TRAIT 1
-#endif // defined(ASIO_HAS_CONSTANT_EXPRESSION_SFINAE)
-//   && defined(ASIO_HAS_WORKING_EXPRESSION_SFINAE)
-
 #include <xio/detail/push_options.h>
 
 namespace xio {
@@ -53,7 +46,6 @@ namespace xio {
                 > {
         };
 
-#if defined(ASIO_HAS_DEDUCED_QUERY_STATIC_CONSTEXPR_MEMBER_TRAIT)
 
         template<typename T, typename Property>
         struct query_static_constexpr_member_trait<T, Property,
@@ -71,7 +63,6 @@ namespace xio {
             }
         };
 
-#endif // defined(ASIO_HAS_DEDUCED_QUERY_STATIC_CONSTEXPR_MEMBER_TRAIT)
     } // namespace detail
     namespace traits {
         template<typename T, typename Property, typename>

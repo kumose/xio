@@ -29,8 +29,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace ip {
         network_v6::network_v6(const address_v6 &addr, unsigned short prefix_len)
             : address_(addr),
@@ -41,7 +39,7 @@ namespace xio {
             }
         }
 
-ASIO_DECL address_v6 network_v6::network() const noexcept {
+        ASIO_DECL address_v6 network_v6::network() const noexcept {
             address_v6::bytes_type bytes(address_.to_bytes());
             for (std::size_t i = 0; i < 16; ++i) {
                 if (prefix_length_ <= i * 8)
@@ -145,7 +143,6 @@ ASIO_DECL address_v6 network_v6::network() const noexcept {
             return network_v6(addr, static_cast<unsigned short>(prefix_len));
         }
 
-#if defined(ASIO_HAS_STRING_VIEW)
 
         network_v6 make_network_v6(string_view str) {
             return make_network_v6(static_cast<std::string>(str));
@@ -155,10 +152,7 @@ ASIO_DECL address_v6 network_v6::network() const noexcept {
                                    xio::error_code &ec) {
             return make_network_v6(static_cast<std::string>(str), ec);
         }
-
-#endif // defined(ASIO_HAS_STRING_VIEW)
     } // namespace ip
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

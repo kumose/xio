@@ -26,27 +26,23 @@ namespace xio {
 
     namespace detail {
 ASIO_DECL void do_throw_error(
-            const xio::error_code &err
-            ASIO_SOURCE_LOCATION_PARAM);
+            const xio::error_code &err);
 
 ASIO_DECL void do_throw_error(
             const xio::error_code &err,
-            const char *location
-            ASIO_SOURCE_LOCATION_PARAM);
+            const char *location);
 
         inline void throw_error(
-            const xio::error_code &err
-            ASIO_SOURCE_LOCATION_DEFAULTED_PARAM) {
+            const xio::error_code &err) {
             if (err)
-                do_throw_error(err ASIO_SOURCE_LOCATION_ARG);
+                do_throw_error(err);
         }
 
         inline void throw_error(
             const xio::error_code &err,
-            const char *location
-            ASIO_SOURCE_LOCATION_DEFAULTED_PARAM) {
+            const char *location) {
             if (err)
-                do_throw_error(err, location ASIO_SOURCE_LOCATION_ARG);
+                do_throw_error(err, location);
         }
     } // namespace detail
 
