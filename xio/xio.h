@@ -8,12 +8,7 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_HPP
-#define ASIO_HPP
-
-#if defined(_MSC_VER) && (_MSC_VER >= 1200)
-# pragma once
-#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+#pragma once
 
 #include <xio/any_completion_executor.h>
 #include <xio/any_completion_handler.h>
@@ -202,4 +197,3 @@
 #include <xio/write.h>
 #include <xio/write_at.h>
 
-#endif // ASIO_HPP
