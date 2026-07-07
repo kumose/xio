@@ -24,7 +24,7 @@
 #include <xio/disposition.h>
 #include <xio/execution.h>
 #include <xio/packaged_task.h>
-#include <xio/system_error.h>
+#include <system_error>
 #include <xio/system_executor.h>
 
 #include <xio/detail/push_options.h>

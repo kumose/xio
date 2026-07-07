@@ -344,7 +344,7 @@ namespace xio {
    *
    * @param signal_number The signal to be added to the set.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         void add(int signal_number) {
             xio::error_code ec;
@@ -384,7 +384,7 @@ namespace xio {
    *
    * @param f Flags to modify the behaviour of the specified signal.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         void add(int signal_number, flags_t f) {
             xio::error_code ec;
@@ -424,7 +424,7 @@ namespace xio {
    *
    * @param signal_number The signal to be removed from the set.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Removes any notifications that have been queued for the specified
    * signal number.
@@ -458,7 +458,7 @@ namespace xio {
    * This function removes all signals from the set. It has no effect if the set
    * is already empty.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Removes all queued notifications.
    */
@@ -491,7 +491,7 @@ namespace xio {
    *
    * Cancellation does not alter the set of registered signals.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note If a registered signal occurred before cancel() is called, then the
    * handlers for asynchronous wait operations will:

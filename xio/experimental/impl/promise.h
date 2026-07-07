@@ -19,7 +19,7 @@
 #include <xio/cancellation_signal.h>
 #include <utility>
 #include <xio/error.h>
-#include <xio/system_error.h>
+#include <system_error>
 #include <tuple>
 
 #include <xio/detail/push_options.h>
@@ -157,7 +157,7 @@ namespace xio {
                 void cancel_impl_(std::exception_ptr *, T_ *...) {
                     complete(
                         std::make_exception_ptr(
-                            xio::system_error(
+                            std::system_error(
                                 xio::error::operation_aborted)),
                         T_{}...);
                 }

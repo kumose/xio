@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 #include <xio/error_code.h>
-#include <xio/system_error.h>
+#include <system_error>
 #if defined(ASIO_WINDOWS) \
   || defined(ASIO_CYGWIN_W32_SOCKETS) \
   || defined(ASIO_WINDOWS_RUNTIME)

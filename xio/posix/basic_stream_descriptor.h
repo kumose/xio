@@ -123,7 +123,7 @@ public:
    *
    * @param native_descriptor The new underlying descriptor implementation.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
     basic_stream_descriptor(const executor_type &ex,
                             const native_handle_type &native_descriptor)
@@ -141,7 +141,7 @@ public:
    *
    * @param native_descriptor The new underlying descriptor implementation.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
     template<typename ExecutionContext>
     basic_stream_descriptor(ExecutionContext &context,
@@ -235,7 +235,7 @@ public:
    *
    * @returns The number of bytes written.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the connection was closed by the
    * peer.
    *
@@ -359,7 +359,7 @@ public:
    *
    * @returns The number of bytes read.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the connection was closed by the
    * peer.
    *

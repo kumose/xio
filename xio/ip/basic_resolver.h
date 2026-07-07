@@ -233,7 +233,7 @@ namespace xio {
    * successful call to this function is guaranteed to return a non-empty
    * range.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note On POSIX systems, host names may be locally defined in the file
    * <tt>/etc/hosts</tt>. On Windows, host names may be defined in the file
@@ -314,7 +314,7 @@ namespace xio {
    * successful call to this function is guaranteed to return a non-empty
    * range.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note On POSIX systems, host names may be locally defined in the file
    * <tt>/etc/hosts</tt>. On Windows, host names may be defined in the file
@@ -407,7 +407,7 @@ namespace xio {
    * successful call to this function is guaranteed to return a non-empty
    * range.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note On POSIX systems, host names may be locally defined in the file
    * <tt>/etc/hosts</tt>. On Windows, host names may be defined in the file
@@ -495,7 +495,7 @@ namespace xio {
    * successful call to this function is guaranteed to return a non-empty
    * range.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note On POSIX systems, host names may be locally defined in the file
    * <tt>/etc/hosts</tt>. On Windows, host names may be defined in the file
@@ -860,7 +860,7 @@ namespace xio {
    * successful call to this function is guaranteed to return a non-empty
    * range.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
             results_type resolve(const endpoint_type &e) {
                 xio::error_code ec;

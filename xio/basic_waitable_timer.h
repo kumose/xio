@@ -379,7 +379,7 @@ namespace xio {
    *
    * @return The number of asynchronous operations that were cancelled.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note If the timer has already expired when cancel() is called, then the
    * handlers for asynchronous wait operations will:
@@ -410,7 +410,7 @@ namespace xio {
    * @return The number of asynchronous operations that were cancelled. That is,
    * either 0 or 1.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note If the timer has already expired when cancel_one() is called, then
    * the handlers for asynchronous wait operations will:
@@ -449,7 +449,7 @@ namespace xio {
    *
    * @return The number of asynchronous operations that were cancelled.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note If the timer has already expired when expires_at() is called, then
    * the handlers for asynchronous wait operations will:
@@ -479,7 +479,7 @@ namespace xio {
    *
    * @return The number of asynchronous operations that were cancelled.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note If the timer has already expired when expires_after() is called,
    * then the handlers for asynchronous wait operations will:
@@ -504,7 +504,7 @@ namespace xio {
    * This function is used to wait for the timer to expire. This function
    * blocks and does not return until the timer has expired.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         void wait() {
             xio::error_code ec;

@@ -143,7 +143,7 @@ namespace xio {
  *
  * @returns The successfully connected endpoint.
  *
- * @throws xio::system_error Thrown on failure. If the sequence is
+ * @throws std::system_error Thrown on failure. If the sequence is
  * empty, the associated @c error_code is xio::error::not_found.
  * Otherwise, contains the error from the last connection attempt.
  *
@@ -213,7 +213,7 @@ namespace xio {
  *
  * @returns An iterator denoting the successfully connected endpoint.
  *
- * @throws xio::system_error Thrown on failure. If the sequence is
+ * @throws std::system_error Thrown on failure. If the sequence is
  * empty, the associated @c error_code is xio::error::not_found.
  * Otherwise, contains the error from the last connection attempt.
  *
@@ -290,7 +290,7 @@ namespace xio {
  *
  * @returns The successfully connected endpoint.
  *
- * @throws xio::system_error Thrown on failure. If the sequence is
+ * @throws std::system_error Thrown on failure. If the sequence is
  * empty, the associated @c error_code is xio::error::not_found.
  * Otherwise, contains the error from the last connection attempt.
  *
@@ -428,7 +428,7 @@ namespace xio {
  *
  * @returns An iterator denoting the successfully connected endpoint.
  *
- * @throws xio::system_error Thrown on failure. If the sequence is
+ * @throws std::system_error Thrown on failure. If the sequence is
  * empty, the associated @c error_code is xio::error::not_found.
  * Otherwise, contains the error from the last connection attempt.
  *

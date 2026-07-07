@@ -128,7 +128,7 @@ namespace xio {
    *
    * @param protocol An object specifying protocol parameters to be used.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         basic_raw_socket(const executor_type &ex, const protocol_type &protocol)
             : basic_socket<Protocol, Executor>(ex, protocol) {
@@ -144,7 +144,7 @@ namespace xio {
    *
    * @param protocol An object specifying protocol parameters to be used.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         template<typename ExecutionContext>
         basic_raw_socket(ExecutionContext &context, const protocol_type &protocol,
@@ -168,7 +168,7 @@ namespace xio {
    * @param endpoint An endpoint on the local machine to which the raw
    * socket will be bound.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         basic_raw_socket(const executor_type &ex, const endpoint_type &endpoint)
             : basic_socket<Protocol, Executor>(ex, endpoint) {
@@ -188,7 +188,7 @@ namespace xio {
    * @param endpoint An endpoint on the local machine to which the raw
    * socket will be bound.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         template<typename ExecutionContext>
         basic_raw_socket(ExecutionContext &context, const endpoint_type &endpoint,
@@ -210,7 +210,7 @@ namespace xio {
    *
    * @param native_socket The new underlying socket implementation.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         basic_raw_socket(const executor_type &ex,
                          const protocol_type &protocol, const native_handle_type &native_socket)
@@ -230,7 +230,7 @@ namespace xio {
    *
    * @param native_socket The new underlying socket implementation.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         template<typename ExecutionContext>
         basic_raw_socket(ExecutionContext &context,
@@ -330,7 +330,7 @@ namespace xio {
    *
    * @returns The number of bytes sent.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note The send operation can only be used with a connected socket. Use
    * the send_to function to send data on an unconnected raw socket.
@@ -362,7 +362,7 @@ namespace xio {
    *
    * @returns The number of bytes sent.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note The send operation can only be used with a connected socket. Use
    * the send_to function to send data on an unconnected raw socket.
@@ -538,7 +538,7 @@ namespace xio {
    *
    * @returns The number of bytes sent.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * To send a single data buffer use the @ref buffer function as follows:
@@ -575,7 +575,7 @@ namespace xio {
    *
    * @returns The number of bytes sent.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         template<typename ConstBufferSequence>
         std::size_t send_to(const ConstBufferSequence &buffers,
@@ -751,7 +751,7 @@ namespace xio {
    *
    * @returns The number of bytes received.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note The receive operation can only be used with a connected socket. Use
    * the receive_from function to receive data on an unconnected raw
@@ -786,7 +786,7 @@ namespace xio {
    *
    * @returns The number of bytes received.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note The receive operation can only be used with a connected socket. Use
    * the receive_from function to receive data on an unconnected raw
@@ -966,7 +966,7 @@ namespace xio {
    *
    * @returns The number of bytes received.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * To receive into a single data buffer use the @ref buffer function as
@@ -1004,7 +1004,7 @@ namespace xio {
    *
    * @returns The number of bytes received.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         template<typename MutableBufferSequence>
         std::size_t receive_from(const MutableBufferSequence &buffers,

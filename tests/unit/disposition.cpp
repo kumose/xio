@@ -53,7 +53,7 @@ void error_code_disposition_test()
     xio::throw_exception(ec2);
     caught = false;
   }
-  catch (const xio::system_error& ex)
+  catch (const std::system_error& ex)
   {
     caught = true;
     ASIO_CHECK(ex.code() == xio::error::eof);
@@ -80,7 +80,7 @@ void exception_ptr_disposition_test()
   ASIO_CHECK(ep1 == nullptr);
 
   std::exception_ptr ep3 = std::make_exception_ptr(
-      xio::system_error(xio::error::eof));
+      std::system_error(xio::error::eof));
 
   ASIO_CHECK(!(ep3 == no_error));
   ASIO_CHECK(!(no_error == ep3));
@@ -94,7 +94,7 @@ void exception_ptr_disposition_test()
     xio::throw_exception(ep3);
     caught = false;
   }
-  catch (const xio::system_error& ex)
+  catch (const std::system_error& ex)
   {
     caught = true;
     ASIO_CHECK(ex.code() == xio::error::eof);

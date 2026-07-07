@@ -134,7 +134,7 @@ explicit basic_writable_pipe(ExecutionContext & context,
    *
    * @param native_pipe A native pipe.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 basic_writable_pipe(const executor_type &ex,
                     const native_handle_type &native_pipe)
@@ -156,7 +156,7 @@ basic_writable_pipe(const executor_type &ex,
    *
    * @param native_pipe A native pipe.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 template<typename ExecutionContext>
 basic_writable_pipe(ExecutionContext &context,
@@ -292,7 +292,7 @@ const lowest_layer_type &lowest_layer() const {
    *
    * @param native_pipe A native pipe.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void assign(const native_handle_type &native_pipe) {
     xio::error_code ec;
@@ -325,7 +325,7 @@ bool is_open() const {
    * will be cancelled immediately, and will complete with the
    * xio::error::operation_aborted error.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void close() {
     xio::error_code ec;
@@ -353,7 +353,7 @@ ASIO_SYNC_OP_VOID close(xio::error_code &ec) {
    * passed the xio::error::operation_aborted error. Ownership of the
    * native pipe is then transferred to the caller.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note This function is unsupported on Windows versions prior to Windows
    * 8.1, and will fail with xio::error::operation_not_supported on
@@ -412,7 +412,7 @@ native_handle_type native_handle() {
    * finish immediately, and the handlers for cancelled operations will be
    * passed the xio::error::operation_aborted error.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void cancel() {
     xio::error_code ec;
@@ -443,7 +443,7 @@ ASIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
    *
    * @returns The number of bytes written.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the connection was closed by the
    * peer.
    *

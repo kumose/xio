@@ -124,7 +124,7 @@ explicit basic_random_access_file(ExecutionContext & context,
    * @param open_flags A set of flags that determine how the file should be
    * opened.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 basic_random_access_file(const executor_type &ex,
                          const char *path, file_base::flags open_flags)
@@ -144,7 +144,7 @@ basic_random_access_file(const executor_type &ex,
    * @param open_flags A set of flags that determine how the file should be
    * opened.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 template<typename ExecutionContext>
 basic_random_access_file(ExecutionContext &context,
@@ -168,7 +168,7 @@ basic_random_access_file(ExecutionContext &context,
    * @param open_flags A set of flags that determine how the file should be
    * opened.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 basic_random_access_file(const executor_type &ex,
                          const std::string &path, file_base::flags open_flags)
@@ -188,7 +188,7 @@ basic_random_access_file(const executor_type &ex,
    * @param open_flags A set of flags that determine how the file should be
    * opened.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 template<typename ExecutionContext>
 basic_random_access_file(ExecutionContext &context,
@@ -210,7 +210,7 @@ basic_random_access_file(ExecutionContext &context,
    *
    * @param native_file The new underlying file implementation.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 basic_random_access_file(const executor_type &ex,
                          const native_handle_type &native_file)
@@ -228,7 +228,7 @@ basic_random_access_file(const executor_type &ex,
    *
    * @param native_file The new underlying file implementation.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 template<typename ExecutionContext>
 basic_random_access_file(ExecutionContext &context,
@@ -334,7 +334,7 @@ constraint_t<
    *
    * @returns The number of bytes written.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the end of the file was reached.
    *
    * @note The write_some_at operation may not write all of the data. Consider
@@ -464,7 +464,7 @@ auto async_write_some_at(uint64_t offset, const ConstBufferSequence &buffers,
    *
    * @returns The number of bytes read.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the end of the file was reached.
    *
    * @note The read_some operation may not read all of the requested number of

@@ -125,7 +125,7 @@ explicit basic_stream_file(ExecutionContext & context,
    * @param open_flags A set of flags that determine how the file should be
    * opened.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 basic_stream_file(const executor_type &ex,
                   const char *path, file_base::flags open_flags)
@@ -152,7 +152,7 @@ basic_stream_file(const executor_type &ex,
    * @param open_flags A set of flags that determine how the file should be
    * opened.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 template<typename ExecutionContext>
 basic_stream_file(ExecutionContext &context,
@@ -183,7 +183,7 @@ basic_stream_file(ExecutionContext &context,
    * @param open_flags A set of flags that determine how the file should be
    * opened.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 basic_stream_file(const executor_type &ex,
                   const std::string &path, file_base::flags open_flags)
@@ -210,7 +210,7 @@ basic_stream_file(const executor_type &ex,
    * @param open_flags A set of flags that determine how the file should be
    * opened.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 template<typename ExecutionContext>
 basic_stream_file(ExecutionContext &context,
@@ -239,7 +239,7 @@ basic_stream_file(ExecutionContext &context,
    *
    * @param native_file The new underlying file implementation.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 basic_stream_file(const executor_type &ex,
                   const native_handle_type &native_file)
@@ -259,7 +259,7 @@ basic_stream_file(const executor_type &ex,
    *
    * @param native_file The new underlying file implementation.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 template<typename ExecutionContext>
 basic_stream_file(ExecutionContext &context,
@@ -362,7 +362,7 @@ constraint_t<
    *
    * @returns The new position relative to the beginning of the file.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 uint64_t seek(int64_t offset, file_base::seek_basis whence) {
     xio::error_code ec;
@@ -400,7 +400,7 @@ uint64_t seek(int64_t offset, file_base::seek_basis whence,
    *
    * @returns The number of bytes written.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the end of the file was reached.
    *
    * @note The write_some operation may not transmit all of the data to the
@@ -523,7 +523,7 @@ auto async_write_some(const ConstBufferSequence &buffers,
    *
    * @returns The number of bytes read.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the end of the file was reached.
    *
    * @note The read_some operation may not read all of the requested number of

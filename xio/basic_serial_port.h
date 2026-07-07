@@ -218,7 +218,7 @@ basic_serial_port(ExecutionContext &context, const std::string &device,
    *
    * @param native_serial_port A native serial port.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 basic_serial_port(const executor_type &ex,
                   const native_handle_type &native_serial_port)
@@ -240,7 +240,7 @@ basic_serial_port(const executor_type &ex,
    *
    * @param native_serial_port A native serial port.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 template<typename ExecutionContext>
 basic_serial_port(ExecutionContext &context,
@@ -378,7 +378,7 @@ const lowest_layer_type &lowest_layer() const {
    *
    * @param device The platform-specific device name.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void open(const std::string &device) {
     xio::error_code ec;
@@ -407,7 +407,7 @@ ASIO_SYNC_OP_VOID open(const std::string &device,
    *
    * @param native_serial_port A native serial port.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void assign(const native_handle_type &native_serial_port) {
     xio::error_code ec;
@@ -442,7 +442,7 @@ bool is_open() const {
    * write operations will be cancelled immediately, and will complete with the
    * xio::error::operation_aborted error.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void close() {
     xio::error_code ec;
@@ -479,7 +479,7 @@ native_handle_type native_handle() {
    * to finish immediately, and the handlers for cancelled operations will be
    * passed the xio::error::operation_aborted error.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void cancel() {
     xio::error_code ec;
@@ -505,7 +505,7 @@ ASIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
    * This function causes a break sequence of platform-specific duration to be
    * sent out the serial port.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void send_break() {
     xio::error_code ec;
@@ -531,7 +531,7 @@ ASIO_SYNC_OP_VOID send_break(xio::error_code &ec) {
    *
    * @param option The option value to be set on the serial port.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @sa SettableSerialPortOption @n
    * xio::serial_port_base::baud_rate @n
@@ -576,7 +576,7 @@ ASIO_SYNC_OP_VOID set_option(const SettableSerialPortOption &option,
    *
    * @param option The option value to be obtained from the serial port.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @sa GettableSerialPortOption @n
    * xio::serial_port_base::baud_rate @n
@@ -625,7 +625,7 @@ ASIO_SYNC_OP_VOID get_option(GettableSerialPortOption &option,
    *
    * @returns The number of bytes written.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the connection was closed by the
    * peer.
    *
@@ -750,7 +750,7 @@ auto async_write_some(const ConstBufferSequence &buffers,
    *
    * @returns The number of bytes read.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the connection was closed by the
    * peer.
    *

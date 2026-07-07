@@ -154,7 +154,7 @@ namespace xio {
             static void invoke_receive_cancelled(F f) {
                 const xio::error_code e = error::channel_cancelled;
                 static_cast<F &&>(f)(
-                    std::make_exception_ptr(xio::system_error(e)));
+                    std::make_exception_ptr(std::system_error(e)));
             }
 
             typedef R receive_closed_signature(std::exception_ptr);
@@ -163,7 +163,7 @@ namespace xio {
             static void invoke_receive_closed(F f) {
                 const xio::error_code e = error::channel_closed;
                 static_cast<F &&>(f)(
-                    std::make_exception_ptr(xio::system_error(e)));
+                    std::make_exception_ptr(std::system_error(e)));
             }
         };
 
@@ -185,7 +185,7 @@ namespace xio {
             static void invoke_receive_cancelled(F f) {
                 const xio::error_code e = error::channel_cancelled;
                 static_cast<F &&>(f)(
-                    std::make_exception_ptr(xio::system_error(e)),
+                    std::make_exception_ptr(std::system_error(e)),
                     decay_t<Args>()...);
             }
 
@@ -195,7 +195,7 @@ namespace xio {
             static void invoke_receive_closed(F f) {
                 const xio::error_code e = error::channel_closed;
                 static_cast<F &&>(f)(
-                    std::make_exception_ptr(xio::system_error(e)),
+                    std::make_exception_ptr(std::system_error(e)),
                     decay_t<Args>()...);
             }
         };

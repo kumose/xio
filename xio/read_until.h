@@ -115,7 +115,7 @@ namespace xio {
  * @returns The number of bytes in the dynamic buffer sequence's get area up to
  * and including the delimiter.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  *
  * @note After a successful read_until operation, the dynamic buffer sequence
  * may contain additional data beyond the delimiter. An application will
@@ -347,7 +347,7 @@ namespace xio {
  * @returns The number of bytes in the dynamic_buffer's get area that
  * have been fully consumed by the match function.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  *
  * @note After a successful read_until operation, the dynamic buffer sequence
  * may contain additional data beyond that which matched the function object.
@@ -517,7 +517,7 @@ namespace xio {
  * @returns The number of bytes in the streambuf's get area up to and including
  * the delimiter.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  *
  * @note After a successful read_until operation, the streambuf may contain
  * additional data beyond the delimiter. An application will typically leave
@@ -604,7 +604,7 @@ namespace xio {
  * @returns The number of bytes in the streambuf's get area up to and including
  * the delimiter.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  *
  * @note After a successful read_until operation, the streambuf may contain
  * additional data beyond the delimiter. An application will typically leave
@@ -708,7 +708,7 @@ namespace xio {
  * @returns The number of bytes in the streambuf's get area that have been fully
  * consumed by the match function.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  *
  * @note After a successful read_until operation, the streambuf may contain
  * additional data beyond that which matched the function object. An application
@@ -862,7 +862,7 @@ namespace xio {
  * @returns The number of bytes in the dynamic buffer sequence's get area up to
  * and including the delimiter.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  *
  * @note After a successful read_until operation, the dynamic buffer sequence
  * may contain additional data beyond the delimiter. An application will
@@ -1077,7 +1077,7 @@ namespace xio {
  * @returns The number of bytes in the dynamic_buffer's get area that
  * have been fully consumed by the match function.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  *
  * @note After a successful read_until operation, the dynamic buffer sequence
  * may contain additional data beyond that which matched the function object.

@@ -276,7 +276,7 @@ namespace xio {
    * @param v A bitmask of peer verification modes. See @ref verify_mode for
    * available values.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_set_verify.
    */
@@ -312,7 +312,7 @@ namespace xio {
    * @param depth Maximum depth for the certificate chain verification that
    * shall be allowed.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_set_verify_depth.
    */
@@ -354,7 +354,7 @@ namespace xio {
    * The return value of the callback is true if the certificate has passed
    * verification, false otherwise.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_set_verify.
    */
@@ -399,7 +399,7 @@ namespace xio {
    * @param type The type of handshaking to be performed, i.e. as a client or as
    * a server.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
             void handshake(handshake_type type) {
                 xio::error_code ec;
@@ -433,7 +433,7 @@ namespace xio {
    *
    * @param buffers The buffered data to be reused for the handshake.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
             template<typename ConstBufferSequence>
             void handshake(handshake_type type, const ConstBufferSequence &buffers) {
@@ -577,7 +577,7 @@ namespace xio {
    * This function is used to shut down SSL on the stream. The function call
    * will block until SSL has been shut down or an error occurs.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
             void shutdown() {
                 xio::error_code ec;
@@ -654,7 +654,7 @@ namespace xio {
    *
    * @returns The number of bytes written.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note The write_some operation may not transmit all of the data to the
    * peer. Consider using the @ref write function if you need to ensure that all
@@ -759,7 +759,7 @@ namespace xio {
    *
    * @returns The number of bytes read.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note The read_some operation may not read all of the requested number of
    * bytes. Consider using the @ref read function if you need to ensure that the

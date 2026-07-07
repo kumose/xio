@@ -146,7 +146,7 @@ namespace xio {
    *
    * @param protocol An object specifying protocol parameters to be used.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         basic_socket(const executor_type &ex, const protocol_type &protocol)
             : impl_(0, ex) {
@@ -165,7 +165,7 @@ namespace xio {
    *
    * @param protocol An object specifying protocol parameters to be used.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         template<typename ExecutionContext>
         basic_socket(ExecutionContext &context, const protocol_type &protocol,
@@ -192,7 +192,7 @@ namespace xio {
    * @param endpoint An endpoint on the local machine to which the socket will
    * be bound.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         basic_socket(const executor_type &ex, const endpoint_type &endpoint)
             : impl_(0, ex) {
@@ -218,7 +218,7 @@ namespace xio {
    * @param endpoint An endpoint on the local machine to which the socket will
    * be bound.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         template<typename ExecutionContext>
         basic_socket(ExecutionContext &context, const endpoint_type &endpoint,
@@ -245,7 +245,7 @@ namespace xio {
    *
    * @param native_socket A native socket.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         basic_socket(const executor_type &ex, const protocol_type &protocol,
                      const native_handle_type &native_socket)
@@ -268,7 +268,7 @@ namespace xio {
    *
    * @param native_socket A native socket.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         template<typename ExecutionContext>
         basic_socket(ExecutionContext &context, const protocol_type &protocol,
@@ -394,7 +394,7 @@ namespace xio {
    *
    * @param protocol An object specifying protocol parameters to be used.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * @code
@@ -441,7 +441,7 @@ namespace xio {
    *
    * @param native_socket A native socket.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         void assign(const protocol_type &protocol,
                     const native_handle_type &native_socket) {
@@ -479,7 +479,7 @@ namespace xio {
    * or connect operations will be cancelled immediately, and will complete
    * with the xio::error::operation_aborted error.
    *
-   * @throws xio::system_error Thrown on failure. Note that, even if
+   * @throws std::system_error Thrown on failure. Note that, even if
    * the function indicates an error, the underlying descriptor is closed.
    *
    * @note For portable behaviour with respect to graceful closure of a
@@ -527,7 +527,7 @@ namespace xio {
    * will be passed the xio::error::operation_aborted error. Ownership
    * of the native socket is then transferred to the caller.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note This function is unsupported on Windows versions prior to Windows
    * 8.1, and will fail with xio::error::operation_not_supported on
@@ -586,7 +586,7 @@ namespace xio {
    * operations to finish immediately, and the handlers for cancelled operations
    * will be passed the xio::error::operation_aborted error.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls to cancel() will always fail with
    * xio::error::operation_not_supported when run on Windows XP, Windows
@@ -681,7 +681,7 @@ namespace xio {
    * @return A bool indicating whether the socket is at the out-of-band data
    * mark.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         bool at_mark() const {
             xio::error_code ec;
@@ -712,7 +712,7 @@ namespace xio {
    * @return The number of bytes that may be read without blocking, or 0 if an
    * error occurs.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         std::size_t available() const {
             xio::error_code ec;
@@ -744,7 +744,7 @@ namespace xio {
    * @param endpoint An endpoint on the local machine to which the socket will
    * be bound.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * @code
@@ -802,7 +802,7 @@ namespace xio {
    * @param peer_endpoint The remote endpoint to which the socket will be
    * connected.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * @code
@@ -947,7 +947,7 @@ namespace xio {
    *
    * @param option The new option value to be set on the socket.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @sa SettableSocketOption @n
    * xio::socket_base::broadcast @n
@@ -1034,7 +1034,7 @@ namespace xio {
    *
    * @param option The option value to be obtained from the socket.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @sa GettableSocketOption @n
    * xio::socket_base::broadcast @n
@@ -1123,7 +1123,7 @@ namespace xio {
    *
    * @param command The IO control command to be performed on the socket.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @sa IoControlCommand @n
    * xio::socket_base::bytes_readable @n
@@ -1202,7 +1202,7 @@ namespace xio {
    * operation immediately. If @c false, synchronous operations will block
    * until complete.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note The non-blocking mode has no effect on the behaviour of asynchronous
    * operations. Asynchronous operations will never fail with the error
@@ -1331,7 +1331,7 @@ namespace xio {
    * mode and direct system calls may fail with xio::error::would_block
    * (or the equivalent system error).
    *
-   * @throws xio::system_error Thrown on failure. If the @c mode is
+   * @throws std::system_error Thrown on failure. If the @c mode is
    * @c false, but the current value of @c non_blocking() is @c true, this
    * function fails with xio::error::invalid_argument, as the
    * combination does not make sense.
@@ -1511,7 +1511,7 @@ namespace xio {
    *
    * @returns An object that represents the local endpoint of the socket.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * @code
@@ -1559,7 +1559,7 @@ namespace xio {
    *
    * @returns An object that represents the remote endpoint of the socket.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * @code
@@ -1608,7 +1608,7 @@ namespace xio {
    *
    * @param what Determines what types of operation will no longer be allowed.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * Shutting down the send side of the socket:

@@ -31,7 +31,7 @@
 #include <utility>
 #include <xio/disposition.h>
 #include <xio/error.h>
-#include <xio/system_error.h>
+#include <system_error>
 
 
 #include <xio/detail/push_options.h>

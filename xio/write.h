@@ -72,7 +72,7 @@ namespace xio {
  *
  * @returns The number of bytes transferred.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  *
  * @par Example
  * To write a single data buffer use the @ref buffer function as follows:
@@ -171,7 +171,7 @@ namespace xio {
  *
  * @returns The number of bytes transferred.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  *
  * @par Example
  * To write a single data buffer use the @ref buffer function as follows:
@@ -264,7 +264,7 @@ namespace xio {
  *
  * @returns The number of bytes transferred.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  *
  * @note This overload is equivalent to calling:
  * @code xio::write(
@@ -353,7 +353,7 @@ namespace xio {
  *
  * @returns The number of bytes transferred.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  */
     template<typename SyncWriteStream, typename DynamicBuffer_v1,
         typename CompletionCondition>
@@ -444,7 +444,7 @@ namespace xio {
  *
  * @returns The number of bytes transferred.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  *
  * @note This overload is equivalent to calling:
  * @code xio::write(
@@ -517,7 +517,7 @@ namespace xio {
  *
  * @returns The number of bytes transferred.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  */
     template<typename SyncWriteStream, typename Allocator,
         typename CompletionCondition>
@@ -595,7 +595,7 @@ namespace xio {
  *
  * @returns The number of bytes transferred.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  *
  * @note This overload is equivalent to calling:
  * @code xio::write(
@@ -676,7 +676,7 @@ namespace xio {
  *
  * @returns The number of bytes transferred.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  */
     template<typename SyncWriteStream, typename DynamicBuffer_v2,
         typename CompletionCondition>

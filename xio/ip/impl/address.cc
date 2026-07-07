@@ -22,7 +22,7 @@
 #include <xio/error.h>
 #include <xio/ip/address.h>
 #include <xio/ip/bad_address_cast.h>
-#include <xio/system_error.h>
+#include <system_error>
 
 #include <xio/detail/push_options.h>
 

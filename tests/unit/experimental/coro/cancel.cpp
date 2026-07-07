@@ -98,7 +98,7 @@ void coro_throw_cancel()
     if (res_ex)
       std::rethrow_exception(res_ex);
   }
-  catch (xio::system_error& se)
+  catch (std::system_error& se)
   {
     ASIO_CHECK(se.code() == xio::error::operation_aborted);
   }

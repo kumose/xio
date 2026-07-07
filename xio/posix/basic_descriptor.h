@@ -135,7 +135,7 @@ explicit basic_descriptor(ExecutionContext & context,
    *
    * @param native_descriptor A native descriptor.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 basic_descriptor(const executor_type &ex,
                  const native_handle_type &native_descriptor)
@@ -157,7 +157,7 @@ basic_descriptor(const executor_type &ex,
    *
    * @param native_descriptor A native descriptor.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 template<typename ExecutionContext>
 basic_descriptor(ExecutionContext &context,
@@ -285,7 +285,7 @@ const lowest_layer_type &lowest_layer() const {
    *
    * @param native_descriptor A native descriptor.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void assign(const native_handle_type &native_descriptor) {
     xio::error_code ec;
@@ -320,7 +320,7 @@ bool is_open() const {
    * write operations will be cancelled immediately, and will complete with the
    * xio::error::operation_aborted error.
    *
-   * @throws xio::system_error Thrown on failure. Note that, even if
+   * @throws std::system_error Thrown on failure. Note that, even if
    * the function indicates an error, the underlying descriptor is closed.
    */
 void close() {
@@ -373,7 +373,7 @@ native_handle_type release() {
    * to finish immediately, and the handlers for cancelled operations will be
    * passed the xio::error::operation_aborted error.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void cancel() {
     xio::error_code ec;
@@ -400,7 +400,7 @@ ASIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
    *
    * @param command The IO control command to be performed on the descriptor.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @sa IoControlCommand @n
    * xio::posix::descriptor_base::bytes_readable @n
@@ -479,7 +479,7 @@ bool non_blocking() const {
    * requested operation immediately. If @c false, synchronous operations will
    * block until complete.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note The non-blocking mode has no effect on the behaviour of asynchronous
    * operations. Asynchronous operations will never fail with the error
@@ -539,7 +539,7 @@ bool native_non_blocking() const {
    * mode and direct system calls may fail with xio::error::would_block
    * (or the equivalent system error).
    *
-   * @throws xio::system_error Thrown on failure. If the @c mode is
+   * @throws std::system_error Thrown on failure. If the @c mode is
    * @c false, but the current value of @c non_blocking() is @c true, this
    * function fails with xio::error::invalid_argument, as the
    * combination does not make sense.

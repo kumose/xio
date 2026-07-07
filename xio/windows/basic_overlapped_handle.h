@@ -124,7 +124,7 @@ explicit basic_overlapped_handle(ExecutionContext & context,
    *
    * @param native_handle The new underlying handle implementation.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 basic_overlapped_handle(const executor_type &ex,
                         const native_handle_type &native_handle)
@@ -145,7 +145,7 @@ basic_overlapped_handle(const executor_type &ex,
    *
    * @param native_handle The new underlying handle implementation.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 template<typename ExecutionContext>
 basic_overlapped_handle(ExecutionContext &context,
@@ -271,7 +271,7 @@ const lowest_layer_type &lowest_layer() const {
    *
    * @param handle A native handle.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void assign(const native_handle_type &handle) {
     xio::error_code ec;
@@ -304,7 +304,7 @@ bool is_open() const {
    * operations will be cancelled immediately, and will complete with the
    * xio::error::operation_aborted error.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void close() {
     xio::error_code ec;
@@ -332,7 +332,7 @@ ASIO_SYNC_OP_VOID close(xio::error_code &ec) {
    * xio::error::operation_aborted error. Ownership of the native handle
    * is then transferred to the caller.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note This function is unsupported on Windows versions prior to Windows
    * 8.1, and will fail with xio::error::operation_not_supported on
@@ -391,7 +391,7 @@ native_handle_type native_handle() {
    * to finish immediately, and the handlers for cancelled operations will be
    * passed the xio::error::operation_aborted error.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void cancel() {
     xio::error_code ec;

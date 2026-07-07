@@ -106,7 +106,7 @@ namespace xio {
                 std::tuple<xio::error_code, Args...> &&args) {
                 if (std::get < 0 > (args))
                     xio::detail::throw_exception(
-                        xio::system_error(std::get < 0 > (args)));
+                        std::system_error(std::get < 0 > (args)));
 
                 return std::apply(
                     [](auto, auto &&... rest) {
@@ -130,7 +130,7 @@ namespace xio {
                 std::tuple<xio::error_code> &&args) {
                 if (std::get < 0 > (args))
                     xio::detail::throw_exception(
-                        xio::system_error(std::get < 0 > (args)));
+                        std::system_error(std::get < 0 > (args)));
             }
 
             inline auto coro_interpret_result(std::tuple<std::exception_ptr> &&args) {
@@ -142,7 +142,7 @@ namespace xio {
             auto coro_interpret_result(std::tuple<xio::error_code, Arg> &&args) {
                 if (std::get < 0 > (args))
                     xio::detail::throw_exception(
-                        xio::system_error(std::get < 0 > (args)));
+                        std::system_error(std::get < 0 > (args)));
                 return std::get < 1 > (std::move(args));
             }
         } // namespace detail

@@ -233,7 +233,7 @@ struct co_composed_state_default_cancellation_on_suspend_impl<Executors,
 
                 std::move(handler)(
                     std::make_exception_ptr(
-                        xio::system_error(
+                        std::system_error(
                             xio::error::operation_aborted, "co_await")),
                     Args{}...);
             };

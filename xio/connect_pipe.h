@@ -48,7 +48,7 @@ namespace xio {
      *
      * @param write_end The write end of the pipe.
      *
-     * @throws xio::system_error Thrown on failure.
+     * @throws std::system_error Thrown on failure.
      */
     template<typename Executor1, typename Executor2>
     void connect_pipe(basic_readable_pipe<Executor1> &read_end,
@@ -60,7 +60,7 @@ namespace xio {
      *
      * @param write_end The write end of the pipe.
      *
-     * @throws xio::system_error Thrown on failure.
+     * @throws std::system_error Thrown on failure.
      *
      * @param ec Set to indicate what error occurred, if any.
      */

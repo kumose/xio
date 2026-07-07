@@ -30,8 +30,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     /// Exception thrown when trying to access an empty polymorphic executor.
     class bad_executor
             : public std::exception {
@@ -345,8 +343,6 @@ namespace xio {
         impl_base *impl_;
 #endif // !defined(GENERATING_DOCUMENTATION)
     };
-
-
 } // namespace xio
 
 ASIO_USES_ALLOCATOR(xio::executor)

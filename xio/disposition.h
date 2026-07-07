@@ -19,7 +19,7 @@
 #include <xio/detail/throw_exception.h>
 #include <xio/detail/type_traits.h>
 #include <xio/error_code.h>
-#include <xio/system_error.h>
+#include <system_error>
 #include <exception>
 
 #include <xio/detail/push_options.h>
@@ -138,13 +138,13 @@ namespace xio {
         }
 
         static void throw_exception(const xio::error_code &ec) {
-            detail::throw_exception(xio::system_error(ec));
+            detail::throw_exception(std::system_error(ec));
         }
 
         static std::exception_ptr to_exception_ptr(
             const xio::error_code &ec) noexcept {
             return ec
-                       ? std::make_exception_ptr(xio::system_error(ec))
+                       ? std::make_exception_ptr(std::system_error(ec))
                        : nullptr;
         }
     };

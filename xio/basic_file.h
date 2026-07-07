@@ -273,7 +273,7 @@ explicit basic_file(ExecutionContext &context,
    *
    * @param native_file A native file handle.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 basic_file(const executor_type &ex, const native_handle_type &native_file)
     : impl_(0, ex) {
@@ -293,7 +293,7 @@ basic_file(const executor_type &ex, const native_handle_type &native_file)
    *
    * @param native_file A native file.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 template<typename ExecutionContext>
 basic_file(ExecutionContext &context, const native_handle_type &native_file,
@@ -393,7 +393,7 @@ const executor_type &get_executor() noexcept {
    * @param open_flags A set of flags that determine how the file should be
    * opened.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * Exactly one of the following file_base::flags values must be specified:
    *
@@ -472,7 +472,7 @@ ASIO_SYNC_OP_VOID open(const char *path,
    * @param open_flags A set of flags that determine how the file should be
    * opened.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * Exactly one of the following file_base::flags values must be specified:
    *
@@ -550,7 +550,7 @@ ASIO_SYNC_OP_VOID open(const std::string &path,
    *
    * @param native_file A native file.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void assign(const native_handle_type &native_file) {
     xio::error_code ec;
@@ -585,7 +585,7 @@ bool is_open() const {
    * operations will be cancelled immediately, and will complete with the
    * xio::error::operation_aborted error.
    *
-   * @throws xio::system_error Thrown on failure. Note that, even if
+   * @throws std::system_error Thrown on failure. Note that, even if
    * the function indicates an error, the underlying descriptor is closed.
    */
 void close() {
@@ -627,7 +627,7 @@ ASIO_SYNC_OP_VOID close(xio::error_code &ec) {
    * operations will be passed the xio::error::operation_aborted error.
    * Ownership of the native file is then transferred to the caller.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note This function is unsupported on Windows versions prior to Windows
    * 8.1, and will fail with xio::error::operation_not_supported on
@@ -686,7 +686,7 @@ native_handle_type native_handle() {
    * operations to finish immediately, and the handlers for cancelled
    * operations will be passed the xio::error::operation_aborted error.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls to cancel() will always fail with
    * xio::error::operation_not_supported when run on Windows XP, Windows
@@ -765,7 +765,7 @@ ASIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
 /**
    * This function determines the size of the file, in bytes.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 uint64_t size() const {
     xio::error_code ec;
@@ -793,7 +793,7 @@ uint64_t size(xio::error_code &ec) const {
    *
    * @param n The new size for the file.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void resize(uint64_t n) {
     xio::error_code ec;
@@ -822,7 +822,7 @@ ASIO_SYNC_OP_VOID resize(uint64_t n, xio::error_code &ec) {
    * This function synchronises the file data and metadata to disk. Note that
    * the semantics of this synchronisation vary between operation systems.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void sync_all() {
     xio::error_code ec;
@@ -847,7 +847,7 @@ ASIO_SYNC_OP_VOID sync_all(xio::error_code &ec) {
    * This function synchronises the file data to disk. Note that the semantics
    * of this synchronisation vary between operation systems.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 void sync_data() {
     xio::error_code ec;

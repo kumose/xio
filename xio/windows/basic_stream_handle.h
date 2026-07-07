@@ -119,7 +119,7 @@ explicit basic_stream_handle(ExecutionContext & context,
    *
    * @param handle The new underlying handle implementation.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 basic_stream_handle(const executor_type &ex, const native_handle_type &handle)
     : basic_overlapped_handle<Executor>(ex, handle) {
@@ -136,7 +136,7 @@ basic_stream_handle(const executor_type &ex, const native_handle_type &handle)
    *
    * @param handle The new underlying handle implementation.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
 template<typename ExecutionContext>
 basic_stream_handle(ExecutionContext &context,
@@ -227,7 +227,7 @@ constraint_t<
    *
    * @returns The number of bytes written.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the connection was closed by the
    * peer.
    *
@@ -351,7 +351,7 @@ auto async_write_some(const ConstBufferSequence &buffers,
    *
    * @returns The number of bytes read.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the connection was closed by the
    * peer.
    *

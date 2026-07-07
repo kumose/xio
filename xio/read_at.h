@@ -74,7 +74,7 @@ namespace xio {
  *
  * @returns The number of bytes transferred.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  *
  * @par Example
  * To read into a single data buffer use the @ref buffer function as follows:
@@ -178,7 +178,7 @@ namespace xio {
  *
  * @returns The number of bytes transferred.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  *
  * @par Example
  * To read into a single data buffer use the @ref buffer function as follows:
@@ -273,7 +273,7 @@ namespace xio {
  *
  * @returns The number of bytes transferred.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  *
  * @note This overload is equivalent to calling:
  * @code xio::read_at(
@@ -352,7 +352,7 @@ namespace xio {
  *
  * @returns The number of bytes transferred.
  *
- * @throws xio::system_error Thrown on failure.
+ * @throws std::system_error Thrown on failure.
  */
     template<typename SyncRandomAccessReadDevice, typename Allocator,
         typename CompletionCondition>

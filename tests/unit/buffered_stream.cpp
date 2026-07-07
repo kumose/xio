@@ -19,7 +19,7 @@
 #include <xio/buffer.h>
 #include <xio/io_context.h>
 #include <xio/ip/tcp.h>
-#include <xio/system_error.h>
+#include <system_error>
 #include "unit_test.hpp"
 #include <array>
 
@@ -219,7 +219,7 @@ void handle_write(const xio::error_code& e,
 {
   ASIO_CHECK(!e);
   if (e)
-    throw xio::system_error(e); // Terminate test.
+    throw std::system_error(e); // Terminate test.
   *total_bytes_written += bytes_transferred;
 }
 
@@ -234,7 +234,7 @@ void handle_read(const xio::error_code& e,
 {
   ASIO_CHECK(!e);
   if (e)
-    throw xio::system_error(e); // Terminate test.
+    throw std::system_error(e); // Terminate test.
   *total_bytes_read += bytes_transferred;
 }
 

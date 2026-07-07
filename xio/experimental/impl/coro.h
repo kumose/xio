@@ -109,25 +109,25 @@ namespace xio {
             struct coro_error<std::exception_ptr> {
                 static std::exception_ptr invalid() {
                     return std::make_exception_ptr(
-                        xio::system_error(
+                        std::system_error(
                             coro_error<xio::error_code>::invalid()));
                 }
 
                 static std::exception_ptr cancelled() {
                     return std::make_exception_ptr(
-                        xio::system_error(
+                        std::system_error(
                             coro_error<xio::error_code>::cancelled()));
                 }
 
                 static std::exception_ptr interrupted() {
                     return std::make_exception_ptr(
-                        xio::system_error(
+                        std::system_error(
                             coro_error<xio::error_code>::interrupted()));
                 }
 
                 static std::exception_ptr done() {
                     return std::make_exception_ptr(
-                        xio::system_error(
+                        std::system_error(
                             coro_error<xio::error_code>::done()));
                 }
             };

@@ -233,7 +233,7 @@ void redirect_disposition_to_exception_ptr_test()
   {
     std::rethrow_exception(ex);
   }
-  catch (const xio::system_error& e)
+  catch (const std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::operation_aborted);
   }
@@ -266,7 +266,7 @@ void redirect_disposition_to_exception_ptr_test()
   {
     std::rethrow_exception(ex);
   }
-  catch (const xio::system_error& e)
+  catch (const std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::operation_aborted);
   }
@@ -330,7 +330,7 @@ void partial_redirect_disposition_to_exception_ptr_test()
   {
     std::rethrow_exception(ex);
   }
-  catch (const xio::system_error& e)
+  catch (const std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::operation_aborted);
   }
@@ -362,7 +362,7 @@ void partial_redirect_disposition_to_exception_ptr_test()
   {
     std::rethrow_exception(ex);
   }
-  catch (const xio::system_error& e)
+  catch (const std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::operation_aborted);
   }
@@ -394,7 +394,7 @@ void partial_redirect_disposition_to_exception_ptr_test()
   {
     std::rethrow_exception(ex);
   }
-  catch (const xio::system_error& e)
+  catch (const std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::operation_aborted);
   }

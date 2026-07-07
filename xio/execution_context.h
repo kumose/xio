@@ -213,7 +213,7 @@ namespace xio {
    *
    * @param event A fork-related event.
    *
-   * @throws xio::system_error Thrown on failure. If the notification
+   * @throws std::system_error Thrown on failure. If the notification
    * fails the execution_context object should no longer be used and should be
    * destroyed.
    *

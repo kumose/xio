@@ -91,7 +91,7 @@ namespace xio {
    * the context_base class. The specified options, if currently enabled on the
    * context, are cleared.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_clear_options.
    */
@@ -120,7 +120,7 @@ namespace xio {
    * the context_base class. The options are bitwise-ored with any existing
    * value for the options.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_set_options.
    */
@@ -149,7 +149,7 @@ namespace xio {
    * @param v A bitmask of peer verification modes. See @ref verify_mode for
    * available values.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_set_verify.
    */
@@ -178,7 +178,7 @@ namespace xio {
    * @param depth Maximum depth for the certificate chain verification that
    * shall be allowed.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_set_verify_depth.
    */
@@ -213,7 +213,7 @@ namespace xio {
    * The return value of the callback is true if the certificate has passed
    * verification, false otherwise.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_set_verify.
    */
@@ -250,7 +250,7 @@ namespace xio {
    * @param filename The name of a file containing certification authority
    * certificates in PEM format.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_load_verify_locations.
    */
@@ -279,7 +279,7 @@ namespace xio {
    * @param ca The buffer containing the certification authority certificate.
    * The certificate must use the PEM format.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_get_cert_store and @c X509_STORE_add_cert.
    */
@@ -307,7 +307,7 @@ namespace xio {
    * system-dependent directories for locating certification authority
    * certificates.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_set_default_verify_paths.
    */
@@ -337,7 +337,7 @@ namespace xio {
    *
    * @param path The name of a directory containing the certificates.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_load_verify_locations.
    */
@@ -368,7 +368,7 @@ namespace xio {
    *
    * @param format The certificate format (ASN.1 or PEM).
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_use_certificate or SSL_CTX_use_certificate_ASN1.
    */
@@ -399,7 +399,7 @@ namespace xio {
    *
    * @param format The file format (ASN.1 or PEM).
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_use_certificate_file.
    */
@@ -430,7 +430,7 @@ namespace xio {
    * @param chain The buffer containing the certificate chain. The certificate
    * chain must use the PEM format.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_use_certificate and SSL_CTX_add_extra_chain_cert.
    */
@@ -459,7 +459,7 @@ namespace xio {
    * @param filename The name of the file containing the certificate. The file
    * must use the PEM format.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_use_certificate_chain_file.
    */
@@ -488,7 +488,7 @@ namespace xio {
    *
    * @param format The private key format (ASN.1 or PEM).
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_use_PrivateKey or SSL_CTX_use_PrivateKey_ASN1.
    */
@@ -519,7 +519,7 @@ namespace xio {
    *
    * @param format The file format (ASN.1 or PEM).
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_use_PrivateKey_file.
    */
@@ -551,7 +551,7 @@ namespace xio {
    *
    * @param format The private key format (ASN.1 or PEM).
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_use_RSAPrivateKey or SSL_CTX_use_RSAPrivateKey_ASN1.
    */
@@ -584,7 +584,7 @@ namespace xio {
    *
    * @param format The file format (ASN.1 or PEM).
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_use_RSAPrivateKey_file.
    */
@@ -617,7 +617,7 @@ namespace xio {
    * @param dh The memory buffer containing the Diffie-Hellman parameters. The
    * buffer must use the PEM format.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_set_tmp_dh.
    */
@@ -647,7 +647,7 @@ namespace xio {
    * @param filename The name of the file containing the Diffie-Hellman
    * parameters. The file must use the PEM format.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_set_tmp_dh.
    */
@@ -681,7 +681,7 @@ namespace xio {
    * ); @endcode
    * The return value of the callback is a string containing the password.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note Calls @c SSL_CTX_set_default_passwd_cb.
    */

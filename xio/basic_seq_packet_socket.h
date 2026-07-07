@@ -128,7 +128,7 @@ namespace xio {
    *
    * @param protocol An object specifying protocol parameters to be used.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         basic_seq_packet_socket(const executor_type &ex,
                                 const protocol_type &protocol)
@@ -147,7 +147,7 @@ namespace xio {
    *
    * @param protocol An object specifying protocol parameters to be used.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         template<typename ExecutionContext>
         basic_seq_packet_socket(ExecutionContext &context,
@@ -172,7 +172,7 @@ namespace xio {
    * @param endpoint An endpoint on the local machine to which the sequenced
    * packet socket will be bound.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         basic_seq_packet_socket(const executor_type &ex,
                                 const endpoint_type &endpoint)
@@ -193,7 +193,7 @@ namespace xio {
    * @param endpoint An endpoint on the local machine to which the sequenced
    * packet socket will be bound.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         template<typename ExecutionContext>
         basic_seq_packet_socket(ExecutionContext &context,
@@ -216,7 +216,7 @@ namespace xio {
    *
    * @param native_socket The new underlying socket implementation.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         basic_seq_packet_socket(const executor_type &ex,
                                 const protocol_type &protocol, const native_handle_type &native_socket)
@@ -236,7 +236,7 @@ namespace xio {
    *
    * @param native_socket The new underlying socket implementation.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         template<typename ExecutionContext>
         basic_seq_packet_socket(ExecutionContext &context,
@@ -344,7 +344,7 @@ namespace xio {
    *
    * @returns The number of bytes sent.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * To send a single data buffer use the @ref buffer function as follows:
@@ -470,7 +470,7 @@ namespace xio {
    *
    * @returns The number of bytes received.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the connection was closed by the
    * peer.
    *
@@ -511,7 +511,7 @@ namespace xio {
    *
    * @returns The number of bytes received.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the connection was closed by the
    * peer.
    *

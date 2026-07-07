@@ -132,7 +132,7 @@ namespace xio {
    *
    * @param protocol An object specifying protocol parameters to be used.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         basic_stream_socket(const executor_type &ex, const protocol_type &protocol)
             : basic_socket<Protocol, Executor>(ex, protocol) {
@@ -149,7 +149,7 @@ namespace xio {
    *
    * @param protocol An object specifying protocol parameters to be used.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         template<typename ExecutionContext>
         basic_stream_socket(ExecutionContext &context, const protocol_type &protocol,
@@ -173,7 +173,7 @@ namespace xio {
    * @param endpoint An endpoint on the local machine to which the stream
    * socket will be bound.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         basic_stream_socket(const executor_type &ex, const endpoint_type &endpoint)
             : basic_socket<Protocol, Executor>(ex, endpoint) {
@@ -193,7 +193,7 @@ namespace xio {
    * @param endpoint An endpoint on the local machine to which the stream
    * socket will be bound.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         template<typename ExecutionContext>
         basic_stream_socket(ExecutionContext &context, const endpoint_type &endpoint,
@@ -215,7 +215,7 @@ namespace xio {
    *
    * @param native_socket The new underlying socket implementation.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         basic_stream_socket(const executor_type &ex,
                             const protocol_type &protocol, const native_handle_type &native_socket)
@@ -235,7 +235,7 @@ namespace xio {
    *
    * @param native_socket The new underlying socket implementation.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         template<typename ExecutionContext>
         basic_stream_socket(ExecutionContext &context,
@@ -336,7 +336,7 @@ namespace xio {
    *
    * @returns The number of bytes sent.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note The send operation may not transmit all of the data to the peer.
    * Consider using the @ref write function if you need to ensure that all data
@@ -372,7 +372,7 @@ namespace xio {
    *
    * @returns The number of bytes sent.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note The send operation may not transmit all of the data to the peer.
    * Consider using the @ref write function if you need to ensure that all data
@@ -567,7 +567,7 @@ namespace xio {
    *
    * @returns The number of bytes received.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the connection was closed by the
    * peer.
    *
@@ -606,7 +606,7 @@ namespace xio {
    *
    * @returns The number of bytes received.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the connection was closed by the
    * peer.
    *
@@ -808,7 +808,7 @@ namespace xio {
    *
    * @returns The number of bytes written.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the connection was closed by the
    * peer.
    *
@@ -934,7 +934,7 @@ namespace xio {
    *
    * @returns The number of bytes read.
    *
-   * @throws xio::system_error Thrown on failure. An error code of
+   * @throws std::system_error Thrown on failure. An error code of
    * xio::error::eof indicates that the connection was closed by the
    * peer.
    *

@@ -52,7 +52,7 @@ void use_future_0_test()
     f.get();
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::operation_aborted);
   }
@@ -123,7 +123,7 @@ void use_future_1_test()
     ASIO_CHECK(false);
     (void)i;
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::operation_aborted);
   }
@@ -202,7 +202,7 @@ void use_future_2_test()
     ASIO_CHECK(false);
     (void)t;
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::operation_aborted);
   }
@@ -288,7 +288,7 @@ void use_future_3_test()
     ASIO_CHECK(false);
     (void)t;
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::operation_aborted);
   }

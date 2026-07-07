@@ -136,7 +136,7 @@ void test_connect_range()
     result = xio::connect(socket, endpoints);
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::not_found);
   }
@@ -202,7 +202,7 @@ void test_connect_range_cond()
     result = xio::connect(socket, endpoints, true_cond_1);
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::not_found);
   }
@@ -212,7 +212,7 @@ void test_connect_range_cond()
     result = xio::connect(socket, endpoints, true_cond_2());
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::not_found);
   }
@@ -222,7 +222,7 @@ void test_connect_range_cond()
     result = xio::connect(socket, endpoints, legacy_true_cond_1);
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::not_found);
   }
@@ -232,7 +232,7 @@ void test_connect_range_cond()
     result = xio::connect(socket, endpoints, legacy_true_cond_2());
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::not_found);
   }
@@ -242,31 +242,7 @@ void test_connect_range_cond()
     result = xio::connect(socket, endpoints, false_cond);
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
-  {
-    ASIO_CHECK(e.code() == xio::error::not_found);
-  }
-
-  endpoints.push_back(sink.target_endpoint());
-
-  result = xio::connect(socket, endpoints, true_cond_1);
-  ASIO_CHECK(result == endpoints[0]);
-
-  result = xio::connect(socket, endpoints, true_cond_2());
-  ASIO_CHECK(result == endpoints[0]);
-
-  result = xio::connect(socket, endpoints, legacy_true_cond_1);
-  ASIO_CHECK(result == endpoints[0]);
-
-  result = xio::connect(socket, endpoints, legacy_true_cond_2());
-  ASIO_CHECK(result == endpoints[0]);
-
-  try
-  {
-    result = xio::connect(socket, endpoints, false_cond);
-    ASIO_CHECK(false);
-  }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::not_found);
   }
@@ -290,7 +266,31 @@ void test_connect_range_cond()
     result = xio::connect(socket, endpoints, false_cond);
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
+  {
+    ASIO_CHECK(e.code() == xio::error::not_found);
+  }
+
+  endpoints.push_back(sink.target_endpoint());
+
+  result = xio::connect(socket, endpoints, true_cond_1);
+  ASIO_CHECK(result == endpoints[0]);
+
+  result = xio::connect(socket, endpoints, true_cond_2());
+  ASIO_CHECK(result == endpoints[0]);
+
+  result = xio::connect(socket, endpoints, legacy_true_cond_1);
+  ASIO_CHECK(result == endpoints[0]);
+
+  result = xio::connect(socket, endpoints, legacy_true_cond_2());
+  ASIO_CHECK(result == endpoints[0]);
+
+  try
+  {
+    result = xio::connect(socket, endpoints, false_cond);
+    ASIO_CHECK(false);
+  }
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::not_found);
   }
@@ -314,7 +314,7 @@ void test_connect_range_cond()
     result = xio::connect(socket, endpoints, false_cond);
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::not_found);
   }
@@ -430,7 +430,7 @@ void test_connect_iter()
     result = xio::connect(socket, cendpoints.begin(), cendpoints.end());
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::not_found);
   }
@@ -503,7 +503,7 @@ void test_connect_iter_cond()
         cendpoints.end(), true_cond_1);
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::not_found);
   }
@@ -514,7 +514,7 @@ void test_connect_iter_cond()
         cendpoints.end(), true_cond_2());
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::not_found);
   }
@@ -525,7 +525,7 @@ void test_connect_iter_cond()
         cendpoints.end(), legacy_true_cond_1);
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::not_found);
   }
@@ -536,7 +536,7 @@ void test_connect_iter_cond()
         cendpoints.end(), legacy_true_cond_2());
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::not_found);
   }
@@ -547,36 +547,7 @@ void test_connect_iter_cond()
         cendpoints.end(), false_cond);
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
-  {
-    ASIO_CHECK(e.code() == xio::error::not_found);
-  }
-
-  endpoints.push_back(sink.target_endpoint());
-
-  result = xio::connect(socket, cendpoints.begin(),
-      cendpoints.end(), true_cond_1);
-  ASIO_CHECK(result == cendpoints.begin());
-
-  result = xio::connect(socket, cendpoints.begin(),
-      cendpoints.end(), true_cond_2());
-  ASIO_CHECK(result == cendpoints.begin());
-
-  result = xio::connect(socket, cendpoints.begin(),
-      cendpoints.end(), legacy_true_cond_1);
-  ASIO_CHECK(result == cendpoints.begin());
-
-  result = xio::connect(socket, cendpoints.begin(),
-      cendpoints.end(), legacy_true_cond_2());
-  ASIO_CHECK(result == cendpoints.begin());
-
-  try
-  {
-    result = xio::connect(socket, cendpoints.begin(),
-        cendpoints.end(), false_cond);
-    ASIO_CHECK(false);
-  }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::not_found);
   }
@@ -605,7 +576,36 @@ void test_connect_iter_cond()
         cendpoints.end(), false_cond);
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
+  {
+    ASIO_CHECK(e.code() == xio::error::not_found);
+  }
+
+  endpoints.push_back(sink.target_endpoint());
+
+  result = xio::connect(socket, cendpoints.begin(),
+      cendpoints.end(), true_cond_1);
+  ASIO_CHECK(result == cendpoints.begin());
+
+  result = xio::connect(socket, cendpoints.begin(),
+      cendpoints.end(), true_cond_2());
+  ASIO_CHECK(result == cendpoints.begin());
+
+  result = xio::connect(socket, cendpoints.begin(),
+      cendpoints.end(), legacy_true_cond_1);
+  ASIO_CHECK(result == cendpoints.begin());
+
+  result = xio::connect(socket, cendpoints.begin(),
+      cendpoints.end(), legacy_true_cond_2());
+  ASIO_CHECK(result == cendpoints.begin());
+
+  try
+  {
+    result = xio::connect(socket, cendpoints.begin(),
+        cendpoints.end(), false_cond);
+    ASIO_CHECK(false);
+  }
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::not_found);
   }
@@ -634,7 +634,7 @@ void test_connect_iter_cond()
         cendpoints.end(), false_cond);
     ASIO_CHECK(false);
   }
-  catch (xio::system_error& e)
+  catch (std::system_error& e)
   {
     ASIO_CHECK(e.code() == xio::error::not_found);
   }

@@ -29,7 +29,7 @@
 #include <xio/disposition.h>
 #include <xio/error.h>
 #include <xio/post.h>
-#include <xio/system_error.h>
+#include <system_error>
 #include <xio/this_coro.h>
 
 #if defined(ASIO_ENABLE_HANDLER_TRACKING)

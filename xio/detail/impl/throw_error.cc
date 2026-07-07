@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 #include <xio/detail/throw_error.h>
-#include <xio/system_error.h>
+#include <system_error>
 
 #include <xio/detail/push_options.h>
 
@@ -27,14 +27,14 @@ namespace xio {
     namespace detail {
         void do_throw_error(
             const xio::error_code &err) {
-            xio::system_error e(err);
+            std::system_error e(err);
             xio::detail::throw_exception(e);
         }
 
         void do_throw_error(
             const xio::error_code &err,
             const char *location) {
-            xio::system_error e(err, location);
+            std::system_error e(err, location);
             xio::detail::throw_exception(e);
         }
     } // namespace detail

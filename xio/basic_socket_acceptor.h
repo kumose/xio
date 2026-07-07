@@ -164,7 +164,7 @@ namespace xio {
    *
    * @param protocol An object specifying protocol parameters to be used.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         basic_socket_acceptor(const executor_type &ex, const protocol_type &protocol)
             : impl_(0, ex) {
@@ -183,7 +183,7 @@ namespace xio {
    *
    * @param protocol An object specifying protocol parameters to be used.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         template<typename ExecutionContext>
         basic_socket_acceptor(ExecutionContext &context,
@@ -213,7 +213,7 @@ namespace xio {
    * @param reuse_addr Whether the constructor should set the socket option
    * socket_base::reuse_address.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note This constructor is equivalent to the following code:
    * @code
@@ -259,7 +259,7 @@ namespace xio {
    * @param reuse_addr Whether the constructor should set the socket option
    * socket_base::reuse_address.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note This constructor is equivalent to the following code:
    * @code
@@ -307,7 +307,7 @@ namespace xio {
    *
    * @param native_acceptor A native acceptor.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         basic_socket_acceptor(const executor_type &ex,
                               const protocol_type &protocol, const native_handle_type &native_acceptor)
@@ -331,7 +331,7 @@ namespace xio {
    *
    * @param native_acceptor A native acceptor.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         template<typename ExecutionContext>
         basic_socket_acceptor(ExecutionContext &context,
@@ -445,7 +445,7 @@ namespace xio {
    *
    * @param protocol An object specifying which protocol is to be used.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * @code
@@ -493,7 +493,7 @@ namespace xio {
    *
    * @param native_acceptor A native acceptor.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         void assign(const protocol_type &protocol,
                     const native_handle_type &native_acceptor) {
@@ -533,7 +533,7 @@ namespace xio {
    * @param endpoint An endpoint on the local machine to which the socket
    * acceptor will be bound.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * @code
@@ -586,7 +586,7 @@ namespace xio {
    *
    * @param backlog The maximum length of the queue of pending connections.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         void listen(int backlog = socket_base::max_listen_connections) {
             xio::error_code ec;
@@ -629,7 +629,7 @@ namespace xio {
    * A subsequent call to open() is required before the acceptor can again be
    * used to again perform socket accept operations.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         void close() {
             xio::error_code ec;
@@ -671,7 +671,7 @@ namespace xio {
    * passed the xio::error::operation_aborted error. Ownership of the
    * native acceptor is then transferred to the caller.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note This function is unsupported on Windows versions prior to Windows
    * 8.1, and will fail with xio::error::operation_not_supported on
@@ -730,7 +730,7 @@ namespace xio {
    * operations to finish immediately, and the handlers for cancelled operations
    * will be passed the xio::error::operation_aborted error.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    */
         void cancel() {
             xio::error_code ec;
@@ -757,7 +757,7 @@ namespace xio {
    *
    * @param option The new option value to be set on the acceptor.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @sa SettableSocketOption @n
    * xio::socket_base::reuse_address
@@ -819,7 +819,7 @@ namespace xio {
    *
    * @param option The option value to be obtained from the acceptor.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @sa GettableSocketOption @n
    * xio::socket_base::reuse_address
@@ -881,7 +881,7 @@ namespace xio {
    *
    * @param command The IO control command to be performed on the acceptor.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @sa IoControlCommand @n
    * xio::socket_base::non_blocking_io
@@ -956,7 +956,7 @@ namespace xio {
    * requested operation immediately. If @c false, synchronous operations will
    * block until complete.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @note The non-blocking mode has no effect on the behaviour of asynchronous
    * operations. Asynchronous operations will never fail with the error
@@ -1015,7 +1015,7 @@ namespace xio {
    * mode and direct system calls may fail with xio::error::would_block
    * (or the equivalent system error).
    *
-   * @throws xio::system_error Thrown on failure. If the @c mode is
+   * @throws std::system_error Thrown on failure. If the @c mode is
    * @c false, but the current value of @c non_blocking() is @c true, this
    * function fails with xio::error::invalid_argument, as the
    * combination does not make sense.
@@ -1055,7 +1055,7 @@ namespace xio {
    *
    * @returns An object that represents the local endpoint of the acceptor.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * @code
@@ -1220,7 +1220,7 @@ namespace xio {
    *
    * @param peer The socket into which the new connection will be accepted.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * @code
@@ -1359,7 +1359,7 @@ namespace xio {
    * @param peer_endpoint An endpoint object which will receive the endpoint of
    * the remote peer.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * @code
@@ -1482,7 +1482,7 @@ namespace xio {
    *
    * @returns A socket object representing the newly accepted connection.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * @code
@@ -1631,7 +1631,7 @@ namespace xio {
    *
    * @returns A socket object representing the newly accepted connection.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * @code
@@ -1669,7 +1669,7 @@ namespace xio {
    *
    * @returns A socket object representing the newly accepted connection.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * @code
@@ -1983,7 +1983,7 @@ namespace xio {
    *
    * @returns A socket object representing the newly accepted connection.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * @code
@@ -2148,7 +2148,7 @@ namespace xio {
    *
    * @returns A socket object representing the newly accepted connection.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * @code
@@ -2192,7 +2192,7 @@ namespace xio {
    *
    * @returns A socket object representing the newly accepted connection.
    *
-   * @throws xio::system_error Thrown on failure.
+   * @throws std::system_error Thrown on failure.
    *
    * @par Example
    * @code
