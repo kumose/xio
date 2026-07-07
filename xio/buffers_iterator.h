@@ -25,12 +25,13 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if !defined(ASIO_BUFFERS_ITERATOR_FWD_DECL)
 #define ASIO_BUFFERS_ITERATOR_FWD_DECL
 
     // Forward declaration with defaulted arguments.
+
 
     template<typename BufferSequence, typename ByteType = char>
     class buffers_iterator;
@@ -453,7 +454,7 @@ namespace xio {
         return buffers_iterator<BufferSequence>::end(buffers);
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

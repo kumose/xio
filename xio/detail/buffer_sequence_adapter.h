@@ -24,7 +24,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class buffer_sequence_adapter_base {
@@ -602,13 +602,10 @@ namespace xio {
             std::size_t total_buffer_size_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/buffer_sequence_adapter.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_DETAIL_BUFFER_SEQUENCE_ADAPTER_HPP

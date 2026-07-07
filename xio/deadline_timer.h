@@ -28,14 +28,14 @@
 #include <boost/date_time/posix_time/posix_time_types.hpp>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// (Deprecated: Use system_timer.) Typedef for the typical usage of timer. Uses
 /// a UTC clock.
     ASIO_DEPRECATED_MSG("Use system_timer")
     typedef basic_deadline_timer<boost::posix_time::ptime> deadline_timer;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // defined(ASIO_HAS_BOOST_DATE_TIME)

@@ -42,7 +42,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if !defined(ASIO_BASIC_SERIAL_PORT_FWD_DECL)
 #define ASIO_BASIC_SERIAL_PORT_FWD_DECL
@@ -940,7 +940,7 @@ detail::io_object_impl<detail::posix_serial_port_service, Executor> impl_;
 #endif
 };
 
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 

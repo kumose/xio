@@ -43,7 +43,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class winrt_timer_scheduler
@@ -56,13 +56,13 @@ namespace xio {
             ASIO_DECL ~winrt_timer_scheduler();
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void shutdown();
+            ASIO_DECL void shutdown();
 
             // Recreate internal descriptors following a fork.
-  ASIO_DECL void notify_fork(execution_context::fork_event fork_ev);
+            ASIO_DECL void notify_fork(execution_context::fork_event fork_ev);
 
             // Initialise the task. No effect as this class uses its own thread.
-  ASIO_DECL void init_task();
+            ASIO_DECL void init_task();
 
             // Add a new timer queue to the reactor.
             template<typename TimeTraits, typename Allocator>
@@ -95,16 +95,16 @@ namespace xio {
 
         private:
             // Run the select loop in the thread.
-  ASIO_DECL void run_thread();
+            ASIO_DECL void run_thread();
 
             // Entry point for the select loop thread.
-  ASIO_DECL static void call_run_thread(winrt_timer_scheduler *reactor);
+            ASIO_DECL static void call_run_thread(winrt_timer_scheduler *reactor);
 
             // Helper function to add a new timer queue.
-  ASIO_DECL void do_add_timer_queue(timer_queue_base &queue);
+            ASIO_DECL void do_add_timer_queue(timer_queue_base &queue);
 
             // Helper function to remove a timer queue.
-  ASIO_DECL void do_remove_timer_queue(timer_queue_base &queue);
+            ASIO_DECL void do_remove_timer_queue(timer_queue_base &queue);
 
 // The scheduler implementation used to post completions.
 #if defined(ASIO_HAS_IOCP)
@@ -134,14 +134,12 @@ bool shutdown_;
 };
 
 } // namespace detail
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 
 #include <xio/detail/impl/winrt_timer_scheduler.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/winrt_timer_scheduler.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
+
 
 #endif // defined(ASIO_WINDOWS_RUNTIME)
 

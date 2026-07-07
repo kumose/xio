@@ -25,7 +25,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         struct posix_static_mutex {
@@ -51,7 +51,7 @@ namespace xio {
 
 #define ASIO_POSIX_STATIC_MUTEX_INIT { PTHREAD_MUTEX_INITIALIZER }
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

@@ -40,9 +40,10 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace posix {
+
 
 
 #if !defined(ASIO_POSIX_BASIC_DESCRIPTOR_FWD_DECL)
@@ -737,7 +738,7 @@ private:
 };
 
 } // namespace posix
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 

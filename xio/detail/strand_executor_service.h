@@ -30,7 +30,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // Default service implementation for a strand.
@@ -191,14 +191,12 @@ namespace xio {
             const xio::error_code success_ec_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
 #include <xio/detail/impl/strand_executor_service.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/strand_executor_service.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
+
 
 #endif // ASIO_DETAIL_STRAND_EXECUTOR_SERVICE_HPP

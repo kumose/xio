@@ -20,7 +20,7 @@
 #include <xio/detail/chrono.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Typedef for a timer based on the high resolution clock.
     /**
@@ -35,7 +35,7 @@ namespace xio {
         chrono::high_resolution_clock>
     high_resolution_timer;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_HIGH_RESOLUTION_TIMER_HPP

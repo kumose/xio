@@ -32,7 +32,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         char (&has_result_type_helper(...))[2];
@@ -3186,7 +3186,7 @@ namespace xio {
 
     /*@}*/
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

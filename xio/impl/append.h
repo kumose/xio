@@ -26,7 +26,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // Class to adapt an append_t as a completion handler.
@@ -44,7 +44,7 @@ namespace xio {
             template<typename... Args>
             void operator()(Args &&... args) {
                 this->invoke(
-                    index_sequence_for < Values...>{},
+                    index_sequence_for<Values...>{},
                     static_cast<Args &&>(args)...);
             }
 
@@ -52,7 +52,7 @@ namespace xio {
             void invoke(index_sequence<I...>, Args &&... args) {
                 static_cast<Handler &&>(handler_)(
                     static_cast<Args &&>(args)...,
-                    static_cast<Values &&>(std::get < I > (values_))...);
+                    static_cast<Values &&>(std::get<I>(values_))...);
             }
 
             //private:
@@ -63,9 +63,9 @@ namespace xio {
         template<typename Handler>
         inline bool asio_handler_is_continuation(
             append_handler<Handler> *this_handler) {
-            return ASIO_VERSIONED_NAME(handler_cont_helpers)
-            ::is_continuation(
-                this_handler->handler_);
+            return XIO_VERSIONED_NAME(handler_cont_helpers)
+                    ::is_continuation(
+                        this_handler->handler_);
         }
 
         template<typename Signature, typename... Values>
@@ -149,7 +149,7 @@ namespace xio {
 
 #endif // !defined(GENERATING_DOCUMENTATION)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

@@ -29,7 +29,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace local {
         /// Create a pair of connected sockets.
@@ -62,7 +62,7 @@ namespace xio {
             Protocol protocol;
             xio::detail::socket_type sv[2];
             if (xio::detail::socket_ops::socketpair(protocol.family(),
-                                                     protocol.type(), protocol.protocol(), sv, ec)
+                                                    protocol.type(), protocol.protocol(), sv, ec)
                 == xio::detail::socket_error_retval)
                 ASIO_SYNC_OP_VOID_RETURN(ec);
 
@@ -87,7 +87,7 @@ namespace xio {
             ASIO_SYNC_OP_VOID_RETURN(ec);
         }
     } // namespace local
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

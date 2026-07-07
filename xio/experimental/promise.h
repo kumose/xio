@@ -32,7 +32,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace experimental {
         template<typename T>
@@ -107,7 +107,7 @@ namespace xio {
             void cancel(cancellation_type level = cancellation_type::all) {
                 if (impl_ && !impl_->done) {
                     xio::dispatch(impl_->executor,
-                                   [level, impl = impl_] { impl->cancel.emit(level); });
+                                  [level, impl = impl_] { impl->cancel.emit(level); });
                 }
             }
 
@@ -171,10 +171,10 @@ namespace xio {
                             handler, self_->get_executor());
 
                         xio::post(exec,
-                                   [self = std::move(self_),
-                                       handler = std::forward<WaitHandler>(handler)]() mutable {
-                                       self->apply(std::move(handler));
-                                   });
+                                  [self = std::move(self_),
+                                      handler = std::forward<WaitHandler>(handler)]() mutable {
+                                      self->apply(std::move(handler));
+                                  });
                     } else {
                         if (cancel.is_connected()) {
                             struct cancel_handler {
@@ -204,7 +204,7 @@ namespace xio {
         };
     } // namespace experimental
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

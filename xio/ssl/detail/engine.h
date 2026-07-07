@@ -27,7 +27,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ssl {
         namespace detail {
@@ -163,13 +163,10 @@ namespace xio {
             };
         } // namespace detail
     } // namespace ssl
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/ssl/detail/impl/engine.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_SSL_DETAIL_ENGINE_HPP

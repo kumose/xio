@@ -27,7 +27,7 @@
 #if defined(GENERATING_DOCUMENTATION)
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// A customisation point that applies a concept-enforcing property to an
 /// object.
@@ -99,12 +99,12 @@ namespace xio {
         typedef automatically_determined type;
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #else // defined(GENERATING_DOCUMENTATION)
 
-namespace ASIO_VERSIONED_NAME(require_concept_fn) {
+namespace XIO_VERSIONED_NAME(require_concept_fn) {
     using xio::conditional_t;
     using xio::decay_t;
     using xio::declval;
@@ -185,6 +185,7 @@ namespace ASIO_VERSIONED_NAME(require_concept_fn) {
     {
   static constexpr overload_type overload = call_member;
 
+
     };
 
     template
@@ -218,6 +219,7 @@ namespace ASIO_VERSIONED_NAME(require_concept_fn) {
     {
   static constexpr overload_type overload = call_free;
 
+
     };
 
     struct impl {
@@ -244,7 +246,7 @@ namespace ASIO_VERSIONED_NAME(require_concept_fn) {
         };
 
         template<typename T, typename Property>
-        ASIO_NODISCARD constexpr enable_if_t<
+        [[nodiscard]] constexpr enable_if_t<
             call_traits<impl, T, void(Property)>::overload == identity,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -255,7 +257,7 @@ namespace ASIO_VERSIONED_NAME(require_concept_fn) {
         }
 
         template<typename T, typename Property>
-        ASIO_NODISCARD constexpr enable_if_t<
+        [[nodiscard]] constexpr enable_if_t<
             call_traits<impl, T, void(Property)>::overload == call_member,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -266,7 +268,7 @@ namespace ASIO_VERSIONED_NAME(require_concept_fn) {
         }
 
         template<typename T, typename Property>
-        ASIO_NODISCARD constexpr enable_if_t<
+        [[nodiscard]] constexpr enable_if_t<
             call_traits<impl, T, void(Property)>::overload == call_free,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -288,33 +290,36 @@ namespace ASIO_VERSIONED_NAME(require_concept_fn) {
     <
     typename T >
 
+
     const T static_instance<T>::instance = {};
-} // namespace ASIO_VERSIONED_NAME(require_concept_fn)
+} // namespace XIO_VERSIONED_NAME(require_concept_fn)
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if defined(ASIO_HAS_INLINE_VARIABLES)
-    inline constexpr ASIO_VERSIONED_NAME (require_concept_fn)::impl
+    inline constexpr XIO_VERSIONED_NAME (require_concept_fn)::impl
     require_concept {
     };
 #else // defined(ASIO_HAS_INLINE_VARIABLES)
 
 
+
+
     namespace {
-        static constexpr const ASIO_VERSIONED_NAME (require_concept_fn)::impl&
-                        require_concept = ASIO_VERSIONED_NAME(
+        static constexpr const XIO_VERSIONED_NAME (require_concept_fn)::impl&
+                        require_concept = XIO_VERSIONED_NAME(
                             require_concept_fn)::static_instance<>::instance;
     } // namespace
 #endif // defined(ASIO_HAS_INLINE_VARIABLES)
 
-    typedef ASIO_VERSIONED_NAME (require_concept_fn)::impl require_concept_t;
+    typedef XIO_VERSIONED_NAME (require_concept_fn)::impl require_concept_t;
 
     template<typename T, typename Property>
     struct can_require_concept :
             integral_constant<bool,
-                ASIO_VERSIONED_NAME(require_concept_fn)::call_traits<
+                XIO_VERSIONED_NAME(require_concept_fn)::call_traits<
                                                            require_concept_t, T, void(Property)>::overload !=
-                                                       ASIO_VERSIONED_NAME(require_concept_fn)::ill_formed> {
+                                                       XIO_VERSIONED_NAME(require_concept_fn)::ill_formed> {
     };
 
 #if defined(ASIO_HAS_VARIABLE_TEMPLATES)
@@ -327,7 +332,7 @@ namespace xio {
     template<typename T, typename Property>
     struct is_nothrow_require_concept :
             integral_constant<bool,
-                ASIO_VERSIONED_NAME(require_concept_fn)::call_traits<
+                XIO_VERSIONED_NAME(require_concept_fn)::call_traits<
                     require_concept_t, T, void(Property)>::is_noexcept> {
     };
 
@@ -341,7 +346,7 @@ namespace xio {
 
     template<typename T, typename Property>
     struct require_concept_result {
-        typedef typename ASIO_VERSIONED_NAME (require_concept_fn)::call_traits<
+        typedef typename XIO_VERSIONED_NAME (require_concept_fn)::call_traits<
             require_concept_t, T, void(Property)>::result_type type;
     };
 
@@ -349,7 +354,7 @@ namespace xio {
     using require_concept_result_t =
     typename require_concept_result<T, Property>::type;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // defined(GENERATING_DOCUMENTATION)

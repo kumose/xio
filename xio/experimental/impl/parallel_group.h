@@ -29,7 +29,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace experimental {
         namespace detail {
@@ -259,7 +259,7 @@ namespace xio {
                         if (auto state = state_.lock()) {
                             xio::cancellation_signal *sig = &signal_;
                             xio::dispatch(executor_,
-                                           [state, sig, type] { sig->emit(type); });
+                                          [state, sig, type] { sig->emit(type); });
                         }
                     }
 
@@ -596,7 +596,7 @@ namespace xio {
                         if (auto state = state_.lock()) {
                             xio::cancellation_signal *sig = &signal_;
                             xio::dispatch(executor_,
-                                           [state, sig, type] { sig->emit(type); });
+                                          [state, sig, type] { sig->emit(type); });
                         }
                     }
 
@@ -723,7 +723,7 @@ namespace xio {
         }
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

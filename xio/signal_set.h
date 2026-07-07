@@ -19,12 +19,12 @@
 #include <xio/basic_signal_set.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Typedef for the typical usage of a signal set.
     typedef basic_signal_set<> signal_set;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_SIGNAL_SET_HPP

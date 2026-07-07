@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     typedef std::error_category error_category;
     typedef std::error_code error_code;
@@ -29,13 +29,10 @@ namespace xio {
     /// Returns the error category used for the system errors produced by asio.
     extern ASIO_DECL const error_category &system_category();
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/impl/error_code.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_ERROR_CODE_HPP

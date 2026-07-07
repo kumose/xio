@@ -24,7 +24,7 @@
 #endif
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 #if defined(ASIO_HAS_IOCP)
@@ -33,7 +33,7 @@ namespace xio {
         typedef scheduler_operation operation;
 #endif
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_DETAIL_OPERATION_HPP

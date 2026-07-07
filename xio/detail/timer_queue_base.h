@@ -23,7 +23,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class timer_queue_base
@@ -62,7 +62,7 @@ namespace xio {
         template<typename TimeTraits, typename Allocator>
         class timer_queue;
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

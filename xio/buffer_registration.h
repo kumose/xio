@@ -35,12 +35,13 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if !defined(ASIO_BUFFER_REGISTRATION_FWD_DECL)
 #define ASIO_BUFFER_REGISTRATION_FWD_DECL
 
     // Forward declaration with defaulted arguments.
+
 
     template<typename MutableBufferSequence,
         typename Allocator = std::allocator<void> >
@@ -248,7 +249,7 @@ namespace xio {
 
     /// Register buffers with an execution context.
     template<typename Executor, typename MutableBufferSequence>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
     buffer_registration<MutableBufferSequence>
 
     register_buffers(const Executor &ex,
@@ -261,7 +262,7 @@ namespace xio {
 
     /// Register buffers with an execution context.
     template<typename Executor, typename MutableBufferSequence, typename Allocator>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
     buffer_registration<MutableBufferSequence, Allocator>
 
     register_buffers(const Executor &ex,
@@ -275,7 +276,7 @@ namespace xio {
 
     /// Register buffers with an execution context.
     template<typename ExecutionContext, typename MutableBufferSequence>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
     buffer_registration<MutableBufferSequence>
 
     register_buffers(ExecutionContext &ctx,
@@ -289,7 +290,7 @@ namespace xio {
     /// Register buffers with an execution context.
     template<typename ExecutionContext,
         typename MutableBufferSequence, typename Allocator>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
     buffer_registration<MutableBufferSequence, Allocator>
 
     register_buffers(ExecutionContext &ctx,
@@ -301,7 +302,7 @@ namespace xio {
             ctx, buffer_sequence, alloc);
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

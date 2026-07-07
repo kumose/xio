@@ -33,7 +33,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Automatically resizable buffer class based on std::streambuf.
     /**
@@ -106,7 +106,10 @@ namespace xio {
 #if defined(GENERATING_DOCUMENTATION)
     template<typename Allocator = std::allocator<char> >
 
+
 #else
+
+
 
 
     template<typename Allocator>
@@ -190,7 +193,7 @@ namespace xio {
    */
         const_buffers_type data() const noexcept {
             return xio::buffer(xio::const_buffer(gptr(),
-                                                   (pptr() - gptr()) * sizeof(char_type)));
+                                                 (pptr() - gptr()) * sizeof(char_type)));
         }
 
         /// Get a list of buffers that represents the output sequence, with the given
@@ -340,6 +343,7 @@ namespace xio {
 #if defined(GENERATING_DOCUMENTATION)
     template<typename Allocator = std::allocator<char> >
 
+
 #else
     template<typename Allocator>
 #endif
@@ -408,7 +412,7 @@ namespace xio {
         basic_streambuf<Allocator> &sb_;
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

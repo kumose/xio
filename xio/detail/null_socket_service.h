@@ -29,7 +29,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename Protocol>
@@ -84,14 +84,14 @@ namespace xio {
 
             // Open a new socket implementation.
             xio::error_code open(implementation_type &,
-                                  const protocol_type &, xio::error_code &ec) {
+                                 const protocol_type &, xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
 
             // Assign a native socket to a socket implementation.
             xio::error_code assign(implementation_type &, const protocol_type &,
-                                    const native_handle_type &, xio::error_code &ec) {
+                                   const native_handle_type &, xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -103,7 +103,7 @@ namespace xio {
 
             // Destroy a socket implementation.
             xio::error_code close(implementation_type &,
-                                   xio::error_code &ec) {
+                                  xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -122,7 +122,7 @@ namespace xio {
 
             // Cancel all operations associated with the socket.
             xio::error_code cancel(implementation_type &,
-                                    xio::error_code &ec) {
+                                   xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -143,7 +143,7 @@ namespace xio {
 
             // Place the socket into the state where it will listen for new connections.
             xio::error_code listen(implementation_type &,
-                                    int, xio::error_code &ec) {
+                                   int, xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -151,7 +151,7 @@ namespace xio {
             // Perform an IO control command on the socket.
             template<typename IO_Control_Command>
             xio::error_code io_control(implementation_type &,
-                                        IO_Control_Command &, xio::error_code &ec) {
+                                       IO_Control_Command &, xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -163,7 +163,7 @@ namespace xio {
 
             // Sets the non-blocking mode of the socket.
             xio::error_code non_blocking(implementation_type &,
-                                          bool, xio::error_code &ec) {
+                                         bool, xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -175,21 +175,21 @@ namespace xio {
 
             // Sets the non-blocking mode of the native socket implementation.
             xio::error_code native_non_blocking(implementation_type &,
-                                                 bool, xio::error_code &ec) {
+                                                bool, xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
 
             // Disable sends or receives on the socket.
             xio::error_code shutdown(implementation_type &,
-                                      socket_base::shutdown_type, xio::error_code &ec) {
+                                     socket_base::shutdown_type, xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
 
             // Bind the socket to the specified local endpoint.
             xio::error_code bind(implementation_type &,
-                                  const endpoint_type &, xio::error_code &ec) {
+                                 const endpoint_type &, xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -197,7 +197,7 @@ namespace xio {
             // Set a socket option.
             template<typename Option>
             xio::error_code set_option(implementation_type &,
-                                        const Option &, xio::error_code &ec) {
+                                       const Option &, xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -205,7 +205,7 @@ namespace xio {
             // Set a socket option.
             template<typename Option>
             xio::error_code get_option(const implementation_type &,
-                                        Option &, xio::error_code &ec) const {
+                                       Option &, xio::error_code &ec) const {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -247,7 +247,7 @@ namespace xio {
                 xio::error_code ec = xio::error::operation_not_supported;
                 const std::size_t bytes_transferred = 0;
                 xio::post(io_ex, detail::bind_handler(
-                               handler, ec, bytes_transferred));
+                              handler, ec, bytes_transferred));
             }
 
             // Start an asynchronous wait until data can be sent without blocking.
@@ -257,7 +257,7 @@ namespace xio {
                 xio::error_code ec = xio::error::operation_not_supported;
                 const std::size_t bytes_transferred = 0;
                 xio::post(io_ex, detail::bind_handler(
-                               handler, ec, bytes_transferred));
+                              handler, ec, bytes_transferred));
             }
 
             // Receive some data from the peer. Returns the number of bytes received.
@@ -284,7 +284,7 @@ namespace xio {
                 xio::error_code ec = xio::error::operation_not_supported;
                 const std::size_t bytes_transferred = 0;
                 xio::post(io_ex, detail::bind_handler(
-                               handler, ec, bytes_transferred));
+                              handler, ec, bytes_transferred));
             }
 
             // Wait until data can be received without blocking.
@@ -294,7 +294,7 @@ namespace xio {
                 xio::error_code ec = xio::error::operation_not_supported;
                 const std::size_t bytes_transferred = 0;
                 xio::post(io_ex, detail::bind_handler(
-                               handler, ec, bytes_transferred));
+                              handler, ec, bytes_transferred));
             }
 
             // Receive some data with associated flags. Returns the number of bytes
@@ -325,7 +325,7 @@ namespace xio {
                 xio::error_code ec = xio::error::operation_not_supported;
                 const std::size_t bytes_transferred = 0;
                 xio::post(io_ex, detail::bind_handler(
-                               handler, ec, bytes_transferred));
+                              handler, ec, bytes_transferred));
             }
 
             // Wait until data can be received without blocking.
@@ -336,7 +336,7 @@ namespace xio {
                 xio::error_code ec = xio::error::operation_not_supported;
                 const std::size_t bytes_transferred = 0;
                 xio::post(io_ex, detail::bind_handler(
-                               handler, ec, bytes_transferred));
+                              handler, ec, bytes_transferred));
             }
 
             // Send a datagram to the specified endpoint. Returns the number of bytes
@@ -366,7 +366,7 @@ namespace xio {
                 xio::error_code ec = xio::error::operation_not_supported;
                 const std::size_t bytes_transferred = 0;
                 xio::post(io_ex, detail::bind_handler(
-                               handler, ec, bytes_transferred));
+                              handler, ec, bytes_transferred));
             }
 
             // Start an asynchronous wait until data can be sent without blocking.
@@ -377,7 +377,7 @@ namespace xio {
                 xio::error_code ec = xio::error::operation_not_supported;
                 const std::size_t bytes_transferred = 0;
                 xio::post(io_ex, detail::bind_handler(
-                               handler, ec, bytes_transferred));
+                              handler, ec, bytes_transferred));
             }
 
             // Receive a datagram with the endpoint of the sender. Returns the number of
@@ -409,7 +409,7 @@ namespace xio {
                 xio::error_code ec = xio::error::operation_not_supported;
                 const std::size_t bytes_transferred = 0;
                 xio::post(io_ex, detail::bind_handler(
-                               handler, ec, bytes_transferred));
+                              handler, ec, bytes_transferred));
             }
 
             // Wait until data can be received without blocking.
@@ -420,13 +420,13 @@ namespace xio {
                 xio::error_code ec = xio::error::operation_not_supported;
                 const std::size_t bytes_transferred = 0;
                 xio::post(io_ex, detail::bind_handler(
-                               handler, ec, bytes_transferred));
+                              handler, ec, bytes_transferred));
             }
 
             // Accept a new connection.
             template<typename Socket>
             xio::error_code accept(implementation_type &,
-                                    Socket &, endpoint_type *, xio::error_code &ec) {
+                                   Socket &, endpoint_type *, xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -442,7 +442,7 @@ namespace xio {
 
             // Connect the socket to the specified endpoint.
             xio::error_code connect(implementation_type &,
-                                     const endpoint_type &, xio::error_code &ec) {
+                                    const endpoint_type &, xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -456,7 +456,7 @@ namespace xio {
             }
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

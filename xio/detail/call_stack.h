@@ -22,7 +22,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // Helper class to determine whether or not the current thread is inside an
@@ -108,7 +108,7 @@ namespace xio {
         tss_ptr<typename call_stack<Key, Value>::context>
         call_stack<Key, Value>::top_;
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

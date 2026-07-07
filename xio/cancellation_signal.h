@@ -26,7 +26,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class cancellation_handler_base {
@@ -218,13 +218,10 @@ namespace xio {
         return cancellation_slot(0, &handler_);
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/impl/cancellation_signal.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_CANCELLATION_SIGNAL_HPP

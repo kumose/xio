@@ -31,7 +31,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename Protocol, typename Handler, typename IoExecutor>
@@ -39,7 +39,7 @@ namespace xio {
                 public winrt_async_op<
                     Windows::Foundation::Collections::IVectorView <
                     Windows::Networking::EndpointPair ^>^>
-        {
+                {
         public:
             ASIO_DEFINE_HANDLER_PTR(winrt_resolve_op);
 
@@ -84,12 +84,13 @@ namespace xio {
                         results = results_type::create(o->result_, o->query_.hints(),
                                                        o->query_.host_name(), o->query_.service_name());
                     } catch (Platform::Exception
+
                     ^
                     e
                     )
                     {
                         o->ec_ = xio::error_code(e->HResult,
-                                                  xio::system_category());
+                                                 xio::system_category());
                     }
                 }
 
@@ -119,7 +120,7 @@ namespace xio {
             handler_work<Handler, IoExecutor> executor_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

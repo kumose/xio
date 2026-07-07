@@ -27,9 +27,10 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Partial specialisation of @c async_result for @c std::packaged_task.
+
 
     template<typename Result, typename... Args, typename Signature>
     class async_result<std::packaged_task < Result(Args...)>
@@ -61,7 +62,7 @@ private:
   return_type future_;
 };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

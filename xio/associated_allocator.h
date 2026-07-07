@@ -24,7 +24,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
     template<typename T, typename Allocator>
     struct associated_allocator;
 
@@ -69,16 +69,16 @@ namespace xio {
 
         template<typename T, typename A>
         struct associated_allocator_impl<T, A,
-            enable_if_t <
-            !has_allocator_type<T>::value
-        >
-        ,
-        void_t<
-            typename associator<associated_allocator, T, A>::type
-        >
-        >
-        :
-        associator<associated_allocator, T, A> {
+                    enable_if_t<
+                        !has_allocator_type<T>::value
+                    >
+                    ,
+                    void_t<
+                        typename associator<associated_allocator, T, A>::type
+                    >
+                >
+                :
+                associator<associated_allocator, T, A> {
         };
     } // namespace detail
 
@@ -129,8 +129,7 @@ namespace xio {
  * @returns <tt>associated_allocator<T>::get(t)</tt>
  */
     template<typename T>
-    ASIO_NODISCARD inline
-
+    [[nodiscard]] inline
     typename associated_allocator<T>::type
     get_associated_allocator(const T &t) noexcept {
         return associated_allocator<T>::get(t);
@@ -141,7 +140,7 @@ namespace xio {
  * @returns <tt>associated_allocator<T, Allocator>::get(t, a)</tt>
  */
     template<typename T, typename Allocator>
-ASIO_NODISCARD inline auto get_associated_allocator(
+    [[nodiscard]] inline auto get_associated_allocator(
         const T &t, const Allocator &a) noexcept
         -> decltype(associated_allocator<T, Allocator>::get(t, a)) {
         return associated_allocator<T, Allocator>::get(t, a);
@@ -158,16 +157,15 @@ ASIO_NODISCARD inline auto get_associated_allocator(
 
         template<typename T, typename A>
         struct associated_allocator_forwarding_base<T, A,
-            enable_if_t <
-            is_same <
-            typename associated_allocator<T,
-                A>::asio_associated_allocator_is_unspecialised,
-            void>::value
-        >
-        >
-{
-  typedef void asio_associated_allocator_is_unspecialised;
-};
+                    enable_if_t<
+                        is_same<
+                            typename associated_allocator<T,
+                                A>::asio_associated_allocator_is_unspecialised,
+                            void>::value
+                    >
+                > {
+            typedef void asio_associated_allocator_is_unspecialised;
+        };
     } // namespace detail
 
     /// Specialisation of associated_allocator for @c std::reference_wrapper.
@@ -195,7 +193,7 @@ ASIO_NODISCARD inline auto get_associated_allocator(
         }
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

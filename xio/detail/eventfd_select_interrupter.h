@@ -23,7 +23,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class eventfd_select_interrupter {
@@ -35,13 +35,13 @@ namespace xio {
             ASIO_DECL ~eventfd_select_interrupter();
 
             // Recreate the interrupter's descriptors. Used after a fork.
-  ASIO_DECL void recreate();
+            ASIO_DECL void recreate();
 
             // Interrupt the select call.
-  ASIO_DECL void interrupt();
+            ASIO_DECL void interrupt();
 
             // Reset the select interrupter. Returns true if the reset was successful.
-  ASIO_DECL bool reset();
+            ASIO_DECL bool reset();
 
             // Get the read descriptor to be passed to select.
             int read_descriptor() const {
@@ -50,10 +50,10 @@ namespace xio {
 
         private:
             // Open the descriptors. Throws on error.
-  ASIO_DECL void open_descriptors(bool use_eventfd);
+            ASIO_DECL void open_descriptors(bool use_eventfd);
 
             // Close the descriptors.
-  ASIO_DECL void close_descriptors();
+            ASIO_DECL void close_descriptors();
 
             // The read end of a connection used to interrupt the select call. This file
             // descriptor is passed to select such that when it is time to stop, a single
@@ -68,14 +68,10 @@ namespace xio {
             int write_descriptor_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
-
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/eventfd_select_interrupter.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // defined(ASIO_HAS_EVENTFD)
 

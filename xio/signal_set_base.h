@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// The signal_set_base class is used as a base for the basic_signal_set class
 /// templates so that we have a common place to define the flags enum.
@@ -153,7 +153,7 @@ namespace xio {
         return x;
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

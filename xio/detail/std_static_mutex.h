@@ -23,7 +23,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class std_event;
@@ -63,7 +63,7 @@ namespace xio {
 
 #define ASIO_STD_STATIC_MUTEX_INIT 0
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

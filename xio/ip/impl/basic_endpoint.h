@@ -22,7 +22,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ip {
         template<typename Elem, typename Traits, typename InternetProtocol>
@@ -33,7 +33,7 @@ namespace xio {
             return os << tmp_ep.to_string().c_str();
         }
     } // namespace ip
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

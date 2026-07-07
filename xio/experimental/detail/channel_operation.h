@@ -31,7 +31,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace experimental {
         namespace detail {
@@ -110,7 +110,7 @@ namespace xio {
                             (get_associated_allocator)(handler);
 
                     xio::prefer(executor_,
-                                 execution::allocator(allocator)
+                                execution::allocator(allocator)
                     ).execute(static_cast<Function &&>(function));
                 }
 
@@ -159,7 +159,7 @@ namespace xio {
                             (get_associated_allocator)(handler);
 
                     xio::prefer(executor_,
-                                 execution::allocator(allocator)
+                                execution::allocator(allocator)
                     ).execute(static_cast<Function &&>(function));
                 }
 
@@ -332,7 +332,7 @@ private:
             };
         } // namespace detail
     } // namespace experimental
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

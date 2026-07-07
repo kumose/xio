@@ -19,7 +19,7 @@
 #include <functional>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         using std::function;
@@ -28,7 +28,7 @@ namespace xio {
     using std::ref;
     using std::reference_wrapper;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_DETAIL_FUNCTIONAL_HPP

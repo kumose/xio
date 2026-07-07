@@ -24,7 +24,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename Operation = scheduler_operation>
@@ -91,7 +91,7 @@ namespace xio {
             Handler &handler_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

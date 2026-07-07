@@ -25,7 +25,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// A @ref completion_token adapter that cancels an operation after a timeout.
     /**
@@ -33,6 +33,8 @@ namespace xio {
  * should be cancelled if not complete before the specified duration has
  * elapsed.
  */
+
+
 
 
     template<typename CompletionToken, typename Clock,
@@ -104,7 +106,7 @@ namespace xio {
         /// Adapt a @ref completion_token to specify that the completion handler
   /// arguments should be combined into a single tuple argument.
         template<typename CompletionToken>
-        ASIO_NODISCARD inline
+        [[nodiscard]] inline
         cancel_after_t<decay_t<CompletionToken>, Clock, WaitTraits>
 
         operator()(CompletionToken &&completion_token) const {
@@ -142,7 +144,7 @@ namespace xio {
         /// Adapt a @ref completion_token to specify that the completion handler
   /// arguments should be combined into a single tuple argument.
         template<typename CompletionToken>
-        ASIO_NODISCARD inline
+        [[nodiscard]] inline
         cancel_after_timer<decay_t<CompletionToken>, Clock, WaitTraits, Executor>
 
         operator()(CompletionToken &&completion_token) const {
@@ -169,7 +171,7 @@ namespace xio {
  * asynchronous operation is performed within an implicit or explicit strand.
  */
     template<typename Rep, typename Period>
-    ASIO_NODISCARD inline partial_cancel_after<chrono::steady_clock>
+    [[nodiscard]] inline partial_cancel_after<chrono::steady_clock>
 
     cancel_after(const chrono::duration<Rep, Period> &timeout,
                  cancellation_type_t cancel_type = cancellation_type::terminal) {
@@ -188,7 +190,7 @@ namespace xio {
  */
     template<typename Clock, typename WaitTraits,
         typename Executor, typename Rep, typename Period>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
     partial_cancel_after_timer<Clock, WaitTraits, Executor>
 
     cancel_after(basic_waitable_timer<Clock, WaitTraits, Executor> &timer,
@@ -209,7 +211,7 @@ namespace xio {
  * asynchronous operation is performed within an implicit or explicit strand.
  */
     template<typename Rep, typename Period, typename CompletionToken>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
     cancel_after_t<decay_t<CompletionToken>, chrono::steady_clock>
 
     cancel_after(const chrono::duration<Rep, Period> &timeout,
@@ -230,7 +232,7 @@ namespace xio {
  * asynchronous operation is performed within an implicit or explicit strand.
  */
     template<typename Rep, typename Period, typename CompletionToken>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
     cancel_after_t<decay_t<CompletionToken>, chrono::steady_clock>
 
     cancel_after(const chrono::duration<Rep, Period> &timeout,
@@ -251,7 +253,7 @@ namespace xio {
  */
     template<typename Clock, typename WaitTraits, typename Executor,
         typename Rep, typename Period, typename CompletionToken>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
     cancel_after_timer<decay_t<CompletionToken>, Clock, WaitTraits, Executor>
 
     cancel_after(basic_waitable_timer<Clock, WaitTraits, Executor> &timer,
@@ -275,7 +277,7 @@ namespace xio {
  */
     template<typename Clock, typename WaitTraits, typename Executor,
         typename Rep, typename Period, typename CompletionToken>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
     cancel_after_timer<decay_t<CompletionToken>, Clock, WaitTraits, Executor>
 
     cancel_after(basic_waitable_timer<Clock, WaitTraits, Executor> &timer,
@@ -287,7 +289,7 @@ namespace xio {
             timer, timeout, cancel_type);
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

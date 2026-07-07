@@ -14,7 +14,7 @@
 #include <xio/detail/config.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class coroutine_ref;
@@ -298,7 +298,7 @@ namespace xio {
             int value_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #if !defined(ASIO_CORO_VALUE_INIT)

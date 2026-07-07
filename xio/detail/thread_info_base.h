@@ -29,7 +29,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 #ifndef ASIO_RECYCLING_ALLOCATOR_CACHE_SIZE
@@ -220,7 +220,7 @@ namespace xio {
 #endif // !defined(ASIO_NO_EXCEPTIONS)
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

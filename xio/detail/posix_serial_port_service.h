@@ -38,7 +38,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // Extend a descriptor_service to provide serial port support.
@@ -88,12 +88,12 @@ void destroy(implementation_type &impl) {
 
 // Open the serial port using the specified device name.
 ASIO_DECL xio::error_code open(implementation_type &impl,
-                                const std::string &device, xio::error_code &ec);
+                               const std::string &device, xio::error_code &ec);
 
 // Assign a native descriptor to a serial port implementation.
 xio::error_code assign(implementation_type &impl,
-                        const native_handle_type &native_descriptor,
-                        xio::error_code &ec) {
+                       const native_handle_type &native_descriptor,
+                       xio::error_code &ec) {
     return descriptor_service_.assign(impl, native_descriptor, ec);
 }
 
@@ -104,7 +104,7 @@ bool is_open(const implementation_type &impl) const {
 
 // Destroy a serial port implementation.
 xio::error_code close(implementation_type &impl,
-                       xio::error_code &ec) {
+                      xio::error_code &ec) {
     return descriptor_service_.close(impl, ec);
 }
 
@@ -115,14 +115,14 @@ native_handle_type native_handle(implementation_type &impl) {
 
 // Cancel all operations associated with the serial port.
 xio::error_code cancel(implementation_type &impl,
-                        xio::error_code &ec) {
+                       xio::error_code &ec) {
     return descriptor_service_.cancel(impl, ec);
 }
 
 // Set an option on the serial port.
 template<typename SettableSerialPortOption>
 xio::error_code set_option(implementation_type &impl,
-                            const SettableSerialPortOption &option, xio::error_code &ec) {
+                           const SettableSerialPortOption &option, xio::error_code &ec) {
     return do_set_option(impl,
                          &posix_serial_port_service::store_option<SettableSerialPortOption>,
                          &option, ec);
@@ -131,7 +131,7 @@ xio::error_code set_option(implementation_type &impl,
 // Get an option from the serial port.
 template<typename GettableSerialPortOption>
 xio::error_code get_option(const implementation_type &impl,
-                            GettableSerialPortOption &option, xio::error_code &ec) const {
+                           GettableSerialPortOption &option, xio::error_code &ec) const {
     return do_get_option(impl,
                          &posix_serial_port_service::load_option<GettableSerialPortOption>,
                          &option, ec);
@@ -139,7 +139,7 @@ xio::error_code get_option(const implementation_type &impl,
 
 // Send a break sequence to the serial port.
 xio::error_code send_break(implementation_type &impl,
-                            xio::error_code &ec) {
+                           xio::error_code &ec) {
     int result = ::tcsendbreak(descriptor_service_.native_handle(impl), 0);
     descriptor_ops::get_last_error(ec, result < 0);
     ASIO_ERROR_LOCATION(ec);
@@ -187,7 +187,7 @@ typedef xio::error_code (*store_function_type)(
 // Helper function template to store a serial port option.
 template<typename SettableSerialPortOption>
 static xio::error_code store_option(const void *option,
-                                     termios &storage, xio::error_code &ec) {
+                                    termios &storage, xio::error_code &ec) {
     static_cast<const SettableSerialPortOption *>(option)->store(storage, ec);
     return ec;
 }
@@ -204,7 +204,7 @@ typedef xio::error_code (*load_function_type)(
 // Helper function template to load a serial port option.
 template<typename GettableSerialPortOption>
 static xio::error_code load_option(void *option,
-                                    const termios &storage, xio::error_code &ec) {
+                                   const termios &storage, xio::error_code &ec) {
     static_cast<GettableSerialPortOption *>(option)->load(storage, ec);
     return ec;
 }
@@ -219,13 +219,10 @@ descriptor_service descriptor_service_;
 };
 
 } // namespace detail
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/posix_serial_port_service.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // !defined(ASIO_WINDOWS)
 //   && !defined(ASIO_CYGWIN_W32_SOCKETS)

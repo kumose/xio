@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// A @ref completion_token adapter used to specify that the completion handler
 /// arguments should be combined into a single tuple argument.
@@ -31,6 +31,8 @@ namespace xio {
  * The arguments are first moved into a @c std::tuple and that tuple is then
  * passed to the completion handler.
  */
+
+
 
 
     template<typename CompletionToken>
@@ -120,7 +122,7 @@ namespace xio {
         /// Adapt a @ref completion_token to specify that the completion handler
   /// arguments should be combined into a single tuple argument.
         template<typename CompletionToken>
-        ASIO_NODISCARD inline
+        [[nodiscard]] inline
         constexpr as_tuple_t<decay_t<CompletionToken> >
 
         operator()(CompletionToken &&completion_token) const {
@@ -139,7 +141,7 @@ namespace xio {
  */
 ASIO_INLINE_VARIABLE constexpr partial_as_tuple as_tuple;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

@@ -26,9 +26,10 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if !defined(ASIO_NO_TS_EXECUTORS)
+
 
 
 
@@ -285,7 +286,7 @@ namespace xio {
     }
 #endif // !defined(ASIO_NO_TS_EXECUTORS)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

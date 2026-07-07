@@ -28,7 +28,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Adapts an executor to add inline invocation of the submitted function.
     /**
@@ -41,6 +41,8 @@ namespace xio {
  * @li dispatched function objects (or when @c blocking is @c blocking.always or
  * @c blocking.possibly) are executed inline.
  */
+
+
 
 
     template<typename Executor,
@@ -176,8 +178,8 @@ namespace xio {
 #if !defined(GENERATING_DOCUMENTATION)
 
     private:
-        friend struct ASIO_VERSIONED_NAME (require_fn)::impl;
-        friend struct ASIO_VERSIONED_NAME (prefer_fn)::impl;
+        friend struct XIO_VERSIONED_NAME (require_fn)::impl;
+        friend struct XIO_VERSIONED_NAME (prefer_fn)::impl;
 #endif // !defined(GENERATING_DOCUMENTATION)
 
         /// Obtain an executor with the @c blocking.possibly property.
@@ -330,7 +332,7 @@ namespace xio {
 #if !defined(GENERATING_DOCUMENTATION)
 
     private:
-        friend struct ASIO_VERSIONED_NAME (query_fn)::impl;
+        friend struct XIO_VERSIONED_NAME (query_fn)::impl;
         friend struct xio::execution::detail::blocking_t<0>;
         friend struct xio::execution::detail::inline_exception_handling_t<0>;
 #endif // !defined(GENERATING_DOCUMENTATION)
@@ -778,7 +780,7 @@ namespace xio {
 
 #endif // !defined(GENERATING_DOCUMENTATION)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

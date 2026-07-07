@@ -22,7 +22,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 ASIO_DECL void do_throw_error(
@@ -49,13 +49,10 @@ ASIO_DECL void do_throw_error(
                 do_throw_error(err, location ASIO_SOURCE_LOCATION_ARG);
         }
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/throw_error.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_DETAIL_THROW_ERROR_HPP

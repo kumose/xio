@@ -20,7 +20,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class noncopyable {
@@ -40,7 +40,7 @@ namespace xio {
 
     using xio::detail::noncopyable;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

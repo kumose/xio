@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// The is_executor trait detects whether a type T meets the Executor type
 /// requirements.
@@ -30,6 +30,8 @@ namespace xio {
  * true_type if the type @c T meets the syntactic requirements for Executor,
  * otherwise @c false_type.
  */
+
+
 
 
     template<typename T>
@@ -42,7 +44,7 @@ namespace xio {
     {
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

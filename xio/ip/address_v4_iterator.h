@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ip {
         template<typename>
@@ -137,7 +137,7 @@ namespace xio {
         /// An input iterator that can be used for traversing IPv4 addresses.
         typedef basic_address_iterator<address_v4> address_v4_iterator;
     } // namespace ip
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

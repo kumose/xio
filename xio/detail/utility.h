@@ -19,7 +19,7 @@
 #include <utility>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 #if defined(ASIO_HAS_STD_INDEX_SEQUENCE)
@@ -72,7 +72,7 @@ namespace xio {
 
 #endif // defined(ASIO_HAS_STD_INDEX_SEQUENCE)
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_DETAIL_UTILITY_HPP

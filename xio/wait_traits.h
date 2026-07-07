@@ -20,9 +20,11 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Wait traits suitable for use with the basic_waitable_timer class template.
+
+
 
 
     template<typename Clock>
@@ -51,7 +53,7 @@ namespace xio {
         }
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

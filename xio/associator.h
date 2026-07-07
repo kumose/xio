@@ -20,9 +20,11 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Used to generically specialise associators for a type.
+
+
 
 
     template<template <typename, typename> class Associator,
@@ -30,7 +32,7 @@ namespace xio {
     struct associator {
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

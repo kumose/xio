@@ -32,7 +32,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // A separate base class is used to ensure that the io_context member is
@@ -81,6 +81,7 @@ namespace xio {
     template<typename Protocol,
         typename Clock = chrono::steady_clock,
         typename WaitTraits = wait_traits<Clock> >
+
 
 #else // defined(GENERATING_DOCUMENTATION)
     template<typename Protocol, typename Clock, typename WaitTraits>
@@ -328,7 +329,7 @@ namespace xio {
                 output_buffer = xio::buffer(&ch, sizeof(char_type));
             } else {
                 output_buffer = xio::buffer(pbase(),
-                                             (pptr() - pbase()) * sizeof(char_type));
+                                            (pptr() - pbase()) * sizeof(char_type));
             }
 
             while (output_buffer.size() > 0) {
@@ -481,7 +482,7 @@ namespace xio {
 
                 // Check the result of the connect operation.
                 ec_ = xio::error_code(connect_error,
-                                       xio::error::get_system_category());
+                                      xio::error::get_system_category());
                 if (!ec_)
                     return;
             }
@@ -499,7 +500,7 @@ namespace xio {
         time_point expiry_time_;
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

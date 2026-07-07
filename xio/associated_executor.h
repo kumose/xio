@@ -27,7 +27,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
     template<typename T, typename Executor>
     struct associated_executor;
 
@@ -133,7 +133,7 @@ namespace xio {
  * @returns <tt>associated_executor<T>::get(t)</tt>
  */
     template<typename T>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
 
     typename associated_executor<T>::type
     get_associated_executor(const T &t) noexcept {
@@ -145,7 +145,7 @@ namespace xio {
  * @returns <tt>associated_executor<T, Executor>::get(t, ex)</tt>
  */
     template<typename T, typename Executor>
-ASIO_NODISCARD inline auto get_associated_executor(
+[[nodiscard]] inline auto get_associated_executor(
         const T &t, const Executor &ex,
         constraint_t<
             is_executor<Executor>::value || execution::is_executor<Executor>::value
@@ -160,7 +160,7 @@ ASIO_NODISCARD inline auto get_associated_executor(
  * ExecutionContext::executor_type>::get(t, ctx.get_executor())</tt>
  */
     template<typename T, typename ExecutionContext>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
 
     typename associated_executor<T,
         typename ExecutionContext::executor_type>::type
@@ -218,7 +218,7 @@ ASIO_NODISCARD inline auto get_associated_executor(
         }
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

@@ -25,7 +25,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace experimental {
         template<typename Yield, typename Return,
@@ -167,7 +167,7 @@ namespace xio {
                             coro.coro_->awaited_from =
                                     dispatch_coroutine(
                                         xio::prefer(hp.get_executor(),
-                                                     execution::outstanding_work.tracked),
+                                                    execution::outstanding_work.tracked),
                                         [h]() mutable { h.resume(); }).handle;
 
                             coro.coro_->reset_error();
@@ -842,7 +842,7 @@ namespace xio {
                 } else {
                     coro_.coro_->awaited_from = detail::dispatch_coroutine(
                         xio::prefer(hp.get_executor(),
-                                     execution::outstanding_work.tracked),
+                                    execution::outstanding_work.tracked),
                         [h]() mutable {
                             h.resume();
                         }).handle;
@@ -864,10 +864,10 @@ namespace xio {
 
                         void operator()(cancellation_type ct) {
                             xio::dispatch(e,
-                                           [ct, st = st]() mutable {
-                                               auto &[sig, state] = *st;
-                                               sig.emit(ct);
-                                           });
+                                          [ct, st = st]() mutable {
+                                              auto &[sig, state] = *st;
+                                              sig.emit(ct);
+                                          });
                         }
                     };
 
@@ -962,18 +962,18 @@ namespace xio {
                             exec = std::move(exec)]() mutable {
                     if (!the_coro)
                         return xio::post(exec,
-                                          xio::append(std::move(h),
-                                                       detail::coro_error<error_type>::invalid()));
+                                         xio::append(std::move(h),
+                                                     detail::coro_error<error_type>::invalid()));
 
                     auto ch = detail::coroutine_handle<promise_type>::from_promise(*the_coro);
                     if (!ch)
                         return xio::post(exec,
-                                          xio::append(std::move(h),
-                                                       detail::coro_error<error_type>::invalid()));
+                                         xio::append(std::move(h),
+                                                     detail::coro_error<error_type>::invalid()));
                     else if (ch.done())
                         return xio::post(exec,
-                                          xio::append(std::move(h),
-                                                       detail::coro_error<error_type>::done()));
+                                         xio::append(std::move(h),
+                                                     detail::coro_error<error_type>::done()));
                     else {
                         the_coro->awaited_from = detail::post_coroutine(
                             exec, std::move(h), the_coro->error_).handle;
@@ -992,19 +992,19 @@ namespace xio {
                             exec = std::move(exec)]() mutable {
                     if (!the_coro)
                         return xio::post(exec,
-                                          xio::append(std::move(h),
-                                                       detail::coro_error<error_type>::invalid(), result_type{}));
+                                         xio::append(std::move(h),
+                                                     detail::coro_error<error_type>::invalid(), result_type{}));
 
                     auto ch =
                             detail::coroutine_handle<promise_type>::from_promise(*the_coro);
                     if (!ch)
                         return xio::post(exec,
-                                          xio::append(std::move(h),
-                                                       detail::coro_error<error_type>::invalid(), result_type{}));
+                                         xio::append(std::move(h),
+                                                     detail::coro_error<error_type>::invalid(), result_type{}));
                     else if (ch.done())
                         return xio::post(exec,
-                                          xio::append(std::move(h),
-                                                       detail::coro_error<error_type>::done(), result_type{}));
+                                         xio::append(std::move(h),
+                                                     detail::coro_error<error_type>::done(), result_type{}));
                     else {
                         the_coro->awaited_from = detail::post_coroutine(
                             exec, std::move(h), the_coro->error_, the_coro->result_).handle;
@@ -1024,9 +1024,9 @@ namespace xio {
                 coro_->cancel->state = cancellation_state(
                     coro_->cancel->slot = get_associated_cancellation_slot(handler));
                 xio::dispatch(get_executor(),
-                               handle(exec, std::forward<WaitHandler>(handler),
-                                      std::integral_constant<bool, is_noexcept>{},
-                                      std::is_void<result_type>{}));
+                              handle(exec, std::forward<WaitHandler>(handler),
+                                     std::integral_constant<bool, is_noexcept>{},
+                                     std::is_void<result_type>{}));
             }
 
             template<typename WaitHandler, typename Input>
@@ -1039,20 +1039,20 @@ namespace xio {
                 coro_->cancel->state = cancellation_state(
                     coro_->cancel->slot = get_associated_cancellation_slot(handler));
                 xio::dispatch(get_executor(),
-                               [h = handle(exec, std::forward<WaitHandler>(handler),
-                                           std::integral_constant<bool, is_noexcept>{},
-                                           std::is_void<result_type>{}),
-                                   in = std::forward<Input>(input), the_coro = coro_]() mutable {
-                                   the_coro->input_ = std::move(in);
-                                   std::move(h)();
-                               });
+                              [h = handle(exec, std::forward<WaitHandler>(handler),
+                                          std::integral_constant<bool, is_noexcept>{},
+                                          std::is_void<result_type>{}),
+                                  in = std::forward<Input>(input), the_coro = coro_]() mutable {
+                                  the_coro->input_ = std::move(in);
+                                  std::move(h)();
+                              });
             }
 
         private:
             typename coro::promise_type *coro_;
         };
     } // namespace experimental
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

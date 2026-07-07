@@ -27,12 +27,14 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// (Deprecated) Time traits suitable for use with the deadline timer.
 
+
     template<typename Time>
     struct ASIO_DEPRECATED_MSG (
+
     "Use basic_waitable_timer and wait_traits"
     )
     time_traits;
@@ -40,6 +42,7 @@ namespace xio {
     /// (Deprecated) Time traits specialised for posix_time.
     template<>
     struct ASIO_DEPRECATED_MSG (
+
     "Use basic_waitable_timer and wait_traits"
     )
     time_traits<boost::posix_time::ptime> {
@@ -52,6 +55,7 @@ namespace xio {
         /// Get the current time.
         static time_type now()
         {
+
 
 #if defined(BOOST_DATE_TIME_HAS_HIGH_PRECISION_CLOCK)
 return boost::posix_time::microsec_clock::universal_time();
@@ -82,7 +86,7 @@ static boost::posix_time::time_duration to_posix_duration(
 }
 };
 
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 

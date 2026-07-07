@@ -47,9 +47,10 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
+
 
 
 #if defined(ASIO_HAS_STD_COROUTINE)
@@ -895,6 +896,7 @@ associated_allocator_t<Handler, recycling_allocator<void> >;
 
 union block {
 
+
 #if defined(ASIO_MSVC) && !defined(__clang__)
 // Force 16-byte alignment as std::max_align_t is only 8-byte aligned on
 // MSVC, but the compiler may emit aligned SSE stores into the storage.
@@ -1045,15 +1047,17 @@ struct associator<Associator,
 
 #endif // !defined(GENERATING_DOCUMENTATION)
 
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #if !defined(GENERATING_DOCUMENTATION)
 # if defined(ASIO_HAS_STD_COROUTINE)
 namespace std {
 
+
 # else // defined(ASIO_HAS_STD_COROUTINE)
 namespace std {
     namespace experimental {
+
 
 # endif // defined(ASIO_HAS_STD_COROUTINE)
 
@@ -1089,7 +1093,7 @@ struct coroutine_traits<void,
 #endif // !defined(GENERATING_DOCUMENTATION)
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Creates an initiation function object that may be used to launch a
 /// coroutine-based composed asynchronous operation.
@@ -1198,6 +1202,8 @@ namespace xio {
  */
 
 
+
+
     template<ASIO_COMPLETION_SIGNATURE... Signatures,
         typename Implementation, typename... IoObjectsOrExecutors>
     inline auto co_composed(Implementation &&implementation,
@@ -1213,7 +1219,7 @@ namespace xio {
                         io_objects_or_executors))...));
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

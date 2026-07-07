@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ip {
         /// The resolver_query_base class is used as a base for the
@@ -34,7 +34,7 @@ namespace xio {
             }
         };
     } // namespace ip
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

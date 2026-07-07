@@ -25,7 +25,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     class execution_context;
     class io_context;
@@ -572,14 +572,12 @@ namespace xio {
         template<typename Type>
         service_id<Type> execution_context_service_base<Type>::id;
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
 #include <xio/impl/execution_context.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/impl/execution_context.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
+
 
 #endif // ASIO_EXECUTION_CONTEXT_HPP

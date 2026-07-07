@@ -29,7 +29,7 @@
 #endif
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 #if defined(ASIO_WINDOWS) \
@@ -41,7 +41,7 @@ namespace xio {
         typedef pipe_select_interrupter select_interrupter;
 #endif
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // !defined(ASIO_WINDOWS_RUNTIME)

@@ -24,7 +24,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ssl {
         namespace detail {
@@ -86,13 +86,10 @@ namespace xio {
             openssl_init<Do_Init> openssl_init<Do_Init>::instance_;
         } // namespace detail
     } // namespace ssl
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/ssl/detail/impl/openssl_init.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_SSL_DETAIL_OPENSSL_INIT_HPP

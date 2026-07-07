@@ -23,7 +23,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ssl {
         /// A simple wrapper around the X509_STORE_CTX type, used during verification of
@@ -57,7 +57,7 @@ namespace xio {
             native_handle_type handle_;
         };
     } // namespace ssl
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

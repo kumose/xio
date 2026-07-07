@@ -22,7 +22,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// A @ref completion_token adapter used to specify that an error produced by an
 /// asynchronous operation is captured to an error_code variable.
@@ -30,6 +30,8 @@ namespace xio {
  * The redirect_error_t class is used to indicate that any error_code produced
  * by an asynchronous operation is captured to a specified variable.
  */
+
+
 
 
     template<typename CompletionToken>
@@ -64,7 +66,7 @@ namespace xio {
         /// Adapt a @ref completion_token to specify that the completion handler
   /// should capture error_code values to a variable.
         template<typename CompletionToken>
-        ASIO_NODISCARD inline
+        [[nodiscard]] inline
         constexpr redirect_error_t<decay_t<CompletionToken> >
 
         operator()(CompletionToken &&completion_token) const {
@@ -78,7 +80,7 @@ namespace xio {
 
     /// Create a partial completion token adapter that captures error_code values
 /// to a variable.
-    ASIO_NODISCARD inline partial_redirect_error
+    [[nodiscard]] inline partial_redirect_error
 
     redirect_error(xio::error_code &ec) {
         return partial_redirect_error(ec);
@@ -86,7 +88,7 @@ namespace xio {
 
     /// Adapt a @ref completion_token to capture error_code values to a variable.
     template<typename CompletionToken>
-    ASIO_NODISCARD inline redirect_error_t<decay_t<CompletionToken> >
+    [[nodiscard]] inline redirect_error_t<decay_t<CompletionToken> >
 
     redirect_error(CompletionToken &&completion_token,
                    xio::error_code &ec) {
@@ -94,7 +96,7 @@ namespace xio {
             static_cast<CompletionToken &&>(completion_token), ec);
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

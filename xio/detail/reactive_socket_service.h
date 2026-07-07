@@ -42,7 +42,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename Protocol>
@@ -116,7 +116,7 @@ namespace xio {
 
             // Open a new socket implementation.
             xio::error_code open(implementation_type &impl,
-                                  const protocol_type &protocol, xio::error_code &ec) {
+                                 const protocol_type &protocol, xio::error_code &ec) {
                 if (!do_open(impl, protocol.family(),
                              protocol.type(), protocol.protocol(), ec))
                     impl.protocol_ = protocol;
@@ -127,8 +127,8 @@ namespace xio {
 
             // Assign a native socket to a socket implementation.
             xio::error_code assign(implementation_type &impl,
-                                    const protocol_type &protocol, const native_handle_type &native_socket,
-                                    xio::error_code &ec) {
+                                   const protocol_type &protocol, const native_handle_type &native_socket,
+                                   xio::error_code &ec) {
                 if (!do_assign(impl, protocol.type(), native_socket, ec))
                     impl.protocol_ = protocol;
 
@@ -143,7 +143,7 @@ namespace xio {
 
             // Bind the socket to the specified local endpoint.
             xio::error_code bind(implementation_type &impl,
-                                  const endpoint_type &endpoint, xio::error_code &ec) {
+                                 const endpoint_type &endpoint, xio::error_code &ec) {
                 socket_ops::bind(impl.socket_, endpoint.data(), endpoint.size(), ec);
 
                 ASIO_ERROR_LOCATION(ec);
@@ -153,7 +153,7 @@ namespace xio {
             // Set a socket option.
             template<typename Option>
             xio::error_code set_option(implementation_type &impl,
-                                        const Option &option, xio::error_code &ec) {
+                                       const Option &option, xio::error_code &ec) {
                 socket_ops::setsockopt(impl.socket_, impl.state_,
                                        option.level(impl.protocol_), option.name(impl.protocol_),
                                        option.data(impl.protocol_), option.size(impl.protocol_), ec);
@@ -165,7 +165,7 @@ namespace xio {
             // Set a socket option.
             template<typename Option>
             xio::error_code get_option(const implementation_type &impl,
-                                        Option &option, xio::error_code &ec) const {
+                                       Option &option, xio::error_code &ec) const {
                 std::size_t size = option.size(impl.protocol_);
                 socket_ops::getsockopt(impl.socket_, impl.state_,
                                        option.level(impl.protocol_), option.name(impl.protocol_),
@@ -206,7 +206,7 @@ namespace xio {
 
             // Disable sends or receives on the socket.
             xio::error_code shutdown(base_implementation_type &impl,
-                                      socket_base::shutdown_type what, xio::error_code &ec) {
+                                     socket_base::shutdown_type what, xio::error_code &ec) {
                 socket_ops::shutdown(impl.socket_, what, ec);
 
                 ASIO_ERROR_LOCATION(ec);
@@ -258,7 +258,7 @@ namespace xio {
                                const endpoint_type &destination, socket_base::message_flags flags,
                                Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -295,7 +295,7 @@ namespace xio {
                                const endpoint_type &, socket_base::message_flags,
                                Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -376,7 +376,7 @@ namespace xio {
                                     socket_base::message_flags flags, Handler &handler,
                                     const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -417,7 +417,7 @@ namespace xio {
                                     endpoint_type &sender_endpoint, socket_base::message_flags flags,
                                     Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -454,7 +454,7 @@ namespace xio {
             // Accept a new connection.
             template<typename Socket>
             xio::error_code accept(implementation_type &impl,
-                                    Socket &peer, endpoint_type *peer_endpoint, xio::error_code &ec) {
+                                   Socket &peer, endpoint_type *peer_endpoint, xio::error_code &ec) {
                 // We cannot accept a socket that is already open.
                 if (peer.is_open()) {
                     ec = xio::error::already_open;
@@ -486,7 +486,7 @@ namespace xio {
             void async_accept(implementation_type &impl, Socket &peer,
                               endpoint_type *peer_endpoint, Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -521,7 +521,7 @@ namespace xio {
                                    const PeerIoExecutor &peer_io_ex, endpoint_type *peer_endpoint,
                                    Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -552,7 +552,7 @@ namespace xio {
 
             // Connect the socket to the specified endpoint.
             xio::error_code connect(implementation_type &impl,
-                                     const endpoint_type &peer_endpoint, xio::error_code &ec) {
+                                    const endpoint_type &peer_endpoint, xio::error_code &ec) {
                 socket_ops::sync_connect(impl.socket_,
                                          peer_endpoint.data(), peer_endpoint.size(), ec);
                 ASIO_ERROR_LOCATION(ec);
@@ -565,7 +565,7 @@ namespace xio {
                                const endpoint_type &peer_endpoint,
                                Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -594,7 +594,7 @@ namespace xio {
             }
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

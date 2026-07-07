@@ -23,7 +23,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename Handler>
@@ -61,7 +61,7 @@ namespace xio {
         template<typename Handler>
         inline bool asio_handler_is_continuation(
             binder0<Handler> *this_handler) {
-            return ASIO_VERSIONED_NAME(handler_cont_helpers)
+            return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -114,7 +114,7 @@ namespace xio {
         template<typename Handler, typename Arg1>
         inline bool asio_handler_is_continuation(
             binder1<Handler, Arg1> *this_handler) {
-            return ASIO_VERSIONED_NAME(handler_cont_helpers)
+            return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -174,7 +174,7 @@ namespace xio {
         template<typename Handler, typename Arg1, typename Arg2>
         inline bool asio_handler_is_continuation(
             binder2<Handler, Arg1, Arg2> *this_handler) {
-            return ASIO_VERSIONED_NAME(handler_cont_helpers)
+            return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -241,7 +241,7 @@ namespace xio {
         template<typename Handler, typename Arg1, typename Arg2, typename Arg3>
         inline bool asio_handler_is_continuation(
             binder3<Handler, Arg1, Arg2, Arg3> *this_handler) {
-            return ASIO_VERSIONED_NAME(handler_cont_helpers)
+            return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -317,7 +317,7 @@ namespace xio {
             typename Arg2, typename Arg3, typename Arg4>
         inline bool asio_handler_is_continuation(
             binder4<Handler, Arg1, Arg2, Arg3, Arg4> *this_handler) {
-            return ASIO_VERSIONED_NAME(handler_cont_helpers)
+            return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -401,7 +401,7 @@ namespace xio {
             typename Arg3, typename Arg4, typename Arg5>
         inline bool asio_handler_is_continuation(
             binder5<Handler, Arg1, Arg2, Arg3, Arg4, Arg5> *this_handler) {
-            return ASIO_VERSIONED_NAME(handler_cont_helpers)
+            return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -451,7 +451,7 @@ namespace xio {
         template<typename Handler, typename Arg1>
         inline bool asio_handler_is_continuation(
             move_binder1<Handler, Arg1> *this_handler) {
-            return ASIO_VERSIONED_NAME(handler_cont_helpers)
+            return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -487,7 +487,7 @@ namespace xio {
         template<typename Handler, typename Arg1, typename Arg2>
         inline bool asio_handler_is_continuation(
             move_binder2<Handler, Arg1, Arg2> *this_handler) {
-            return ASIO_VERSIONED_NAME(handler_cont_helpers)
+            return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -634,7 +634,7 @@ namespace xio {
         }
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

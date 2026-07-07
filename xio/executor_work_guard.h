@@ -25,10 +25,11 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if !defined(ASIO_EXECUTOR_WORK_GUARD_DECL)
 #define ASIO_EXECUTOR_WORK_GUARD_DECL
+
 
 
     template<typename Executor, typename = void, typename = void>
@@ -239,7 +240,7 @@ private:
  * @returns A work guard constructed with the specified executor.
  */
     template<typename Executor>
-    ASIO_NODISCARD inline executor_work_guard<Executor>
+    [[nodiscard]] inline executor_work_guard<Executor>
 
     make_work_guard(const Executor &ex,
                     constraint_t<
@@ -256,7 +257,7 @@ private:
  * obtained by performing <tt>ctx.get_executor()</tt>.
  */
     template<typename ExecutionContext>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
     executor_work_guard<typename ExecutionContext::executor_type>
 
     make_work_guard(ExecutionContext & ctx,
@@ -276,7 +277,7 @@ private:
  * @c t, which is obtained as if by calling <tt>get_associated_executor(t)</tt>.
  */
     template<typename T>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
     executor_work_guard<
         typename constraint_t <
         !is_executor<T>::value
@@ -303,7 +304,7 @@ private:
  * ex)</tt>.
  */
     template<typename T, typename Executor>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
     executor_work_guard<associated_executor_t<T, Executor> >
 
     make_work_guard(const T &t, const Executor &ex,
@@ -327,7 +328,7 @@ private:
  * ctx.get_executor())</tt>.
  */
     template<typename T, typename ExecutionContext>
-    ASIO_NODISCARD inline executor_work_guard<
+    [[nodiscard]] inline executor_work_guard<
         associated_executor_t<T, typename ExecutionContext::executor_type> >
 
     make_work_guard(const T &t, ExecutionContext &ctx,
@@ -349,7 +350,7 @@ private:
                 t, ctx.get_executor()));
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

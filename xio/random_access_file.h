@@ -23,12 +23,12 @@
 #include <xio/basic_random_access_file.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Typedef for the typical usage of a random-access file.
     typedef basic_random_access_file<> random_access_file;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // defined(ASIO_HAS_FILE)

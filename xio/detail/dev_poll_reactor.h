@@ -39,7 +39,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class dev_poll_reactor
@@ -233,15 +233,13 @@ namespace xio {
             bool shutdown_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
 #include <xio/detail/impl/dev_poll_reactor.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/dev_poll_reactor.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
+
 
 #endif // defined(ASIO_HAS_DEV_POLL)
 

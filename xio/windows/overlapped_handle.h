@@ -24,13 +24,13 @@
 #include <xio/windows/basic_overlapped_handle.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace windows {
         /// Typedef for the typical usage of an overlapped handle.
         typedef basic_overlapped_handle<> overlapped_handle;
     } // namespace windows
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // defined(ASIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE)

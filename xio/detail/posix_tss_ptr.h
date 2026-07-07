@@ -25,11 +25,11 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // Helper function to create thread-specific storage.
-ASIO_DECL void posix_tss_ptr_create(pthread_key_t & key);
+        ASIO_DECL void posix_tss_ptr_create(pthread_key_t &key);
 
         template<typename T>
         class posix_tss_ptr
@@ -61,14 +61,11 @@ ASIO_DECL void posix_tss_ptr_create(pthread_key_t & key);
             pthread_key_t tss_key_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/posix_tss_ptr.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // defined(ASIO_HAS_PTHREADS)
 

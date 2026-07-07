@@ -43,7 +43,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if !defined(ASIO_BASIC_FILE_FWD_DECL)
 #define ASIO_BASIC_FILE_FWD_DECL
@@ -888,7 +888,7 @@ basic_file(const basic_file &) = delete;
 basic_file &operator=(const basic_file &) = delete;
 };
 
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 

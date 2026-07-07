@@ -23,12 +23,12 @@
 #include <xio/basic_writable_pipe.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Typedef for the typical usage of a writable pipe.
     typedef basic_writable_pipe<> writable_pipe;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // defined(ASIO_HAS_PIPE)

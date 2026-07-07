@@ -30,7 +30,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Exception thrown when trying to access an empty polymorphic executor.
     class bad_executor
@@ -346,7 +346,7 @@ namespace xio {
 #endif // !defined(GENERATING_DOCUMENTATION)
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 ASIO_USES_ALLOCATOR(xio::executor)

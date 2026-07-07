@@ -29,7 +29,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // Base class for all spawn()-ed thread implementations.
@@ -656,7 +656,7 @@ namespace xio {
 
     /*@}*/
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

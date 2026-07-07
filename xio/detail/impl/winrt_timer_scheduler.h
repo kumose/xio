@@ -22,7 +22,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename TimeTraits, typename Allocator>
@@ -83,7 +83,7 @@ namespace xio {
             scheduler_.post_deferred_completions(ops);
         }
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

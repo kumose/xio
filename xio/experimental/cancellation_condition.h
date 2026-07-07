@@ -23,7 +23,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace experimental {
         /// Wait for all operations to complete.
@@ -117,7 +117,7 @@ namespace xio {
             cancellation_type_t cancel_type_;
         };
     } // namespace experimental
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

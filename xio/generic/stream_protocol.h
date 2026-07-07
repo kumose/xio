@@ -27,7 +27,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace generic {
         /// Encapsulates the flags needed for a generic stream-oriented socket.
@@ -111,7 +111,7 @@ namespace xio {
             int protocol_;
         };
     } // namespace generic
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

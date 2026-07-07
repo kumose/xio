@@ -23,7 +23,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ip {
         /// An query to be passed to a resolver.
@@ -243,7 +243,7 @@ namespace xio {
             std::string service_name_;
         };
     } // namespace ip
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

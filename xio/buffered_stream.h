@@ -27,7 +27,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Adds buffering to the read- and write-related operations of a stream.
     /**
@@ -41,6 +41,8 @@ namespace xio {
  * @par Concepts:
  * AsyncReadStream, AsyncWriteStream, Stream, SyncReadStream, SyncWriteStream.
  */
+
+
 
 
     template<typename Stream>
@@ -263,7 +265,7 @@ namespace xio {
         read_stream_type stream_impl_;
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

@@ -25,7 +25,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
@@ -97,16 +97,16 @@ namespace xio {
         template<typename OtherAnyExecutor>
         any_completion_executor(OtherAnyExecutor e,
                                 constraint_t<
-                                    conditional <
-                                    !is_same<OtherAnyExecutor, any_completion_executor>::value
-                                    && is_base_of<execution::detail::any_executor_base,
-                                        OtherAnyExecutor>::value,
-                                    typename execution::detail::supportable_properties <
-                                    0, supportable_properties_type>::template
-                                is_valid_target<OtherAnyExecutor>,
-                                false_type
-        >::type::value
-      > = 0)
+                                    conditional<
+                                        !is_same<OtherAnyExecutor, any_completion_executor>::value
+                                        && is_base_of<execution::detail::any_executor_base,
+                                            OtherAnyExecutor>::value,
+                                        typename execution::detail::supportable_properties<
+                                            0, supportable_properties_type>::template
+                                        is_valid_target<OtherAnyExecutor>,
+                                        false_type
+                                    >::type::value
+                                > = 0)
             : base_type(static_cast<OtherAnyExecutor &&>(e)) {
         }
 #endif // defined(GENERATING_DOCUMENTATION)
@@ -120,16 +120,16 @@ namespace xio {
         template<typename OtherAnyExecutor>
         any_completion_executor(std::nothrow_t, OtherAnyExecutor e,
                                 constraint_t<
-                                    conditional <
-                                    !is_same<OtherAnyExecutor, any_completion_executor>::value
-                                    && is_base_of<execution::detail::any_executor_base,
-                                        OtherAnyExecutor>::value,
-                                    typename execution::detail::supportable_properties <
-                                    0, supportable_properties_type>::template
-                                is_valid_target<OtherAnyExecutor>,
-                                false_type
-        >::type::value
-      > = 0) noexcept
+                                    conditional<
+                                        !is_same<OtherAnyExecutor, any_completion_executor>::value
+                                        && is_base_of<execution::detail::any_executor_base,
+                                            OtherAnyExecutor>::value,
+                                        typename execution::detail::supportable_properties<
+                                            0, supportable_properties_type>::template
+                                        is_valid_target<OtherAnyExecutor>,
+                                        false_type
+                                    >::type::value
+                                > = 0) noexcept
             : base_type(std::nothrow, static_cast<OtherAnyExecutor &&>(e)) {
         }
 #endif // defined(GENERATING_DOCUMENTATION)
@@ -150,15 +150,15 @@ namespace xio {
         template<ASIO_EXECUTION_EXECUTOR Executor>
         any_completion_executor(Executor e,
                                 constraint_t<
-                                    conditional <
-                                    !is_same < Executor, any_completion_executor>::value
-                                &&!is_base_of<execution::detail::any_executor_base,
-                                    Executor>::value,
-                                execution::detail::is_valid_target_executor<
-                                    Executor, supportable_properties_type>,
-                                false_type
-        >::type::value
-      > = 0)
+                                    conditional<
+                                        !is_same<Executor, any_completion_executor>::value
+                                        && !is_base_of<execution::detail::any_executor_base,
+                                            Executor>::value,
+                                        execution::detail::is_valid_target_executor<
+                                            Executor, supportable_properties_type>,
+                                        false_type
+                                    >::type::value
+                                > = 0)
             : base_type(static_cast<Executor &&>(e)) {
         }
 #endif // defined(GENERATING_DOCUMENTATION)
@@ -171,35 +171,35 @@ namespace xio {
         template<ASIO_EXECUTION_EXECUTOR Executor>
         any_completion_executor(std::nothrow_t, Executor e,
                                 constraint_t<
-                                    conditional <
-                                    !is_same < Executor, any_completion_executor>::value
-                                &&!is_base_of<execution::detail::any_executor_base,
-                                    Executor>::value,
-                                execution::detail::is_valid_target_executor<
-                                    Executor, supportable_properties_type>,
-                                false_type
-        >::type::value
-      > = 0) noexcept
+                                    conditional<
+                                        !is_same<Executor, any_completion_executor>::value
+                                        && !is_base_of<execution::detail::any_executor_base,
+                                            Executor>::value,
+                                        execution::detail::is_valid_target_executor<
+                                            Executor, supportable_properties_type>,
+                                        false_type
+                                    >::type::value
+                                > = 0) noexcept
             : base_type(std::nothrow, static_cast<Executor &&>(e)) {
         }
 #endif // defined(GENERATING_DOCUMENTATION)
 
         /// Assignment operator.
-  ASIO_DECL any_completion_executor &operator=(
+        ASIO_DECL any_completion_executor &operator=(
             const any_completion_executor &e) noexcept;
 
         /// Move assignment operator.
-  ASIO_DECL any_completion_executor &operator=(
+        ASIO_DECL any_completion_executor &operator=(
             any_completion_executor &&e) noexcept;
 
         /// Assignment operator that sets the polymorphic wrapper to the empty state.
-  ASIO_DECL any_completion_executor &operator=(nullptr_t);
+        ASIO_DECL any_completion_executor &operator=(nullptr_t);
 
         /// Destructor.
         ASIO_DECL ~any_completion_executor();
 
         /// Swap targets with another polymorphic wrapper.
-  ASIO_DECL void swap(any_completion_executor &other) noexcept;
+        ASIO_DECL void swap(any_completion_executor &other) noexcept;
 
         /// Obtain a polymorphic wrapper with the specified property.
         /**
@@ -239,19 +239,19 @@ namespace xio {
 #if !defined(GENERATING_DOCUMENTATION)
 
     template<>
-ASIO_DECL any_completion_executor any_completion_executor::prefer(
+    ASIO_DECL any_completion_executor any_completion_executor::prefer(
         const execution::outstanding_work_t::tracked_t &, int) const;
 
     template<>
-ASIO_DECL any_completion_executor any_completion_executor::prefer(
+    ASIO_DECL any_completion_executor any_completion_executor::prefer(
         const execution::outstanding_work_t::untracked_t &, int) const;
 
     template<>
-ASIO_DECL any_completion_executor any_completion_executor::prefer(
+    ASIO_DECL any_completion_executor any_completion_executor::prefer(
         const execution::relationship_t::fork_t &, int) const;
 
     template<>
-ASIO_DECL any_completion_executor any_completion_executor::prefer(
+    ASIO_DECL any_completion_executor any_completion_executor::prefer(
         const execution::relationship_t::continuation_t &, int) const;
 
     namespace traits {
@@ -310,15 +310,10 @@ ASIO_DECL any_completion_executor any_completion_executor::prefer(
 
 #endif // defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY) \
-  && !defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
-# include "xio/impl/any_completion_executor.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
-//   && !defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
 #endif // ASIO_ANY_COMPLETION_EXECUTOR_HPP

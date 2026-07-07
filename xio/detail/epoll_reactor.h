@@ -41,7 +41,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class epoll_reactor
@@ -290,14 +290,12 @@ friend struct perform_io_cleanup_on_block_exit;
 };
 
 } // namespace detail
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 
 #include <xio/detail/impl/epoll_reactor.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/epoll_reactor.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
+
 
 #endif // defined(ASIO_HAS_EPOLL)
 

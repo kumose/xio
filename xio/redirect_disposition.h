@@ -22,7 +22,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// A @ref completion_token adapter used to specify that the disposition
 /// produced by an asynchronous operation is captured to a variable.
@@ -30,6 +30,8 @@ namespace xio {
  * The redirect_disposition_t class is used to indicate that any disposition
  * produced by an asynchronous operation is captured to a specified variable.
  */
+
+
 
 
     template<typename CompletionToken, ASIO_DISPOSITION Disposition>
@@ -66,7 +68,7 @@ namespace xio {
         /// Adapt a @ref completion_token to specify that the completion handler
   /// should capture disposition values to a variable.
         template<typename CompletionToken>
-        ASIO_NODISCARD inline
+        [[nodiscard]] inline
         constexpr redirect_disposition_t<decay_t<CompletionToken>, Disposition>
 
         operator()(CompletionToken &&completion_token) const {
@@ -85,7 +87,7 @@ namespace xio {
  * disposition types will be automatically converted to @c std::exception_ptr.
  */
     template<ASIO_DISPOSITION Disposition>
-    ASIO_NODISCARD inline partial_redirect_disposition<Disposition>
+    [[nodiscard]] inline partial_redirect_disposition<Disposition>
 
     redirect_disposition(Disposition &d) {
         return partial_redirect_disposition<Disposition>(d);
@@ -97,7 +99,7 @@ namespace xio {
  * disposition types will be automatically converted to @c std::exception_ptr.
  */
     template<typename CompletionToken, ASIO_DISPOSITION Disposition>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
     redirect_disposition_t<decay_t<CompletionToken>, Disposition>
 
     redirect_disposition(CompletionToken &&completion_token, Disposition &d) {
@@ -105,7 +107,7 @@ namespace xio {
             static_cast<CompletionToken &&>(completion_token), d);
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

@@ -23,7 +23,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace experimental {
         template<typename Allocator = std::allocator<void> >
@@ -93,7 +93,7 @@ namespace xio {
 
         ASIO_INLINE_VARIABLE constexpr use_promise_t<> use_promise;
     } // namespace experimental
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

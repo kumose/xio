@@ -26,7 +26,7 @@
 #endif
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 #if !defined(ASIO_HAS_THREADS) \
@@ -37,7 +37,7 @@ namespace xio {
         typedef std_fenced_block fenced_block;
 #endif
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_DETAIL_FENCED_BLOCK_HPP

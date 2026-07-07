@@ -23,7 +23,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     template<typename Blocking, typename Relationship, typename Allocator>
     inline system_context &
@@ -158,7 +158,7 @@ namespace xio {
     }
 #endif // !defined(ASIO_NO_TS_EXECUTORS)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

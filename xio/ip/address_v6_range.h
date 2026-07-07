@@ -22,7 +22,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ip {
         template<typename>
@@ -108,7 +108,7 @@ namespace xio {
         /// Represents a range of IPv6 addresses.
         typedef basic_address_range<address_v6> address_v6_range;
     } // namespace ip
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

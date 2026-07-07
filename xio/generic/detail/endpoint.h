@@ -23,7 +23,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace generic {
         namespace detail {
@@ -112,13 +112,10 @@ namespace xio {
             };
         } // namespace detail
     } // namespace generic
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/generic/detail/impl/endpoint.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_GENERIC_DETAIL_ENDPOINT_HPP

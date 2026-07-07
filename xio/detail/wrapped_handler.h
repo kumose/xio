@@ -22,13 +22,13 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         struct is_continuation_delegated {
             template<typename Dispatcher, typename Handler>
             bool operator()(Dispatcher &, Handler &handler) const {
-                return ASIO_VERSIONED_NAME(handler_cont_helpers)
+                return XIO_VERSIONED_NAME(handler_cont_helpers)
                 ::is_continuation(
                     handler);
             }
@@ -188,7 +188,7 @@ namespace xio {
             return IsContinuation()(this_handler->dispatcher_, this_handler->handler_);
         }
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

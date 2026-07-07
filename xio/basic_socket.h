@@ -42,12 +42,13 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if !defined(ASIO_BASIC_SOCKET_FWD_DECL)
 #define ASIO_BASIC_SOCKET_FWD_DECL
 
     // Forward declaration with defaulted arguments.
+
 
     template<typename Protocol, typename Executor = any_io_executor>
     class basic_socket;
@@ -1814,8 +1815,8 @@ namespace xio {
 
                 if (open_ec) {
                     xio::post(self_->impl_.get_executor(),
-                               xio::detail::bind_handler(
-                                   static_cast<ConnectHandler &&>(handler), open_ec));
+                              xio::detail::bind_handler(
+                                  static_cast<ConnectHandler &&>(handler), open_ec));
                 } else {
                     detail::non_const_lvalue<ConnectHandler> handler2(handler);
                     self_->impl_.get_service().async_connect(
@@ -1858,7 +1859,7 @@ namespace xio {
         };
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

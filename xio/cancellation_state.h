@@ -25,9 +25,11 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// A simple cancellation signal propagation filter.
+
+
 
 
     template<cancellation_type_t Mask>
@@ -215,7 +217,7 @@ namespace xio {
         impl_base *impl_;
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

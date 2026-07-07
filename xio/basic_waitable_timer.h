@@ -31,12 +31,13 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if !defined(ASIO_BASIC_WAITABLE_TIMER_FWD_DECL)
 #define ASIO_BASIC_WAITABLE_TIMER_FWD_DECL
 
     // Forward declaration with defaulted arguments.
+
 
     template<typename Clock,
         typename WaitTraits = xio::wait_traits<Clock>,
@@ -615,7 +616,7 @@ namespace xio {
             executor_type> impl_;
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

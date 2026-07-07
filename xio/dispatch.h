@@ -26,7 +26,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Submits a completion token or function object for execution.
     /**
@@ -70,6 +70,7 @@ namespace xio {
  * @par Completion Signature
  * @code void() @endcode
  */
+
 
     template<ASIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = deferred_t>
     inline auto dispatch(NullaryToken && token = deferred_t())
@@ -387,6 +388,7 @@ namespace xio {
         ASIO_COMPLETION_TOKEN_FOR(
         void(decay_t<result_of_t < decay_t<Function>()> >
 
+
     )
     )
     CompletionToken= default_completion_token_t
@@ -487,6 +489,7 @@ namespace xio {
         ASIO_COMPLETION_TOKEN_FOR(
         void(decay_t<result_of_t < decay_t<Function>()> >
 
+
     )
     )
     CompletionToken= default_completion_token_t
@@ -515,7 +518,7 @@ namespace xio {
             token, static_cast<Function &&>(function));
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

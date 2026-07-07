@@ -24,7 +24,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename Initiation, typename Clock,
@@ -240,15 +240,17 @@ namespace xio {
         >
         (
 
+
         static_cast
         <
         Initiation &&
+
         >
         (initiation),
                 cancel_after_timer<
                     default_completion_token_t<associated_executor_t<Initiation> >,
                     Clock, WaitTraits, Executor>(
-                    default_completion_token_t<associated_executor_t<Initiation> > {
+                    default_completion_token_t<associated_executor_t<Initiation> >  {
         }
 
         ,
@@ -268,6 +270,7 @@ namespace xio {
         static_cast
         <
         Args &&
+
         >
         (args)
         ...
@@ -287,7 +290,7 @@ namespace xio {
 
 #endif // !defined(GENERATING_DOCUMENTATION)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

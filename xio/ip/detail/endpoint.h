@@ -25,7 +25,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ip {
         namespace detail {
@@ -121,13 +121,10 @@ namespace xio {
             };
         } // namespace detail
     } // namespace ip
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/ip/detail/impl/endpoint.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_IP_DETAIL_ENDPOINT_HPP

@@ -47,7 +47,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class scheduler;
@@ -268,15 +268,13 @@ namespace xio {
             atomic_count allocation_counter_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
 #include <xio/detail/impl/kqueue_reactor.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/kqueue_reactor.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
+
 
 #endif // defined(ASIO_HAS_KQUEUE)
 

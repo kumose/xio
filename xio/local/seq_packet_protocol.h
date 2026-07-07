@@ -28,7 +28,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace local {
         /// Encapsulates the flags needed for seq_packet UNIX sockets.
@@ -70,7 +70,7 @@ namespace xio {
             typedef basic_socket_acceptor<seq_packet_protocol> acceptor;
         };
     } // namespace local
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

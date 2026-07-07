@@ -20,7 +20,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Exception thrown when there are multiple pending exceptions to rethrow.
     class multiple_exceptions
@@ -49,7 +49,7 @@ namespace xio {
         std::exception_ptr first_;
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

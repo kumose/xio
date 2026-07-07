@@ -32,7 +32,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     class executor;
     class io_context;
@@ -79,7 +79,7 @@ namespace xio {
             template<typename Function, typename Handler>
             void dispatch(Function &function, Handler &handler) {
                 xio::prefer(executor_,
-                             execution::allocator((get_associated_allocator)(handler))
+                            execution::allocator((get_associated_allocator)(handler))
                 ).execute(static_cast<Function &&>(function));
             }
 
@@ -461,7 +461,7 @@ private:
             handler_work_type handler_work_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

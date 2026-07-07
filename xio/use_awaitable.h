@@ -31,7 +31,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// A @ref completion_token that represents the currently executing coroutine.
     /**
@@ -50,6 +50,8 @@ namespace xio {
  * the asynchronous operation completes, and the result of the operation is
  * returned.
  */
+
+
 
 
     template<typename Executor = any_io_executor>
@@ -149,7 +151,7 @@ ASIO_INLINE_VARIABLE constexpr use_awaitable_t<> use_awaitable;
 ASIO_INLINE_VARIABLE constexpr use_awaitable_t<> use_awaitable(0, 0, 0);
 #endif
 
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 

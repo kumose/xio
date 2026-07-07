@@ -28,7 +28,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace experimental {
         namespace detail {
@@ -270,7 +270,7 @@ namespace xio {
             typename Allocator = std::allocator<void> >
         using task = coro<void(), T, Executor, Allocator>;
     } // namespace experimental
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

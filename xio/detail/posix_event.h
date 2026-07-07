@@ -27,7 +27,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class posix_event
@@ -120,43 +120,38 @@ namespace xio {
 #if (defined(__MACH__) && defined(__APPLE__)) \
       || (defined(__ANDROID__) && (__ANDROID_API__ < 21) \
           && defined(HAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE))
-ts.tv_sec= usec/ 1000000;
-ts.tv_nsec= (usec% 1000000) * 1000;
-::pthread_cond_timedwait_relative_np (
-    &cond_, &lock.mutex().mutex_, &ts); // Ignore EINVAL.
+                    ts.tv_sec = usec / 1000000;
+                    ts.tv_nsec = (usec % 1000000) * 1000;
+                    ::pthread_cond_timedwait_relative_np(
+                        &cond_, &lock.mutex().mutex_, &ts); // Ignore EINVAL.
 #else // (defined(__MACH__) && defined(__APPLE__))
-// || (defined(__ANDROID__) && (__ANDROID_API__ < 21)
-//     && defined(HAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE))
-if (::clock_gettime(CLOCK_MONOTONIC, &ts) == 0)
-      {
-        ts.tv_sec += usec / 1000000;
-        ts.tv_nsec += (usec % 1000000) * 1000;
-        ts.tv_sec += ts.tv_nsec / 1000000000;
-        ts.tv_nsec = ts.tv_nsec % 1000000000;
-        ::pthread_cond_timedwait(&cond_,
-            &lock.mutex().mutex_, &ts); // Ignore EINVAL.
-      }
+                    // || (defined(__ANDROID__) && (__ANDROID_API__ < 21)
+                    //     && defined(HAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE))
+                    if (::clock_gettime(CLOCK_MONOTONIC, &ts) == 0) {
+                        ts.tv_sec += usec / 1000000;
+                        ts.tv_nsec += (usec % 1000000) * 1000;
+                        ts.tv_sec += ts.tv_nsec / 1000000000;
+                        ts.tv_nsec = ts.tv_nsec % 1000000000;
+                        ::pthread_cond_timedwait(&cond_,
+                                                 &lock.mutex().mutex_, &ts); // Ignore EINVAL.
+                    }
 #endif // (defined(__MACH__) && defined(__APPLE__))
-// || (defined(__ANDROID__) && (__ANDROID_API__ < 21)
-//     && defined(HAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE))
-state_-= 2;
-    }
-    return (state_ &1) != 0;
-  }
+                    // || (defined(__ANDROID__) && (__ANDROID_API__ < 21)
+                    //     && defined(HAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE))
+                    state_ -= 2;
+                }
+                return (state_ & 1) != 0;
+            }
 
-private:
-::pthread_cond_t cond_;
-std::size_t state_;
-};
-
-} // namespace detail
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+        private:
+            ::pthread_cond_t cond_;
+            std::size_t state_;
+        };
+    } // namespace detail
+    } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/posix_event.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // defined(ASIO_HAS_PTHREADS)
 

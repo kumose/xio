@@ -27,7 +27,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename Function, typename Allocator>
@@ -100,6 +100,7 @@ namespace xio {
    */
         template<typename Function>
 
+
 #if defined(GENERATING_DOCUMENTATION)
 unspecified
 #else // defined(GENERATING_DOCUMENTATION)
@@ -131,7 +132,7 @@ conditional_t<
  */
 ASIO_INLINE_VARIABLE constexpr use_future_t<> use_future;
 
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 

@@ -24,7 +24,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
     template<typename T, typename CancellationSlot>
     struct associated_cancellation_slot;
 
@@ -133,7 +133,7 @@ namespace xio {
  * @returns <tt>associated_cancellation_slot<T>::get(t)</tt>
  */
     template<typename T>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
 
     typename associated_cancellation_slot<T>::type
     get_associated_cancellation_slot(const T &t) noexcept {
@@ -146,7 +146,7 @@ namespace xio {
  * CancellationSlot>::get(t, st)</tt>
  */
     template<typename T, typename CancellationSlot>
-ASIO_NODISCARD inline auto get_associated_cancellation_slot(
+[[nodiscard]] inline auto get_associated_cancellation_slot(
         const T &t, const CancellationSlot &st) noexcept
         -> decltype(associated_cancellation_slot<T, CancellationSlot>::get(t, st)) {
         return associated_cancellation_slot<T, CancellationSlot>::get(t, st);
@@ -202,7 +202,7 @@ ASIO_NODISCARD inline auto get_associated_cancellation_slot(
         }
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

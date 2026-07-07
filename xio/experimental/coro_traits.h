@@ -22,7 +22,7 @@
 #include <xio/any_io_executor.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace experimental {
         namespace detail {
@@ -72,6 +72,7 @@ namespace xio {
             template<>
             struct coro_handler<void, false> {
                 using type = void(
+
                 std::exception_ptr
                 );
             };
@@ -84,6 +85,7 @@ namespace xio {
             template<typename T>
             struct coro_handler<T, false> {
                 using type = void(
+
                 std::exception_ptr
                 ,
                 T
@@ -212,7 +214,7 @@ namespace xio {
 
 #endif // defined(GENERATING_DOCUMENTATION)
     } // namespace experimental
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_EXPERIMENTAL_DETAIL_CORO_TRAITS_HPP

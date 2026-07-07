@@ -36,7 +36,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class win_iocp_handle_service :
@@ -96,7 +96,7 @@ namespace xio {
 
             // Assign a native handle to a handle implementation.
             ASIO_DECL xio::error_code assign(implementation_type &impl,
-                                              const native_handle_type &handle, xio::error_code &ec);
+                                             const native_handle_type &handle, xio::error_code &ec);
 
             // Determine whether the handle is open.
             bool is_open(const implementation_type &impl) const {
@@ -105,7 +105,7 @@ namespace xio {
 
             // Destroy a handle implementation.
             ASIO_DECL xio::error_code close(implementation_type &impl,
-                                             xio::error_code &ec);
+                                            xio::error_code &ec);
 
             // Release ownership of a handle.
   ASIO_DECL native_handle_type release(implementation_type &impl,
@@ -118,7 +118,7 @@ namespace xio {
 
             // Cancel all operations associated with the handle.
             ASIO_DECL xio::error_code cancel(implementation_type &impl,
-                                              xio::error_code &ec);
+                                             xio::error_code &ec);
 
             // Write the given data. Returns the number of bytes written.
             template<typename ConstBufferSequence>
@@ -385,6 +385,7 @@ namespace xio {
 
                 void operator()(cancellation_type_t type) {
 
+
 #if defined(_WIN32_WINNT) && (_WIN32_WINNT >= 0x0600)
 if (!!(type &
 (cancellation_type::terminal
@@ -417,13 +418,10 @@ implementation_type *impl_list_;
 };
 
 } // namespace detail
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/win_iocp_handle_service.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // defined(ASIO_HAS_IOCP)
 

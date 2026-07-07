@@ -22,12 +22,12 @@
 #include <xio/basic_streambuf.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Typedef for the typical usage of basic_streambuf.
     typedef basic_streambuf<> streambuf;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // !defined(ASIO_NO_IOSTREAM)

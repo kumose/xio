@@ -36,7 +36,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// (Deprecated: Use basic_waitable_timer.) Provides waitable timer
 /// functionality.
@@ -128,10 +128,12 @@ namespace xio {
  * it contains the value xio::error::operation_aborted.
  */
 
+
     template<typename Time,
         typename TimeTraits = xio::time_traits<Time>,
         typename Executor = any_io_executor>
     class ASIO_DEPRECATED_MSG (
+
     "Use basic_waitable_timer"
     )
     basic_deadline_timer {
@@ -172,6 +174,7 @@ namespace xio {
    * dispatch handlers for any asynchronous operations performed on the timer.
    */
         explicit basic_deadline_timer (
+
         const executor_type &ex
         )
         :
@@ -260,6 +263,7 @@ namespace xio {
    */
         basic_deadline_timer(const executor_type & ex,
 
+
         const duration_type &expiry_time
         )
         :
@@ -286,6 +290,7 @@ namespace xio {
         <
         typename ExecutionContext >
                 basic_deadline_timer(ExecutionContext & context,
+
 
         const duration_type &expiry_time,
                 constraint_t<
@@ -681,6 +686,7 @@ namespace xio {
         ASIO_COMPLETION_TOKEN_FOR(void(xio::error_code))
         WaitToken = default_completion_token_t<executor_type> >
 
+
         auto async_wait(
             WaitToken && token = default_completion_token_t<executor_type>())
         ->
@@ -691,6 +697,7 @@ namespace xio {
     return async_initiate<WaitToken, void(xio::error_code)>(
                 initiate_async_wait(this), token);
 
+
         }
 
         private
@@ -699,7 +706,9 @@ namespace xio {
         basic_deadline_timer(const basic_deadline_timer &) = delete;
         basic_deadline_timer & operator=(
 
+
         const basic_deadline_timer &
+
         )
         =
         delete;
@@ -737,7 +746,7 @@ namespace xio {
             detail::deadline_timer_service<TimeTraits>, Executor> impl_;
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

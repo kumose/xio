@@ -28,7 +28,7 @@
 #endif
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 #if !defined(ASIO_HAS_THREADS) || defined(ASIO_WINDOWS) \
@@ -39,7 +39,7 @@ namespace xio {
         typedef posix_signal_blocker signal_blocker;
 #endif
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_DETAIL_SIGNAL_BLOCKER_HPP

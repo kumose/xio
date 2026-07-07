@@ -26,7 +26,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // A separate base class is used to ensure that the streambuf is initialised
@@ -70,6 +70,7 @@ namespace xio {
     template<typename Protocol,
         typename Clock = chrono::steady_clock,
         typename WaitTraits = wait_traits<Clock> >
+
 
 #else // defined(GENERATING_DOCUMENTATION)
     template<typename Protocol, typename Clock, typename WaitTraits>
@@ -240,7 +241,7 @@ namespace xio {
             const basic_socket_iostream &) = delete;
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

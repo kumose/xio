@@ -33,7 +33,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ip {
         /// Implements version-independent IP addresses.
@@ -220,7 +220,7 @@ ASIO_DECL address make_address(string_view str,
 
 #endif // !defined(ASIO_NO_IOSTREAM)
     } // namespace ip
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 namespace std {
@@ -238,8 +238,5 @@ namespace std {
 #include <xio/detail/pop_options.h>
 
 #include <xio/ip/impl/address.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/ip/impl/address.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_IP_ADDRESS_HPP

@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class timer_queue_set {
@@ -54,13 +54,10 @@ namespace xio {
             timer_queue_base *first_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/timer_queue_set.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_DETAIL_TIMER_QUEUE_SET_HPP

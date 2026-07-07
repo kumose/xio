@@ -28,7 +28,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     template<typename Allocator>
     io_context::io_context(allocator_arg_t, const Allocator &a)
@@ -306,7 +306,7 @@ namespace xio {
         return static_cast<xio::io_context &>(context());
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

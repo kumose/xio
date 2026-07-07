@@ -25,7 +25,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // Type trait used to determine whether a service supports move.
@@ -57,11 +57,13 @@ namespace xio {
 #if defined(GENERATING_DOCUMENTATION)
     template<typename IoObjectService>
 
+
 #else
     template<typename IoObjectService,
         bool Movable = detail::service_has_move<IoObjectService>::value>
 #endif
     class ASIO_DEPRECATED_MSG (
+
     "Deprecated without replacement"
     )
     basic_io_object {
@@ -200,6 +202,7 @@ namespace xio {
     // Specialisation for movable objects.
     template<typename IoObjectService>
     class ASIO_DEPRECATED_MSG (
+
     "Deprecated without replacement"
     )
     basic_io_object<IoObjectService, true> {
@@ -298,7 +301,7 @@ namespace xio {
         implementation_type implementation_;
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

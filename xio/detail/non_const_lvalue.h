@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename T>
@@ -34,7 +34,7 @@ namespace xio {
             conditional_t<is_same<T, decay_t<T> >::value, decay_t<T> &, decay_t<T> > value;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

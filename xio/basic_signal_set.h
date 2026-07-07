@@ -32,12 +32,13 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if !defined(ASIO_BASIC_SIGNAL_SET_FWD_DECL)
 #define ASIO_BASIC_SIGNAL_SET_FWD_DECL
 
     // Forward declaration with defaulted arguments.
+
 
     template<typename Executor = any_io_executor>
     class basic_signal_set;
@@ -632,7 +633,7 @@ namespace xio {
         detail::io_object_impl<detail::signal_set_service, Executor> impl_;
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

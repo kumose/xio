@@ -24,7 +24,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         namespace socket_ops {
@@ -336,8 +336,8 @@ ASIO_DECL int gethostname(char *name,
 #if !defined(ASIO_WINDOWS_RUNTIME)
 
             ASIO_DECL xio::error_code getaddrinfo(const char *host,
-                                                   const char *service, const addrinfo_type &hints,
-                                                   addrinfo_type **result, xio::error_code &ec);
+                                                  const char *service, const addrinfo_type &hints,
+                                                  addrinfo_type **result, xio::error_code &ec);
 
             ASIO_DECL xio::error_code background_getaddrinfo(
                 const weak_cancel_token_type &cancel_token, const char *host,
@@ -347,13 +347,13 @@ ASIO_DECL int gethostname(char *name,
 ASIO_DECL void freeaddrinfo(addrinfo_type * ai);
 
             ASIO_DECL xio::error_code getnameinfo(const void *addr,
-                                                   std::size_t addrlen, char *host, std::size_t hostlen, char *serv,
-                                                   std::size_t servlen, int flags, xio::error_code &ec);
+                                                  std::size_t addrlen, char *host, std::size_t hostlen, char *serv,
+                                                  std::size_t servlen, int flags, xio::error_code &ec);
 
             ASIO_DECL xio::error_code sync_getnameinfo(const void *addr,
-                                                        std::size_t addrlen, char *host, std::size_t hostlen,
-                                                        char *serv,
-                                                        std::size_t servlen, int sock_type, xio::error_code &ec);
+                                                       std::size_t addrlen, char *host, std::size_t hostlen,
+                                                       char *serv,
+                                                       std::size_t servlen, int sock_type, xio::error_code &ec);
 
             ASIO_DECL xio::error_code background_getnameinfo(
                 const weak_cancel_token_type &cancel_token,
@@ -372,13 +372,10 @@ ASIO_DECL u_short_type network_to_host_short(u_short_type value);
 ASIO_DECL u_short_type host_to_network_short(u_short_type value);
         } // namespace socket_ops
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/socket_ops.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_DETAIL_SOCKET_OPS_HPP

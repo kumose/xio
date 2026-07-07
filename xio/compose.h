@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Launch an asynchronous operation with a stateful implementation.
     /**
@@ -107,6 +107,8 @@ namespace xio {
  */
 
 
+
+
     template<typename CompletionToken, typename Signature,
         typename Implementation, typename... IoObjectsOrExecutors>
     inline auto async_compose(Implementation &&implementation,
@@ -123,7 +125,7 @@ namespace xio {
             token);
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

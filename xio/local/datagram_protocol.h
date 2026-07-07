@@ -27,7 +27,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace local {
         /// Encapsulates the flags needed for datagram-oriented UNIX sockets.
@@ -66,7 +66,7 @@ namespace xio {
             typedef basic_datagram_socket<datagram_protocol> socket;
         };
     } // namespace local
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

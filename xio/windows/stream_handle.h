@@ -23,13 +23,13 @@
 #include <xio/windows/basic_stream_handle.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace windows {
         /// Typedef for the typical usage of a stream-oriented handle.
         typedef basic_stream_handle<> stream_handle;
     } // namespace windows
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // defined(ASIO_HAS_WINDOWS_STREAM_HANDLE)

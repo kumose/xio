@@ -40,7 +40,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 #if !defined(ASIO_NO_EXCEPTIONS)
@@ -484,8 +484,10 @@ namespace xio {
             template
             <
             typename
+
             ...
             Args >
+
 
             void operator()(Args &&... args)
             {
@@ -647,6 +649,7 @@ namespace xio {
                     std::tuple < InitArgs &&...>(
                         static_cast<InitArgs &&>(init_args)...
 )
+
                 });
 
             return handler_type::on_resume(result);
@@ -695,6 +698,7 @@ namespace xio {
                 {
                     throw;
 
+
                 }
 # endif // defined(ASIO_HAS_BOOST_CONTEXT_FIBER)
                 catch (...) {
@@ -726,6 +730,7 @@ namespace xio {
     catch (const boost::context::detail::forced_unwind &)
                 {
                     throw;
+
 
                 }
 # endif // defined(ASIO_HAS_BOOST_CONTEXT_FIBER)
@@ -1020,7 +1025,7 @@ namespace xio {
 
 #endif // defined(ASIO_HAS_BOOST_CONTEXT_FIBER)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

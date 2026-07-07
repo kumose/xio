@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ssl {
         /// Bitmask type for peer verification.
@@ -56,7 +56,7 @@ namespace xio {
         const int verify_client_once = SSL_VERIFY_CLIENT_ONCE;
 #endif
     } // namespace ssl
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

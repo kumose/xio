@@ -28,7 +28,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         inline std::size_t calculate_hash_value(int i) {
@@ -287,7 +287,7 @@ namespace xio {
             std::size_t num_buckets_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

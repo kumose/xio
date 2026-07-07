@@ -30,7 +30,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         struct empty_work_function {
@@ -192,7 +192,7 @@ namespace xio {
                 : work_dispatcher_function<Function>(static_cast<F &&>(function)),
                   handler_(static_cast<CompletionHandler &&>(handler)),
                   executor_(xio::prefer(handler_ex,
-                                         execution::outstanding_work.tracked)) {
+                                        execution::outstanding_work.tracked)) {
             }
 
             work_dispatcher(const work_dispatcher &other)
@@ -240,6 +240,7 @@ namespace xio {
             typename F, typename CompletionHandler >
                     work_dispatcher(F && function, CompletionHandler && handler,
 
+
             const Executor &handler_ex
             )
             :
@@ -282,7 +283,7 @@ namespace xio {
 
 #endif // !defined(ASIO_NO_TS_EXECUTORS)
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

@@ -24,7 +24,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     template<typename Allocator>
     execution_context::execution_context(allocator_arg_t, const Allocator &a)
@@ -106,6 +106,7 @@ namespace xio {
 
     template<typename Service>
     ASIO_DEPRECATED_MSG (
+
     "Use make_service()"
     )
     inline void add_service(execution_context &e, Service *svc) {
@@ -129,7 +130,7 @@ namespace xio {
         return owner_;
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

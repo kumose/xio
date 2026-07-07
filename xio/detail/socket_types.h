@@ -95,7 +95,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 #if defined(ASIO_WINDOWS_RUNTIME)
@@ -468,7 +468,7 @@ ASIO_INLINE_VARIABLE const int custom_socket_option_level = 0xA5100000;
 ASIO_INLINE_VARIABLE const int enable_connection_aborted_option = 1;
 ASIO_INLINE_VARIABLE const int always_fail_option = 2;
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

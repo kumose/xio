@@ -26,7 +26,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // Mutex adapter used to conditionally enable or disable locking.
@@ -103,7 +103,7 @@ namespace xio {
             xio::detail::event event_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

@@ -24,12 +24,12 @@
 #include <xio/basic_serial_port.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Typedef for the typical usage of a serial port.
     typedef basic_serial_port<> serial_port;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // defined(ASIO_HAS_SERIAL_PORT)

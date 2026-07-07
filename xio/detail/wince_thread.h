@@ -27,7 +27,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 DWORD WINAPI wince_thread_function(LPVOID arg);
@@ -134,7 +134,7 @@ DWORD WINAPI wince_thread_function(LPVOID arg);
                     arg->destroy();
                     DWORD last_error = ::GetLastError();
                     xio::error_code ec(last_error,
-                                        xio::error::get_system_category());
+                                       xio::error::get_system_category());
                     xio::detail::throw_error(ec, "thread");
                 }
                 return arg;
@@ -148,7 +148,7 @@ DWORD WINAPI wince_thread_function(LPVOID arg);
             return 0;
         }
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

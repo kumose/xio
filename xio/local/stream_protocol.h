@@ -29,7 +29,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace local {
         /// Encapsulates the flags needed for stream-oriented UNIX sockets.
@@ -77,7 +77,7 @@ typedef basic_socket_iostream<stream_protocol> iostream;
 };
 
 } // namespace local
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 

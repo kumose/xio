@@ -25,7 +25,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Traits type to adapt arbitrary error types as dispositions.
     /**
@@ -47,6 +47,7 @@ namespace xio {
         static std::exception_ptr to_exception_ptr(T d) noexcept;
     };
 #else // defined(GENERATING_DOCUMENTATION)
+
 
     template<typename T>
     struct disposition_traits;
@@ -251,7 +252,7 @@ ASIO_INLINE_VARIABLE constexpr no_error_t no_error;
       static_cast<Disposition&&>(d));
 }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

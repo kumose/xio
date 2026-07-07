@@ -28,7 +28,7 @@
 #endif
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 #if !defined(ASIO_HAS_THREADS)
@@ -41,7 +41,7 @@ namespace xio {
         typedef mutex slim_mutex;
 #endif
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_DETAIL_SLIM_MUTEX_HPP

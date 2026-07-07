@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// A special type, similar to std::nothrow_t, used to disambiguate
 /// constructors that accept executor arguments.
@@ -60,7 +60,7 @@ ASIO_INLINE_VARIABLE constexpr executor_arg_t executor_arg;
     struct uses_executor : false_type {
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

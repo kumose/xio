@@ -23,7 +23,7 @@
 #endif // defined(ASIO_HAS_WORKING_EXPRESSION_SFINAE)
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace traits {
         template<typename T, typename = void>
@@ -85,7 +85,7 @@ namespace xio {
         struct equality_comparable : equality_comparable_default<T> {
         };
     } // namespace traits
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_TRAITS_EQUALITY_COMPARABLE_HPP

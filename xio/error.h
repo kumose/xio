@@ -65,7 +65,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace error {
         enum basic_errors {
@@ -266,10 +266,12 @@ namespace xio {
   && !defined(ASIO_CYGWIN_W32_SOCKETS)
 
         extern
+
         ASIO_DECL
         const xio::error_category &get_netdb_category();
 
         extern
+
         ASIO_DECL
         const xio::error_category &get_addrinfo_category();
 
@@ -288,6 +290,7 @@ namespace xio {
         //   && !defined(ASIO_CYGWIN_W32_SOCKETS)
 
         extern
+
         ASIO_DECL
         const xio::error_category &get_misc_category();
 
@@ -304,7 +307,7 @@ namespace xio {
   misc_category ASIO_UNUSED_VARIABLE
                 = xio::error::get_misc_category();
     } // namespace error
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 namespace std {
@@ -330,7 +333,7 @@ namespace std {
 } // namespace std
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace error {
         inline xio::error_code make_error_code(basic_errors e) {
@@ -375,7 +378,7 @@ namespace xio {
         const error::netdb_errors try_again = error::host_not_found_try_again;
         using error::service_not_found;
     } // namespace resolver_errc
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
@@ -385,9 +388,5 @@ namespace xio {
 #undef ASIO_NETDB_ERROR
 #undef ASIO_GETADDRINFO_ERROR
 #undef ASIO_WIN_OR_POSIX
-
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/impl/error.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_ERROR_HPP

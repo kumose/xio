@@ -20,7 +20,7 @@
 #include <xio/detail/chrono.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Typedef for a timer based on the steady clock.
     /**
@@ -33,7 +33,7 @@ namespace xio {
  */
     typedef basic_waitable_timer<chrono::steady_clock> steady_timer;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_STEADY_TIMER_HPP

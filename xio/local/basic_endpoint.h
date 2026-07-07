@@ -30,7 +30,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace local {
         /// Describes an endpoint for a UNIX socket.
@@ -209,7 +209,7 @@ std::basic_ostream<Elem, Traits> &operator<<(
 }
 
 } // namespace local
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 

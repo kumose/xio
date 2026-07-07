@@ -41,7 +41,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// The serial_port_base class is used as a base for the basic_serial_port class
 /// template so that we have a common place to define the serial port options.
@@ -169,7 +169,7 @@ namespace xio {
         }
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
@@ -177,9 +177,7 @@ namespace xio {
 #undef ASIO_OPTION_STORAGE
 
 #include <xio/impl/serial_port_base.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/impl/serial_port_base.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
+
 
 #endif // defined(ASIO_HAS_SERIAL_PORT)
 //   || defined(GENERATING_DOCUMENTATION)

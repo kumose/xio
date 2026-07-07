@@ -27,7 +27,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // Class to adapt a as_tuple_t as a completion handler.
@@ -59,7 +59,7 @@ namespace xio {
         template<typename Handler>
         inline bool asio_handler_is_continuation(
             as_tuple_handler<Handler> *this_handler) {
-            return ASIO_VERSIONED_NAME(handler_cont_helpers)
+            return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -235,17 +235,21 @@ namespace xio {
         >
         (
 
+
         static_cast
         <
         Initiation &&
+
         >
         (initiation),
                 as_tuple_t<
                     default_completion_token_t<associated_executor_t<Initiation> > >{},
 
+
         static_cast
         <
         Args &&
+
         >
         (args)
         ...
@@ -262,7 +266,7 @@ namespace xio {
 
 #endif // !defined(GENERATING_DOCUMENTATION)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

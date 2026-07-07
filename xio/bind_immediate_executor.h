@@ -26,7 +26,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // Helper to automatically define nested typedef result_type.
@@ -371,7 +371,7 @@ namespace xio {
         /// Adapt a @ref completion_token to specify that the completion handler
   /// should have the executor as its associated immediate executor.
         template<typename CompletionToken>
-        ASIO_NODISCARD inline
+        [[nodiscard]] inline
         constexpr immediate_executor_binder<decay_t<CompletionToken>, Executor>
 
         operator()(CompletionToken &&completion_token) const {
@@ -385,7 +385,7 @@ namespace xio {
 
     /// Create a partial completion token that associates an executor.
     template<typename Executor>
-    ASIO_NODISCARD inline partial_immediate_executor_binder<Executor>
+    [[nodiscard]] inline partial_immediate_executor_binder<Executor>
 
     bind_immediate_executor(const Executor &ex) {
         return partial_immediate_executor_binder<Executor>(ex);
@@ -394,7 +394,7 @@ namespace xio {
     /// Associate an object of type @c T with a immediate executor of type
 /// @c Executor.
     template<typename Executor, typename T>
-    ASIO_NODISCARD inline immediate_executor_binder<decay_t<T>, Executor>
+    [[nodiscard]] inline immediate_executor_binder<decay_t<T>, Executor>
 
     bind_immediate_executor(const Executor &e, T &&t) {
         return immediate_executor_binder<
@@ -528,15 +528,17 @@ namespace xio {
         >
         (
 
+
         static_cast
         <
         Initiation &&
+
         >
         (initiation),
                 immediate_executor_binder<
                     default_completion_token_t<associated_executor_t<Initiation> >,
                     Executor>(token.executor_,
-                              default_completion_token_t<associated_executor_t<Initiation> > {
+                              default_completion_token_t<associated_executor_t<Initiation> >  {
         }
 
         )
@@ -544,6 +546,7 @@ namespace xio {
         static_cast
         <
         Args &&
+
         >
         (args)
         ...
@@ -593,7 +596,7 @@ namespace xio {
 
 #endif // !defined(GENERATING_DOCUMENTATION)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

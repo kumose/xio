@@ -24,7 +24,7 @@
 // Calls to asio_handler_is_continuation must be made from a namespace that
 // does not contain overloads of this function. This namespace is defined here
 // for that purpose.
-namespace ASIO_VERSIONED_NAME(handler_cont_helpers){
+namespace XIO_VERSIONED_NAME(handler_cont_helpers){
 
 template <typename Context >
 inline bool is_continuation(Context & context)
@@ -37,9 +37,10 @@ inline bool is_continuation(Context & context)
             xio::detail::addressof(context));
 #endif
 
+
     }
 
-} // namespace ASIO_VERSIONED_NAME(handler_cont_helpers)
+} // namespace XIO_VERSIONED_NAME(handler_cont_helpers)
 
 #include <xio/detail/pop_options.h>
 

@@ -22,7 +22,7 @@
 #endif // defined(ASIO_BOOST_THROW_EXCEPTION)
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 #if defined(ASIO_HAS_BOOST_THROW_EXCEPTION)
@@ -49,7 +49,7 @@ namespace xio {
 
 #endif // defined(ASIO_HAS_BOOST_THROW_EXCEPTION)
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_DETAIL_THROW_EXCEPTION_HPP

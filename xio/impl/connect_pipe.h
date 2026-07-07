@@ -25,7 +25,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     template<typename Executor1, typename Executor2>
     void connect_pipe(basic_readable_pipe<Executor1> &read_end,
@@ -61,7 +61,7 @@ namespace xio {
         ASIO_SYNC_OP_VOID_RETURN(ec);
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

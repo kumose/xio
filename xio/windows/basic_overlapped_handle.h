@@ -34,9 +34,10 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace windows {
+
 
 
 #if !defined(ASIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_FWD_DECL)
@@ -431,7 +432,7 @@ basic_overlapped_handle &operator=(
 };
 
 } // namespace windows
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 

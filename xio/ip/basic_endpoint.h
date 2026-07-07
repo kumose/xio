@@ -28,7 +28,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ip {
         /// Type used for storing port numbers.
@@ -232,7 +232,7 @@ namespace xio {
 
 #endif // !defined(ASIO_NO_IOSTREAM)
     } // namespace ip
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 namespace std {

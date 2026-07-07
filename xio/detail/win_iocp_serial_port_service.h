@@ -28,7 +28,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // Extend win_iocp_handle_service to provide serial port support.
@@ -73,11 +73,11 @@ namespace xio {
 
             // Open the serial port using the specified device name.
             ASIO_DECL xio::error_code open(implementation_type &impl,
-                                            const std::string &device, xio::error_code &ec);
+                                           const std::string &device, xio::error_code &ec);
 
             // Assign a native handle to a serial port implementation.
             xio::error_code assign(implementation_type &impl,
-                                    const native_handle_type &handle, xio::error_code &ec) {
+                                   const native_handle_type &handle, xio::error_code &ec) {
                 return handle_service_.assign(impl, handle, ec);
             }
 
@@ -88,7 +88,7 @@ namespace xio {
 
             // Destroy a serial port implementation.
             xio::error_code close(implementation_type &impl,
-                                   xio::error_code &ec) {
+                                  xio::error_code &ec) {
                 return handle_service_.close(impl, ec);
             }
 
@@ -99,14 +99,14 @@ namespace xio {
 
             // Cancel all operations associated with the handle.
             xio::error_code cancel(implementation_type &impl,
-                                    xio::error_code &ec) {
+                                   xio::error_code &ec) {
                 return handle_service_.cancel(impl, ec);
             }
 
             // Set an option on the serial port.
             template<typename SettableSerialPortOption>
             xio::error_code set_option(implementation_type &impl,
-                                        const SettableSerialPortOption &option, xio::error_code &ec) {
+                                       const SettableSerialPortOption &option, xio::error_code &ec) {
                 return do_set_option(impl,
                                      &win_iocp_serial_port_service::store_option<SettableSerialPortOption>,
                                      &option, ec);
@@ -115,7 +115,7 @@ namespace xio {
             // Get an option from the serial port.
             template<typename GettableSerialPortOption>
             xio::error_code get_option(const implementation_type &impl,
-                                        GettableSerialPortOption &option, xio::error_code &ec) const {
+                                       GettableSerialPortOption &option, xio::error_code &ec) const {
                 return do_get_option(impl,
                                      &win_iocp_serial_port_service::load_option<GettableSerialPortOption>,
                                      &option, ec);
@@ -123,7 +123,7 @@ namespace xio {
 
             // Send a break sequence to the serial port.
             xio::error_code send_break(implementation_type &,
-                                        xio::error_code &ec) {
+                                       xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 ASIO_ERROR_LOCATION(ec);
                 return ec;
@@ -170,7 +170,7 @@ namespace xio {
             // Helper function template to store a serial port option.
             template<typename SettableSerialPortOption>
             static xio::error_code store_option(const void *option,
-                                                 ::DCB &storage, xio::error_code &ec) {
+                                                ::DCB &storage, xio::error_code &ec) {
                 static_cast<const SettableSerialPortOption *>(option)->store(storage, ec);
                 return ec;
             }
@@ -187,7 +187,7 @@ namespace xio {
             // Helper function template to load a serial port option.
             template<typename GettableSerialPortOption>
             static xio::error_code load_option(void *option,
-                                                const ::DCB &storage, xio::error_code &ec) {
+                                               const ::DCB &storage, xio::error_code &ec) {
                 static_cast<GettableSerialPortOption *>(option)->load(storage, ec);
                 return ec;
             }
@@ -201,14 +201,11 @@ namespace xio {
             win_iocp_handle_service handle_service_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/win_iocp_serial_port_service.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // defined(ASIO_HAS_IOCP) && defined(ASIO_HAS_SERIAL_PORT)
 

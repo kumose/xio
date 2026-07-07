@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace generic {
         /// Describes an endpoint for any socket type.
@@ -162,7 +162,7 @@ namespace xio {
             xio::generic::detail::endpoint impl_;
         };
     } // namespace generic
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

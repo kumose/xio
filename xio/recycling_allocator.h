@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// An allocator that caches memory blocks in thread-local storage for reuse.
     /**
@@ -29,6 +29,8 @@ namespace xio {
  * small memory blocks are cached in thread-local storage, if the current
  * thread is running an @c io_context or is part of a @c thread_pool.
  */
+
+
 
 
     template<typename T>
@@ -120,7 +122,7 @@ namespace xio {
         }
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

@@ -25,9 +25,11 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Trait for detecting objects that are usable as deferred operations.
+
+
 
 
     template<typename T>
@@ -195,7 +197,7 @@ namespace xio {
 
     /// Encapsulates deferred values.
     template<typename... Values>
-    class ASIO_NODISCARD deferred_values {
+    class [[nodiscard]] deferred_values {
     private:
         std::tuple<Values...> values_;
 
@@ -266,7 +268,7 @@ namespace xio {
 
     /// Encapsulates a deferred asynchronous operation.
     template<typename Signature, typename Initiation, typename... InitArgs>
-    class ASIO_NODISCARD deferred_async_operation {
+    class [[nodiscard]] deferred_async_operation {
     private:
         typedef decay_t<Initiation> initiation_t;
         initiation_t initiation_;
@@ -329,7 +331,7 @@ namespace xio {
     /// Encapsulates a deferred asynchronous operation thas has multiple completion
 /// signatures.
     template<typename... Signatures, typename Initiation, typename... InitArgs>
-    class ASIO_NODISCARD deferred_async_operation<
+    class [[nodiscard]] deferred_async_operation<
         deferred_signatures<Signatures...>, Initiation, InitArgs...> {
         private
         :
@@ -343,6 +345,7 @@ namespace xio {
         typename CompletionToken, std::size_t
         ...
         I >
+
 
         auto invoke_helper(CompletionToken &&token, detail::index_sequence<I...>)
             -> decltype(
@@ -361,6 +364,7 @@ namespace xio {
         ...
         I >
 
+
         auto const_invoke_helper(CompletionToken &&token,
                                  detail::index_sequence<I...>) const & -> decltype(
             async_initiate<CompletionToken, Signatures...>(
@@ -377,12 +381,14 @@ namespace xio {
         template
         <
         typename I, typename
+
         ...
         A >
         constexpr explicit deferred_async_operation (
             deferred_init_tag
         ,
         I &&initiation, A&&
+
         ...
         init_args
         )
@@ -398,7 +404,9 @@ namespace xio {
         ASIO_COMPLETION_TOKEN_FOR(Signatures...)
         CompletionToken >
 
+
         auto operator()(CompletionToken && token) &&
+
 
         ->
         decltype(
@@ -410,12 +418,14 @@ namespace xio {
                 static_cast<CompletionToken &&>(token),
                 detail::index_sequence_for<InitArgs...>());
 
+
         }
 
         template
         <
         ASIO_COMPLETION_TOKEN_FOR(Signatures...)
         CompletionToken >
+
 
         auto operator()(CompletionToken &&token) const & -> decltype(
             this->const_invoke_helper(
@@ -437,7 +447,7 @@ namespace xio {
 
     /// Defines a link between two consecutive operations in a sequence.
     template<typename Head, typename Tail>
-    class ASIO_NODISCARD deferred_sequence :
+    class [[nodiscard]] deferred_sequence :
             public detail::deferred_sequence_types<Head, Tail>::base {
     public:
         template<typename H, typename T>
@@ -463,7 +473,7 @@ namespace xio {
 
     /// Used to represent a deferred conditional branch.
     template<typename OnTrue = deferred_noop, typename OnFalse = deferred_noop>
-    class ASIO_NODISCARD deferred_conditional {
+    class [[nodiscard]] deferred_conditional {
     private:
         template<typename T, typename F>
         friend class deferred_conditional;
@@ -669,7 +679,7 @@ namespace xio {
  */
 ASIO_INLINE_VARIABLE constexpr deferred_t deferred;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

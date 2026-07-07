@@ -22,7 +22,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ip {
         /// Get the current host name.
@@ -31,13 +31,10 @@ namespace xio {
         /// Get the current host name.
         ASIO_DECL std::string host_name(xio::error_code & ec);
     } // namespace ip
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/ip/impl/host_name.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_IP_HOST_NAME_HPP

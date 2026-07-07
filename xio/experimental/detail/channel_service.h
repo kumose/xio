@@ -31,7 +31,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace experimental {
         namespace detail {
@@ -228,7 +228,7 @@ namespace xio {
                     void operator()(Args &&... args) {
                         op_->post(
                             xio::detail::completion_message<Signature>(0,
-                                                                        static_cast<Args &&>(args)...));
+                                                                       static_cast<Args &&>(args)...));
                     }
 
                     channel_receive<Payload> *op_;
@@ -642,7 +642,7 @@ namespace xio {
             };
         } // namespace detail
     } // namespace experimental
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

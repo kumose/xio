@@ -34,7 +34,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename SyncRandomAccessReadDevice, typename MutableBufferSequence,
@@ -261,7 +261,7 @@ namespace xio {
                 MutableBufferIterator, CompletionCondition, ReadHandler> *this_handler) {
             return this_handler->start_ == 0
                        ? true
-                       : ASIO_VERSIONED_NAME(handler_cont_helpers)
+                       : XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -442,7 +442,7 @@ namespace xio {
                 CompletionCondition, ReadHandler> *this_handler) {
             return this_handler->start_ == 0
                        ? true
-                       : ASIO_VERSIONED_NAME(handler_cont_helpers)
+                       : XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -515,7 +515,7 @@ namespace xio {
 #endif // !defined(ASIO_NO_IOSTREAM)
 #endif // !defined(ASIO_NO_EXTENSIONS)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

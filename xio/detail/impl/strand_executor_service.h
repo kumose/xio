@@ -25,7 +25,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename F, typename Allocator>
@@ -261,8 +261,8 @@ private:
             p.v = p.p = 0;
             if (first) {
                 xio::dispatch(ex,
-                               allocator_binder<invoker<Executor>, Allocator>(
-                                   invoker<Executor>(impl, ex), a));
+                              allocator_binder<invoker<Executor>, Allocator>(
+                                  invoker<Executor>(impl, ex), a));
             }
         }
 
@@ -285,8 +285,8 @@ private:
             p.v = p.p = 0;
             if (first) {
                 xio::post(ex,
-                           allocator_binder<invoker<Executor>, Allocator>(
-                               invoker<Executor>(impl, ex), a));
+                          allocator_binder<invoker<Executor>, Allocator>(
+                              invoker<Executor>(impl, ex), a));
             }
         }
 
@@ -309,12 +309,12 @@ private:
             p.v = p.p = 0;
             if (first) {
                 xio::defer(ex,
-                            allocator_binder<invoker<Executor>, Allocator>(
-                                invoker<Executor>(impl, ex), a));
+                           allocator_binder<invoker<Executor>, Allocator>(
+                               invoker<Executor>(impl, ex), a));
             }
         }
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

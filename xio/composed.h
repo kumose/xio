@@ -26,7 +26,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename Impl, typename Work,
@@ -169,7 +169,7 @@ namespace xio {
             composed_op<Impl, Work, Handler, Signature> *this_handler) {
             return this_handler->invocations_ > 1
                        ? true
-                       : ASIO_VERSIONED_NAME(handler_cont_helpers)
+                       : XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -381,7 +381,7 @@ namespace xio {
                         io_objects_or_executors))...));
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

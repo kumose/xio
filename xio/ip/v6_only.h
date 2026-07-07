@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ip {
         /// Socket option for determining whether an IPv6 socket supports IPv6
@@ -62,7 +62,7 @@ namespace xio {
             xio::detail::always_fail_option> v6_only;
 #endif
     } // namespace ip
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

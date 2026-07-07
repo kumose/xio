@@ -33,9 +33,10 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace windows {
+
 
 
 #if !defined(ASIO_WINDOWS_BASIC_OBJECT_HANDLE_FWD_DECL)
@@ -459,7 +460,7 @@ xio::detail::io_object_impl<
 };
 
 } // namespace windows
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 

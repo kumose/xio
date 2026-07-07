@@ -24,7 +24,7 @@
 #endif // defined(ASIO_HAS_STD_COROUTINE)
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace experimental {
         namespace detail {
@@ -102,7 +102,7 @@ namespace xio {
             };
         } // namespace detail
     } // namespace experimental
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #if defined(ASIO_HAS_STD_COROUTINE)
@@ -136,7 +136,7 @@ namespace std {
 #endif // defined(ASIO_HAS_STD_COROUTINE)
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace experimental {
         namespace detail {
@@ -173,7 +173,7 @@ namespace xio {
             }
         } // namespace detail
     } // namespace experimental
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_EXPERIMENTAL_DETAIL_PARTIAL_PROMISE_HPP

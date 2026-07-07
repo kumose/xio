@@ -26,7 +26,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // Helper to automatically define nested typedef result_type.
@@ -366,7 +366,7 @@ namespace xio {
         /// Adapt a @ref completion_token to specify that the completion handler
   /// should have the allocator as its associated allocator.
         template<typename CompletionToken>
-        ASIO_NODISCARD inline
+        [[nodiscard]] inline
         constexpr allocator_binder<decay_t<CompletionToken>, Allocator>
 
         operator()(CompletionToken &&completion_token) const {
@@ -380,7 +380,7 @@ namespace xio {
 
     /// Create a partial completion token that associates an allocator.
     template<typename Allocator>
-    ASIO_NODISCARD inline partial_allocator_binder<Allocator>
+    [[nodiscard]] inline partial_allocator_binder<Allocator>
 
     bind_allocator(const Allocator &ex) {
         return partial_allocator_binder<Allocator>(ex);
@@ -389,7 +389,7 @@ namespace xio {
     /// Associate an object of type @c T with an allocator of type
 /// @c Allocator.
     template<typename Allocator, typename T>
-    ASIO_NODISCARD inline allocator_binder<decay_t<T>, Allocator>
+    [[nodiscard]] inline allocator_binder<decay_t<T>, Allocator>
 
     bind_allocator(const Allocator &s, T &&t) {
         return allocator_binder<decay_t<T>, Allocator>(s, static_cast<T &&>(t));
@@ -512,15 +512,17 @@ namespace xio {
         >
         (
 
+
         static_cast
         <
         Initiation &&
+
         >
         (initiation),
                 allocator_binder<
                     default_completion_token_t<associated_executor_t<Initiation> >,
                     Allocator>(token.allocator_,
-                               default_completion_token_t<associated_executor_t<Initiation> > {
+                               default_completion_token_t<associated_executor_t<Initiation> >  {
         }
 
         )
@@ -528,6 +530,7 @@ namespace xio {
         static_cast
         <
         Args &&
+
         >
         (args)
         ...
@@ -573,7 +576,7 @@ namespace xio {
 
 #endif // !defined(GENERATING_DOCUMENTATION)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

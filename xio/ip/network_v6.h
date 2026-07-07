@@ -25,7 +25,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ip {
         /// Represents an IPv6 network.
@@ -206,14 +206,12 @@ ASIO_DECL network_v6 make_network_v6(
 
 #endif // !defined(ASIO_NO_IOSTREAM)
     } // namespace ip
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
 #include <xio/ip/impl/network_v6.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/ip/impl/network_v6.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
+
 
 #endif // ASIO_IP_NETWORK_V6_HPP

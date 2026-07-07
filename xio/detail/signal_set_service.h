@@ -50,7 +50,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 #if defined(NSIG) && (NSIG > 0)
@@ -61,7 +61,8 @@ namespace xio {
 
         extern ASIO_DECL struct signal_state *get_signal_state();
 
-        extern "C" ASIO_DECL void ASIO_VERSIONED_NAME(signal_handler)(
+        extern "C" ASIO_DECL void XIO_VERSIONED_NAME(signal_handler)(
+
 
         int signal_number
         );
@@ -143,26 +144,26 @@ namespace xio {
 
             // Add a signal to a signal_set.
             xio::error_code add(implementation_type &impl,
-                                 int signal_number, xio::error_code &ec) {
+                                int signal_number, xio::error_code &ec) {
                 return add(impl, signal_number, signal_set_base::flags::dont_care, ec);
             }
 
             // Add a signal to a signal_set with the specified flags.
             ASIO_DECL xio::error_code add(implementation_type &impl,
-                                           int signal_number, signal_set_base::flags_t f,
-                                           xio::error_code &ec);
+                                          int signal_number, signal_set_base::flags_t f,
+                                          xio::error_code &ec);
 
             // Remove a signal to a signal_set.
             ASIO_DECL xio::error_code remove(implementation_type &impl,
-                                              int signal_number, xio::error_code &ec);
+                                             int signal_number, xio::error_code &ec);
 
             // Remove all signals from a signal_set.
             ASIO_DECL xio::error_code clear(implementation_type &impl,
-                                             xio::error_code &ec);
+                                            xio::error_code &ec);
 
             // Cancel all operations associated with the signal set.
             ASIO_DECL xio::error_code cancel(implementation_type &impl,
-                                              xio::error_code &ec);
+                                             xio::error_code &ec);
 
             // Cancel a specific operation associated with the signal set.
   ASIO_DECL void cancel_ops_by_key(implementation_type &impl,
@@ -276,13 +277,10 @@ namespace xio {
             signal_set_service *prev_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/signal_set_service.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_DETAIL_SIGNAL_SET_SERVICE_HPP

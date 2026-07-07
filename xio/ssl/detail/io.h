@@ -27,7 +27,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ssl {
         namespace detail {
@@ -50,7 +50,7 @@ namespace xio {
                             // the underlying transport.
                             if (core.input_.size() == 0) {
                                 core.input_ = xio::buffer(core.input_buffer(),
-                                                           next_layer.read_some(core.input_buffer(), io_ec));
+                                                          next_layer.read_some(core.input_buffer(), io_ec));
                                 if (!ec)
                                     ec = io_ec;
                             }
@@ -66,8 +66,8 @@ namespace xio {
                             // Get output data from the engine and write it to the underlying
                             // transport.
                             xio::write(next_layer,
-                                        core.engine_.get_output(core.output_buffer()),
-                                        transfer_unlimited(), io_ec);
+                                       core.engine_.get_output(core.output_buffer()),
+                                       transfer_unlimited(), io_ec);
                             if (!ec)
                                 ec = io_ec;
 
@@ -79,8 +79,8 @@ namespace xio {
                             // Get output data from the engine and write it to the underlying
                             // transport.
                             xio::write(next_layer,
-                                        core.engine_.get_output(core.output_buffer()),
-                                        transfer_unlimited(), io_ec);
+                                       core.engine_.get_output(core.output_buffer()),
+                                       transfer_unlimited(), io_ec);
                             if (!ec)
                                 ec = io_ec;
 
@@ -203,8 +203,8 @@ namespace xio {
 
                                             // Start writing all the data to the underlying transport.
                                             xio::async_write(next_layer_,
-                                                              core_.engine_.get_output(core_.output_buffer()),
-                                                              transfer_unlimited(), static_cast<io_op &&>(*this));
+                                                             core_.engine_.get_output(core_.output_buffer()),
+                                                             transfer_unlimited(), static_cast<io_op &&>(*this));
                                         } else {
                                             ASIO_HANDLER_LOCATION((
                                                 __FILE__, __LINE__, Operation::tracking_name()));
@@ -323,7 +323,7 @@ namespace xio {
                 io_op<Stream, Operation, Handler> *this_handler) {
                 return this_handler->start_ == 0
                            ? true
-                           : ASIO_VERSIONED_NAME(handler_cont_helpers)
+                           : XIO_VERSIONED_NAME(handler_cont_helpers)
                 ::is_continuation(
                     this_handler->handler_);
             }
@@ -357,7 +357,7 @@ namespace xio {
         }
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

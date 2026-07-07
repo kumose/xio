@@ -57,21 +57,8 @@
 # define ASIO_HAS_BOOST_CONFIG 1
 #endif // defined(ASIO_STANDALONE)
 
-// Default to a header-only implementation. The user must specifically request
-// separate compilation by defining either ASIO_SEPARATE_COMPILATION or
-// ASIO_DYN_LINK (as a DLL/shared library implies separate compilation).
-#if !defined(ASIO_HEADER_ONLY)
-# if !defined(ASIO_SEPARATE_COMPILATION)
-#  if !defined(ASIO_DYN_LINK)
-#   define ASIO_HEADER_ONLY 1
-#  endif // !defined(ASIO_DYN_LINK)
-# endif // !defined(ASIO_SEPARATE_COMPILATION)
-#endif // !defined(ASIO_HEADER_ONLY)
 
 #if !defined(ASIO_DECL)
-# if defined(ASIO_HEADER_ONLY)
-#  define ASIO_DECL inline
-# else // defined(ASIO_HEADER_ONLY)
 #  if defined(_MSC_VER) || defined(__BORLANDC__) || defined(__CODEGEARC__)
 // We need to import/export our code only if the user has specifically asked
 // for it by defining ASIO_DYN_LINK.
@@ -84,7 +71,6 @@
 #    endif // defined(ASIO_SOURCE)
 #   endif // defined(ASIO_DYN_LINK)
 #  endif // defined(_MSC_VER) || defined(__BORLANDC__) || defined(__CODEGEARC__)
-# endif // defined(ASIO_HEADER_ONLY)
 // If ASIO_DECL isn't defined yet define it now.
 # if !defined(ASIO_DECL)
 #  define ASIO_DECL
@@ -132,7 +118,6 @@
 # define ASIO_MOVE_OR_LVALUE(type) static_cast<type&&>
 # define ASIO_MOVE_OR_LVALUE_ARG(type) type&&
 # define ASIO_MOVE_OR_LVALUE_TYPE(type) type
-# define ASIO_DELETED = delete
 # define ASIO_HAS_VARIADIC_TEMPLATES 1
 # define ASIO_HAS_CONSTEXPR 1
 # define ASIO_STATIC_CONSTEXPR(type, assignment) \
@@ -908,14 +893,14 @@
 # include <linux/version.h>
 # if !defined(ASIO_HAS_EPOLL)
 #  if !defined(ASIO_DISABLE_EPOLL)
-#   if LINUX_VERSION_CODE >= KERNEL_VERSION(2,5,45)
+#   if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 5, 45)
 #    define ASIO_HAS_EPOLL 1
 #   endif // LINUX_VERSION_CODE >= KERNEL_VERSION(2,5,45)
 #  endif // !defined(ASIO_DISABLE_EPOLL)
 # endif // !defined(ASIO_HAS_EPOLL)
 # if !defined(ASIO_HAS_EVENTFD)
 #  if !defined(ASIO_DISABLE_EVENTFD)
-#   if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,22)
+#   if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 22)
 #    define ASIO_HAS_EVENTFD 1
 #   endif // LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,22)
 #  endif // !defined(ASIO_DISABLE_EVENTFD)
@@ -972,7 +957,7 @@
 #if !defined(ASIO_HAS_FUTEX)
 # if !defined(ASIO_DISABLE_FUTEX)
 #  if defined(__linux__)
-#   if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,22)
+#   if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 22)
 #    define ASIO_HAS_FUTEX 1
 #   endif // LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,22)
 #  endif // defined(__linux__)
@@ -1285,13 +1270,6 @@
 # endif // !defined(ASIO_DISABLE_BOOST_ASSERT)
 #endif // !defined(ASIO_HAS_BOOST_ASSERT)
 
-// Boost limits header.
-#if !defined(ASIO_HAS_BOOST_LIMITS)
-# if !defined(ASIO_DISABLE_BOOST_LIMITS)
-#  define ASIO_HAS_BOOST_LIMITS 1
-# endif // !defined(ASIO_DISABLE_BOOST_LIMITS)
-#endif // !defined(ASIO_HAS_BOOST_LIMITS)
-
 // Boost throw_exception function.
 #if !defined(ASIO_HAS_BOOST_THROW_EXCEPTION)
 # if !defined(ASIO_DISABLE_BOOST_THROW_EXCEPTION)
@@ -1523,19 +1501,6 @@
 # endif // !defined(ASIO_DISABLE_STD_COROUTINE)
 #endif // !defined(ASIO_HAS_STD_COROUTINE)
 
-// Compiler support for the the [[nodiscard]] attribute.
-#if !defined(ASIO_NODISCARD)
-# if defined(__has_cpp_attribute)
-#  if __has_cpp_attribute(nodiscard)
-#   if (__cplusplus >= 201703)
-#    define ASIO_NODISCARD [[nodiscard]]
-#   endif // (__cplusplus >= 201703)
-#  endif // __has_cpp_attribute(nodiscard)
-# endif // defined(__has_cpp_attribute)
-#endif // !defined(ASIO_NODISCARD)
-#if !defined(ASIO_NODISCARD)
-# define ASIO_NODISCARD
-#endif // !defined(ASIO_NODISCARD)
 
 // Compiler support for the the [[deprecated(msg)]] attribute.
 #if !defined(ASIO_DEPRECATED_MSG)
@@ -1648,55 +1613,14 @@
 # define ASIO_VERSION_TAG_r
 #endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
 
-// Automatic version namespace v<ASIO_VERSION>_<tags>.
-#if defined(ASIO_ENABLE_VERSION_NAMESPACE)
-# if !defined(ASIO_VERSION_NAMESPACE)
-#  define ASIO_VERSION_NAMESPACE \
-  ASIO_DETAIL_CAT(v, \
-  ASIO_DETAIL_CAT(ASIO_VERSION, \
-  ASIO_DETAIL_CAT(_, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_a, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_b, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_c, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_d, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_e, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_f, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_g, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_h, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_i, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_j, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_k, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_l, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_m, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_n, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_o, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_p, \
-  ASIO_DETAIL_CAT(ASIO_VERSION_TAG_q, \
-  ASIO_VERSION_TAG_r))))))))))))))))))))
-# endif // !defined(ASIO_VERSION_NAMESPACE)
-#endif // defined(ASIO_ENABLE_VERSION_NAMESPACE)
+# define XIO_VERSIONED_NAME(name) xio_ ## name
 
 // Optional inline namespace used for library versioning.
-#if defined(ASIO_VERSION_NAMESPACE)
-# define ASIO_INLINE_NAMESPACE_BEGIN \
-  inline namespace ASIO_VERSION_NAMESPACE {
-# define ASIO_INLINE_NAMESPACE_END }
-#endif // defined(ASIO_VERSION_NAMESPACE)
 #if !defined(ASIO_INLINE_NAMESPACE_BEGIN)
 # define ASIO_INLINE_NAMESPACE_BEGIN
 #endif // !defined(ASIO_INLINE_NAMESPACE_BEGIN)
 #if !defined(ASIO_INLINE_NAMESPACE_END)
 # define ASIO_INLINE_NAMESPACE_END
 #endif // !defined(ASIO_INLINE_NAMESPACE_END)
-
-// Helper macro used to tag global symbols (extern "C" functions and some helper
-// namespaces) with the version namespace name.
-#if defined(ASIO_VERSION_NAMESPACE)
-# define ASIO_VERSIONED_NAME(name) \
-    ASIO_DETAIL_CAT(ASIO_DETAIL_CAT(asio_, \
-      ASIO_VERSION_NAMESPACE), _ ## name)
-#else // defined(ASIO_VERSION_NAMESPACE)
-# define ASIO_VERSIONED_NAME(name) asio_ ## name
-#endif // defined(ASIO_VERSION_NAMESPACE)
 
 #endif // ASIO_DETAIL_CONFIG_HPP

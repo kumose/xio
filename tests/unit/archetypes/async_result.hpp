@@ -11,8 +11,8 @@
 #ifndef ARCHETYPES_ASYNC_RESULT_HPP
 #define ARCHETYPES_ASYNC_RESULT_HPP
 
-#include <asio/async_result.hpp>
-#include <asio/system_executor.hpp>
+#include <xio/async_result.h>
+#include <xio/system_executor.h>
 
 namespace archetypes {
 

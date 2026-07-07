@@ -34,7 +34,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class win_object_handle_service :
@@ -85,26 +85,26 @@ namespace xio {
             ASIO_DECL win_object_handle_service(execution_context &context);
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void shutdown();
+            ASIO_DECL void shutdown();
 
             // Construct a new handle implementation.
-  ASIO_DECL void construct(implementation_type &impl);
+            ASIO_DECL void construct(implementation_type &impl);
 
             // Move-construct a new handle implementation.
-  ASIO_DECL void move_construct(implementation_type &impl,
-                                implementation_type &other_impl);
+            ASIO_DECL void move_construct(implementation_type &impl,
+                                          implementation_type &other_impl);
 
             // Move-assign from another handle implementation.
-  ASIO_DECL void move_assign(implementation_type &impl,
-                             win_object_handle_service &other_service,
-                             implementation_type &other_impl);
+            ASIO_DECL void move_assign(implementation_type &impl,
+                                       win_object_handle_service &other_service,
+                                       implementation_type &other_impl);
 
             // Destroy a handle implementation.
-  ASIO_DECL void destroy(implementation_type &impl);
+            ASIO_DECL void destroy(implementation_type &impl);
 
             // Assign a native handle to a handle implementation.
             ASIO_DECL xio::error_code assign(implementation_type &impl,
-                                              const native_handle_type &handle, xio::error_code &ec);
+                                             const native_handle_type &handle, xio::error_code &ec);
 
             // Determine whether the handle is open.
             bool is_open(const implementation_type &impl) const {
@@ -113,7 +113,7 @@ namespace xio {
 
             // Destroy a handle implementation.
             ASIO_DECL xio::error_code close(implementation_type &impl,
-                                             xio::error_code &ec);
+                                            xio::error_code &ec);
 
             // Get the native handle representation.
             native_handle_type native_handle(const implementation_type &impl) const {
@@ -122,11 +122,11 @@ namespace xio {
 
             // Cancel all operations associated with the handle.
             ASIO_DECL xio::error_code cancel(implementation_type &impl,
-                                              xio::error_code &ec);
+                                             xio::error_code &ec);
 
             // Perform a synchronous wait for the object to enter a signalled state.
-  ASIO_DECL void wait(implementation_type &impl,
-                      xio::error_code &ec);
+            ASIO_DECL void wait(implementation_type &impl,
+                                xio::error_code &ec);
 
             /// Start an asynchronous wait.
             template<typename Handler, typename IoExecutor>
@@ -149,10 +149,10 @@ namespace xio {
 
         private:
             // Helper function to start an asynchronous wait operation.
-  ASIO_DECL void start_wait_op(implementation_type &impl, wait_op *op);
+            ASIO_DECL void start_wait_op(implementation_type &impl, wait_op *op);
 
             // Helper function to register a wait operation.
-  ASIO_DECL void register_wait_callback(
+            ASIO_DECL void register_wait_callback(
                 implementation_type &impl, mutex::scoped_lock &lock);
 
             // Callback function invoked when the registered wait completes.
@@ -178,13 +178,10 @@ bool shutdown_;
 };
 
 } // namespace detail
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/win_object_handle_service.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // defined(ASIO_HAS_WINDOWS_OBJECT_HANDLE)
 

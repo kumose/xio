@@ -25,7 +25,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace traits {
         template<typename T, typename F, typename = void>
@@ -87,7 +87,7 @@ namespace xio {
                 execute_member_default<T, F> {
         };
     } // namespace traits
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

@@ -22,7 +22,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace error {
         enum ssl_errors {
@@ -34,7 +34,7 @@ namespace xio {
         const xio::error_category &get_ssl_category();
 
         ASIO_INLINE_OR_STATIC_VARIABLE const xio::error_category &
-  ssl_category ASIO_UNUSED_VARIABLE
+                ssl_category ASIO_UNUSED_VARIABLE
                 = xio::error::get_ssl_category();
     } // namespace error
     namespace ssl {
@@ -55,9 +55,9 @@ namespace xio {
 # if (OPENSSL_VERSION_NUMBER < 0x10100000L) \
     && !defined(OPENSSL_IS_BORINGSSL) \
     && !defined(ASIO_USE_WOLFSSL)
-                stream_truncated = ERR_PACK(ERR_LIB_SSL, 0, SSL_R_SHORT_READ),
+                stream_truncated= ERR_PACK(ERR_LIB_SSL, 0, SSL_R_SHORT_READ),
 # else
-                stream_truncated=1,
+                stream_truncated = 1,
 # endif
                 unspecified_system_error = 2,
                 unexpected_result = 3
@@ -69,11 +69,11 @@ namespace xio {
             const xio::error_category &get_stream_category();
 
             ASIO_INLINE_OR_STATIC_VARIABLE const xio::error_category &
-  stream_category ASIO_UNUSED_VARIABLE
+                    stream_category ASIO_UNUSED_VARIABLE
                     = xio::ssl::error::get_stream_category();
         } // namespace error
     } // namespace ssl
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 namespace std {
@@ -89,7 +89,7 @@ namespace std {
 } // namespace std
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace error {
         inline xio::error_code make_error_code(ssl_errors e) {
@@ -105,13 +105,10 @@ namespace xio {
             }
         } // namespace error
     } // namespace ssl
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/ssl/impl/error.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_SSL_ERROR_HPP

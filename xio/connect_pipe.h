@@ -27,58 +27,53 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
-
-
 #if defined(ASIO_HAS_IOCP)
-typedef HANDLE native_pipe_handle;
+        typedef HANDLE native_pipe_handle;
 #else // defined(ASIO_HAS_IOCP)
-typedef int native_pipe_handle;
+        typedef int native_pipe_handle;
 #endif // defined(ASIO_HAS_IOCP)
 
-ASIO_DECL void create_pipe(native_pipe_handle p[2],
-                           xio::error_code &ec);
+        ASIO_DECL void create_pipe(native_pipe_handle p[2],
+                                   xio::error_code &ec);
 
-ASIO_DECL void close_pipe(native_pipe_handle p);
+        ASIO_DECL void close_pipe(native_pipe_handle p);
+    } // namespace detail
 
-} // namespace detail
+    /// Connect two pipe ends using an anonymous pipe.
+    /**
+     * @param read_end The read end of the pipe.
+     *
+     * @param write_end The write end of the pipe.
+     *
+     * @throws xio::system_error Thrown on failure.
+     */
+    template<typename Executor1, typename Executor2>
+    void connect_pipe(basic_readable_pipe<Executor1> &read_end,
+                      basic_writable_pipe<Executor2> &write_end);
 
-/// Connect two pipe ends using an anonymous pipe.
-/**
- * @param read_end The read end of the pipe.
- *
- * @param write_end The write end of the pipe.
- *
- * @throws xio::system_error Thrown on failure.
- */
-template<typename Executor1, typename Executor2>
-void connect_pipe(basic_readable_pipe<Executor1> & read_end,
-                  basic_writable_pipe<Executor2> & write_end);
+    /// Connect two pipe ends using an anonymous pipe.
+    /**
+     * @param read_end The read end of the pipe.
+     *
+     * @param write_end The write end of the pipe.
+     *
+     * @throws xio::system_error Thrown on failure.
+     *
+     * @param ec Set to indicate what error occurred, if any.
+     */
+    template<typename Executor1, typename Executor2>
+    ASIO_SYNC_OP_VOID connect_pipe(basic_readable_pipe<Executor1> &read_end,
+                                   basic_writable_pipe<Executor2> &write_end, xio::error_code &ec);
 
-/// Connect two pipe ends using an anonymous pipe.
-/**
- * @param read_end The read end of the pipe.
- *
- * @param write_end The write end of the pipe.
- *
- * @throws xio::system_error Thrown on failure.
- *
- * @param ec Set to indicate what error occurred, if any.
- */
-template<typename Executor1, typename Executor2>
-ASIO_SYNC_OP_VOID connect_pipe(basic_readable_pipe<Executor1> & read_end,
-                               basic_writable_pipe<Executor2> & write_end, xio::error_code & ec);
-
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+    } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
 #include <xio/impl/connect_pipe.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/impl/connect_pipe.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
+
 
 #endif // defined(ASIO_HAS_PIPE)
 //   || defined(GENERATING_DOCUMENTATION)

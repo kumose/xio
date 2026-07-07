@@ -28,7 +28,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace experimental {
         namespace detail {
@@ -268,7 +268,7 @@ namespace xio {
  * @endcode
  */
         template<typename... Ops>
-        ASIO_NODISCARD inline parallel_group<Ops...>
+        [[nodiscard]] inline parallel_group<Ops...>
         make_parallel_group (Ops
         ...
         ops
@@ -392,7 +392,7 @@ namespace xio {
  * @endcode
  */
         template<typename Range>
-        ASIO_NODISCARD inline ranged_parallel_group<decay_t<Range> >
+        [[nodiscard]] inline ranged_parallel_group<decay_t<Range> >
 
         make_parallel_group(Range && range,
                             constraint_t <
@@ -441,7 +441,7 @@ namespace xio {
  * @endcode
  */
         template<typename Allocator, typename Range>
-        ASIO_NODISCARD inline ranged_parallel_group<decay_t<Range>, Allocator>
+        [[nodiscard]] inline ranged_parallel_group<decay_t<Range>, Allocator>
 
         make_parallel_group(allocator_arg_t, const Allocator &allocator, Range &&range,
                             constraint_t<
@@ -451,7 +451,7 @@ namespace xio {
                 std::forward<Range>(range), allocator);
         }
     } // namespace experimental
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

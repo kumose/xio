@@ -25,9 +25,11 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Provides serialised function invocation for any executor type.
+
+
 
 
     template<typename Executor>
@@ -509,7 +511,7 @@ namespace xio {
 
 #endif // !defined(GENERATING_DOCUMENTATION)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
@@ -518,7 +520,7 @@ namespace xio {
 // include the header file needed for the io_context::strand class.
 #if !defined(ASIO_NO_EXTENSIONS)
 # if defined(ASIO_IO_CONTEXT_HPP)
-#  include "xio/io_context_strand.hpp"
+#  include "xio/io_context_strand.h"
 # endif // defined(ASIO_IO_CONTEXT_HPP)
 #endif // !defined(ASIO_NO_EXTENSIONS)
 

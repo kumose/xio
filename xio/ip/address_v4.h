@@ -32,7 +32,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ip {
         /// Implements IP version 4 style addresses.
@@ -322,7 +322,7 @@ ASIO_DECL address_v4 make_address_v4(string_view str,
 
 #endif // !defined(ASIO_NO_IOSTREAM)
     } // namespace ip
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 namespace std {
@@ -338,8 +338,6 @@ namespace std {
 #include <xio/detail/pop_options.h>
 
 #include <xio/ip/impl/address_v4.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/ip/impl/address_v4.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
+
 
 #endif // ASIO_IP_ADDRESS_V4_HPP

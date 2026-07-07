@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace execution {
         /// An archetypal function object used for determining adherence to the
@@ -33,7 +33,7 @@ namespace xio {
             }
         };
     } // namespace execution
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

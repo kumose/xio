@@ -24,7 +24,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     class any_io_executor;
 
@@ -170,7 +170,7 @@ namespace xio {
         ASIO_INLINE_VARIABLE constexpr use_coro_t<> use_coro(0, 0, 0);
 #endif
     } // namespace experimental
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

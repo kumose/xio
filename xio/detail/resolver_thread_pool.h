@@ -31,7 +31,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class resolver_thread_pool :
@@ -50,13 +50,13 @@ namespace xio {
             ASIO_DECL ~resolver_thread_pool();
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void shutdown();
+            ASIO_DECL void shutdown();
 
             // Perform any fork-related housekeeping.
-  ASIO_DECL void notify_fork(execution_context::fork_event fork_ev);
+            ASIO_DECL void notify_fork(execution_context::fork_event fork_ev);
 
             // Helper function to start an asynchronous resolve operation.
-  ASIO_DECL void start_resolve_op(resolve_op *op);
+            ASIO_DECL void start_resolve_op(resolve_op *op);
 
             // Get the underlying scheduler implementation.
             scheduler_impl &scheduler() {
@@ -68,7 +68,7 @@ namespace xio {
             class work_scheduler_runner;
 
             // Start the work scheduler if it's not already running.
-  ASIO_DECL void start_work_threads();
+            ASIO_DECL void start_work_threads();
 
             // The scheduler implementation used to post completions.
             scheduler_impl &scheduler_;
@@ -92,13 +92,10 @@ namespace xio {
             bool shutdown_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/resolver_thread_pool.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_DETAIL_RESOLVER_THREAD_POOL_HPP

@@ -24,7 +24,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ssl {
         /// Verifies a certificate against a host_name according to the rules described
@@ -69,7 +69,7 @@ namespace xio {
             }
 
             /// Perform certificate verification.
-  ASIO_DECL bool operator()(bool preverified, verify_context &ctx) const;
+            ASIO_DECL bool operator()(bool preverified, verify_context &ctx) const;
 
         private:
             // Helper function to check a host name against an IPv4 address
@@ -77,13 +77,9 @@ namespace xio {
             std::string host_;
         };
     } // namespace ssl
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
-
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/ssl/impl/host_name_verification.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_SSL_HOST_NAME_VERIFICATION_HPP

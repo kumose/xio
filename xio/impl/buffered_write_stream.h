@@ -23,7 +23,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     template<typename Stream>
     std::size_t buffered_write_stream<Stream>::flush() {
@@ -76,7 +76,7 @@ namespace xio {
         template<typename WriteHandler>
         inline bool asio_handler_is_continuation(
             buffered_flush_handler<WriteHandler> *this_handler) {
-            return ASIO_VERSIONED_NAME(handler_cont_helpers)
+            return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -235,7 +235,7 @@ namespace xio {
         inline bool asio_handler_is_continuation(
             buffered_write_some_handler<
                 ConstBufferSequence, WriteHandler> *this_handler) {
-            return ASIO_VERSIONED_NAME(handler_cont_helpers)
+            return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -342,7 +342,7 @@ namespace xio {
             storage_.data() + orig_size, buffers, length);
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

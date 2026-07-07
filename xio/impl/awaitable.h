@@ -42,7 +42,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename, typename, typename>
@@ -849,8 +849,10 @@ namespace xio {
             template
             <
             typename
+
             ...
             Args >
+
 
             void operator()(Args &&... args)
             {
@@ -969,7 +971,7 @@ namespace xio {
 #endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #if !defined(GENERATING_DOCUMENTATION)

@@ -28,7 +28,7 @@
 #endif // defined(ASIO_HAS_STD_EXPERIMENTAL_STRING_VIEW)
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if defined(ASIO_HAS_STD_STRING_VIEW)
 using std::basic_string_view;
@@ -38,7 +38,7 @@ using std::experimental::basic_string_view;
 using std::experimental::string_view;
 #endif // defined(ASIO_HAS_STD_EXPERIMENTAL_STRING_VIEW)
 
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 # define ASIO_STRING_VIEW_PARAM xio::string_view
 #else // defined(ASIO_HAS_STRING_VIEW)

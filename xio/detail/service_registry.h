@@ -25,7 +25,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     class io_context;
 
@@ -161,14 +161,12 @@ namespace xio {
             execution_context::service *first_service_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
 #include <xio/detail/impl/service_registry.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/service_registry.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
+
 
 #endif // ASIO_DETAIL_SERVICE_REGISTRY_HPP

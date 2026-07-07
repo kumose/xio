@@ -18,11 +18,11 @@
 #include <xio/detail/config.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     class execution_context;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #if defined(ASIO_CUSTOM_HANDLER_TRACKING)
@@ -37,7 +37,7 @@ namespace xio {
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 #if defined(ASIO_CUSTOM_HANDLER_TRACKING)
@@ -255,13 +255,10 @@ namespace xio {
 
 #endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/handler_tracking.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_DETAIL_HANDLER_TRACKING_HPP

@@ -30,7 +30,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         namespace descriptor_ops {
@@ -57,24 +57,24 @@ namespace xio {
                     xio::error::clear(ec);
                 } else {
                     ec = xio::error_code(errno,
-                                          xio::error::get_system_category());
+                                         xio::error::get_system_category());
                 }
             }
 
-ASIO_DECL int open(const char *path, int flags,
-                   xio::error_code &ec);
+            ASIO_DECL int open(const char *path, int flags,
+                               xio::error_code &ec);
 
-ASIO_DECL int open(const char *path, int flags, unsigned mode,
-                   xio::error_code &ec);
+            ASIO_DECL int open(const char *path, int flags, unsigned mode,
+                               xio::error_code &ec);
 
-ASIO_DECL int close(int d, state_type &state,
-                    xio::error_code &ec);
+            ASIO_DECL int close(int d, state_type &state,
+                                xio::error_code &ec);
 
-ASIO_DECL bool set_user_non_blocking(int d,
-                                     state_type &state, bool value, xio::error_code &ec);
+            ASIO_DECL bool set_user_non_blocking(int d,
+                                                 state_type &state, bool value, xio::error_code &ec);
 
-ASIO_DECL bool set_internal_non_blocking(int d,
-                                         state_type &state, bool value, xio::error_code &ec);
+            ASIO_DECL bool set_internal_non_blocking(int d,
+                                                     state_type &state, bool value, xio::error_code &ec);
 
             typedef iovec buf;
 
@@ -84,11 +84,11 @@ ASIO_DECL bool set_internal_non_blocking(int d,
             ASIO_DECL std::size_t sync_read1(int d, state_type state, void *data,
                                              std::size_t size, xio::error_code &ec);
 
-ASIO_DECL bool non_blocking_read(int d, buf *bufs, std::size_t count,
-                                 xio::error_code &ec, std::size_t &bytes_transferred);
+            ASIO_DECL bool non_blocking_read(int d, buf *bufs, std::size_t count,
+                                             xio::error_code &ec, std::size_t &bytes_transferred);
 
-ASIO_DECL bool non_blocking_read1(int d, void *data, std::size_t size,
-                                  xio::error_code &ec, std::size_t &bytes_transferred);
+            ASIO_DECL bool non_blocking_read1(int d, void *data, std::size_t size,
+                                              xio::error_code &ec, std::size_t &bytes_transferred);
 
             ASIO_DECL std::size_t sync_write(int d, state_type state,
                                              const buf *bufs, std::size_t count, bool all_empty,
@@ -97,13 +97,13 @@ ASIO_DECL bool non_blocking_read1(int d, void *data, std::size_t size,
             ASIO_DECL std::size_t sync_write1(int d, state_type state,
                                               const void *data, std::size_t size, xio::error_code &ec);
 
-ASIO_DECL bool non_blocking_write(int d,
-                                  const buf *bufs, std::size_t count,
-                                  xio::error_code &ec, std::size_t &bytes_transferred);
+            ASIO_DECL bool non_blocking_write(int d,
+                                              const buf *bufs, std::size_t count,
+                                              xio::error_code &ec, std::size_t &bytes_transferred);
 
-ASIO_DECL bool non_blocking_write1(int d,
-                                   const void *data, std::size_t size,
-                                   xio::error_code &ec, std::size_t &bytes_transferred);
+            ASIO_DECL bool non_blocking_write1(int d,
+                                               const void *data, std::size_t size,
+                                               xio::error_code &ec, std::size_t &bytes_transferred);
 
 #if defined(ASIO_HAS_FILE)
 
@@ -115,13 +115,13 @@ ASIO_DECL bool non_blocking_write1(int d,
                                                 uint64_t offset, void *data, std::size_t size,
                                                 xio::error_code &ec);
 
-ASIO_DECL bool non_blocking_read_at(int d, uint64_t offset,
-                                    buf *bufs, std::size_t count, xio::error_code &ec,
-                                    std::size_t &bytes_transferred);
+            ASIO_DECL bool non_blocking_read_at(int d, uint64_t offset,
+                                                buf *bufs, std::size_t count, xio::error_code &ec,
+                                                std::size_t &bytes_transferred);
 
-ASIO_DECL bool non_blocking_read_at1(int d, uint64_t offset,
-                                     void *data, std::size_t size, xio::error_code &ec,
-                                     std::size_t &bytes_transferred);
+            ASIO_DECL bool non_blocking_read_at1(int d, uint64_t offset,
+                                                 void *data, std::size_t size, xio::error_code &ec,
+                                                 std::size_t &bytes_transferred);
 
             ASIO_DECL std::size_t sync_write_at(int d, state_type state,
                                                 uint64_t offset, const buf *bufs, std::size_t count, bool all_empty,
@@ -131,42 +131,39 @@ ASIO_DECL bool non_blocking_read_at1(int d, uint64_t offset,
                                                  uint64_t offset, const void *data, std::size_t size,
                                                  xio::error_code &ec);
 
-ASIO_DECL bool non_blocking_write_at(int d,
-                                     uint64_t offset, const buf *bufs, std::size_t count,
-                                     xio::error_code &ec, std::size_t &bytes_transferred);
+            ASIO_DECL bool non_blocking_write_at(int d,
+                                                 uint64_t offset, const buf *bufs, std::size_t count,
+                                                 xio::error_code &ec, std::size_t &bytes_transferred);
 
-ASIO_DECL bool non_blocking_write_at1(int d,
-                                      uint64_t offset, const void *data, std::size_t size,
-                                      xio::error_code &ec, std::size_t &bytes_transferred);
+            ASIO_DECL bool non_blocking_write_at1(int d,
+                                                  uint64_t offset, const void *data, std::size_t size,
+                                                  xio::error_code &ec, std::size_t &bytes_transferred);
 
 #endif // defined(ASIO_HAS_FILE)
 
-ASIO_DECL int ioctl(int d, state_type &state, long cmd,
-                    ioctl_arg_type *arg, xio::error_code &ec);
+            ASIO_DECL int ioctl(int d, state_type &state, long cmd,
+                                ioctl_arg_type *arg, xio::error_code &ec);
 
-ASIO_DECL int fcntl(int d, int cmd, xio::error_code &ec);
+            ASIO_DECL int fcntl(int d, int cmd, xio::error_code &ec);
 
-ASIO_DECL int fcntl(int d, int cmd,
-                    long arg, xio::error_code &ec);
+            ASIO_DECL int fcntl(int d, int cmd,
+                                long arg, xio::error_code &ec);
 
-ASIO_DECL int poll_read(int d,
-                        state_type state, xio::error_code &ec);
+            ASIO_DECL int poll_read(int d,
+                                    state_type state, xio::error_code &ec);
 
-ASIO_DECL int poll_write(int d,
-                         state_type state, xio::error_code &ec);
+            ASIO_DECL int poll_write(int d,
+                                     state_type state, xio::error_code &ec);
 
-ASIO_DECL int poll_error(int d,
-                         state_type state, xio::error_code &ec);
+            ASIO_DECL int poll_error(int d,
+                                     state_type state, xio::error_code &ec);
         } // namespace descriptor_ops
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/descriptor_ops.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // !defined(ASIO_WINDOWS)
 //   && !defined(ASIO_WINDOWS_RUNTIME)

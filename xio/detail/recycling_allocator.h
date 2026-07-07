@@ -23,7 +23,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename T, typename Purpose = thread_info_base::default_tag>
@@ -95,7 +95,7 @@ namespace xio {
             static type get(const std::allocator<T> &) { return type(); }
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

@@ -26,11 +26,12 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         extern "C" {
-        ASIO_DECL void *ASIO_VERSIONED_NAME(detail_posix_thread_function)(
+        ASIO_DECL void *XIO_VERSIONED_NAME(detail_posix_thread_function)(
+
 
         void *arg
         );
@@ -84,7 +85,7 @@ namespace xio {
             ASIO_DECL static std::size_t hardware_concurrency();
 
         private:
-            friend void *ASIO_VERSIONED_NAME(detail_posix_thread_function)(
+            friend void *XIO_VERSIONED_NAME(detail_posix_thread_function)(
                 void *arg);
 
             class func_base {
@@ -126,14 +127,11 @@ namespace xio {
             func_base *arg_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/posix_thread.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // defined(ASIO_HAS_PTHREADS)
 

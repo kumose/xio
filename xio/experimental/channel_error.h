@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace experimental {
         namespace error {
@@ -34,6 +34,7 @@ namespace xio {
             };
 
             extern
+
             ASIO_DECL
             const xio::error_category &get_channel_category();
 
@@ -47,7 +48,7 @@ namespace xio {
             using error::channel_cancelled;
         } // namespace channel_errc
     } // namespace experimental
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 namespace std {
@@ -59,7 +60,7 @@ namespace std {
 } // namespace std
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace experimental {
         namespace error {
@@ -69,13 +70,10 @@ namespace xio {
             }
         } // namespace error
     } // namespace experimental
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/experimental/impl/channel_error.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_EXPERIMENTAL_CHANNEL_ERROR_HPP

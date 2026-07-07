@@ -29,7 +29,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename Protocol>
@@ -104,7 +104,7 @@ namespace xio {
 
             // Open a new socket implementation.
             xio::error_code open(implementation_type &impl,
-                                  const protocol_type &protocol, xio::error_code &ec) {
+                                 const protocol_type &protocol, xio::error_code &ec) {
                 if (is_open(impl)) {
                     ec = xio::error::already_open;
                     return ec;
@@ -116,12 +116,13 @@ namespace xio {
                     impl.protocol_ = protocol;
                     ec = xio::error_code();
                 } catch (Platform::Exception
+
                 ^
                 e
                 )
                 {
                     ec = xio::error_code(e->HResult,
-                                          xio::system_category());
+                                         xio::system_category());
                 }
 
                 return ec;
@@ -129,8 +130,8 @@ namespace xio {
 
             // Assign a native socket to a socket implementation.
             xio::error_code assign(implementation_type &impl,
-                                    const protocol_type &protocol, const native_handle_type &native_socket,
-                                    xio::error_code &ec) {
+                                   const protocol_type &protocol, const native_handle_type &native_socket,
+                                   xio::error_code &ec) {
                 if (is_open(impl)) {
                     ec = xio::error::already_open;
                     return ec;
@@ -145,7 +146,7 @@ namespace xio {
 
             // Bind the socket to the specified local endpoint.
             xio::error_code bind(implementation_type &,
-                                  const endpoint_type &, xio::error_code &ec) {
+                                 const endpoint_type &, xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -170,7 +171,7 @@ namespace xio {
 
             // Disable sends or receives on the socket.
             xio::error_code shutdown(implementation_type &,
-                                      socket_base::shutdown_type, xio::error_code &ec) {
+                                     socket_base::shutdown_type, xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -178,7 +179,7 @@ namespace xio {
             // Set a socket option.
             template<typename Option>
             xio::error_code set_option(implementation_type &impl,
-                                        const Option &option, xio::error_code &ec) {
+                                       const Option &option, xio::error_code &ec) {
                 return do_set_option(impl, option.level(impl.protocol_),
                                      option.name(impl.protocol_), option.data(impl.protocol_),
                                      option.size(impl.protocol_), ec);
@@ -187,7 +188,7 @@ namespace xio {
             // Get a socket option.
             template<typename Option>
             xio::error_code get_option(const implementation_type &impl,
-                                        Option &option, xio::error_code &ec) const {
+                                       Option &option, xio::error_code &ec) const {
                 std::size_t size = option.size(impl.protocol_);
                 do_get_option(impl, option.level(impl.protocol_),
                               option.name(impl.protocol_),
@@ -199,7 +200,7 @@ namespace xio {
 
             // Connect the socket to the specified endpoint.
             xio::error_code connect(implementation_type &impl,
-                                     const endpoint_type &peer_endpoint, xio::error_code &ec) {
+                                    const endpoint_type &peer_endpoint, xio::error_code &ec) {
                 return do_connect(impl, peer_endpoint.data(), ec);
             }
 
@@ -209,7 +210,7 @@ namespace xio {
                                const endpoint_type &peer_endpoint,
                                Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 // Allocate and construct an operation to wrap the handler.
                 typedef winrt_socket_connect_op<Handler, IoExecutor> op;
@@ -227,7 +228,7 @@ namespace xio {
             }
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

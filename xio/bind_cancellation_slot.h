@@ -26,7 +26,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // Helper to automatically define nested typedef result_type.
@@ -372,7 +372,7 @@ namespace xio {
         /// Adapt a @ref completion_token to specify that the completion handler
   /// should have the cancellation slot as its associated cancellation slot.
         template<typename CompletionToken>
-        ASIO_NODISCARD inline
+        [[nodiscard]] inline
         constexpr cancellation_slot_binder<decay_t<CompletionToken>, CancellationSlot>
 
         operator()(CompletionToken &&completion_token) const {
@@ -386,7 +386,7 @@ namespace xio {
 
     /// Create a partial completion token that associates a cancellation slot.
     template<typename CancellationSlot>
-    ASIO_NODISCARD inline partial_cancellation_slot_binder<CancellationSlot>
+    [[nodiscard]] inline partial_cancellation_slot_binder<CancellationSlot>
 
     bind_cancellation_slot(const CancellationSlot &ex) {
         return partial_cancellation_slot_binder<CancellationSlot>(ex);
@@ -395,7 +395,7 @@ namespace xio {
     /// Associate an object of type @c T with a cancellation slot of type
 /// @c CancellationSlot.
     template<typename CancellationSlot, typename T>
-    ASIO_NODISCARD inline
+    [[nodiscard]] inline
     cancellation_slot_binder<decay_t<T>, CancellationSlot>
 
     bind_cancellation_slot(const CancellationSlot &s, T &&t) {
@@ -525,15 +525,17 @@ namespace xio {
         >
         (
 
+
         static_cast
         <
         Initiation &&
+
         >
         (initiation),
                 cancellation_slot_binder<
                     default_completion_token_t<associated_executor_t<Initiation> >,
                     CancellationSlot>(token.cancellation_slot_,
-                                      default_completion_token_t<associated_executor_t<Initiation> > {
+                                      default_completion_token_t<associated_executor_t<Initiation> >  {
         }
 
         )
@@ -541,6 +543,7 @@ namespace xio {
         static_cast
         <
         Args &&
+
         >
         (args)
         ...
@@ -590,7 +593,7 @@ namespace xio {
 
 #endif // !defined(GENERATING_DOCUMENTATION)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

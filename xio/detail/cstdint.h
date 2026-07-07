@@ -19,7 +19,7 @@
 #include <cstdint>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
     using std::int16_t;
     using std::int_least16_t;
     using std::uint16_t;
@@ -35,7 +35,7 @@ namespace xio {
     using std::uintptr_t;
     using std::uintmax_t;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_DETAIL_CSTDINT_HPP

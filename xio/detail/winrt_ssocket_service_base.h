@@ -39,7 +39,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class winrt_ssocket_service_base {
@@ -107,7 +107,7 @@ namespace xio {
 
             // Cancel all operations associated with the socket.
             xio::error_code cancel(base_implementation_type &,
-                                    xio::error_code &ec) {
+                                   xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -129,7 +129,7 @@ namespace xio {
             // Perform an IO control command on the socket.
             template<typename IO_Control_Command>
             xio::error_code io_control(base_implementation_type &,
-                                        IO_Control_Command &, xio::error_code &ec) {
+                                       IO_Control_Command &, xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -141,7 +141,7 @@ namespace xio {
 
             // Sets the non-blocking mode of the socket.
             xio::error_code non_blocking(base_implementation_type &,
-                                          bool, xio::error_code &ec) {
+                                         bool, xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -153,7 +153,7 @@ namespace xio {
 
             // Sets the non-blocking mode of the native socket implementation.
             xio::error_code native_non_blocking(base_implementation_type &,
-                                                 bool, xio::error_code &ec) {
+                                                bool, xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
@@ -182,7 +182,7 @@ namespace xio {
                             const ConstBufferSequence &buffers, socket_base::message_flags flags,
                             Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 // Allocate and construct an operation to wrap the handler.
                 typedef winrt_socket_send_op<ConstBufferSequence, Handler, IoExecutor> op;
@@ -209,7 +209,7 @@ namespace xio {
                 xio::error_code ec = xio::error::operation_not_supported;
                 const std::size_t bytes_transferred = 0;
                 xio::post(io_ex,
-                           detail::bind_handler(handler, ec, bytes_transferred));
+                          detail::bind_handler(handler, ec, bytes_transferred));
             }
 
             // Receive some data from the peer. Returns the number of bytes received.
@@ -237,7 +237,7 @@ namespace xio {
                                const MutableBufferSequence &buffers, socket_base::message_flags flags,
                                Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 // Allocate and construct an operation to wrap the handler.
                 typedef winrt_socket_recv_op<MutableBufferSequence, Handler, IoExecutor> op;
@@ -264,7 +264,7 @@ namespace xio {
                 xio::error_code ec = xio::error::operation_not_supported;
                 const std::size_t bytes_transferred = 0;
                 xio::post(io_ex,
-                           detail::bind_handler(handler, ec, bytes_transferred));
+                          detail::bind_handler(handler, ec, bytes_transferred));
             }
 
         protected:
@@ -335,13 +335,9 @@ base_implementation_type *impl_list_;
 };
 
 } // namespace detail
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
-
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/winrt_ssocket_service_base.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // defined(ASIO_WINDOWS_RUNTIME)
 

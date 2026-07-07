@@ -33,7 +33,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename MutableBufferSequence, typename Handler, typename IoExecutor>
@@ -114,7 +114,7 @@ handler_work<Handler, IoExecutor> work_;
 };
 
 } // namespace detail
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 

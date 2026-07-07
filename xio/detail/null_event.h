@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class null_event
@@ -80,18 +80,15 @@ namespace xio {
             }
 
         private:
-  ASIO_DECL static void do_wait();
+            ASIO_DECL static void do_wait();
 
-  ASIO_DECL static void do_wait_for_usec(long usec);
+            ASIO_DECL static void do_wait_for_usec(long usec);
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/null_event.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_DETAIL_NULL_EVENT_HPP

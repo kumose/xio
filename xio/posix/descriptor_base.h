@@ -26,7 +26,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace posix {
         /// The descriptor_base class is used as a base for the descriptor class as a
@@ -78,7 +78,7 @@ protected:
 };
 
 } // namespace posix
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 

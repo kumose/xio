@@ -29,7 +29,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ip {
         /// A range of entries produced by a resolver.
@@ -274,7 +274,7 @@ namespace xio {
             typedef std::vector<basic_resolver_entry<InternetProtocol> > values_type;
         };
     } // namespace ip
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

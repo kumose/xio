@@ -31,9 +31,10 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
+
 
 
 #if defined(ASIO_HAS_STD_COROUTINE)
@@ -53,7 +54,7 @@ class awaitable_frame;
 
 /// The return type of a coroutine or asynchronous operation.
 template<typename T, typename Executor = any_io_executor>
-class ASIO_NODISCARD awaitable {
+class [[nodiscard]] awaitable {
 public:
     /// The type of the awaited value.
     typedef T value_type;
@@ -131,14 +132,11 @@ explicit awaitable(detail::awaitable_frame<T, Executor> *a)
 detail::awaitable_frame<T, Executor> *frame_;
 };
 
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 
 #include <xio/impl/awaitable.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/impl/awaitable.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // defined(ASIO_HAS_CO_AWAIT) || defined(GENERATING_DOCUMENTATION)
 

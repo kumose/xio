@@ -30,7 +30,7 @@
 //   && defined(ASIO_HAS_BOOST_ALIGN)
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         using std::allocate_shared;
@@ -143,7 +143,7 @@ namespace xio {
 #endif // defined(ASIO_MSVC)
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_DETAIL_MEMORY_HPP

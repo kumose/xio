@@ -23,7 +23,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename Executor, typename T>
@@ -126,7 +126,7 @@ namespace xio {
                 : public awaitable_handler_base<Executor,
                       conditional_t<is_disposition<T0>::value,
                           std::tuple < Ts...>, std::tuple<T0, Ts...> >>
-        {
+                {
         public:
             using awaitable_handler_base<Executor,
                 conditional_t<is_disposition<T0>::value,
@@ -204,7 +204,7 @@ namespace xio {
 
 #endif // !defined(GENERATING_DOCUMENTATION)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

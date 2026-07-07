@@ -25,7 +25,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if defined(GENERATING_DOCUMENTATION)
 
@@ -66,6 +66,7 @@ namespace xio {
     } // namespace execution
 
 #else // defined(GENERATING_DOCUMENTATION)
+
 
 
 
@@ -256,7 +257,7 @@ namespace xio {
 
 #endif // defined(GENERATING_DOCUMENTATION)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

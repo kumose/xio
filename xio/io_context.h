@@ -44,7 +44,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 #if defined(ASIO_HAS_IOCP)
@@ -498,6 +498,7 @@ namespace xio {
    */
         template<typename Handler>
         ASIO_DEPRECATED_MSG (
+
         "Use xio::bind_executor()"
         )
 #if defined(GENERATING_DOCUMENTATION)
@@ -567,8 +568,8 @@ namespace xio {
 #if !defined(GENERATING_DOCUMENTATION)
 
     private:
-        friend struct ASIO_VERSIONED_NAME (require_fn)::impl;
-        friend struct ASIO_VERSIONED_NAME (prefer_fn)::impl;
+        friend struct XIO_VERSIONED_NAME (require_fn)::impl;
+        friend struct XIO_VERSIONED_NAME (prefer_fn)::impl;
 #endif // !defined(GENERATING_DOCUMENTATION)
 
         /// Obtain an executor with the @c blocking.possibly property.
@@ -702,7 +703,7 @@ namespace xio {
 #if !defined(GENERATING_DOCUMENTATION)
 
     private:
-        friend struct ASIO_VERSIONED_NAME (query_fn)::impl;
+        friend struct XIO_VERSIONED_NAME (query_fn)::impl;
         friend struct xio::execution::detail::mapping_t<0>;
         friend struct xio::execution::detail::inline_exception_handling_t<0>;
         friend struct xio::execution::detail::outstanding_work_t<0>;
@@ -1293,21 +1294,19 @@ namespace xio {
 
 #endif // !defined(GENERATING_DOCUMENTATION)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
 #include <xio/impl/io_context.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/impl/io_context.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
+
 
 // If both io_context.hpp and strand.hpp have been included, automatically
 // include the header file needed for the io_context::strand class.
 #if !defined(ASIO_NO_EXTENSIONS)
 # if defined(ASIO_STRAND_HPP)
-#  include "xio/io_context_strand.hpp"
+#  include "xio/io_context_strand.h"
 # endif // defined(ASIO_STRAND_HPP)
 #endif // !defined(ASIO_NO_EXTENSIONS)
 

@@ -24,7 +24,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
     template<typename Blocking, typename Relationship, typename Allocator>
     class basic_system_executor;
 
@@ -78,14 +78,12 @@ namespace xio {
         std::size_t num_threads_;
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
 #include <xio/impl/system_context.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/impl/system_context.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
+
 
 #endif // ASIO_SYSTEM_CONTEXT_HPP

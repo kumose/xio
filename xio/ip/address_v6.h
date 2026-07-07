@@ -33,7 +33,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ip {
         template<typename>
@@ -315,7 +315,7 @@ ASIO_DECL address_v6 make_address_v6(
 
 #endif // !defined(ASIO_NO_IOSTREAM)
     } // namespace ip
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 namespace std {
@@ -347,8 +347,6 @@ namespace std {
 #include <xio/detail/pop_options.h>
 
 #include <xio/ip/impl/address_v6.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/ip/impl/address_v6.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
+
 
 #endif // ASIO_IP_ADDRESS_V6_HPP

@@ -17,13 +17,14 @@
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include <xio/detail/config.h>
+#include <xio/ssl/context.h>
 
 #include <xio/detail/throw_error.h>
 
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ssl {
         template<typename VerifyCallback>
@@ -56,7 +57,7 @@ namespace xio {
             ASIO_SYNC_OP_VOID_RETURN(ec);
         }
     } // namespace ssl
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

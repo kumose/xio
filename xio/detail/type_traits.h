@@ -19,7 +19,7 @@
 #include <type_traits>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
     using std::add_const;
 
     template<typename T>
@@ -196,7 +196,7 @@ namespace xio {
     template<typename T>
     using type_identity_t = typename type_identity<T>::type;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_DETAIL_TYPE_TRAITS_HPP

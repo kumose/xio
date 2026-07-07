@@ -38,7 +38,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename Protocol>
@@ -118,12 +118,13 @@ namespace xio {
                         endpoint_pairs, query.hints(),
                         query.host_name(), query.service_name());
                 } catch (Platform::Exception
+
                 ^
                 e
                 )
                 {
                     ec = xio::error_code(e->HResult,
-                                          xio::system_category());
+                                         xio::system_category());
                     return results_type();
                 }
             }
@@ -133,7 +134,7 @@ namespace xio {
             void async_resolve(implementation_type &impl, const query_type &query,
                                Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 // Allocate and construct an operation to wrap the handler.
                 typedef winrt_resolve_op<Protocol, Handler, IoExecutor> op;
@@ -154,6 +155,7 @@ namespace xio {
                                              winrt_utils::string(query.service_name())), p.p);
                     p.v = p.p = 0;
                 } catch (Platform::Exception
+
                 ^
                 e
                 )
@@ -194,7 +196,7 @@ winrt_async_manager &async_manager_;
 };
 
 } // namespace detail
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 

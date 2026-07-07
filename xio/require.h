@@ -27,7 +27,7 @@
 #if defined(GENERATING_DOCUMENTATION)
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// A customisation point that applies a concept-preserving property to an
 /// object.
@@ -99,12 +99,12 @@ namespace xio {
         typedef automatically_determined type;
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #else // defined(GENERATING_DOCUMENTATION)
 
-namespace ASIO_VERSIONED_NAME(require_fn) {
+namespace XIO_VERSIONED_NAME(require_fn) {
     using xio::conditional_t;
     using xio::decay_t;
     using xio::declval;
@@ -182,6 +182,7 @@ namespace ASIO_VERSIONED_NAME(require_fn) {
     {
   static constexpr overload_type overload = call_member;
 
+
     };
 
     template
@@ -211,6 +212,7 @@ namespace ASIO_VERSIONED_NAME(require_fn) {
     require_free<T, Property>
     {
   static constexpr overload_type overload = call_free;
+
 
     };
 
@@ -256,6 +258,7 @@ namespace ASIO_VERSIONED_NAME(require_fn) {
     <
     typename Impl, typename T, typename P0,
             typename P1, typename
+
     ...
     PN >
     struct call_traits<Impl, T, void(P0, P1, PN...),
@@ -315,7 +318,7 @@ namespace ASIO_VERSIONED_NAME(require_fn) {
         };
 
         template<typename T, typename Property>
-        ASIO_NODISCARD constexpr enable_if_t<
+        [[nodiscard]] constexpr enable_if_t<
             call_traits<impl, T, void(Property)>::overload == identity,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -326,7 +329,7 @@ namespace ASIO_VERSIONED_NAME(require_fn) {
         }
 
         template<typename T, typename Property>
-        ASIO_NODISCARD constexpr enable_if_t<
+        [[nodiscard]] constexpr enable_if_t<
             call_traits<impl, T, void(Property)>::overload == call_member,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -337,7 +340,7 @@ namespace ASIO_VERSIONED_NAME(require_fn) {
         }
 
         template<typename T, typename Property>
-        ASIO_NODISCARD constexpr enable_if_t<
+        [[nodiscard]] constexpr enable_if_t<
             call_traits<impl, T, void(Property)>::overload == call_free,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -348,7 +351,7 @@ namespace ASIO_VERSIONED_NAME(require_fn) {
         }
 
         template<typename T, typename P0, typename P1>
-        ASIO_NODISCARD constexpr enable_if_t<
+        [[nodiscard]] constexpr enable_if_t<
             call_traits<impl, T, void(P0, P1)>::overload == two_props,
             typename call_traits<impl, T, void(P0, P1)>::result_type
         >
@@ -362,7 +365,7 @@ namespace ASIO_VERSIONED_NAME(require_fn) {
 
         template<typename T, typename P0, typename P1,
             typename... PN>
-        ASIO_NODISCARD constexpr enable_if_t<
+        [[nodiscard]] constexpr enable_if_t<
             call_traits<impl, T, void(P0, P1, PN...)>::overload == n_props,
             typename call_traits<impl, T, void(P0, P1, PN...)>::result_type
         >
@@ -386,30 +389,33 @@ namespace ASIO_VERSIONED_NAME(require_fn) {
     <
     typename T >
 
+
     const T static_instance<T>::instance = {};
-} // namespace ASIO_VERSIONED_NAME(require_fn)
+} // namespace XIO_VERSIONED_NAME(require_fn)
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if defined(ASIO_HAS_INLINE_VARIABLES)
-    inline constexpr ASIO_VERSIONED_NAME (require_fn)::impl require{};
+    inline constexpr XIO_VERSIONED_NAME (require_fn)::impl require{};
 #else // defined(ASIO_HAS_INLINE_VARIABLES)
 
 
+
+
     namespace {
-        static constexpr const ASIO_VERSIONED_NAME (require_fn)::impl&
-                        require = ASIO_VERSIONED_NAME(require_fn)::static_instance<>::instance;
+        static constexpr const XIO_VERSIONED_NAME (require_fn)::impl&
+                        require = XIO_VERSIONED_NAME(require_fn)::static_instance<>::instance;
     } // namespace
 #endif // defined(ASIO_HAS_INLINE_VARIABLES)
 
-    typedef ASIO_VERSIONED_NAME (require_fn)::impl require_t;
+    typedef XIO_VERSIONED_NAME (require_fn)::impl require_t;
 
     template<typename T, typename... Properties>
     struct can_require :
             integral_constant<bool,
-                ASIO_VERSIONED_NAME(require_fn)::call_traits<
+                XIO_VERSIONED_NAME(require_fn)::call_traits<
                                                    require_t, T, void(Properties...)>::overload
-                                               != ASIO_VERSIONED_NAME(require_fn)::ill_formed> {
+                                               != XIO_VERSIONED_NAME(require_fn)::ill_formed> {
     };
 
 #if defined(ASIO_HAS_VARIABLE_TEMPLATES)
@@ -423,7 +429,7 @@ namespace xio {
     template<typename T, typename... Properties>
     struct is_nothrow_require :
             integral_constant<bool,
-                ASIO_VERSIONED_NAME(require_fn)::call_traits<
+                XIO_VERSIONED_NAME(require_fn)::call_traits<
                     require_t, T, void(Properties...)>::is_noexcept> {
     };
 
@@ -437,14 +443,14 @@ namespace xio {
 
     template<typename T, typename... Properties>
     struct require_result {
-        typedef typename ASIO_VERSIONED_NAME (require_fn)::call_traits<
+        typedef typename XIO_VERSIONED_NAME (require_fn)::call_traits<
             require_t, T, void(Properties...)>::result_type type;
     };
 
     template<typename T, typename... Properties>
     using require_result_t = typename require_result<T, Properties...>::type;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // defined(GENERATING_DOCUMENTATION)

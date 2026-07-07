@@ -37,7 +37,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if defined(GENERATING_DOCUMENTATION)
 
@@ -221,6 +221,7 @@ namespace xio {
     } // namespace execution
 
 #else // defined(GENERATING_DOCUMENTATION)
+
 
 
 
@@ -903,7 +904,7 @@ namespace xio {
                                                   void>::value
       >*) {
                     xio::query(*static_cast<const Ex *>(ex),
-                                *static_cast<const Prop *>(prop));
+                               *static_cast<const Prop *>(prop));
                 }
 
                 template<typename Ex, class Prop>
@@ -927,7 +928,7 @@ namespace xio {
                                 typename Prop::polymorphic_query_result_type> **>(result)
                             = &static_cast<typename Prop::polymorphic_query_result_type>(
                                 xio::query(*static_cast<const Ex *>(ex),
-                                            *static_cast<const Prop *>(prop)));
+                                           *static_cast<const Prop *>(prop)));
                 }
 
                 template<typename Ex, class Prop>
@@ -952,7 +953,7 @@ namespace xio {
                     *static_cast<typename Prop::polymorphic_query_result_type *>(result)
                             = static_cast<typename Prop::polymorphic_query_result_type>(
                                 xio::query(*static_cast<const Ex *>(ex),
-                                            *static_cast<const Prop *>(prop)));
+                                           *static_cast<const Prop *>(prop)));
                 }
 
                 template<typename Ex, class Prop>
@@ -979,7 +980,7 @@ namespace xio {
                     *static_cast<typename Prop::polymorphic_query_result_type **>(result)
                             = new typename Prop::polymorphic_query_result_type(
                                 xio::query(*static_cast<const Ex *>(ex),
-                                            *static_cast<const Prop *>(prop)));
+                                           *static_cast<const Prop *>(prop)));
                 }
 
                 template<typename Ex, class Prop>
@@ -1025,7 +1026,7 @@ namespace xio {
                                                 !is_same<Ex, void>::value && Prop::is_requirable
                                             > *) {
                     return xio::require(*static_cast<const Ex *>(ex),
-                                         *static_cast<const Prop *>(prop));
+                                        *static_cast<const Prop *>(prop));
                 }
 
                 template<typename Poly, typename Ex, class Prop>
@@ -1054,7 +1055,7 @@ namespace xio {
                                                !is_same<Ex, void>::value && Prop::is_preferable
                                            > *) {
                     return xio::prefer(*static_cast<const Ex *>(ex),
-                                        *static_cast<const Prop *>(prop));
+                                       *static_cast<const Prop *>(prop));
                 }
 
                 template<typename Poly, typename Ex, class Prop>
@@ -1779,7 +1780,7 @@ namespace xio {
 
 #endif // defined(GENERATING_DOCUMENTATION)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

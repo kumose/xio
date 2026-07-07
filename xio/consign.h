@@ -22,7 +22,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Completion token type used to specify that the completion handler should
 /// carry additional values along with it.
@@ -31,6 +31,8 @@ namespace xio {
  * an object, such as a smart pointer, alive until the completion handler is
  * called.
  */
+
+
 
 
     template<typename CompletionToken, typename... Values>
@@ -58,7 +60,7 @@ namespace xio {
  * called.
  */
     template<typename CompletionToken, typename... Values>
-    ASIO_NODISCARD inline constexpr
+    [[nodiscard]] inline constexpr
     consign_t<decay_t<CompletionToken>, decay_t<Values>...>
 
     consign(CompletionToken &&completion_token, Values &&... values) {
@@ -67,7 +69,7 @@ namespace xio {
             static_cast<Values &&>(values)...);
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

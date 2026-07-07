@@ -34,7 +34,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // Algorithm that finds a subsequence of equal values in a sequence. Returns
@@ -861,7 +861,7 @@ namespace xio {
                 DynamicBuffer_v1, ReadHandler> *this_handler) {
             return this_handler->start_ == 0
                        ? true
-                       : ASIO_VERSIONED_NAME(handler_cont_helpers)
+                       : XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -1072,7 +1072,7 @@ namespace xio {
                 DynamicBuffer_v1, ReadHandler> *this_handler) {
             return this_handler->start_ == 0
                        ? true
-                       : ASIO_VERSIONED_NAME(handler_cont_helpers)
+                       : XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -1288,7 +1288,7 @@ namespace xio {
                 DynamicBuffer_v1, RegEx, ReadHandler> *this_handler) {
             return this_handler->start_ == 0
                        ? true
-                       : ASIO_VERSIONED_NAME(handler_cont_helpers)
+                       : XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -1499,7 +1499,7 @@ namespace xio {
                 MatchCondition, ReadHandler> *this_handler) {
             return this_handler->start_ == 0
                        ? true
-                       : ASIO_VERSIONED_NAME(handler_cont_helpers)
+                       : XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -1714,7 +1714,7 @@ namespace xio {
                 DynamicBuffer_v2, ReadHandler> *this_handler) {
             return this_handler->start_ == 0
                        ? true
-                       : ASIO_VERSIONED_NAME(handler_cont_helpers)
+                       : XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -1932,7 +1932,7 @@ namespace xio {
                 DynamicBuffer_v2, ReadHandler> *this_handler) {
             return this_handler->start_ == 0
                        ? true
-                       : ASIO_VERSIONED_NAME(handler_cont_helpers)
+                       : XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -2156,7 +2156,7 @@ namespace xio {
                 DynamicBuffer_v2, RegEx, ReadHandler> *this_handler) {
             return this_handler->start_ == 0
                        ? true
-                       : ASIO_VERSIONED_NAME(handler_cont_helpers)
+                       : XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -2376,7 +2376,7 @@ namespace xio {
                 MatchCondition, ReadHandler> *this_handler) {
             return this_handler->start_ == 0
                        ? true
-                       : ASIO_VERSIONED_NAME(handler_cont_helpers)
+                       : XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -2445,7 +2445,7 @@ namespace xio {
 
 #endif // !defined(ASIO_NO_EXTENSIONS)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

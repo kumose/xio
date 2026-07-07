@@ -24,19 +24,19 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         struct win_static_mutex {
             typedef xio::detail::scoped_lock<win_static_mutex> scoped_lock;
 
             // Initialise the mutex.
-  ASIO_DECL void init();
+            ASIO_DECL void init();
 
             // Initialisation must be performed in a separate function to the "public"
             // init() function since the compiler does not support the use of structured
             // exceptions and C++ exceptions in the same function.
-  ASIO_DECL int do_init();
+            ASIO_DECL int do_init();
 
             // Lock the mutex.
             void lock() {
@@ -59,13 +59,9 @@ namespace xio {
 #endif // defined(UNDER_CE)
 
 } // namespace detail
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
-
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/win_static_mutex.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // defined(ASIO_WINDOWS)
 

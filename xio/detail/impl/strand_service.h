@@ -23,7 +23,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         inline strand_service::strand_impl::strand_impl()
@@ -62,7 +62,7 @@ namespace xio {
         void strand_service::post(strand_service::implementation_type &impl,
                                   Handler &handler) {
             bool is_continuation =
-                    ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                    XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
             // Allocate and construct an operation to wrap the handler.
             typedef completion_handler<Handler, io_context::executor_type> op;
@@ -79,7 +79,7 @@ namespace xio {
             p.v = p.p = 0;
         }
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

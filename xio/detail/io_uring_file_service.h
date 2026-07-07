@@ -31,7 +31,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // Extend the io_uring_descriptor_service to provide file support.
@@ -86,13 +86,13 @@ namespace xio {
 
             // Open the file using the specified path name.
             ASIO_DECL xio::error_code open(implementation_type &impl,
-                                            const char *path, file_base::flags open_flags,
-                                            xio::error_code &ec);
+                                           const char *path, file_base::flags open_flags,
+                                           xio::error_code &ec);
 
             // Assign a native descriptor to a file implementation.
             xio::error_code assign(implementation_type &impl,
-                                    const native_handle_type &native_descriptor,
-                                    xio::error_code &ec) {
+                                   const native_handle_type &native_descriptor,
+                                   xio::error_code &ec) {
                 return descriptor_service_.assign(impl, native_descriptor, ec);
             }
 
@@ -108,7 +108,7 @@ namespace xio {
 
             // Destroy a file implementation.
             xio::error_code close(implementation_type &impl,
-                                   xio::error_code &ec) {
+                                  xio::error_code &ec) {
                 return descriptor_service_.close(impl, ec);
             }
 
@@ -125,7 +125,7 @@ namespace xio {
 
             // Cancel all operations associated with the file.
             xio::error_code cancel(implementation_type &impl,
-                                    xio::error_code &ec) {
+                                   xio::error_code &ec) {
                 return descriptor_service_.cancel(impl, ec);
             }
 
@@ -135,15 +135,15 @@ namespace xio {
 
             // Alter the size of the file.
             ASIO_DECL xio::error_code resize(implementation_type &impl,
-                                              uint64_t n, xio::error_code &ec);
+                                             uint64_t n, xio::error_code &ec);
 
             // Synchronise the file to disk.
             ASIO_DECL xio::error_code sync_all(implementation_type &impl,
-                                                xio::error_code &ec);
+                                               xio::error_code &ec);
 
             // Synchronise the file data to disk.
             ASIO_DECL xio::error_code sync_data(implementation_type &impl,
-                                                 xio::error_code &ec);
+                                                xio::error_code &ec);
 
             // Seek to a position in the file.
   ASIO_DECL uint64_t seek(implementation_type &impl, int64_t offset,
@@ -226,14 +226,11 @@ namespace xio {
             const xio::error_code success_ec_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/io_uring_file_service.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // defined(ASIO_HAS_FILE)
 //   && defined(ASIO_HAS_IO_URING)

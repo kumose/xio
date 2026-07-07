@@ -28,7 +28,7 @@
 #endif
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 #if !defined(ASIO_HAS_THREADS)
@@ -45,7 +45,7 @@ namespace xio {
 # define ASIO_STATIC_MUTEX_INIT ASIO_STD_STATIC_MUTEX_INIT
 #endif
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_DETAIL_STATIC_MUTEX_HPP

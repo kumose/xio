@@ -25,7 +25,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Base class for configuration implementations.
     class config_service :
@@ -44,11 +44,11 @@ namespace xio {
         ASIO_DECL explicit config_service(execution_context &ctx);
 
         /// Shutdown the service.
-  ASIO_DECL void shutdown() override;
+        ASIO_DECL void shutdown() override;
 
         /// Retrieve a configuration value.
-  ASIO_DECL virtual const char *get_value(const char *section,
-                                          const char *key_name, char *value, std::size_t value_len) const;
+        ASIO_DECL virtual const char *get_value(const char *section,
+                                                const char *key_name, char *value, std::size_t value_len) const;
     };
 
     /// Provides access to the configuration values associated with an execution
@@ -98,7 +98,7 @@ namespace xio {
         }
 
         /// Add a concrete service to the specified execution context.
-  ASIO_DECL void make(execution_context &ctx) const override;
+        ASIO_DECL void make(execution_context &ctx) const override;
 
     private:
         int concurrency_hint_;
@@ -138,7 +138,7 @@ namespace xio {
         }
 
         /// Add a concrete service to the specified execution context.
-  ASIO_DECL void make(execution_context &ctx) const override;
+        ASIO_DECL void make(execution_context &ctx) const override;
 
     private:
         std::string string_;
@@ -166,20 +166,17 @@ namespace xio {
         }
 
         /// Add a concrete service to the specified execution context.
-  ASIO_DECL void make(execution_context &ctx) const override;
+        ASIO_DECL void make(execution_context &ctx) const override;
 
     private:
         std::string prefix_;
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
 #include <xio/impl/config.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/impl/config.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_CONFIG_HPP

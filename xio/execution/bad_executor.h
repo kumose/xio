@@ -20,7 +20,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace execution {
         /// Exception thrown when trying to access an empty polymorphic executor.
@@ -41,7 +41,7 @@ namespace xio {
             }
         };
     } // namespace execution
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

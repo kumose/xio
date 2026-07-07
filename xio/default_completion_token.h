@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     class deferred_t;
 
@@ -75,7 +75,7 @@ namespace xio {
 #define ASIO_DEFAULT_COMPLETION_TOKEN(e) \
   = typename ::xio::default_completion_token<e>::type()
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

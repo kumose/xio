@@ -24,7 +24,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     template<typename Stream>
     std::size_t buffered_read_stream<Stream>::fill() {
@@ -91,7 +91,7 @@ namespace xio {
         template<typename ReadHandler>
         inline bool asio_handler_is_continuation(
             buffered_fill_handler<ReadHandler> *this_handler) {
-            return ASIO_VERSIONED_NAME(handler_cont_helpers)
+            return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -248,7 +248,7 @@ namespace xio {
         inline bool asio_handler_is_continuation(
             buffered_read_some_handler<
                 MutableBufferSequence, ReadHandler> *this_handler) {
-            return ASIO_VERSIONED_NAME(handler_cont_helpers)
+            return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -360,7 +360,7 @@ namespace xio {
         return this->peek_copy(buffers);
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

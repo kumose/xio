@@ -22,7 +22,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class thread_info_base;
@@ -32,20 +32,17 @@ namespace xio {
         public:
             // Obtain a pointer to the top of the thread call stack. Returns null when
             // not running inside a thread context.
-  ASIO_DECL static thread_info_base *top_of_thread_call_stack();
+            ASIO_DECL static thread_info_base *top_of_thread_call_stack();
 
         protected:
             // Per-thread call stack to track the state of each thread in the context.
             typedef call_stack<thread_context, thread_info_base> thread_call_stack;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/thread_context.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // ASIO_DETAIL_THREAD_CONTEXT_HPP

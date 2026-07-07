@@ -29,7 +29,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Provides serialised handler execution.
     /**
@@ -228,6 +228,7 @@ namespace xio {
    */
         template<typename Handler>
         ASIO_DEPRECATED_MSG (
+
         "Use xio::bind_executor()"
         )
 #if defined(GENERATING_DOCUMENTATION)
@@ -274,7 +275,7 @@ namespace xio {
         mutable xio::detail::strand_service::implementation_type impl_;
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

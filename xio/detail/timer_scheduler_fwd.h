@@ -18,7 +18,7 @@
 #include <xio/detail/config.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
 #if defined(ASIO_WINDOWS_RUNTIME)
@@ -37,7 +37,7 @@ namespace xio {
         typedef class select_reactor timer_scheduler;
 #endif
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_DETAIL_TIMER_SCHEDULER_FWD_HPP

@@ -30,7 +30,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         // Wraps a handler to create an OVERLAPPED object for use with overlapped I/O.
@@ -149,7 +149,7 @@ namespace xio {
             win_iocp_io_context *iocp_service_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

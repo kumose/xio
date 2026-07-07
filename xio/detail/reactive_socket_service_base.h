@@ -43,7 +43,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class reactive_socket_service_base {
@@ -120,7 +120,7 @@ namespace xio {
 
             // Place the socket into the state where it will listen for new connections.
             xio::error_code listen(base_implementation_type &impl,
-                                    int backlog, xio::error_code &ec) {
+                                   int backlog, xio::error_code &ec) {
                 socket_ops::listen(impl.socket_, backlog, ec);
                 return ec;
             }
@@ -128,7 +128,7 @@ namespace xio {
             // Perform an IO control command on the socket.
             template<typename IO_Control_Command>
             xio::error_code io_control(base_implementation_type &impl,
-                                        IO_Control_Command &command, xio::error_code &ec) {
+                                       IO_Control_Command &command, xio::error_code &ec) {
                 socket_ops::ioctl(impl.socket_, impl.state_, command.name(),
                                   static_cast<ioctl_arg_type *>(command.data()), ec);
                 return ec;
@@ -141,7 +141,7 @@ namespace xio {
 
             // Sets the non-blocking mode of the socket.
             xio::error_code non_blocking(base_implementation_type &impl,
-                                          bool mode, xio::error_code &ec) {
+                                         bool mode, xio::error_code &ec) {
                 socket_ops::set_user_non_blocking(impl.socket_, impl.state_, mode, ec);
                 return ec;
             }
@@ -153,7 +153,7 @@ namespace xio {
 
             // Sets the non-blocking mode of the native socket implementation.
             xio::error_code native_non_blocking(base_implementation_type &impl,
-                                                 bool mode, xio::error_code &ec) {
+                                                bool mode, xio::error_code &ec) {
                 socket_ops::set_internal_non_blocking(impl.socket_, impl.state_, mode, ec);
                 return ec;
             }
@@ -161,7 +161,7 @@ namespace xio {
             // Wait for the socket to become ready to read, ready to write, or to have
             // pending error conditions.
             xio::error_code wait(base_implementation_type &impl,
-                                  socket_base::wait_type w, xio::error_code &ec) {
+                                 socket_base::wait_type w, xio::error_code &ec) {
                 switch (w) {
                     case socket_base::wait_read:
                         socket_ops::poll_read(impl.socket_, impl.state_, -1, ec);
@@ -186,7 +186,7 @@ namespace xio {
             void async_wait(base_implementation_type &impl,
                             socket_base::wait_type w, Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -268,7 +268,7 @@ namespace xio {
                             const ConstBufferSequence &buffers, socket_base::message_flags flags,
                             Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -306,7 +306,7 @@ namespace xio {
             void async_send(base_implementation_type &impl, const null_buffers &,
                             socket_base::message_flags, Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -370,7 +370,7 @@ namespace xio {
                                const MutableBufferSequence &buffers, socket_base::message_flags flags,
                                Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -414,7 +414,7 @@ namespace xio {
                                const null_buffers &, socket_base::message_flags flags,
                                Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -482,7 +482,7 @@ namespace xio {
                                           socket_base::message_flags &out_flags, Handler &handler,
                                           const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -524,7 +524,7 @@ namespace xio {
                                           socket_base::message_flags &out_flags, Handler &handler,
                                           const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -712,14 +712,11 @@ namespace xio {
             socket_ops::state_type extra_state_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/reactive_socket_service_base.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // !defined(ASIO_HAS_IOCP)
 //   && !defined(ASIO_WINDOWS_RUNTIME)

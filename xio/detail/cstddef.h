@@ -19,10 +19,10 @@
 #include <cstddef>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
     using std::nullptr_t;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_DETAIL_CSTDDEF_HPP

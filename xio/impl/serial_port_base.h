@@ -19,7 +19,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     inline serial_port_base::baud_rate::baud_rate(unsigned int rate)
         : value_(rate) {
@@ -47,7 +47,7 @@ namespace xio {
         return value_;
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

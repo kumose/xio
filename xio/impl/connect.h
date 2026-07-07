@@ -31,7 +31,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename Protocol, typename Iterator>
@@ -290,8 +290,8 @@ namespace xio {
                                 ec = xio::error::not_found;
                                 ASIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_connect"));
                                 xio::post(socket_.get_executor(),
-                                           detail::bind_handler(
-                                               static_cast<range_connect_op &&>(*this), ec));
+                                          detail::bind_handler(
+                                              static_cast<range_connect_op &&>(*this), ec));
                                 return;
                             }
 
@@ -337,7 +337,7 @@ namespace xio {
         inline bool asio_handler_is_continuation(
             range_connect_op<Protocol, Executor, EndpointSequence,
                 ConnectCondition, RangeConnectHandler> *this_handler) {
-            return ASIO_VERSIONED_NAME(handler_cont_helpers)
+            return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -437,8 +437,8 @@ namespace xio {
                                 ec = xio::error::not_found;
                                 ASIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_connect"));
                                 xio::post(socket_.get_executor(),
-                                           detail::bind_handler(
-                                               static_cast<iterator_connect_op &&>(*this), ec));
+                                          detail::bind_handler(
+                                              static_cast<iterator_connect_op &&>(*this), ec));
                                 return;
                             }
 
@@ -483,7 +483,7 @@ namespace xio {
         inline bool asio_handler_is_continuation(
             iterator_connect_op<Protocol, Executor, Iterator,
                 ConnectCondition, IteratorConnectHandler> *this_handler) {
-            return ASIO_VERSIONED_NAME(handler_cont_helpers)
+            return XIO_VERSIONED_NAME(handler_cont_helpers)
             ::is_continuation(
                 this_handler->handler_);
         }
@@ -584,7 +584,7 @@ namespace xio {
 
 #endif // !defined(GENERATING_DOCUMENTATION)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace ip {
         template<typename>
@@ -111,7 +111,7 @@ namespace xio {
         /// Represents a range of IPv4 addresses.
         typedef basic_address_range<address_v4> address_v4_range;
     } // namespace ip
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

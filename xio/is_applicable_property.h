@@ -19,7 +19,7 @@
 #include <xio/detail/type_traits.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         template<typename T, typename Property, typename = void>
@@ -53,7 +53,7 @@ namespace xio {
 
 #endif // defined(ASIO_HAS_VARIABLE_TEMPLATES)
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // ASIO_IS_APPLICABLE_PROPERTY_HPP

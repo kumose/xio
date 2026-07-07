@@ -21,7 +21,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace experimental {
         /// A @ref completion_token adapter used to specify that the completion handler
@@ -109,7 +109,7 @@ namespace xio {
         /// Adapt a @ref completion_token to specify that the completion handler
 /// arguments should be combined into a single argument.
         template<typename CompletionToken>
-        ASIO_NODISCARD inline
+        [[nodiscard]] inline
         constexpr as_single_t<decay_t<CompletionToken> >
 
         as_single(CompletionToken &&completion_token) {
@@ -117,7 +117,7 @@ namespace xio {
                 static_cast<CompletionToken &&>(completion_token));
         }
     } // namespace experimental
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

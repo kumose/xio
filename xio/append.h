@@ -22,7 +22,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// Completion token type used to specify that the completion handler
 /// arguments should be passed additional values after the results of the
@@ -48,7 +48,7 @@ namespace xio {
 /// arguments should be passed additional values after the results of the
 /// operation.
     template<typename CompletionToken, typename... Values>
-    ASIO_NODISCARD inline constexpr
+    [[nodiscard]] inline constexpr
     append_t<decay_t<CompletionToken>, decay_t<Values>...>
 
     append(CompletionToken &&completion_token, Values &&... values) {
@@ -57,7 +57,7 @@ namespace xio {
             static_cast<Values &&>(values)...);
     }
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

@@ -43,7 +43,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class reactive_descriptor_service :
@@ -99,8 +99,8 @@ namespace xio {
 
             // Assign a native descriptor to a descriptor implementation.
             ASIO_DECL xio::error_code assign(implementation_type &impl,
-                                              const native_handle_type &native_descriptor,
-                                              xio::error_code &ec);
+                                             const native_handle_type &native_descriptor,
+                                             xio::error_code &ec);
 
             // Determine whether the descriptor is open.
             bool is_open(const implementation_type &impl) const {
@@ -109,7 +109,7 @@ namespace xio {
 
             // Destroy a descriptor implementation.
             ASIO_DECL xio::error_code close(implementation_type &impl,
-                                             xio::error_code &ec);
+                                            xio::error_code &ec);
 
             // Get the native descriptor representation.
             native_handle_type native_handle(const implementation_type &impl) const {
@@ -128,12 +128,12 @@ namespace xio {
 
             // Cancel all operations associated with the descriptor.
             ASIO_DECL xio::error_code cancel(implementation_type &impl,
-                                              xio::error_code &ec);
+                                             xio::error_code &ec);
 
             // Perform an IO control command on the descriptor.
             template<typename IO_Control_Command>
             xio::error_code io_control(implementation_type &impl,
-                                        IO_Control_Command &command, xio::error_code &ec) {
+                                       IO_Control_Command &command, xio::error_code &ec) {
                 descriptor_ops::ioctl(impl.descriptor_, impl.state_,
                                       command.name(), static_cast<ioctl_arg_type *>(command.data()), ec);
                 ASIO_ERROR_LOCATION(ec);
@@ -147,7 +147,7 @@ namespace xio {
 
             // Sets the non-blocking mode of the descriptor.
             xio::error_code non_blocking(implementation_type &impl,
-                                          bool mode, xio::error_code &ec) {
+                                         bool mode, xio::error_code &ec) {
                 descriptor_ops::set_user_non_blocking(
                     impl.descriptor_, impl.state_, mode, ec);
                 ASIO_ERROR_LOCATION(ec);
@@ -161,7 +161,7 @@ namespace xio {
 
             // Sets the non-blocking mode of the native descriptor implementation.
             xio::error_code native_non_blocking(implementation_type &impl,
-                                                 bool mode, xio::error_code &ec) {
+                                                bool mode, xio::error_code &ec) {
                 descriptor_ops::set_internal_non_blocking(
                     impl.descriptor_, impl.state_, mode, ec);
                 return ec;
@@ -170,7 +170,7 @@ namespace xio {
             // Wait for the descriptor to become ready to read, ready to write, or to have
             // pending error conditions.
             xio::error_code wait(implementation_type &impl,
-                                  posix::descriptor_base::wait_type w, xio::error_code &ec) {
+                                 posix::descriptor_base::wait_type w, xio::error_code &ec) {
                 switch (w) {
                     case posix::descriptor_base::wait_read:
                         descriptor_ops::poll_read(impl.descriptor_, impl.state_, ec);
@@ -197,7 +197,7 @@ namespace xio {
                             posix::descriptor_base::wait_type w,
                             Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -283,7 +283,7 @@ namespace xio {
                                   const ConstBufferSequence &buffers, Handler &handler,
                                   const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -318,7 +318,7 @@ namespace xio {
             void async_write_some(implementation_type &impl,
                                   const null_buffers &, Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -387,7 +387,7 @@ namespace xio {
                                  const MutableBufferSequence &buffers,
                                  Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -422,7 +422,7 @@ namespace xio {
             void async_read_some(implementation_type &impl,
                                  const null_buffers &, Handler &handler, const IoExecutor &io_ex) {
                 bool is_continuation =
-                        ASIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
+                        XIO_VERSIONED_NAME(handler_cont_helpers)::is_continuation(handler);
 
                 associated_cancellation_slot_t<Handler> slot
                         = xio::get_associated_cancellation_slot(handler);
@@ -524,14 +524,11 @@ namespace xio {
             const xio::error_code success_ec_;
         };
     } // namespace detail
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/reactive_descriptor_service.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
 
 #endif // !defined(ASIO_WINDOWS)
 //   && !defined(ASIO_WINDOWS_RUNTIME)

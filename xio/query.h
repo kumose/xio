@@ -27,7 +27,7 @@
 #if defined(GENERATING_DOCUMENTATION)
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     /// A customisation point that queries the value of a property.
     /**
@@ -92,12 +92,12 @@ namespace xio {
         typedef automatically_determined type;
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #else // defined(GENERATING_DOCUMENTATION)
 
-namespace ASIO_VERSIONED_NAME(query_fn) {
+namespace XIO_VERSIONED_NAME(query_fn) {
     using xio::conditional_t;
     using xio::decay_t;
     using xio::declval;
@@ -165,6 +165,7 @@ namespace ASIO_VERSIONED_NAME(query_fn) {
     {
   static constexpr overload_type overload = call_member;
 
+
     };
 
     template
@@ -192,6 +193,7 @@ namespace ASIO_VERSIONED_NAME(query_fn) {
     {
   static constexpr overload_type overload = call_free;
 
+
     };
 
     struct impl {
@@ -216,7 +218,7 @@ namespace ASIO_VERSIONED_NAME(query_fn) {
         };
 
         template<typename T, typename Property>
-        ASIO_NODISCARD constexpr enable_if_t<
+        [[nodiscard]] constexpr enable_if_t<
             call_traits<impl, T, void(Property)>::overload == static_value,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -227,7 +229,7 @@ namespace ASIO_VERSIONED_NAME(query_fn) {
         }
 
         template<typename T, typename Property>
-        ASIO_NODISCARD constexpr enable_if_t<
+        [[nodiscard]] constexpr enable_if_t<
             call_traits<impl, T, void(Property)>::overload == call_member,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -238,7 +240,7 @@ namespace ASIO_VERSIONED_NAME(query_fn) {
         }
 
         template<typename T, typename Property>
-        ASIO_NODISCARD constexpr enable_if_t<
+        [[nodiscard]] constexpr enable_if_t<
             call_traits<impl, T, void(Property)>::overload == call_free,
             typename call_traits<impl, T, void(Property)>::result_type
         >
@@ -260,30 +262,33 @@ namespace ASIO_VERSIONED_NAME(query_fn) {
     <
     typename T >
 
+
     const T static_instance<T>::instance = {};
-} // namespace ASIO_VERSIONED_NAME(query_fn)
+} // namespace XIO_VERSIONED_NAME(query_fn)
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if defined(ASIO_HAS_INLINE_VARIABLES)
-    inline constexpr ASIO_VERSIONED_NAME (query_fn)::impl query{};
+    inline constexpr XIO_VERSIONED_NAME (query_fn)::impl query{};
 #else // defined(ASIO_HAS_INLINE_VARIABLES)
 
 
+
+
     namespace {
-        static constexpr const ASIO_VERSIONED_NAME (query_fn)::impl&
-                        query = ASIO_VERSIONED_NAME(query_fn)::static_instance<>::instance;
+        static constexpr const XIO_VERSIONED_NAME (query_fn)::impl&
+                        query = XIO_VERSIONED_NAME(query_fn)::static_instance<>::instance;
     } // namespace
 #endif // defined(ASIO_HAS_INLINE_VARIABLES)
 
-    typedef ASIO_VERSIONED_NAME (query_fn)::impl query_t;
+    typedef XIO_VERSIONED_NAME (query_fn)::impl query_t;
 
     template<typename T, typename Property>
     struct can_query :
             integral_constant<bool,
-                ASIO_VERSIONED_NAME(query_fn)::call_traits<
+                XIO_VERSIONED_NAME(query_fn)::call_traits<
                                                  query_t, T, void(Property)>::overload !=
-                                             ASIO_VERSIONED_NAME(query_fn)::ill_formed> {
+                                             XIO_VERSIONED_NAME(query_fn)::ill_formed> {
     };
 
 #if defined(ASIO_HAS_VARIABLE_TEMPLATES)
@@ -296,7 +301,7 @@ namespace xio {
     template<typename T, typename Property>
     struct is_nothrow_query :
             integral_constant<bool,
-                ASIO_VERSIONED_NAME(query_fn)::call_traits<
+                XIO_VERSIONED_NAME(query_fn)::call_traits<
                     query_t, T, void(Property)>::is_noexcept> {
     };
 
@@ -309,14 +314,14 @@ namespace xio {
 
     template<typename T, typename Property>
     struct query_result {
-        typedef typename ASIO_VERSIONED_NAME (query_fn)::call_traits<
+        typedef typename XIO_VERSIONED_NAME (query_fn)::call_traits<
             query_t, T, void(Property)>::result_type type;
     };
 
     template<typename T, typename Property>
     using query_result_t = typename query_result<T, Property>::type;
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #endif // defined(GENERATING_DOCUMENTATION)

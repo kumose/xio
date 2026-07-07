@@ -41,12 +41,13 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
 #if !defined(ASIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL)
 #define ASIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL
 
     // Forward declaration with defaulted arguments.
+
 
     template<typename Protocol, typename Executor = any_io_executor>
     class basic_socket_acceptor;
@@ -2631,7 +2632,7 @@ namespace xio {
 #endif
     };
 
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

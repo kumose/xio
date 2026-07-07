@@ -27,7 +27,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace traits {
         template<typename T, typename Property, typename = void>
@@ -85,7 +85,7 @@ namespace xio {
         struct static_query : static_query_default<T, Property> {
         };
     } // namespace traits
-    ASIO_INLINE_NAMESPACE_END
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

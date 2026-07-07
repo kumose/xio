@@ -35,7 +35,7 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-    ASIO_INLINE_NAMESPACE_BEGIN
+
 
     namespace detail {
         class wait_op;
@@ -326,14 +326,12 @@ xio::detail::thread thread_;
 };
 
 } // namespace detail
-ASIO_INLINE_NAMESPACE_END} // namespace xio
+} // namespace xio
 
 #include <xio/detail/pop_options.h>
 
 #include <xio/detail/impl/win_iocp_io_context.h>
-#if defined(ASIO_HEADER_ONLY)
-# include "xio/detail/impl/win_iocp_io_context.ipp"
-#endif // defined(ASIO_HEADER_ONLY)
+
 
 #endif // defined(ASIO_HAS_IOCP)
 
