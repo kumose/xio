@@ -27,7 +27,7 @@
 #include <xio/detail/handler_cont_helpers.h>
 #include <xio/detail/handler_tracking.h>
 #include <xio/detail/handler_type_requirements.h>
-#include <xio/detail/limits.h>
+#include <limits>
 #include <xio/detail/non_const_lvalue.h>
 #include <xio/detail/throw_error.h>
 

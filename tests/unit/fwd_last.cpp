@@ -11,7 +11,7 @@
 
 
 // Test that full declarations are pulled in first.
-#include "asio.hpp"
+#include <xio/xio.h>
 
 // Test that the forward declaration header doesn't conflict when included
 // after the full declarations.

@@ -20,7 +20,7 @@
 #include <cstdlib>
 #include <memory>
 #include <new>
-#include <xio/detail/cstdint.h>
+#include <cstdint>
 #include <xio/detail/throw_exception.h>
 
 namespace xio {

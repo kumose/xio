@@ -20,7 +20,7 @@
 #include <typeinfo>
 #include <xio/detail/assert.h>
 #include <xio/detail/atomic_count.h>
-#include <xio/detail/cstddef.h>
+#include <cstddef>
 #include <xio/detail/executor_function.h>
 #include <xio/detail/memory.h>
 #include <xio/detail/non_const_lvalue.h>

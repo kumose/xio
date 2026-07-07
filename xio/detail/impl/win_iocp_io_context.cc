@@ -21,9 +21,9 @@
 
 #include <xio/config.h>
 #include <xio/error.h>
-#include <xio/detail/cstdint.h>
+#include <cstdint>
 #include <xio/detail/handler_alloc_helpers.h>
-#include <xio/detail/limits.h>
+#include <limits>
 #include <xio/detail/thread.h>
 #include <xio/detail/throw_error.h>
 #include <xio/detail/win_iocp_io_context.h>

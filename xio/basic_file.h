@@ -24,7 +24,7 @@
 #include <utility>
 #include <xio/any_io_executor.h>
 #include <xio/async_result.h>
-#include <xio/detail/cstdint.h>
+#include <cstdint>
 #include <xio/detail/handler_type_requirements.h>
 #include <xio/detail/io_object_impl.h>
 #include <xio/detail/non_const_lvalue.h>

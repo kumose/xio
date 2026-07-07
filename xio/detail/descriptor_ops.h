@@ -24,7 +24,7 @@
 #include <cstddef>
 #include <xio/error.h>
 #include <xio/error_code.h>
-#include <xio/detail/cstdint.h>
+#include <cstdint>
 #include <xio/detail/socket_types.h>
 
 #include <xio/detail/push_options.h>

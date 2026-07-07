@@ -20,7 +20,7 @@
 #include <new>
 #include <utility>
 #include <xio/cancellation_signal.h>
-#include <xio/detail/cstddef.h>
+#include <cstddef>
 
 #include <xio/detail/push_options.h>
 

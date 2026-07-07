@@ -28,7 +28,7 @@
 #include <xio/detail/memory.h>
 #include <xio/detail/noncopyable.h>
 #include <xio/detail/type_traits.h>
-#include <xio/detail/utility.h>
+#include <utility>
 #include <xio/disposition.h>
 #include <xio/error.h>
 #include <xio/system_error.h>

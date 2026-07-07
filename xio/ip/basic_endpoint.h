@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 #include <functional>
-#include <xio/detail/cstdint.h>
+#include <cstdint>
 #include <xio/ip/address.h>
 #include <xio/ip/detail/endpoint.h>
 

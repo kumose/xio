@@ -25,8 +25,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace detail {
         // Type trait used to determine whether a service supports move.
         template<typename IoObjectService>
@@ -58,17 +56,18 @@ namespace xio {
     template<typename IoObjectService>
 
 
+
 #else
     template<typename IoObjectService,
         bool Movable = detail::service_has_move<IoObjectService>::value>
 #endif
-    class ASIO_DEPRECATED_MSG (
+    class ASIO_DEPRECATED_MSG(
 
-    "Deprecated without replacement"
-    )
-    basic_io_object {
-        public
-        :
+                "Deprecated without replacement"
+            )
+            basic_io_object {
+    public
+    :
         /// The type of the service that will be used to provide I/O operations.
         typedef IoObjectService service_type;
 
@@ -83,8 +82,7 @@ namespace xio {
    * @return A reference to the io_context object that the I/O object will use
    * to dispatch handlers. Ownership is not transferred to the caller.
    */
-        xio::io_context & get_io_context()
-        {
+        xio::io_context &get_io_context() {
             return service_.get_io_context();
         }
 
@@ -96,8 +94,7 @@ namespace xio {
    * @return A reference to the io_context object that the I/O object will use
    * to dispatch handlers. Ownership is not transferred to the caller.
    */
-        xio::io_context & get_io_service()
-        {
+        xio::io_context &get_io_service() {
             return service_.get_io_context();
         }
 
@@ -105,24 +102,21 @@ namespace xio {
         typedef xio::io_context::executor_type executor_type;
 
         /// Get the executor associated with the object.
-        executor_type get_executor() noexcept
-        {
+        executor_type get_executor() noexcept {
             return service_.get_io_context().get_executor();
         }
 
-        protected
-        :
+    protected
+    :
         /// Construct a basic_io_object.
         /**
    * Performs:
    * @code get_service().construct(get_implementation()); @endcode
    */
-        explicit basic_io_object (xio::io_context
-        &io_context
+        explicit basic_io_object(xio::io_context
+            &io_context
         )
-        :
-        service_(xio::use_service<IoObjectService>(io_context))
-        {
+            : service_(xio::use_service<IoObjectService>(io_context)) {
             service_.construct(implementation_);
         }
 
@@ -135,7 +129,7 @@ namespace xio {
    *
    * @note Available only for services that support movability,
    */
-        basic_io_object(basic_io_object && other);
+        basic_io_object(basic_io_object &&other);
 
         /// Move-assign a basic_io_object.
         /**
@@ -145,12 +139,12 @@ namespace xio {
    *
    * @note Available only for services that support movability,
    */
-        basic_io_object & operator=(basic_io_object && other);
+        basic_io_object &operator=(basic_io_object &&other);
 
         /// Perform a converting move-construction of a basic_io_object.
-  template <typename IoObjectService1 >
-            basic_io_object(IoObjectService1 & other_service,
-                            typename IoObjectService1::implementation_type & other_implementation);
+        template<typename IoObjectService1>
+        basic_io_object(IoObjectService1 &other_service,
+                        typename IoObjectService1::implementation_type &other_implementation);
 #endif // defined(GENERATING_DOCUMENTATION)
 
         /// Protected destructor to prevent deletion through this type.
@@ -158,39 +152,35 @@ namespace xio {
    * Performs:
    * @code get_service().destroy(get_implementation()); @endcode
    */
-        ~basic_io_object()
-        {
+        ~basic_io_object() {
             service_.destroy(implementation_);
         }
 
         /// Get the service associated with the I/O object.
-        service_type & get_service()
-        {
+        service_type &get_service() {
             return service_;
         }
 
         /// Get the service associated with the I/O object.
-        const service_type & get_service() const
-        {
+        const service_type &get_service() const {
             return service_;
         }
 
         /// Get the underlying implementation of the I/O object.
-        implementation_type & get_implementation()
-        {
+        implementation_type &get_implementation() {
             return implementation_;
         }
 
         /// Get the underlying implementation of the I/O object.
-        const implementation_type & get_implementation() const
-        {
+        const implementation_type &get_implementation() const {
             return implementation_;
         }
 
-        private
-        :
+    private
+    :
         basic_io_object(const basic_io_object &);
-        basic_io_object & operator=(const basic_io_object &);
+
+        basic_io_object &operator=(const basic_io_object &);
 
         // The service associated with the I/O object.
         service_type &service_;
@@ -201,107 +191,91 @@ namespace xio {
 
     // Specialisation for movable objects.
     template<typename IoObjectService>
-    class ASIO_DEPRECATED_MSG (
+    class ASIO_DEPRECATED_MSG(
 
-    "Deprecated without replacement"
-    )
-    basic_io_object<IoObjectService, true> {
-        public
-        :
+                "Deprecated without replacement"
+            )
+            basic_io_object<IoObjectService, true> {
+    public
+    :
         typedef IoObjectService service_type;
         typedef typename service_type::implementation_type implementation_type;
 
-        xio::io_context & get_io_context()
-        {
+        xio::io_context &get_io_context() {
             return service_->get_io_context();
         }
 
-        xio::io_context & get_io_service()
-        {
+        xio::io_context &get_io_service() {
             return service_->get_io_context();
         }
 
         typedef xio::io_context::executor_type executor_type;
 
-        executor_type get_executor() noexcept
-        {
+        executor_type get_executor() noexcept {
             return service_->get_io_context().get_executor();
         }
 
-        protected
-        :
-        explicit basic_io_object (xio::io_context
-        &io_context
+    protected
+    :
+        explicit basic_io_object(xio::io_context
+            &io_context
         )
-        :
-        service_(&xio::use_service<IoObjectService>(io_context))
-        {
+            : service_(&xio::use_service<IoObjectService>(io_context)) {
             service_->construct(implementation_);
         }
 
-        basic_io_object(basic_io_object && other)
-        :
-        service_(&other.get_service())
-        {
+        basic_io_object(basic_io_object &&other)
+            : service_(&other.get_service()) {
             service_->move_construct(implementation_, other.implementation_);
         }
 
         template
         <
-        typename IoObjectService1 >
-                basic_io_object(IoObjectService1 & other_service,
-                                typename IoObjectService1::implementation_type & other_implementation)
-        :
-        service_(&xio::use_service<IoObjectService>(
-            other_service.get_io_context()))
-        {
+            typename IoObjectService1>
+        basic_io_object(IoObjectService1 &other_service,
+                        typename IoObjectService1::implementation_type &other_implementation)
+            : service_(&xio::use_service<IoObjectService>(
+                other_service.get_io_context())) {
             service_->converting_move_construct(implementation_,
                                                 other_service, other_implementation);
         }
 
-        ~basic_io_object()
-        {
+        ~basic_io_object() {
             service_->destroy(implementation_);
         }
 
-        basic_io_object & operator=(basic_io_object && other)
-        {
+        basic_io_object &operator=(basic_io_object &&other) {
             service_->move_assign(implementation_,
                                   *other.service_, other.implementation_);
             service_ = other.service_;
             return *this;
         }
 
-        service_type & get_service()
-        {
+        service_type &get_service() {
             return *service_;
         }
 
-        const service_type & get_service() const
-        {
+        const service_type &get_service() const {
             return *service_;
         }
 
-        implementation_type & get_implementation()
-        {
+        implementation_type &get_implementation() {
             return implementation_;
         }
 
-        const implementation_type & get_implementation() const
-        {
+        const implementation_type &get_implementation() const {
             return implementation_;
         }
 
-        private
-        :
+    private
+    :
         basic_io_object(const basic_io_object &);
+
         void operator=(const basic_io_object &);
 
         IoObjectService *service_;
         implementation_type implementation_;
     };
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

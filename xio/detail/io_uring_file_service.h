@@ -21,7 +21,7 @@
   && defined(ASIO_HAS_IO_URING)
 
 #include <string>
-#include <xio/detail/cstdint.h>
+#include <cstdint>
 #include <xio/detail/descriptor_ops.h>
 #include <xio/detail/io_uring_descriptor_service.h>
 #include <xio/error.h>

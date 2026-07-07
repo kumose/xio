@@ -21,7 +21,7 @@
 
 #include <xio/detail/atomic_count.h>
 #include <xio/detail/conditionally_enabled_mutex.h>
-#include <xio/detail/limits.h>
+#include <limits>
 #include <xio/detail/object_pool.h>
 #include <xio/detail/op_queue.h>
 #include <xio/detail/reactor_op.h>

@@ -102,23 +102,23 @@ namespace xio {
                 }
 
                 void operator()() {
-                    this->invoke(xio::detail::make_index_sequence<sizeof...(Ops)>());
+                    this->invoke(std::make_index_sequence<sizeof...(Ops)>());
                 }
 
                 template<std::size_t... I>
-                void invoke(xio::detail::index_sequence<I...>) {
+                void invoke(std::index_sequence<I...>) {
                     this->invoke(std::tuple_cat(std::move(std::get < I > (args_).get())...));
                 }
 
                 template<typename... Args>
                 void invoke(std::tuple<Args...> &&args) {
                     this->invoke(std::move(args),
-                                 xio::detail::index_sequence_for<Args...>());
+                                 std::index_sequence_for<Args...>());
                 }
 
                 template<typename... Args, std::size_t... I>
                 void invoke(std::tuple<Args...> &&args,
-                            xio::detail::index_sequence<I...>) {
+                            std::index_sequence<I...>) {
                     std::move(handler_)(completion_order_, std::move(std::get < I > (args))...);
                 }
 
@@ -329,7 +329,7 @@ namespace xio {
             template<typename Condition, typename Handler,
                 typename... Ops, std::size_t... I>
             void parallel_group_launch(Condition cancellation_condition, Handler handler,
-                                       std::tuple<Ops...> &ops, xio::detail::index_sequence<I...>) {
+                                       std::tuple<Ops...> &ops, std::index_sequence<I...>) {
                 // Get the user's completion handler's cancellation slot, so that we can allow
                 // cancellation of the entire group.
                 associated_cancellation_slot_t<Handler> slot
@@ -402,12 +402,12 @@ namespace xio {
 
                 void operator()() {
                     this->invoke(
-                        xio::detail::make_index_sequence<
+                        std::make_index_sequence<
                             std::tuple_size<op_tuple_type>::value>());
                 }
 
                 template<std::size_t... I>
-                void invoke(xio::detail::index_sequence<I...>) {
+                void invoke(std::index_sequence<I...>) {
                     typedef typename parallel_op_signature_as_tuple<
                         typename ranged_parallel_group_signature<
                             completion_signature_of_t<Op>,

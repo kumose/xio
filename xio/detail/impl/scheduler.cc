@@ -19,7 +19,7 @@
 
 #include <xio/config.h>
 #include <xio/detail/event.h>
-#include <xio/detail/limits.h>
+#include <limits>
 #include <xio/detail/scheduler.h>
 #include <xio/detail/scheduler_thread_info.h>
 #include <xio/detail/signal_blocker.h>

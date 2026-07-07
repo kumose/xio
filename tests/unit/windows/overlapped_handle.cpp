@@ -13,7 +13,7 @@
 // Test that header file is self-contained.
 #include <xio/windows/overlapped_handle.h>
 
-#include "asio.hpp"
+#include <xio/xio.h>
 #include "../unit_test.hpp"
 
 ASIO_TEST_SUITE

@@ -18,7 +18,7 @@
 #include <xio/detail/config.h>
 #include <tuple>
 #include <xio/detail/type_traits.h>
-#include <xio/detail/utility.h>
+#include <utility>
 
 #include <xio/detail/push_options.h>
 
@@ -93,12 +93,12 @@ namespace xio {
 
             template<typename Handler>
             void receive(Handler &h) {
-                this->do_receive(h, xio::detail::index_sequence_for<Args...>());
+                this->do_receive(h, std::index_sequence_for<Args...>());
             }
 
         private:
             template<typename Handler, std::size_t... I>
-            void do_receive(Handler &h, xio::detail::index_sequence<I...>) {
+            void do_receive(Handler &h, std::index_sequence<I...>) {
                 static_cast<Handler &&>(h)(
                     std::get < I > (static_cast<args_type &&>(args_))...);
             }

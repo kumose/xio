@@ -20,7 +20,7 @@
 #include <xio/associator.h>
 #include <xio/async_result.h>
 #include <xio/detail/type_traits.h>
-#include <xio/detail/utility.h>
+#include <utility>
 
 #include <xio/detail/push_options.h>
 
@@ -209,7 +209,7 @@ namespace xio {
         };
 
         template<typename CompletionToken, std::size_t... I>
-        auto invoke_helper(CompletionToken &&token, detail::index_sequence<I...>)
+        auto invoke_helper(CompletionToken &&token, std::index_sequence<I...>)
             -> decltype(
                 async_initiate<CompletionToken, void(Values...)>(initiate(), token,
                                                                  std::get < I > (static_cast<std::tuple<Values...> &&>(
@@ -221,7 +221,7 @@ namespace xio {
 
         template<typename CompletionToken, std::size_t... I>
         auto const_invoke_helper(CompletionToken &&token,
-                                 detail::index_sequence<I...>)
+                                 std::index_sequence<I...>)
             -> decltype(
                 async_initiate<CompletionToken, void(Values...)>(
                     initiate(), token, std::get < I > (values_)...)) {
@@ -243,20 +243,20 @@ namespace xio {
         auto operator()(CompletionToken &&token) && -> decltype(
             this->invoke_helper(
                 static_cast<CompletionToken &&>(token),
-                detail::index_sequence_for<Values...>())) {
+                std::index_sequence_for<Values...>())) {
             return this->invoke_helper(
                 static_cast<CompletionToken &&>(token),
-                detail::index_sequence_for<Values...>());
+                std::index_sequence_for<Values...>());
         }
 
         template<ASIO_COMPLETION_TOKEN_FOR(void (Values...)) CompletionToken>
         auto operator()(CompletionToken &&token) const & -> decltype(
             this->const_invoke_helper(
                 static_cast<CompletionToken &&>(token),
-                detail::index_sequence_for<Values...>())) {
+                std::index_sequence_for<Values...>())) {
             return this->const_invoke_helper(
                 static_cast<CompletionToken &&>(token),
-                detail::index_sequence_for<Values...>());
+                std::index_sequence_for<Values...>());
         }
     };
 
@@ -276,7 +276,7 @@ namespace xio {
         init_args_t init_args_;
 
         template<typename CompletionToken, std::size_t... I>
-        auto invoke_helper(CompletionToken &&token, detail::index_sequence<I...>)
+        auto invoke_helper(CompletionToken &&token, std::index_sequence<I...>)
             -> decltype(
                 async_initiate<CompletionToken, Signature>(
                     static_cast<initiation_t &&>(initiation_), token,
@@ -288,7 +288,7 @@ namespace xio {
 
         template<typename CompletionToken, std::size_t... I>
         auto const_invoke_helper(CompletionToken &&token,
-                                 detail::index_sequence<I...>) const & -> decltype(
+                                 std::index_sequence<I...>) const & -> decltype(
             async_initiate<CompletionToken, Signature>(
                 conditional_t < true, initiation_t, CompletionToken > (initiation_),
                 token, std::get < I > (init_args_)...)) {
@@ -311,20 +311,20 @@ namespace xio {
         auto operator()(CompletionToken &&token) && -> decltype(
             this->invoke_helper(
                 static_cast<CompletionToken &&>(token),
-                detail::index_sequence_for<InitArgs...>())) {
+                std::index_sequence_for<InitArgs...>())) {
             return this->invoke_helper(
                 static_cast<CompletionToken &&>(token),
-                detail::index_sequence_for<InitArgs...>());
+                std::index_sequence_for<InitArgs...>());
         }
 
         template<ASIO_COMPLETION_TOKEN_FOR(Signature) CompletionToken>
         auto operator()(CompletionToken &&token) const & -> decltype(
             this->const_invoke_helper(
                 static_cast<CompletionToken &&>(token),
-                detail::index_sequence_for<InitArgs...>())) {
+                std::index_sequence_for<InitArgs...>())) {
             return this->const_invoke_helper(
                 static_cast<CompletionToken &&>(token),
-                detail::index_sequence_for<InitArgs...>());
+                std::index_sequence_for<InitArgs...>());
         }
     };
 
@@ -347,7 +347,7 @@ namespace xio {
         I >
 
 
-        auto invoke_helper(CompletionToken &&token, detail::index_sequence<I...>)
+        auto invoke_helper(CompletionToken &&token, std::index_sequence<I...>)
             -> decltype(
                 async_initiate<CompletionToken, Signatures...>(
                     static_cast<initiation_t &&>(initiation_), token,
@@ -366,7 +366,7 @@ namespace xio {
 
 
         auto const_invoke_helper(CompletionToken &&token,
-                                 detail::index_sequence<I...>) const & -> decltype(
+                                 std::index_sequence<I...>) const & -> decltype(
             async_initiate<CompletionToken, Signatures...>(
                 initiation_t(initiation_), token, std::get<I>(init_args_)...))
         {
@@ -412,11 +412,11 @@ namespace xio {
         decltype(
             this->invoke_helper(
                 static_cast<CompletionToken &&>(token),
-                detail::index_sequence_for<InitArgs...>()))
+                std::index_sequence_for<InitArgs...>()))
         {
     return this->invoke_helper(
                 static_cast<CompletionToken &&>(token),
-                detail::index_sequence_for<InitArgs...>());
+                std::index_sequence_for<InitArgs...>());
 
 
         }
@@ -430,11 +430,11 @@ namespace xio {
         auto operator()(CompletionToken &&token) const & -> decltype(
             this->const_invoke_helper(
                 static_cast<CompletionToken &&>(token),
-                detail::index_sequence_for<InitArgs...>()))
+                std::index_sequence_for<InitArgs...>()))
         {
             return this->const_invoke_helper(
                 static_cast<CompletionToken &&>(token),
-                detail::index_sequence_for<InitArgs...>());
+                std::index_sequence_for<InitArgs...>());
         }
     };
 

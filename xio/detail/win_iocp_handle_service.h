@@ -24,7 +24,7 @@
 #include <xio/error.h>
 #include <xio/execution_context.h>
 #include <xio/detail/buffer_sequence_adapter.h>
-#include <xio/detail/cstdint.h>
+#include <cstdint>
 #include <xio/detail/handler_alloc_helpers.h>
 #include <xio/detail/memory.h>
 #include <xio/detail/mutex.h>

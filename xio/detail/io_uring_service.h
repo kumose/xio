@@ -27,7 +27,7 @@
 #include <xio/detail/buffer_sequence_adapter.h>
 #include <xio/detail/conditionally_enabled_mutex.h>
 #include <xio/detail/io_uring_operation.h>
-#include <xio/detail/limits.h>
+#include <limits>
 #include <xio/detail/object_pool.h>
 #include <xio/detail/op_queue.h>
 #include <xio/detail/reactor.h>

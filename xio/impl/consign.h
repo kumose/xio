@@ -21,7 +21,7 @@
 #include <xio/detail/handler_cont_helpers.h>
 #include <xio/detail/initiation_base.h>
 #include <xio/detail/type_traits.h>
-#include <xio/detail/utility.h>
+#include <utility>
 
 #include <xio/detail/push_options.h>
 

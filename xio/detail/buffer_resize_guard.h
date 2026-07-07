@@ -16,7 +16,7 @@
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include <xio/detail/config.h>
-#include <xio/detail/limits.h>
+#include <limits>
 
 #include <xio/detail/push_options.h>
 

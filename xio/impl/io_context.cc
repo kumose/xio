@@ -19,7 +19,7 @@
 #include <xio/config.h>
 #include <xio/io_context.h>
 #include <xio/detail/concurrency_hint.h>
-#include <xio/detail/limits.h>
+#include <limits>
 #include <xio/detail/service_registry.h>
 #include <xio/detail/throw_error.h>
 

@@ -19,7 +19,7 @@
 #include <cstddef>
 #include <xio/async_result.h>
 #include <xio/completion_condition.h>
-#include <xio/detail/cstdint.h>
+#include <cstdint>
 #include <xio/error.h>
 
 #if !defined(ASIO_NO_EXTENSIONS)

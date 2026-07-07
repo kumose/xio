@@ -84,7 +84,7 @@ void redirect_disposition_test()
   ASIO_CHECK(!ec);
   ASIO_CHECK(count == 2);
 
-#if defined(ASIO_HAS_STD_FUTURE_CLASS)
+
   ec = xio::error::would_block;
   std::future<void> f = timer1.async_wait(
       xio::redirect_disposition(
@@ -108,7 +108,7 @@ void redirect_disposition_test()
   ASIO_CHECK(!ec);
   ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
       == std::future_status::ready);
-#endif // defined(ASIO_HAS_STD_FUTURE_CLASS)
+
 }
 
 void partial_redirect_disposition_test()
@@ -177,7 +177,6 @@ void partial_redirect_disposition_test()
   ASIO_CHECK(!ec);
   ASIO_CHECK(count == 3);
 
-#if defined(ASIO_HAS_STD_FUTURE_CLASS)
   ec = xio::error::would_block;
   std::future<void> f = timer1.async_wait(xio::redirect_disposition(ec))(
       xio::bind_executor(io2.get_executor(), xio::use_future));
@@ -199,7 +198,6 @@ void partial_redirect_disposition_test()
   ASIO_CHECK(!ec);
   ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
       == std::future_status::ready);
-#endif // defined(ASIO_HAS_STD_FUTURE_CLASS)
 }
 
 void redirect_disposition_to_exception_ptr_test()
@@ -274,7 +272,6 @@ void redirect_disposition_to_exception_ptr_test()
   }
 #endif // !defined(ASIO_NO_EXCEPTIONS)
 
-#if defined(ASIO_HAS_STD_FUTURE_CLASS)
   ex = nullptr;
   std::future<void> f = timer1.async_wait(
       xio::redirect_disposition(
@@ -299,7 +296,6 @@ void redirect_disposition_to_exception_ptr_test()
   ASIO_CHECK(ex != nullptr);
   ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
       == std::future_status::ready);
-#endif // defined(ASIO_HAS_STD_FUTURE_CLASS)
 }
 
 void partial_redirect_disposition_to_exception_ptr_test()
@@ -404,7 +400,6 @@ void partial_redirect_disposition_to_exception_ptr_test()
   }
 #endif // !defined(ASIO_NO_EXCEPTIONS)
 
-#if defined(ASIO_HAS_STD_FUTURE_CLASS)
   ex = nullptr;
   std::future<void> f = timer1.async_wait(xio::redirect_disposition(ex))(
       xio::bind_executor(io2.get_executor(), xio::use_future));
@@ -427,7 +422,7 @@ void partial_redirect_disposition_to_exception_ptr_test()
   ASIO_CHECK(ex != nullptr);
   ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
       == std::future_status::ready);
-#endif // defined(ASIO_HAS_STD_FUTURE_CLASS)
+
 }
 
 ASIO_TEST_SUITE

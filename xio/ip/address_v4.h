@@ -18,8 +18,8 @@
 #include <xio/detail/config.h>
 #include <functional>
 #include <string>
-#include <xio/detail/array.h>
-#include <xio/detail/cstdint.h>
+#include <array>
+#include <cstdint>
 #include <xio/detail/socket_types.h>
 #include <xio/detail/string_view.h>
 #include <xio/detail/winsock_init.h>
@@ -57,7 +57,7 @@ namespace xio {
 #if defined(GENERATING_DOCUMENTATION)
             typedef array<unsigned char, 4> bytes_type;
 #else
-            typedef xio::detail::array<unsigned char, 4> bytes_type;
+            typedef std::array<unsigned char, 4> bytes_type;
 #endif
 
             /// Default constructor.

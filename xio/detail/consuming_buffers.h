@@ -19,7 +19,7 @@
 #include <cstddef>
 #include <xio/buffer.h>
 #include <xio/detail/buffer_sequence_adapter.h>
-#include <xio/detail/limits.h>
+#include <limits>
 #include <xio/registered_buffer.h>
 
 #include <xio/detail/push_options.h>
@@ -32,11 +32,6 @@ namespace xio {
         template<typename Buffers>
         struct prepared_buffers_max {
             enum { value = buffer_sequence_adapter_base::max_buffers };
-        };
-
-        template<typename Elem, std::size_t N>
-        struct prepared_buffers_max<boost::array<Elem, N> > {
-            enum { value = N };
         };
 
         template<typename Elem, std::size_t N>
@@ -232,54 +227,6 @@ namespace xio {
             explicit consuming_buffers(const const_registered_buffer &buffer)
                 : consuming_single_buffer<const_registered_buffer>(buffer) {
             }
-        };
-
-        template<typename Buffer, typename Elem>
-        class consuming_buffers<Buffer, boost::array<Elem, 2>,
-                    typename boost::array<Elem, 2>::const_iterator> {
-        public:
-            // Construct to represent the entire list of buffers.
-            explicit consuming_buffers(const boost::array<Elem, 2> &buffers)
-                : buffers_(buffers),
-                  total_consumed_(0) {
-            }
-
-            // Determine if we are at the end of the buffers.
-            bool empty() const {
-                return total_consumed_ >=
-                       Buffer(buffers_[0]).size() + Buffer(buffers_[1]).size();
-            }
-
-            // Get the buffer for a single transfer, with a size.
-            boost::array<Buffer, 2> prepare(std::size_t max_size) {
-                boost::array<Buffer, 2> result = {
-                    {
-                        Buffer(buffers_[0]), Buffer(buffers_[1])
-                    }
-                };
-                std::size_t buffer0_size = result[0].size();
-                result[0] = xio::buffer(result[0] + total_consumed_, max_size);
-                result[1] = xio::buffer(
-                    result[1] + (total_consumed_ < buffer0_size
-                                     ? 0
-                                     : total_consumed_ - buffer0_size),
-                    max_size - result[0].size());
-                return result;
-            }
-
-            // Consume the specified number of bytes from the buffers.
-            void consume(std::size_t size) {
-                total_consumed_ += size;
-            }
-
-            // Get the total number of bytes consumed from the buffers.
-            std::size_t total_consumed() const {
-                return total_consumed_;
-            }
-
-        private:
-            boost::array<Elem, 2> buffers_;
-            std::size_t total_consumed_;
         };
 
         template<typename Buffer, typename Elem>

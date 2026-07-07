@@ -17,7 +17,7 @@
 
 #include <xio/associator.h>
 #include <xio/buffer.h>
-#include <xio/detail/array_fwd.h>
+#include <array>
 #include <xio/detail/base_from_cancellation_state.h>
 #include <xio/detail/base_from_completion_cond.h>
 #include <xio/detail/bind_handler.h>

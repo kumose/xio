@@ -14,7 +14,7 @@
 #include <xio/fwd.h>
 
 // Test that forward declarations don't conflict with full declarations.
-#include "asio.hpp"
+#include <xio/xio.h>
 
 #include "unit_test.hpp"
 

@@ -55,7 +55,7 @@ public:
   }
 
   template <typename Iterator>
-  bool check_buffers(xio::uint64_t offset,
+  bool check_buffers(uint64_t offset,
       Iterator begin, Iterator end, size_t length)
   {
     if (offset + length > max_length)
@@ -78,7 +78,7 @@ public:
   }
 
   template <typename Const_Buffers>
-  bool check_buffers(xio::uint64_t offset,
+  bool check_buffers(uint64_t offset,
       const Const_Buffers& buffers, size_t length)
   {
     return check_buffers(offset, xio::buffer_sequence_begin(buffers),
@@ -86,7 +86,7 @@ public:
   }
 
   template <typename Const_Buffers>
-  size_t write_some_at(xio::uint64_t offset,
+  size_t write_some_at(uint64_t offset,
       const Const_Buffers& buffers)
   {
     return xio::buffer_copy(
@@ -95,7 +95,7 @@ public:
   }
 
   template <typename Const_Buffers>
-  size_t write_some_at(xio::uint64_t offset,
+  size_t write_some_at(uint64_t offset,
       const Const_Buffers& buffers, xio::error_code& ec)
   {
     ec = xio::error_code();
@@ -103,7 +103,7 @@ public:
   }
 
   template <typename Const_Buffers, typename Handler>
-  void async_write_some_at(xio::uint64_t offset,
+  void async_write_some_at(uint64_t offset,
       const Const_Buffers& buffers, Handler&& handler)
   {
     size_t bytes_transferred = write_some_at(offset, buffers);

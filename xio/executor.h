@@ -21,7 +21,7 @@
 
 #include <new>
 #include <typeinfo>
-#include <xio/detail/cstddef.h>
+#include <cstddef>
 #include <xio/detail/executor_function.h>
 #include <xio/detail/memory.h>
 #include <xio/detail/throw_exception.h>

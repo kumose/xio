@@ -21,7 +21,7 @@
 
 #include <xio/detail/bind_handler.h>
 #include <xio/detail/buffer_sequence_adapter.h>
-#include <xio/detail/cstdint.h>
+#include <cstdint>
 #include <xio/detail/descriptor_ops.h>
 #include <xio/detail/fenced_block.h>
 #include <xio/detail/handler_work.h>

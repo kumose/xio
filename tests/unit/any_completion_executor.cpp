@@ -101,7 +101,7 @@ void increment(int* count)
 void any_completion_executor_construction_test()
 {
   thread_pool pool(1);
-  xio::nullptr_t null_ptr = xio::nullptr_t();
+  std::nullptr_t null_ptr = std::nullptr_t();
 
   xio::any_completion_executor ex1;
 
@@ -190,7 +190,7 @@ void any_completion_executor_construction_test()
 void any_completion_executor_nothrow_construction_test()
 {
   thread_pool pool(1);
-  xio::nullptr_t null_ptr = xio::nullptr_t();
+  std::nullptr_t null_ptr = std::nullptr_t();
 
   xio::any_completion_executor ex1;
 
@@ -286,7 +286,7 @@ void any_completion_executor_nothrow_construction_test()
 void any_completion_executor_assignment_test()
 {
   thread_pool pool(1);
-  xio::nullptr_t null_ptr = xio::nullptr_t();
+  std::nullptr_t null_ptr = std::nullptr_t();
 
   xio::any_completion_executor ex1;
 

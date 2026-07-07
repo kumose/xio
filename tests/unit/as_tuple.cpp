@@ -9,7 +9,6 @@
 //
 
 
-
 // Test that header file is self-contained.
 #include <xio/as_tuple.h>
 
@@ -21,168 +20,158 @@
 #include <xio/use_future.h>
 #include "unit_test.hpp"
 
-void as_tuple_test()
-{
-  xio::io_context io1;
-  xio::io_context io2;
-  xio::system_timer timer1(io1);
-  int count = 0;
+void as_tuple_test() {
+    xio::io_context io1;
+    xio::io_context io2;
+    xio::system_timer timer1(io1);
+    int count = 0;
 
-  timer1.expires_after(xio::chrono::seconds(0));
-  timer1.async_wait(
-      xio::as_tuple(
-        xio::bind_executor(io2.get_executor(),
-          [&count](std::tuple<xio::error_code>)
-          {
+    timer1.expires_after(xio::chrono::seconds(0));
+    timer1.async_wait(
+        xio::as_tuple(
+            xio::bind_executor(io2.get_executor(),
+                               [&count](std::tuple<xio::error_code>) {
+                                   ++count;
+                               })));
+
+    ASIO_CHECK(count == 0);
+
+    io1.run();
+
+    ASIO_CHECK(count == 0);
+
+    io2.run();
+
+    ASIO_CHECK(count == 1);
+
+    timer1.async_wait(
+        xio::as_tuple(
+            xio::bind_executor(io2.get_executor(),
+                               xio::deferred)))(
+        [&count](std::tuple<xio::error_code>) {
             ++count;
-          })));
+        });
 
-  ASIO_CHECK(count == 0);
+    ASIO_CHECK(count == 1);
 
-  io1.run();
+    io1.restart();
+    io1.run();
 
-  ASIO_CHECK(count == 0);
+    ASIO_CHECK(count == 1);
 
-  io2.run();
+    io2.restart();
+    io2.run();
 
-  ASIO_CHECK(count == 1);
+    ASIO_CHECK(count == 2);
 
-  timer1.async_wait(
-      xio::as_tuple(
-        xio::bind_executor(io2.get_executor(),
-          xio::deferred)))(
-            [&count](std::tuple<xio::error_code>)
-            {
-              ++count;
-            });
+    std::future<std::tuple<xio::error_code> > f = timer1.async_wait(
+        xio::as_tuple(
+            xio::bind_executor(io2.get_executor(),
+                               xio::use_future)));
 
-  ASIO_CHECK(count == 1);
+    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+        == std::future_status::timeout);
 
-  io1.restart();
-  io1.run();
+    io1.restart();
+    io1.run();
 
-  ASIO_CHECK(count == 1);
+    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+        == std::future_status::timeout);
 
-  io2.restart();
-  io2.run();
+    io2.restart();
+    io2.run();
 
-  ASIO_CHECK(count == 2);
-
-# if defined(ASIO_HAS_STD_FUTURE_CLASS)
-  std::future<std::tuple<xio::error_code> > f = timer1.async_wait(
-      xio::as_tuple(
-        xio::bind_executor(io2.get_executor(),
-          xio::use_future)));
-
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
-      == std::future_status::timeout);
-
-  io1.restart();
-  io1.run();
-
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
-      == std::future_status::timeout);
-
-  io2.restart();
-  io2.run();
-
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
-      == std::future_status::ready);
-# endif // defined(ASIO_HAS_STD_FUTURE_CLASS)
+    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+        == std::future_status::ready);
 }
 
-void as_tuple_constness_test()
-{
-# if defined(ASIO_HAS_STD_FUTURE_CLASS)
-  xio::io_context io1;
-  xio::system_timer timer1(io1);
+void as_tuple_constness_test() {
+    xio::io_context io1;
+    xio::system_timer timer1(io1);
 
-  auto tok1 = xio::as_tuple(xio::use_future);
-  (void)timer1.async_wait(tok1);
-  (void)timer1.async_wait(std::move(tok1));
+    auto tok1 = xio::as_tuple(xio::use_future);
+    (void) timer1.async_wait(tok1);
+    (void) timer1.async_wait(std::move(tok1));
 
-  const auto tok2 = xio::as_tuple(xio::use_future);
-  (void)timer1.async_wait(tok2);
-  (void)timer1.async_wait(std::move(tok2));
+    const auto tok2 = xio::as_tuple(xio::use_future);
+    (void) timer1.async_wait(tok2);
+    (void) timer1.async_wait(std::move(tok2));
 
-  constexpr auto tok3 = xio::as_tuple(xio::use_future);
-  (void)timer1.async_wait(tok3);
-  (void)timer1.async_wait(std::move(tok3));
-# endif // defined(ASIO_HAS_STD_FUTURE_CLASS)
+    constexpr auto tok3 = xio::as_tuple(xio::use_future);
+    (void) timer1.async_wait(tok3);
+    (void) timer1.async_wait(std::move(tok3));
+
 }
 
-void partial_as_tuple_test()
-{
-  xio::io_context io1;
-  xio::io_context io2;
-  xio::system_timer timer1(io1);
-  int count = 0;
+void partial_as_tuple_test() {
+    xio::io_context io1;
+    xio::io_context io2;
+    xio::system_timer timer1(io1);
+    int count = 0;
 
-  timer1.expires_after(xio::chrono::seconds(0));
-  timer1.async_wait(xio::as_tuple)(
-      xio::bind_executor(io2.get_executor(),
-        [&count](std::tuple<xio::error_code>)
-        {
-          ++count;
-        }));
-
-  ASIO_CHECK(count == 0);
-
-  io1.run();
-
-  ASIO_CHECK(count == 0);
-
-  io2.run();
-
-  ASIO_CHECK(count == 1);
-
-  timer1.async_wait(xio::as_tuple)(
-      xio::bind_executor(io2.get_executor(),
-        xio::deferred))(
-          [&count](std::tuple<xio::error_code>)
-          {
-            ++count;
-          });
-
-  ASIO_CHECK(count == 1);
-
-  io1.restart();
-  io1.run();
-
-  ASIO_CHECK(count == 1);
-
-  io2.restart();
-  io2.run();
-
-  ASIO_CHECK(count == 2);
-
-# if defined(ASIO_HAS_STD_FUTURE_CLASS)
-  std::future<std::tuple<xio::error_code> > f
-    = timer1.async_wait(xio::as_tuple)(
+    timer1.expires_after(xio::chrono::seconds(0));
+    timer1.async_wait(xio::as_tuple)(
         xio::bind_executor(io2.get_executor(),
-          xio::use_future));
+                           [&count](std::tuple<xio::error_code>) {
+                               ++count;
+                           }));
 
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
-      == std::future_status::timeout);
+    ASIO_CHECK(count == 0);
 
-  io1.restart();
-  io1.run();
+    io1.run();
 
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
-      == std::future_status::timeout);
+    ASIO_CHECK(count == 0);
 
-  io2.restart();
-  io2.run();
+    io2.run();
 
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
-      == std::future_status::ready);
-# endif // defined(ASIO_HAS_STD_FUTURE_CLASS)
+    ASIO_CHECK(count == 1);
+
+    timer1.async_wait(xio::as_tuple)(
+        xio::bind_executor(io2.get_executor(),
+                           xio::deferred))(
+        [&count](std::tuple<xio::error_code>) {
+            ++count;
+        });
+
+    ASIO_CHECK(count == 1);
+
+    io1.restart();
+    io1.run();
+
+    ASIO_CHECK(count == 1);
+
+    io2.restart();
+    io2.run();
+
+    ASIO_CHECK(count == 2);
+
+
+    std::future<std::tuple<xio::error_code> > f
+            = timer1.async_wait(xio::as_tuple)(
+                xio::bind_executor(io2.get_executor(),
+                                   xio::use_future));
+
+    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+        == std::future_status::timeout);
+
+    io1.restart();
+    io1.run();
+
+    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+        == std::future_status::timeout);
+
+    io2.restart();
+    io2.run();
+
+    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+        == std::future_status::ready);
+
 }
 
 ASIO_TEST_SUITE
 (
-  "as_tuple",
-  ASIO_TEST_CASE(as_tuple_test)
-  ASIO_COMPILE_TEST_CASE(as_tuple_constness_test)
-  ASIO_TEST_CASE(partial_as_tuple_test)
+    "as_tuple",
+    ASIO_TEST_CASE(as_tuple_test)
+    ASIO_COMPILE_TEST_CASE(as_tuple_constness_test)
+    ASIO_TEST_CASE(partial_as_tuple_test)
 )

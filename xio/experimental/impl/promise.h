@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 #include <xio/cancellation_signal.h>
-#include <xio/detail/utility.h>
+#include <utility>
 #include <xio/error.h>
 #include <xio/system_error.h>
 #include <tuple>
@@ -62,7 +62,7 @@ namespace xio {
                 Executor executor;
 
                 template<typename Func, std::size_t... Idx>
-                void apply_impl(Func f, xio::detail::index_sequence<Idx...>) {
+                void apply_impl(Func f, std::index_sequence<Idx...>) {
                     auto &result_type = *reinterpret_cast<promise_impl::result_type *>(&result);
                     f(std::get < Idx > (std::move(result_type))...);
                 }
@@ -76,7 +76,7 @@ namespace xio {
                 template<typename Func>
                 void apply(Func f) {
                     apply_impl(std::forward<Func>(f),
-                               xio::detail::make_index_sequence < sizeof...(Ts) >
+                               std::make_index_sequence < sizeof...(Ts) >
                     {
                     }
                     )
@@ -139,14 +139,14 @@ namespace xio {
                 }
 
                 template<std::size_t... Idx>
-                void complete_with_result_impl(xio::detail::index_sequence<Idx...>) {
+                void complete_with_result_impl(std::index_sequence<Idx...>) {
                     auto &result_type = *reinterpret_cast<promise_impl::result_type *>(&result);
                     this->complete(std::get < Idx > (std::move(result_type))...);
                 }
 
                 void complete_with_result() {
                     complete_with_result_impl(
-                        xio::detail::make_index_sequence < sizeof...(Ts) >
+                        std::make_index_sequence < sizeof...(Ts) >
                     {
                     }
                     )

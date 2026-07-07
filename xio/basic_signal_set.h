@@ -32,8 +32,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
 #if !defined(ASIO_BASIC_SIGNAL_SET_FWD_DECL)
 #define ASIO_BASIC_SIGNAL_SET_FWD_DECL
 
@@ -632,8 +630,6 @@ namespace xio {
 
         detail::io_object_impl<detail::signal_set_service, Executor> impl_;
     };
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

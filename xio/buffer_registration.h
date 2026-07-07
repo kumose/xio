@@ -35,8 +35,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
 #if !defined(ASIO_BUFFER_REGISTRATION_FWD_DECL)
 #define ASIO_BUFFER_REGISTRATION_FWD_DECL
 
@@ -213,9 +211,9 @@ namespace xio {
 #if defined(ASIO_HAS_IO_URING)
             service_ = &use_service<detail::io_uring_service>(ctx);
             std::vector<iovec,
-                ASIO_REBIND_ALLOC(allocator_type, iovec)> iovecs(n,
-                                                                 ASIO_REBIND_ALLOC(allocator_type, iovec)(
-                                                                     buffers_.get_allocator()));
+                ASIO_REBIND_ALLOC(allocator_type, iovec) > iovecs(n,
+                                                                  ASIO_REBIND_ALLOC(allocator_type, iovec)(
+                                                                      buffers_.get_allocator()));
 #endif // defined(ASIO_HAS_IO_URING)
 
             Iterator iter = begin;
@@ -241,7 +239,7 @@ namespace xio {
         MutableBufferSequence buffer_sequence_;
         std::vector<mutable_registered_buffer,
             ASIO_REBIND_ALLOC(allocator_type,
-                              mutable_registered_buffer)> buffers_;
+                              mutable_registered_buffer) > buffers_;
 #if defined(ASIO_HAS_IO_URING)
         detail::io_uring_service *service_;
 #endif // defined(ASIO_HAS_IO_URING)
@@ -301,8 +299,6 @@ namespace xio {
         return buffer_registration<MutableBufferSequence, Allocator>(
             ctx, buffer_sequence, alloc);
     }
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

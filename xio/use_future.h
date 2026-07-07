@@ -16,10 +16,7 @@
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include <xio/detail/config.h>
-#include <xio/detail/future.h>
-
-#if defined(ASIO_HAS_STD_FUTURE_CLASS) \
-  || defined(GENERATING_DOCUMENTATION)
+#include <future>
 
 #include <memory>
 #include <xio/detail/type_traits.h>
@@ -137,8 +134,5 @@ inline constexpr use_future_t<> use_future;
 #include <xio/detail/pop_options.h>
 
 #include <xio/impl/use_future.h>
-
-#endif // defined(ASIO_HAS_STD_FUTURE_CLASS)
-//   || defined(GENERATING_DOCUMENTATION)
 
 #endif // ASIO_USE_FUTURE_HPP

@@ -20,7 +20,7 @@
 #if defined(ASIO_HAS_IOCP) && defined(ASIO_HAS_FILE)
 
 #include <string>
-#include <xio/detail/cstdint.h>
+#include <cstdint>
 #include <xio/detail/win_iocp_handle_service.h>
 #include <xio/error.h>
 #include <xio/execution_context.h>

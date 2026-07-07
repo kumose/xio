@@ -16,10 +16,7 @@
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include <xio/detail/config.h>
-#include <xio/detail/future.h>
-
-#if defined(ASIO_HAS_STD_FUTURE_CLASS) \
-  || defined(GENERATING_DOCUMENTATION)
+#include <future>
 
 #include <xio/async_result.h>
 #include <xio/detail/type_traits.h>
@@ -66,8 +63,5 @@ private:
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
-
-#endif // defined(ASIO_HAS_STD_FUTURE_CLASS)
-//   || defined(GENERATING_DOCUMENTATION)
 
 #endif // ASIO_PACKAGED_TASK_HPP

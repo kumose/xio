@@ -20,7 +20,7 @@
 #if defined(ASIO_HAS_IO_URING)
 
 #include <liburing.h>
-#include <xio/detail/cstdint.h>
+#include <cstdint>
 #include <xio/detail/operation.h>
 
 #include <xio/detail/push_options.h>

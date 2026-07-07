@@ -28,7 +28,7 @@
 #else // __GLIBC__ == 2 && __GLIBC_MINOR__ < 8 && !defined(__UCLIBC__)
 # include <sys/eventfd.h>
 #endif // __GLIBC__ == 2 && __GLIBC_MINOR__ < 8 && !defined(__UCLIBC__)
-#include <xio/detail/cstdint.h>
+#include <cstdint>
 #include <xio/detail/eventfd_select_interrupter.h>
 #include <xio/detail/throw_error.h>
 #include <xio/error.h>

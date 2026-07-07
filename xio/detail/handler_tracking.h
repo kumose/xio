@@ -29,7 +29,7 @@ namespace xio {
 # include ASIO_CUSTOM_HANDLER_TRACKING
 #elif defined(ASIO_ENABLE_HANDLER_TRACKING)
 #include <xio/error_code.h>
-#include <xio/detail/cstdint.h>
+#include <cstdint>
 #include <xio/detail/static_mutex.h>
 #include <xio/detail/tss_ptr.h>
 #endif // defined(ASIO_ENABLE_HANDLER_TRACKING)

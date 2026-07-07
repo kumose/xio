@@ -21,7 +21,7 @@
 #include <xio/detail/handler_cont_helpers.h>
 #include <xio/detail/initiation_base.h>
 #include <xio/detail/type_traits.h>
-#include <xio/detail/utility.h>
+#include <utility>
 
 #include <xio/detail/push_options.h>
 
@@ -44,12 +44,12 @@ namespace xio {
             template<typename... Args>
             void operator()(Args &&... args) {
                 this->invoke(
-                    index_sequence_for<Values...>{},
+                    std::index_sequence_for<Values...>{},
                     static_cast<Args &&>(args)...);
             }
 
             template<std::size_t... I, typename... Args>
-            void invoke(index_sequence<I...>, Args &&... args) {
+            void invoke(std::index_sequence<I...>, Args &&... args) {
                 static_cast<Handler &&>(handler_)(
                     static_cast<Args &&>(args)...,
                     static_cast<Values &&>(std::get<I>(values_))...);

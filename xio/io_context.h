@@ -22,7 +22,7 @@
 #include <xio/async_result.h>
 #include <xio/detail/chrono.h>
 #include <xio/detail/concurrency_hint.h>
-#include <xio/detail/cstdint.h>
+#include <cstdint>
 #include <xio/detail/wrapped_handler.h>
 #include <xio/error_code.h>
 #include <xio/execution.h>

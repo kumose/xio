@@ -11,7 +11,7 @@
 #ifndef HANDLER_ALLOCATOR_HPP
 #define HANDLER_ALLOCATOR_HPP
 
-#include "asio.hpp"
+#include <xio/xio.h>
 
 // Class to manage the memory to be used for handler-based custom allocation.
 // It contains a single block of memory which may be returned for allocation

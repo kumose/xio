@@ -18,11 +18,11 @@
 #include <xio/detail/config.h>
 #include <vector>
 #include <xio/async_result.h>
-#include <xio/detail/array.h>
+#include <array>
 #include <xio/detail/memory.h>
 #include <xio/detail/throw_exception.h>
 #include <xio/detail/type_traits.h>
-#include <xio/detail/utility.h>
+#include <utility>
 #include <xio/experimental/cancellation_condition.h>
 
 #include <xio/detail/push_options.h>
@@ -49,7 +49,7 @@ namespace xio {
 
             template<std::size_t N, typename R0, typename... Args0>
             struct parallel_group_signature<N, R0(Args0...)> {
-                typedef xio::detail::array<std::size_t, N> order_type;
+                typedef std::array<std::size_t, N> order_type;
 
                 typedef R0 raw_type(Args0...);
 
@@ -60,7 +60,7 @@ namespace xio {
                 typename R0, typename... Args0,
                 typename R1, typename... Args1>
             struct parallel_group_signature<N, R0(Args0...), R1(Args1...)> {
-                typedef xio::detail::array<std::size_t, N> order_type;
+                typedef std::array<std::size_t, N> order_type;
 
                 typedef R0 raw_type(Args0..., Args1...);
 
@@ -70,7 +70,7 @@ namespace xio {
             template<std::size_t N, typename Sig0,
                 typename Sig1, typename... SigN>
             struct parallel_group_signature<N, Sig0, Sig1, SigN...> {
-                typedef xio::detail::array<std::size_t, N> order_type;
+                typedef std::array<std::size_t, N> order_type;
                 typedef typename parallel_group_signature<N,
                     typename parallel_group_signature<N, Sig0, Sig1>::raw_type,
                     SigN...>::raw_type raw_type;
@@ -82,7 +82,7 @@ namespace xio {
             template<typename Condition, typename Handler,
                 typename... Ops, std::size_t... I>
             void parallel_group_launch(Condition cancellation_condition, Handler handler,
-                                       std::tuple<Ops...> &ops, xio::detail::index_sequence<I...>);
+                                       std::tuple<Ops...> &ops, std::index_sequence<I...>);
 
             // Helper trait for determining ranged parallel group completion signatures.
 
@@ -145,7 +145,7 @@ namespace xio {
                 void operator()(Handler &&h, Condition &&c, std::tuple<Ops...> &&ops) const {
                     detail::parallel_group_launch(
                         std::forward<Condition>(c), std::forward<Handler>(h),
-                        ops, xio::detail::index_sequence_for<Ops...>());
+                        ops, std::index_sequence_for<Ops...>());
                 }
             };
 

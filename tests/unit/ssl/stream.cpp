@@ -13,7 +13,7 @@
 // Test that header file is self-contained.
 #include <xio/ssl/stream.h>
 
-#include "asio.hpp"
+#include <xio/xio.h>
 #include <xio/ssl.h>
 #include "../archetypes/async_result.hpp"
 #include "../unit_test.hpp"

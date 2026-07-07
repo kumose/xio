@@ -25,7 +25,7 @@
 
 #include <cstddef>
 #include <xio/detail/fd_set_adapter.h>
-#include <xio/detail/limits.h>
+#include <limits>
 #include <xio/detail/mutex.h>
 #include <xio/detail/op_queue.h>
 #include <xio/detail/reactor_op.h>

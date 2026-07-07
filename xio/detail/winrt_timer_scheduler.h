@@ -21,7 +21,7 @@
 
 #include <cstddef>
 #include <xio/detail/event.h>
-#include <xio/detail/limits.h>
+#include <limits>
 #include <xio/detail/mutex.h>
 #include <xio/detail/op_queue.h>
 #include <xio/detail/thread.h>

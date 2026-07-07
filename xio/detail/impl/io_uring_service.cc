@@ -21,7 +21,7 @@
 
 #include <cstddef>
 #include <sys/eventfd.h>
-#include <xio/detail/cstdint.h>
+#include <cstdint>
 #include <xio/detail/io_uring_service.h>
 #include <xio/detail/reactor_op.h>
 #include <xio/detail/scheduler.h>

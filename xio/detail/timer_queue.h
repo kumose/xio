@@ -18,9 +18,9 @@
 #include <xio/detail/config.h>
 #include <cstddef>
 #include <vector>
-#include <xio/detail/cstdint.h>
+#include <cstdint>
 #include <xio/detail/date_time_fwd.h>
-#include <xio/detail/limits.h>
+#include <limits>
 #include <xio/detail/op_queue.h>
 #include <xio/detail/timer_queue_base.h>
 #include <xio/detail/wait_op.h>

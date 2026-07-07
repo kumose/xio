@@ -26,7 +26,7 @@
 #include <vector>
 #include <xio/basic_streambuf_fwd.h>
 #include <xio/buffer.h>
-#include <xio/detail/limits.h>
+#include <limits>
 #include <xio/detail/noncopyable.h>
 #include <xio/detail/throw_exception.h>
 

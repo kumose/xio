@@ -22,7 +22,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include <xio/detail/array_fwd.h>
+#include <array>
 #include <xio/detail/memory.h>
 #include <xio/detail/string_view.h>
 #include <xio/detail/throw_exception.h>
@@ -52,8 +52,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace detail {
 #if defined(ASIO_MSVC)
 
@@ -306,14 +304,14 @@ namespace xio {
     /// (Deprecated: Use the socket/descriptor wait() and async_wait() member
 /// functions.) An implementation of both the ConstBufferSequence and
 /// MutableBufferSequence concepts to represent a null buffer sequence.
-    class ASIO_DEPRECATED_MSG (
+    class ASIO_DEPRECATED_MSG(
 
 
-    "Use the socket/descriptor wait() and async_wait() member functions"
-    )
-    null_buffers {
-        public
-        :
+                "Use the socket/descriptor wait() and async_wait() member functions"
+            )
+            null_buffers {
+    public
+    :
         /// The type for each element in the list of buffers.
         typedef mutable_buffer value_type;
 
@@ -321,19 +319,17 @@ namespace xio {
         typedef const mutable_buffer *const_iterator;
 
         /// Get a random-access iterator to the first element.
-        const_iterator begin() const noexcept
-        {
+        const_iterator begin() const noexcept {
             return &buf_;
         }
 
         /// Get a random-access iterator for one past the last element.
-        const_iterator end() const noexcept
-        {
+        const_iterator end() const noexcept {
             return &buf_;
         }
 
-        private
-        :
+    private
+    :
         mutable_buffer buf_;
     };
 
@@ -383,22 +379,22 @@ namespace xio {
 
     /// Get an iterator to the first element in a buffer sequence.
     template<typename C>
-    inline auto buffer_sequence_begin(C & c,
-                                      constraint_t <
-                                      !is_convertible<const C *, const mutable_buffer *>::value
+    inline auto buffer_sequence_begin(C &c,
+                                      constraint_t<
+                                          !is_convertible<const C *, const mutable_buffer *>::value
                                       > = 0,
-                                      constraint_t <
-                                      !is_convertible<const C *, const const_buffer *>::value
+                                      constraint_t<
+                                          !is_convertible<const C *, const const_buffer *>::value
                                       > = 0,
-                                      constraint_t <
-                                      !is_convertible<C, mutable_buffer>::value
+                                      constraint_t<
+                                          !is_convertible<C, mutable_buffer>::value
                                       > = 0,
-                                      constraint_t <
-                                      !is_convertible<C, const_buffer>::value
+                                      constraint_t<
+                                          !is_convertible<C, const_buffer>::value
                                       > = 0)
-    noexcept
-    ->
-    decltype(c.begin()) {
+        noexcept
+        ->
+        decltype(c.begin()) {
         return c.begin();
     }
 
@@ -467,22 +463,22 @@ namespace xio {
 
     /// Get an iterator to one past the end element in a buffer sequence.
     template<typename C>
-    inline auto buffer_sequence_end(C & c,
-                                    constraint_t <
-                                    !is_convertible<const C *, const mutable_buffer *>::value
+    inline auto buffer_sequence_end(C &c,
+                                    constraint_t<
+                                        !is_convertible<const C *, const mutable_buffer *>::value
                                     > = 0,
-                                    constraint_t <
-                                    !is_convertible<const C *, const const_buffer *>::value
+                                    constraint_t<
+                                        !is_convertible<const C *, const const_buffer *>::value
                                     > = 0,
-                                    constraint_t <
-                                    !is_convertible<C, mutable_buffer>::value
+                                    constraint_t<
+                                        !is_convertible<C, mutable_buffer>::value
                                     > = 0,
-                                    constraint_t <
-                                    !is_convertible<C, const_buffer>::value
+                                    constraint_t<
+                                        !is_convertible<C, const_buffer>::value
                                     > = 0)
-    noexcept
-    ->
-    decltype(c.end()) {
+        noexcept
+        ->
+        decltype(c.end()) {
         return c.end();
     }
 
@@ -632,6 +628,7 @@ namespace xio {
             ~buffer_debug_check() {
 
 
+
 #if defined(ASIO_MSVC) && (ASIO_MSVC == 1400)
     // MSVC 8's string iterator checking may crash in a std::string::iterator
     // object's destructor when the iterator points to an already-destroyed
@@ -677,7 +674,7 @@ private:
  * memory also meets the requirements of the MutableBufferSequence concept.
  *
  * An individual buffer may be created from a builtin array, std::vector,
- * std::array or boost::array of POD elements. This helps prevent buffer
+ * std::array of POD elements. This helps prevent buffer
  * overruns by automatically determining the size of the buffer:
  *
  * @code char d1[128];
@@ -688,9 +685,6 @@ private:
  *
  * std::array<char, 128> d3;
  * bytes_transferred = sock.receive(xio::buffer(d3));
- *
- * boost::array<char, 128> d4;
- * bytes_transferred = sock.receive(xio::buffer(d4)); @endcode
  *
  * In all three cases above, the buffers created are exactly 128 bytes long.
  * Note that a vector is @e never automatically resized when creating or using
@@ -795,22 +789,6 @@ private:
  * buffer objects may be assigned into a container that supports the
  * MutableBufferSequence (for read) or ConstBufferSequence (for write) concepts:
  *
- * @code
- * char d1[128];
- * std::vector<char> d2(128);
- * boost::array<char, 128> d3;
- *
- * boost::array<mutable_buffer, 3> bufs1 = {
- *   xio::buffer(d1),
- *   xio::buffer(d2),
- *   xio::buffer(d3) };
- * bytes_transferred = sock.receive(bufs1);
- *
- * std::vector<const_buffer> bufs2;
- * bufs2.push_back(xio::buffer(d1));
- * bufs2.push_back(xio::buffer(d2));
- * bufs2.push_back(xio::buffer(d3));
- * bytes_transferred = sock.send(bufs2); @endcode
  *
  * @par Buffer Literals
  *
@@ -837,7 +815,7 @@ private:
     /**
  * @returns <tt>mutable_buffer(b)</tt>.
  */
-[[nodiscard]] inline mutable_buffer buffer(
+    [[nodiscard]] inline mutable_buffer buffer(
         const mutable_buffer &b) noexcept {
         return mutable_buffer(b);
     }
@@ -849,7 +827,7 @@ private:
  *     b.data(),
  *     min(b.size(), max_size_in_bytes)); @endcode
  */
-[[nodiscard]] inline mutable_buffer buffer(
+    [[nodiscard]] inline mutable_buffer buffer(
         const mutable_buffer &b,
         std::size_t max_size_in_bytes) noexcept {
         return mutable_buffer(
@@ -867,7 +845,7 @@ private:
     /**
  * @returns <tt>const_buffer(b)</tt>.
  */
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         const const_buffer &b) noexcept {
         return const_buffer(b);
     }
@@ -879,7 +857,7 @@ private:
  *     b.data(),
  *     min(b.size(), max_size_in_bytes)); @endcode
  */
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         const const_buffer &b,
         std::size_t max_size_in_bytes) noexcept {
         return const_buffer(b.data(),
@@ -896,7 +874,7 @@ private:
     /**
  * @returns <tt>mutable_buffer(data, size_in_bytes)</tt>.
  */
-[[nodiscard]] inline mutable_buffer buffer(
+    [[nodiscard]] inline mutable_buffer buffer(
         void *data, std::size_t size_in_bytes) noexcept {
         return mutable_buffer(data, size_in_bytes);
     }
@@ -905,7 +883,7 @@ private:
     /**
  * @returns <tt>const_buffer(data, size_in_bytes)</tt>.
  */
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         const void *data, std::size_t size_in_bytes) noexcept {
         return const_buffer(data, size_in_bytes);
     }
@@ -918,7 +896,7 @@ private:
  *     N * sizeof(PodType)); @endcode
  */
     template<typename PodType, std::size_t N>
-[[nodiscard]] inline mutable_buffer buffer(
+    [[nodiscard]] inline mutable_buffer buffer(
         PodType (&data)[N]) noexcept {
         return mutable_buffer(data, N * sizeof(PodType));
     }
@@ -931,15 +909,15 @@ private:
  *     min(N * sizeof(PodType), max_size_in_bytes)); @endcode
  */
     template<typename PodType, std::size_t N>
-[[nodiscard]] inline mutable_buffer buffer(
-        PodType(&data)[N],
-    std::size_t max_size_in_bytes)
-    noexcept
-{
-  return mutable_buffer(data,
-      N * sizeof(PodType) < max_size_in_bytes
-      ? N * sizeof(PodType) : max_size_in_bytes);
-}
+    [[nodiscard]] inline mutable_buffer buffer(
+        PodType (&data)[N],
+        std::size_t max_size_in_bytes)
+        noexcept {
+        return mutable_buffer(data,
+                              N * sizeof(PodType) < max_size_in_bytes
+                                  ? N * sizeof(PodType)
+                                  : max_size_in_bytes);
+    }
 
     /// Create a new non-modifiable buffer that represents the given POD array.
     /**
@@ -949,7 +927,7 @@ private:
  *     N * sizeof(PodType)); @endcode
  */
     template<typename PodType, std::size_t N>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         const PodType (&data)[N]) noexcept {
         return const_buffer(data, N * sizeof(PodType));
     }
@@ -962,109 +940,19 @@ private:
  *     min(N * sizeof(PodType), max_size_in_bytes)); @endcode
  */
     template<typename PodType, std::size_t N>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
 
 
-    const PodType (&data)[N],
-    std::size_t max_size_in_bytes
+        const PodType (&data)[N],
+        std::size_t max_size_in_bytes
     )
-    noexcept
-{
-  return const_buffer(data,
-      N * sizeof(PodType) < max_size_in_bytes
-      ? N * sizeof(PodType) : max_size_in_bytes);
-}
-
-    /// Create a new modifiable buffer that represents the given POD array.
-    /**
- * @returns A mutable_buffer value equivalent to:
- * @code mutable_buffer(
- *     data.data(),
- *     data.size() * sizeof(PodType)); @endcode
- */
-    template<typename PodType, std::size_t N>
-[[nodiscard]] inline mutable_buffer buffer(
-        boost::array<PodType, N> &data) noexcept {
-        return mutable_buffer(
-            data.data(), data.size() * sizeof(PodType));
-    }
-
-    /// Create a new modifiable buffer that represents the given POD array.
-    /**
- * @returns A mutable_buffer value equivalent to:
- * @code mutable_buffer(
- *     data.data(),
- *     min(data.size() * sizeof(PodType), max_size_in_bytes)); @endcode
- */
-    template<typename PodType, std::size_t N>
-[[nodiscard]] inline mutable_buffer buffer(
-        boost::array<PodType, N> &data,
-        std::size_t max_size_in_bytes) noexcept {
-        return mutable_buffer(data.data(),
-                              data.size() * sizeof(PodType) < max_size_in_bytes
-                                  ? data.size() * sizeof(PodType)
-                                  : max_size_in_bytes);
-    }
-
-    /// Create a new non-modifiable buffer that represents the given POD array.
-    /**
- * @returns A const_buffer value equivalent to:
- * @code const_buffer(
- *     data.data(),
- *     data.size() * sizeof(PodType)); @endcode
- */
-    template<typename PodType, std::size_t N>
-[[nodiscard]] inline const_buffer buffer(
-        boost::array<const PodType, N> &data) noexcept {
-        return const_buffer(data.data(), data.size() * sizeof(PodType));
-    }
-
-    /// Create a new non-modifiable buffer that represents the given POD array.
-    /**
- * @returns A const_buffer value equivalent to:
- * @code const_buffer(
- *     data.data(),
- *     min(data.size() * sizeof(PodType), max_size_in_bytes)); @endcode
- */
-    template<typename PodType, std::size_t N>
-[[nodiscard]] inline const_buffer buffer(
-        boost::array<const PodType, N> &data,
-        std::size_t max_size_in_bytes) noexcept {
-        return const_buffer(data.data(),
-                            data.size() * sizeof(PodType) < max_size_in_bytes
-                                ? data.size() * sizeof(PodType)
+        noexcept {
+        return const_buffer(data,
+                            N * sizeof(PodType) < max_size_in_bytes
+                                ? N * sizeof(PodType)
                                 : max_size_in_bytes);
     }
 
-    /// Create a new non-modifiable buffer that represents the given POD array.
-    /**
- * @returns A const_buffer value equivalent to:
- * @code const_buffer(
- *     data.data(),
- *     data.size() * sizeof(PodType)); @endcode
- */
-    template<typename PodType, std::size_t N>
-[[nodiscard]] inline const_buffer buffer(
-        const boost::array<PodType, N> &data) noexcept {
-        return const_buffer(data.data(), data.size() * sizeof(PodType));
-    }
-
-    /// Create a new non-modifiable buffer that represents the given POD array.
-    /**
- * @returns A const_buffer value equivalent to:
- * @code const_buffer(
- *     data.data(),
- *     min(data.size() * sizeof(PodType), max_size_in_bytes)); @endcode
- */
-    template<typename PodType, std::size_t N>
-[[nodiscard]] inline const_buffer buffer(
-        const boost::array<PodType, N> &data,
-        std::size_t max_size_in_bytes) noexcept {
-        return const_buffer(data.data(),
-                            data.size() * sizeof(PodType) < max_size_in_bytes
-                                ? data.size() * sizeof(PodType)
-                                : max_size_in_bytes);
-    }
 
     /// Create a new modifiable buffer that represents the given POD array.
     /**
@@ -1074,7 +962,7 @@ private:
  *     data.size() * sizeof(PodType)); @endcode
  */
     template<typename PodType, std::size_t N>
-[[nodiscard]] inline mutable_buffer buffer(
+    [[nodiscard]] inline mutable_buffer buffer(
         std::array<PodType, N> &data) noexcept {
         return mutable_buffer(data.data(), data.size() * sizeof(PodType));
     }
@@ -1087,7 +975,7 @@ private:
  *     min(data.size() * sizeof(PodType), max_size_in_bytes)); @endcode
  */
     template<typename PodType, std::size_t N>
-[[nodiscard]] inline mutable_buffer buffer(
+    [[nodiscard]] inline mutable_buffer buffer(
         std::array<PodType, N> &data,
         std::size_t max_size_in_bytes) noexcept {
         return mutable_buffer(data.data(),
@@ -1104,7 +992,7 @@ private:
  *     data.size() * sizeof(PodType)); @endcode
  */
     template<typename PodType, std::size_t N>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         std::array<const PodType, N> &data) noexcept {
         return const_buffer(data.data(), data.size() * sizeof(PodType));
     }
@@ -1117,7 +1005,7 @@ private:
  *     min(data.size() * sizeof(PodType), max_size_in_bytes)); @endcode
  */
     template<typename PodType, std::size_t N>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         std::array<const PodType, N> &data,
         std::size_t max_size_in_bytes) noexcept {
         return const_buffer(data.data(),
@@ -1134,7 +1022,7 @@ private:
  *     data.size() * sizeof(PodType)); @endcode
  */
     template<typename PodType, std::size_t N>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         const std::array<PodType, N> &data) noexcept {
         return const_buffer(data.data(), data.size() * sizeof(PodType));
     }
@@ -1147,7 +1035,7 @@ private:
  *     min(data.size() * sizeof(PodType), max_size_in_bytes)); @endcode
  */
     template<typename PodType, std::size_t N>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         const std::array<PodType, N> &data,
         std::size_t max_size_in_bytes) noexcept {
         return const_buffer(data.data(),
@@ -1168,14 +1056,14 @@ private:
  * the vector.
  */
     template<typename PodType, typename Allocator>
-[[nodiscard]] inline mutable_buffer buffer(
+    [[nodiscard]] inline mutable_buffer buffer(
         std::vector<PodType, Allocator> &data) noexcept {
         return mutable_buffer(
             data.size() ? &data[0] : 0, data.size() * sizeof(PodType)
 #if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
-      , detail::buffer_debug_check<
-                typename std::vector<PodType, Allocator>::iterator
-            >(data.begin())
+      , detail::buffer_debug_check <
+        typename std::vector<PodType, Allocator>::iterator
+        > (data.begin())
 #endif // ASIO_ENABLE_BUFFER_DEBUGGING
         );
     }
@@ -1192,7 +1080,7 @@ private:
  * the vector.
  */
     template<typename PodType, typename Allocator>
-[[nodiscard]] inline mutable_buffer buffer(
+    [[nodiscard]] inline mutable_buffer buffer(
         std::vector<PodType, Allocator> &data,
         std::size_t max_size_in_bytes) noexcept {
         return mutable_buffer(data.size() ? &data[0] : 0,
@@ -1200,9 +1088,9 @@ private:
                                   ? data.size() * sizeof(PodType)
                                   : max_size_in_bytes
 #if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
-      , detail::buffer_debug_check<
-                                  typename std::vector<PodType, Allocator>::iterator
-                              >(data.begin())
+      , detail::buffer_debug_check <
+        typename std::vector<PodType, Allocator>::iterator
+        > (data.begin())
 #endif // ASIO_ENABLE_BUFFER_DEBUGGING
         );
     }
@@ -1219,14 +1107,14 @@ private:
  * the vector.
  */
     template<typename PodType, typename Allocator>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         const std::vector<PodType, Allocator> &data) noexcept {
         return const_buffer(
             data.size() ? &data[0] : 0, data.size() * sizeof(PodType)
 #if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
-      , detail::buffer_debug_check<
-                typename std::vector<PodType, Allocator>::const_iterator
-            >(data.begin())
+      , detail::buffer_debug_check <
+        typename std::vector<PodType, Allocator>::const_iterator
+        > (data.begin())
 #endif // ASIO_ENABLE_BUFFER_DEBUGGING
         );
     }
@@ -1243,7 +1131,7 @@ private:
  * the vector.
  */
     template<typename PodType, typename Allocator>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         const std::vector<PodType, Allocator> &data,
         std::size_t max_size_in_bytes) noexcept {
         return const_buffer(data.size() ? &data[0] : 0,
@@ -1251,9 +1139,9 @@ private:
                                 ? data.size() * sizeof(PodType)
                                 : max_size_in_bytes
 #if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
-      , detail::buffer_debug_check<
-                                typename std::vector<PodType, Allocator>::const_iterator
-                            >(data.begin())
+      , detail::buffer_debug_check <
+        typename std::vector<PodType, Allocator>::const_iterator
+        > (data.begin())
 #endif // ASIO_ENABLE_BUFFER_DEBUGGING
         );
     }
@@ -1267,14 +1155,14 @@ private:
  * given string object.
  */
     template<typename Elem, typename Traits, typename Allocator>
-[[nodiscard]] inline mutable_buffer buffer(
+    [[nodiscard]] inline mutable_buffer buffer(
         std::basic_string<Elem, Traits, Allocator> &data) noexcept {
         return mutable_buffer(data.size() ? &data[0] : 0,
                               data.size() * sizeof(Elem)
 #if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
-      , detail::buffer_debug_check<
-                                  typename std::basic_string<Elem, Traits, Allocator>::iterator
-                              >(data.begin())
+      , detail::buffer_debug_check <
+        typename std::basic_string<Elem, Traits, Allocator>::iterator
+        > (data.begin())
 #endif // ASIO_ENABLE_BUFFER_DEBUGGING
         );
     }
@@ -1290,7 +1178,7 @@ private:
  * given string object.
  */
     template<typename Elem, typename Traits, typename Allocator>
-[[nodiscard]] inline mutable_buffer buffer(
+    [[nodiscard]] inline mutable_buffer buffer(
         std::basic_string<Elem, Traits, Allocator> &data,
         std::size_t max_size_in_bytes) noexcept {
         return mutable_buffer(data.size() ? &data[0] : 0,
@@ -1298,9 +1186,9 @@ private:
                                   ? data.size() * sizeof(Elem)
                                   : max_size_in_bytes
 #if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
-      , detail::buffer_debug_check<
-                                  typename std::basic_string<Elem, Traits, Allocator>::iterator
-                              >(data.begin())
+      , detail::buffer_debug_check <
+        typename std::basic_string<Elem, Traits, Allocator>::iterator
+        > (data.begin())
 #endif // ASIO_ENABLE_BUFFER_DEBUGGING
         );
     }
@@ -1313,13 +1201,13 @@ private:
  * given string object.
  */
     template<typename Elem, typename Traits, typename Allocator>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         const std::basic_string<Elem, Traits, Allocator> &data) noexcept {
         return const_buffer(data.data(), data.size() * sizeof(Elem)
 #if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
-      , detail::buffer_debug_check<
-                                typename std::basic_string<Elem, Traits, Allocator>::const_iterator
-                            >(data.begin())
+      , detail::buffer_debug_check <
+        typename std::basic_string<Elem, Traits, Allocator>::const_iterator
+        > (data.begin())
 #endif // ASIO_ENABLE_BUFFER_DEBUGGING
         );
     }
@@ -1335,7 +1223,7 @@ private:
  * given string object.
  */
     template<typename Elem, typename Traits, typename Allocator>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         const std::basic_string<Elem, Traits, Allocator> &data,
         std::size_t max_size_in_bytes) noexcept {
         return const_buffer(data.data(),
@@ -1343,9 +1231,9 @@ private:
                                 ? data.size() * sizeof(Elem)
                                 : max_size_in_bytes
 #if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
-      , detail::buffer_debug_check<
-                                typename std::basic_string<Elem, Traits, Allocator>::const_iterator
-                            >(data.begin())
+      , detail::buffer_debug_check <
+        typename std::basic_string<Elem, Traits, Allocator>::const_iterator
+        > (data.begin())
 #endif // ASIO_ENABLE_BUFFER_DEBUGGING
         );
     }
@@ -1357,17 +1245,17 @@ private:
  * data.size() * sizeof(Elem))</tt>.
  */
     template<typename Elem, typename Traits>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         basic_string_view<Elem, Traits> data) noexcept {
         return const_buffer(data.size() ? &data[0] : 0,
                             data.size() * sizeof(Elem)
 #if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
-    , detail::buffer_debug_check<
-        typename basic_string_view<Elem, Traits>::iterator
-    > (data.begin())
+    , detail::buffer_debug_check <
+      typename basic_string_view<Elem, Traits>::iterator
+      > (data.begin())
 #endif // ASIO_ENABLE_BUFFER_DEBUGGING
-    );
-}
+        );
+    }
 
     /// Create a new non-modifiable buffer that represents the given string.
     /**
@@ -1377,7 +1265,7 @@ private:
  *     min(data.size() * sizeof(Elem), max_size_in_bytes)); @endcode
  */
     template<typename Elem, typename Traits>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         basic_string_view<Elem, Traits> data,
         std::size_t max_size_in_bytes) noexcept {
         return const_buffer(data.size() ? &data[0] : 0,
@@ -1385,12 +1273,12 @@ private:
                                 ? data.size() * sizeof(Elem)
                                 : max_size_in_bytes
 #if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
-    , detail::buffer_debug_check<
-        typename basic_string_view<Elem, Traits>::iterator
-    > (data.begin())
+    , detail::buffer_debug_check <
+      typename basic_string_view<Elem, Traits>::iterator
+      > (data.begin())
 #endif // ASIO_ENABLE_BUFFER_DEBUGGING
-    );
-}
+        );
+    }
 
 
     /// Create a new modifiable buffer from a contiguous container.
@@ -1401,34 +1289,33 @@ private:
  *     data.size() * sizeof(typename T::value_type)); @endcode
  */
     template<typename T>
-[[nodiscard]] inline mutable_buffer buffer(
-        T & data,
-        constraint_t <
-        is_contiguous_iterator < typename T::iterator > ::value,
-        defaulted_constraint
+    [[nodiscard]] inline mutable_buffer buffer(
+        T &data,
+        constraint_t<
+            is_contiguous_iterator<typename T::iterator>::value,
+            defaulted_constraint
         > = defaulted_constraint(),
-        constraint_t <
-        !is_convertible<T, const_buffer>::value,
-        defaulted_constraint
+        constraint_t<
+            !is_convertible<T, const_buffer>::value,
+            defaulted_constraint
         > = defaulted_constraint(),
-        constraint_t <
-        !is_convertible<T, mutable_buffer>::value,
-        defaulted_constraint
+        constraint_t<
+            !is_convertible<T, mutable_buffer>::value,
+            defaulted_constraint
         > = defaulted_constraint(),
-        constraint_t <
-        !is_const <
-        remove_reference_t <
-        typename std::iterator_traits < typename T::iterator > ::reference
-        >
-        > ::value,
-        defaulted_constraint
+        constraint_t<
+            !is_const<
+                remove_reference_t<
+                    typename std::iterator_traits<typename T::iterator>::reference
+                >
+            >::value,
+            defaulted_constraint
         > = defaulted_constraint())
-    noexcept
-{
-  return mutable_buffer(
-      data.size() ? detail::to_address(data.begin()) : 0,
-      data.size() * sizeof(typename T::value_type));
-}
+        noexcept {
+        return mutable_buffer(
+            data.size() ? detail::to_address(data.begin()) : 0,
+            data.size() * sizeof(typename T::value_type));
+    }
 
     /// Create a new modifiable buffer from a contiguous container.
     /**
@@ -1440,12 +1327,12 @@ private:
  *       max_size_in_bytes)); @endcode
  */
     template<typename T>
-[[nodiscard]] inline mutable_buffer buffer(
+    [[nodiscard]] inline mutable_buffer buffer(
         T &data, std::size_t max_size_in_bytes,
         constraint_t<
-            is_contiguous_iterator < typename T::iterator>::value,
-        defaulted_constraint
-    > = defaulted_constraint (),
+            is_contiguous_iterator<typename T::iterator>::value,
+            defaulted_constraint
+        > = defaulted_constraint(),
         constraint_t<
             !is_convertible<T, const_buffer>::value,
             defaulted_constraint
@@ -1455,13 +1342,13 @@ private:
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            !is_const <
-            remove_reference_t <
-            typename std::iterator_traits < typename T::iterator>::reference
-        >
-      >::value,
-        defaulted_constraint
-    > = defaulted_constraint ()) noexcept {
+            !is_const<
+                remove_reference_t<
+                    typename std::iterator_traits<typename T::iterator>::reference
+                >
+            >::value,
+            defaulted_constraint
+        > = defaulted_constraint()) noexcept {
         return mutable_buffer(
             data.size() ? detail::to_address(data.begin()) : 0,
             data.size() * sizeof(typename T::value_type) < max_size_in_bytes
@@ -1477,34 +1364,33 @@ private:
  *     data.size() * sizeof(typename T::value_type)); @endcode
  */
     template<typename T>
-[[nodiscard]] inline const_buffer buffer(
-        T & data,
-        constraint_t <
-        is_contiguous_iterator < typename T::iterator > ::value,
-        defaulted_constraint
+    [[nodiscard]] inline const_buffer buffer(
+        T &data,
+        constraint_t<
+            is_contiguous_iterator<typename T::iterator>::value,
+            defaulted_constraint
         > = defaulted_constraint(),
-        constraint_t <
-        !is_convertible<T, const_buffer>::value,
-        defaulted_constraint
+        constraint_t<
+            !is_convertible<T, const_buffer>::value,
+            defaulted_constraint
         > = defaulted_constraint(),
-        constraint_t <
-        !is_convertible<T, mutable_buffer>::value,
-        defaulted_constraint
+        constraint_t<
+            !is_convertible<T, mutable_buffer>::value,
+            defaulted_constraint
         > = defaulted_constraint(),
-        constraint_t <
-        is_const <
-        remove_reference_t <
-        typename std::iterator_traits < typename T::iterator > ::reference
-        >
-        > ::value,
-        defaulted_constraint
+        constraint_t<
+            is_const<
+                remove_reference_t<
+                    typename std::iterator_traits<typename T::iterator>::reference
+                >
+            >::value,
+            defaulted_constraint
         > = defaulted_constraint())
-    noexcept
-{
-  return const_buffer(
-      data.size() ? detail::to_address(data.begin()) : 0,
-      data.size() * sizeof(typename T::value_type));
-}
+        noexcept {
+        return const_buffer(
+            data.size() ? detail::to_address(data.begin()) : 0,
+            data.size() * sizeof(typename T::value_type));
+    }
 
     /// Create a new non-modifiable buffer from a contiguous container.
     /**
@@ -1516,12 +1402,12 @@ private:
  *       max_size_in_bytes)); @endcode
  */
     template<typename T>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         T &data, std::size_t max_size_in_bytes,
         constraint_t<
-            is_contiguous_iterator < typename T::iterator>::value,
-        defaulted_constraint
-    > = defaulted_constraint (),
+            is_contiguous_iterator<typename T::iterator>::value,
+            defaulted_constraint
+        > = defaulted_constraint(),
         constraint_t<
             !is_convertible<T, const_buffer>::value,
             defaulted_constraint
@@ -1531,13 +1417,13 @@ private:
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-            is_const <
-            remove_reference_t <
-            typename std::iterator_traits < typename T::iterator>::reference
-        >
-      >::value,
-        defaulted_constraint
-    > = defaulted_constraint ()) noexcept {
+            is_const<
+                remove_reference_t<
+                    typename std::iterator_traits<typename T::iterator>::reference
+                >
+            >::value,
+            defaulted_constraint
+        > = defaulted_constraint()) noexcept {
         return const_buffer(
             data.size() ? detail::to_address(data.begin()) : 0,
             data.size() * sizeof(typename T::value_type) < max_size_in_bytes
@@ -1553,12 +1439,12 @@ private:
  *     data.size() * sizeof(typename T::value_type)); @endcode
  */
     template<typename T>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         const T &data,
         constraint_t<
-            is_contiguous_iterator < typename T::const_iterator>::value,
-        defaulted_constraint
-    > = defaulted_constraint (),
+            is_contiguous_iterator<typename T::const_iterator>::value,
+            defaulted_constraint
+        > = defaulted_constraint(),
         constraint_t<
             !is_convertible<T, const_buffer>::value,
             defaulted_constraint
@@ -1582,12 +1468,12 @@ private:
  *       max_size_in_bytes)); @endcode
  */
     template<typename T>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         const T &data, std::size_t max_size_in_bytes,
         constraint_t<
-            is_contiguous_iterator < typename T::const_iterator>::value,
-        defaulted_constraint
-    > = defaulted_constraint (),
+            is_contiguous_iterator<typename T::const_iterator>::value,
+            defaulted_constraint
+        > = defaulted_constraint(),
         constraint_t<
             !is_convertible<T, const_buffer>::value,
             defaulted_constraint
@@ -1609,7 +1495,7 @@ private:
  */
     template<template <typename, std::size_t> class Span,
         typename T, std::size_t Extent>
-[[nodiscard]] inline mutable_buffer buffer(
+    [[nodiscard]] inline mutable_buffer buffer(
         const Span<T, Extent> &span,
         constraint_t<
             !is_const<T>::value,
@@ -1643,7 +1529,7 @@ private:
  */
     template<template <typename, std::size_t> class Span,
         typename T, std::size_t Extent>
-[[nodiscard]] inline mutable_buffer buffer(
+    [[nodiscard]] inline mutable_buffer buffer(
         const Span<T, Extent> &span,
         std::size_t max_size_in_bytes,
         constraint_t<
@@ -1674,7 +1560,7 @@ private:
  */
     template<template <typename, std::size_t> class Span,
         typename T, std::size_t Extent>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         const Span<const T, Extent> &span,
         constraint_t<
             sizeof(T) == 1,
@@ -1704,7 +1590,7 @@ private:
  */
     template<template <typename, std::size_t> class Span,
         typename T, std::size_t Extent>
-[[nodiscard]] inline const_buffer buffer(
+    [[nodiscard]] inline const_buffer buffer(
         const Span<const T, Extent> &span,
         std::size_t max_size_in_bytes,
         constraint_t<
@@ -2547,8 +2433,6 @@ private:
     }
 
     /*@}*/
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
@@ -2556,12 +2440,8 @@ private:
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     /// Trait to determine whether a type satisfies the MutableBufferSequence
 /// requirements.
-
-
 
 
     template<typename T>
@@ -2792,7 +2672,6 @@ namespace xio {
                 detail::literal<Chars...>::size);
         }
     } // namespace buffer_literals
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
