@@ -101,8 +101,8 @@ void test()
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "registered_buffer",
-  ASIO_COMPILE_TEST_CASE(registered_buffer_compile::test)
+  XIO_COMPILE_TEST_CASE(registered_buffer_compile::test)
 )

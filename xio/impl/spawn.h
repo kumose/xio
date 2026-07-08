@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_SPAWN_HPP
-#define ASIO_IMPL_SPAWN_HPP
+#ifndef XIO_IMPL_SPAWN_HPP
+#define XIO_IMPL_SPAWN_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -40,12 +40,12 @@ namespace xio {
 
 
     namespace detail {
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
         inline void spawned_thread_rethrow(void *ex) {
             if (*static_cast<exception_ptr *>(ex))
                 rethrow_exception(*static_cast<exception_ptr *>(ex));
         }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
 
 # error No spawn() implementation available
 
@@ -462,8 +462,6 @@ namespace xio {
         }
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
-
     template<typename Executor, typename Signature>
     class async_result<basic_yield_context<Executor>, Signature> {
     public:
@@ -490,8 +488,6 @@ namespace xio {
 
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
-
     namespace detail {
         template<typename Executor, typename Function, typename Handler>
         class spawn_entry_point {
@@ -513,9 +509,9 @@ namespace xio {
 
         private:
             void call(const basic_yield_context<Executor> &yield, void_type<void>) {
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
                 try
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
                 {
                     function_(yield);
                     if (!yield.spawned_thread_->has_context_switched())
@@ -524,7 +520,7 @@ namespace xio {
                             handler(handler_, exception_ptr());
                     work_.complete(handler, handler.handler_);
                 }
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
 
                 catch (...) {
                     exception_ptr ex = current_exception();
@@ -533,14 +529,14 @@ namespace xio {
                     detail::binder1<Handler, exception_ptr> handler(handler_, ex);
                     work_.complete(handler, handler.handler_);
                 }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
             }
 
             template<typename T>
             void call(const basic_yield_context<Executor> &yield, void_type<T>) {
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
                 try
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
                 {
                     T result(function_(yield));
                     if (!yield.spawned_thread_->has_context_switched())
@@ -550,7 +546,7 @@ namespace xio {
                                     exception_ptr(), static_cast<T &&>(result));
                     work_.complete(handler, handler.handler_);
                 }
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
                 catch (...) {
                     exception_ptr ex = current_exception();
                     if (!yield.spawned_thread_->has_context_switched())
@@ -559,7 +555,7 @@ namespace xio {
                             handler(0, static_cast<Handler &&>(handler_), ex, T());
                     work_.complete(handler, handler.handler_);
                 }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
             }
 
             Executor executor_;
@@ -673,7 +669,7 @@ namespace xio {
     } // namespace detail
 
     template<typename Executor, typename F,
-        ASIO_COMPLETION_TOKEN_FOR(typename detail::spawn_signature<
+        XIO_COMPLETION_TOKEN_FOR(typename detail::spawn_signature<
             result_of_t<F(basic_yield_context<Executor>)> >::type) CompletionToken>
     inline auto spawn(const Executor &ex, F &&function, CompletionToken &&token,
                       constraint_t<
@@ -693,7 +689,7 @@ namespace xio {
     }
 
     template<typename ExecutionContext, typename F,
-        ASIO_COMPLETION_TOKEN_FOR(typename detail::spawn_signature<
+        XIO_COMPLETION_TOKEN_FOR(typename detail::spawn_signature<
             result_of_t<F(basic_yield_context <
                           typename ExecutionContext::executor_type >)> >::type) CompletionToken>
     inline auto spawn(ExecutionContext &ctx, F &&function, CompletionToken &&token,
@@ -713,7 +709,7 @@ namespace xio {
     }
 
     template<typename Executor, typename F,
-        ASIO_COMPLETION_TOKEN_FOR(typename detail::spawn_signature<
+        XIO_COMPLETION_TOKEN_FOR(typename detail::spawn_signature<
             result_of_t<F(basic_yield_context<Executor>)> >::type)
         CompletionToken>
     inline auto spawn(const basic_yield_context<Executor> &ctx,
@@ -737,4 +733,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_SPAWN_HPP
+#endif // XIO_IMPL_SPAWN_HPP

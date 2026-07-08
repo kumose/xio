@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_IO_CONTEXT_HPP
-#define ASIO_IMPL_IO_CONTEXT_HPP
+#ifndef XIO_IMPL_IO_CONTEXT_HPP
+#define XIO_IMPL_IO_CONTEXT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -51,7 +51,6 @@ namespace xio {
           impl_(xio::make_service<impl_type>(*this, false)) {
     }
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<typename Service>
     inline Service &use_service(io_context &ioc) {
@@ -68,7 +67,6 @@ namespace xio {
         return ioc.impl_;
     }
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
     inline io_context::executor_type
     io_context::get_executor() noexcept {
@@ -121,19 +119,16 @@ namespace xio {
         return 0;
     }
 
-#if !defined(ASIO_NO_DEPRECATED)
+#if !defined(XIO_NO_DEPRECATED)
 
     template<typename Handler>
-#if defined(GENERATING_DOCUMENTATION)
-    unspecified
-#else
+
     inline detail::wrapped_handler<io_context &, Handler>
-#endif
     io_context::wrap(Handler handler) {
         return detail::wrapped_handler<io_context &, Handler>(*this, handler);
     }
 
-#endif // !defined(ASIO_NO_DEPRECATED)
+#endif // !defined(XIO_NO_DEPRECATED)
 
     template<typename Allocator, uintptr_t Bits>
     io_context::basic_executor_type<Allocator, Bits> &
@@ -188,18 +183,18 @@ namespace xio {
             // Make a local, non-const copy of the function.
             function_type tmp(static_cast<Function &&>(f));
 
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             try {
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
                 detail::fenced_block b(detail::fenced_block::full);
                 static_cast<function_type &&>(tmp)();
                 return;
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             } catch (...) {
                 context_ptr()->impl_.capture_current_exception();
                 return;
             }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
         }
 
         // Allocate and construct an operation to wrap the function.
@@ -211,7 +206,7 @@ namespace xio {
         p.p = new(p.v) op(static_cast<Function &&>(f),
                           static_cast<const Allocator &>(*this));
 
-        ASIO_HANDLER_CREATION((*context_ptr(), *p.p,
+        XIO_HANDLER_CREATION((*context_ptr(), *p.p,
                                "io_context", context_ptr(), 0, "execute"));
 
         context_ptr()->impl_.post_immediate_completion(p.p,
@@ -219,7 +214,7 @@ namespace xio {
         p.v = p.p = 0;
     }
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
     template<typename Allocator, uintptr_t Bits>
     inline io_context &io_context::basic_executor_type<
         Allocator, Bits>::context() const noexcept {
@@ -260,7 +255,7 @@ namespace xio {
         typename op::ptr p = {detail::addressof(a), op::ptr::allocate(a), 0};
         p.p = new(p.v) op(static_cast<Function &&>(f), a);
 
-        ASIO_HANDLER_CREATION((*context_ptr(), *p.p,
+        XIO_HANDLER_CREATION((*context_ptr(), *p.p,
                                "io_context", context_ptr(), 0, "dispatch"));
 
         context_ptr()->impl_.post_immediate_completion(p.p, false);
@@ -277,7 +272,7 @@ namespace xio {
         typename op::ptr p = {detail::addressof(a), op::ptr::allocate(a), 0};
         p.p = new(p.v) op(static_cast<Function &&>(f), a);
 
-        ASIO_HANDLER_CREATION((*context_ptr(), *p.p,
+        XIO_HANDLER_CREATION((*context_ptr(), *p.p,
                                "io_context", context_ptr(), 0, "post"));
 
         context_ptr()->impl_.post_immediate_completion(p.p, false);
@@ -294,13 +289,13 @@ namespace xio {
         typename op::ptr p = {detail::addressof(a), op::ptr::allocate(a), 0};
         p.p = new(p.v) op(static_cast<Function &&>(f), a);
 
-        ASIO_HANDLER_CREATION((*context_ptr(), *p.p,
+        XIO_HANDLER_CREATION((*context_ptr(), *p.p,
                                "io_context", context_ptr(), 0, "defer"));
 
         context_ptr()->impl_.post_immediate_completion(p.p, true);
         p.v = p.p = 0;
     }
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
     inline xio::io_context &io_context::service::get_io_context() {
         return static_cast<xio::io_context &>(context());
@@ -311,4 +306,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_IO_CONTEXT_HPP
+#endif // XIO_IMPL_IO_CONTEXT_HPP

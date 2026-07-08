@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_READ_HPP
-#define ASIO_READ_HPP
+#ifndef XIO_READ_HPP
+#define XIO_READ_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -22,9 +22,9 @@
 #include <xio/completion_condition.h>
 #include <xio/error.h>
 
-#if !defined(ASIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_EXTENSIONS)
 #include <xio/basic_streambuf_fwd.h>
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
 #include <xio/detail/push_options.h>
 
@@ -34,10 +34,10 @@ namespace xio {
     namespace detail {
         template<typename>
         class initiate_async_read;
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
         template<typename>
         class initiate_async_read_dynbuf_v1;
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
         template<typename>
         class initiate_async_read_dynbuf_v2;
     } // namespace detail
@@ -242,7 +242,7 @@ namespace xio {
                          is_completion_condition<CompletionCondition>::value
                      > = 0);
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     /// Attempt to read a certain amount of data from a stream before returning.
     /**
@@ -421,8 +421,8 @@ namespace xio {
                          is_completion_condition<CompletionCondition>::value
                      > = 0);
 
-#if !defined(ASIO_NO_EXTENSIONS)
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_IOSTREAM)
 
     /// Attempt to read a certain amount of data from a stream before returning.
     /**
@@ -570,9 +570,9 @@ namespace xio {
                          is_completion_condition<CompletionCondition>::value
                      > = 0);
 
-#endif // !defined(ASIO_NO_IOSTREAM)
-#endif // !defined(ASIO_NO_EXTENSIONS)
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     /// Attempt to read a certain amount of data from a stream before returning.
     /**
@@ -821,7 +821,7 @@ namespace xio {
  * @c async_read_some operation.
  */
     template<typename AsyncReadStream, typename MutableBufferSequence,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read(AsyncReadStream &s, const MutableBufferSequence &buffers,
@@ -925,7 +925,7 @@ namespace xio {
  */
     template<typename AsyncReadStream,
         typename MutableBufferSequence, typename CompletionCondition,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read(AsyncReadStream &s, const MutableBufferSequence &buffers,
@@ -950,7 +950,7 @@ namespace xio {
             static_cast<CompletionCondition &&>(completion_condition));
     }
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     /// Start an asynchronous operation to read a certain amount of data from a
 /// stream.
@@ -1019,7 +1019,7 @@ namespace xio {
  * @c async_read_some operation.
  */
     template<typename AsyncReadStream, typename DynamicBuffer_v1,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read(AsyncReadStream & s, DynamicBuffer_v1 && buffers,
@@ -1122,7 +1122,7 @@ namespace xio {
  */
     template<typename AsyncReadStream,
         typename DynamicBuffer_v1, typename CompletionCondition,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read(AsyncReadStream &s, DynamicBuffer_v1 &&buffers,
@@ -1151,8 +1151,8 @@ namespace xio {
             static_cast<CompletionCondition &&>(completion_condition));
     }
 
-#if !defined(ASIO_NO_EXTENSIONS)
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_IOSTREAM)
 
     /// Start an asynchronous operation to read a certain amount of data from a
 /// stream.
@@ -1219,7 +1219,7 @@ namespace xio {
  * @c async_read_some operation.
  */
     template<typename AsyncReadStream, typename Allocator,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read(AsyncReadStream & s, basic_streambuf<Allocator> & b,
@@ -1314,7 +1314,7 @@ namespace xio {
  */
     template<typename AsyncReadStream,
         typename Allocator, typename CompletionCondition,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read(AsyncReadStream &s, basic_streambuf<Allocator> &b,
@@ -1337,9 +1337,9 @@ namespace xio {
             static_cast<CompletionCondition &&>(completion_condition));
     }
 
-#endif // !defined(ASIO_NO_IOSTREAM)
-#endif // !defined(ASIO_NO_EXTENSIONS)
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     /// Start an asynchronous operation to read a certain amount of data from a
 /// stream.
@@ -1408,7 +1408,7 @@ namespace xio {
  * @c async_read_some operation.
  */
     template<typename AsyncReadStream, typename DynamicBuffer_v2,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read(AsyncReadStream &s, DynamicBuffer_v2 buffers,
@@ -1507,7 +1507,7 @@ namespace xio {
  */
     template<typename AsyncReadStream,
         typename DynamicBuffer_v2, typename CompletionCondition,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read(AsyncReadStream &s, DynamicBuffer_v2 buffers,
@@ -1542,4 +1542,4 @@ namespace xio {
 
 #include <xio/impl/read.h>
 
-#endif // ASIO_READ_HPP
+#endif // XIO_READ_HPP

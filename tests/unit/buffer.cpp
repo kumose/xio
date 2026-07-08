@@ -102,11 +102,11 @@ void test()
     const std::string const_string_data(1024, ' ');
     std::vector<mutable_buffer> mutable_buffer_sequence;
     std::vector<const_buffer> const_buffer_sequence;
-#if defined(ASIO_HAS_STD_STRING_VIEW)
+#if defined(XIO_HAS_STD_STRING_VIEW)
     std::string_view string_view_data(string_data);
-#elif defined(ASIO_HAS_STD_EXPERIMENTAL_STRING_VIEW)
+#elif defined(XIO_HAS_STD_EXPERIMENTAL_STRING_VIEW)
     std::experimental::std::string_view string_view_data(string_data);
-#endif // defined(ASIO_HAS_STD_EXPERIMENTAL_STRING_VIEW)
+#endif // defined(XIO_HAS_STD_EXPERIMENTAL_STRING_VIEW)
     mutable_contiguous_container<char> mutable_contiguous_data;
     const mutable_contiguous_container<char> const_mutable_contiguous_data;
     const_contiguous_container<char> const_contiguous_data;
@@ -203,10 +203,10 @@ void test()
     mb1 = buffer(string_data, 1024);
     cb1 = buffer(const_string_data);
     cb1 = buffer(const_string_data, 1024);
-#if defined(ASIO_HAS_STRING_VIEW)
+#if defined(XIO_HAS_STRING_VIEW)
     cb1 = buffer(string_view_data);
     cb1 = buffer(string_view_data, 1024);
-#endif // defined(ASIO_HAS_STRING_VIEW)
+#endif // defined(XIO_HAS_STRING_VIEW)
     mb1 = buffer(mutable_contiguous_data);
     mb1 = buffer(mutable_contiguous_data, 1024);
     cb1 = buffer(const_mutable_contiguous_data);
@@ -272,7 +272,7 @@ void test()
     std::size_t size20 = db3.max_size();
     (void)size20;
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
     dynamic_string_buffer<char, std::string::traits_type,
       std::string::allocator_type>::const_buffers_type
         cb7 = db1.data();
@@ -291,7 +291,7 @@ void test()
 
     db1.commit(1024);
     db3.commit(1024);
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     dynamic_string_buffer<char, std::string::traits_type,
       std::string::allocator_type>::mutable_buffers_type
@@ -344,15 +344,15 @@ void test()
   mutable_buffer mb1 = xio::buffer(dest_data);
   mutable_buffer mb2 = xio::buffer(source_data);
   std::size_t n = buffer_copy(mb1, mb2);
-  ASIO_CHECK(n == sizeof(source_data));
-  ASIO_CHECK(memcmp(dest_data, source_data, n) == 0);
+  XIO_CHECK(n == sizeof(source_data));
+  XIO_CHECK(memcmp(dest_data, source_data, n) == 0);
 
   memset(dest_data, 0, sizeof(dest_data));
   mb1 = xio::buffer(dest_data);
   const_buffer cb1 = xio::buffer(source_data);
   n = buffer_copy(mb1, cb1);
-  ASIO_CHECK(n == sizeof(source_data));
-  ASIO_CHECK(memcmp(dest_data, source_data, n) == 0);
+  XIO_CHECK(n == sizeof(source_data));
+  XIO_CHECK(memcmp(dest_data, source_data, n) == 0);
 
   memset(dest_data, 0, sizeof(dest_data));
   mb1 = xio::buffer(dest_data);
@@ -360,8 +360,8 @@ void test()
   mv1.push_back(xio::buffer(source_data, 5));
   mv1.push_back(xio::buffer(source_data) + 5);
   n = buffer_copy(mb1, mv1);
-  ASIO_CHECK(n == sizeof(source_data));
-  ASIO_CHECK(memcmp(dest_data, source_data, n) == 0);
+  XIO_CHECK(n == sizeof(source_data));
+  XIO_CHECK(memcmp(dest_data, source_data, n) == 0);
 
   memset(dest_data, 0, sizeof(dest_data));
   mb1 = xio::buffer(dest_data);
@@ -369,8 +369,8 @@ void test()
   cv1.push_back(xio::buffer(source_data, 6));
   cv1.push_back(xio::buffer(source_data) + 6);
   n = buffer_copy(mb1, cv1);
-  ASIO_CHECK(n == sizeof(source_data));
-  ASIO_CHECK(memcmp(dest_data, source_data, n) == 0);
+  XIO_CHECK(n == sizeof(source_data));
+  XIO_CHECK(memcmp(dest_data, source_data, n) == 0);
 
   memset(dest_data, 0, sizeof(dest_data));
   mv1.clear();
@@ -378,8 +378,8 @@ void test()
   mv1.push_back(xio::buffer(dest_data) + 7);
   cb1 = xio::buffer(source_data);
   n = buffer_copy(mv1, cb1);
-  ASIO_CHECK(n == sizeof(source_data));
-  ASIO_CHECK(memcmp(dest_data, source_data, n) == 0);
+  XIO_CHECK(n == sizeof(source_data));
+  XIO_CHECK(memcmp(dest_data, source_data, n) == 0);
 
   memset(dest_data, 0, sizeof(dest_data));
   mv1.clear();
@@ -389,22 +389,22 @@ void test()
   cv1.push_back(xio::buffer(source_data, 8));
   cv1.push_back(xio::buffer(source_data) + 8);
   n = buffer_copy(mv1, cv1);
-  ASIO_CHECK(n == sizeof(source_data));
-  ASIO_CHECK(memcmp(dest_data, source_data, n) == 0);
+  XIO_CHECK(n == sizeof(source_data));
+  XIO_CHECK(memcmp(dest_data, source_data, n) == 0);
 
   memset(dest_data, 0, sizeof(dest_data));
   mb1 = xio::buffer(dest_data);
   mb2 = xio::buffer(source_data);
   n = buffer_copy(mb1, mb2, 10);
-  ASIO_CHECK(n == 10);
-  ASIO_CHECK(memcmp(dest_data, source_data, n) == 0);
+  XIO_CHECK(n == 10);
+  XIO_CHECK(memcmp(dest_data, source_data, n) == 0);
 
   memset(dest_data, 0, sizeof(dest_data));
   mb1 = xio::buffer(dest_data);
   cb1 = xio::buffer(source_data);
   n = buffer_copy(mb1, cb1, 10);
-  ASIO_CHECK(n == 10);
-  ASIO_CHECK(memcmp(dest_data, source_data, n) == 0);
+  XIO_CHECK(n == 10);
+  XIO_CHECK(memcmp(dest_data, source_data, n) == 0);
 
   memset(dest_data, 0, sizeof(dest_data));
   mb1 = xio::buffer(dest_data);
@@ -412,8 +412,8 @@ void test()
   mv1.push_back(xio::buffer(source_data, 5));
   mv1.push_back(xio::buffer(source_data) + 5);
   n = buffer_copy(mb1, mv1, 10);
-  ASIO_CHECK(n == 10);
-  ASIO_CHECK(memcmp(dest_data, source_data, n) == 0);
+  XIO_CHECK(n == 10);
+  XIO_CHECK(memcmp(dest_data, source_data, n) == 0);
 
   memset(dest_data, 0, sizeof(dest_data));
   mb1 = xio::buffer(dest_data);
@@ -421,8 +421,8 @@ void test()
   cv1.push_back(xio::buffer(source_data, 6));
   cv1.push_back(xio::buffer(source_data) + 6);
   n = buffer_copy(mb1, cv1, 10);
-  ASIO_CHECK(n == 10);
-  ASIO_CHECK(memcmp(dest_data, source_data, n) == 0);
+  XIO_CHECK(n == 10);
+  XIO_CHECK(memcmp(dest_data, source_data, n) == 0);
 
   memset(dest_data, 0, sizeof(dest_data));
   mv1.clear();
@@ -430,8 +430,8 @@ void test()
   mv1.push_back(xio::buffer(dest_data) + 7);
   cb1 = xio::buffer(source_data);
   n = buffer_copy(mv1, cb1, 10);
-  ASIO_CHECK(n == 10);
-  ASIO_CHECK(memcmp(dest_data, source_data, n) == 0);
+  XIO_CHECK(n == 10);
+  XIO_CHECK(memcmp(dest_data, source_data, n) == 0);
 
   memset(dest_data, 0, sizeof(dest_data));
   mv1.clear();
@@ -441,8 +441,8 @@ void test()
   cv1.push_back(xio::buffer(source_data, 8));
   cv1.push_back(xio::buffer(source_data) + 8);
   n = buffer_copy(mv1, cv1, 10);
-  ASIO_CHECK(n == 10);
-  ASIO_CHECK(memcmp(dest_data, source_data, n) == 0);
+  XIO_CHECK(n == 10);
+  XIO_CHECK(memcmp(dest_data, source_data, n) == 0);
 }
 
 } // namespace buffer_copy_runtime
@@ -565,115 +565,115 @@ struct invalid_mutable_f
 
 void test()
 {
-  ASIO_CHECK(is_const_buffer_sequence<const_buffer>::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<const_buffer>::value);
+  XIO_CHECK(is_const_buffer_sequence<const_buffer>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<const_buffer>::value);
 
   const_buffer b1;
-  ASIO_CHECK(buffer_sequence_begin(b1) == &b1);
-  ASIO_CHECK(buffer_sequence_end(b1) == &b1 + 1);
+  XIO_CHECK(buffer_sequence_begin(b1) == &b1);
+  XIO_CHECK(buffer_sequence_end(b1) == &b1 + 1);
 
-  ASIO_CHECK(is_const_buffer_sequence<mutable_buffer>::value);
-  ASIO_CHECK(is_mutable_buffer_sequence<mutable_buffer>::value);
+  XIO_CHECK(is_const_buffer_sequence<mutable_buffer>::value);
+  XIO_CHECK(is_mutable_buffer_sequence<mutable_buffer>::value);
 
   mutable_buffer b2;
-  ASIO_CHECK(buffer_sequence_begin(b2) == &b2);
-  ASIO_CHECK(buffer_sequence_end(b2) == &b2 + 1);
+  XIO_CHECK(buffer_sequence_begin(b2) == &b2);
+  XIO_CHECK(buffer_sequence_end(b2) == &b2 + 1);
 
-  ASIO_CHECK(is_const_buffer_sequence<vector<const_buffer> >::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<vector<const_buffer> >::value);
+  XIO_CHECK(is_const_buffer_sequence<vector<const_buffer> >::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<vector<const_buffer> >::value);
 
   vector<const_buffer> b3;
-  ASIO_CHECK(buffer_sequence_begin(b3) == b3.begin());
-  ASIO_CHECK(buffer_sequence_end(b3) == b3.end());
+  XIO_CHECK(buffer_sequence_begin(b3) == b3.begin());
+  XIO_CHECK(buffer_sequence_end(b3) == b3.end());
 
-  ASIO_CHECK(is_const_buffer_sequence<vector<mutable_buffer> >::value);
-  ASIO_CHECK(is_mutable_buffer_sequence<vector<mutable_buffer> >::value);
+  XIO_CHECK(is_const_buffer_sequence<vector<mutable_buffer> >::value);
+  XIO_CHECK(is_mutable_buffer_sequence<vector<mutable_buffer> >::value);
 
   vector<mutable_buffer> b4;
-  ASIO_CHECK(buffer_sequence_begin(b4) == b4.begin());
-  ASIO_CHECK(buffer_sequence_end(b4) == b4.end());
+  XIO_CHECK(buffer_sequence_begin(b4) == b4.begin());
+  XIO_CHECK(buffer_sequence_end(b4) == b4.end());
 
-  ASIO_CHECK(is_const_buffer_sequence<valid_const_a>::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<valid_const_a>::value);
+  XIO_CHECK(is_const_buffer_sequence<valid_const_a>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<valid_const_a>::value);
 
   valid_const_a b5;
-  ASIO_CHECK(buffer_sequence_begin(b5) == b5.begin());
-  ASIO_CHECK(buffer_sequence_end(b5) == b5.end());
+  XIO_CHECK(buffer_sequence_begin(b5) == b5.begin());
+  XIO_CHECK(buffer_sequence_end(b5) == b5.end());
 
-  ASIO_CHECK(is_const_buffer_sequence<valid_const_b>::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<valid_const_b>::value);
+  XIO_CHECK(is_const_buffer_sequence<valid_const_b>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<valid_const_b>::value);
 
   valid_const_b b6;
-  ASIO_CHECK(buffer_sequence_begin(b6) == b6.begin());
-  ASIO_CHECK(buffer_sequence_end(b6) == b6.end());
+  XIO_CHECK(buffer_sequence_begin(b6) == b6.begin());
+  XIO_CHECK(buffer_sequence_end(b6) == b6.end());
 
-  ASIO_CHECK(is_const_buffer_sequence<valid_mutable_a>::value);
-  ASIO_CHECK(is_mutable_buffer_sequence<valid_mutable_a>::value);
+  XIO_CHECK(is_const_buffer_sequence<valid_mutable_a>::value);
+  XIO_CHECK(is_mutable_buffer_sequence<valid_mutable_a>::value);
 
   valid_mutable_a b7;
-  ASIO_CHECK(buffer_sequence_begin(b7) == b7.begin());
-  ASIO_CHECK(buffer_sequence_end(b7) == b7.end());
+  XIO_CHECK(buffer_sequence_begin(b7) == b7.begin());
+  XIO_CHECK(buffer_sequence_end(b7) == b7.end());
 
-  ASIO_CHECK(is_const_buffer_sequence<valid_mutable_b>::value);
-  ASIO_CHECK(is_mutable_buffer_sequence<valid_mutable_b>::value);
+  XIO_CHECK(is_const_buffer_sequence<valid_mutable_b>::value);
+  XIO_CHECK(is_mutable_buffer_sequence<valid_mutable_b>::value);
 
   valid_mutable_b b8;
-  ASIO_CHECK(buffer_sequence_begin(b8) == b8.begin());
-  ASIO_CHECK(buffer_sequence_end(b8) == b8.end());
+  XIO_CHECK(buffer_sequence_begin(b8) == b8.begin());
+  XIO_CHECK(buffer_sequence_end(b8) == b8.end());
 
-  ASIO_CHECK(is_const_buffer_sequence<
+  XIO_CHECK(is_const_buffer_sequence<
       custom_const_buffer_sequence>::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<
+  XIO_CHECK(!is_mutable_buffer_sequence<
       custom_const_buffer_sequence>::value);
 
   custom_const_buffer_sequence b11;
-  ASIO_CHECK(buffer_sequence_begin(b11) == &b11);
-  ASIO_CHECK(buffer_sequence_end(b11) == &b11 + 1);
+  XIO_CHECK(buffer_sequence_begin(b11) == &b11);
+  XIO_CHECK(buffer_sequence_end(b11) == &b11 + 1);
 
-  ASIO_CHECK(is_const_buffer_sequence<
+  XIO_CHECK(is_const_buffer_sequence<
       custom_mutable_buffer_sequence>::value);
-  ASIO_CHECK(is_mutable_buffer_sequence<
+  XIO_CHECK(is_mutable_buffer_sequence<
       custom_mutable_buffer_sequence>::value);
 
   custom_mutable_buffer_sequence b12;
-  ASIO_CHECK(buffer_sequence_begin(b12) == &b12);
-  ASIO_CHECK(buffer_sequence_end(b12) == &b12 + 1);
+  XIO_CHECK(buffer_sequence_begin(b12) == &b12);
+  XIO_CHECK(buffer_sequence_end(b12) == &b12 + 1);
 
-  ASIO_CHECK(!is_const_buffer_sequence<invalid_const_a>::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_const_a>::value);
+  XIO_CHECK(!is_const_buffer_sequence<invalid_const_a>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_const_a>::value);
 
-  ASIO_CHECK(!is_const_buffer_sequence<invalid_const_b>::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_const_b>::value);
+  XIO_CHECK(!is_const_buffer_sequence<invalid_const_b>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_const_b>::value);
 
-  ASIO_CHECK(!is_const_buffer_sequence<invalid_const_c>::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_const_c>::value);
+  XIO_CHECK(!is_const_buffer_sequence<invalid_const_c>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_const_c>::value);
 
-  ASIO_CHECK(!is_const_buffer_sequence<invalid_const_d>::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_const_d>::value);
+  XIO_CHECK(!is_const_buffer_sequence<invalid_const_d>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_const_d>::value);
 
-  ASIO_CHECK(!is_const_buffer_sequence<invalid_const_e>::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_const_e>::value);
+  XIO_CHECK(!is_const_buffer_sequence<invalid_const_e>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_const_e>::value);
 
-  ASIO_CHECK(!is_const_buffer_sequence<invalid_const_f>::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_const_f>::value);
+  XIO_CHECK(!is_const_buffer_sequence<invalid_const_f>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_const_f>::value);
 
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_a>::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_a>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_a>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_a>::value);
 
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_b>::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_b>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_b>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_b>::value);
 
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_c>::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_c>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_c>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_c>::value);
 
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_d>::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_d>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_d>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_d>::value);
 
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_e>::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_e>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_e>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_e>::value);
 
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_f>::value);
-  ASIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_f>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_f>::value);
+  XIO_CHECK(!is_mutable_buffer_sequence<invalid_mutable_f>::value);
 }
 
 } // namespace buffer_sequence
@@ -682,65 +682,65 @@ namespace buffer_literals {
 
 void test()
 {
-#if defined(ASIO_HAS_USER_DEFINED_LITERALS)
+#if defined(XIO_HAS_USER_DEFINED_LITERALS)
   using namespace xio::buffer_literals;
   using namespace std; // For memcmp.
 
   xio::const_buffer b1 = ""_buf;
-  ASIO_CHECK(b1.size() == 0);
+  XIO_CHECK(b1.size() == 0);
 
   xio::const_buffer b2 = "hello"_buf;
-  ASIO_CHECK(b2.size() == 5);
-  ASIO_CHECK(memcmp(b2.data(), "hello", 5) == 0);
+  XIO_CHECK(b2.size() == 5);
+  XIO_CHECK(memcmp(b2.data(), "hello", 5) == 0);
 
   xio::const_buffer b3 = 0x00_buf;
-  ASIO_CHECK(b3.size() == 1);
-  ASIO_CHECK(memcmp(b3.data(), "\x00", 1) == 0);
+  XIO_CHECK(b3.size() == 1);
+  XIO_CHECK(memcmp(b3.data(), "\x00", 1) == 0);
 
   xio::const_buffer b4 = 0X01_buf;
-  ASIO_CHECK(b4.size() == 1);
-  ASIO_CHECK(memcmp(b4.data(), "\x01", 1) == 0);
+  XIO_CHECK(b4.size() == 1);
+  XIO_CHECK(memcmp(b4.data(), "\x01", 1) == 0);
 
   xio::const_buffer b5 = 0xaB_buf;
-  ASIO_CHECK(b5.size() == 1);
-  ASIO_CHECK(memcmp(b5.data(), "\xab", 1) == 0);
+  XIO_CHECK(b5.size() == 1);
+  XIO_CHECK(memcmp(b5.data(), "\xab", 1) == 0);
 
   xio::const_buffer b6 = 0xABcd_buf;
-  ASIO_CHECK(b6.size() == 2);
-  ASIO_CHECK(memcmp(b6.data(), "\xab\xcd", 2) == 0);
+  XIO_CHECK(b6.size() == 2);
+  XIO_CHECK(memcmp(b6.data(), "\xab\xcd", 2) == 0);
 
   xio::const_buffer b7 = 0x01ab01cd01ef01ba01dc01fe_buf;
-  ASIO_CHECK(b7.size() == 12);
-  ASIO_CHECK(memcmp(b7.data(),
+  XIO_CHECK(b7.size() == 12);
+  XIO_CHECK(memcmp(b7.data(),
         "\x01\xab\x01\xcd\x01\xef\x01\xba\x01\xdc\x01\xfe", 12) == 0);
 
   xio::const_buffer b8 = 0b00000000_buf;
-  ASIO_CHECK(b8.size() == 1);
-  ASIO_CHECK(memcmp(b8.data(), "\x00", 1) == 0);
+  XIO_CHECK(b8.size() == 1);
+  XIO_CHECK(memcmp(b8.data(), "\x00", 1) == 0);
 
   xio::const_buffer b9 = 0B00000001_buf;
-  ASIO_CHECK(b9.size() == 1);
-  ASIO_CHECK(memcmp(b9.data(), "\x01", 1) == 0);
+  XIO_CHECK(b9.size() == 1);
+  XIO_CHECK(memcmp(b9.data(), "\x01", 1) == 0);
 
   xio::const_buffer b10 = 0B11111111_buf;
-  ASIO_CHECK(b10.size() == 1);
-  ASIO_CHECK(memcmp(b10.data(), "\xFF", 1) == 0);
+  XIO_CHECK(b10.size() == 1);
+  XIO_CHECK(memcmp(b10.data(), "\xFF", 1) == 0);
 
   xio::const_buffer b11 = 0b1111000000001111_buf;
-  ASIO_CHECK(b11.size() == 2);
-  ASIO_CHECK(memcmp(b11.data(), "\xF0\x0F", 2) == 0);
-#endif // (defined(ASIO_HAS_USER_DEFINED_LITERALS)
+  XIO_CHECK(b11.size() == 2);
+  XIO_CHECK(memcmp(b11.data(), "\xF0\x0F", 2) == 0);
+#endif // (defined(XIO_HAS_USER_DEFINED_LITERALS)
 }
 
 } // namespace buffer_literals
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "buffer",
-  ASIO_COMPILE_TEST_CASE(buffer_compile::test)
-  ASIO_TEST_CASE(buffer_copy_runtime::test)
-  ASIO_TEST_CASE(buffer_sequence::test)
-  ASIO_TEST_CASE(buffer_literals::test)
+  XIO_COMPILE_TEST_CASE(buffer_compile::test)
+  XIO_TEST_CASE(buffer_copy_runtime::test)
+  XIO_TEST_CASE(buffer_sequence::test)
+  XIO_TEST_CASE(buffer_literals::test)
 )

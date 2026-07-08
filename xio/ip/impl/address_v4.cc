@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_IMPL_ADDRESS_V4_IPP
-#define ASIO_IP_IMPL_ADDRESS_V4_IPP
+#ifndef XIO_IP_IMPL_ADDRESS_V4_IPP
+#define XIO_IP_IMPL_ADDRESS_V4_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -70,7 +70,7 @@ namespace xio {
             char addr_str[xio::detail::max_addr_v4_str_len];
             const char *addr =
                     xio::detail::socket_ops::inet_ntop(
-                        ASIO_OS_DEF(AF_INET), &addr_, addr_str,
+                        XIO_OS_DEF(AF_INET), &addr_, addr_str,
                         xio::detail::max_addr_v4_str_len, 0, ec);
             if (addr == 0)
                 xio::detail::throw_error(ec);
@@ -100,7 +100,7 @@ namespace xio {
                                    xio::error_code &ec) noexcept {
             address_v4::bytes_type bytes;
             if (xio::detail::socket_ops::inet_pton(
-                    ASIO_OS_DEF(AF_INET), str, &bytes, 0, ec) <= 0)
+                    XIO_OS_DEF(AF_INET), str, &bytes, 0, ec) <= 0)
                 return address_v4();
             return address_v4(bytes);
         }
@@ -129,4 +129,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_IMPL_ADDRESS_V4_IPP
+#endif // XIO_IP_IMPL_ADDRESS_V4_IPP

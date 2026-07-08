@@ -15,7 +15,7 @@
 
 #include "unit_test.hpp"
 
-#if defined(ASIO_HAS_CO_AWAIT)
+#if defined(XIO_HAS_CO_AWAIT)
 
 #include <stdexcept>
 #include <xio/any_completion_handler.h>
@@ -46,11 +46,11 @@ void test_co_spawn_with_any_completion_handler()
           called = true;
         }));
 
-  ASIO_CHECK(!called);
+  XIO_CHECK(!called);
 
   ctx.run();
 
-  ASIO_CHECK(called);
+  XIO_CHECK(called);
 
   int result = 0;
   xio::co_spawn(ctx, int_returning_coroutine(),
@@ -60,12 +60,12 @@ void test_co_spawn_with_any_completion_handler()
           result = i;
         }));
 
-  ASIO_CHECK(result == 0);
+  XIO_CHECK(result == 0);
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(result == 42);
+  XIO_CHECK(result == 42);
 }
 
 void test_co_spawn_immediate_cancel()
@@ -83,14 +83,14 @@ void test_co_spawn_immediate_cancel()
           called = true;
         }));
 
-  ASIO_CHECK(!called);
-  ASIO_CHECK(result == nullptr);
+  XIO_CHECK(!called);
+  XIO_CHECK(result == nullptr);
 
   sig.emit(xio::cancellation_type::all);
   ctx.run();
 
-  ASIO_CHECK(called);
-  ASIO_CHECK(result != nullptr);
+  XIO_CHECK(called);
+  XIO_CHECK(result != nullptr);
 
   result = nullptr;
   called = false;
@@ -98,20 +98,20 @@ void test_co_spawn_immediate_cancel()
       xio::bind_cancellation_slot(sig.slot(),
         [&](std::exception_ptr e, int i)
         {
-          ASIO_CHECK(i != 42);
+          XIO_CHECK(i != 42);
           result = e;
           called = true;
         }));
 
-  ASIO_CHECK(!called);
-  ASIO_CHECK(result == nullptr);
+  XIO_CHECK(!called);
+  XIO_CHECK(result == nullptr);
 
   sig.emit(xio::cancellation_type::all);
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(called);
-  ASIO_CHECK(result != nullptr);
+  XIO_CHECK(called);
+  XIO_CHECK(result != nullptr);
 }
 
 xio::awaitable<void> void_returning_dispatch_coroutine()
@@ -140,12 +140,12 @@ void test_co_spawn_with_immediate_completion_via_dispatch()
               called = true;
             });
 
-        ASIO_CHECK(!called);
+        XIO_CHECK(!called);
       });
 
   ctx.run();
 
-  ASIO_CHECK(called);
+  XIO_CHECK(called);
 
   int result = 0;
   xio::post(ctx,
@@ -157,29 +157,29 @@ void test_co_spawn_with_immediate_completion_via_dispatch()
               result = i;
             });
 
-        ASIO_CHECK(result == 0);
+        XIO_CHECK(result == 0);
       });
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(result == 42);
+  XIO_CHECK(result == 42);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "co_spawn",
-  ASIO_TEST_CASE(test_co_spawn_with_any_completion_handler)
-  ASIO_TEST_CASE(test_co_spawn_immediate_cancel)
-  ASIO_TEST_CASE(test_co_spawn_with_immediate_completion_via_dispatch)
+  XIO_TEST_CASE(test_co_spawn_with_any_completion_handler)
+  XIO_TEST_CASE(test_co_spawn_immediate_cancel)
+  XIO_TEST_CASE(test_co_spawn_with_immediate_completion_via_dispatch)
 )
 
-#else // defined(ASIO_HAS_CO_AWAIT)
+#else // defined(XIO_HAS_CO_AWAIT)
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "co_spawn",
-  ASIO_TEST_CASE(null_test)
+  XIO_TEST_CASE(null_test)
 )
 
-#endif // defined(ASIO_HAS_CO_AWAIT)
+#endif // defined(XIO_HAS_CO_AWAIT)

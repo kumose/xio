@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXPERIMENTAL_PARALLEL_GROUP_HPP
-#define ASIO_EXPERIMENTAL_PARALLEL_GROUP_HPP
+#ifndef XIO_EXPERIMENTAL_PARALLEL_GROUP_HPP
+#define XIO_EXPERIMENTAL_PARALLEL_GROUP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -92,13 +92,13 @@ namespace xio {
             template<typename R, typename... Args, typename Allocator>
             struct ranged_parallel_group_signature<R(Args...), Allocator> {
                 typedef std::vector<std::size_t,
-                    ASIO_REBIND_ALLOC(Allocator, std::size_t)> order_type;
+                    XIO_REBIND_ALLOC(Allocator, std::size_t)> order_type;
 
                 typedef R raw_type(
-                    std::vector<Args, ASIO_REBIND_ALLOC(Allocator, Args)>...);
+                    std::vector<Args, XIO_REBIND_ALLOC(Allocator, Args)>...);
 
                 typedef R type(order_type,
-                               std::vector<Args, ASIO_REBIND_ALLOC(Allocator, Args)>...);
+                               std::vector<Args, XIO_REBIND_ALLOC(Allocator, Args)>...);
             };
 
             template<typename Condition, typename Handler,
@@ -121,15 +121,9 @@ namespace xio {
 /// operations that can be used with with @c make_parallel_group.
         template<typename T>
         struct is_async_operation_range {
-#if defined(GENERATING_DOCUMENTATION)
-            /// The value member is true if the type may be used as a range of
-  /// asynchronous operations.
-            static const bool value;
-#else
             enum {
                 value = detail::parallel_group_has_iterator_typedef<T>::value
             };
-#endif
         };
 
         /// A group of asynchronous operations that may be launched in parallel.
@@ -187,7 +181,7 @@ namespace xio {
    * @li xio::experimental::wait_for_one_success
    */
             template<typename CancellationCondition,
-                ASIO_COMPLETION_TOKEN_FOR(signature) CompletionToken>
+                XIO_COMPLETION_TOKEN_FOR(signature) CompletionToken>
             auto async_wait(CancellationCondition cancellation_condition,
                             CompletionToken &&token)
                 -> decltype(
@@ -343,7 +337,7 @@ namespace xio {
    * @li xio::experimental::wait_for_one_success
    */
             template<typename CancellationCondition,
-                ASIO_COMPLETION_TOKEN_FOR(signature) CompletionToken>
+                XIO_COMPLETION_TOKEN_FOR(signature) CompletionToken>
             auto async_wait(CancellationCondition cancellation_condition,
                             CompletionToken &&token)
                 -> decltype(
@@ -458,4 +452,4 @@ namespace xio {
 
 #include <xio/experimental/impl/parallel_group.h>
 
-#endif // ASIO_EXPERIMENTAL_PARALLEL_GROUP_HPP
+#endif // XIO_EXPERIMENTAL_PARALLEL_GROUP_HPP

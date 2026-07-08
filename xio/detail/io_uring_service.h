@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IO_URING_SERVICE_HPP
-#define ASIO_DETAIL_IO_URING_SERVICE_HPP
+#ifndef XIO_DETAIL_IO_URING_SERVICE_HPP
+#define XIO_DETAIL_IO_URING_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
 
 #include <atomic>
 #include <liburing.h>
@@ -79,13 +79,13 @@ namespace xio {
                 bool cancel_requested_;
                 std::size_t first_op_ring_index_;
 
-                ASIO_DECL io_queue();
+                XIO_DECL io_queue();
 
                 void set_result(int r) { task_result_ = static_cast<unsigned>(r); }
 
-    ASIO_DECL operation *perform_io(int result);
+    XIO_DECL operation *perform_io(int result);
 
-    ASIO_DECL static void do_complete(void *owner, operation *base,
+    XIO_DECL static void do_complete(void *owner, operation *base,
                                       const xio::error_code &ec, std::size_t bytes_transferred);
             };
 
@@ -99,68 +99,68 @@ namespace xio {
                 io_queue queues_[max_ops];
                 bool shutdown_;
 
-                ASIO_DECL io_object(bool locking, int spin_count);
+                XIO_DECL io_object(bool locking, int spin_count);
             };
 
             // Per I/O object data.
             typedef io_object *per_io_object_data;
 
             // Constructor.
-            ASIO_DECL io_uring_service(xio::execution_context &ctx);
+            XIO_DECL io_uring_service(xio::execution_context &ctx);
 
             // Destructor.
-            ASIO_DECL ~io_uring_service();
+            XIO_DECL ~io_uring_service();
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void shutdown();
+  XIO_DECL void shutdown();
 
             // Recreate internal state following a fork.
-  ASIO_DECL void notify_fork(
+  XIO_DECL void notify_fork(
                 xio::execution_context::fork_event fork_ev);
 
             // Initialise the task.
-  ASIO_DECL void init_task();
+  XIO_DECL void init_task();
 
             // Register an I/O object with io_uring.
-  ASIO_DECL void register_io_object(io_object *&io_obj);
+  XIO_DECL void register_io_object(io_object *&io_obj);
 
             // Register an internal I/O object with io_uring.
-  ASIO_DECL void register_internal_io_object(
+  XIO_DECL void register_internal_io_object(
                 io_object *&io_obj, int op_type, io_uring_operation *op);
 
             // Register buffers with io_uring.
-  ASIO_DECL void register_buffers(const ::iovec *v, unsigned n);
+  XIO_DECL void register_buffers(const ::iovec *v, unsigned n);
 
             // Unregister buffers from io_uring.
-  ASIO_DECL void unregister_buffers();
+  XIO_DECL void unregister_buffers();
 
             // Post an operation for immediate completion.
             void post_immediate_completion(operation *op, bool is_continuation);
 
             // Start a new operation. The operation will be prepared and submitted to the
             // io_uring when it is at the head of its I/O operation queue.
-  ASIO_DECL void start_op(int op_type, per_io_object_data &io_obj,
+  XIO_DECL void start_op(int op_type, per_io_object_data &io_obj,
                           io_uring_operation *op, bool is_continuation);
 
             // Cancel all operations associated with the given I/O object. The handlers
             // associated with the I/O object will be invoked with the operation_aborted
             // error.
-  ASIO_DECL void cancel_ops(per_io_object_data &io_obj);
+  XIO_DECL void cancel_ops(per_io_object_data &io_obj);
 
             // Cancel all operations associated with the given I/O object and key. The
             // handlers associated with the object and key will be invoked with the
             // operation_aborted error.
-  ASIO_DECL void cancel_ops_by_key(per_io_object_data &io_obj,
+  XIO_DECL void cancel_ops_by_key(per_io_object_data &io_obj,
                                    int op_type, void *cancellation_key);
 
             // Cancel any operations that are running against the I/O object and remove
             // its registration from the service. The service resources associated with
             // the I/O object must be released by calling cleanup_io_object.
-  ASIO_DECL void deregister_io_object(per_io_object_data &io_obj);
+  XIO_DECL void deregister_io_object(per_io_object_data &io_obj);
 
             // Perform any post-deregistration cleanup tasks associated with the I/O
             // object.
-  ASIO_DECL void cleanup_io_object(per_io_object_data &io_obj);
+  XIO_DECL void cleanup_io_object(per_io_object_data &io_obj);
 
             // Add a new timer queue to the reactor.
             template<typename TimeTraits, typename Allocator>
@@ -199,10 +199,10 @@ namespace xio {
 
             // Wait on io_uring once until interrupted or events are ready to be
             // dispatched.
-  ASIO_DECL void run(long usec, op_queue<operation> &ops);
+  XIO_DECL void run(long usec, op_queue<operation> &ops);
 
             // Interrupt the io_uring wait.
-  ASIO_DECL void interrupt();
+  XIO_DECL void interrupt();
 
         private:
             // The default hint to pass to io_uring_queue_init to size its data
@@ -217,60 +217,60 @@ namespace xio {
             class event_fd_read_op;
 
             // Initialise the ring.
-  ASIO_DECL void init_ring();
+  XIO_DECL void init_ring();
 
             // Register the eventfd descriptor for readiness notifications.
-  ASIO_DECL void register_with_reactor();
+  XIO_DECL void register_with_reactor();
 
             // Allocate a new I/O object.
-  ASIO_DECL io_object *allocate_io_object();
+  XIO_DECL io_object *allocate_io_object();
 
             // Free an existing I/O object.
-  ASIO_DECL void free_io_object(io_object *s);
+  XIO_DECL void free_io_object(io_object *s);
 
             // Helper function to cancel all operations associated with the given I/O
             // object. This function must be called while the I/O object's mutex is held.
             // Returns true if there are operations for which cancellation is pending.
-  ASIO_DECL bool do_cancel_ops(
+  XIO_DECL bool do_cancel_ops(
                 per_io_object_data &io_obj, op_queue<operation> &ops);
 
             // Helper function to add a new timer queue.
-  ASIO_DECL void do_add_timer_queue(timer_queue_base &queue);
+  XIO_DECL void do_add_timer_queue(timer_queue_base &queue);
 
             // Helper function to remove a timer queue.
-  ASIO_DECL void do_remove_timer_queue(timer_queue_base &queue);
+  XIO_DECL void do_remove_timer_queue(timer_queue_base &queue);
 
             // Called to recalculate and update the timeout.
-  ASIO_DECL void update_timeout();
+  XIO_DECL void update_timeout();
 
             // Get the current timeout value.
-  ASIO_DECL __kernel_timespec get_timeout() const;
+  XIO_DECL __kernel_timespec get_timeout() const;
 
             // Get the ring index for the current thread.
-            ASIO_DECL std::size_t current_ring_index();
+            XIO_DECL std::size_t current_ring_index();
 
             // Obtain the mutex for timer operations. Always comes from ring 0.
-  ASIO_DECL mutex &timer_mutex();
+  XIO_DECL mutex &timer_mutex();
 
             // Run implementation when using a single ring. No poll needed.
-  ASIO_DECL void run_single_ring(long usec, op_queue<operation> &ops);
+  XIO_DECL void run_single_ring(long usec, op_queue<operation> &ops);
 
             // Run implementation when using multiple rings. Uses poll to identify rings
             // with ready completions.
-  ASIO_DECL void run_multi_ring(long usec, op_queue<operation> &ops);
+  XIO_DECL void run_multi_ring(long usec, op_queue<operation> &ops);
 
             // Get a new submission queue entry, flushing the queue if necessary.
-            ASIO_DECL::io_uring_sqe *get_sqe(std::size_t ring_index);
+            XIO_DECL::io_uring_sqe *get_sqe(std::size_t ring_index);
 
             // Submit pending submission queue entries.
-  ASIO_DECL void submit_sqes(std::size_t ring_index);
+  XIO_DECL void submit_sqes(std::size_t ring_index);
 
             // Post an operation to submit the pending submission queue entries.
-  ASIO_DECL void post_submit_sqes_op(
+  XIO_DECL void post_submit_sqes_op(
                 mutex::scoped_lock &lock, std::size_t ring_index);
 
             // Push an operation to submit the pending submission queue entries.
-  ASIO_DECL void push_submit_sqes_op(
+  XIO_DECL void push_submit_sqes_op(
                 op_queue<operation> &ops, std::size_t ring_index);
 
             // Helper operation to submit pending submission queue entries.
@@ -281,9 +281,9 @@ namespace xio {
                 io_uring_service *service_;
                 std::size_t ring_index_;
 
-                ASIO_DECL submit_sqes_op(io_uring_service *s, std::size_t ring_index);
+                XIO_DECL submit_sqes_op(io_uring_service *s, std::size_t ring_index);
 
-    ASIO_DECL static void do_complete(void *owner, operation *base,
+    XIO_DECL static void do_complete(void *owner, operation *base,
                                       const xio::error_code &ec, std::size_t bytes_transferred);
             };
 
@@ -359,6 +359,6 @@ namespace xio {
 #include <xio/detail/impl/io_uring_service.h>
 
 
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
 
-#endif // ASIO_DETAIL_IO_URING_SERVICE_HPP
+#endif // XIO_DETAIL_IO_URING_SERVICE_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WIN_IOCP_IO_CONTEXT_HPP
-#define ASIO_DETAIL_WIN_IOCP_IO_CONTEXT_HPP
+#ifndef XIO_DETAIL_WIN_IOCP_IO_CONTEXT_HPP
+#define XIO_DETAIL_WIN_IOCP_IO_CONTEXT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 
 #include <limits>
 #include <xio/detail/mutex.h>
@@ -49,44 +49,44 @@ namespace xio {
             };
 
             // Constructor.
-            ASIO_DECL win_iocp_io_context(
+            XIO_DECL win_iocp_io_context(
                 xio::execution_context &ctx, bool own_thread = true);
 
             // Construct as an internal scheduler.
-            ASIO_DECL win_iocp_io_context(internal,
+            XIO_DECL win_iocp_io_context(internal,
                                           xio::execution_context &ctx);
 
             // Destructor.
-            ASIO_DECL ~win_iocp_io_context();
+            XIO_DECL ~win_iocp_io_context();
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void shutdown();
+  XIO_DECL void shutdown();
 
             // Initialise the task. Nothing to do here.
             void init_task() {
             }
 
             // Register a handle with the IO completion port.
-            ASIO_DECL xio::error_code register_handle(
+            XIO_DECL xio::error_code register_handle(
                 HANDLE handle, xio::error_code &ec);
 
             // Run the event loop until stopped or no more work.
-  ASIO_DECL size_t run(xio::error_code &ec);
+  XIO_DECL size_t run(xio::error_code &ec);
 
             // Run until stopped or one operation is performed.
-  ASIO_DECL size_t run_one(xio::error_code &ec);
+  XIO_DECL size_t run_one(xio::error_code &ec);
 
             // Run until timeout, interrupted, or one operation is performed.
-  ASIO_DECL size_t wait_one(long usec, xio::error_code &ec);
+  XIO_DECL size_t wait_one(long usec, xio::error_code &ec);
 
             // Poll for operations without blocking.
-  ASIO_DECL size_t poll(xio::error_code &ec);
+  XIO_DECL size_t poll(xio::error_code &ec);
 
             // Poll for one operation without blocking.
-  ASIO_DECL size_t poll_one(xio::error_code &ec);
+  XIO_DECL size_t poll_one(xio::error_code &ec);
 
             // Stop the event processing loop.
-  ASIO_DECL void stop();
+  XIO_DECL void stop();
 
             // Determine whether the io_context is stopped.
             bool stopped() const {
@@ -110,10 +110,10 @@ namespace xio {
             }
 
             // Return whether a handler can be dispatched immediately.
-  ASIO_DECL bool can_dispatch();
+  XIO_DECL bool can_dispatch();
 
             /// Capture the current exception so it can be rethrown from a run function.
-  ASIO_DECL void capture_current_exception();
+  XIO_DECL void capture_current_exception();
 
             // Request invocation of the given operation and return immediately. Assumes
             // that work_started() has not yet been called for the operation.
@@ -124,11 +124,11 @@ namespace xio {
 
             // Request invocation of the given operation and return immediately. Assumes
             // that work_started() was previously called for the operation.
-  ASIO_DECL void post_deferred_completion(win_iocp_operation *op);
+  XIO_DECL void post_deferred_completion(win_iocp_operation *op);
 
             // Request invocation of the given operation and return immediately. Assumes
             // that work_started() was previously called for the operations.
-  ASIO_DECL void post_deferred_completions(
+  XIO_DECL void post_deferred_completions(
                 op_queue<win_iocp_operation> &ops);
 
             // Request invocation of the given operation using the thread-private queue
@@ -153,23 +153,23 @@ namespace xio {
 
             // Process unfinished operations as part of a shutdown operation. Assumes
             // that work_started() was previously called for the operations.
-  ASIO_DECL void abandon_operations(op_queue<operation> &ops);
+  XIO_DECL void abandon_operations(op_queue<operation> &ops);
 
             // Called after starting an overlapped I/O operation that did not complete
             // immediately. The caller must have already called work_started() prior to
             // starting the operation.
-  ASIO_DECL void on_pending(win_iocp_operation *op);
+  XIO_DECL void on_pending(win_iocp_operation *op);
 
             // Called after starting an overlapped I/O operation that completed
             // immediately. The caller must have already called work_started() prior to
             // starting the operation.
-  ASIO_DECL void on_completion(win_iocp_operation *op,
+  XIO_DECL void on_completion(win_iocp_operation *op,
                                DWORD last_error = 0, DWORD bytes_transferred = 0);
 
             // Called after starting an overlapped I/O operation that completed
             // immediately. The caller must have already called work_started() prior to
             // starting the operation.
-  ASIO_DECL void on_completion(win_iocp_operation *op,
+  XIO_DECL void on_completion(win_iocp_operation *op,
                                const xio::error_code &ec, DWORD bytes_transferred = 0);
 
             // Add a new timer queue to the service.
@@ -219,20 +219,20 @@ typedef ULONG_PTR ulong_ptr_t;
 // Dequeues at most one operation from the I/O completion port, and then
 // executes it. Returns the number of operations that were dequeued (i.e.
 // either 0 or 1).
-  ASIO_DECL size_t do_one(DWORD msec,
+  XIO_DECL size_t do_one(DWORD msec,
                           win_iocp_thread_info &this_thread, xio::error_code &ec);
 
 // Helper to calculate the GetQueuedCompletionStatus timeout.
-  ASIO_DECL static DWORD get_gqcs_timeout();
+  XIO_DECL static DWORD get_gqcs_timeout();
 
 // Helper function to add a new timer queue.
-  ASIO_DECL void do_add_timer_queue(timer_queue_base & queue);
+  XIO_DECL void do_add_timer_queue(timer_queue_base & queue);
 
 // Helper function to remove a timer queue.
-  ASIO_DECL void do_remove_timer_queue(timer_queue_base & queue);
+  XIO_DECL void do_remove_timer_queue(timer_queue_base & queue);
 
 // Called to recalculate and update the timeout.
-  ASIO_DECL void update_timeout();
+  XIO_DECL void update_timeout();
 
 // Helper class to call work_finished() on block exit.
 struct work_finished_on_block_exit;
@@ -333,6 +333,6 @@ xio::detail::thread thread_;
 #include <xio/detail/impl/win_iocp_io_context.h>
 
 
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
-#endif // ASIO_DETAIL_WIN_IOCP_IO_CONTEXT_HPP
+#endif // XIO_DETAIL_WIN_IOCP_IO_CONTEXT_HPP

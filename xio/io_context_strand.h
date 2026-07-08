@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IO_CONTEXT_STRAND_HPP
-#define ASIO_IO_CONTEXT_STRAND_HPP
+#ifndef XIO_IO_CONTEXT_STRAND_HPP
+#define XIO_IO_CONTEXT_STRAND_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,8 +17,8 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_NO_EXTENSIONS) \
-  && !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_EXTENSIONS) \
+  && !defined(XIO_NO_TS_EXECUTORS)
 
 #include <xio/async_result.h>
 #include <xio/detail/handler_type_requirements.h>
@@ -204,7 +204,7 @@ namespace xio {
             (void) a;
         }
 
-#if !defined(ASIO_NO_DEPRECATED)
+#if !defined(XIO_NO_DEPRECATED)
         /// (Deprecated: Use xio::bind_executor().) Create a new handler that
   /// automatically dispatches the wrapped handler on the strand.
         /**
@@ -227,20 +227,16 @@ namespace xio {
    * @code xio::dispatch(strand, boost::bind(f, a1, ... an)); @endcode
    */
         template<typename Handler>
-        ASIO_DEPRECATED_MSG (
+        XIO_DEPRECATED_MSG (
 
         "Use xio::bind_executor()"
         )
-#if defined(GENERATING_DOCUMENTATION)
-        unspecified
-#else
         detail::wrapped_handler<strand, Handler, detail::is_continuation_if_running>
-#endif
         wrap(Handler handler) {
             return detail::wrapped_handler<io_context::strand, Handler,
                 detail::is_continuation_if_running>(*this, handler);
         }
-#endif // !defined(ASIO_NO_DEPRECATED)
+#endif // !defined(XIO_NO_DEPRECATED)
 
         /// Determine whether the strand is running in the current thread.
         /**
@@ -280,7 +276,7 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(ASIO_NO_EXTENSIONS)
-//   && !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_EXTENSIONS)
+//   && !defined(XIO_NO_TS_EXECUTORS)
 
-#endif // ASIO_IO_CONTEXT_STRAND_HPP
+#endif // XIO_IO_CONTEXT_STRAND_HPP

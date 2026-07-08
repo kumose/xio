@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BUFFERS_ITERATOR_HPP
-#define ASIO_BUFFERS_ITERATOR_HPP
+#ifndef XIO_BUFFERS_ITERATOR_HPP
+#define XIO_BUFFERS_ITERATOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -27,8 +27,8 @@
 namespace xio {
 
 
-#if !defined(ASIO_BUFFERS_ITERATOR_FWD_DECL)
-#define ASIO_BUFFERS_ITERATOR_FWD_DECL
+#if !defined(XIO_BUFFERS_ITERATOR_FWD_DECL)
+#define XIO_BUFFERS_ITERATOR_FWD_DECL
 
     // Forward declaration with defaulted arguments.
 
@@ -36,7 +36,7 @@ namespace xio {
     template<typename BufferSequence, typename ByteType = char>
     class buffers_iterator;
 
-#endif // !defined(ASIO_BUFFERS_ITERATOR_FWD_DECL)
+#endif // !defined(XIO_BUFFERS_ITERATOR_FWD_DECL)
 
     namespace detail {
         template<bool IsMutable>
@@ -108,31 +108,11 @@ namespace xio {
         /// The type of the value pointed to by the iterator.
         typedef ByteType value_type;
 
-#if defined(GENERATING_DOCUMENTATION)
-        /// The type of the result of applying operator->() to the iterator.
-        /**
-   * If the buffer sequence stores buffer objects that are convertible to
-   * mutable_buffer, this is a pointer to a non-const ByteType. Otherwise, a
-   * pointer to a const ByteType.
-   */
-        typedef const_or_non_const_ByteType *pointer;
-#else // defined(GENERATING_DOCUMENTATION)
         typedef typename detail::buffers_iterator_types<
             BufferSequence, ByteType>::byte_type *pointer;
-#endif // defined(GENERATING_DOCUMENTATION)
 
-#if defined(GENERATING_DOCUMENTATION)
-        /// The type of the result of applying operator*() to the iterator.
-        /**
-   * If the buffer sequence stores buffer objects that are convertible to
-   * mutable_buffer, this is a reference to a non-const ByteType. Otherwise, a
-   * reference to a const ByteType.
-   */
-        typedef const_or_non_const_ByteType &reference;
-#else // defined(GENERATING_DOCUMENTATION)
         typedef typename detail::buffers_iterator_types<
             BufferSequence, ByteType>::byte_type &reference;
-#endif // defined(GENERATING_DOCUMENTATION)
 
         /// The iterator category.
         typedef std::random_access_iterator_tag iterator_category;
@@ -459,4 +439,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_BUFFERS_ITERATOR_HPP
+#endif // XIO_BUFFERS_ITERATOR_HPP

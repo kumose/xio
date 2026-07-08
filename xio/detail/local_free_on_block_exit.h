@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_LOCAL_FREE_ON_BLOCK_EXIT_HPP
-#define ASIO_DETAIL_LOCAL_FREE_ON_BLOCK_EXIT_HPP
+#ifndef XIO_DETAIL_LOCAL_FREE_ON_BLOCK_EXIT_HPP
+#define XIO_DETAIL_LOCAL_FREE_ON_BLOCK_EXIT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,8 +17,8 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
-#if !defined(ASIO_WINDOWS_APP)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
+#if !defined(XIO_WINDOWS_APP)
 
 #include <xio/detail/noncopyable.h>
 #include <xio/detail/socket_types.h>
@@ -51,7 +51,7 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(ASIO_WINDOWS_APP)
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // !defined(XIO_WINDOWS_APP)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 
-#endif // ASIO_DETAIL_LOCAL_FREE_ON_BLOCK_EXIT_HPP
+#endif // XIO_DETAIL_LOCAL_FREE_ON_BLOCK_EXIT_HPP

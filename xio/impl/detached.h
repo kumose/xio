@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_DETACHED_HPP
-#define ASIO_IMPL_DETACHED_HPP
+#ifndef XIO_IMPL_DETACHED_HPP
+#define XIO_IMPL_DETACHED_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -39,8 +39,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
-
     template<typename... Signatures>
     struct async_result<detached_t, Signatures...> {
         typedef xio::detail::detached_handler completion_handler_type;
@@ -62,11 +60,9 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
-
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_DETACHED_HPP
+#endif // XIO_IMPL_DETACHED_HPP

@@ -35,7 +35,7 @@ awaiter_noexcept(xio::any_io_executor exec)
 {
   xio::steady_timer timer{exec};
   auto ec = co_await timer.async_wait(xio::deferred);
-  ASIO_CHECK(ec == xio::error_code{});
+  XIO_CHECK(ec == xio::error_code{});
   co_return 42;
 }
 
@@ -50,25 +50,25 @@ void stack_test2()
   k.async_resume(
       [&](std::exception_ptr ex, int res)
       {
-        ASIO_CHECK(!ex);
-        ASIO_CHECK(res == 42);
+        XIO_CHECK(!ex);
+        XIO_CHECK(res == 42);
         done = true;
       });
 
   k2.async_resume([&](int res)
        {
-         ASIO_CHECK(res == 42);
+         XIO_CHECK(res == 42);
          done = true;
        });
 
   ctx.run();
-  ASIO_CHECK(done);
+  XIO_CHECK(done);
 }
 
 } // namespace coro
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "coro/use_coro",
-  ASIO_TEST_CASE(::coro::stack_test2)
+  XIO_TEST_CASE(::coro::stack_test2)
 )

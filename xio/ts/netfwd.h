@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_TS_NETFWD_HPP
-#define ASIO_TS_NETFWD_HPP
+#ifndef XIO_TS_NETFWD_HPP
+#define XIO_TS_NETFWD_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,13 +18,11 @@
 #include <xio/detail/config.h>
 #include <chrono>
 
-#if !defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#if !defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 #include <xio/execution/blocking.h>
 #include <xio/execution/outstanding_work.h>
 #include <xio/execution/relationship.h>
-#endif // !defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
-
-#if !defined(GENERATING_DOCUMENTATION)
+#endif // !defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
 #include <xio/detail/push_options.h>
 
@@ -36,33 +34,33 @@ namespace xio {
     template<typename T, typename Executor>
     class executor_binder;
 
-#if !defined(ASIO_EXECUTOR_WORK_GUARD_DECL)
-#define ASIO_EXECUTOR_WORK_GUARD_DECL
+#if !defined(XIO_EXECUTOR_WORK_GUARD_DECL)
+#define XIO_EXECUTOR_WORK_GUARD_DECL
 
     template<typename Executor, typename = void, typename = void>
     class executor_work_guard;
 
-#endif // !defined(ASIO_EXECUTOR_WORK_GUARD_DECL)
+#endif // !defined(XIO_EXECUTOR_WORK_GUARD_DECL)
 
     template<typename Blocking, typename Relationship, typename Allocator>
     class basic_system_executor;
 
-#if defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#if defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
     class executor;
 
     typedef executor any_io_executor;
 
-#else // defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#else // defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
     namespace execution {
-#if !defined(ASIO_EXECUTION_ANY_EXECUTOR_FWD_DECL)
-#define ASIO_EXECUTION_ANY_EXECUTOR_FWD_DECL
+#if !defined(XIO_EXECUTION_ANY_EXECUTOR_FWD_DECL)
+#define XIO_EXECUTION_ANY_EXECUTOR_FWD_DECL
 
         template<typename... SupportableProperties>
         class any_executor;
 
-#endif // !defined(ASIO_EXECUTION_ANY_EXECUTOR_FWD_DECL)
+#endif // !defined(XIO_EXECUTION_ANY_EXECUTOR_FWD_DECL)
 
         template<typename U>
         struct context_as_t;
@@ -73,7 +71,7 @@ namespace xio {
 
     class any_io_executor;
 
-#endif // defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#endif // defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
     template<typename Executor>
     class strand;
@@ -83,15 +81,15 @@ namespace xio {
     template<typename Clock>
     struct wait_traits;
 
-#if !defined(ASIO_BASIC_WAITABLE_TIMER_FWD_DECL)
-#define ASIO_BASIC_WAITABLE_TIMER_FWD_DECL
+#if !defined(XIO_BASIC_WAITABLE_TIMER_FWD_DECL)
+#define XIO_BASIC_WAITABLE_TIMER_FWD_DECL
 
     template<typename Clock,
         typename WaitTraits = wait_traits<Clock>,
         typename Executor = any_io_executor>
     class basic_waitable_timer;
 
-#endif // !defined(ASIO_BASIC_WAITABLE_TIMER_FWD_DECL)
+#endif // !defined(XIO_BASIC_WAITABLE_TIMER_FWD_DECL)
 
     typedef basic_waitable_timer<std::chrono::system_clock> system_timer;
 
@@ -100,41 +98,41 @@ namespace xio {
     typedef basic_waitable_timer<std::chrono::high_resolution_clock>
     high_resolution_timer;
 
-#if !defined(ASIO_BASIC_SOCKET_FWD_DECL)
-#define ASIO_BASIC_SOCKET_FWD_DECL
+#if !defined(XIO_BASIC_SOCKET_FWD_DECL)
+#define XIO_BASIC_SOCKET_FWD_DECL
 
     template<typename Protocol, typename Executor = any_io_executor>
     class basic_socket;
 
-#endif // !defined(ASIO_BASIC_SOCKET_FWD_DECL)
+#endif // !defined(XIO_BASIC_SOCKET_FWD_DECL)
 
-#if !defined(ASIO_BASIC_DATAGRAM_SOCKET_FWD_DECL)
-#define ASIO_BASIC_DATAGRAM_SOCKET_FWD_DECL
+#if !defined(XIO_BASIC_DATAGRAM_SOCKET_FWD_DECL)
+#define XIO_BASIC_DATAGRAM_SOCKET_FWD_DECL
 
     template<typename Protocol, typename Executor = any_io_executor>
     class basic_datagram_socket;
 
-#endif // !defined(ASIO_BASIC_DATAGRAM_SOCKET_FWD_DECL)
+#endif // !defined(XIO_BASIC_DATAGRAM_SOCKET_FWD_DECL)
 
-#if !defined(ASIO_BASIC_STREAM_SOCKET_FWD_DECL)
-#define ASIO_BASIC_STREAM_SOCKET_FWD_DECL
+#if !defined(XIO_BASIC_STREAM_SOCKET_FWD_DECL)
+#define XIO_BASIC_STREAM_SOCKET_FWD_DECL
 
     // Forward declaration with defaulted arguments.
     template<typename Protocol, typename Executor = any_io_executor>
     class basic_stream_socket;
 
-#endif // !defined(ASIO_BASIC_STREAM_SOCKET_FWD_DECL)
+#endif // !defined(XIO_BASIC_STREAM_SOCKET_FWD_DECL)
 
-#if !defined(ASIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL)
-#define ASIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL
+#if !defined(XIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL)
+#define XIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL
 
     template<typename Protocol, typename Executor = any_io_executor>
     class basic_socket_acceptor;
 
-#endif // !defined(ASIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL)
+#endif // !defined(XIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL)
 
-#if !defined(ASIO_BASIC_SOCKET_STREAMBUF_FWD_DECL)
-#define ASIO_BASIC_SOCKET_STREAMBUF_FWD_DECL
+#if !defined(XIO_BASIC_SOCKET_STREAMBUF_FWD_DECL)
+#define XIO_BASIC_SOCKET_STREAMBUF_FWD_DECL
 
     // Forward declaration with defaulted arguments.
     template<typename Protocol,
@@ -142,10 +140,10 @@ namespace xio {
         typename WaitTraits = wait_traits<Clock> >
     class basic_socket_streambuf;
 
-#endif // !defined(ASIO_BASIC_SOCKET_STREAMBUF_FWD_DECL)
+#endif // !defined(XIO_BASIC_SOCKET_STREAMBUF_FWD_DECL)
 
-#if !defined(ASIO_BASIC_SOCKET_IOSTREAM_FWD_DECL)
-#define ASIO_BASIC_SOCKET_IOSTREAM_FWD_DECL
+#if !defined(XIO_BASIC_SOCKET_IOSTREAM_FWD_DECL)
+#define XIO_BASIC_SOCKET_IOSTREAM_FWD_DECL
 
     // Forward declaration with defaulted arguments.
     template<typename Protocol,
@@ -153,7 +151,7 @@ namespace xio {
         typename WaitTraits = wait_traits<Clock> >
     class basic_socket_iostream;
 
-#endif // !defined(ASIO_BASIC_SOCKET_IOSTREAM_FWD_DECL)
+#endif // !defined(XIO_BASIC_SOCKET_IOSTREAM_FWD_DECL)
 
     namespace ip {
         class address;
@@ -189,13 +187,13 @@ namespace xio {
         template<typename InternetProtocol>
         class basic_resolver_results;
 
-#if !defined(ASIO_IP_BASIC_RESOLVER_FWD_DECL)
-#define ASIO_IP_BASIC_RESOLVER_FWD_DECL
+#if !defined(XIO_IP_BASIC_RESOLVER_FWD_DECL)
+#define XIO_IP_BASIC_RESOLVER_FWD_DECL
 
         template<typename InternetProtocol, typename Executor = any_io_executor>
         class basic_resolver;
 
-#endif // !defined(ASIO_IP_BASIC_RESOLVER_FWD_DECL)
+#endif // !defined(XIO_IP_BASIC_RESOLVER_FWD_DECL)
 
         class tcp;
 
@@ -206,6 +204,5 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
-#endif // ASIO_TS_NETFWD_HPP
+#endif // XIO_TS_NETFWD_HPP

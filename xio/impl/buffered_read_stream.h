@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_BUFFERED_READ_STREAM_HPP
-#define ASIO_IMPL_BUFFERED_READ_STREAM_HPP
+#ifndef XIO_IMPL_BUFFERED_READ_STREAM_HPP
+#define XIO_IMPL_BUFFERED_READ_STREAM_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -116,7 +116,7 @@ namespace xio {
                             buffered_stream_storage *storage) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a ReadHandler.
-                ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+                XIO_READ_HANDLER_CHECK(ReadHandler, handler)
                 type_check;
 
                 non_const_lvalue<ReadHandler> handler2(handler);
@@ -134,8 +134,6 @@ namespace xio {
             std::remove_reference_t<Stream> &next_layer_;
         };
     } // namespace detail
-
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename ReadHandler, typename DefaultCandidate>
@@ -155,11 +153,9 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
-
     template<typename Stream>
     template<
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) ReadHandler>
     inline auto buffered_read_stream<Stream>::async_fill(ReadHandler &&handler)
         -> decltype(
@@ -274,7 +270,7 @@ namespace xio {
                             const MutableBufferSequence &buffers) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a ReadHandler.
-                ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+                XIO_READ_HANDLER_CHECK(ReadHandler, handler)
                 type_check;
 
                 using xio::buffer_size;
@@ -298,7 +294,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename MutableBufferSequence, typename ReadHandler,
@@ -322,11 +317,10 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
     template<typename Stream>
     template<typename MutableBufferSequence,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) ReadHandler>
     inline auto buffered_read_stream<Stream>::async_read_some(
         const MutableBufferSequence &buffers, ReadHandler &&handler)
@@ -365,4 +359,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_BUFFERED_READ_STREAM_HPP
+#endif // XIO_IMPL_BUFFERED_READ_STREAM_HPP

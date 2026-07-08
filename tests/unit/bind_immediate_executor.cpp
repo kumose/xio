@@ -41,11 +41,11 @@ void bind_immediate_executor_to_function_object_test()
 
   ioc1.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   ioc2.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   async_immediate(ioc1.get_executor(),
       bind_immediate_executor(
@@ -57,12 +57,12 @@ void bind_immediate_executor_to_function_object_test()
   ioc1.restart();
   ioc1.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   ioc2.restart();
   ioc2.run();
 
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 }
 
 struct incrementer_token_v1
@@ -106,11 +106,11 @@ void bind_immediate_executor_to_completion_token_v1_test()
 
   ioc1.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   ioc2.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 }
 
 struct incrementer_token_v2
@@ -125,9 +125,9 @@ template <>
 class async_result<incrementer_token_v2, void()>
 {
 public:
-#if !defined(ASIO_HAS_RETURN_TYPE_DEDUCTION)
+#if !defined(XIO_HAS_RETURN_TYPE_DEDUCTION)
   typedef void return_type;
-#endif // !defined(ASIO_HAS_RETURN_TYPE_DEDUCTION)
+#endif // !defined(XIO_HAS_RETURN_TYPE_DEDUCTION)
 
   template <typename Initiation, typename... Args>
   static void initiate(Initiation initiation,
@@ -154,11 +154,11 @@ void bind_immediate_executor_to_completion_token_v2_test()
 
   ioc1.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   ioc2.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 }
 
 void partial_bind_immediate_executor_test()
@@ -173,11 +173,11 @@ void partial_bind_immediate_executor_test()
 
   ioc1.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   ioc2.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   async_immediate(ioc1, bind_immediate_executor(ioc2.get_executor()))(
       incrementer_token_v2(&count));
@@ -185,19 +185,19 @@ void partial_bind_immediate_executor_test()
   ioc1.restart();
   ioc1.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   ioc2.restart();
   ioc2.run();
 
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "bind_immediate_executor",
-  ASIO_TEST_CASE(bind_immediate_executor_to_function_object_test)
-  ASIO_TEST_CASE(bind_immediate_executor_to_completion_token_v1_test)
-  ASIO_TEST_CASE(bind_immediate_executor_to_completion_token_v2_test)
-  ASIO_TEST_CASE(partial_bind_immediate_executor_test)
+  XIO_TEST_CASE(bind_immediate_executor_to_function_object_test)
+  XIO_TEST_CASE(bind_immediate_executor_to_completion_token_v1_test)
+  XIO_TEST_CASE(bind_immediate_executor_to_completion_token_v2_test)
+  XIO_TEST_CASE(partial_bind_immediate_executor_test)
 )

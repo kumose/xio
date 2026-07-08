@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_CO_SPAWN_HPP
-#define ASIO_CO_SPAWN_HPP
+#ifndef XIO_CO_SPAWN_HPP
+#define XIO_CO_SPAWN_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_CO_AWAIT) || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_CO_AWAIT)
 
 #include <xio/awaitable.h>
 #include <xio/execution/executor.h>
@@ -103,15 +103,15 @@ namespace xio {
  * cancellation state, call xio::this_coro::reset_cancellation_state.
  */
     template<typename Executor, typename T, typename AwaitableExecutor,
-        ASIO_COMPLETION_TOKEN_FOR(
+        XIO_COMPLETION_TOKEN_FOR(
         void(std::exception_ptr, T)) CompletionToken
-        ASIO_DEFAULT_COMPLETION_TOKEN_TYPE(Executor)>
-    inline ASIO_INITFN_AUTO_RESULT_TYPE(
+        XIO_DEFAULT_COMPLETION_TOKEN_TYPE(Executor)>
+    inline XIO_INITFN_AUTO_RESULT_TYPE(
         CompletionToken, void(std::exception_ptr, T))
 
     co_spawn(const Executor &ex, awaitable<T, AwaitableExecutor> a,
              CompletionToken &&token
-             ASIO_DEFAULT_COMPLETION_TOKEN (Executor),
+             XIO_DEFAULT_COMPLETION_TOKEN (Executor),
              constraint_t<
                  (is_executor < Executor > ::value || execution::is_executor < Executor > ::value)
                  && std::is_convertible < Executor, AwaitableExecutor>::value
@@ -168,15 +168,15 @@ namespace xio {
  * cancellation state, call xio::this_coro::reset_cancellation_state.
  */
     template<typename Executor, typename AwaitableExecutor,
-        ASIO_COMPLETION_TOKEN_FOR(
+        XIO_COMPLETION_TOKEN_FOR(
             void (std::exception_ptr)) CompletionToken
-        ASIO_DEFAULT_COMPLETION_TOKEN_TYPE(Executor)>
-    inline ASIO_INITFN_AUTO_RESULT_TYPE(
+        XIO_DEFAULT_COMPLETION_TOKEN_TYPE(Executor)>
+    inline XIO_INITFN_AUTO_RESULT_TYPE(
         CompletionToken, void(std::exception_ptr))
 
     co_spawn(const Executor &ex, awaitable<void, AwaitableExecutor> a,
              CompletionToken &&token
-             ASIO_DEFAULT_COMPLETION_TOKEN (Executor),
+             XIO_DEFAULT_COMPLETION_TOKEN (Executor),
              constraint_t<
                  (is_executor < Executor > ::value || execution::is_executor < Executor > ::value)
                  && std::is_convertible < Executor, AwaitableExecutor>::value
@@ -241,16 +241,16 @@ namespace xio {
  * cancellation state, call xio::this_coro::reset_cancellation_state.
  */
     template<typename ExecutionContext, typename T, typename AwaitableExecutor,
-        ASIO_COMPLETION_TOKEN_FOR(
+        XIO_COMPLETION_TOKEN_FOR(
         void(std::exception_ptr, T)) CompletionToken
-        ASIO_DEFAULT_COMPLETION_TOKEN_TYPE(
+        XIO_DEFAULT_COMPLETION_TOKEN_TYPE(
             typename ExecutionContext::executor_type)>
-    inline ASIO_INITFN_AUTO_RESULT_TYPE(
+    inline XIO_INITFN_AUTO_RESULT_TYPE(
         CompletionToken, void(std::exception_ptr, T))
 
     co_spawn(ExecutionContext &ctx, awaitable<T, AwaitableExecutor> a,
              CompletionToken &&token
-             ASIO_DEFAULT_COMPLETION_TOKEN (
+             XIO_DEFAULT_COMPLETION_TOKEN (
                  typename ExecutionContext::executor_type),
              constraint_t<
                  std::is_convertible<ExecutionContext &, execution_context &>::value
@@ -309,16 +309,16 @@ namespace xio {
  * cancellation state, call xio::this_coro::reset_cancellation_state.
  */
     template<typename ExecutionContext, typename AwaitableExecutor,
-        ASIO_COMPLETION_TOKEN_FOR(
+        XIO_COMPLETION_TOKEN_FOR(
             void (std::exception_ptr)) CompletionToken
-        ASIO_DEFAULT_COMPLETION_TOKEN_TYPE(
+        XIO_DEFAULT_COMPLETION_TOKEN_TYPE(
             typename ExecutionContext::executor_type)>
-    inline ASIO_INITFN_AUTO_RESULT_TYPE(
+    inline XIO_INITFN_AUTO_RESULT_TYPE(
         CompletionToken, void(std::exception_ptr))
 
     co_spawn(ExecutionContext &ctx, awaitable<void, AwaitableExecutor> a,
              CompletionToken &&token
-             ASIO_DEFAULT_COMPLETION_TOKEN (
+             XIO_DEFAULT_COMPLETION_TOKEN (
                  typename ExecutionContext::executor_type),
              constraint_t<
                  std::is_convertible<ExecutionContext &, execution_context &>::value
@@ -407,15 +407,15 @@ namespace xio {
  * cancellation state, call xio::this_coro::reset_cancellation_state.
  */
     template<typename Executor, typename F,
-        ASIO_COMPLETION_TOKEN_FOR(typename detail::awaitable_signature<
+        XIO_COMPLETION_TOKEN_FOR(typename detail::awaitable_signature<
             result_of_t<F()> >::type) CompletionToken
-        ASIO_DEFAULT_COMPLETION_TOKEN_TYPE(Executor)>
-    ASIO_INITFN_AUTO_RESULT_TYPE(CompletionToken,
+        XIO_DEFAULT_COMPLETION_TOKEN_TYPE(Executor)>
+    XIO_INITFN_AUTO_RESULT_TYPE(CompletionToken,
                                  typename detail::awaitable_signature<result_of_t<F()> >::type)
 
     co_spawn(const Executor &ex, F &&f,
              CompletionToken &&token
-             ASIO_DEFAULT_COMPLETION_TOKEN (Executor),
+             XIO_DEFAULT_COMPLETION_TOKEN (Executor),
              constraint_t<
                  is_executor < Executor>::value || execution::is_executor<Executor>::value
     > = 0);
@@ -501,15 +501,15 @@ namespace xio {
  * cancellation state, call xio::this_coro::reset_cancellation_state.
  */
     template<typename ExecutionContext, typename F,
-        ASIO_COMPLETION_TOKEN_FOR(typename detail::awaitable_signature<
+        XIO_COMPLETION_TOKEN_FOR(typename detail::awaitable_signature<
             result_of_t<F()> >::type) CompletionToken
-        ASIO_DEFAULT_COMPLETION_TOKEN_TYPE(
+        XIO_DEFAULT_COMPLETION_TOKEN_TYPE(
             typename ExecutionContext::executor_type)>
-    ASIO_INITFN_AUTO_RESULT_TYPE(CompletionToken,
+    XIO_INITFN_AUTO_RESULT_TYPE(CompletionToken,
                                  typename detail::awaitable_signature<result_of_t<F()> >::type)
     co_spawn(ExecutionContext & ctx, F && f,
              CompletionToken && token
-             ASIO_DEFAULT_COMPLETION_TOKEN(
+             XIO_DEFAULT_COMPLETION_TOKEN(
                  typename ExecutionContext::executor_type),
              constraint_t<
                  std::is_convertible<ExecutionContext &, execution_context &>::value
@@ -522,6 +522,6 @@ namespace xio {
 
 #include <xio/impl/co_spawn.h>
 
-#endif // defined(ASIO_HAS_CO_AWAIT) || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_CO_AWAIT)
 
-#endif // ASIO_CO_SPAWN_HPP
+#endif // XIO_CO_SPAWN_HPP

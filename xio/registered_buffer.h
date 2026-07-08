@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_REGISTERED_BUFFER_HPP
-#define ASIO_REGISTERED_BUFFER_HPP
+#ifndef XIO_REGISTERED_BUFFER_HPP
+#define XIO_REGISTERED_BUFFER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -125,10 +125,8 @@ namespace xio {
               id_(i) {
         }
 
-#if !defined(GENERATING_DOCUMENTATION)
         friend mutable_registered_buffer buffer(
             const mutable_registered_buffer &b, std::size_t n) noexcept;
-#endif // !defined(GENERATING_DOCUMENTATION)
 
         mutable_buffer buffer_;
         registered_buffer_id id_;
@@ -193,10 +191,8 @@ namespace xio {
               id_(i) {
         }
 
-#if !defined(GENERATING_DOCUMENTATION)
         friend const_registered_buffer buffer(
             const const_registered_buffer &b, std::size_t n) noexcept;
-#endif // !defined(GENERATING_DOCUMENTATION)
 
         const_buffer buffer_;
         registered_buffer_id id_;
@@ -307,4 +303,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_REGISTERED_BUFFER_HPP
+#endif // XIO_REGISTERED_BUFFER_HPP

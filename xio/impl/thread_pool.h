@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_THREAD_POOL_HPP
-#define ASIO_IMPL_THREAD_POOL_HPP
+#ifndef XIO_IMPL_THREAD_POOL_HPP
+#define XIO_IMPL_THREAD_POOL_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -28,7 +28,7 @@
 namespace xio {
 
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
 
 
 
@@ -43,7 +43,7 @@ namespace xio {
         start();
     }
 
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
     template<typename Allocator>
     thread_pool::thread_pool(allocator_arg_t,
@@ -134,18 +134,18 @@ namespace xio {
             // Make a local, non-const copy of the function.
             function_type tmp(static_cast<Function &&>(f));
 
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             try {
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
                 detail::fenced_block b(detail::fenced_block::full);
                 static_cast<function_type &&>(tmp)();
                 return;
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             } catch (...) {
                 std::terminate();
                 return;
             }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
         }
 
         // Allocate and construct an operation to wrap the function.
@@ -157,10 +157,10 @@ namespace xio {
         p.p = new(p.v) op(static_cast<Function &&>(f), allocator_);
 
         if ((bits_ & relationship_continuation) != 0) {
-            ASIO_HANDLER_CREATION((*pool_, *p.p,
+            XIO_HANDLER_CREATION((*pool_, *p.p,
                                    "thread_pool", pool_, 0, "execute(blk=never,rel=cont)"));
         } else {
-            ASIO_HANDLER_CREATION((*pool_, *p.p,
+            XIO_HANDLER_CREATION((*pool_, *p.p,
                                    "thread_pool", pool_, 0, "execute(blk=never,rel=fork)"));
         }
 
@@ -178,31 +178,31 @@ namespace xio {
 
         // Invoke immediately if we are already inside the thread pool.
         if (pool_->scheduler_.can_dispatch()) {
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             try {
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
                 detail::fenced_block b(detail::fenced_block::full);
                 static_cast<std::decay_t<Function> &&>(f2.value)();
                 return;
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             } catch (...) {
                 std::terminate();
             }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
         }
 
         // Construct an operation to wrap the function.
         typedef std::decay_t<Function> function_type;
         detail::blocking_executor_op<function_type> op(f2.value);
 
-        ASIO_HANDLER_CREATION((*pool_, op,
+        XIO_HANDLER_CREATION((*pool_, op,
                                "thread_pool", pool_, 0, "execute(blk=always)"));
 
         pool_->scheduler_.post_immediate_completion(&op, false);
         op.wait();
     }
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
     template<typename Allocator, unsigned int Bits>
     inline thread_pool &thread_pool::basic_executor_type<
         Allocator, Bits>::context() const noexcept {
@@ -242,7 +242,7 @@ namespace xio {
         typename op::ptr p = {detail::addressof(a), op::ptr::allocate(a), 0};
         p.p = new(p.v) op(static_cast<Function &&>(f), a);
 
-        ASIO_HANDLER_CREATION((*pool_, *p.p,
+        XIO_HANDLER_CREATION((*pool_, *p.p,
                                "thread_pool", pool_, 0, "dispatch"));
 
         pool_->scheduler_.post_immediate_completion(p.p, false);
@@ -260,7 +260,7 @@ namespace xio {
         typename op::ptr p = {detail::addressof(a), op::ptr::allocate(a), 0};
         p.p = new(p.v) op(static_cast<Function &&>(f), a);
 
-        ASIO_HANDLER_CREATION((*pool_, *p.p,
+        XIO_HANDLER_CREATION((*pool_, *p.p,
                                "thread_pool", pool_, 0, "post"));
 
         pool_->scheduler_.post_immediate_completion(p.p, false);
@@ -278,17 +278,17 @@ namespace xio {
         typename op::ptr p = {detail::addressof(a), op::ptr::allocate(a), 0};
         p.p = new(p.v) op(static_cast<Function &&>(f), a);
 
-        ASIO_HANDLER_CREATION((*pool_, *p.p,
+        XIO_HANDLER_CREATION((*pool_, *p.p,
                                "thread_pool", pool_, 0, "defer"));
 
         pool_->scheduler_.post_immediate_completion(p.p, true);
         p.v = p.p = 0;
     }
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_THREAD_POOL_HPP
+#endif // XIO_IMPL_THREAD_POOL_HPP

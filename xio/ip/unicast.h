@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_UNICAST_HPP
-#define ASIO_IP_UNICAST_HPP
+#ifndef XIO_IP_UNICAST_HPP
+#define XIO_IP_UNICAST_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -52,15 +52,11 @@ namespace xio {
  * @par Concepts:
  * GettableSocketOption, SettableSocketOption.
  */
-#if defined(GENERATING_DOCUMENTATION)
-            typedef implementation_defined hops;
-#else
             typedef xio::ip::detail::socket_option::unicast_hops<
-                ASIO_OS_DEF(IPPROTO_IP),
-                ASIO_OS_DEF(IP_TTL),
-                ASIO_OS_DEF(IPPROTO_IPV6),
-                ASIO_OS_DEF(IPV6_UNICAST_HOPS)> hops;
-#endif
+                XIO_OS_DEF(IPPROTO_IP),
+                XIO_OS_DEF(IP_TTL),
+                XIO_OS_DEF(IPPROTO_IPV6),
+                XIO_OS_DEF(IPV6_UNICAST_HOPS)> hops;
         } // namespace unicast
     } // namespace ip
 
@@ -68,4 +64,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_UNICAST_HPP
+#endif // XIO_IP_UNICAST_HPP

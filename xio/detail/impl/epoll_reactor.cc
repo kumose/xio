@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_EPOLL_REACTOR_IPP
-#define ASIO_DETAIL_IMPL_EPOLL_REACTOR_IPP
+#ifndef XIO_DETAIL_IMPL_EPOLL_REACTOR_IPP
+#define XIO_DETAIL_IMPL_EPOLL_REACTOR_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_EPOLL)
+#if defined(XIO_HAS_EPOLL)
 
 #include <cstddef>
 #include <sys/epoll.h>
@@ -27,9 +27,9 @@
 #include <xio/detail/throw_error.h>
 #include <xio/error.h>
 
-#if defined(ASIO_HAS_TIMERFD)
+#if defined(XIO_HAS_TIMERFD)
 # include <sys/timerfd.h>
-#endif // defined(ASIO_HAS_TIMERFD)
+#endif // defined(XIO_HAS_TIMERFD)
 
 #include <xio/detail/push_options.h>
 
@@ -155,7 +155,7 @@ namespace xio {
                                                epoll_reactor::per_descriptor_data &descriptor_data) {
             descriptor_data = allocate_descriptor_state();
 
-            ASIO_HANDLER_REACTOR_REGISTRATION((
+            XIO_HANDLER_REACTOR_REGISTRATION((
                 context(), static_cast<uintmax_t>(descriptor),
                 reinterpret_cast<uintmax_t>(descriptor_data)));
 
@@ -194,7 +194,7 @@ namespace xio {
             epoll_reactor::per_descriptor_data &descriptor_data, reactor_op *op) {
             descriptor_data = allocate_descriptor_state();
 
-            ASIO_HANDLER_REACTOR_REGISTRATION((
+            XIO_HANDLER_REACTOR_REGISTRATION((
                 context(), static_cast<uintmax_t>(descriptor),
                 reinterpret_cast<uintmax_t>(descriptor_data)));
 
@@ -386,7 +386,7 @@ namespace xio {
 
                 descriptor_lock.unlock();
 
-                ASIO_HANDLER_REACTOR_DEREGISTRATION((
+                XIO_HANDLER_REACTOR_DEREGISTRATION((
                     context(), static_cast<uintmax_t>(descriptor),
                     reinterpret_cast<uintmax_t>(descriptor_data)));
 
@@ -421,7 +421,7 @@ namespace xio {
 
                 descriptor_lock.unlock();
 
-                ASIO_HANDLER_REACTOR_DEREGISTRATION((
+                XIO_HANDLER_REACTOR_DEREGISTRATION((
                     context(), static_cast<uintmax_t>(descriptor),
                     reinterpret_cast<uintmax_t>(descriptor_data)));
 
@@ -465,7 +465,7 @@ namespace xio {
             epoll_event events[128];
             int num_events = epoll_wait(epoll_fd_, events, 128, timeout);
 
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
 // Trace the waiting events.
 for (int i = 0; i<num_events;++i)
   {
@@ -474,32 +474,32 @@ for (int i = 0; i<num_events;++i)
     {
       // Ignore.
     }
-# if defined(ASIO_HAS_TIMERFD)
+# if defined(XIO_HAS_TIMERFD)
 else if (ptr== &timer_fd_)
     {
       // Ignore.
     }
-# endif // defined(ASIO_HAS_TIMERFD)
+# endif // defined(XIO_HAS_TIMERFD)
 else
     {
       unsigned event_mask = 0;
       if ((events[i].events & EPOLLIN) != 0)
-        event_mask |= ASIO_HANDLER_REACTOR_READ_EVENT;
+        event_mask |= XIO_HANDLER_REACTOR_READ_EVENT;
       if ((events[i].events & EPOLLOUT))
-        event_mask |= ASIO_HANDLER_REACTOR_WRITE_EVENT;
+        event_mask |= XIO_HANDLER_REACTOR_WRITE_EVENT;
       if ((events[i].events & (EPOLLERR | EPOLLHUP)) != 0)
-        event_mask |= ASIO_HANDLER_REACTOR_ERROR_EVENT;
-      ASIO_HANDLER_REACTOR_EVENTS((context(),
+        event_mask |= XIO_HANDLER_REACTOR_ERROR_EVENT;
+      XIO_HANDLER_REACTOR_EVENTS((context(),
             reinterpret_cast<uintmax_t>(ptr), event_mask));
     }
   }
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 
-#if defined(ASIO_HAS_TIMERFD)
+#if defined(XIO_HAS_TIMERFD)
 bool check_timers = (timer_fd_ == -1);
-#else // defined(ASIO_HAS_TIMERFD)
+#else // defined(XIO_HAS_TIMERFD)
 bool check_timers = true;
-#endif // defined(ASIO_HAS_TIMERFD)
+#endif // defined(XIO_HAS_TIMERFD)
 
 // Dispatch the waiting events.
 for (int i = 0; i<num_events;++i)
@@ -512,19 +512,19 @@ for (int i = 0; i<num_events;++i)
 // to make it so that we only get woken up when the descriptor's epoll
 // registration is updated.
 
-#if defined(ASIO_HAS_TIMERFD)
+#if defined(XIO_HAS_TIMERFD)
 if (timer_fd_== -1)
 check_timers=true;
-#else // defined(ASIO_HAS_TIMERFD)
+#else // defined(XIO_HAS_TIMERFD)
 check_timers=true;
-#endif // defined(ASIO_HAS_TIMERFD)
+#endif // defined(XIO_HAS_TIMERFD)
 }
-#if defined(ASIO_HAS_TIMERFD)
+#if defined(XIO_HAS_TIMERFD)
 else if (ptr== &timer_fd_)
     {
       check_timers = true;
     }
-#endif // defined(ASIO_HAS_TIMERFD)
+#endif // defined(XIO_HAS_TIMERFD)
 else
     {
       // The descriptor operation doesn't count as work in and of itself, so we
@@ -547,7 +547,7 @@ else
     mutex::scoped_lock common_lock(mutex_);
     timer_queues_.get_ready_timers(ops);
 
-#if defined(ASIO_HAS_TIMERFD)
+#if defined(XIO_HAS_TIMERFD)
 if (timer_fd_!= -1)
     {
       itimerspec new_timeout;
@@ -555,7 +555,7 @@ if (timer_fd_!= -1)
       int flags = get_timeout(new_timeout);
       timerfd_settime(timer_fd_, flags, &new_timeout, &old_timeout);
     }
-#endif // defined(ASIO_HAS_TIMERFD)
+#endif // defined(XIO_HAS_TIMERFD)
 }
 }
 
@@ -596,7 +596,7 @@ if (fd== -1 && (errno== EINVAL|| errno== ENOSYS))
 int epoll_reactor::do_timerfd_create() {
 
 
-#if defined(ASIO_HAS_TIMERFD)
+#if defined(XIO_HAS_TIMERFD)
 # if defined(TFD_CLOEXEC)
 int fd = timerfd_create(CLOCK_MONOTONIC, TFD_CLOEXEC);
 # else // defined(TFD_CLOEXEC)
@@ -612,9 +612,9 @@ if (fd== -1 && errno== EINVAL)
   }
 
   return fd;
-#else // defined(ASIO_HAS_TIMERFD)
+#else // defined(XIO_HAS_TIMERFD)
 return -1;
-#endif // defined(ASIO_HAS_TIMERFD)
+#endif // defined(XIO_HAS_TIMERFD)
 }
 
 epoll_reactor::descriptor_state *epoll_reactor::allocate_descriptor_state() {
@@ -640,7 +640,7 @@ void epoll_reactor::do_remove_timer_queue(timer_queue_base &queue) {
 void epoll_reactor::update_timeout() {
 
 
-#if defined(ASIO_HAS_TIMERFD)
+#if defined(XIO_HAS_TIMERFD)
 if (timer_fd_!= -1)
   {
     itimerspec new_timeout;
@@ -649,7 +649,7 @@ if (timer_fd_!= -1)
     timerfd_settime(timer_fd_, flags, &new_timeout, &old_timeout);
     return;
   }
-#endif // defined(ASIO_HAS_TIMERFD)
+#endif // defined(XIO_HAS_TIMERFD)
 interrupt();
 }
 
@@ -661,7 +661,7 @@ int epoll_reactor::get_timeout(int msec) {
         (msec < 0 || max_msec < msec) ? max_msec : msec);
 }
 
-#if defined(ASIO_HAS_TIMERFD)
+#if defined(XIO_HAS_TIMERFD)
 int epoll_reactor::get_timeout(itimerspec &ts) {
     ts.it_interval.tv_sec = 0;
     ts.it_interval.tv_nsec = 0;
@@ -672,7 +672,7 @@ int epoll_reactor::get_timeout(itimerspec &ts) {
 
     return usec ? 0 : TFD_TIMER_ABSTIME;
 }
-#endif // defined(ASIO_HAS_TIMERFD)
+#endif // defined(XIO_HAS_TIMERFD)
 
 struct epoll_reactor::perform_io_cleanup_on_block_exit {
     explicit perform_io_cleanup_on_block_exit(epoll_reactor *r)
@@ -755,6 +755,6 @@ void epoll_reactor::descriptor_state::do_complete(
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_EPOLL)
+#endif // defined(XIO_HAS_EPOLL)
 
-#endif // ASIO_DETAIL_IMPL_EPOLL_REACTOR_IPP
+#endif // XIO_DETAIL_IMPL_EPOLL_REACTOR_IPP

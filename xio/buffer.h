@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BUFFER_HPP
-#define ASIO_BUFFER_HPP
+#ifndef XIO_BUFFER_HPP
+#define XIO_BUFFER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -29,31 +29,31 @@
 #include <xio/detail/type_traits.h>
 #include <xio/is_contiguous_iterator.h>
 
-#if defined(ASIO_MSVC) && (ASIO_MSVC >= 1700)
+#if defined(XIO_MSVC) && (XIO_MSVC >= 1700)
 # if defined(_HAS_ITERATOR_DEBUGGING) && (_HAS_ITERATOR_DEBUGGING != 0)
-#  if !defined(ASIO_DISABLE_BUFFER_DEBUGGING)
-#   define ASIO_ENABLE_BUFFER_DEBUGGING
-#  endif // !defined(ASIO_DISABLE_BUFFER_DEBUGGING)
+#  if !defined(XIO_DISABLE_BUFFER_DEBUGGING)
+#   define XIO_ENABLE_BUFFER_DEBUGGING
+#  endif // !defined(XIO_DISABLE_BUFFER_DEBUGGING)
 # endif // defined(_HAS_ITERATOR_DEBUGGING)
-#endif // defined(ASIO_MSVC) && (ASIO_MSVC >= 1700)
+#endif // defined(XIO_MSVC) && (XIO_MSVC >= 1700)
 
 #if defined(__GNUC__)
 # if defined(_GLIBCXX_DEBUG)
-#  if !defined(ASIO_DISABLE_BUFFER_DEBUGGING)
-#   define ASIO_ENABLE_BUFFER_DEBUGGING
-#  endif // !defined(ASIO_DISABLE_BUFFER_DEBUGGING)
+#  if !defined(XIO_DISABLE_BUFFER_DEBUGGING)
+#   define XIO_ENABLE_BUFFER_DEBUGGING
+#  endif // !defined(XIO_DISABLE_BUFFER_DEBUGGING)
 # endif // defined(_GLIBCXX_DEBUG)
 #endif // defined(__GNUC__)
 
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
 #include <functional>
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
 
 #include <xio/detail/push_options.h>
 
 namespace xio {
     namespace detail {
-#if defined(ASIO_MSVC)
+#if defined(XIO_MSVC)
 
         struct span_memfns_base {
             void subspan();
@@ -81,7 +81,7 @@ namespace xio {
                 std::integral_constant<bool, sizeof(subspan_memfn_helper<T>(0)) != 1> {
         };
 
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
     } // namespace detail
 
     class mutable_buffer;
@@ -133,21 +133,21 @@ namespace xio {
                            defaulted_constraint
                        > = defaulted_constraint(),
                        constraint_t<
-#if defined(ASIO_MSVC)
+#if defined(XIO_MSVC)
                            detail::has_subspan_memfn<Span<T, Extent> >::value,
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                            std::is_same<
                                decltype(span.subspan(0, 0)),
                                Span<T, static_cast<std::size_t>(-1)>
                            >::value,
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
                            defaulted_constraint
                        > = defaulted_constraint())
             : data_(span.data()),
               size_(span.size()) {
         }
 
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
         mutable_buffer(void *data, std::size_t size,
                        xio::detail::function<void()> debug_check)
             : data_(data),
@@ -158,14 +158,14 @@ namespace xio {
         const xio::detail::function<void()> &get_debug_check() const {
             return debug_check_;
         }
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
 
         /// Get a pointer to the beginning of the memory range.
         void *data() const noexcept {
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
             if (size_ && debug_check_)
                 debug_check_();
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
             return data_;
         }
 
@@ -186,9 +186,9 @@ namespace xio {
         void *data_;
         std::size_t size_;
 
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
         xio::detail::function<void()> debug_check_;
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
     };
 
     /// Holds a buffer that cannot be modified.
@@ -228,9 +228,9 @@ namespace xio {
         const_buffer(const mutable_buffer &b) noexcept
             : data_(b.data()),
               size_(b.size())
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
       , debug_check_(b.get_debug_check())
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
         {
         }
 
@@ -243,21 +243,21 @@ namespace xio {
                          defaulted_constraint
                      > = defaulted_constraint(),
                      constraint_t<
-#if defined(ASIO_MSVC)
+#if defined(XIO_MSVC)
                          detail::has_subspan_memfn<Span<T, Extent> >::value,
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                          std::is_same<
                              decltype(span.subspan(0, 0)),
                              Span<T, static_cast<std::size_t>(-1)>
                          >::value,
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
                          defaulted_constraint
                      > = defaulted_constraint())
             : data_(span.data()),
               size_(span.size()) {
         }
 
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
         const_buffer(const void *data, std::size_t size,
                      xio::detail::function<void()> debug_check)
             : data_(data),
@@ -268,14 +268,14 @@ namespace xio {
         const xio::detail::function<void()> &get_debug_check() const {
             return debug_check_;
         }
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
 
         /// Get a pointer to the beginning of the memory range.
         const void *data() const noexcept {
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
             if (size_ && debug_check_)
                 debug_check_();
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
             return data_;
         }
 
@@ -296,15 +296,15 @@ namespace xio {
         const void *data_;
         std::size_t size_;
 
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
         xio::detail::function<void()> debug_check_;
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
     };
 
     /// (Deprecated: Use the socket/descriptor wait() and async_wait() member
 /// functions.) An implementation of both the ConstBufferSequence and
 /// MutableBufferSequence concepts to represent a null buffer sequence.
-    class ASIO_DEPRECATED_MSG(
+    class XIO_DEPRECATED_MSG(
 
 
                 "Use the socket/descriptor wait() and async_wait() member functions"
@@ -576,9 +576,9 @@ namespace xio {
         char *new_data = static_cast<char *>(b.data()) + offset;
         std::size_t new_size = b.size() - offset;
         return mutable_buffer(new_data, new_size
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
       , b.get_debug_check()
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
         );
     }
 
@@ -601,9 +601,9 @@ namespace xio {
         const char *new_data = static_cast<const char *>(b.data()) + offset;
         std::size_t new_size = b.size() - offset;
         return const_buffer(new_data, new_size
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
       , b.get_debug_check()
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
         );
     }
 
@@ -616,7 +616,7 @@ namespace xio {
         return b + n;
     }
 
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
     namespace detail {
         template<typename Iterator>
         class buffer_debug_check {
@@ -629,12 +629,12 @@ namespace xio {
 
 
 
-#if defined(ASIO_MSVC) && (ASIO_MSVC == 1400)
+#if defined(XIO_MSVC) && (XIO_MSVC == 1400)
     // MSVC 8's string iterator checking may crash in a std::string::iterator
     // object's destructor when the iterator points to an already-destroyed
     // std::string object, unless the iterator is cleared first.
     iter_= Iterator();
-#endif // defined(ASIO_MSVC) && (ASIO_MSVC == 1400)
+#endif // defined(XIO_MSVC) && (XIO_MSVC == 1400)
     }
 
     void operator()() {
@@ -646,7 +646,7 @@ private:
 };
 
 } // namespace detail
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
 
     /** @defgroup buffer xio::buffer
  *
@@ -835,9 +835,9 @@ private:
                            b.size() < max_size_in_bytes
                                ? b.size()
                                : max_size_in_bytes
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
         , b.get_debug_check()
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
             ));
     }
 
@@ -864,9 +864,9 @@ private:
                             b.size() < max_size_in_bytes
                                 ? b.size()
                                 : max_size_in_bytes
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
       , b.get_debug_check()
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
         );
     }
 
@@ -1060,11 +1060,11 @@ private:
         std::vector<PodType, Allocator> &data) noexcept {
         return mutable_buffer(
             data.size() ? &data[0] : 0, data.size() * sizeof(PodType)
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
       , detail::buffer_debug_check <
         typename std::vector<PodType, Allocator>::iterator
         > (data.begin())
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
         );
     }
 
@@ -1087,11 +1087,11 @@ private:
                               data.size() * sizeof(PodType) < max_size_in_bytes
                                   ? data.size() * sizeof(PodType)
                                   : max_size_in_bytes
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
       , detail::buffer_debug_check <
         typename std::vector<PodType, Allocator>::iterator
         > (data.begin())
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
         );
     }
 
@@ -1111,11 +1111,11 @@ private:
         const std::vector<PodType, Allocator> &data) noexcept {
         return const_buffer(
             data.size() ? &data[0] : 0, data.size() * sizeof(PodType)
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
       , detail::buffer_debug_check <
         typename std::vector<PodType, Allocator>::const_iterator
         > (data.begin())
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
         );
     }
 
@@ -1138,11 +1138,11 @@ private:
                             data.size() * sizeof(PodType) < max_size_in_bytes
                                 ? data.size() * sizeof(PodType)
                                 : max_size_in_bytes
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
       , detail::buffer_debug_check <
         typename std::vector<PodType, Allocator>::const_iterator
         > (data.begin())
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
         );
     }
 
@@ -1159,11 +1159,11 @@ private:
         std::basic_string<Elem, Traits, Allocator> &data) noexcept {
         return mutable_buffer(data.size() ? &data[0] : 0,
                               data.size() * sizeof(Elem)
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
       , detail::buffer_debug_check <
         typename std::basic_string<Elem, Traits, Allocator>::iterator
         > (data.begin())
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
         );
     }
 
@@ -1185,11 +1185,11 @@ private:
                               data.size() * sizeof(Elem) < max_size_in_bytes
                                   ? data.size() * sizeof(Elem)
                                   : max_size_in_bytes
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
       , detail::buffer_debug_check <
         typename std::basic_string<Elem, Traits, Allocator>::iterator
         > (data.begin())
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
         );
     }
 
@@ -1204,11 +1204,11 @@ private:
     [[nodiscard]] inline const_buffer buffer(
         const std::basic_string<Elem, Traits, Allocator> &data) noexcept {
         return const_buffer(data.data(), data.size() * sizeof(Elem)
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
       , detail::buffer_debug_check <
         typename std::basic_string<Elem, Traits, Allocator>::const_iterator
         > (data.begin())
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
         );
     }
 
@@ -1230,11 +1230,11 @@ private:
                             data.size() * sizeof(Elem) < max_size_in_bytes
                                 ? data.size() * sizeof(Elem)
                                 : max_size_in_bytes
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
       , detail::buffer_debug_check <
         typename std::basic_string<Elem, Traits, Allocator>::const_iterator
         > (data.begin())
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
         );
     }
 
@@ -1249,11 +1249,11 @@ private:
         std::basic_string_view<Elem, Traits> data) noexcept {
         return const_buffer(data.size() ? &data[0] : 0,
                             data.size() * sizeof(Elem)
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
     , detail::buffer_debug_check <
       typename std::basic_string_view<Elem, Traits>::iterator
       > (data.begin())
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
         );
     }
 
@@ -1272,11 +1272,11 @@ private:
                             data.size() * sizeof(Elem) < max_size_in_bytes
                                 ? data.size() * sizeof(Elem)
                                 : max_size_in_bytes
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
     , detail::buffer_debug_check <
       typename std::basic_string_view<Elem, Traits>::iterator
       > (data.begin())
-#endif // ASIO_ENABLE_BUFFER_DEBUGGING
+#endif // XIO_ENABLE_BUFFER_DEBUGGING
         );
     }
 
@@ -1506,14 +1506,14 @@ private:
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-#if defined(ASIO_MSVC)
+#if defined(XIO_MSVC)
             detail::has_subspan_memfn<Span<T, Extent> >::value,
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
             std::is_same<
                 decltype(span.subspan(0, 0)),
                 Span<T, static_cast<std::size_t>(-1)>
             >::value,
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
             defaulted_constraint
         > = defaulted_constraint()) noexcept {
         return mutable_buffer(span);
@@ -1541,14 +1541,14 @@ private:
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-#if defined(ASIO_MSVC)
+#if defined(XIO_MSVC)
             detail::has_subspan_memfn<Span<T, Extent> >::value,
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
             std::is_same<
                 decltype(span.subspan(0, 0)),
                 Span<T, static_cast<std::size_t>(-1)>
             >::value,
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
             defaulted_constraint
         > = defaulted_constraint()) noexcept {
         return buffer(mutable_buffer(span), max_size_in_bytes);
@@ -1567,14 +1567,14 @@ private:
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-#if defined(ASIO_MSVC)
+#if defined(XIO_MSVC)
             detail::has_subspan_memfn<Span<const T, Extent> >::value,
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
             std::is_same<
                 decltype(span.subspan(0, 0)),
                 Span<T, static_cast<std::size_t>(-1)>
             >::value,
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
             defaulted_constraint
         > = defaulted_constraint()) noexcept {
         return const_buffer(span);
@@ -1598,14 +1598,14 @@ private:
             defaulted_constraint
         > = defaulted_constraint(),
         constraint_t<
-#if defined(ASIO_MSVC)
+#if defined(XIO_MSVC)
             detail::has_subspan_memfn<Span<const T, Extent> >::value,
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
             std::is_same<
                 decltype(span.subspan(0, 0)),
                 Span<T, static_cast<std::size_t>(-1)>
             >::value,
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
             defaulted_constraint
         > = defaulted_constraint()) noexcept {
         return buffer(const_buffer(span), max_size_in_bytes);
@@ -1644,27 +1644,27 @@ private:
                                        std::size_t maximum_size =
                                                (std::numeric_limits<std::size_t>::max)()) noexcept
             : string_(s),
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
               size_((std::numeric_limits<std::size_t>::max)()),
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
               max_size_(maximum_size) {
         }
 
         /// @b DynamicBuffer_v2: Copy construct a dynamic buffer.
         dynamic_string_buffer(const dynamic_string_buffer &other) noexcept
             : string_(other.string_),
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
               size_(other.size_),
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
               max_size_(other.max_size_) {
         }
 
         /// Move construct a dynamic buffer.
         dynamic_string_buffer(dynamic_string_buffer &&other) noexcept
             : string_(other.string_),
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
               size_(other.size_),
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
               max_size_(other.max_size_) {
         }
 
@@ -1676,10 +1676,10 @@ private:
    * max_size(). Otherwise returns max_size().
    */
         std::size_t size() const noexcept {
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
             if (size_ != (std::numeric_limits<std::size_t>::max)())
                 return size_;
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
             return (std::min)(string_.size(), max_size());
         }
 
@@ -1701,7 +1701,7 @@ private:
             return (std::min)(string_.capacity(), max_size());
         }
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
         /// @b DynamicBuffer_v1: Get a list of buffers that represents the input
   /// sequence.
         /**
@@ -1715,7 +1715,7 @@ private:
         const_buffers_type data() const noexcept {
             return const_buffers_type(xio::buffer(string_, size_));
         }
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
         /// @b DynamicBuffer_v2: Get a sequence of buffers that represents the
   /// underlying memory.
@@ -1755,7 +1755,7 @@ private:
                 xio::buffer(string_, max_size_) + pos, n));
         }
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
         /// @b DynamicBuffer_v1: Get a list of buffers that represents the output
   /// sequence, with the given size.
         /**
@@ -1803,7 +1803,7 @@ private:
             size_ += (std::min)(n, string_.size() - size_);
             string_.resize(size_);
         }
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
         /// @b DynamicBuffer_v2: Grow the underlying memory by the specified number of
   /// bytes.
@@ -1845,22 +1845,22 @@ private:
    * emptied.
    */
         void consume(std::size_t n) {
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
             if (size_ != (std::numeric_limits<std::size_t>::max)()) {
                 std::size_t consume_length = (std::min)(n, size_);
                 string_.erase(0, consume_length);
                 size_ -= consume_length;
                 return;
             }
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
             string_.erase(0, n);
         }
 
     private:
         std::basic_string<Elem, Traits, Allocator> &string_;
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
         std::size_t size_;
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
         const std::size_t max_size_;
     };
 
@@ -1892,27 +1892,27 @@ private:
                                        std::size_t maximum_size =
                                                (std::numeric_limits<std::size_t>::max)()) noexcept
             : vector_(v),
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
               size_((std::numeric_limits<std::size_t>::max)()),
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
               max_size_(maximum_size) {
         }
 
         /// @b DynamicBuffer_v2: Copy construct a dynamic buffer.
         dynamic_vector_buffer(const dynamic_vector_buffer &other) noexcept
             : vector_(other.vector_),
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
               size_(other.size_),
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
               max_size_(other.max_size_) {
         }
 
         /// Move construct a dynamic buffer.
         dynamic_vector_buffer(dynamic_vector_buffer &&other) noexcept
             : vector_(other.vector_),
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
               size_(other.size_),
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
               max_size_(other.max_size_) {
         }
 
@@ -1924,10 +1924,10 @@ private:
    * max_size(). Otherwise returns max_size().
    */
         std::size_t size() const noexcept {
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
             if (size_ != (std::numeric_limits<std::size_t>::max)())
                 return size_;
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
             return (std::min)(vector_.size(), max_size());
         }
 
@@ -1953,7 +1953,7 @@ private:
             return (std::min)(vector_.capacity(), max_size());
         }
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
         /// @b DynamicBuffer_v1: Get a list of buffers that represents the input
   /// sequence.
         /**
@@ -1968,7 +1968,7 @@ private:
         const_buffers_type data() const noexcept {
             return const_buffers_type(xio::buffer(vector_, size_));
         }
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
         /// @b DynamicBuffer_v2: Get a sequence of buffers that represents the
   /// underlying memory.
@@ -2008,7 +2008,7 @@ private:
                 xio::buffer(vector_, max_size_) + pos, n));
         }
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
         /// @b DynamicBuffer_v1: Get a list of buffers that represents the output
   /// sequence, with the given size.
         /**
@@ -2056,7 +2056,7 @@ private:
             size_ += (std::min)(n, vector_.size() - size_);
             vector_.resize(size_);
         }
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
         /// @b DynamicBuffer_v2: Grow the underlying memory by the specified number of
   /// bytes.
@@ -2098,22 +2098,22 @@ private:
    * emptied.
    */
         void consume(std::size_t n) {
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
             if (size_ != (std::numeric_limits<std::size_t>::max)()) {
                 std::size_t consume_length = (std::min)(n, size_);
                 vector_.erase(vector_.begin(), vector_.begin() + consume_length);
                 size_ -= consume_length;
                 return;
             }
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
             vector_.erase(vector_.begin(), vector_.begin() + (std::min)(size(), n));
         }
 
     private:
         std::vector<Elem, Allocator> &vector_;
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
         std::size_t size_;
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
         const std::size_t max_size_;
     };
 
@@ -2446,11 +2446,7 @@ namespace xio {
 
     template<typename T>
     struct is_mutable_buffer_sequence
-#if defined(GENERATING_DOCUMENTATION)
-            : std::integral_constant<bool, automatically_determined>
-#else // defined(GENERATING_DOCUMENTATION)
             : xio::detail::is_buffer_sequence<T, mutable_buffer>
-#endif // defined(GENERATING_DOCUMENTATION)
     {
     };
 
@@ -2458,56 +2454,42 @@ namespace xio {
 /// requirements.
     template<typename T>
     struct is_const_buffer_sequence
-#if defined(GENERATING_DOCUMENTATION)
-            : std::integral_constant<bool, automatically_determined>
-#else // defined(GENERATING_DOCUMENTATION)
             : xio::detail::is_buffer_sequence<T, const_buffer>
-#endif // defined(GENERATING_DOCUMENTATION)
     {
     };
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
     /// Trait to determine whether a type satisfies the DynamicBuffer_v1
 /// requirements.
     template<typename T>
     struct is_dynamic_buffer_v1
-#if defined(GENERATING_DOCUMENTATION)
-            : std::integral_constant<bool, automatically_determined>
-#else // defined(GENERATING_DOCUMENTATION)
             : xio::detail::is_dynamic_buffer_v1<T>
-#endif // defined(GENERATING_DOCUMENTATION)
     {
     };
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     /// Trait to determine whether a type satisfies the DynamicBuffer_v2
 /// requirements.
     template<typename T>
     struct is_dynamic_buffer_v2
-#if defined(GENERATING_DOCUMENTATION)
-            : std::integral_constant<bool, automatically_determined>
-#else // defined(GENERATING_DOCUMENTATION)
             : xio::detail::is_dynamic_buffer_v2<T>
-#endif // defined(GENERATING_DOCUMENTATION)
     {
     };
 
     /// Trait to determine whether a type satisfies the DynamicBuffer requirements.
     /**
- * If @c ASIO_NO_DYNAMIC_BUFFER_V1 is not defined, determines whether the
+ * If @c XIO_NO_DYNAMIC_BUFFER_V1 is not defined, determines whether the
  * type satisfies the DynamicBuffer_v1 requirements. Otherwise, if @c
- * ASIO_NO_DYNAMIC_BUFFER_V1 is defined, determines whether the type
+ * XIO_NO_DYNAMIC_BUFFER_V1 is defined, determines whether the type
  * satisfies the DynamicBuffer_v2 requirements.
  */
     template<typename T>
     struct is_dynamic_buffer
-#if defined(GENERATING_DOCUMENTATION)
-            : std::integral_constant<bool, automatically_determined>
-#elif defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if defined(XIO_NO_DYNAMIC_BUFFER_V1)
             : xio::is_dynamic_buffer_v2<T>
-#else // defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#else // defined(XIO_NO_DYNAMIC_BUFFER_V1)
             : xio::is_dynamic_buffer_v1<T>
-#endif // defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // defined(XIO_NO_DYNAMIC_BUFFER_V1)
     {
     };
 
@@ -2676,4 +2658,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_BUFFER_HPP
+#endif // XIO_BUFFER_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_ASSOCIATED_ALLOCATOR_HPP
-#define ASIO_ASSOCIATED_ALLOCATOR_HPP
+#ifndef XIO_ASSOCIATED_ALLOCATOR_HPP
+#define XIO_ASSOCIATED_ALLOCATOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -105,23 +105,10 @@ namespace xio {
  */
     template<typename T, typename Allocator = std::allocator<void> >
     struct associated_allocator
-#if !defined(GENERATING_DOCUMENTATION)
+
             : detail::associated_allocator_impl<T, Allocator>
-#endif // !defined(GENERATING_DOCUMENTATION)
+
     {
-#if defined(GENERATING_DOCUMENTATION)
-        /// If @c T has a nested type @c allocator_type, <tt>T::allocator_type</tt>.
-  /// Otherwise @c Allocator.
-        typedef see_below type;
-
-        /// If @c T has a nested type @c allocator_type, returns
-  /// <tt>t.get_allocator()</tt>. Otherwise returns @c type().
-        static decltype(auto) get(const T &t) noexcept;
-
-        /// If @c T has a nested type @c allocator_type, returns
-  /// <tt>t.get_allocator()</tt>. Otherwise returns @c a.
-        static decltype(auto) get(const T &t, const Allocator &a) noexcept;
-#endif // defined(GENERATING_DOCUMENTATION)
     };
 
     /// Helper function to obtain an object's associated allocator.
@@ -171,9 +158,8 @@ namespace xio {
     /// Specialisation of associated_allocator for @c std::reference_wrapper.
     template<typename T, typename Allocator>
     struct associated_allocator<std::reference_wrapper<T>, Allocator>
-#if !defined(GENERATING_DOCUMENTATION)
             : detail::associated_allocator_forwarding_base<T, Allocator>
-#endif // !defined(GENERATING_DOCUMENTATION)
+
     {
         /// Forwards @c type to the associator specialisation for the unwrapped type
   /// @c T.
@@ -198,4 +184,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_ASSOCIATED_ALLOCATOR_HPP
+#endif // XIO_ASSOCIATED_ALLOCATOR_HPP

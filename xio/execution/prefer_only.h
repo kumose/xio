@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXECUTION_PREFER_ONLY_HPP
-#define ASIO_EXECUTION_PREFER_ONLY_HPP
+#ifndef XIO_EXECUTION_PREFER_ONLY_HPP
+#define XIO_EXECUTION_PREFER_ONLY_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -25,39 +25,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
-#if defined(GENERATING_DOCUMENTATION)
-
-    namespace execution {
-        /// A property adapter that is used with the polymorphic executor wrapper
-/// to mark properties as preferable, but not requirable.
-        template<typename Property>
-        struct prefer_only {
-            /// The prefer_only adapter applies to the same types as the nested property.
-            template<typename T>
-            static constexpr bool is_applicable_property_v =
-                    is_applicable_property<T, Property>::value;
-
-            /// The context_t property cannot be required.
-            static constexpr bool is_requirable = false;
-
-            /// The context_t property can be preferred, it the underlying property can
-  /// be preferred.
-            /**
-   * @c true if @c Property::is_preferable is @c true, otherwise @c false.
-   */
-            static constexpr bool is_preferable = automatically_determined;
-
-            /// The type returned by queries against an @c any_executor.
-            typedef typename Property::polymorphic_query_result_type
-            polymorphic_query_result_type;
-        };
-    } // namespace execution
-
-#else // defined(GENERATING_DOCUMENTATION)
-
-
 
 
     namespace execution {
@@ -154,10 +121,10 @@ namespace xio {
                    std::enable_if_t<
                        can_prefer<const Executor &, const InnerProperty &>::value
                    > * = 0)
-#if !defined(ASIO_MSVC) \
+#if !defined(XIO_MSVC) \
   && !defined(__clang__) // Clang crashes if noexcept is used here.
                 noexcept(is_nothrow_prefer<const Executor &, const InnerProperty &>::value)
-#endif // !defined(ASIO_MSVC)
+#endif // !defined(XIO_MSVC)
             //   && !defined(__clang__)
             {
                 return xio::prefer(ex, p.property);
@@ -173,10 +140,10 @@ namespace xio {
                   std::enable_if_t<
                       can_query<const Executor &, const InnerProperty &>::value
                   > * = 0)
-#if !defined(ASIO_MSVC) \
+#if !defined(XIO_MSVC) \
   && !defined(__clang__) // Clang crashes if noexcept is used here.
                 noexcept(is_nothrow_query<const Executor &, const InnerProperty &>::value)
-#endif // !defined(ASIO_MSVC)
+#endif // !defined(XIO_MSVC)
             //   && !defined(__clang__)
             {
                 return xio::query(ex, p.property);
@@ -195,11 +162,9 @@ namespace xio {
             : is_applicable_property<T, InnerProperty> {
     };
 
-#endif // defined(GENERATING_DOCUMENTATION)
-
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXECUTION_PREFER_ONLY_HPP
+#endif // XIO_EXECUTION_PREFER_ONLY_HPP

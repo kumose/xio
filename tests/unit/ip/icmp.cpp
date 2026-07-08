@@ -88,22 +88,22 @@ void test()
     ip::icmp::socket socket3(ioc, ip::icmp::v6());
     ip::icmp::socket socket4(ioc, ip::icmp::endpoint(ip::icmp::v4(), 0));
     ip::icmp::socket socket5(ioc, ip::icmp::endpoint(ip::icmp::v6(), 0));
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     ip::icmp::socket::native_handle_type native_socket1
       = ::socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     ip::icmp::socket socket6(ioc, ip::icmp::v4(), native_socket1);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     ip::icmp::socket socket7(ioc_ex);
     ip::icmp::socket socket8(ioc_ex, ip::icmp::v4());
     ip::icmp::socket socket9(ioc_ex, ip::icmp::v6());
     ip::icmp::socket socket10(ioc_ex, ip::icmp::endpoint(ip::icmp::v4(), 0));
     ip::icmp::socket socket11(ioc_ex, ip::icmp::endpoint(ip::icmp::v6(), 0));
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     ip::icmp::socket::native_handle_type native_socket2
       = ::socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     ip::icmp::socket socket12(ioc_ex, ip::icmp::v4(), native_socket2);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     ip::icmp::socket socket13(std::move(socket6));
 
@@ -132,14 +132,14 @@ void test()
     socket1.open(ip::icmp::v4(), ec);
     socket1.open(ip::icmp::v6(), ec);
 
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     ip::icmp::socket::native_handle_type native_socket3
       = ::socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     socket1.assign(ip::icmp::v4(), native_socket3);
     ip::icmp::socket::native_handle_type native_socket4
       = ::socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     socket1.assign(ip::icmp::v4(), native_socket4, ec);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     bool is_open = socket1.is_open();
     (void)is_open;
@@ -579,9 +579,9 @@ void test()
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "ip/icmp",
-  ASIO_COMPILE_TEST_CASE(ip_icmp_socket_compile::test)
-  ASIO_COMPILE_TEST_CASE(ip_icmp_resolver_compile::test)
+  XIO_COMPILE_TEST_CASE(ip_icmp_socket_compile::test)
+  XIO_COMPILE_TEST_CASE(ip_icmp_resolver_compile::test)
 )

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_GLOBAL_HPP
-#define ASIO_DETAIL_GLOBAL_HPP
+#ifndef XIO_DETAIL_GLOBAL_HPP
+#define XIO_DETAIL_GLOBAL_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,11 +17,11 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_HAS_THREADS)
+#if !defined(XIO_HAS_THREADS)
 #include <xio/detail/null_global.h>
-#elif defined(ASIO_WINDOWS)
+#elif defined(XIO_WINDOWS)
 #include <xio/detail/win_global.h>
-#elif defined(ASIO_HAS_PTHREADS)
+#elif defined(XIO_HAS_PTHREADS)
 #include <xio/detail/posix_global.h>
 #else
 #include <xio/detail/std_global.h>
@@ -33,11 +33,11 @@ namespace xio {
     namespace detail {
         template<typename T>
         inline T &global() {
-#if !defined(ASIO_HAS_THREADS)
+#if !defined(XIO_HAS_THREADS)
             return null_global<T>();
-#elif defined(ASIO_WINDOWS)
+#elif defined(XIO_WINDOWS)
             return win_global<T>();
-#elif defined(ASIO_HAS_PTHREADS)
+#elif defined(XIO_HAS_PTHREADS)
             return posix_global<T>();
 #else
             return std_global<T>();
@@ -47,4 +47,4 @@ namespace xio {
 
 } // namespace xio
 
-#endif // ASIO_DETAIL_GLOBAL_HPP
+#endif // XIO_DETAIL_GLOBAL_HPP

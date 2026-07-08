@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_REACTIVE_SOCKET_CONNECT_OP_HPP
-#define ASIO_DETAIL_REACTIVE_SOCKET_CONNECT_OP_HPP
+#ifndef XIO_DETAIL_REACTIVE_SOCKET_CONNECT_OP_HPP
+#define XIO_DETAIL_REACTIVE_SOCKET_CONNECT_OP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -40,7 +40,7 @@ namespace xio {
             }
 
             static status do_perform(reactor_op *base) {
-                ASIO_ASSUME(base != 0);
+                XIO_ASSUME(base != 0);
                 reactive_socket_connect_op_base *o(
                     static_cast<reactive_socket_connect_op_base *>(base));
 
@@ -49,7 +49,7 @@ namespace xio {
                                     ? done
                                     : not_done;
 
-                ASIO_HANDLER_REACTOR_OPERATION((*o, "non_blocking_connect", o->ec_));
+                XIO_HANDLER_REACTOR_OPERATION((*o, "non_blocking_connect", o->ec_));
 
                 return result;
             }
@@ -64,7 +64,7 @@ namespace xio {
             typedef Handler handler_type;
             typedef IoExecutor io_executor_type;
 
-            ASIO_DEFINE_HANDLER_PTR(reactive_socket_connect_op);
+            XIO_DEFINE_HANDLER_PTR(reactive_socket_connect_op);
 
             reactive_socket_connect_op(const xio::error_code &success_ec,
                                        socket_type socket, Handler &handler, const IoExecutor &io_ex)
@@ -78,19 +78,19 @@ namespace xio {
                                     const xio::error_code & /*ec*/,
                                     std::size_t /*bytes_transferred*/) {
                 // Take ownership of the handler object.
-                ASIO_ASSUME(base != 0);
+                XIO_ASSUME(base != 0);
                 reactive_socket_connect_op *o
                         (static_cast<reactive_socket_connect_op *>(base));
                 ptr p = {xio::detail::addressof(o->handler_), o, o};
 
-                ASIO_HANDLER_COMPLETION((*o));
+                XIO_HANDLER_COMPLETION((*o));
 
                 // Take ownership of the operation's outstanding work.
                 handler_work<Handler, IoExecutor> w(
                     static_cast<handler_work<Handler, IoExecutor> &&>(
                         o->work_));
 
-                ASIO_ERROR_LOCATION(o->ec_);
+                XIO_ERROR_LOCATION(o->ec_);
 
                 // Make a copy of the handler so that the memory can be deallocated before
                 // the upcall is made. Even if we're not about to make an upcall, a
@@ -106,27 +106,27 @@ namespace xio {
                 // Make the upcall if required.
                 if (owner) {
                     fenced_block b(fenced_block::half);
-                    ASIO_HANDLER_INVOCATION_BEGIN((handler.arg1_));
+                    XIO_HANDLER_INVOCATION_BEGIN((handler.arg1_));
                     w.complete(handler, handler.handler_);
-                    ASIO_HANDLER_INVOCATION_END;
+                    XIO_HANDLER_INVOCATION_END;
                 }
             }
 
             static void do_immediate(operation *base, bool, const void *io_ex) {
                 // Take ownership of the handler object.
-                ASIO_ASSUME(base != 0);
+                XIO_ASSUME(base != 0);
                 reactive_socket_connect_op *o
                         (static_cast<reactive_socket_connect_op *>(base));
                 ptr p = {xio::detail::addressof(o->handler_), o, o};
 
-                ASIO_HANDLER_COMPLETION((*o));
+                XIO_HANDLER_COMPLETION((*o));
 
                 // Take ownership of the operation's outstanding work.
                 immediate_handler_work<Handler, IoExecutor> w(
                     static_cast<handler_work<Handler, IoExecutor> &&>(
                         o->work_));
 
-                ASIO_ERROR_LOCATION(o->ec_);
+                XIO_ERROR_LOCATION(o->ec_);
 
                 // Make a copy of the handler so that the memory can be deallocated before
                 // the upcall is made. Even if we're not about to make an upcall, a
@@ -139,9 +139,9 @@ namespace xio {
                 p.h = xio::detail::addressof(handler.handler_);
                 p.reset();
 
-                ASIO_HANDLER_INVOCATION_BEGIN((handler.arg1_));
+                XIO_HANDLER_INVOCATION_BEGIN((handler.arg1_));
                 w.complete(handler, handler.handler_, io_ex);
-                ASIO_HANDLER_INVOCATION_END;
+                XIO_HANDLER_INVOCATION_END;
             }
 
         private:
@@ -154,4 +154,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_REACTIVE_SOCKET_CONNECT_OP_HPP
+#endif // XIO_DETAIL_REACTIVE_SOCKET_CONNECT_OP_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_SIGNAL_HANDLER_HPP
-#define ASIO_DETAIL_SIGNAL_HANDLER_HPP
+#ifndef XIO_DETAIL_SIGNAL_HANDLER_HPP
+#define XIO_DETAIL_SIGNAL_HANDLER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -32,7 +32,7 @@ namespace xio {
         template<typename Handler, typename IoExecutor>
         class signal_handler : public signal_op {
         public:
-            ASIO_DEFINE_HANDLER_PTR(signal_handler);
+            XIO_DEFINE_HANDLER_PTR(signal_handler);
 
             signal_handler(Handler &h, const IoExecutor &io_ex)
                 : signal_op(&signal_handler::do_complete),
@@ -47,7 +47,7 @@ namespace xio {
                 signal_handler *h(static_cast<signal_handler *>(base));
                 ptr p = {xio::detail::addressof(h->handler_), h, h};
 
-                ASIO_HANDLER_COMPLETION((*h));
+                XIO_HANDLER_COMPLETION((*h));
 
                 // Take ownership of the operation's outstanding work.
                 handler_work<Handler, IoExecutor> w(
@@ -68,9 +68,9 @@ namespace xio {
                 // Make the upcall if required.
                 if (owner) {
                     fenced_block b(fenced_block::half);
-                    ASIO_HANDLER_INVOCATION_BEGIN((handler.arg1_, handler.arg2_));
+                    XIO_HANDLER_INVOCATION_BEGIN((handler.arg1_, handler.arg2_));
                     w.complete(handler, handler.handler_);
-                    ASIO_HANDLER_INVOCATION_END;
+                    XIO_HANDLER_INVOCATION_END;
                 }
             }
 
@@ -84,4 +84,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_SIGNAL_HANDLER_HPP
+#endif // XIO_DETAIL_SIGNAL_HANDLER_HPP

@@ -8,8 +8,8 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-#ifndef ASIO_EXPERIMENTAL_CO_SPAWN_HPP
-#define ASIO_EXPERIMENTAL_CO_SPAWN_HPP
+#ifndef XIO_EXPERIMENTAL_CO_SPAWN_HPP
+#define XIO_EXPERIMENTAL_CO_SPAWN_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -58,7 +58,7 @@ namespace xio {
  * @returns Implementation defined
  */
         template<typename T, typename Executor, typename CompletionToken>
-        ASIO_INITFN_AUTO_RESULT_TYPE(
+        XIO_INITFN_AUTO_RESULT_TYPE(
             CompletionToken, void(std::exception_ptr, T))
 
         co_spawn(coro<void, T, Executor> c, CompletionToken &&token) {
@@ -80,7 +80,7 @@ namespace xio {
  * @returns Implementation defined
  */
         template<typename T, typename Executor, typename CompletionToken>
-        ASIO_INITFN_AUTO_RESULT_TYPE(
+        XIO_INITFN_AUTO_RESULT_TYPE(
             CompletionToken, void(std::exception_ptr, T))
 
         co_spawn(coro<void(), T, Executor> c, CompletionToken &&token) {
@@ -102,7 +102,7 @@ namespace xio {
  * @returns Implementation defined
  */
         template<typename T, typename Executor, typename CompletionToken>
-        ASIO_INITFN_AUTO_RESULT_TYPE(CompletionToken, void (T))
+        XIO_INITFN_AUTO_RESULT_TYPE(CompletionToken, void (T))
 
         co_spawn(coro<void() noexcept, T, Executor> c, CompletionToken &&token) {
             auto exec = c.get_executor();
@@ -123,7 +123,7 @@ namespace xio {
  * @returns Implementation defined
  */
         template<typename Executor, typename CompletionToken>
-        ASIO_INITFN_AUTO_RESULT_TYPE(
+        XIO_INITFN_AUTO_RESULT_TYPE(
             CompletionToken, void (std::exception_ptr))
 
         co_spawn(coro<void, void, Executor> c, CompletionToken &&token) {
@@ -145,7 +145,7 @@ namespace xio {
  * @returns Implementation defined
  */
         template<typename Executor, typename CompletionToken>
-        ASIO_INITFN_AUTO_RESULT_TYPE(
+        XIO_INITFN_AUTO_RESULT_TYPE(
             CompletionToken, void (std::exception_ptr))
 
         co_spawn(coro<void(), void, Executor> c, CompletionToken &&token) {
@@ -167,7 +167,7 @@ namespace xio {
  * @returns Implementation defined
  */
         template<typename Executor, typename CompletionToken>
-        ASIO_INITFN_AUTO_RESULT_TYPE(CompletionToken, void ())
+        XIO_INITFN_AUTO_RESULT_TYPE(CompletionToken, void ())
 
         co_spawn(coro<void() noexcept, void, Executor> c, CompletionToken &&token) {
             auto exec = c.get_executor();
@@ -181,4 +181,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif //ASIO_EXPERIMENTAL_CO_SPAWN_HPP
+#endif //XIO_EXPERIMENTAL_CO_SPAWN_HPP

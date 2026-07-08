@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_BLOCKING_EXECUTOR_OP_HPP
-#define ASIO_DETAIL_BLOCKING_EXECUTOR_OP_HPP
+#ifndef XIO_DETAIL_BLOCKING_EXECUTOR_OP_HPP
+#define XIO_DETAIL_BLOCKING_EXECUTOR_OP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -69,21 +69,21 @@ namespace xio {
             static void do_complete(void *owner, Operation *base,
                                     const xio::error_code & /*ec*/,
                                     std::size_t /*bytes_transferred*/) {
-                ASIO_ASSUME(base != 0);
+                XIO_ASSUME(base != 0);
                 blocking_executor_op *o(static_cast<blocking_executor_op *>(base));
 
                 typename blocking_executor_op_base<Operation>::do_complete_cleanup
                         on_exit = {o};
                 (void) on_exit;
 
-                ASIO_HANDLER_COMPLETION((*o));
+                XIO_HANDLER_COMPLETION((*o));
 
                 // Make the upcall if required.
                 if (owner) {
                     fenced_block b(fenced_block::half);
-                    ASIO_HANDLER_INVOCATION_BEGIN(());
+                    XIO_HANDLER_INVOCATION_BEGIN(());
                     static_cast<Handler &&>(o->handler_)();
-                    ASIO_HANDLER_INVOCATION_END;
+                    XIO_HANDLER_INVOCATION_END;
                 }
             }
 
@@ -96,4 +96,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_BLOCKING_EXECUTOR_OP_HPP
+#endif // XIO_DETAIL_BLOCKING_EXECUTOR_OP_HPP

@@ -45,7 +45,7 @@ struct ex_nq_nr
 namespace xio {
 namespace traits {
 
-#if !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
 template <>
 struct equality_comparable<ex_nq_nr>
@@ -54,9 +54,9 @@ struct equality_comparable<ex_nq_nr>
   static constexpr bool is_noexcept = true;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
-#if !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
 
 template <typename Function>
 struct execute_member<ex_nq_nr, Function>
@@ -67,7 +67,7 @@ struct execute_member<ex_nq_nr, Function>
   typedef void result_type;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
 
 } // namespace traits
 } // namespace xio
@@ -99,7 +99,7 @@ struct ex_cq_nr
 namespace xio {
 namespace traits {
 
-#if !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
 template <typename ResultType, typename ParamType, typename Result>
 struct equality_comparable<ex_cq_nr<ResultType, ParamType, Result> >
@@ -108,9 +108,9 @@ struct equality_comparable<ex_cq_nr<ResultType, ParamType, Result> >
   static constexpr bool is_noexcept = true;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
-#if !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
 
 template <typename ResultType, typename ParamType,
     typename Result, typename Function>
@@ -122,9 +122,9 @@ struct execute_member<ex_cq_nr<ResultType, ParamType, Result>, Function>
   typedef void result_type;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
 
-#if !defined(ASIO_HAS_DEDUCED_QUERY_STATIC_CONSTEXPR_MEMBER_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_QUERY_STATIC_CONSTEXPR_MEMBER_TRAIT)
 
 template <typename ResultType, typename ParamType,
   typename Result, typename Param>
@@ -145,7 +145,7 @@ struct query_static_constexpr_member<
   }
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_QUERY_STATIC_CONSTEXPR_MEMBER_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_QUERY_STATIC_CONSTEXPR_MEMBER_TRAIT)
 
 } // namespace traits
 } // namespace xio
@@ -177,7 +177,7 @@ struct ex_mq_nr
 namespace xio {
 namespace traits {
 
-#if !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
 template <typename ResultType, typename ParamType, typename Result>
 struct equality_comparable<ex_mq_nr<ResultType, ParamType, Result> >
@@ -186,9 +186,9 @@ struct equality_comparable<ex_mq_nr<ResultType, ParamType, Result> >
   static constexpr bool is_noexcept = true;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
-#if !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
 
 template <typename ResultType, typename ParamType,
     typename Result, typename Function>
@@ -200,9 +200,9 @@ struct execute_member<ex_mq_nr<ResultType, ParamType, Result>, Function>
   typedef void result_type;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
 
-#if !defined(ASIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
 
 template <typename ResultType, typename ParamType,
   typename Result, typename Param>
@@ -218,7 +218,7 @@ struct query_member<
   typedef ResultType result_type;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
 
 } // namespace traits
 } // namespace xio
@@ -250,7 +250,7 @@ struct ex_fq_nr
 namespace xio {
 namespace traits {
 
-#if !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
 template <typename ResultType, typename ParamType, typename Result>
 struct equality_comparable<ex_fq_nr<ResultType, ParamType, Result> >
@@ -259,9 +259,9 @@ struct equality_comparable<ex_fq_nr<ResultType, ParamType, Result> >
   static constexpr bool is_noexcept = true;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
-#if !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
 
 template <typename ResultType, typename ParamType,
     typename Result, typename Function>
@@ -273,9 +273,9 @@ struct execute_member<ex_fq_nr<ResultType, ParamType, Result>, Function>
   typedef void result_type;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
 
-#if !defined(ASIO_HAS_DEDUCED_QUERY_FREE_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_QUERY_FREE_TRAIT)
 
 template <typename ResultType, typename ParamType,
   typename Result, typename Param>
@@ -291,7 +291,7 @@ struct query_free<
   typedef ResultType result_type;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_QUERY_FREE_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_QUERY_FREE_TRAIT)
 
 } // namespace traits
 } // namespace xio
@@ -370,7 +370,7 @@ struct ex_mq_mr<CurrentType, CurrentType>
 namespace xio {
 namespace traits {
 
-#if !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
 template <typename CurrentType, typename OtherType>
 struct equality_comparable<ex_mq_mr<CurrentType, OtherType> >
@@ -379,9 +379,9 @@ struct equality_comparable<ex_mq_mr<CurrentType, OtherType> >
   static constexpr bool is_noexcept = true;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
-#if !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
 
 template <typename CurrentType, typename OtherType, typename Function>
 struct execute_member<ex_mq_mr<CurrentType, OtherType>, Function>
@@ -392,9 +392,9 @@ struct execute_member<ex_mq_mr<CurrentType, OtherType>, Function>
   typedef void result_type;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
 
-#if !defined(ASIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
 
 template <typename CurrentType, typename OtherType, typename Param>
 struct query_member<
@@ -410,9 +410,9 @@ struct query_member<
   typedef CurrentType result_type;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_QUERY_MEMBER_TRAIT)
 
-#if !defined(ASIO_HAS_DEDUCED_REQUIRE_MEMBER_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_REQUIRE_MEMBER_TRAIT)
 
 template <typename CurrentType, typename OtherType, typename Param>
 struct require_member<
@@ -441,7 +441,7 @@ struct require_member<
   typedef ex_mq_mr<OtherType, CurrentType> result_type;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_REQUIRE_MEMBER_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_REQUIRE_MEMBER_TRAIT)
 
 } // namespace traits
 } // namespace xio
@@ -538,7 +538,7 @@ struct ex_fq_fr<CurrentType, CurrentType>
 namespace xio {
 namespace traits {
 
-#if !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
 template <typename CurrentType, typename OtherType>
 struct equality_comparable<ex_fq_fr<CurrentType, OtherType> >
@@ -547,9 +547,9 @@ struct equality_comparable<ex_fq_fr<CurrentType, OtherType> >
   static constexpr bool is_noexcept = true;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
-#if !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
 
 template <typename CurrentType, typename OtherType, typename Function>
 struct execute_member<ex_fq_fr<CurrentType, OtherType>, Function>
@@ -560,9 +560,9 @@ struct execute_member<ex_fq_fr<CurrentType, OtherType>, Function>
   typedef void result_type;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
 
-#if !defined(ASIO_HAS_DEDUCED_QUERY_FREE_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_QUERY_FREE_TRAIT)
 
 template <typename CurrentType, typename OtherType, typename Param>
 struct query_free<
@@ -578,9 +578,9 @@ struct query_free<
   typedef CurrentType result_type;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_QUERY_FREE_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_QUERY_FREE_TRAIT)
 
-#if !defined(ASIO_HAS_DEDUCED_REQUIRE_FREE_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_REQUIRE_FREE_TRAIT)
 
 template <typename CurrentType, typename OtherType, typename Param>
 struct require_free<
@@ -609,9 +609,9 @@ struct require_free<
   typedef ex_fq_fr<OtherType, CurrentType> result_type;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_REQUIRE_FREE_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_REQUIRE_FREE_TRAIT)
 
-#if !defined(ASIO_HAS_DEDUCED_PREFER_FREE_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_PREFER_FREE_TRAIT)
 
 template <typename CurrentType, typename OtherType, typename Param>
 struct prefer_free<
@@ -640,7 +640,7 @@ struct prefer_free<
   typedef ex_fq_fr<OtherType, CurrentType> result_type;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_PREFER_FREE_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_PREFER_FREE_TRAIT)
 
 } // namespace traits
 } // namespace xio
@@ -650,34 +650,34 @@ void test_can_query()
 {
   constexpr bool b1 =
     xio::can_query<Executor, Param>::value;
-  ASIO_CHECK(b1 == ExpectedResult);
+  XIO_CHECK(b1 == ExpectedResult);
 
   constexpr bool b2 =
     xio::can_query<const Executor, Param>::value;
-  ASIO_CHECK(b2 == ExpectedResult);
+  XIO_CHECK(b2 == ExpectedResult);
 
   constexpr bool b3 =
     xio::can_query<Executor&, Param>::value;
-  ASIO_CHECK(b3 == ExpectedResult);
+  XIO_CHECK(b3 == ExpectedResult);
 
   constexpr bool b4 =
     xio::can_query<const Executor&, Param>::value;
-  ASIO_CHECK(b4 == ExpectedResult);
+  XIO_CHECK(b4 == ExpectedResult);
 }
 
 template <typename Executor, typename Param, typename ExpectedResult>
 void test_query()
 {
   exec::blocking_adaptation_t result1 = xio::query(Executor(), Param());
-  ASIO_CHECK(result1 == ExpectedResult());
+  XIO_CHECK(result1 == ExpectedResult());
 
   Executor ex1 = {};
   exec::blocking_adaptation_t result2 = xio::query(ex1, Param());
-  ASIO_CHECK(result2 == ExpectedResult());
+  XIO_CHECK(result2 == ExpectedResult());
 
   const Executor ex2 = {};
   exec::blocking_adaptation_t result3 = xio::query(ex2, Param());
-  ASIO_CHECK(result3 == ExpectedResult());
+  XIO_CHECK(result3 == ExpectedResult());
 }
 
 template <typename Executor, typename Param, typename ExpectedResult>
@@ -685,7 +685,7 @@ void test_constexpr_query()
 {
   constexpr Executor ex1 = {};
   constexpr exec::blocking_adaptation_t result1 = xio::query(ex1, Param());
-  ASIO_CHECK(result1 == ExpectedResult());
+  XIO_CHECK(result1 == ExpectedResult());
 }
 
 template <typename Executor, typename Param, bool ExpectedResult>
@@ -693,19 +693,19 @@ void test_can_require()
 {
   constexpr bool b1 =
     xio::can_require<Executor, Param>::value;
-  ASIO_CHECK(b1 == ExpectedResult);
+  XIO_CHECK(b1 == ExpectedResult);
 
   constexpr bool b2 =
     xio::can_require<const Executor, Param>::value;
-  ASIO_CHECK(b2 == ExpectedResult);
+  XIO_CHECK(b2 == ExpectedResult);
 
   constexpr bool b3 =
     xio::can_require<Executor&, Param>::value;
-  ASIO_CHECK(b3 == ExpectedResult);
+  XIO_CHECK(b3 == ExpectedResult);
 
   constexpr bool b4 =
     xio::can_require<const Executor&, Param>::value;
-  ASIO_CHECK(b4 == ExpectedResult);
+  XIO_CHECK(b4 == ExpectedResult);
 }
 
 void do_nothing()
@@ -715,19 +715,19 @@ void do_nothing()
 template <typename Executor, typename Param, typename ExpectedResult>
 void test_require()
 {
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(
         xio::require(Executor(), Param()),
         Param()) == ExpectedResult());
 
   Executor ex1 = {};
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(
         xio::require(ex1, Param()),
         Param()) == ExpectedResult());
 
-  ASIO_CHECK((
+  XIO_CHECK((
       xio::execution::is_executor<
         typename std::decay<
           typename xio::require_result<Executor&, Param>::type
@@ -736,12 +736,12 @@ void test_require()
 
   const Executor ex2 = {};
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(
         xio::require(ex2, Param()),
         Param()) == ExpectedResult());
 
-  ASIO_CHECK((
+  XIO_CHECK((
       xio::execution::is_executor<
         typename std::decay<
           typename xio::require_result<const Executor&, Param>::type
@@ -754,37 +754,37 @@ void test_can_prefer()
 {
   constexpr bool b1 =
     xio::can_prefer<Executor, Param>::value;
-  ASIO_CHECK(b1 == ExpectedResult);
+  XIO_CHECK(b1 == ExpectedResult);
 
   constexpr bool b2 =
     xio::can_prefer<const Executor, Param>::value;
-  ASIO_CHECK(b2 == ExpectedResult);
+  XIO_CHECK(b2 == ExpectedResult);
 
   constexpr bool b3 =
     xio::can_prefer<Executor&, Param>::value;
-  ASIO_CHECK(b3 == ExpectedResult);
+  XIO_CHECK(b3 == ExpectedResult);
 
   constexpr bool b4 =
     xio::can_prefer<const Executor&, Param>::value;
-  ASIO_CHECK(b4 == ExpectedResult);
+  XIO_CHECK(b4 == ExpectedResult);
 }
 
 template <typename Executor, typename Param, typename ExpectedResult>
 void test_prefer()
 {
-  ASIO_CHECK(
+  XIO_CHECK(
       s(xio::query(
         xio::prefer(Executor(), Param()),
           s())) == s(ExpectedResult()));
 
   Executor ex1 = {};
-  ASIO_CHECK(
+  XIO_CHECK(
       s(xio::query(
         xio::prefer(ex1, Param()),
           s())) == s(ExpectedResult()));
 
   const Executor ex2 = {};
-  ASIO_CHECK(
+  XIO_CHECK(
       s(xio::query(
         xio::prefer(ex2, Param()),
           s())) == s(ExpectedResult()));
@@ -792,529 +792,529 @@ void test_prefer()
 
 void test_vars()
 {
-  ASIO_CHECK(s() == exec::blocking_adaptation);
-  ASIO_CHECK(s() != exec::blocking_adaptation.disallowed);
-  ASIO_CHECK(s() != exec::blocking_adaptation.allowed);
-  ASIO_CHECK(n1() == exec::blocking_adaptation.disallowed);
-  ASIO_CHECK(n1() != exec::blocking_adaptation.allowed);
-  ASIO_CHECK(n2() == exec::blocking_adaptation.allowed);
-  ASIO_CHECK(n2() != exec::blocking_adaptation.disallowed);
+  XIO_CHECK(s() == exec::blocking_adaptation);
+  XIO_CHECK(s() != exec::blocking_adaptation.disallowed);
+  XIO_CHECK(s() != exec::blocking_adaptation.allowed);
+  XIO_CHECK(n1() == exec::blocking_adaptation.disallowed);
+  XIO_CHECK(n1() != exec::blocking_adaptation.allowed);
+  XIO_CHECK(n2() == exec::blocking_adaptation.allowed);
+  XIO_CHECK(n2() != exec::blocking_adaptation.disallowed);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "blocking_adaptation",
 
-  ASIO_TEST_CASE3(test_can_query<ex_nq_nr, s, true>)
-  ASIO_TEST_CASE3(test_can_query<ex_nq_nr, n1, true>)
-  ASIO_TEST_CASE3(test_can_query<ex_nq_nr, n2, false>)
+  XIO_TEST_CASE3(test_can_query<ex_nq_nr, s, true>)
+  XIO_TEST_CASE3(test_can_query<ex_nq_nr, n1, true>)
+  XIO_TEST_CASE3(test_can_query<ex_nq_nr, n2, false>)
 
-  ASIO_TEST_CASE3(test_query<ex_nq_nr, s, n1>)
-  ASIO_TEST_CASE3(test_query<ex_nq_nr, n1, n1>)
+  XIO_TEST_CASE3(test_query<ex_nq_nr, s, n1>)
+  XIO_TEST_CASE3(test_query<ex_nq_nr, n1, n1>)
 
-  ASIO_TEST_CASE3(test_constexpr_query<ex_nq_nr, s, n1>)
-  ASIO_TEST_CASE3(test_constexpr_query<ex_nq_nr, n1, n1>)
+  XIO_TEST_CASE3(test_constexpr_query<ex_nq_nr, s, n1>)
+  XIO_TEST_CASE3(test_constexpr_query<ex_nq_nr, n1, n1>)
 
-  ASIO_TEST_CASE3(test_can_require<ex_nq_nr, s, false>)
-  ASIO_TEST_CASE3(test_can_require<ex_nq_nr, n1, true>)
-  ASIO_TEST_CASE3(test_can_require<ex_nq_nr, n2, true>)
+  XIO_TEST_CASE3(test_can_require<ex_nq_nr, s, false>)
+  XIO_TEST_CASE3(test_can_require<ex_nq_nr, n1, true>)
+  XIO_TEST_CASE3(test_can_require<ex_nq_nr, n2, true>)
 
-  ASIO_TEST_CASE3(test_require<ex_nq_nr, n1, n1>)
-  ASIO_TEST_CASE3(test_require<ex_nq_nr, n2, n2>)
+  XIO_TEST_CASE3(test_require<ex_nq_nr, n1, n1>)
+  XIO_TEST_CASE3(test_require<ex_nq_nr, n2, n2>)
 
-  ASIO_TEST_CASE3(test_can_prefer<ex_nq_nr, s, false>)
-  ASIO_TEST_CASE3(test_can_prefer<ex_nq_nr, n1, true>)
-  ASIO_TEST_CASE3(test_can_prefer<ex_nq_nr, n2, false>)
+  XIO_TEST_CASE3(test_can_prefer<ex_nq_nr, s, false>)
+  XIO_TEST_CASE3(test_can_prefer<ex_nq_nr, n1, true>)
+  XIO_TEST_CASE3(test_can_prefer<ex_nq_nr, n2, false>)
 
-  ASIO_TEST_CASE3(test_prefer<ex_nq_nr, n1, n1>)
+  XIO_TEST_CASE3(test_prefer<ex_nq_nr, n1, n1>)
 
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, s, n1>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, s, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, s, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, s, n2>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, s, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, s, n2>, n2, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n1, n1>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n1, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n1, n1>, n2, false>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n1, n2>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n1, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n1, n2>, n2, false>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n2, n1>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n2, n1>, n1, false>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n2, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n2, n2>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n2, n2>, n1, false>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n2, n2>, n2, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<n1, s, n1>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<n1, s, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<n1, s, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<n2, s, n2>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<n2, s, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_cq_nr<n2, s, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, s, n1>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, s, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, s, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, s, n2>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, s, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, s, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n1, n1>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n1, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n1, n1>, n2, false>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n1, n2>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n1, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n1, n2>, n2, false>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n2, n1>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n2, n1>, n1, false>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n2, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n2, n2>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n2, n2>, n1, false>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<s, n2, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<n1, s, n1>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<n1, s, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<n1, s, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<n2, s, n2>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<n2, s, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_cq_nr<n2, s, n2>, n2, true>)
 
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<s, s, n1>, s, n1>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<s, s, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<s, s, n1>, n2, n1>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<s, s, n2>, s, n2>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<s, s, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<s, s, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<s, n1, n1>, s, n1>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<s, n1, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<s, n1, n2>, s, n2>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<s, n1, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<s, n2, n1>, s, n1>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<s, n2, n1>, n2, n1>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<s, n2, n2>, s, n2>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<s, n2, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<n1, s, n1>, s, n1>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<n1, s, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<n1, s, n1>, n2, n1>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<n2, s, n2>, s, n2>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<n2, s, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_query<ex_cq_nr<n2, s, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<s, s, n1>, s, n1>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<s, s, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<s, s, n1>, n2, n1>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<s, s, n2>, s, n2>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<s, s, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<s, s, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<s, n1, n1>, s, n1>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<s, n1, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<s, n1, n2>, s, n2>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<s, n1, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<s, n2, n1>, s, n1>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<s, n2, n1>, n2, n1>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<s, n2, n2>, s, n2>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<s, n2, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<n1, s, n1>, s, n1>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<n1, s, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<n1, s, n1>, n2, n1>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<n2, s, n2>, s, n2>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<n2, s, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_query<ex_cq_nr<n2, s, n2>, n2, n2>)
 
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, s, n1>, s, n1>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, s, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, s, n1>, n2, n1>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, s, n2>, s, n2>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, s, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, s, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, n1, n1>, s, n1>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, n1, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, n1, n2>, s, n2>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, n1, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, n2, n1>, s, n1>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, n2, n1>, n2, n1>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, n2, n2>, s, n2>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, n2, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<n1, s, n1>, s, n1>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<n1, s, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<n1, s, n1>, n2, n1>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<n2, s, n2>, s, n2>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<n2, s, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<n2, s, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, s, n1>, s, n1>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, s, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, s, n1>, n2, n1>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, s, n2>, s, n2>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, s, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, s, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, n1, n1>, s, n1>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, n1, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, n1, n2>, s, n2>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, n1, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, n2, n1>, s, n1>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, n2, n1>, n2, n1>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, n2, n2>, s, n2>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<s, n2, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<n1, s, n1>, s, n1>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<n1, s, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<n1, s, n1>, n2, n1>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<n2, s, n2>, s, n2>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<n2, s, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_constexpr_query<ex_cq_nr<n2, s, n2>, n2, n2>)
 
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, s, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, s, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, s, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, s, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, s, n2>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, s, n2>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n1, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n1, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n1, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n1, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n1, n2>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n1, n2>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n2, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n2, n1>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n2, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n2, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n2, n2>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n2, n2>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<n1, s, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<n1, s, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<n1, s, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<n2, s, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<n2, s, n2>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_cq_nr<n2, s, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, s, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, s, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, s, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, s, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, s, n2>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, s, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n1, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n1, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n1, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n1, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n1, n2>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n1, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n2, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n2, n1>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n2, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n2, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n2, n2>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<s, n2, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<n1, s, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<n1, s, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<n1, s, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<n2, s, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<n2, s, n2>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_cq_nr<n2, s, n2>, n2, true>)
 
-  ASIO_TEST_CASE5(test_require<ex_cq_nr<s, s, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_require<ex_cq_nr<s, s, n1>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_cq_nr<s, s, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_cq_nr<s, n1, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_require<ex_cq_nr<s, n1, n1>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_cq_nr<s, n1, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_cq_nr<s, n2, n1>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_cq_nr<s, n2, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_cq_nr<n1, s, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_require<ex_cq_nr<n1, s, n1>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_cq_nr<n2, s, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_cq_nr<s, s, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_require<ex_cq_nr<s, s, n1>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_cq_nr<s, s, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_cq_nr<s, n1, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_require<ex_cq_nr<s, n1, n1>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_cq_nr<s, n1, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_cq_nr<s, n2, n1>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_cq_nr<s, n2, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_cq_nr<n1, s, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_require<ex_cq_nr<n1, s, n1>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_cq_nr<n2, s, n2>, n2, n2>)
 
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, s, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, s, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, s, n1>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, s, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, s, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, s, n2>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n1, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n1, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n1, n1>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n1, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n1, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n1, n2>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n2, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n2, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n2, n1>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n2, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n2, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n2, n2>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<n1, s, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<n1, s, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<n1, s, n1>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<n2, s, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<n2, s, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_cq_nr<n2, s, n2>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, s, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, s, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, s, n1>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, s, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, s, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, s, n2>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n1, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n1, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n1, n1>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n1, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n1, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n1, n2>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n2, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n2, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n2, n1>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n2, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n2, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<s, n2, n2>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<n1, s, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<n1, s, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<n1, s, n1>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<n2, s, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<n2, s, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_cq_nr<n2, s, n2>, n2, false>)
 
-  ASIO_TEST_CASE5(test_prefer<ex_cq_nr<s, s, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_prefer<ex_cq_nr<s, s, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_prefer<ex_cq_nr<s, n1, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_prefer<ex_cq_nr<s, n1, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_prefer<ex_cq_nr<s, n2, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_prefer<ex_cq_nr<s, n2, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_prefer<ex_cq_nr<n1, s, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_prefer<ex_cq_nr<n2, s, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_prefer<ex_cq_nr<s, s, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_prefer<ex_cq_nr<s, s, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_prefer<ex_cq_nr<s, n1, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_prefer<ex_cq_nr<s, n1, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_prefer<ex_cq_nr<s, n2, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_prefer<ex_cq_nr<s, n2, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_prefer<ex_cq_nr<n1, s, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_prefer<ex_cq_nr<n2, s, n2>, n1, n2>)
 
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, s, n1>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, s, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, s, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, s, n2>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, s, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, s, n2>, n2, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n1, n1>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n1, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n1, n1>, n2, false>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n1, n2>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n1, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n1, n2>, n2, false>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n2, n1>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n2, n1>, n1, false>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n2, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n2, n2>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n2, n2>, n1, false>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n2, n2>, n2, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<n1, s, n1>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<n1, s, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<n1, s, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<n2, s, n2>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<n2, s, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_mq_nr<n2, s, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, s, n1>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, s, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, s, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, s, n2>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, s, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, s, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n1, n1>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n1, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n1, n1>, n2, false>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n1, n2>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n1, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n1, n2>, n2, false>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n2, n1>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n2, n1>, n1, false>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n2, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n2, n2>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n2, n2>, n1, false>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<s, n2, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<n1, s, n1>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<n1, s, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<n1, s, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<n2, s, n2>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<n2, s, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_mq_nr<n2, s, n2>, n2, true>)
 
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<s, s, n1>, s, n1>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<s, s, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<s, s, n1>, n2, n1>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<s, s, n2>, s, n2>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<s, s, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<s, s, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<s, n1, n1>, s, n1>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<s, n1, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<s, n1, n2>, s, n2>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<s, n1, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<s, n2, n1>, s, n1>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<s, n2, n1>, n2, n1>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<s, n2, n2>, s, n2>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<s, n2, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<n1, s, n1>, s, n1>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<n1, s, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<n1, s, n1>, n2, n1>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<n2, s, n2>, s, n2>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<n2, s, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_query<ex_mq_nr<n2, s, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<s, s, n1>, s, n1>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<s, s, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<s, s, n1>, n2, n1>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<s, s, n2>, s, n2>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<s, s, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<s, s, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<s, n1, n1>, s, n1>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<s, n1, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<s, n1, n2>, s, n2>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<s, n1, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<s, n2, n1>, s, n1>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<s, n2, n1>, n2, n1>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<s, n2, n2>, s, n2>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<s, n2, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<n1, s, n1>, s, n1>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<n1, s, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<n1, s, n1>, n2, n1>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<n2, s, n2>, s, n2>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<n2, s, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_query<ex_mq_nr<n2, s, n2>, n2, n2>)
 
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, s, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, s, n1>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, s, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, s, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, s, n2>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, s, n2>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n1, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n1, n1>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n1, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n1, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n1, n2>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n1, n2>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n2, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n2, n1>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n2, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n2, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n2, n2>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n2, n2>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<n1, s, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<n1, s, n1>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<n1, s, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<n2, s, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<n2, s, n2>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_mq_nr<n2, s, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, s, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, s, n1>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, s, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, s, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, s, n2>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, s, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n1, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n1, n1>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n1, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n1, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n1, n2>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n1, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n2, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n2, n1>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n2, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n2, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n2, n2>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<s, n2, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<n1, s, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<n1, s, n1>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<n1, s, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<n2, s, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<n2, s, n2>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_mq_nr<n2, s, n2>, n2, true>)
 
-  ASIO_TEST_CASE5(test_require<ex_mq_nr<s, s, n1>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_mq_nr<s, s, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_mq_nr<s, n1, n1>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_mq_nr<s, n1, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_mq_nr<s, n2, n1>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_mq_nr<s, n2, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_mq_nr<n1, s, n1>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_mq_nr<n2, s, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_mq_nr<s, s, n1>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_mq_nr<s, s, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_mq_nr<s, n1, n1>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_mq_nr<s, n1, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_mq_nr<s, n2, n1>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_mq_nr<s, n2, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_mq_nr<n1, s, n1>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_mq_nr<n2, s, n2>, n2, n2>)
 
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, s, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, s, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, s, n1>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, s, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, s, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, s, n2>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n1, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n1, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n1, n1>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n1, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n1, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n1, n2>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n2, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n2, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n2, n1>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n2, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n2, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n2, n2>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<n1, s, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<n1, s, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<n1, s, n1>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<n2, s, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<n2, s, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_mq_nr<n2, s, n2>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, s, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, s, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, s, n1>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, s, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, s, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, s, n2>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n1, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n1, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n1, n1>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n1, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n1, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n1, n2>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n2, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n2, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n2, n1>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n2, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n2, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<s, n2, n2>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<n1, s, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<n1, s, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<n1, s, n1>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<n2, s, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<n2, s, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_mq_nr<n2, s, n2>, n2, false>)
 
-  ASIO_TEST_CASE5(test_prefer<ex_mq_nr<s, s, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_prefer<ex_mq_nr<s, s, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_prefer<ex_mq_nr<s, n1, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_prefer<ex_mq_nr<s, n1, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_prefer<ex_mq_nr<s, n2, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_prefer<ex_mq_nr<s, n2, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_prefer<ex_mq_nr<n1, s, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_prefer<ex_mq_nr<n2, s, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_prefer<ex_mq_nr<s, s, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_prefer<ex_mq_nr<s, s, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_prefer<ex_mq_nr<s, n1, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_prefer<ex_mq_nr<s, n1, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_prefer<ex_mq_nr<s, n2, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_prefer<ex_mq_nr<s, n2, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_prefer<ex_mq_nr<n1, s, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_prefer<ex_mq_nr<n2, s, n2>, n1, n2>)
 
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, s, n1>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, s, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, s, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, s, n2>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, s, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, s, n2>, n2, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n1, n1>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n1, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n1, n1>, n2, false>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n1, n2>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n1, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n1, n2>, n2, false>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n2, n1>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n2, n1>, n1, false>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n2, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n2, n2>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n2, n2>, n1, false>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n2, n2>, n2, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<n1, s, n1>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<n1, s, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<n1, s, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<n2, s, n2>, s, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<n2, s, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_query<ex_fq_nr<n2, s, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, s, n1>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, s, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, s, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, s, n2>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, s, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, s, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n1, n1>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n1, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n1, n1>, n2, false>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n1, n2>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n1, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n1, n2>, n2, false>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n2, n1>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n2, n1>, n1, false>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n2, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n2, n2>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n2, n2>, n1, false>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<s, n2, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<n1, s, n1>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<n1, s, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<n1, s, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<n2, s, n2>, s, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<n2, s, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_query<ex_fq_nr<n2, s, n2>, n2, true>)
 
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<s, s, n1>, s, n1>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<s, s, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<s, s, n1>, n2, n1>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<s, s, n2>, s, n2>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<s, s, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<s, s, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<s, n1, n1>, s, n1>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<s, n1, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<s, n1, n2>, s, n2>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<s, n1, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<s, n2, n1>, s, n1>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<s, n2, n1>, n2, n1>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<s, n2, n2>, s, n2>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<s, n2, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<n1, s, n1>, s, n1>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<n1, s, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<n1, s, n1>, n2, n1>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<n2, s, n2>, s, n2>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<n2, s, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_query<ex_fq_nr<n2, s, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<s, s, n1>, s, n1>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<s, s, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<s, s, n1>, n2, n1>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<s, s, n2>, s, n2>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<s, s, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<s, s, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<s, n1, n1>, s, n1>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<s, n1, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<s, n1, n2>, s, n2>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<s, n1, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<s, n2, n1>, s, n1>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<s, n2, n1>, n2, n1>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<s, n2, n2>, s, n2>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<s, n2, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<n1, s, n1>, s, n1>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<n1, s, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<n1, s, n1>, n2, n1>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<n2, s, n2>, s, n2>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<n2, s, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_query<ex_fq_nr<n2, s, n2>, n2, n2>)
 
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, s, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, s, n1>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, s, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, s, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, s, n2>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, s, n2>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n1, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n1, n1>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n1, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n1, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n1, n2>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n1, n2>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n2, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n2, n1>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n2, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n2, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n2, n2>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n2, n2>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<n1, s, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<n1, s, n1>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<n1, s, n1>, n2, true>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<n2, s, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<n2, s, n2>, n1, false>)
-  ASIO_TEST_CASE5(test_can_require<ex_fq_nr<n2, s, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, s, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, s, n1>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, s, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, s, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, s, n2>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, s, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n1, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n1, n1>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n1, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n1, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n1, n2>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n1, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n2, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n2, n1>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n2, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n2, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n2, n2>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<s, n2, n2>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<n1, s, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<n1, s, n1>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<n1, s, n1>, n2, true>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<n2, s, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<n2, s, n2>, n1, false>)
+  XIO_TEST_CASE5(test_can_require<ex_fq_nr<n2, s, n2>, n2, true>)
 
-  ASIO_TEST_CASE5(test_require<ex_fq_nr<s, s, n1>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_fq_nr<s, s, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_fq_nr<s, n1, n1>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_fq_nr<s, n1, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_fq_nr<s, n2, n1>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_fq_nr<s, n2, n2>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_fq_nr<n1, s, n1>, n2, n2>)
-  ASIO_TEST_CASE5(test_require<ex_fq_nr<n2, s, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_fq_nr<s, s, n1>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_fq_nr<s, s, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_fq_nr<s, n1, n1>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_fq_nr<s, n1, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_fq_nr<s, n2, n1>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_fq_nr<s, n2, n2>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_fq_nr<n1, s, n1>, n2, n2>)
+  XIO_TEST_CASE5(test_require<ex_fq_nr<n2, s, n2>, n2, n2>)
 
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, s, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, s, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, s, n1>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, s, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, s, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, s, n2>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n1, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n1, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n1, n1>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n1, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n1, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n1, n2>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n2, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n2, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n2, n1>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n2, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n2, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n2, n2>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<n1, s, n1>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<n1, s, n1>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<n1, s, n1>, n2, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<n2, s, n2>, s, false>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<n2, s, n2>, n1, true>)
-  ASIO_TEST_CASE5(test_can_prefer<ex_fq_nr<n2, s, n2>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, s, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, s, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, s, n1>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, s, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, s, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, s, n2>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n1, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n1, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n1, n1>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n1, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n1, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n1, n2>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n2, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n2, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n2, n1>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n2, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n2, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<s, n2, n2>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<n1, s, n1>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<n1, s, n1>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<n1, s, n1>, n2, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<n2, s, n2>, s, false>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<n2, s, n2>, n1, true>)
+  XIO_TEST_CASE5(test_can_prefer<ex_fq_nr<n2, s, n2>, n2, false>)
 
-  ASIO_TEST_CASE5(test_prefer<ex_fq_nr<s, s, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_prefer<ex_fq_nr<s, s, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_prefer<ex_fq_nr<s, n1, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_prefer<ex_fq_nr<s, n1, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_prefer<ex_fq_nr<s, n2, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_prefer<ex_fq_nr<s, n2, n2>, n1, n2>)
-  ASIO_TEST_CASE5(test_prefer<ex_fq_nr<n1, s, n1>, n1, n1>)
-  ASIO_TEST_CASE5(test_prefer<ex_fq_nr<n2, s, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_prefer<ex_fq_nr<s, s, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_prefer<ex_fq_nr<s, s, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_prefer<ex_fq_nr<s, n1, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_prefer<ex_fq_nr<s, n1, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_prefer<ex_fq_nr<s, n2, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_prefer<ex_fq_nr<s, n2, n2>, n1, n2>)
+  XIO_TEST_CASE5(test_prefer<ex_fq_nr<n1, s, n1>, n1, n1>)
+  XIO_TEST_CASE5(test_prefer<ex_fq_nr<n2, s, n2>, n1, n2>)
 
-  ASIO_TEST_CASE4(test_can_query<ex_mq_mr<n1, n1>, s, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_mq_mr<n1, n1>, n1, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_mq_mr<n1, n1>, n2, false>)
-  ASIO_TEST_CASE4(test_can_query<ex_mq_mr<n1, n2>, s, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_mq_mr<n1, n2>, n1, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_mq_mr<n1, n2>, n2, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_mq_mr<n2, n1>, s, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_mq_mr<n2, n1>, n1, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_mq_mr<n2, n1>, n2, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_mq_mr<n2, n2>, s, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_mq_mr<n2, n2>, n1, false>)
-  ASIO_TEST_CASE4(test_can_query<ex_mq_mr<n2, n2>, n2, true>)
+  XIO_TEST_CASE4(test_can_query<ex_mq_mr<n1, n1>, s, true>)
+  XIO_TEST_CASE4(test_can_query<ex_mq_mr<n1, n1>, n1, true>)
+  XIO_TEST_CASE4(test_can_query<ex_mq_mr<n1, n1>, n2, false>)
+  XIO_TEST_CASE4(test_can_query<ex_mq_mr<n1, n2>, s, true>)
+  XIO_TEST_CASE4(test_can_query<ex_mq_mr<n1, n2>, n1, true>)
+  XIO_TEST_CASE4(test_can_query<ex_mq_mr<n1, n2>, n2, true>)
+  XIO_TEST_CASE4(test_can_query<ex_mq_mr<n2, n1>, s, true>)
+  XIO_TEST_CASE4(test_can_query<ex_mq_mr<n2, n1>, n1, true>)
+  XIO_TEST_CASE4(test_can_query<ex_mq_mr<n2, n1>, n2, true>)
+  XIO_TEST_CASE4(test_can_query<ex_mq_mr<n2, n2>, s, true>)
+  XIO_TEST_CASE4(test_can_query<ex_mq_mr<n2, n2>, n1, false>)
+  XIO_TEST_CASE4(test_can_query<ex_mq_mr<n2, n2>, n2, true>)
 
-  ASIO_TEST_CASE4(test_query<ex_mq_mr<n1, n1>, s, n1>)
-  ASIO_TEST_CASE4(test_query<ex_mq_mr<n1, n1>, n1, n1>)
-  ASIO_TEST_CASE4(test_query<ex_mq_mr<n1, n2>, s, n1>)
-  ASIO_TEST_CASE4(test_query<ex_mq_mr<n1, n2>, n1, n1>)
-  ASIO_TEST_CASE4(test_query<ex_mq_mr<n2, n1>, s, n2>)
-  ASIO_TEST_CASE4(test_query<ex_mq_mr<n2, n1>, n2, n2>)
-  ASIO_TEST_CASE4(test_query<ex_mq_mr<n2, n2>, s, n2>)
-  ASIO_TEST_CASE4(test_query<ex_mq_mr<n2, n2>, n2, n2>)
+  XIO_TEST_CASE4(test_query<ex_mq_mr<n1, n1>, s, n1>)
+  XIO_TEST_CASE4(test_query<ex_mq_mr<n1, n1>, n1, n1>)
+  XIO_TEST_CASE4(test_query<ex_mq_mr<n1, n2>, s, n1>)
+  XIO_TEST_CASE4(test_query<ex_mq_mr<n1, n2>, n1, n1>)
+  XIO_TEST_CASE4(test_query<ex_mq_mr<n2, n1>, s, n2>)
+  XIO_TEST_CASE4(test_query<ex_mq_mr<n2, n1>, n2, n2>)
+  XIO_TEST_CASE4(test_query<ex_mq_mr<n2, n2>, s, n2>)
+  XIO_TEST_CASE4(test_query<ex_mq_mr<n2, n2>, n2, n2>)
 
-  ASIO_TEST_CASE4(test_can_require<ex_mq_mr<n1, n1>, s, false>)
-  ASIO_TEST_CASE4(test_can_require<ex_mq_mr<n1, n1>, n1, true>)
-  ASIO_TEST_CASE4(test_can_require<ex_mq_mr<n1, n1>, n2, true>)
-  ASIO_TEST_CASE4(test_can_require<ex_mq_mr<n1, n2>, s, false>)
-  ASIO_TEST_CASE4(test_can_require<ex_mq_mr<n1, n2>, n1, true>)
-  ASIO_TEST_CASE4(test_can_require<ex_mq_mr<n1, n2>, n2, true>)
-  ASIO_TEST_CASE4(test_can_require<ex_mq_mr<n2, n1>, s, false>)
-  ASIO_TEST_CASE4(test_can_require<ex_mq_mr<n2, n1>, n1, true>)
-  ASIO_TEST_CASE4(test_can_require<ex_mq_mr<n2, n1>, n2, true>)
-  ASIO_TEST_CASE4(test_can_require<ex_mq_mr<n2, n2>, s, false>)
-  ASIO_TEST_CASE4(test_can_require<ex_mq_mr<n2, n2>, n1, false>)
-  ASIO_TEST_CASE4(test_can_require<ex_mq_mr<n2, n2>, n2, true>)
+  XIO_TEST_CASE4(test_can_require<ex_mq_mr<n1, n1>, s, false>)
+  XIO_TEST_CASE4(test_can_require<ex_mq_mr<n1, n1>, n1, true>)
+  XIO_TEST_CASE4(test_can_require<ex_mq_mr<n1, n1>, n2, true>)
+  XIO_TEST_CASE4(test_can_require<ex_mq_mr<n1, n2>, s, false>)
+  XIO_TEST_CASE4(test_can_require<ex_mq_mr<n1, n2>, n1, true>)
+  XIO_TEST_CASE4(test_can_require<ex_mq_mr<n1, n2>, n2, true>)
+  XIO_TEST_CASE4(test_can_require<ex_mq_mr<n2, n1>, s, false>)
+  XIO_TEST_CASE4(test_can_require<ex_mq_mr<n2, n1>, n1, true>)
+  XIO_TEST_CASE4(test_can_require<ex_mq_mr<n2, n1>, n2, true>)
+  XIO_TEST_CASE4(test_can_require<ex_mq_mr<n2, n2>, s, false>)
+  XIO_TEST_CASE4(test_can_require<ex_mq_mr<n2, n2>, n1, false>)
+  XIO_TEST_CASE4(test_can_require<ex_mq_mr<n2, n2>, n2, true>)
 
-  ASIO_TEST_CASE4(test_require<ex_mq_mr<n1, n1>, n1, n1>)
-  ASIO_TEST_CASE4(test_require<ex_mq_mr<n1, n1>, n2, n2>)
-  ASIO_TEST_CASE4(test_require<ex_mq_mr<n1, n2>, n1, n1>)
-  ASIO_TEST_CASE4(test_require<ex_mq_mr<n1, n2>, n2, n2>)
-  ASIO_TEST_CASE4(test_require<ex_mq_mr<n2, n1>, n1, n1>)
-  ASIO_TEST_CASE4(test_require<ex_mq_mr<n2, n1>, n2, n2>)
-  ASIO_TEST_CASE4(test_require<ex_mq_mr<n2, n2>, n2, n2>)
+  XIO_TEST_CASE4(test_require<ex_mq_mr<n1, n1>, n1, n1>)
+  XIO_TEST_CASE4(test_require<ex_mq_mr<n1, n1>, n2, n2>)
+  XIO_TEST_CASE4(test_require<ex_mq_mr<n1, n2>, n1, n1>)
+  XIO_TEST_CASE4(test_require<ex_mq_mr<n1, n2>, n2, n2>)
+  XIO_TEST_CASE4(test_require<ex_mq_mr<n2, n1>, n1, n1>)
+  XIO_TEST_CASE4(test_require<ex_mq_mr<n2, n1>, n2, n2>)
+  XIO_TEST_CASE4(test_require<ex_mq_mr<n2, n2>, n2, n2>)
 
-  ASIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n1, n1>, s, false>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n1, n1>, n1, true>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n1, n1>, n2, false>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n1, n2>, s, false>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n1, n2>, n1, true>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n1, n2>, n2, false>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n2, n1>, s, false>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n2, n1>, n1, true>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n2, n1>, n2, false>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n2, n2>, s, false>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n2, n2>, n1, true>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n2, n2>, n2, false>)
+  XIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n1, n1>, s, false>)
+  XIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n1, n1>, n1, true>)
+  XIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n1, n1>, n2, false>)
+  XIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n1, n2>, s, false>)
+  XIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n1, n2>, n1, true>)
+  XIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n1, n2>, n2, false>)
+  XIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n2, n1>, s, false>)
+  XIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n2, n1>, n1, true>)
+  XIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n2, n1>, n2, false>)
+  XIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n2, n2>, s, false>)
+  XIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n2, n2>, n1, true>)
+  XIO_TEST_CASE4(test_can_prefer<ex_mq_mr<n2, n2>, n2, false>)
 
-  ASIO_TEST_CASE4(test_prefer<ex_mq_mr<n1, n1>, n1, n1>)
-  ASIO_TEST_CASE4(test_prefer<ex_mq_mr<n1, n2>, n1, n1>)
-  ASIO_TEST_CASE4(test_prefer<ex_mq_mr<n2, n1>, n1, n1>)
-  ASIO_TEST_CASE4(test_prefer<ex_mq_mr<n2, n2>, n1, n2>)
+  XIO_TEST_CASE4(test_prefer<ex_mq_mr<n1, n1>, n1, n1>)
+  XIO_TEST_CASE4(test_prefer<ex_mq_mr<n1, n2>, n1, n1>)
+  XIO_TEST_CASE4(test_prefer<ex_mq_mr<n2, n1>, n1, n1>)
+  XIO_TEST_CASE4(test_prefer<ex_mq_mr<n2, n2>, n1, n2>)
 
-  ASIO_TEST_CASE4(test_can_query<ex_fq_fr<n1, n1>, s, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_fq_fr<n1, n1>, n1, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_fq_fr<n1, n1>, n2, false>)
-  ASIO_TEST_CASE4(test_can_query<ex_fq_fr<n1, n2>, s, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_fq_fr<n1, n2>, n1, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_fq_fr<n1, n2>, n2, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_fq_fr<n2, n1>, s, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_fq_fr<n2, n1>, n1, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_fq_fr<n2, n1>, n2, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_fq_fr<n2, n2>, s, true>)
-  ASIO_TEST_CASE4(test_can_query<ex_fq_fr<n2, n2>, n1, false>)
-  ASIO_TEST_CASE4(test_can_query<ex_fq_fr<n2, n2>, n2, true>)
+  XIO_TEST_CASE4(test_can_query<ex_fq_fr<n1, n1>, s, true>)
+  XIO_TEST_CASE4(test_can_query<ex_fq_fr<n1, n1>, n1, true>)
+  XIO_TEST_CASE4(test_can_query<ex_fq_fr<n1, n1>, n2, false>)
+  XIO_TEST_CASE4(test_can_query<ex_fq_fr<n1, n2>, s, true>)
+  XIO_TEST_CASE4(test_can_query<ex_fq_fr<n1, n2>, n1, true>)
+  XIO_TEST_CASE4(test_can_query<ex_fq_fr<n1, n2>, n2, true>)
+  XIO_TEST_CASE4(test_can_query<ex_fq_fr<n2, n1>, s, true>)
+  XIO_TEST_CASE4(test_can_query<ex_fq_fr<n2, n1>, n1, true>)
+  XIO_TEST_CASE4(test_can_query<ex_fq_fr<n2, n1>, n2, true>)
+  XIO_TEST_CASE4(test_can_query<ex_fq_fr<n2, n2>, s, true>)
+  XIO_TEST_CASE4(test_can_query<ex_fq_fr<n2, n2>, n1, false>)
+  XIO_TEST_CASE4(test_can_query<ex_fq_fr<n2, n2>, n2, true>)
 
-  ASIO_TEST_CASE4(test_query<ex_fq_fr<n1, n1>, s, n1>)
-  ASIO_TEST_CASE4(test_query<ex_fq_fr<n1, n1>, n1, n1>)
-  ASIO_TEST_CASE4(test_query<ex_fq_fr<n1, n2>, s, n1>)
-  ASIO_TEST_CASE4(test_query<ex_fq_fr<n1, n2>, n1, n1>)
-  ASIO_TEST_CASE4(test_query<ex_fq_fr<n2, n1>, s, n2>)
-  ASIO_TEST_CASE4(test_query<ex_fq_fr<n2, n1>, n2, n2>)
-  ASIO_TEST_CASE4(test_query<ex_fq_fr<n2, n2>, s, n2>)
-  ASIO_TEST_CASE4(test_query<ex_fq_fr<n2, n2>, n2, n2>)
+  XIO_TEST_CASE4(test_query<ex_fq_fr<n1, n1>, s, n1>)
+  XIO_TEST_CASE4(test_query<ex_fq_fr<n1, n1>, n1, n1>)
+  XIO_TEST_CASE4(test_query<ex_fq_fr<n1, n2>, s, n1>)
+  XIO_TEST_CASE4(test_query<ex_fq_fr<n1, n2>, n1, n1>)
+  XIO_TEST_CASE4(test_query<ex_fq_fr<n2, n1>, s, n2>)
+  XIO_TEST_CASE4(test_query<ex_fq_fr<n2, n1>, n2, n2>)
+  XIO_TEST_CASE4(test_query<ex_fq_fr<n2, n2>, s, n2>)
+  XIO_TEST_CASE4(test_query<ex_fq_fr<n2, n2>, n2, n2>)
 
-  ASIO_TEST_CASE4(test_can_require<ex_fq_fr<n1, n1>, s, false>)
-  ASIO_TEST_CASE4(test_can_require<ex_fq_fr<n1, n1>, n1, true>)
-  ASIO_TEST_CASE4(test_can_require<ex_fq_fr<n1, n1>, n2, true>)
-  ASIO_TEST_CASE4(test_can_require<ex_fq_fr<n1, n2>, s, false>)
-  ASIO_TEST_CASE4(test_can_require<ex_fq_fr<n1, n2>, n1, true>)
-  ASIO_TEST_CASE4(test_can_require<ex_fq_fr<n1, n2>, n2, true>)
-  ASIO_TEST_CASE4(test_can_require<ex_fq_fr<n2, n1>, s, false>)
-  ASIO_TEST_CASE4(test_can_require<ex_fq_fr<n2, n1>, n1, true>)
-  ASIO_TEST_CASE4(test_can_require<ex_fq_fr<n2, n1>, n2, true>)
-  ASIO_TEST_CASE4(test_can_require<ex_fq_fr<n2, n2>, s, false>)
-  ASIO_TEST_CASE4(test_can_require<ex_fq_fr<n2, n2>, n1, false>)
-  ASIO_TEST_CASE4(test_can_require<ex_fq_fr<n2, n2>, n2, true>)
+  XIO_TEST_CASE4(test_can_require<ex_fq_fr<n1, n1>, s, false>)
+  XIO_TEST_CASE4(test_can_require<ex_fq_fr<n1, n1>, n1, true>)
+  XIO_TEST_CASE4(test_can_require<ex_fq_fr<n1, n1>, n2, true>)
+  XIO_TEST_CASE4(test_can_require<ex_fq_fr<n1, n2>, s, false>)
+  XIO_TEST_CASE4(test_can_require<ex_fq_fr<n1, n2>, n1, true>)
+  XIO_TEST_CASE4(test_can_require<ex_fq_fr<n1, n2>, n2, true>)
+  XIO_TEST_CASE4(test_can_require<ex_fq_fr<n2, n1>, s, false>)
+  XIO_TEST_CASE4(test_can_require<ex_fq_fr<n2, n1>, n1, true>)
+  XIO_TEST_CASE4(test_can_require<ex_fq_fr<n2, n1>, n2, true>)
+  XIO_TEST_CASE4(test_can_require<ex_fq_fr<n2, n2>, s, false>)
+  XIO_TEST_CASE4(test_can_require<ex_fq_fr<n2, n2>, n1, false>)
+  XIO_TEST_CASE4(test_can_require<ex_fq_fr<n2, n2>, n2, true>)
 
-  ASIO_TEST_CASE4(test_require<ex_fq_fr<n1, n1>, n1, n1>)
-  ASIO_TEST_CASE4(test_require<ex_fq_fr<n1, n1>, n2, n2>)
-  ASIO_TEST_CASE4(test_require<ex_fq_fr<n1, n2>, n1, n1>)
-  ASIO_TEST_CASE4(test_require<ex_fq_fr<n1, n2>, n2, n2>)
-  ASIO_TEST_CASE4(test_require<ex_fq_fr<n2, n1>, n1, n1>)
-  ASIO_TEST_CASE4(test_require<ex_fq_fr<n2, n1>, n2, n2>)
-  ASIO_TEST_CASE4(test_require<ex_fq_fr<n2, n2>, n2, n2>)
+  XIO_TEST_CASE4(test_require<ex_fq_fr<n1, n1>, n1, n1>)
+  XIO_TEST_CASE4(test_require<ex_fq_fr<n1, n1>, n2, n2>)
+  XIO_TEST_CASE4(test_require<ex_fq_fr<n1, n2>, n1, n1>)
+  XIO_TEST_CASE4(test_require<ex_fq_fr<n1, n2>, n2, n2>)
+  XIO_TEST_CASE4(test_require<ex_fq_fr<n2, n1>, n1, n1>)
+  XIO_TEST_CASE4(test_require<ex_fq_fr<n2, n1>, n2, n2>)
+  XIO_TEST_CASE4(test_require<ex_fq_fr<n2, n2>, n2, n2>)
 
-  ASIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n1, n1>, s, false>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n1, n1>, n1, true>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n1, n1>, n2, false>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n1, n2>, s, false>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n1, n2>, n1, true>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n1, n2>, n2, false>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n2, n1>, s, false>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n2, n1>, n1, true>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n2, n1>, n2, false>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n2, n2>, s, false>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n2, n2>, n1, true>)
-  ASIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n2, n2>, n2, false>)
+  XIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n1, n1>, s, false>)
+  XIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n1, n1>, n1, true>)
+  XIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n1, n1>, n2, false>)
+  XIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n1, n2>, s, false>)
+  XIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n1, n2>, n1, true>)
+  XIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n1, n2>, n2, false>)
+  XIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n2, n1>, s, false>)
+  XIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n2, n1>, n1, true>)
+  XIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n2, n1>, n2, false>)
+  XIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n2, n2>, s, false>)
+  XIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n2, n2>, n1, true>)
+  XIO_TEST_CASE4(test_can_prefer<ex_fq_fr<n2, n2>, n2, false>)
 
-  ASIO_TEST_CASE4(test_prefer<ex_fq_fr<n1, n1>, n1, n1>)
-  ASIO_TEST_CASE4(test_prefer<ex_fq_fr<n1, n2>, n1, n1>)
-  ASIO_TEST_CASE4(test_prefer<ex_fq_fr<n2, n1>, n1, n1>)
-  ASIO_TEST_CASE4(test_prefer<ex_fq_fr<n2, n2>, n1, n2>)
+  XIO_TEST_CASE4(test_prefer<ex_fq_fr<n1, n1>, n1, n1>)
+  XIO_TEST_CASE4(test_prefer<ex_fq_fr<n1, n2>, n1, n1>)
+  XIO_TEST_CASE4(test_prefer<ex_fq_fr<n2, n1>, n1, n1>)
+  XIO_TEST_CASE4(test_prefer<ex_fq_fr<n2, n2>, n1, n2>)
 
-  ASIO_TEST_CASE(test_vars)
+  XIO_TEST_CASE(test_vars)
 )

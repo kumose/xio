@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_WIN_IOCP_IO_CONTEXT_IPP
-#define ASIO_DETAIL_IMPL_WIN_IOCP_IO_CONTEXT_IPP
+#ifndef XIO_DETAIL_IMPL_WIN_IOCP_IO_CONTEXT_IPP
+#define XIO_DETAIL_IMPL_WIN_IOCP_IO_CONTEXT_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 
 #include <xio/config.h>
 #include <xio/error.h>
@@ -81,7 +81,7 @@ namespace xio {
               gqcs_timeout_(get_gqcs_timeout()),
               dispatch_required_(0),
               concurrency_hint_(config(ctx).get("scheduler", "concurrency_hint", -1)) {
-            ASIO_HANDLER_TRACKING_INIT;
+            XIO_HANDLER_TRACKING_INIT;
 
             iocp_.handle = ::CreateIoCompletionPort(INVALID_HANDLE_VALUE, 0, 0,
                                                     static_cast<DWORD>(concurrency_hint_ >= 0
@@ -111,7 +111,7 @@ namespace xio {
               gqcs_timeout_(get_gqcs_timeout()),
               dispatch_required_(0),
               concurrency_hint_(-1) {
-            ASIO_HANDLER_TRACKING_INIT;
+            XIO_HANDLER_TRACKING_INIT;
 
             iocp_.handle = ::CreateIoCompletionPort(INVALID_HANDLE_VALUE, 0, 0,
                                                     static_cast<DWORD>(concurrency_hint_ >= 0
@@ -551,6 +551,6 @@ void win_iocp_io_context::update_timeout() {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
-#endif // ASIO_DETAIL_IMPL_WIN_IOCP_IO_CONTEXT_IPP
+#endif // XIO_DETAIL_IMPL_WIN_IOCP_IO_CONTEXT_IPP

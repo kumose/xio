@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_COMPOSED_HPP
-#define ASIO_COMPOSED_HPP
+#ifndef XIO_COMPOSED_HPP
+#define XIO_COMPOSED_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -256,7 +256,6 @@ namespace xio {
         }
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename Impl, typename Work, typename Handler,
@@ -277,7 +276,6 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
     /// Creates an initiation function object that may be used to launch an
 /// asynchronous operation with a stateful implementation.
@@ -362,7 +360,7 @@ namespace xio {
  *       token, xio::error_code{}, 0);
  * } @endcode
  */
-    template<ASIO_COMPLETION_SIGNATURE... Signatures,
+    template<XIO_COMPLETION_SIGNATURE... Signatures,
         typename Implementation, typename... IoObjectsOrExecutors>
     inline auto composed(Implementation &&implementation,
                          IoObjectsOrExecutors &&... io_objects_or_executors)
@@ -386,4 +384,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_COMPOSE_HPP
+#endif // XIO_COMPOSE_HPP

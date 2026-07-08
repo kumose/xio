@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_ANY_IO_EXECUTOR_IPP
-#define ASIO_IMPL_ANY_IO_EXECUTOR_IPP
+#ifndef XIO_IMPL_ANY_IO_EXECUTOR_IPP
+#define XIO_IMPL_ANY_IO_EXECUTOR_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#if !defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
 #include <xio/any_io_executor.h>
 
@@ -114,6 +114,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#endif // !defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
-#endif // ASIO_IMPL_ANY_IO_EXECUTOR_IPP
+#endif // XIO_IMPL_ANY_IO_EXECUTOR_IPP

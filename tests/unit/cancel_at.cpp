@@ -42,7 +42,7 @@ void cancel_at_function_object_test()
 
   ioc.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -54,7 +54,7 @@ void cancel_at_function_object_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::milliseconds(100));
   now = steady_timer::clock_type::now();
@@ -67,7 +67,7 @@ void cancel_at_function_object_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -80,7 +80,7 @@ void cancel_at_function_object_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -93,7 +93,7 @@ void cancel_at_function_object_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 }
 
 void cancel_at_timer_function_object_test()
@@ -112,7 +112,7 @@ void cancel_at_timer_function_object_test()
 
   ioc.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -124,7 +124,7 @@ void cancel_at_timer_function_object_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::milliseconds(100));
   now = steady_timer::clock_type::now();
@@ -137,7 +137,7 @@ void cancel_at_timer_function_object_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -150,7 +150,7 @@ void cancel_at_timer_function_object_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -163,7 +163,7 @@ void cancel_at_timer_function_object_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 }
 
 struct incrementer_token_v1
@@ -211,7 +211,7 @@ void cancel_at_completion_token_v1_test()
 
   ioc.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -223,7 +223,7 @@ void cancel_at_completion_token_v1_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::milliseconds(100));
   now = steady_timer::clock_type::now();
@@ -235,7 +235,7 @@ void cancel_at_completion_token_v1_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -247,7 +247,7 @@ void cancel_at_completion_token_v1_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -259,7 +259,7 @@ void cancel_at_completion_token_v1_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 }
 
 void cancel_at_timer_completion_token_v1_test()
@@ -277,7 +277,7 @@ void cancel_at_timer_completion_token_v1_test()
 
   ioc.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -289,7 +289,7 @@ void cancel_at_timer_completion_token_v1_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::milliseconds(100));
   now = steady_timer::clock_type::now();
@@ -301,7 +301,7 @@ void cancel_at_timer_completion_token_v1_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -313,7 +313,7 @@ void cancel_at_timer_completion_token_v1_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -325,7 +325,7 @@ void cancel_at_timer_completion_token_v1_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 }
 
 struct incrementer_token_v2
@@ -366,7 +366,7 @@ void cancel_at_completion_token_v2_test()
 
   ioc.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -377,7 +377,7 @@ void cancel_at_completion_token_v2_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::milliseconds(100));
   now = steady_timer::clock_type::now();
@@ -389,7 +389,7 @@ void cancel_at_completion_token_v2_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -401,7 +401,7 @@ void cancel_at_completion_token_v2_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -413,7 +413,7 @@ void cancel_at_completion_token_v2_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 }
 
 void cancel_at_timer_completion_token_v2_test()
@@ -431,7 +431,7 @@ void cancel_at_timer_completion_token_v2_test()
 
   ioc.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -442,7 +442,7 @@ void cancel_at_timer_completion_token_v2_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::milliseconds(100));
   now = steady_timer::clock_type::now();
@@ -454,7 +454,7 @@ void cancel_at_timer_completion_token_v2_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -466,7 +466,7 @@ void cancel_at_timer_completion_token_v2_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -478,7 +478,7 @@ void cancel_at_timer_completion_token_v2_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 }
 
 void partial_cancel_at_test()
@@ -493,7 +493,7 @@ void partial_cancel_at_test()
 
   ioc.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -503,7 +503,7 @@ void partial_cancel_at_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 }
 
 void partial_cancel_at_timer_test()
@@ -519,7 +519,7 @@ void partial_cancel_at_timer_test()
 
   ioc.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   t.expires_after(chronons::seconds(5));
   now = steady_timer::clock_type::now();
@@ -530,18 +530,18 @@ void partial_cancel_at_timer_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "cancel_at",
-  ASIO_TEST_CASE(cancel_at_function_object_test)
-  ASIO_TEST_CASE(cancel_at_timer_function_object_test)
-  ASIO_TEST_CASE(cancel_at_completion_token_v1_test)
-  ASIO_TEST_CASE(cancel_at_timer_completion_token_v1_test)
-  ASIO_TEST_CASE(cancel_at_completion_token_v2_test)
-  ASIO_TEST_CASE(cancel_at_timer_completion_token_v2_test)
-  ASIO_TEST_CASE(partial_cancel_at_test)
-  ASIO_TEST_CASE(partial_cancel_at_timer_test)
+  XIO_TEST_CASE(cancel_at_function_object_test)
+  XIO_TEST_CASE(cancel_at_timer_function_object_test)
+  XIO_TEST_CASE(cancel_at_completion_token_v1_test)
+  XIO_TEST_CASE(cancel_at_timer_completion_token_v1_test)
+  XIO_TEST_CASE(cancel_at_completion_token_v2_test)
+  XIO_TEST_CASE(cancel_at_timer_completion_token_v2_test)
+  XIO_TEST_CASE(partial_cancel_at_test)
+  XIO_TEST_CASE(partial_cancel_at_timer_test)
 )

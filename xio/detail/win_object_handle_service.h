@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WIN_OBJECT_HANDLE_SERVICE_HPP
-#define ASIO_DETAIL_WIN_OBJECT_HANDLE_SERVICE_HPP
+#ifndef XIO_DETAIL_WIN_OBJECT_HANDLE_SERVICE_HPP
+#define XIO_DETAIL_WIN_OBJECT_HANDLE_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,18 +18,18 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_WINDOWS_OBJECT_HANDLE)
+#if defined(XIO_HAS_WINDOWS_OBJECT_HANDLE)
 
 #include <xio/detail/memory.h>
 #include <xio/detail/wait_handler.h>
 #include <xio/error.h>
 #include <xio/execution_context.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 #include <xio/detail/win_iocp_io_context.h>
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 #include <xio/detail/scheduler.h>
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
 #include <xio/detail/push_options.h>
 
@@ -82,28 +82,28 @@ namespace xio {
             };
 
             // Constructor.
-            ASIO_DECL win_object_handle_service(execution_context &context);
+            XIO_DECL win_object_handle_service(execution_context &context);
 
             // Destroy all user-defined handler objects owned by the service.
-            ASIO_DECL void shutdown();
+            XIO_DECL void shutdown();
 
             // Construct a new handle implementation.
-            ASIO_DECL void construct(implementation_type &impl);
+            XIO_DECL void construct(implementation_type &impl);
 
             // Move-construct a new handle implementation.
-            ASIO_DECL void move_construct(implementation_type &impl,
+            XIO_DECL void move_construct(implementation_type &impl,
                                           implementation_type &other_impl);
 
             // Move-assign from another handle implementation.
-            ASIO_DECL void move_assign(implementation_type &impl,
+            XIO_DECL void move_assign(implementation_type &impl,
                                        win_object_handle_service &other_service,
                                        implementation_type &other_impl);
 
             // Destroy a handle implementation.
-            ASIO_DECL void destroy(implementation_type &impl);
+            XIO_DECL void destroy(implementation_type &impl);
 
             // Assign a native handle to a handle implementation.
-            ASIO_DECL xio::error_code assign(implementation_type &impl,
+            XIO_DECL xio::error_code assign(implementation_type &impl,
                                              const native_handle_type &handle, xio::error_code &ec);
 
             // Determine whether the handle is open.
@@ -112,7 +112,7 @@ namespace xio {
             }
 
             // Destroy a handle implementation.
-            ASIO_DECL xio::error_code close(implementation_type &impl,
+            XIO_DECL xio::error_code close(implementation_type &impl,
                                             xio::error_code &ec);
 
             // Get the native handle representation.
@@ -121,11 +121,11 @@ namespace xio {
             }
 
             // Cancel all operations associated with the handle.
-            ASIO_DECL xio::error_code cancel(implementation_type &impl,
+            XIO_DECL xio::error_code cancel(implementation_type &impl,
                                              xio::error_code &ec);
 
             // Perform a synchronous wait for the object to enter a signalled state.
-            ASIO_DECL void wait(implementation_type &impl,
+            XIO_DECL void wait(implementation_type &impl,
                                 xio::error_code &ec);
 
             /// Start an asynchronous wait.
@@ -140,7 +140,7 @@ namespace xio {
                 };
                 p.p = new(p.v) op(handler, io_ex);
 
-                ASIO_HANDLER_CREATION((scheduler_.context(), *p.p, "object_handle",
+                XIO_HANDLER_CREATION((scheduler_.context(), *p.p, "object_handle",
                                        &impl, reinterpret_cast<uintmax_t>(impl.wait_handle_), "async_wait"));
 
                 start_wait_op(impl, p.p);
@@ -149,18 +149,18 @@ namespace xio {
 
         private:
             // Helper function to start an asynchronous wait operation.
-            ASIO_DECL void start_wait_op(implementation_type &impl, wait_op *op);
+            XIO_DECL void start_wait_op(implementation_type &impl, wait_op *op);
 
             // Helper function to register a wait operation.
-            ASIO_DECL void register_wait_callback(
+            XIO_DECL void register_wait_callback(
                 implementation_type &impl, mutex::scoped_lock &lock);
 
             // Callback function invoked when the registered wait completes.
-            static ASIO_DECL VOID CALLBACK wait_callback(
+            static XIO_DECL VOID CALLBACK wait_callback(
                 PVOID param, BOOLEAN timeout);
 
 // The scheduler used to post completions.
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 typedef class win_iocp_io_context scheduler_impl;
 #else
 typedef class scheduler scheduler_impl;
@@ -183,6 +183,6 @@ bool shutdown_;
 #include <xio/detail/pop_options.h>
 
 
-#endif // defined(ASIO_HAS_WINDOWS_OBJECT_HANDLE)
+#endif // defined(XIO_HAS_WINDOWS_OBJECT_HANDLE)
 
-#endif // ASIO_DETAIL_WIN_OBJECT_HANDLE_SERVICE_HPP
+#endif // XIO_DETAIL_WIN_OBJECT_HANDLE_SERVICE_HPP

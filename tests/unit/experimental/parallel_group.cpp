@@ -98,15 +98,15 @@ void non_terminal_group_cancellation_test()
 
   ioc.run_for(std::chrono::seconds(5));
 
-  ASIO_CHECK(called == 1);
-  ASIO_CHECK(order[0] == 0);
-  ASIO_CHECK(order[1] == 1);
-  ASIO_CHECK(ec0 == xio::error::operation_aborted);
-  ASIO_CHECK(ec1 == xio::error::operation_aborted);
+  XIO_CHECK(called == 1);
+  XIO_CHECK(order[0] == 0);
+  XIO_CHECK(order[1] == 1);
+  XIO_CHECK(ec0 == xio::error::operation_aborted);
+  XIO_CHECK(ec1 == xio::error::operation_aborted);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "experimental/parallel_group",
-  ASIO_TEST_CASE(non_terminal_group_cancellation_test)
+  XIO_TEST_CASE(non_terminal_group_cancellation_test)
 )

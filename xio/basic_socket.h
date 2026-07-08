@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BASIC_SOCKET_HPP
-#define ASIO_BASIC_SOCKET_HPP
+#ifndef XIO_BASIC_SOCKET_HPP
+#define XIO_BASIC_SOCKET_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -29,11 +29,11 @@
 #include <xio/post.h>
 #include <xio/socket_base.h>
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 #include <xio/detail/null_socket_service.h>
-#elif defined(ASIO_HAS_IOCP)
+#elif defined(XIO_HAS_IOCP)
 #include <xio/detail/win_iocp_socket_service.h>
-#elif defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#elif defined(XIO_HAS_IO_URING_AS_DEFAULT)
 #include <xio/detail/io_uring_socket_service.h>
 #else
 #include <xio/detail/reactive_socket_service.h>
@@ -44,8 +44,8 @@
 namespace xio {
 
 
-#if !defined(ASIO_BASIC_SOCKET_FWD_DECL)
-#define ASIO_BASIC_SOCKET_FWD_DECL
+#if !defined(XIO_BASIC_SOCKET_FWD_DECL)
+#define XIO_BASIC_SOCKET_FWD_DECL
 
     // Forward declaration with defaulted arguments.
 
@@ -53,7 +53,7 @@ namespace xio {
     template<typename Protocol, typename Executor = any_io_executor>
     class basic_socket;
 
-#endif // !defined(ASIO_BASIC_SOCKET_FWD_DECL)
+#endif // !defined(XIO_BASIC_SOCKET_FWD_DECL)
 
     /// Provides socket functionality.
     /**
@@ -83,15 +83,13 @@ namespace xio {
         };
 
         /// The native representation of a socket.
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined native_handle_type;
-#elif defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
         typedef typename detail::null_socket_service<
             Protocol>::native_handle_type native_handle_type;
-#elif defined(ASIO_HAS_IOCP)
+#elif defined(XIO_HAS_IOCP)
         typedef typename detail::win_iocp_socket_service<
             Protocol>::native_handle_type native_handle_type;
-#elif defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#elif defined(XIO_HAS_IO_URING_AS_DEFAULT)
         typedef typename detail::io_uring_socket_service<
             Protocol>::native_handle_type native_handle_type;
 #else
@@ -105,10 +103,10 @@ namespace xio {
         /// The endpoint type.
         typedef typename Protocol::endpoint endpoint_type;
 
-#if !defined(ASIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_EXTENSIONS)
         /// A basic_socket is always the lowest layer.
         typedef basic_socket<Protocol, Executor> lowest_layer_type;
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
         /// Construct a basic_socket without opening it.
         /**
@@ -360,7 +358,7 @@ namespace xio {
             return impl_.get_executor();
         }
 
-#if !defined(ASIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_EXTENSIONS)
         /// Get a reference to the lowest layer.
         /**
    * This function returns a reference to the lowest layer in a stack of
@@ -386,7 +384,7 @@ namespace xio {
         const lowest_layer_type &lowest_layer() const {
             return *this;
         }
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
         /// Open the socket using the specified protocol.
         /**
@@ -427,10 +425,10 @@ namespace xio {
    * }
    * @endcode
    */
-        ASIO_SYNC_OP_VOID open(const protocol_type &protocol,
+        XIO_SYNC_OP_VOID open(const protocol_type &protocol,
                                xio::error_code &ec) {
             impl_.get_service().open(impl_.get_implementation(), protocol, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Assign an existing native socket to the socket.
@@ -461,11 +459,11 @@ namespace xio {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-        ASIO_SYNC_OP_VOID assign(const protocol_type &protocol,
+        XIO_SYNC_OP_VOID assign(const protocol_type &protocol,
                                  const native_handle_type &native_socket, xio::error_code &ec) {
             impl_.get_service().assign(impl_.get_implementation(),
                                        protocol, native_socket, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Determine whether the socket is open.
@@ -515,9 +513,9 @@ namespace xio {
    * @note For portable behaviour with respect to graceful closure of a
    * connected socket, call shutdown() before closing the socket.
    */
-        ASIO_SYNC_OP_VOID close(xio::error_code &ec) {
+        XIO_SYNC_OP_VOID close(xio::error_code &ec) {
             impl_.get_service().close(impl_.get_implementation(), ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Release ownership of the underlying native socket.
@@ -533,7 +531,7 @@ namespace xio {
    * 8.1, and will fail with xio::error::operation_not_supported on
    * these platforms.
    */
-#if defined(ASIO_MSVC) && (ASIO_MSVC >= 1400) \
+#if defined(XIO_MSVC) && (XIO_MSVC >= 1400) \
   && (!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0603)
         __declspec(deprecated("This function always fails with "
         "operation_not_supported when used on Windows versions "
@@ -560,7 +558,7 @@ namespace xio {
    * 8.1, and will fail with xio::error::operation_not_supported on
    * these platforms.
    */
-#if defined(ASIO_MSVC) && (ASIO_MSVC >= 1400) \
+#if defined(XIO_MSVC) && (XIO_MSVC >= 1400) \
   && (!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0603)
         __declspec(deprecated("This function always fails with "
         "operation_not_supported when used on Windows versions "
@@ -591,7 +589,7 @@ namespace xio {
    * @note Calls to cancel() will always fail with
    * xio::error::operation_not_supported when run on Windows XP, Windows
    * Server 2003, and earlier versions of Windows, unless
-   * ASIO_ENABLE_CANCELIO is defined. However, the CancelIo function has
+   * XIO_ENABLE_CANCELIO is defined. However, the CancelIo function has
    * two issues that should be considered before enabling its use:
    *
    * @li It will only cancel asynchronous operations that were initiated in the
@@ -605,7 +603,7 @@ namespace xio {
    * alternatives:
    *
    * @li Disable xio's I/O completion port backend by defining
-   * ASIO_DISABLE_IOCP.
+   * XIO_DISABLE_IOCP.
    *
    * @li Use the close() function to simultaneously cancel the outstanding
    * operations and close the socket.
@@ -614,9 +612,9 @@ namespace xio {
    * CancelIoEx function is always used. This function does not have the
    * problems described above.
    */
-#if defined(ASIO_MSVC) && (ASIO_MSVC >= 1400) \
+#if defined(XIO_MSVC) && (XIO_MSVC >= 1400) \
   && (!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0600) \
-  && !defined(ASIO_ENABLE_CANCELIO)
+  && !defined(XIO_ENABLE_CANCELIO)
         __declspec(deprecated("By default, this function always fails with "
         "operation_not_supported when used on Windows XP, Windows Server 2003, "
         "or earlier. Consult documentation for details."))
@@ -638,7 +636,7 @@ namespace xio {
    * @note Calls to cancel() will always fail with
    * xio::error::operation_not_supported when run on Windows XP, Windows
    * Server 2003, and earlier versions of Windows, unless
-   * ASIO_ENABLE_CANCELIO is defined. However, the CancelIo function has
+   * XIO_ENABLE_CANCELIO is defined. However, the CancelIo function has
    * two issues that should be considered before enabling its use:
    *
    * @li It will only cancel asynchronous operations that were initiated in the
@@ -652,7 +650,7 @@ namespace xio {
    * alternatives:
    *
    * @li Disable xio's I/O completion port backend by defining
-   * ASIO_DISABLE_IOCP.
+   * XIO_DISABLE_IOCP.
    *
    * @li Use the close() function to simultaneously cancel the outstanding
    * operations and close the socket.
@@ -661,16 +659,16 @@ namespace xio {
    * CancelIoEx function is always used. This function does not have the
    * problems described above.
    */
-#if defined(ASIO_MSVC) && (ASIO_MSVC >= 1400) \
+#if defined(XIO_MSVC) && (XIO_MSVC >= 1400) \
   && (!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0600) \
-  && !defined(ASIO_ENABLE_CANCELIO)
+  && !defined(XIO_ENABLE_CANCELIO)
         __declspec(deprecated("By default, this function always fails with "
         "operation_not_supported when used on Windows XP, Windows Server 2003, "
         "or earlier. Consult documentation for details."))
 #endif
-        ASIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
+        XIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
             impl_.get_service().cancel(impl_.get_implementation(), ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Determine whether the socket is at the out-of-band data mark.
@@ -783,10 +781,10 @@ namespace xio {
    * }
    * @endcode
    */
-        ASIO_SYNC_OP_VOID bind(const endpoint_type &endpoint,
+        XIO_SYNC_OP_VOID bind(const endpoint_type &endpoint,
                                xio::error_code &ec) {
             impl_.get_service().bind(impl_.get_implementation(), endpoint, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Connect the socket to the specified endpoint.
@@ -851,18 +849,18 @@ namespace xio {
    * }
    * @endcode
    */
-        ASIO_SYNC_OP_VOID connect(const endpoint_type &peer_endpoint,
+        XIO_SYNC_OP_VOID connect(const endpoint_type &peer_endpoint,
                                   xio::error_code &ec) {
             if (!is_open()) {
                 impl_.get_service().open(impl_.get_implementation(),
                                          peer_endpoint.protocol(), ec);
                 if (ec) {
-                    ASIO_SYNC_OP_VOID_RETURN(ec);
+                    XIO_SYNC_OP_VOID_RETURN(ec);
                 }
             }
 
             impl_.get_service().connect(impl_.get_implementation(), peer_endpoint, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Start an asynchronous connect.
@@ -923,7 +921,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
             ConnectToken = default_completion_token_t<executor_type> >
         auto async_connect(const endpoint_type &peer_endpoint,
                            ConnectToken &&token = default_completion_token_t<executor_type>())
@@ -1022,10 +1020,10 @@ namespace xio {
    * @endcode
    */
         template<typename SettableSocketOption>
-        ASIO_SYNC_OP_VOID set_option(const SettableSocketOption &option,
+        XIO_SYNC_OP_VOID set_option(const SettableSocketOption &option,
                                      xio::error_code &ec) {
             impl_.get_service().set_option(impl_.get_implementation(), option, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Get an option from the socket.
@@ -1111,10 +1109,10 @@ namespace xio {
    * @endcode
    */
         template<typename GettableSocketOption>
-        ASIO_SYNC_OP_VOID get_option(GettableSocketOption &option,
+        XIO_SYNC_OP_VOID get_option(GettableSocketOption &option,
                                      xio::error_code &ec) const {
             impl_.get_service().get_option(impl_.get_implementation(), option, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Perform an IO control command on the socket.
@@ -1174,10 +1172,10 @@ namespace xio {
    * @endcode
    */
         template<typename IoControlCommand>
-        ASIO_SYNC_OP_VOID io_control(IoControlCommand &command,
+        XIO_SYNC_OP_VOID io_control(IoControlCommand &command,
                                      xio::error_code &ec) {
             impl_.get_service().io_control(impl_.get_implementation(), command, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Gets the non-blocking mode of the socket.
@@ -1227,10 +1225,10 @@ namespace xio {
    * operations. Asynchronous operations will never fail with the error
    * xio::error::would_block.
    */
-        ASIO_SYNC_OP_VOID non_blocking(
+        XIO_SYNC_OP_VOID non_blocking(
             bool mode, xio::error_code &ec) {
             impl_.get_service().non_blocking(impl_.get_implementation(), mode, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Gets the non-blocking mode of the native socket implementation.
@@ -1498,11 +1496,11 @@ namespace xio {
    *   sock.async_wait(tcp::socket::wait_write, op);
    * } @endcode
    */
-        ASIO_SYNC_OP_VOID native_non_blocking(
+        XIO_SYNC_OP_VOID native_non_blocking(
             bool mode, xio::error_code &ec) {
             impl_.get_service().native_non_blocking(
                 impl_.get_implementation(), mode, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Get the local endpoint of the socket.
@@ -1646,10 +1644,10 @@ namespace xio {
    * }
    * @endcode
    */
-        ASIO_SYNC_OP_VOID shutdown(shutdown_type what,
+        XIO_SYNC_OP_VOID shutdown(shutdown_type what,
                                    xio::error_code &ec) {
             impl_.get_service().shutdown(impl_.get_implementation(), what, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Wait for the socket to become ready to read, ready to write, or to have
@@ -1693,9 +1691,9 @@ namespace xio {
    * socket.wait(xio::ip::tcp::socket::wait_read, ec);
    * @endcode
    */
-        ASIO_SYNC_OP_VOID wait(wait_type w, xio::error_code &ec) {
+        XIO_SYNC_OP_VOID wait(wait_type w, xio::error_code &ec) {
             impl_.get_service().wait(impl_.get_implementation(), w, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Asynchronously wait for the socket to become ready to read, ready to
@@ -1752,7 +1750,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
             WaitToken = default_completion_token_t<executor_type> >
         auto async_wait(wait_type w,
                         WaitToken &&token = default_completion_token_t<executor_type>())
@@ -1772,13 +1770,13 @@ namespace xio {
         ~basic_socket() {
         }
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
         detail::io_object_impl<
             detail::null_socket_service<Protocol>, Executor> impl_;
-#elif defined(ASIO_HAS_IOCP)
+#elif defined(XIO_HAS_IOCP)
         detail::io_object_impl<
             detail::win_iocp_socket_service<Protocol>, Executor> impl_;
-#elif defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#elif defined(XIO_HAS_IO_URING_AS_DEFAULT)
         detail::io_object_impl<
             detail::io_uring_socket_service<Protocol>, Executor> impl_;
 #else
@@ -1810,7 +1808,7 @@ namespace xio {
                             const xio::error_code &open_ec) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a ConnectHandler.
-                ASIO_CONNECT_HANDLER_CHECK(ConnectHandler, handler)
+                XIO_CONNECT_HANDLER_CHECK(ConnectHandler, handler)
                 type_check;
 
                 if (open_ec) {
@@ -1845,7 +1843,7 @@ namespace xio {
             void operator()(WaitHandler &&handler, wait_type w) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a WaitHandler.
-                ASIO_WAIT_HANDLER_CHECK(WaitHandler, handler)
+                XIO_WAIT_HANDLER_CHECK(WaitHandler, handler)
                 type_check;
 
                 detail::non_const_lvalue<WaitHandler> handler2(handler);
@@ -1864,4 +1862,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_BASIC_SOCKET_HPP
+#endif // XIO_BASIC_SOCKET_HPP

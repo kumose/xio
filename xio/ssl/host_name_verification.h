@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SSL_HOST_NAME_VERIFICATION_HPP
-#define ASIO_SSL_HOST_NAME_VERIFICATION_HPP
+#ifndef XIO_SSL_HOST_NAME_VERIFICATION_HPP
+#define XIO_SSL_HOST_NAME_VERIFICATION_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -69,7 +69,7 @@ namespace xio {
             }
 
             /// Perform certificate verification.
-            ASIO_DECL bool operator()(bool preverified, verify_context &ctx) const;
+            XIO_DECL bool operator()(bool preverified, verify_context &ctx) const;
 
         private:
             // Helper function to check a host name against an IPv4 address
@@ -82,4 +82,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_SSL_HOST_NAME_VERIFICATION_HPP
+#endif // XIO_SSL_HOST_NAME_VERIFICATION_HPP

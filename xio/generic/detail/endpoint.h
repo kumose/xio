@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_GENERIC_DETAIL_ENDPOINT_HPP
-#define ASIO_GENERIC_DETAIL_ENDPOINT_HPP
+#ifndef XIO_GENERIC_DETAIL_ENDPOINT_HPP
+#define XIO_GENERIC_DETAIL_ENDPOINT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -31,10 +31,10 @@ namespace xio {
             class endpoint {
             public:
                 // Default constructor.
-                ASIO_DECL endpoint();
+                XIO_DECL endpoint();
 
                 // Construct an endpoint from the specified raw bytes.
-                ASIO_DECL endpoint(const void *sock_addr,
+                XIO_DECL endpoint(const void *sock_addr,
                                    std::size_t sock_addr_size, int sock_protocol);
 
                 // Copy constructor.
@@ -78,7 +78,7 @@ namespace xio {
                 }
 
                 // Set the underlying size of the endpoint in the native type.
-  ASIO_DECL void resize(std::size_t size);
+  XIO_DECL void resize(std::size_t size);
 
                 // Get the capacity of the endpoint in the native type.
                 std::size_t capacity() const {
@@ -86,11 +86,11 @@ namespace xio {
                 }
 
                 // Compare two endpoints for equality.
-  ASIO_DECL friend bool operator==(
+  XIO_DECL friend bool operator==(
                     const endpoint &e1, const endpoint &e2);
 
                 // Compare endpoints for ordering.
-  ASIO_DECL friend bool operator<(
+  XIO_DECL friend bool operator<(
                     const endpoint &e1, const endpoint &e2);
 
             private:
@@ -107,7 +107,7 @@ namespace xio {
                 int protocol_;
 
                 // Initialise with a specified memory.
-  ASIO_DECL void init(const void *sock_addr,
+  XIO_DECL void init(const void *sock_addr,
                       std::size_t sock_addr_size, int sock_protocol);
             };
         } // namespace detail
@@ -118,4 +118,4 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // ASIO_GENERIC_DETAIL_ENDPOINT_HPP
+#endif // XIO_GENERIC_DETAIL_ENDPOINT_HPP

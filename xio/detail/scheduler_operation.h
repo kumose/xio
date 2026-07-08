@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_SCHEDULER_OPERATION_HPP
-#define ASIO_DETAIL_SCHEDULER_OPERATION_HPP
+#ifndef XIO_DETAIL_SCHEDULER_OPERATION_HPP
+#define XIO_DETAIL_SCHEDULER_OPERATION_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -29,7 +29,7 @@ namespace xio {
 
         // Base class for all operations. A function pointer is used instead of virtual
         // functions to avoid the associated overhead.
-        class scheduler_operation ASIO_INHERIT_TRACKED_HANDLER {
+        class scheduler_operation XIO_INHERIT_TRACKED_HANDLER {
         public:
             typedef scheduler_operation operation_type;
 
@@ -72,4 +72,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_SCHEDULER_OPERATION_HPP
+#endif // XIO_DETAIL_SCHEDULER_OPERATION_HPP

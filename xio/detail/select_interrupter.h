@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_SELECT_INTERRUPTER_HPP
-#define ASIO_DETAIL_SELECT_INTERRUPTER_HPP
+#ifndef XIO_DETAIL_SELECT_INTERRUPTER_HPP
+#define XIO_DETAIL_SELECT_INTERRUPTER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,12 +17,12 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
 
-#if defined(ASIO_WINDOWS) \
-  || defined(ASIO_CYGWIN_W32_SOCKETS) || defined(__SYMBIAN32__)
+#if defined(XIO_WINDOWS) \
+  || defined(XIO_CYGWIN_W32_SOCKETS) || defined(__SYMBIAN32__)
 #include <xio/detail/socket_select_interrupter.h>
-#elif defined(ASIO_HAS_EVENTFD)
+#elif defined(XIO_HAS_EVENTFD)
 #include <xio/detail/eventfd_select_interrupter.h>
 #else
 #include <xio/detail/pipe_select_interrupter.h>
@@ -32,10 +32,10 @@ namespace xio {
 
 
     namespace detail {
-#if defined(ASIO_WINDOWS) \
-  || defined(ASIO_CYGWIN_W32_SOCKETS) || defined(__SYMBIAN32__)
+#if defined(XIO_WINDOWS) \
+  || defined(XIO_CYGWIN_W32_SOCKETS) || defined(__SYMBIAN32__)
         typedef socket_select_interrupter select_interrupter;
-#elif defined(ASIO_HAS_EVENTFD)
+#elif defined(XIO_HAS_EVENTFD)
         typedef eventfd_select_interrupter select_interrupter;
 #else
         typedef pipe_select_interrupter select_interrupter;
@@ -44,6 +44,6 @@ namespace xio {
 
 } // namespace xio
 
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
-#endif // ASIO_DETAIL_SELECT_INTERRUPTER_HPP
+#endif // XIO_DETAIL_SELECT_INTERRUPTER_HPP

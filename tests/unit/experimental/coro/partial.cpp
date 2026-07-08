@@ -26,17 +26,17 @@ void partial()
   xio::io_context ctx;
   bool ran = false;
   auto p = detail::post_coroutine(ctx, [&]{ran = true;}).handle;
-  ASIO_CHECK(!ran);
+  XIO_CHECK(!ran);
   p.resume();
-  ASIO_CHECK(!ran);
+  XIO_CHECK(!ran);
   ctx.run();
-  ASIO_CHECK(ran);
+  XIO_CHECK(ran);
 }
 
 } // namespace coro
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "coro/partial",
-  ASIO_TEST_CASE(::coro::partial)
+  XIO_TEST_CASE(::coro::partial)
 )

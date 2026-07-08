@@ -1,0 +1,292 @@
+/************************************************************************
+Copyright 2017-2019 eBay Inc.
+Author/Developer(s): Jung-Sang Ahn
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+**************************************************************************/
+
+#pragma once
+
+#include <xio/logging.h>
+
+#include <xio/raft/xio_service_options.h>
+#include <tests/raft/raft_functional_common.h>
+#include <xio/raft/internal_timer.h>
+
+#include <xio/raft/raft.h>
+
+#if defined(__linux__) || defined(__APPLE__)
+    #include <unistd.h>
+#endif
+
+using namespace xio::raft;
+using namespace raft_functional_common;
+
+class RaftXioPkg {
+public:
+    static const int HEARTBEAT_MS = 100;
+
+    using READ_META_FUNC = std::function
+                               < bool( const xio_service::meta_cb_params&,
+                                       const std::string& ) >;
+
+    using WRITE_META_FUNC = std::function
+                               < std::string(const xio_service::meta_cb_params&) >;
+
+
+    RaftXioPkg(int srv_id,
+                const std::string& endpoint)
+        : myId(srv_id)
+        , myEndpoint(endpoint)
+        , sMgr(nullptr)
+        , sm(nullptr)
+        , xioSvc(nullptr)
+        , xioListener(nullptr)
+        , raftServer(nullptr)
+        , readReqMeta(nullptr)
+        , writeReqMeta(nullptr)
+        , alwaysInvokeCb(true)
+        , useCustomResolver(false)
+        , useLogTimestamp(false)
+        , useCrcOnEntireMessage(false)
+        , customIoContext(nullptr)
+        {}
+
+    ~RaftXioPkg() {
+    }
+
+    void setMetaCallback( READ_META_FUNC read_req_meta,
+                          WRITE_META_FUNC write_req_meta,
+                          READ_META_FUNC read_resp_meta,
+                          WRITE_META_FUNC write_resp_meta,
+                          bool always_invoke_cb )
+    {
+        readReqMeta = read_req_meta;
+        writeReqMeta = write_req_meta;
+        readRespMeta = read_resp_meta;
+        writeRespMeta = write_resp_meta;
+        alwaysInvokeCb = always_invoke_cb;
+    }
+
+    void setCrcOnEntireMessage(bool to) {
+        useCrcOnEntireMessage = to;
+    }
+
+    static bool verifySn(const std::string& sn) {
+        // Check if `CN=localhost` exists.
+        size_t pos = sn.find("CN=");
+        if (pos == std::string::npos) return false;
+        if (sn.substr(pos+3, 9) == "localhost") return true;
+        return false;
+    }
+
+    void initServer(bool enable_ssl = false,
+                    bool use_global_xio = false,
+                    bool use_bg_snapshot_io = true,
+                    const raft_server::init_options& opt = raft_server::init_options(),
+                    bool use_stream_xio = false) {
+        std::string log_file_name = "./srv" + std::to_string(myId) + ".log";
+        (void)log_file_name;
+        sMgr = cs_new<TestMgr>(myId, myEndpoint);
+        sm = cs_new<TestSm>();
+
+        xio_service::options xio_opt;
+        xio_opt.thread_pool_size_  = 4;
+        if (use_stream_xio) {
+            xio_opt.streaming_mode_ = true;
+        }
+
+        if (enable_ssl) {
+            xio_opt.enable_ssl_        = enable_ssl;
+            xio_opt.verify_sn_         = RaftXioPkg::verifySn;
+            xio_opt.server_cert_file_  = "./cert.pem";
+            xio_opt.root_cert_file_    = "./cert.pem"; // self-signed.
+            xio_opt.server_key_file_   = "./key.pem";
+        }
+
+        if (useCustomResolver) {
+            xio_opt.custom_resolver_ =
+                []( const std::string& host,
+                    const std::string& port,
+                    xio_service_custom_resolver_response when_done ) {
+                    if (host.substr(0, 2) == "S1") {
+                        when_done("127.0.0.1", "20010", std::error_code());
+                    } else if (host.substr(0, 2) == "S2") {
+                        when_done("127.0.0.1", "20020", std::error_code());
+                    } else {
+                        when_done("127.0.0.1", "20030", std::error_code());
+                    }
+                };
+        }
+
+        if (useCrcOnEntireMessage) {
+            xio_opt.crc_on_entire_message_ = true;
+            xio_opt.crc_on_payload_ = true;
+            xio_opt.corrupted_msg_handler_ =
+                [&](ptr<buffer> header, ptr<buffer> ctx){
+                    abort();
+                    return;
+                };
+        }
+
+        xio_opt.replicate_log_timestamp_ = useLogTimestamp;
+
+        if (readReqMeta) xio_opt.read_req_meta_ = readReqMeta;
+        if (writeReqMeta) xio_opt.write_req_meta_ = writeReqMeta;
+
+        if (readRespMeta) xio_opt.read_resp_meta_ = readRespMeta;
+        if (writeRespMeta) xio_opt.write_resp_meta_ = writeRespMeta;
+
+        xio_opt.invoke_req_cb_on_empty_meta_ = alwaysInvokeCb;
+        xio_opt.invoke_resp_cb_on_empty_meta_ = alwaysInvokeCb;
+
+        if (customIoContext) {
+            xio_opt.custom_io_context_ = customIoContext;
+        }
+        xioSvc = use_global_xio
+                  ? xraft_global_mgr::init_xio_service(xio_opt)
+                  : cs_new<xio_service>(xio_opt);
+
+        int raft_port = 20000 + myId * 10;
+        ptr<rpc_listener> listener
+                          ( xioSvc->create_rpc_listener(raft_port) );
+        ptr<delayed_task_scheduler> scheduler = xioSvc;
+        ptr<rpc_client_factory> rpc_cli_factory = xioSvc;
+
+        raft_params params;
+        params.with_hb_interval(HEARTBEAT_MS);
+        params.with_election_timeout_lower(HEARTBEAT_MS * 2);
+        params.with_election_timeout_upper(HEARTBEAT_MS * 4);
+        params.with_reserved_log_items(10);
+        params.with_snapshot_enabled(5);
+        params.with_client_req_timeout(10000);
+        params.use_bg_thread_for_snapshot_io_ = use_bg_snapshot_io;
+        context* ctx( new context( sMgr, sm, listener,
+                                   rpc_cli_factory, scheduler, params ) );
+        raftServer = cs_new<raft_server>(ctx, opt);
+
+        // Listen.
+        xioListener = listener;
+        xioListener->listen(raftServer);
+    }
+
+    /**
+     * Re-init Raft server without changing internal data including state machine.
+     */
+    void restartServer(
+            raft_params* custom_params = nullptr,
+            bool enable_ssl = false,
+            bool use_global_xio = false,
+            const raft_server::init_options& opt = raft_server::init_options()) {
+        xio_service::options xio_opt;
+        xio_opt.thread_pool_size_  = 4;
+        if (enable_ssl) {
+            xio_opt.enable_ssl_        = enable_ssl;
+            xio_opt.verify_sn_         = RaftXioPkg::verifySn;
+            xio_opt.server_cert_file_  = "./cert.pem";
+            xio_opt.root_cert_file_    = "./cert.pem"; // self-signed.
+            xio_opt.server_key_file_   = "./key.pem";
+        }
+
+        xioSvc = use_global_xio
+                  ? xraft_global_mgr::init_xio_service(xio_opt)
+                  : cs_new<xio_service>(xio_opt);
+
+        int raft_port = 20000 + myId * 10;
+        ptr<rpc_listener> listener
+                          ( xioSvc->create_rpc_listener(raft_port) );
+        ptr<delayed_task_scheduler> scheduler = xioSvc;
+        ptr<rpc_client_factory> rpc_cli_factory = xioSvc;
+
+        raft_params params;
+        if (custom_params) {
+            params = *custom_params;
+        } else {
+            params.with_hb_interval(HEARTBEAT_MS);
+            params.with_election_timeout_lower(HEARTBEAT_MS * 2);
+            params.with_election_timeout_upper(HEARTBEAT_MS * 4);
+            params.with_reserved_log_items(10);
+            params.with_snapshot_enabled(5);
+            params.with_client_req_timeout(10000);
+        }
+        context* ctx( new context( sMgr, sm, listener,
+                                   rpc_cli_factory, scheduler, params ) );
+        raftServer = cs_new<raft_server>(ctx, opt);
+
+        // Listen.
+        xioListener = listener;
+        xioListener->listen(raftServer);
+    }
+
+    void stopXio() {
+        if (xioListener) {
+            xioListener->stop();
+            xioListener->shutdown();
+        }
+        if (xioSvc) {
+            xioSvc->stop();
+            size_t count = 0;
+            while (xioSvc->get_active_workers() && count < 500) {
+                // 10ms per tick.
+                timer_helper::sleep_ms(10);
+                count++;
+            }
+        }
+    }
+
+    void dbgLog(const std::string& msg) {
+        TLOG(INFO, "{}", msg);
+    }
+
+    TestMgr* getTestMgr() const {
+        return static_cast<TestMgr*>(sMgr.get());
+    }
+
+    TestSm* getTestSm() const {
+        return static_cast<TestSm*>(sm.get());
+    }
+
+    int myId;
+    std::string myEndpoint;
+
+    ptr<state_mgr> sMgr;
+    ptr<state_machine> sm;
+
+    ptr<xio_service> xioSvc;
+    ptr<rpc_listener> xioListener;
+
+    ptr<raft_server> raftServer;
+
+    // Callback function to read Raft request metadata.
+    READ_META_FUNC readReqMeta;
+
+    // Callback function to write Raft request metadata.
+    WRITE_META_FUNC writeReqMeta;
+
+    // Callback function to read Raft response metadata.
+    READ_META_FUNC readRespMeta;
+
+    // Callback function to write Raft response metadata.
+    WRITE_META_FUNC writeRespMeta;
+
+    bool alwaysInvokeCb;
+
+    bool useCustomResolver;
+
+    bool useLogTimestamp;
+
+    bool useCrcOnEntireMessage;
+
+    xio::io_context* customIoContext;
+};
+

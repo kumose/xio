@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WINRT_TIMER_SCHEDULER_HPP
-#define ASIO_DETAIL_WINRT_TIMER_SCHEDULER_HPP
+#ifndef XIO_DETAIL_WINRT_TIMER_SCHEDULER_HPP
+#define XIO_DETAIL_WINRT_TIMER_SCHEDULER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 
 #include <cstddef>
 #include <xio/detail/event.h>
@@ -30,15 +30,15 @@
 #include <xio/detail/wait_op.h>
 #include <xio/execution_context.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 #include <xio/detail/win_iocp_io_context.h>
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 #include <xio/detail/scheduler.h>
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 #include <xio/detail/thread.h>
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
 #include <xio/detail/push_options.h>
 
@@ -50,19 +50,19 @@ namespace xio {
                 : public execution_context_service_base<winrt_timer_scheduler> {
         public:
             // Constructor.
-            ASIO_DECL winrt_timer_scheduler(execution_context &context);
+            XIO_DECL winrt_timer_scheduler(execution_context &context);
 
             // Destructor.
-            ASIO_DECL ~winrt_timer_scheduler();
+            XIO_DECL ~winrt_timer_scheduler();
 
             // Destroy all user-defined handler objects owned by the service.
-            ASIO_DECL void shutdown();
+            XIO_DECL void shutdown();
 
             // Recreate internal descriptors following a fork.
-            ASIO_DECL void notify_fork(execution_context::fork_event fork_ev);
+            XIO_DECL void notify_fork(execution_context::fork_event fork_ev);
 
             // Initialise the task. No effect as this class uses its own thread.
-            ASIO_DECL void init_task();
+            XIO_DECL void init_task();
 
             // Add a new timer queue to the reactor.
             template<typename TimeTraits, typename Allocator>
@@ -95,19 +95,19 @@ namespace xio {
 
         private:
             // Run the select loop in the thread.
-            ASIO_DECL void run_thread();
+            XIO_DECL void run_thread();
 
             // Entry point for the select loop thread.
-            ASIO_DECL static void call_run_thread(winrt_timer_scheduler *reactor);
+            XIO_DECL static void call_run_thread(winrt_timer_scheduler *reactor);
 
             // Helper function to add a new timer queue.
-            ASIO_DECL void do_add_timer_queue(timer_queue_base &queue);
+            XIO_DECL void do_add_timer_queue(timer_queue_base &queue);
 
             // Helper function to remove a timer queue.
-            ASIO_DECL void do_remove_timer_queue(timer_queue_base &queue);
+            XIO_DECL void do_remove_timer_queue(timer_queue_base &queue);
 
 // The scheduler implementation used to post completions.
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 typedef class win_iocp_io_context scheduler_impl;
 #else
 typedef class scheduler scheduler_impl;
@@ -141,6 +141,6 @@ bool shutdown_;
 #include <xio/detail/impl/winrt_timer_scheduler.h>
 
 
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
 
-#endif // ASIO_DETAIL_WINRT_TIMER_SCHEDULER_HPP
+#endif // XIO_DETAIL_WINRT_TIMER_SCHEDULER_HPP

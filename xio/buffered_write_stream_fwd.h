@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BUFFERED_WRITE_STREAM_FWD_HPP
-#define ASIO_BUFFERED_WRITE_STREAM_FWD_HPP
+#ifndef XIO_BUFFERED_WRITE_STREAM_FWD_HPP
+#define XIO_BUFFERED_WRITE_STREAM_FWD_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -23,4 +23,4 @@ namespace xio {
 
 } // namespace xio
 
-#endif // ASIO_BUFFERED_WRITE_STREAM_FWD_HPP
+#endif // XIO_BUFFERED_WRITE_STREAM_FWD_HPP

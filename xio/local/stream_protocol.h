@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_LOCAL_STREAM_PROTOCOL_HPP
-#define ASIO_LOCAL_STREAM_PROTOCOL_HPP
+#ifndef XIO_LOCAL_STREAM_PROTOCOL_HPP
+#define XIO_LOCAL_STREAM_PROTOCOL_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,9 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_LOCAL_SOCKETS) \
-  || defined(GENERATING_DOCUMENTATION)
-
+#if defined(XIO_HAS_LOCAL_SOCKETS)
 #include <xio/basic_socket_acceptor.h>
 #include <xio/basic_socket_iostream.h>
 #include <xio/basic_stream_socket.h>
@@ -29,8 +27,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace local {
         /// Encapsulates the flags needed for stream-oriented UNIX sockets.
         /**
@@ -70,18 +66,16 @@ namespace xio {
             /// The UNIX domain acceptor type.
             typedef basic_socket_acceptor<stream_protocol> acceptor;
 
-#if !defined(ASIO_NO_IOSTREAM)
-/// The UNIX domain iostream type.
-typedef basic_socket_iostream<stream_protocol> iostream;
-#endif // !defined(ASIO_NO_IOSTREAM)
-};
-
-} // namespace local
+#if !defined(XIO_NO_IOSTREAM)
+            /// The UNIX domain iostream type.
+            typedef basic_socket_iostream<stream_protocol> iostream;
+#endif // !defined(XIO_NO_IOSTREAM)
+        };
+    } // namespace local
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_LOCAL_SOCKETS)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_LOCAL_SOCKETS)
 
-#endif // ASIO_LOCAL_STREAM_PROTOCOL_HPP
+#endif // XIO_LOCAL_STREAM_PROTOCOL_HPP

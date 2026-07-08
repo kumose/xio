@@ -20,7 +20,7 @@
 
 #include "unit_test.hpp"
 
-#if defined(ASIO_HAS_CO_AWAIT)
+#if defined(XIO_HAS_CO_AWAIT)
 
 #include <xio/bind_cancellation_slot.h>
 #include <xio/deferred.h>
@@ -52,7 +52,7 @@ void test_throw_first()
   try
   {
     throw_first(xio::detached);
-    ASIO_CHECK(0);
+    XIO_CHECK(0);
   }
   catch (int)
   {
@@ -79,7 +79,7 @@ void test_throw_after_await()
     xio::io_context ctx(1);
     throw_after_await(ctx, xio::detached);
     ctx.run();
-    ASIO_CHECK(0);
+    XIO_CHECK(0);
   }
   catch (int)
   {
@@ -103,7 +103,7 @@ void test_throw_in_first_suspend()
   try
   {
     throw_in_first_suspend(xio::detached);
-    ASIO_CHECK(0);
+    XIO_CHECK(0);
   }
   catch (int)
   {
@@ -131,7 +131,7 @@ void test_throw_in_suspend_after_await()
     xio::io_context ctx(1);
     throw_in_suspend_after_await(ctx, xio::detached);
     ctx.run();
-    ASIO_CHECK(0);
+    XIO_CHECK(0);
   }
   catch (int)
   {
@@ -158,7 +158,7 @@ void test_post_loop()
   int count = 0;
   post_loop(ctx, [&](int i){ count = i; });
   ctx.run();
-  ASIO_CHECK(count == 100);
+  XIO_CHECK(count == 100);
 }
 
 template <typename CompletionToken>
@@ -193,7 +193,7 @@ void test_nested_post_loop()
   int count = 0;
   nested_post_loop(ctx, [&](int i){ count = i; });
   ctx.run();
-  ASIO_CHECK(count == 100);
+  XIO_CHECK(count == 100);
 }
 
 template <typename CompletionToken>
@@ -216,7 +216,7 @@ void test_post_loop_return_1_0()
   bool done = false;
   post_loop_return_1_0(ctx, [&]{ done = true; });
   ctx.run();
-  ASIO_CHECK(done);
+  XIO_CHECK(done);
 }
 
 template <typename CompletionToken>
@@ -239,7 +239,7 @@ void test_post_loop_return_1_1()
   int count = 0;
   post_loop_return_1_1(ctx, [&](int i){ count = i; });
   ctx.run();
-  ASIO_CHECK(count == 100);
+  XIO_CHECK(count == 100);
 }
 
 template <typename CompletionToken>
@@ -263,8 +263,8 @@ void test_post_loop_return_1_2()
   char ch = 0;
   post_loop_return_1_2(ctx, [&](int i, char c){ count = i, ch = c; });
   ctx.run();
-  ASIO_CHECK(count == 100);
-  ASIO_CHECK(ch == 'A');
+  XIO_CHECK(count == 100);
+  XIO_CHECK(ch == 'A');
 }
 
 template <typename CompletionToken>
@@ -287,7 +287,7 @@ void test_post_loop_return_2()
   int count = 0;
   post_loop_return_2(ctx, [&](int i = 0){ count = i; });
   ctx.run();
-  ASIO_CHECK(count == 100);
+  XIO_CHECK(count == 100);
 }
 
 template <typename CompletionToken>
@@ -324,8 +324,8 @@ void test_complete_on_cancel()
 
   ctx.run();
 
-  ASIO_CHECK(ec == xio::error::eof);
-  ASIO_CHECK(count == 100);
+  XIO_CHECK(ec == xio::error::eof);
+  XIO_CHECK(count == 100);
 
   complete_on_cancel(ctx,
       xio::bind_cancellation_slot(cancel.slot(),
@@ -340,8 +340,8 @@ void test_complete_on_cancel()
   cancel.emit(xio::cancellation_type::all);
   ctx.run();
 
-  ASIO_CHECK(ec == xio::error::invalid_argument);
-  ASIO_CHECK(count == 42);
+  XIO_CHECK(ec == xio::error::invalid_argument);
+  XIO_CHECK(count == 42);
 
   complete_on_cancel(ctx,
       xio::bind_cancellation_slot(cancel.slot(),
@@ -354,8 +354,8 @@ void test_complete_on_cancel()
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(ec == xio::error::eof);
-  ASIO_CHECK(count == 100);
+  XIO_CHECK(ec == xio::error::eof);
+  XIO_CHECK(count == 100);
 }
 
 template <typename CompletionToken>
@@ -391,8 +391,8 @@ void test_complete_with_default_on_cancel()
 
   ctx.run();
 
-  ASIO_CHECK(ec == xio::error::eof);
-  ASIO_CHECK(count == 100);
+  XIO_CHECK(ec == xio::error::eof);
+  XIO_CHECK(count == 100);
 
   complete_with_default_on_cancel(ctx,
       xio::bind_cancellation_slot(cancel.slot(),
@@ -407,8 +407,8 @@ void test_complete_with_default_on_cancel()
   cancel.emit(xio::cancellation_type::all);
   ctx.run();
 
-  ASIO_CHECK(ec == xio::error::operation_aborted);
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(ec == xio::error::operation_aborted);
+  XIO_CHECK(count == 0);
 
   complete_with_default_on_cancel(ctx,
       xio::bind_cancellation_slot(cancel.slot(),
@@ -421,8 +421,8 @@ void test_complete_with_default_on_cancel()
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(ec == xio::error::eof);
-  ASIO_CHECK(count == 100);
+  XIO_CHECK(ec == xio::error::eof);
+  XIO_CHECK(count == 100);
 }
 
 template <typename CompletionToken>
@@ -465,8 +465,8 @@ void test_throw_on_cancel()
 
   ctx.run();
 
-  ASIO_CHECK(ec == xio::error::eof);
-  ASIO_CHECK(count == 100);
+  XIO_CHECK(ec == xio::error::eof);
+  XIO_CHECK(count == 100);
 
   throw_on_cancel(ctx,
       xio::bind_cancellation_slot(cancel.slot(),
@@ -481,8 +481,8 @@ void test_throw_on_cancel()
   cancel.emit(xio::cancellation_type::all);
   ctx.run();
 
-  ASIO_CHECK(ec == xio::error::invalid_argument);
-  ASIO_CHECK(count == 42);
+  XIO_CHECK(ec == xio::error::invalid_argument);
+  XIO_CHECK(count == 42);
 
   throw_on_cancel(ctx,
       xio::bind_cancellation_slot(cancel.slot(),
@@ -495,8 +495,8 @@ void test_throw_on_cancel()
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(ec == xio::error::eof);
-  ASIO_CHECK(count == 100);
+  XIO_CHECK(ec == xio::error::eof);
+  XIO_CHECK(count == 100);
 }
 
 void test_no_signatures_detached()
@@ -532,31 +532,31 @@ void test_no_signatures_detached()
   assert(count2 == 2);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "co_composed",
-  ASIO_TEST_CASE(test_throw_first)
-  ASIO_TEST_CASE(test_throw_after_await)
-  ASIO_TEST_CASE(test_throw_in_first_suspend)
-  ASIO_TEST_CASE(test_throw_in_suspend_after_await)
-  ASIO_TEST_CASE(test_post_loop)
-  ASIO_TEST_CASE(test_nested_post_loop)
-  ASIO_TEST_CASE(test_post_loop_return_1_0)
-  ASIO_TEST_CASE(test_post_loop_return_1_1)
-  ASIO_TEST_CASE(test_post_loop_return_1_2)
-  ASIO_TEST_CASE(test_post_loop_return_2)
-  ASIO_TEST_CASE(test_complete_on_cancel)
-  ASIO_TEST_CASE(test_complete_with_default_on_cancel)
-  ASIO_TEST_CASE(test_throw_on_cancel)
-  ASIO_TEST_CASE(test_no_signatures_detached)
+  XIO_TEST_CASE(test_throw_first)
+  XIO_TEST_CASE(test_throw_after_await)
+  XIO_TEST_CASE(test_throw_in_first_suspend)
+  XIO_TEST_CASE(test_throw_in_suspend_after_await)
+  XIO_TEST_CASE(test_post_loop)
+  XIO_TEST_CASE(test_nested_post_loop)
+  XIO_TEST_CASE(test_post_loop_return_1_0)
+  XIO_TEST_CASE(test_post_loop_return_1_1)
+  XIO_TEST_CASE(test_post_loop_return_1_2)
+  XIO_TEST_CASE(test_post_loop_return_2)
+  XIO_TEST_CASE(test_complete_on_cancel)
+  XIO_TEST_CASE(test_complete_with_default_on_cancel)
+  XIO_TEST_CASE(test_throw_on_cancel)
+  XIO_TEST_CASE(test_no_signatures_detached)
 )
 
-#else // defined(ASIO_HAS_CO_AWAIT)
+#else // defined(XIO_HAS_CO_AWAIT)
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "co_composed",
-  ASIO_TEST_CASE(null_test)
+  XIO_TEST_CASE(null_test)
 )
 
-#endif // defined(ASIO_HAS_CO_AWAIT)
+#endif // defined(XIO_HAS_CO_AWAIT)

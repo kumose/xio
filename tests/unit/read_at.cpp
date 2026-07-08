@@ -43,7 +43,7 @@ public:
 
   void reset(const void* data, size_t length)
   {
-    ASIO_CHECK(length <= max_length);
+    XIO_CHECK(length <= max_length);
 
     length_ = 0;
     while (length_ + length < max_length)
@@ -141,42 +141,42 @@ void test_3_arg_mutable_buffer_read_at()
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   size_t bytes_transferred = xio::read_at(s, 0, buffers);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 }
 
 void test_3_arg_vector_buffers_read_at()
@@ -191,42 +191,42 @@ void test_3_arg_vector_buffers_read_at()
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   size_t bytes_transferred = xio::read_at(s, 0, buffers);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 }
 
 void test_3_arg_streambuf_read_at()
@@ -238,48 +238,48 @@ void test_3_arg_streambuf_read_at()
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   size_t bytes_transferred = xio::read_at(s, 0, sb);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 }
 
 void test_4_arg_nothrow_mutable_buffer_read_at()
@@ -294,48 +294,48 @@ void test_4_arg_nothrow_mutable_buffer_read_at()
   memset(read_buf, 0, sizeof(read_buf));
   xio::error_code error;
   size_t bytes_transferred = xio::read_at(s, 0, buffers, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 }
 
 void test_4_arg_nothrow_vector_buffers_read_at()
@@ -351,48 +351,48 @@ void test_4_arg_nothrow_vector_buffers_read_at()
   memset(read_buf, 0, sizeof(read_buf));
   xio::error_code error;
   size_t bytes_transferred = xio::read_at(s, 0, buffers, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 }
 
 void test_4_arg_nothrow_streambuf_read_at()
@@ -405,54 +405,54 @@ void test_4_arg_nothrow_streambuf_read_at()
   sb.consume(sb.size());
   xio::error_code error;
   size_t bytes_transferred = xio::read_at(s, 0, sb, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 }
 
 bool old_style_transfer_all(const xio::error_code& ec,
@@ -484,409 +484,409 @@ void test_4_arg_mutable_buffer_read_at()
   memset(read_buf, 0, sizeof(read_buf));
   size_t bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == 50);
-  ASIO_CHECK(s.check_buffers(0, buffers, 50));
+  XIO_CHECK(bytes_transferred == 50);
+  XIO_CHECK(s.check_buffers(0, buffers, 50));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == 50);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 50));
+  XIO_CHECK(bytes_transferred == 50);
+  XIO_CHECK(s.check_buffers(1234, buffers, 50));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 }
 
 void test_4_arg_vector_buffers_read_at()
@@ -902,409 +902,409 @@ void test_4_arg_vector_buffers_read_at()
   memset(read_buf, 0, sizeof(read_buf));
   size_t bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == 50);
-  ASIO_CHECK(s.check_buffers(0, buffers, 50));
+  XIO_CHECK(bytes_transferred == 50);
+  XIO_CHECK(s.check_buffers(0, buffers, 50));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == 50);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 50));
+  XIO_CHECK(bytes_transferred == 50);
+  XIO_CHECK(s.check_buffers(1234, buffers, 50));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 }
 
 void test_4_arg_streambuf_read_at()
@@ -1317,463 +1317,463 @@ void test_4_arg_streambuf_read_at()
   sb.consume(sb.size());
   size_t bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_all());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(1));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == 50);
-  ASIO_CHECK(sb.size() == 50);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 50));
+  XIO_CHECK(bytes_transferred == 50);
+  XIO_CHECK(sb.size() == 50);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 50));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(42));
-  ASIO_CHECK(bytes_transferred == 50);
-  ASIO_CHECK(sb.size() == 50);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 50));
+  XIO_CHECK(bytes_transferred == 50);
+  XIO_CHECK(sb.size() == 50);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 50));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 1));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(1));
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 1));
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 1));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(10));
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 42));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(42));
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 42));
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 42));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       old_style_transfer_all);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb, short_transfer());
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 }
 
 void test_5_arg_mutable_buffer_read_at()
@@ -1789,17 +1789,17 @@ void test_5_arg_mutable_buffer_read_at()
   xio::error_code error;
   size_t bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1807,9 +1807,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1817,9 +1817,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1827,9 +1827,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1837,27 +1837,27 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1865,9 +1865,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1875,9 +1875,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1885,9 +1885,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1895,27 +1895,27 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1923,9 +1923,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1933,9 +1933,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1943,9 +1943,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1953,27 +1953,27 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1981,9 +1981,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1991,9 +1991,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2001,9 +2001,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == 50);
-  ASIO_CHECK(s.check_buffers(0, buffers, 50));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 50);
+  XIO_CHECK(s.check_buffers(0, buffers, 50));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2011,27 +2011,27 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == 50);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 50));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 50);
+  XIO_CHECK(s.check_buffers(1234, buffers, 50));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2039,9 +2039,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2049,9 +2049,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2059,9 +2059,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2069,27 +2069,27 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2097,9 +2097,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2107,9 +2107,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2117,9 +2117,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2127,27 +2127,27 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2155,9 +2155,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2165,9 +2165,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2175,9 +2175,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2185,25 +2185,25 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2211,9 +2211,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2221,9 +2221,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2231,9 +2231,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2241,25 +2241,25 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2267,9 +2267,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2277,9 +2277,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2287,9 +2287,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2297,9 +2297,9 @@ void test_5_arg_mutable_buffer_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 }
 
 void test_5_arg_vector_buffers_read_at()
@@ -2316,17 +2316,17 @@ void test_5_arg_vector_buffers_read_at()
   xio::error_code error;
   size_t bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2334,9 +2334,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2344,9 +2344,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2354,9 +2354,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2364,27 +2364,27 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2392,9 +2392,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2402,9 +2402,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2412,9 +2412,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2422,27 +2422,27 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2450,9 +2450,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2460,9 +2460,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2470,9 +2470,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2480,27 +2480,27 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2508,9 +2508,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2518,9 +2518,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2528,9 +2528,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == 50);
-  ASIO_CHECK(s.check_buffers(0, buffers, 50));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 50);
+  XIO_CHECK(s.check_buffers(0, buffers, 50));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2538,27 +2538,27 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == 50);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 50));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 50);
+  XIO_CHECK(s.check_buffers(1234, buffers, 50));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2566,9 +2566,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2576,9 +2576,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2586,9 +2586,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2596,27 +2596,27 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2624,9 +2624,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2634,9 +2634,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2644,9 +2644,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2654,27 +2654,27 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2682,9 +2682,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2692,9 +2692,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2702,9 +2702,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2712,25 +2712,25 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2738,9 +2738,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2748,9 +2748,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2758,9 +2758,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2768,25 +2768,25 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 0, buffers,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   bytes_transferred = xio::read_at(s, 1234, buffers,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2794,9 +2794,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2804,9 +2804,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2814,9 +2814,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, buffers,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2824,9 +2824,9 @@ void test_5_arg_vector_buffers_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, buffers,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(!error);
 }
 
 void test_5_arg_streambuf_read_at()
@@ -2840,19 +2840,19 @@ void test_5_arg_streambuf_read_at()
   xio::error_code error;
   size_t bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2860,10 +2860,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2871,10 +2871,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2882,10 +2882,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2893,30 +2893,30 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_all(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2924,10 +2924,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2935,10 +2935,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2946,10 +2946,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -2957,30 +2957,30 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(1), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2988,10 +2988,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -2999,10 +2999,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3010,10 +3010,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3021,30 +3021,30 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3052,10 +3052,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3063,10 +3063,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3074,10 +3074,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == 50);
-  ASIO_CHECK(sb.size() == 50);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 50));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 50);
+  XIO_CHECK(sb.size() == 50);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 50));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3085,30 +3085,30 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_at_least(42), error);
-  ASIO_CHECK(bytes_transferred == 50);
-  ASIO_CHECK(sb.size() == 50);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 50));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 50);
+  XIO_CHECK(sb.size() == 50);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 50));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3116,10 +3116,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3127,10 +3127,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3138,10 +3138,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3149,30 +3149,30 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(1), error);
-  ASIO_CHECK(bytes_transferred == 1);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 1));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 1);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 1));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3180,10 +3180,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3191,10 +3191,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3202,10 +3202,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3213,30 +3213,30 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(10), error);
-  ASIO_CHECK(bytes_transferred == 10);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 10);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3244,10 +3244,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3255,10 +3255,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3266,10 +3266,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3277,28 +3277,28 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       xio::transfer_exactly(42), error);
-  ASIO_CHECK(bytes_transferred == 42);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 42));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == 42);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 42));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3306,10 +3306,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3317,10 +3317,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3328,10 +3328,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3339,28 +3339,28 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       old_style_transfer_all, error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 0, sb,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   bytes_transferred = xio::read_at(s, 1234, sb,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3368,10 +3368,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3379,10 +3379,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3390,10 +3390,10 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 0, sb,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3401,18 +3401,18 @@ void test_5_arg_streambuf_read_at()
   error = xio::error_code();
   bytes_transferred = xio::read_at(s, 1234, sb,
       short_transfer(), error);
-  ASIO_CHECK(bytes_transferred == sizeof(read_data));
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
-  ASIO_CHECK(!error);
+  XIO_CHECK(bytes_transferred == sizeof(read_data));
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(!error);
 }
 
 void async_read_handler(const xio::error_code& e,
     size_t bytes_transferred, size_t expected_bytes_transferred, bool* called)
 {
   *called = true;
-  ASIO_CHECK(!e);
-  ASIO_CHECK(bytes_transferred == expected_bytes_transferred);
+  XIO_CHECK(!e);
+  XIO_CHECK(bytes_transferred == expected_bytes_transferred);
 }
 
 void test_4_arg_mutable_buffer_async_read_at()
@@ -3435,8 +3435,8 @@ void test_4_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -3446,8 +3446,8 @@ void test_4_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3458,8 +3458,8 @@ void test_4_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3470,8 +3470,8 @@ void test_4_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3482,8 +3482,8 @@ void test_4_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3494,17 +3494,17 @@ void test_4_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   int i = xio::async_read_at(s, 1234, buffers,
       archetypes::lazy_handler());
-  ASIO_CHECK(i == 42);
+  XIO_CHECK(i == 42);
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3515,8 +3515,8 @@ void test_4_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 }
 
 void test_4_arg_boost_array_buffers_async_read_at()
@@ -3548,8 +3548,8 @@ void test_4_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -3559,8 +3559,8 @@ void test_4_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3571,8 +3571,8 @@ void test_4_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3583,8 +3583,8 @@ void test_4_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3595,8 +3595,8 @@ void test_4_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3607,17 +3607,17 @@ void test_4_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   int i = xio::async_read_at(s, 1234, buffers,
       archetypes::lazy_handler());
-  ASIO_CHECK(i == 42);
+  XIO_CHECK(i == 42);
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3628,8 +3628,8 @@ void test_4_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 }
 
 void test_4_arg_vector_buffers_async_read_at()
@@ -3653,8 +3653,8 @@ void test_4_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -3664,8 +3664,8 @@ void test_4_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3676,8 +3676,8 @@ void test_4_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3688,8 +3688,8 @@ void test_4_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3700,8 +3700,8 @@ void test_4_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3712,17 +3712,17 @@ void test_4_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   int i = xio::async_read_at(s, 1234, buffers,
       archetypes::lazy_handler());
-  ASIO_CHECK(i == 42);
+  XIO_CHECK(i == 42);
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3733,8 +3733,8 @@ void test_4_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 }
 
 void test_4_arg_streambuf_async_read_at()
@@ -3755,9 +3755,9 @@ void test_4_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -3767,9 +3767,9 @@ void test_4_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3780,9 +3780,9 @@ void test_4_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3793,9 +3793,9 @@ void test_4_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3806,9 +3806,9 @@ void test_4_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3819,18 +3819,18 @@ void test_4_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   int i = xio::async_read_at(s, 1234, sb,
       archetypes::lazy_handler());
-  ASIO_CHECK(i == 42);
+  XIO_CHECK(i == 42);
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3841,9 +3841,9 @@ void test_4_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 }
 
 void test_5_arg_mutable_buffer_async_read_at()
@@ -3867,8 +3867,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -3879,8 +3879,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3892,8 +3892,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3905,8 +3905,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3918,8 +3918,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3931,8 +3931,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -3943,8 +3943,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -3955,8 +3955,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3968,8 +3968,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -3981,8 +3981,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -3994,8 +3994,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4007,8 +4007,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4019,8 +4019,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4031,8 +4031,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4044,8 +4044,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4057,8 +4057,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4070,8 +4070,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4083,8 +4083,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4095,8 +4095,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4107,8 +4107,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4120,8 +4120,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4133,8 +4133,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4146,8 +4146,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 50, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 50));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 50));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4159,8 +4159,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 50, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 50));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 50));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4171,8 +4171,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4183,8 +4183,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4196,8 +4196,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4209,8 +4209,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4222,8 +4222,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4235,8 +4235,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4247,8 +4247,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4259,8 +4259,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4272,8 +4272,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4285,8 +4285,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4298,8 +4298,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4311,8 +4311,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4323,8 +4323,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4335,8 +4335,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4348,8 +4348,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4361,8 +4361,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4374,8 +4374,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4387,8 +4387,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4398,8 +4398,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4409,8 +4409,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4421,8 +4421,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4433,8 +4433,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4445,8 +4445,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4457,8 +4457,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4468,8 +4468,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4479,8 +4479,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4491,8 +4491,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4503,8 +4503,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4515,8 +4515,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4527,17 +4527,17 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   int i = xio::async_read_at(s, 1234, buffers,
       short_transfer(), archetypes::lazy_handler());
-  ASIO_CHECK(i == 42);
+  XIO_CHECK(i == 42);
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4548,8 +4548,8 @@ void test_5_arg_mutable_buffer_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 }
 
 void test_5_arg_boost_array_buffers_async_read_at()
@@ -4582,8 +4582,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4594,8 +4594,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4607,8 +4607,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4620,8 +4620,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4633,8 +4633,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4646,8 +4646,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4658,8 +4658,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4670,8 +4670,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4683,8 +4683,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4696,8 +4696,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4709,8 +4709,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4722,8 +4722,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4734,8 +4734,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4746,8 +4746,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4759,8 +4759,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4772,8 +4772,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4785,8 +4785,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4798,8 +4798,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4810,8 +4810,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4822,8 +4822,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4835,8 +4835,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4848,8 +4848,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4861,8 +4861,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 50, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 50));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 50));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4874,8 +4874,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 50, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 50));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 50));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4886,8 +4886,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4898,8 +4898,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4911,8 +4911,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4924,8 +4924,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4937,8 +4937,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -4950,8 +4950,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4962,8 +4962,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -4974,8 +4974,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -4987,8 +4987,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5000,8 +5000,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5013,8 +5013,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5026,8 +5026,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5038,8 +5038,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5050,8 +5050,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5063,8 +5063,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5076,8 +5076,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5089,8 +5089,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5102,8 +5102,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5113,8 +5113,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5124,8 +5124,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5136,8 +5136,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5148,8 +5148,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5160,8 +5160,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5172,8 +5172,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5183,8 +5183,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5194,8 +5194,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5206,8 +5206,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5218,8 +5218,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5230,8 +5230,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5242,17 +5242,17 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   int i = xio::async_read_at(s, 1234, buffers,
       short_transfer(), archetypes::lazy_handler());
-  ASIO_CHECK(i == 42);
+  XIO_CHECK(i == 42);
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5263,8 +5263,8 @@ void test_5_arg_std_array_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 }
 
 void test_5_arg_vector_buffers_async_read_at()
@@ -5289,8 +5289,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5301,8 +5301,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5314,8 +5314,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5327,8 +5327,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5340,8 +5340,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5353,8 +5353,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5365,8 +5365,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5377,8 +5377,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5390,8 +5390,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5403,8 +5403,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5416,8 +5416,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5429,8 +5429,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5441,8 +5441,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5453,8 +5453,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5466,8 +5466,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5479,8 +5479,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5492,8 +5492,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5505,8 +5505,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5517,8 +5517,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5529,8 +5529,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5542,8 +5542,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5555,8 +5555,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5568,8 +5568,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 50, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 50));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 50));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5581,8 +5581,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 50, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 50));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 50));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5593,8 +5593,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5605,8 +5605,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5618,8 +5618,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5631,8 +5631,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5644,8 +5644,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5657,8 +5657,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 1));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 1));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5669,8 +5669,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5681,8 +5681,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5694,8 +5694,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5707,8 +5707,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5720,8 +5720,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5733,8 +5733,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 10));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 10));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5745,8 +5745,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5757,8 +5757,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5770,8 +5770,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5783,8 +5783,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5796,8 +5796,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5809,8 +5809,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, 42));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, 42));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5820,8 +5820,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5831,8 +5831,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5843,8 +5843,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5855,8 +5855,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5867,8 +5867,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5879,8 +5879,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5890,8 +5890,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
@@ -5901,8 +5901,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5913,8 +5913,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -5925,8 +5925,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5937,8 +5937,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(0, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5949,17 +5949,17 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   memset(read_buf, 0, sizeof(read_buf));
   int i = xio::async_read_at(s, 1234, buffers,
       short_transfer(), archetypes::lazy_handler());
-  ASIO_CHECK(i == 42);
+  XIO_CHECK(i == 42);
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -5970,8 +5970,8 @@ void test_5_arg_vector_buffers_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(s.check_buffers(1234, buffers, sizeof(read_data)));
 }
 
 void test_5_arg_streambuf_async_read_at()
@@ -5993,9 +5993,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6006,9 +6006,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6020,9 +6020,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6034,9 +6034,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6048,9 +6048,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6062,9 +6062,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6075,9 +6075,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6088,9 +6088,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6102,9 +6102,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 1));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6116,9 +6116,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 1));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6130,9 +6130,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6144,9 +6144,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6157,9 +6157,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6170,9 +6170,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6184,9 +6184,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6198,9 +6198,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6212,9 +6212,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6226,9 +6226,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6239,9 +6239,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6252,9 +6252,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6266,9 +6266,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 42));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6280,9 +6280,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 42));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6294,9 +6294,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 50, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 50);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 50));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 50);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 50));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6308,9 +6308,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 50, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 50);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 50));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 50);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 50));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6321,9 +6321,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 1));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 1));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6334,9 +6334,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 1));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6348,9 +6348,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 1));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6362,9 +6362,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 1));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6376,9 +6376,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 1));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 1));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6390,9 +6390,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 1, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 1);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 1));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 1);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 1));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6403,9 +6403,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6416,9 +6416,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6430,9 +6430,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6444,9 +6444,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6458,9 +6458,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 10));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6472,9 +6472,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 10, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 10);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 10));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 10);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 10));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6485,9 +6485,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 42));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 42));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6498,9 +6498,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 42));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6512,9 +6512,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 42));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6526,9 +6526,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 42));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6540,9 +6540,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(0, sb.data(), 42));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(0, sb.data(), 42));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6554,9 +6554,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, 42, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == 42);
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), 42));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == 42);
+  XIO_CHECK(s.check_buffers(1234, sb.data(), 42));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6566,9 +6566,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6578,9 +6578,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6591,9 +6591,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6604,9 +6604,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6617,9 +6617,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6630,9 +6630,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6642,9 +6642,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
@@ -6654,9 +6654,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6667,9 +6667,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -6680,9 +6680,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6693,9 +6693,9 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(0, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6706,18 +6706,18 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   sb.consume(sb.size());
   int i = xio::async_read_at(s, 1234, sb,
       short_transfer(), archetypes::lazy_handler());
-  ASIO_CHECK(i == 42);
+  XIO_CHECK(i == 42);
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -6728,34 +6728,34 @@ void test_5_arg_streambuf_async_read_at()
         _1, _2, sizeof(read_data), &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(sb.size() == sizeof(read_data));
-  ASIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
+  XIO_CHECK(called);
+  XIO_CHECK(sb.size() == sizeof(read_data));
+  XIO_CHECK(s.check_buffers(1234, sb.data(), sizeof(read_data)));
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "read_at",
-  ASIO_TEST_CASE(test_3_arg_mutable_buffer_read_at)
-  ASIO_TEST_CASE(test_3_arg_vector_buffers_read_at)
-  ASIO_TEST_CASE(test_3_arg_streambuf_read_at)
-  ASIO_TEST_CASE(test_4_arg_nothrow_mutable_buffer_read_at)
-  ASIO_TEST_CASE(test_4_arg_nothrow_vector_buffers_read_at)
-  ASIO_TEST_CASE(test_4_arg_nothrow_streambuf_read_at)
-  ASIO_TEST_CASE(test_4_arg_mutable_buffer_read_at)
-  ASIO_TEST_CASE(test_4_arg_vector_buffers_read_at)
-  ASIO_TEST_CASE(test_4_arg_streambuf_read_at)
-  ASIO_TEST_CASE(test_5_arg_mutable_buffer_read_at)
-  ASIO_TEST_CASE(test_5_arg_vector_buffers_read_at)
-  ASIO_TEST_CASE(test_5_arg_streambuf_read_at)
-  ASIO_TEST_CASE(test_4_arg_mutable_buffer_async_read_at)
-  ASIO_TEST_CASE(test_4_arg_boost_array_buffers_async_read_at)
-  ASIO_TEST_CASE(test_4_arg_std_array_buffers_async_read_at)
-  ASIO_TEST_CASE(test_4_arg_vector_buffers_async_read_at)
-  ASIO_TEST_CASE(test_4_arg_streambuf_async_read_at)
-  ASIO_TEST_CASE(test_5_arg_mutable_buffer_async_read_at)
-  ASIO_TEST_CASE(test_5_arg_boost_array_buffers_async_read_at)
-  ASIO_TEST_CASE(test_5_arg_std_array_buffers_async_read_at)
-  ASIO_TEST_CASE(test_5_arg_vector_buffers_async_read_at)
-  ASIO_TEST_CASE(test_5_arg_streambuf_async_read_at)
+  XIO_TEST_CASE(test_3_arg_mutable_buffer_read_at)
+  XIO_TEST_CASE(test_3_arg_vector_buffers_read_at)
+  XIO_TEST_CASE(test_3_arg_streambuf_read_at)
+  XIO_TEST_CASE(test_4_arg_nothrow_mutable_buffer_read_at)
+  XIO_TEST_CASE(test_4_arg_nothrow_vector_buffers_read_at)
+  XIO_TEST_CASE(test_4_arg_nothrow_streambuf_read_at)
+  XIO_TEST_CASE(test_4_arg_mutable_buffer_read_at)
+  XIO_TEST_CASE(test_4_arg_vector_buffers_read_at)
+  XIO_TEST_CASE(test_4_arg_streambuf_read_at)
+  XIO_TEST_CASE(test_5_arg_mutable_buffer_read_at)
+  XIO_TEST_CASE(test_5_arg_vector_buffers_read_at)
+  XIO_TEST_CASE(test_5_arg_streambuf_read_at)
+  XIO_TEST_CASE(test_4_arg_mutable_buffer_async_read_at)
+  XIO_TEST_CASE(test_4_arg_boost_array_buffers_async_read_at)
+  XIO_TEST_CASE(test_4_arg_std_array_buffers_async_read_at)
+  XIO_TEST_CASE(test_4_arg_vector_buffers_async_read_at)
+  XIO_TEST_CASE(test_4_arg_streambuf_async_read_at)
+  XIO_TEST_CASE(test_5_arg_mutable_buffer_async_read_at)
+  XIO_TEST_CASE(test_5_arg_boost_array_buffers_async_read_at)
+  XIO_TEST_CASE(test_5_arg_std_array_buffers_async_read_at)
+  XIO_TEST_CASE(test_5_arg_vector_buffers_async_read_at)
+  XIO_TEST_CASE(test_5_arg_streambuf_async_read_at)
 )

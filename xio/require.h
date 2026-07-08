@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_REQUIRE_HPP
-#define ASIO_REQUIRE_HPP
+#ifndef XIO_REQUIRE_HPP
+#define XIO_REQUIRE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -24,85 +24,6 @@
 
 #include <xio/detail/push_options.h>
 
-#if defined(GENERATING_DOCUMENTATION)
-
-namespace xio {
-
-
-    /// A customisation point that applies a concept-preserving property to an
-/// object.
-    /**
- * The name <tt>require</tt> denotes a customisation point object. The
- * expression <tt>xio::require(E, P0, Pn...)</tt> for some
- * subexpressions <tt>E</tt> and <tt>P0</tt>, and where <tt>Pn...</tt>
- * represents <tt>N</tt> subexpressions (where <tt>N</tt> is 0 or more, and with
- * types <tt>T = std::decay_t<decltype(E)></tt> and <tt>Prop0 =
- * std::decay_t<decltype(P0)></tt>) is expression-equivalent to:
- *
- * @li If <tt>is_applicable_property_v<T, Prop0> && Prop0::is_requirable</tt> is
- *   not a well-formed constant expression with value <tt>true</tt>,
- *   <tt>xio::require(E, P0, Pn...)</tt> is ill-formed.
- *
- * @li Otherwise, <tt>E</tt> if <tt>N == 0</tt> and the expression
- *   <tt>Prop0::template static_query_v<T> == Prop0::value()</tt> is a
- *   well-formed constant expression with value <tt>true</tt>.
- *
- * @li Otherwise, <tt>(E).require(P0)</tt> if <tt>N == 0</tt> and the expression
- *   <tt>(E).require(P0)</tt> is a valid expression.
- *
- * @li Otherwise, <tt>require(E, P0)</tt> if <tt>N == 0</tt> and the expression
- *   <tt>require(E, P0)</tt> is a valid expression with overload resolution
- *   performed in a context that does not include the declaration of the
- *   <tt>require</tt> customization point object.
- *
- * @li Otherwise,
- *   <tt>xio::require(xio::require(E, P0), Pn...)</tt>
- *   if <tt>N > 0</tt> and the expression
- *   <tt>xio::require(xio::require(E, P0), Pn...)</tt>
- *   is a valid expression.
- *
- * @li Otherwise, <tt>xio::require(E, P0, Pn...)</tt> is ill-formed.
- */
-    inline constexpr unspecified require = unspecified;
-
-    /// A type trait that determines whether a @c require expression is well-formed.
-    /**
- * Class template @c can_require is a trait that is derived from
- * @c std::true_type if the expression <tt>xio::require(std::declval<T>(),
- * std::declval<Properties>()...)</tt> is well formed; otherwise @c std::false_type.
- */
-    template<typename T, typename... Properties>
-    struct can_require :
-            std::integral_constant<bool, automatically_determined> {
-    };
-
-    /// A type trait that determines whether a @c require expression will not throw.
-    /**
- * Class template @c is_nothrow_require is a trait that is derived from
- * @c std::true_type if the expression <tt>xio::require(std::declval<T>(),
- * std::declval<Properties>()...)</tt> is @c noexcept; otherwise @c std::false_type.
- */
-    template<typename T, typename... Properties>
-    struct is_nothrow_require :
-            std::integral_constant<bool, automatically_determined> {
-    };
-
-    /// A type trait that determines the result type of a @c require expression.
-    /**
- * Class template @c require_result is a trait that determines the result
- * type of the expression <tt>xio::require(std::declval<T>(),
- * std::declval<Properties>()...)</tt>.
- */
-    template<typename T, typename... Properties>
-    struct require_result {
-        /// The result of the @c require expression.
-        typedef automatically_determined type;
-    };
-
-
-} // namespace xio
-
-#else // defined(GENERATING_DOCUMENTATION)
 
 namespace XIO_VERSIONED_NAME(require_fn) {
     using std::conditional_t;
@@ -432,8 +353,6 @@ namespace xio {
 
 } // namespace xio
 
-#endif // defined(GENERATING_DOCUMENTATION)
-
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_REQUIRE_HPP
+#endif // XIO_REQUIRE_HPP

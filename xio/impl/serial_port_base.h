@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_SERIAL_PORT_BASE_HPP
-#define ASIO_IMPL_SERIAL_PORT_BASE_HPP
+#ifndef XIO_IMPL_SERIAL_PORT_BASE_HPP
+#define XIO_IMPL_SERIAL_PORT_BASE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -52,4 +52,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_SERIAL_PORT_BASE_HPP
+#endif // XIO_IMPL_SERIAL_PORT_BASE_HPP

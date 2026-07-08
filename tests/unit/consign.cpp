@@ -35,19 +35,19 @@ void consign_test()
             ++count;
           }), 123, 321));
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   io1.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   io2.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "consign",
-  ASIO_TEST_CASE(consign_test)
+  XIO_TEST_CASE(consign_test)
 )

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_ASSOCIATED_IMMEDIATE_EXECUTOR_HPP
-#define ASIO_ASSOCIATED_IMMEDIATE_EXECUTOR_HPP
+#ifndef XIO_ASSOCIATED_IMMEDIATE_EXECUTOR_HPP
+#define XIO_ASSOCIATED_IMMEDIATE_EXECUTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -174,20 +174,8 @@ namespace xio {
  */
     template<typename T, typename Executor>
     struct associated_immediate_executor
-#if !defined(GENERATING_DOCUMENTATION)
             : detail::associated_immediate_executor_impl<T, Executor>
-#endif // !defined(GENERATING_DOCUMENTATION)
     {
-#if defined(GENERATING_DOCUMENTATION)
-        /// If @c T has a nested type @c immediate_executor_type,
-        // <tt>T::immediate_executor_type</tt>. Otherwise @c Executor.
-        typedef see_below type;
-
-        /// If @c T has a nested type @c immediate_executor_type, returns
-  /// <tt>t.get_immediate_executor()</tt>. Otherwise returns
-  /// <tt>xio::require(ex, xio::execution::blocking.never)</tt>.
-        static decltype(auto) get(const T &t, const Executor &ex) noexcept;
-#endif // defined(GENERATING_DOCUMENTATION)
     };
 
     /// Helper function to obtain an object's associated executor.
@@ -249,9 +237,7 @@ namespace xio {
 /// @c std::reference_wrapper.
     template<typename T, typename Executor>
     struct associated_immediate_executor<std::reference_wrapper<T>, Executor>
-#if !defined(GENERATING_DOCUMENTATION)
             : detail::associated_immediate_executor_forwarding_base<T, Executor>
-#endif // !defined(GENERATING_DOCUMENTATION)
     {
         /// Forwards @c type to the associator specialisation for the unwrapped type
   /// @c T.
@@ -270,4 +256,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_ASSOCIATED_IMMEDIATE_EXECUTOR_HPP
+#endif // XIO_ASSOCIATED_IMMEDIATE_EXECUTOR_HPP

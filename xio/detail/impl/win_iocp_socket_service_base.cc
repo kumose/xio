@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_WIN_IOCP_SOCKET_SERVICE_BASE_IPP
-#define ASIO_DETAIL_IMPL_WIN_IOCP_SOCKET_SERVICE_BASE_IPP
+#ifndef XIO_DETAIL_IMPL_WIN_IOCP_SOCKET_SERVICE_BASE_IPP
+#define XIO_DETAIL_IMPL_WIN_IOCP_SOCKET_SERVICE_BASE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 
 #include <xio/detail/win_iocp_socket_service_base.h>
 
@@ -53,9 +53,9 @@ namespace xio {
             impl.socket_ = invalid_socket;
             impl.state_ = 0;
             impl.cancel_token_.reset();
-#if defined(ASIO_ENABLE_CANCELIO)
+#if defined(XIO_ENABLE_CANCELIO)
 impl.safe_cancellation_thread_id_=0;
-#endif // defined(ASIO_ENABLE_CANCELIO)
+#endif // defined(XIO_ENABLE_CANCELIO)
 
 // Insert implementation into linked list of all implementations.
 xio::detail::mutex::scoped_lock lock(mutex_);
@@ -79,10 +79,10 @@ void win_iocp_socket_service_base::base_move_construct(
     impl.cancel_token_ = other_impl.cancel_token_;
     other_impl.cancel_token_.reset();
 
-#if defined(ASIO_ENABLE_CANCELIO)
+#if defined(XIO_ENABLE_CANCELIO)
 impl.safe_cancellation_thread_id_= other_impl.safe_cancellation_thread_id_;
 other_impl.safe_cancellation_thread_id_=0;
-#endif // defined(ASIO_ENABLE_CANCELIO)
+#endif // defined(XIO_ENABLE_CANCELIO)
 
 // Insert implementation into linked list of all implementations.
 xio::detail::mutex::scoped_lock lock(mutex_);
@@ -121,10 +121,10 @@ void win_iocp_socket_service_base::base_move_assign(
     impl.cancel_token_ = other_impl.cancel_token_;
     other_impl.cancel_token_.reset();
 
-#if defined(ASIO_ENABLE_CANCELIO)
+#if defined(XIO_ENABLE_CANCELIO)
 impl.safe_cancellation_thread_id_= other_impl.safe_cancellation_thread_id_;
 other_impl.safe_cancellation_thread_id_=0;
-#endif // defined(ASIO_ENABLE_CANCELIO)
+#endif // defined(XIO_ENABLE_CANCELIO)
 
 if (this != &other_service)
   {
@@ -158,7 +158,7 @@ xio::error_code win_iocp_socket_service_base::close(
     win_iocp_socket_service_base::base_implementation_type &impl,
     xio::error_code &ec) {
     if (is_open(impl)) {
-        ASIO_HANDLER_OPERATION((iocp_service_.context(),
+        XIO_HANDLER_OPERATION((iocp_service_.context(),
                                 "socket", &impl, impl.socket_, "close"));
 
         // Check if the reactor was created, in which case we need to close the
@@ -181,9 +181,9 @@ xio::error_code win_iocp_socket_service_base::close(
     impl.socket_ = invalid_socket;
     impl.state_ = 0;
     impl.cancel_token_.reset();
-#if defined(ASIO_ENABLE_CANCELIO)
+#if defined(XIO_ENABLE_CANCELIO)
 impl.safe_cancellation_thread_id_=0;
-#endif // defined(ASIO_ENABLE_CANCELIO)
+#endif // defined(XIO_ENABLE_CANCELIO)
 
 return ec;
 }
@@ -226,7 +226,7 @@ xio::error_code win_iocp_socket_service_base::cancel(
         return ec;
     }
 
-    ASIO_HANDLER_OPERATION((iocp_service_.context(),
+    XIO_HANDLER_OPERATION((iocp_service_.context(),
                             "socket", &impl, impl.socket_, "cancel"));
 
     if (FARPROC cancel_io_ex_ptr = ::GetProcAddress(
@@ -255,7 +255,7 @@ xio::error_code win_iocp_socket_service_base::cancel(
             ec = xio::error_code();
         }
     }
-#if defined(ASIO_ENABLE_CANCELIO)
+#if defined(XIO_ENABLE_CANCELIO)
 else if (impl.safe_cancellation_thread_id_== 0)
   {
     // No operations have been started, so there's nothing to cancel.
@@ -284,13 +284,13 @@ else if (impl.safe_cancellation_thread_id_== 0)
     // so cancellation is not safe.
     ec = xio::error::operation_not_supported;
   }
-#else // defined(ASIO_ENABLE_CANCELIO)
+#else // defined(XIO_ENABLE_CANCELIO)
 else
   {
     // Cancellation is not supported as CancelIo may not be used.
     ec = xio::error::operation_not_supported;
   }
-#endif // defined(ASIO_ENABLE_CANCELIO)
+#endif // defined(XIO_ENABLE_CANCELIO)
 
 // Cancel any operations started via the reactor.
 if (!ec)
@@ -568,8 +568,8 @@ int win_iocp_socket_service_base::start_connect_op(
     int family, int type, const void *addr, std::size_t addrlen,
     win_iocp_socket_connect_op_base *op, operation *iocp_op) {
     // If ConnectEx is available, use that.
-    if (family == ASIO_OS_DEF(AF_INET)
-        || family == ASIO_OS_DEF(AF_INET6)) {
+    if (family == XIO_OS_DEF(AF_INET)
+        || family == XIO_OS_DEF(AF_INET6)) {
         if (connect_ex_fn connect_ex = get_connect_ex(impl, type)) {
             union address_union {
                 socket_addr_type base;
@@ -582,7 +582,7 @@ int win_iocp_socket_service_base::start_connect_op(
             a.base.sa_family = family;
 
             socket_ops::bind(impl.socket_, &a.base,
-                             family == ASIO_OS_DEF(AF_INET)
+                             family == XIO_OS_DEF(AF_INET)
                                  ? sizeof(a.v4)
                                  : sizeof(a.v6), op->ec_);
             if (op->ec_ && op->ec_ != xio::error::invalid_argument) {
@@ -631,7 +631,7 @@ int win_iocp_socket_service_base::start_connect_op(
 void win_iocp_socket_service_base::close_for_destruction(
     win_iocp_socket_service_base::base_implementation_type &impl) {
     if (is_open(impl)) {
-        ASIO_HANDLER_OPERATION((iocp_service_.context(),
+        XIO_HANDLER_OPERATION((iocp_service_.context(),
                                 "socket", &impl, impl.socket_, "close"));
 
         // Check if the reactor was created, in which case we need to close the
@@ -653,23 +653,23 @@ void win_iocp_socket_service_base::close_for_destruction(
     impl.socket_ = invalid_socket;
     impl.state_ = 0;
     impl.cancel_token_.reset();
-#if defined(ASIO_ENABLE_CANCELIO)
+#if defined(XIO_ENABLE_CANCELIO)
 impl.safe_cancellation_thread_id_=0;
-#endif // defined(ASIO_ENABLE_CANCELIO)
+#endif // defined(XIO_ENABLE_CANCELIO)
 }
 
 void win_iocp_socket_service_base::update_cancellation_thread_id(
     win_iocp_socket_service_base::base_implementation_type &impl) {
 
 
-#if defined(ASIO_ENABLE_CANCELIO)
+#if defined(XIO_ENABLE_CANCELIO)
 if (impl.safe_cancellation_thread_id_== 0)
 impl.safe_cancellation_thread_id_= ::GetCurrentThreadId();
   else if (impl.safe_cancellation_thread_id_!= ::GetCurrentThreadId())
 impl.safe_cancellation_thread_id_= ~DWORD(0);
-#else // defined(ASIO_ENABLE_CANCELIO)
+#else // defined(XIO_ENABLE_CANCELIO)
 (void)impl;
-#endif // defined(ASIO_ENABLE_CANCELIO)
+#endif // defined(XIO_ENABLE_CANCELIO)
 }
 
 select_reactor &win_iocp_socket_service_base::get_reactor() {
@@ -688,13 +688,13 @@ win_iocp_socket_service_base::get_connect_ex(
     win_iocp_socket_service_base::base_implementation_type &impl, int type) {
 
 
-#if defined(ASIO_DISABLE_CONNECTEX)
+#if defined(XIO_DISABLE_CONNECTEX)
 (void)impl;
 (void)type;
   return 0;
-#else // defined(ASIO_DISABLE_CONNECTEX)
-if (type!= ASIO_OS_DEF (SOCK_STREAM)
-      && type!= ASIO_OS_DEF (SOCK_SEQPACKET))
+#else // defined(XIO_DISABLE_CONNECTEX)
+if (type!= XIO_OS_DEF (SOCK_STREAM)
+      && type!= XIO_OS_DEF (SOCK_SEQPACKET))
     return 0;
 
 void *ptr = interlocked_compare_exchange_pointer(&connect_ex_, 0, 0);
@@ -716,7 +716,7 @@ void *ptr = interlocked_compare_exchange_pointer(&connect_ex_, 0, 0);
   }
 
   return reinterpret_cast<connect_ex_fn>(ptr== this ? 0 : ptr);
-#endif // defined(ASIO_DISABLE_CONNECTEX)
+#endif // defined(XIO_DISABLE_CONNECTEX)
 }
 
 win_iocp_socket_service_base::nt_set_info_fn
@@ -765,6 +765,6 @@ return InterlockedExchangePointer(dest, val);
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
-#endif // ASIO_DETAIL_IMPL_WIN_IOCP_SOCKET_SERVICE_BASE_IPP
+#endif // XIO_DETAIL_IMPL_WIN_IOCP_SOCKET_SERVICE_BASE_IPP

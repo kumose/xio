@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXECUTION_CONTEXT_AS_HPP
-#define ASIO_EXECUTION_CONTEXT_AS_HPP
+#ifndef XIO_EXECUTION_CONTEXT_AS_HPP
+#define XIO_EXECUTION_CONTEXT_AS_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -27,38 +27,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
-#if defined(GENERATING_DOCUMENTATION)
-
-    namespace execution {
-        /// A property that is used to obtain the execution context that is associated
-/// with an executor.
-        template<typename U>
-        struct context_as_t {
-            /// The context_as_t property applies to executors.
-            template<typename T>
-            static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-            /// The context_t property cannot be required.
-            static constexpr bool is_requirable = false;
-
-            /// The context_t property cannot be preferred.
-            static constexpr bool is_preferable = false;
-
-            /// The type returned by queries against an @c any_executor.
-            typedef T polymorphic_query_result_type;
-        };
-
-        /// A special value used for accessing the context_as_t property.
-        template<typename U>
-        constexpr context_as_t context_as;
-    } // namespace execution
-
-#else // defined(GENERATING_DOCUMENTATION)
-
-
-
 
     namespace execution {
         template<typename T>
@@ -101,11 +69,11 @@ namespace xio {
                     can_query<const Executor &, const context_t &>::value
                 > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
-#if defined(ASIO_MSVC) // Visual C++ wants the type to be qualified.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
             noexcept(is_nothrow_query<const Executor &, const context_t &>::value)
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                 noexcept(is_nothrow_query<const Executor &, const context_t &>::value)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 #endif // !defined(__clang__)
             {
                 return xio::query(ex, context);
@@ -123,11 +91,9 @@ namespace xio {
     } // namespace execution
 
 
-#endif // defined(GENERATING_DOCUMENTATION)
-
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXECUTION_CONTEXT_AS_HPP
+#endif // XIO_EXECUTION_CONTEXT_AS_HPP

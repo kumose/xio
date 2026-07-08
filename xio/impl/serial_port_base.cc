@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_SERIAL_PORT_BASE_IPP
-#define ASIO_IMPL_SERIAL_PORT_BASE_IPP
+#ifndef XIO_IMPL_SERIAL_PORT_BASE_IPP
+#define XIO_IMPL_SERIAL_PORT_BASE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,19 +18,17 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_SERIAL_PORT)
+#if defined(XIO_HAS_SERIAL_PORT)
 
 #include <stdexcept>
 #include <xio/error.h>
 #include <xio/serial_port_base.h>
 #include <xio/detail/throw_exception.h>
 
-#if defined(GENERATING_DOCUMENTATION)
-# define ASIO_OPTION_STORAGE implementation_defined
-#elif defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
-# define ASIO_OPTION_STORAGE DCB
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
+# define XIO_OPTION_STORAGE DCB
 #else
-# define ASIO_OPTION_STORAGE termios
+# define XIO_OPTION_STORAGE termios
 #endif
 
 #include <xio/detail/push_options.h>
@@ -38,11 +36,11 @@
 namespace xio {
 
 
-    ASIO_SYNC_OP_VOID serial_port_base::baud_rate::store(
-        ASIO_OPTION_STORAGE &storage, xio::error_code &ec) const {
+    XIO_SYNC_OP_VOID serial_port_base::baud_rate::store(
+        XIO_OPTION_STORAGE &storage, xio::error_code &ec) const {
 
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 storage.BaudRate= value_;
 #else
 speed_t baud;
@@ -127,7 +125,7 @@ case 3500000: baud= B3500000;break;
 case 4000000: baud= B4000000;break;
 # endif
 default : ec= xio::error::invalid_argument;
-ASIO_SYNC_OP_VOID_RETURN (ec);
+XIO_SYNC_OP_VOID_RETURN (ec);
   }
 # if defined(_BSD_SOURCE) || defined(_DEFAULT_SOURCE)
 ::cfsetspeed (&storage, baud);
@@ -137,14 +135,14 @@ ASIO_SYNC_OP_VOID_RETURN (ec);
 # endif
 #endif
 ec= xio::error_code();
-ASIO_SYNC_OP_VOID_RETURN (ec);
+XIO_SYNC_OP_VOID_RETURN (ec);
 }
 
-ASIO_SYNC_OP_VOID serial_port_base::baud_rate::load(
-    const ASIO_OPTION_STORAGE &storage, xio::error_code &ec) {
+XIO_SYNC_OP_VOID serial_port_base::baud_rate::load(
+    const XIO_OPTION_STORAGE &storage, xio::error_code &ec) {
 
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 value_= storage.BaudRate;
 #else
 speed_t baud = ::cfgetospeed(&storage);
@@ -230,11 +228,11 @@ case B4000000 : value_= 4000000;break;
 # endif
 default : value_= 0;
 ec= xio::error::invalid_argument;
-ASIO_SYNC_OP_VOID_RETURN (ec);
+XIO_SYNC_OP_VOID_RETURN (ec);
   }
 #endif
 ec= xio::error_code();
-ASIO_SYNC_OP_VOID_RETURN (ec);
+XIO_SYNC_OP_VOID_RETURN (ec);
 }
 
 serial_port_base::flow_control::flow_control(
@@ -246,11 +244,11 @@ serial_port_base::flow_control::flow_control(
     }
 }
 
-ASIO_SYNC_OP_VOID serial_port_base::flow_control::store(
-    ASIO_OPTION_STORAGE &storage, xio::error_code &ec) const {
+XIO_SYNC_OP_VOID serial_port_base::flow_control::store(
+    XIO_OPTION_STORAGE &storage, xio::error_code &ec) const {
 
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 storage.fOutxCtsFlow= FALSE;
 storage.fOutxDsrFlow= FALSE;
 storage.fTXContinueOnXoff= TRUE;
@@ -301,21 +299,21 @@ storage.c_cflag|= (IHFLOW| OHFLOW);
     break;
 # else
 ec= xio::error::operation_not_supported;
-ASIO_SYNC_OP_VOID_RETURN (ec);
+XIO_SYNC_OP_VOID_RETURN (ec);
 # endif
 default :
     break;
   }
 #endif
 ec= xio::error_code();
-ASIO_SYNC_OP_VOID_RETURN (ec);
+XIO_SYNC_OP_VOID_RETURN (ec);
 }
 
-ASIO_SYNC_OP_VOID serial_port_base::flow_control::load(
-    const ASIO_OPTION_STORAGE &storage, xio::error_code &ec) {
+XIO_SYNC_OP_VOID serial_port_base::flow_control::load(
+    const XIO_OPTION_STORAGE &storage, xio::error_code &ec) {
 
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 if (storage.fOutX &&storage.fInX)
   {
     value_ = software;
@@ -350,7 +348,7 @@ else
   }
 #endif
 ec= xio::error_code();
-ASIO_SYNC_OP_VOID_RETURN (ec);
+XIO_SYNC_OP_VOID_RETURN (ec);
 }
 
 serial_port_base::parity::parity(serial_port_base::parity::type t)
@@ -361,11 +359,11 @@ serial_port_base::parity::parity(serial_port_base::parity::type t)
     }
 }
 
-ASIO_SYNC_OP_VOID serial_port_base::parity::store(
-    ASIO_OPTION_STORAGE &storage, xio::error_code &ec) const {
+XIO_SYNC_OP_VOID serial_port_base::parity::store(
+    XIO_OPTION_STORAGE &storage, xio::error_code &ec) const {
 
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 switch (value_) {
 case none:
     storage.fParity = FALSE;
@@ -404,14 +402,14 @@ default:
 }
 #endif
 ec= xio::error_code();
-ASIO_SYNC_OP_VOID_RETURN (ec);
+XIO_SYNC_OP_VOID_RETURN (ec);
 }
 
-ASIO_SYNC_OP_VOID serial_port_base::parity::load(
-    const ASIO_OPTION_STORAGE &storage, xio::error_code &ec) {
+XIO_SYNC_OP_VOID serial_port_base::parity::load(
+    const XIO_OPTION_STORAGE &storage, xio::error_code &ec) {
 
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 if (storage.Parity== EVENPARITY)
   {
     value_ = even;
@@ -442,7 +440,7 @@ if (storage.c_cflag &PARENB)
   }
 #endif
 ec= xio::error_code();
-ASIO_SYNC_OP_VOID_RETURN (ec);
+XIO_SYNC_OP_VOID_RETURN (ec);
 }
 
 serial_port_base::stop_bits::stop_bits(
@@ -454,11 +452,11 @@ serial_port_base::stop_bits::stop_bits(
     }
 }
 
-ASIO_SYNC_OP_VOID serial_port_base::stop_bits::store(
-    ASIO_OPTION_STORAGE &storage, xio::error_code &ec) const {
+XIO_SYNC_OP_VOID serial_port_base::stop_bits::store(
+    XIO_OPTION_STORAGE &storage, xio::error_code &ec) const {
 
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 switch (value_) {
 case one:
     storage.StopBits = ONESTOPBIT;
@@ -482,18 +480,18 @@ case two:
     break;
 default:
     ec = xio::error::operation_not_supported;
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 #endif
 ec= xio::error_code();
-ASIO_SYNC_OP_VOID_RETURN (ec);
+XIO_SYNC_OP_VOID_RETURN (ec);
 }
 
-ASIO_SYNC_OP_VOID serial_port_base::stop_bits::load(
-    const ASIO_OPTION_STORAGE &storage, xio::error_code &ec) {
+XIO_SYNC_OP_VOID serial_port_base::stop_bits::load(
+    const XIO_OPTION_STORAGE &storage, xio::error_code &ec) {
 
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 if (storage.StopBits== ONESTOPBIT)
   {
     value_ = one;
@@ -514,7 +512,7 @@ if (storage.StopBits== ONESTOPBIT)
 value_= (storage.c_cflag &CSTOPB) ? two : one;
 #endif
 ec= xio::error_code();
-ASIO_SYNC_OP_VOID_RETURN (ec);
+XIO_SYNC_OP_VOID_RETURN (ec);
 }
 
 serial_port_base::character_size::character_size(unsigned int t)
@@ -525,11 +523,11 @@ serial_port_base::character_size::character_size(unsigned int t)
     }
 }
 
-ASIO_SYNC_OP_VOID serial_port_base::character_size::store(
-    ASIO_OPTION_STORAGE &storage, xio::error_code &ec) const {
+XIO_SYNC_OP_VOID serial_port_base::character_size::store(
+    XIO_OPTION_STORAGE &storage, xio::error_code &ec) const {
 
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 storage.ByteSize=static_cast<BYTE>(value_);
 #else
 storage.c_cflag&= ~CSIZE;
@@ -546,14 +544,14 @@ default: break;
 }
 #endif
 ec= xio::error_code();
-ASIO_SYNC_OP_VOID_RETURN (ec);
+XIO_SYNC_OP_VOID_RETURN (ec);
 }
 
-ASIO_SYNC_OP_VOID serial_port_base::character_size::load(
-    const ASIO_OPTION_STORAGE &storage, xio::error_code &ec) {
+XIO_SYNC_OP_VOID serial_port_base::character_size::load(
+    const XIO_OPTION_STORAGE &storage, xio::error_code &ec) {
 
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 value_= storage.ByteSize;
 #else
 if ((storage.c_cflag &CSIZE) == CS5) { value_ = 5; }
@@ -567,15 +565,15 @@ if ((storage.c_cflag &CSIZE) == CS5) { value_ = 5; }
   }
 #endif
 ec= xio::error_code();
-ASIO_SYNC_OP_VOID_RETURN (ec);
+XIO_SYNC_OP_VOID_RETURN (ec);
 }
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#undef ASIO_OPTION_STORAGE
+#undef XIO_OPTION_STORAGE
 
-#endif // defined(ASIO_HAS_SERIAL_PORT)
+#endif // defined(XIO_HAS_SERIAL_PORT)
 
-#endif // ASIO_IMPL_SERIAL_PORT_BASE_IPP
+#endif // XIO_IMPL_SERIAL_PORT_BASE_IPP

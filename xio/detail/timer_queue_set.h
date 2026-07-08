@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_TIMER_QUEUE_SET_HPP
-#define ASIO_DETAIL_TIMER_QUEUE_SET_HPP
+#ifndef XIO_DETAIL_TIMER_QUEUE_SET_HPP
+#define XIO_DETAIL_TIMER_QUEUE_SET_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -27,28 +27,28 @@ namespace xio {
         class timer_queue_set {
         public:
             // Constructor.
-            ASIO_DECL timer_queue_set();
+            XIO_DECL timer_queue_set();
 
             // Add a timer queue to the set.
-  ASIO_DECL void insert(timer_queue_base *q);
+  XIO_DECL void insert(timer_queue_base *q);
 
             // Remove a timer queue from the set.
-  ASIO_DECL void erase(timer_queue_base *q);
+  XIO_DECL void erase(timer_queue_base *q);
 
             // Determine whether all queues are empty.
-  ASIO_DECL bool all_empty() const;
+  XIO_DECL bool all_empty() const;
 
             // Get the wait duration in milliseconds.
-  ASIO_DECL long wait_duration_msec(long max_duration) const;
+  XIO_DECL long wait_duration_msec(long max_duration) const;
 
             // Get the wait duration in microseconds.
-  ASIO_DECL long wait_duration_usec(long max_duration) const;
+  XIO_DECL long wait_duration_usec(long max_duration) const;
 
             // Dequeue all ready timers.
-  ASIO_DECL void get_ready_timers(op_queue<operation> &ops);
+  XIO_DECL void get_ready_timers(op_queue<operation> &ops);
 
             // Dequeue all timers.
-  ASIO_DECL void get_all_timers(op_queue<operation> &ops);
+  XIO_DECL void get_all_timers(op_queue<operation> &ops);
 
         private:
             timer_queue_base *first_;
@@ -60,4 +60,4 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // ASIO_DETAIL_TIMER_QUEUE_SET_HPP
+#endif // XIO_DETAIL_TIMER_QUEUE_SET_HPP

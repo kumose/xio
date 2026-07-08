@@ -10,8 +10,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_CONNECT_PIPE_IPP
-#define ASIO_IMPL_CONNECT_PIPE_IPP
+#ifndef XIO_IMPL_CONNECT_PIPE_IPP
+#define XIO_IMPL_CONNECT_PIPE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -19,23 +19,23 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_PIPE)
+#if defined(XIO_HAS_PIPE)
 
 #include <xio/connect_pipe.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 # include <cstdio>
 # if _WIN32_WINNT >= 0x601
 #  include <bcrypt.h>
-#  if !defined(ASIO_NO_DEFAULT_LINKED_LIBS)
+#  if !defined(XIO_NO_DEFAULT_LINKED_LIBS)
 #   if defined(_MSC_VER)
 #    pragma comment(lib, "bcrypt.lib")
 #   endif // defined(_MSC_VER)
-#  endif // !defined(ASIO_NO_DEFAULT_LINKED_LIBS)
+#  endif // !defined(XIO_NO_DEFAULT_LINKED_LIBS)
 # endif // _WIN32_WINNT >= 0x601
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 #include <xio/detail/descriptor_ops.h>
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
 #include <xio/detail/push_options.h>
 
@@ -46,7 +46,7 @@ namespace xio {
         void create_pipe(native_pipe_handle p[2], xio::error_code &ec) {
 
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 using namespace std; // For sprintf and memcmp.
 
 static LONG counter1 = 0;
@@ -58,13 +58,13 @@ long n2 = (static_cast<unsigned long>(n1) % 0x10000000) == 0
               : ::InterlockedExchangeAdd(&counter2, 0);
 
 wchar_t pipe_name[128];
-#if defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_CYGWIN_W32_SOCKETS)
 swprintf (
-#elif defined(ASIO_HAS_SECURE_RTL)
+#elif defined(XIO_HAS_SECURE_RTL)
 swprintf_s (
-#else // defined(ASIO_HAS_SECURE_RTL)
+#else // defined(XIO_HAS_SECURE_RTL)
 _snwprintf (
-#endif // defined(ASIO_HAS_SECURE_RTL)
+#endif // defined(XIO_HAS_SECURE_RTL)
 pipe_name, 128,
 // Include address of static to discriminate xio instances in DLLs.
       L"\\\\.\\pipe\\xio-A0812896-741A-484D-AF23-BE51BF620E22-%u-%p-%ld-%ld",
@@ -127,22 +127,22 @@ ok= ::ReadFile (p[0], nonce_check, sizeof(nonce), &bytes_read, 0);
 #endif // _WIN32_WINNT >= 0x601
 
 xio::error::clear (ec);
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 int result = ::pipe(p);
 detail::descriptor_ops::get_last_error(ec, result != 0);
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 }
 
 void close_pipe(native_pipe_handle p) {
 
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 ::CloseHandle (p);
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 xio::error_code ignored_ec;
 detail::descriptor_ops::state_type state = 0;
 detail::descriptor_ops::close(p, state, ignored_ec);
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 }
 
 } // namespace detail
@@ -150,6 +150,6 @@ detail::descriptor_ops::close(p, state, ignored_ec);
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_PIPE)
+#endif // defined(XIO_HAS_PIPE)
 
-#endif // ASIO_IMPL_CONNECT_PIPE_IPP
+#endif // XIO_IMPL_CONNECT_PIPE_IPP

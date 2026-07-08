@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_TIME_TRAITS_HPP
-#define ASIO_TIME_TRAITS_HPP
+#ifndef XIO_TIME_TRAITS_HPP
+#define XIO_TIME_TRAITS_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,4 +17,4 @@
 
 #include <xio/detail/socket_types.h> // Must come before posix_time.
 
-#endif // ASIO_TIME_TRAITS_HPP
+#endif // XIO_TIME_TRAITS_HPP

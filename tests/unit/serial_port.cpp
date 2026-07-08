@@ -47,7 +47,7 @@ private:
 
 void test()
 {
-#if defined(ASIO_HAS_SERIAL_PORT)
+#if defined(XIO_HAS_SERIAL_PORT)
   using namespace xio;
 
   try
@@ -65,7 +65,7 @@ void test()
     serial_port port1(ioc);
     serial_port port2(ioc, "null");
     serial_port::native_handle_type native_port1 = port1.native_handle();
-#if defined(ASIO_MSVC) && (_MSC_VER < 1910)
+#if defined(XIO_MSVC) && (_MSC_VER < 1910)
     // Skip this on older MSVC due to mysterious ambiguous overload errors.
 #else
     serial_port port3(ioc, native_port1);
@@ -152,15 +152,15 @@ void test()
   catch (std::exception&)
   {
   }
-#endif // defined(ASIO_HAS_SERIAL_PORT)
+#endif // defined(XIO_HAS_SERIAL_PORT)
 }
 
 } // namespace serial_port_compile
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "serial_port",
-  ASIO_COMPILE_TEST_CASE(serial_port_compile::test)
+  XIO_COMPILE_TEST_CASE(serial_port_compile::test)
 )

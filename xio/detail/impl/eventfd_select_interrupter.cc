@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_EVENTFD_SELECT_INTERRUPTER_IPP
-#define ASIO_DETAIL_IMPL_EVENTFD_SELECT_INTERRUPTER_IPP
+#ifndef XIO_DETAIL_IMPL_EVENTFD_SELECT_INTERRUPTER_IPP
+#define XIO_DETAIL_IMPL_EVENTFD_SELECT_INTERRUPTER_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,7 +18,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_EVENTFD)
+#if defined(XIO_HAS_EVENTFD)
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -157,6 +157,6 @@ bool eventfd_select_interrupter::reset() {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_EVENTFD)
+#endif // defined(XIO_HAS_EVENTFD)
 
-#endif // ASIO_DETAIL_IMPL_EVENTFD_SELECT_INTERRUPTER_IPP
+#endif // XIO_DETAIL_IMPL_EVENTFD_SELECT_INTERRUPTER_IPP

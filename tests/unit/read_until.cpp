@@ -43,7 +43,7 @@ public:
   {
     using namespace std; // For memcpy.
 
-    ASIO_CHECK(length <= max_length);
+    XIO_CHECK(length <= max_length);
 
     memcpy(data_, data, length);
     length_ = length;
@@ -110,84 +110,84 @@ void test_dynamic_string_read_until_char()
   s.reset(read_data, sizeof(read_data));
   sb1.consume(sb1.size());
   std::size_t length = xio::read_until(s, sb1, 'Z');
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, 'Z');
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, 'Z');
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, 'Z', ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, 'Z', ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, 'Z', ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, 'Z', ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, 'Z', ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, 'Z', ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, 'Y', ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, 'Y', ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, 'Y', ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 }
 
 void test_streambuf_read_until_char()
 {
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
   xio::io_context ioc;
   test_stream s(ioc);
   xio::streambuf sb1;
@@ -197,80 +197,80 @@ void test_streambuf_read_until_char()
   s.reset(read_data, sizeof(read_data));
   sb1.consume(sb1.size());
   std::size_t length = xio::read_until(s, sb1, 'Z');
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, 'Z');
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, 'Z');
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, 'Z', ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, 'Z', ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, 'Z', ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, 'Z', ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, 'Z', ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, 'Z', ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, 'Y', ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, 'Y', ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, 'Y', ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 }
 
 void test_dynamic_string_read_until_string()
@@ -287,84 +287,84 @@ void test_dynamic_string_read_until_string()
   s.reset(read_data, sizeof(read_data));
   sb1.consume(sb1.size());
   std::size_t length = xio::read_until(s, sb1, "XYZ");
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, "XYZ");
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, "XYZ");
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, "XYZ", ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, "XYZ", ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, "XYZ", ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, "XYZ", ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, "XYZ", ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, "XYZ", ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, "WXY", ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, "WXY", ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, "WXY", ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 }
 
 void test_streambuf_read_until_string()
 {
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
   xio::io_context ioc;
   test_stream s(ioc);
   xio::streambuf sb1;
@@ -374,80 +374,80 @@ void test_streambuf_read_until_string()
   s.reset(read_data, sizeof(read_data));
   sb1.consume(sb1.size());
   std::size_t length = xio::read_until(s, sb1, "XYZ");
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, "XYZ");
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, "XYZ");
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, "XYZ", ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, "XYZ", ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, "XYZ", ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, "XYZ", ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, "XYZ", ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, "XYZ", ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, "WXY", ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, "WXY", ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, "WXY", ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 }
 
 class match_char
@@ -491,84 +491,84 @@ void test_dynamic_string_read_until_match_condition()
   s.reset(read_data, sizeof(read_data));
   sb1.consume(sb1.size());
   std::size_t length = xio::read_until(s, sb1, match_char('Z'));
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, match_char('Z'));
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, match_char('Z'));
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, match_char('Z'), ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, match_char('Z'), ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, match_char('Z'), ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, match_char('Z'), ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, match_char('Z'), ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, match_char('Z'), ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, match_char('Y'), ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, match_char('Y'), ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, match_char('Y'), ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 }
 
 void test_streambuf_read_until_match_condition()
 {
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
   xio::io_context ioc;
   test_stream s(ioc);
   xio::streambuf sb1;
@@ -578,80 +578,80 @@ void test_streambuf_read_until_match_condition()
   s.reset(read_data, sizeof(read_data));
   sb1.consume(sb1.size());
   std::size_t length = xio::read_until(s, sb1, match_char('Z'));
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, match_char('Z'));
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, match_char('Z'));
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, match_char('Z'), ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, match_char('Z'), ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb1.consume(sb1.size());
   length = xio::read_until(s, sb1, match_char('Z'), ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, match_char('Z'), ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, match_char('Z'), ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, match_char('Z'), ec);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, match_char('Y'), ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, match_char('Y'), ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
   sb2.consume(sb2.size());
   length = xio::read_until(s, sb2, match_char('Y'), ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 }
 
 void async_read_handler(
@@ -690,9 +690,9 @@ void test_dynamic_string_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -705,9 +705,9 @@ void test_dynamic_string_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -720,9 +720,9 @@ void test_dynamic_string_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   ec = xio::error_code();
@@ -734,9 +734,9 @@ void test_dynamic_string_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -749,9 +749,9 @@ void test_dynamic_string_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -764,9 +764,9 @@ void test_dynamic_string_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   ec = xio::error_code();
@@ -778,9 +778,9 @@ void test_dynamic_string_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -793,9 +793,9 @@ void test_dynamic_string_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -808,15 +808,15 @@ void test_dynamic_string_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   int i = xio::async_read_until(s, sb2, 'Y',
       archetypes::lazy_handler());
-  ASIO_CHECK(i == 42);
+  XIO_CHECK(i == 42);
   ioc.restart();
   ioc.run();
 
@@ -831,14 +831,14 @@ void test_dynamic_string_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 }
 
 void test_streambuf_async_read_until_char()
 {
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
   namespace bindns = std;
   using bindns::placeholders::_1;
   using bindns::placeholders::_2;
@@ -861,9 +861,9 @@ void test_streambuf_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -876,9 +876,9 @@ void test_streambuf_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -891,9 +891,9 @@ void test_streambuf_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   ec = xio::error_code();
@@ -905,9 +905,9 @@ void test_streambuf_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -920,9 +920,9 @@ void test_streambuf_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -935,9 +935,9 @@ void test_streambuf_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   ec = xio::error_code();
@@ -949,9 +949,9 @@ void test_streambuf_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -964,9 +964,9 @@ void test_streambuf_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -979,15 +979,15 @@ void test_streambuf_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   int i = xio::async_read_until(s, sb2, 'Y',
       archetypes::lazy_handler());
-  ASIO_CHECK(i == 42);
+  XIO_CHECK(i == 42);
   ioc.restart();
   ioc.run();
 
@@ -1002,10 +1002,10 @@ void test_streambuf_async_read_until_char()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 }
 
 void test_dynamic_string_async_read_until_string()
@@ -1035,9 +1035,9 @@ void test_dynamic_string_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1050,9 +1050,9 @@ void test_dynamic_string_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1065,9 +1065,9 @@ void test_dynamic_string_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   ec = xio::error_code();
@@ -1079,9 +1079,9 @@ void test_dynamic_string_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1094,9 +1094,9 @@ void test_dynamic_string_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1109,9 +1109,9 @@ void test_dynamic_string_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   ec = xio::error_code();
@@ -1123,9 +1123,9 @@ void test_dynamic_string_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1138,9 +1138,9 @@ void test_dynamic_string_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1153,15 +1153,15 @@ void test_dynamic_string_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   int i = xio::async_read_until(s, sb2, "WXY",
       archetypes::lazy_handler());
-  ASIO_CHECK(i == 42);
+  XIO_CHECK(i == 42);
   ioc.restart();
   ioc.run();
 
@@ -1176,14 +1176,14 @@ void test_dynamic_string_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 }
 
 void test_streambuf_async_read_until_string()
 {
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
   namespace bindns = std;
   using bindns::placeholders::_1;
   using bindns::placeholders::_2;
@@ -1206,9 +1206,9 @@ void test_streambuf_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1221,9 +1221,9 @@ void test_streambuf_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1236,9 +1236,9 @@ void test_streambuf_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   ec = xio::error_code();
@@ -1250,9 +1250,9 @@ void test_streambuf_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1265,9 +1265,9 @@ void test_streambuf_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1280,9 +1280,9 @@ void test_streambuf_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   ec = xio::error_code();
@@ -1294,9 +1294,9 @@ void test_streambuf_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1309,9 +1309,9 @@ void test_streambuf_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1324,15 +1324,15 @@ void test_streambuf_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   int i = xio::async_read_until(s, sb2, "WXY",
       archetypes::lazy_handler());
-  ASIO_CHECK(i == 42);
+  XIO_CHECK(i == 42);
   ioc.restart();
   ioc.run();
 
@@ -1347,10 +1347,10 @@ void test_streambuf_async_read_until_string()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 }
 
 void test_dynamic_string_async_read_until_match_condition()
@@ -1380,9 +1380,9 @@ void test_dynamic_string_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1395,9 +1395,9 @@ void test_dynamic_string_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1410,9 +1410,9 @@ void test_dynamic_string_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   ec = xio::error_code();
@@ -1424,9 +1424,9 @@ void test_dynamic_string_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1439,9 +1439,9 @@ void test_dynamic_string_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1454,9 +1454,9 @@ void test_dynamic_string_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   ec = xio::error_code();
@@ -1468,9 +1468,9 @@ void test_dynamic_string_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1483,9 +1483,9 @@ void test_dynamic_string_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1498,15 +1498,15 @@ void test_dynamic_string_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   int i = xio::async_read_until(s, sb2, match_char('Y'),
       archetypes::lazy_handler());
-  ASIO_CHECK(i == 42);
+  XIO_CHECK(i == 42);
   ioc.restart();
   ioc.run();
 
@@ -1521,14 +1521,14 @@ void test_dynamic_string_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 }
 
 void test_streambuf_async_read_until_match_condition()
 {
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
   namespace bindns = std;
   using bindns::placeholders::_1;
   using bindns::placeholders::_2;
@@ -1551,9 +1551,9 @@ void test_streambuf_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1566,9 +1566,9 @@ void test_streambuf_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1581,9 +1581,9 @@ void test_streambuf_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 26);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 26);
 
   s.reset(read_data, sizeof(read_data));
   ec = xio::error_code();
@@ -1595,9 +1595,9 @@ void test_streambuf_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1610,9 +1610,9 @@ void test_streambuf_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1625,9 +1625,9 @@ void test_streambuf_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == xio::error::not_found);
-  ASIO_CHECK(length == 0);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == xio::error::not_found);
+  XIO_CHECK(length == 0);
 
   s.reset(read_data, sizeof(read_data));
   ec = xio::error_code();
@@ -1639,9 +1639,9 @@ void test_streambuf_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(1);
@@ -1654,9 +1654,9 @@ void test_streambuf_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   s.next_read_length(10);
@@ -1669,15 +1669,15 @@ void test_streambuf_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
 
   s.reset(read_data, sizeof(read_data));
   sb2.consume(sb2.size());
   int i = xio::async_read_until(s, sb2, match_char('Y'),
       archetypes::lazy_handler());
-  ASIO_CHECK(i == 42);
+  XIO_CHECK(i == 42);
   ioc.restart();
   ioc.run();
 
@@ -1692,25 +1692,25 @@ void test_streambuf_async_read_until_match_condition()
         _2, &length, &called));
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(called);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(length == 25);
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+  XIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(length == 25);
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "read_until",
-  ASIO_TEST_CASE(test_dynamic_string_read_until_char)
-  ASIO_TEST_CASE(test_streambuf_read_until_char)
-  ASIO_TEST_CASE(test_dynamic_string_read_until_string)
-  ASIO_TEST_CASE(test_streambuf_read_until_string)
-  ASIO_TEST_CASE(test_dynamic_string_read_until_match_condition)
-  ASIO_TEST_CASE(test_streambuf_read_until_match_condition)
-  ASIO_TEST_CASE(test_dynamic_string_async_read_until_char)
-  ASIO_TEST_CASE(test_streambuf_async_read_until_char)
-  ASIO_TEST_CASE(test_dynamic_string_async_read_until_string)
-  ASIO_TEST_CASE(test_streambuf_async_read_until_string)
-  ASIO_TEST_CASE(test_dynamic_string_async_read_until_match_condition)
-  ASIO_TEST_CASE(test_streambuf_async_read_until_match_condition)
+  XIO_TEST_CASE(test_dynamic_string_read_until_char)
+  XIO_TEST_CASE(test_streambuf_read_until_char)
+  XIO_TEST_CASE(test_dynamic_string_read_until_string)
+  XIO_TEST_CASE(test_streambuf_read_until_string)
+  XIO_TEST_CASE(test_dynamic_string_read_until_match_condition)
+  XIO_TEST_CASE(test_streambuf_read_until_match_condition)
+  XIO_TEST_CASE(test_dynamic_string_async_read_until_char)
+  XIO_TEST_CASE(test_streambuf_async_read_until_char)
+  XIO_TEST_CASE(test_dynamic_string_async_read_until_string)
+  XIO_TEST_CASE(test_streambuf_async_read_until_string)
+  XIO_TEST_CASE(test_dynamic_string_async_read_until_match_condition)
+  XIO_TEST_CASE(test_streambuf_async_read_until_match_condition)
 )

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_WINRT_SSOCKET_SERVICE_BASE_IPP
-#define ASIO_DETAIL_IMPL_WINRT_SSOCKET_SERVICE_BASE_IPP
+#ifndef XIO_DETAIL_IMPL_WINRT_SSOCKET_SERVICE_BASE_IPP
+#define XIO_DETAIL_IMPL_WINRT_SSOCKET_SERVICE_BASE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 
 #include <cstring>
 #include <xio/detail/winrt_ssocket_service_base.h>
@@ -172,24 +172,24 @@ namespace xio {
                 unsigned long scope = 0;
 
                 switch (static_cast<const socket_addr_type *>(addr)->sa_family) {
-                    case ASIO_OS_DEF(AF_INET):
+                    case XIO_OS_DEF(AF_INET):
                         if (addr_len < sizeof(sockaddr_in4_type)) {
                             ec = xio::error::invalid_argument;
                             return addr_len;
                         } else {
-                            socket_ops::inet_pton(ASIO_OS_DEF(AF_INET), addr_string.c_str(),
+                            socket_ops::inet_pton(XIO_OS_DEF(AF_INET), addr_string.c_str(),
                                                   &reinterpret_cast<sockaddr_in4_type *>(addr)->sin_addr, &scope, ec);
                             reinterpret_cast<sockaddr_in4_type *>(addr)->sin_port
                                     = socket_ops::host_to_network_short(port);
                             ec = xio::error_code();
                             return sizeof(sockaddr_in4_type);
                         }
-                    case ASIO_OS_DEF(AF_INET6):
+                    case XIO_OS_DEF(AF_INET6):
                         if (addr_len < sizeof(sockaddr_in6_type)) {
                             ec = xio::error::invalid_argument;
                             return addr_len;
                         } else {
-                            socket_ops::inet_pton(ASIO_OS_DEF(AF_INET6), addr_string.c_str(),
+                            socket_ops::inet_pton(XIO_OS_DEF(AF_INET6), addr_string.c_str(),
                                                   &reinterpret_cast<sockaddr_in6_type *>(addr)->sin6_addr, &scope, ec);
                             reinterpret_cast<sockaddr_in6_type *>(addr)->sin6_port
                                     = socket_ops::host_to_network_short(port);
@@ -222,8 +222,8 @@ namespace xio {
             }
 
             try {
-                if (level == ASIO_OS_DEF(SOL_SOCKET)
-                    && optname == ASIO_OS_DEF(SO_KEEPALIVE)) {
+                if (level == XIO_OS_DEF(SOL_SOCKET)
+                    && optname == XIO_OS_DEF(SO_KEEPALIVE)) {
                     if (optlen == sizeof(int)) {
                         int value = 0;
                         std::memcpy(&value, optval, optlen);
@@ -232,8 +232,8 @@ namespace xio {
                     } else {
                         ec = xio::error::invalid_argument;
                     }
-                } else if (level == ASIO_OS_DEF(IPPROTO_TCP)
-                           && optname == ASIO_OS_DEF(TCP_NODELAY)) {
+                } else if (level == XIO_OS_DEF(IPPROTO_TCP)
+                           && optname == XIO_OS_DEF(TCP_NODELAY)) {
                     if (optlen == sizeof(int)) {
                         int value = 0;
                         std::memcpy(&value, optval, optlen);
@@ -268,8 +268,8 @@ namespace xio {
             }
 
             try {
-                if (level == ASIO_OS_DEF(SOL_SOCKET)
-                    && optname == ASIO_OS_DEF(SO_KEEPALIVE)) {
+                if (level == XIO_OS_DEF(SOL_SOCKET)
+                    && optname == XIO_OS_DEF(SO_KEEPALIVE)) {
                     if (*optlen >= sizeof(int)) {
                         int value = impl.socket_->Control->KeepAlive ? 1 : 0;
                         std::memcpy(optval, &value, sizeof(int));
@@ -278,8 +278,8 @@ namespace xio {
                     } else {
                         ec = xio::error::invalid_argument;
                     }
-                } else if (level == ASIO_OS_DEF(IPPROTO_TCP)
-                           && optname == ASIO_OS_DEF(TCP_NODELAY)) {
+                } else if (level == XIO_OS_DEF(IPPROTO_TCP)
+                           && optname == XIO_OS_DEF(TCP_NODELAY)) {
                     if (*optlen >= sizeof(int)) {
                         int value = impl.socket_->Control->NoDelay ? 1 : 0;
                         std::memcpy(optval, &value, sizeof(int));
@@ -313,15 +313,15 @@ namespace xio {
             char addr_string[max_addr_v6_str_len];
             unsigned short port;
             switch (static_cast<const socket_addr_type *>(addr)->sa_family) {
-                case ASIO_OS_DEF(AF_INET):
-                    socket_ops::inet_ntop(ASIO_OS_DEF(AF_INET),
+                case XIO_OS_DEF(AF_INET):
+                    socket_ops::inet_ntop(XIO_OS_DEF(AF_INET),
                                           &reinterpret_cast<const sockaddr_in4_type *>(addr)->sin_addr,
                                           addr_string, sizeof(addr_string), 0, ec);
                     port = socket_ops::network_to_host_short(
                         reinterpret_cast<const sockaddr_in4_type *>(addr)->sin_port);
                     break;
-                case ASIO_OS_DEF(AF_INET6):
-                    socket_ops::inet_ntop(ASIO_OS_DEF(AF_INET6),
+                case XIO_OS_DEF(AF_INET6):
+                    socket_ops::inet_ntop(XIO_OS_DEF(AF_INET6),
                                           &reinterpret_cast<const sockaddr_in6_type *>(addr)->sin6_addr,
                                           addr_string, sizeof(addr_string), 0, ec);
                     port = socket_ops::network_to_host_short(
@@ -363,15 +363,15 @@ namespace xio {
             char addr_string[max_addr_v6_str_len];
             unsigned short port = 0;
             switch (static_cast<const socket_addr_type *>(addr)->sa_family) {
-                case ASIO_OS_DEF(AF_INET):
-                    socket_ops::inet_ntop(ASIO_OS_DEF(AF_INET),
+                case XIO_OS_DEF(AF_INET):
+                    socket_ops::inet_ntop(XIO_OS_DEF(AF_INET),
                                           &reinterpret_cast<const sockaddr_in4_type *>(addr)->sin_addr,
                                           addr_string, sizeof(addr_string), 0, op->ec_);
                     port = socket_ops::network_to_host_short(
                         reinterpret_cast<const sockaddr_in4_type *>(addr)->sin_port);
                     break;
-                case ASIO_OS_DEF(AF_INET6):
-                    socket_ops::inet_ntop(ASIO_OS_DEF(AF_INET6),
+                case XIO_OS_DEF(AF_INET6):
+                    socket_ops::inet_ntop(XIO_OS_DEF(AF_INET6),
                                           &reinterpret_cast<const sockaddr_in6_type *>(addr)->sin6_addr,
                                           addr_string, sizeof(addr_string), 0, op->ec_);
                     port = socket_ops::network_to_host_short(
@@ -573,6 +573,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
 
-#endif // ASIO_DETAIL_IMPL_WINRT_SSOCKET_SERVICE_BASE_IPP
+#endif // XIO_DETAIL_IMPL_WINRT_SSOCKET_SERVICE_BASE_IPP

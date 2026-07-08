@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WIN_IOCP_HANDLE_SERVICE_HPP
-#define ASIO_DETAIL_WIN_IOCP_HANDLE_SERVICE_HPP
+#ifndef XIO_DETAIL_WIN_IOCP_HANDLE_SERVICE_HPP
+#define XIO_DETAIL_WIN_IOCP_HANDLE_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,7 +18,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 
 #include <xio/associated_cancellation_slot.h>
 #include <xio/error.h>
@@ -74,28 +74,28 @@ namespace xio {
                 implementation_type *prev_;
             };
 
-            ASIO_DECL win_iocp_handle_service(execution_context &context);
+            XIO_DECL win_iocp_handle_service(execution_context &context);
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void shutdown();
+  XIO_DECL void shutdown();
 
             // Construct a new handle implementation.
-  ASIO_DECL void construct(implementation_type &impl);
+  XIO_DECL void construct(implementation_type &impl);
 
             // Move-construct a new handle implementation.
-  ASIO_DECL void move_construct(implementation_type &impl,
+  XIO_DECL void move_construct(implementation_type &impl,
                                 implementation_type &other_impl);
 
             // Move-assign from another handle implementation.
-  ASIO_DECL void move_assign(implementation_type &impl,
+  XIO_DECL void move_assign(implementation_type &impl,
                              win_iocp_handle_service &other_service,
                              implementation_type &other_impl);
 
             // Destroy a handle implementation.
-  ASIO_DECL void destroy(implementation_type &impl);
+  XIO_DECL void destroy(implementation_type &impl);
 
             // Assign a native handle to a handle implementation.
-            ASIO_DECL xio::error_code assign(implementation_type &impl,
+            XIO_DECL xio::error_code assign(implementation_type &impl,
                                              const native_handle_type &handle, xio::error_code &ec);
 
             // Determine whether the handle is open.
@@ -104,11 +104,11 @@ namespace xio {
             }
 
             // Destroy a handle implementation.
-            ASIO_DECL xio::error_code close(implementation_type &impl,
+            XIO_DECL xio::error_code close(implementation_type &impl,
                                             xio::error_code &ec);
 
             // Release ownership of a handle.
-  ASIO_DECL native_handle_type release(implementation_type &impl,
+  XIO_DECL native_handle_type release(implementation_type &impl,
                                        xio::error_code &ec);
 
             // Get the native handle representation.
@@ -117,7 +117,7 @@ namespace xio {
             }
 
             // Cancel all operations associated with the handle.
-            ASIO_DECL xio::error_code cancel(implementation_type &impl,
+            XIO_DECL xio::error_code cancel(implementation_type &impl,
                                              xio::error_code &ec);
 
             // Write the given data. Returns the number of bytes written.
@@ -157,7 +157,7 @@ namespace xio {
                 };
                 operation *o = p.p = new(p.v) op(buffers, handler, io_ex);
 
-                ASIO_HANDLER_CREATION((iocp_service_.context(), *p.p, "handle", &impl,
+                XIO_HANDLER_CREATION((iocp_service_.context(), *p.p, "handle", &impl,
                                        reinterpret_cast<uintmax_t>(impl.handle_), "async_write_some"));
 
                 // Optionally register for per-operation cancellation.
@@ -188,7 +188,7 @@ namespace xio {
                 };
                 operation *o = p.p = new(p.v) op(buffers, handler, io_ex);
 
-                ASIO_HANDLER_CREATION((iocp_service_.context(), *p.p, "handle", &impl,
+                XIO_HANDLER_CREATION((iocp_service_.context(), *p.p, "handle", &impl,
                                        reinterpret_cast<uintmax_t>(impl.handle_), "async_write_some_at"));
 
                 // Optionally register for per-operation cancellation.
@@ -238,7 +238,7 @@ namespace xio {
                 };
                 operation *o = p.p = new(p.v) op(buffers, handler, io_ex);
 
-                ASIO_HANDLER_CREATION((iocp_service_.context(), *p.p, "handle", &impl,
+                XIO_HANDLER_CREATION((iocp_service_.context(), *p.p, "handle", &impl,
                                        reinterpret_cast<uintmax_t>(impl.handle_), "async_read_some"));
 
                 // Optionally register for per-operation cancellation.
@@ -271,7 +271,7 @@ namespace xio {
                 };
                 operation *o = p.p = new(p.v) op(buffers, handler, io_ex);
 
-                ASIO_HANDLER_CREATION((iocp_service_.context(), *p.p, "handle", &impl,
+                XIO_HANDLER_CREATION((iocp_service_.context(), *p.p, "handle", &impl,
                                        reinterpret_cast<uintmax_t>(impl.handle_), "async_read_some_at"));
 
                 // Optionally register for per-operation cancellation.
@@ -320,31 +320,31 @@ namespace xio {
             class overlapped_wrapper;
 
             // Helper function to perform a synchronous write operation.
-  ASIO_DECL size_t do_write(implementation_type &impl,
+  XIO_DECL size_t do_write(implementation_type &impl,
                             uint64_t offset, const xio::const_buffer &buffer,
                             xio::error_code &ec);
 
             // Helper function to start a write operation.
-  ASIO_DECL void start_write_op(implementation_type &impl,
+  XIO_DECL void start_write_op(implementation_type &impl,
                                 uint64_t offset, const xio::const_buffer &buffer,
                                 operation *op);
 
             // Helper function to perform a synchronous write operation.
-  ASIO_DECL size_t do_read(implementation_type &impl,
+  XIO_DECL size_t do_read(implementation_type &impl,
                            uint64_t offset, const xio::mutable_buffer &buffer,
                            xio::error_code &ec);
 
             // Helper function to start a read operation.
-  ASIO_DECL void start_read_op(implementation_type &impl,
+  XIO_DECL void start_read_op(implementation_type &impl,
                                uint64_t offset, const xio::mutable_buffer &buffer,
                                operation *op);
 
             // Update the ID of the thread from which cancellation is safe.
-  ASIO_DECL void update_cancellation_thread_id(implementation_type &impl);
+  XIO_DECL void update_cancellation_thread_id(implementation_type &impl);
 
             // Helper function to close a handle when the associated object is being
             // destroyed.
-  ASIO_DECL void close_for_destruction(implementation_type &impl);
+  XIO_DECL void close_for_destruction(implementation_type &impl);
 
             // The type of a NtSetInformationFile function pointer.
             typedef LONG(NTAPI *nt_set_info_fn)(HANDLE, ULONG_PTR *, void *, ULONG, ULONG);
@@ -353,19 +353,19 @@ namespace xio {
             // NtSetInformationFile pointer has been obtained yet, one is obtained using
             // GetProcAddress and the pointer is cached. Returns a null pointer if
             // NtSetInformationFile is not available.
-  ASIO_DECL nt_set_info_fn get_nt_set_info();
+  XIO_DECL nt_set_info_fn get_nt_set_info();
 
             // Helper function to emulate InterlockedCompareExchangePointer functionality
             // for:
             // - very old Platform SDKs; and
             // - platform SDKs where MSVC's /Wp64 option causes spurious warnings.
-  ASIO_DECL void *interlocked_compare_exchange_pointer(
+  XIO_DECL void *interlocked_compare_exchange_pointer(
                 void **dest, void *exch, void *cmp);
 
             // Helper function to emulate InterlockedExchangePointer functionality for:
             // - very old Platform SDKs; and
             // - platform SDKs where MSVC's /Wp64 option causes spurious warnings.
-  ASIO_DECL void *interlocked_exchange_pointer(void **dest, void *val);
+  XIO_DECL void *interlocked_exchange_pointer(void **dest, void *val);
 
             // Helper class used to implement per operation cancellation.
             class iocp_op_cancellation : public operation {
@@ -423,6 +423,6 @@ implementation_type *impl_list_;
 #include <xio/detail/pop_options.h>
 
 
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
-#endif // ASIO_DETAIL_WIN_IOCP_HANDLE_SERVICE_HPP
+#endif // XIO_DETAIL_WIN_IOCP_HANDLE_SERVICE_HPP

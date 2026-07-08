@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SYSTEM_EXECUTOR_HPP
-#define ASIO_SYSTEM_EXECUTOR_HPP
+#ifndef XIO_SYSTEM_EXECUTOR_HPP
+#define XIO_SYSTEM_EXECUTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -43,12 +43,10 @@ namespace xio {
             : allocator_(Allocator()) {
         }
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     private:
         friend struct XIO_VERSIONED_NAME (require_fn)::impl;
         friend struct XIO_VERSIONED_NAME (prefer_fn)::impl;
-#endif // !defined(GENERATING_DOCUMENTATION)
 
         /// Obtain an executor with the @c blocking.possibly property.
         /**
@@ -168,7 +166,6 @@ namespace xio {
                 Relationship, std::allocator<void> >();
         }
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     private:
         friend struct XIO_VERSIONED_NAME (query_fn)::impl;
@@ -177,7 +174,6 @@ namespace xio {
         friend struct xio::execution::detail::inline_exception_handling_t<0>;
         friend struct xio::execution::detail::outstanding_work_t<0>;
         friend struct xio::execution::detail::relationship_t<0>;
-#endif // !defined(GENERATING_DOCUMENTATION)
 
         /// Query the current value of the @c mapping property.
         /**
@@ -325,7 +321,7 @@ namespace xio {
             this->do_execute(static_cast<Function &&>(f), Blocking());
         }
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
 
     public:
         /// Obtain the underlying execution context.
@@ -391,7 +387,7 @@ namespace xio {
    */
         template<typename Function, typename OtherAllocator>
         void defer(Function &&f, const OtherAllocator &a) const;
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
     private:
         template<typename, typename, typename>
@@ -441,4 +437,4 @@ namespace xio {
 
 #include <xio/impl/system_executor.h>
 
-#endif // ASIO_SYSTEM_EXECUTOR_HPP
+#endif // XIO_SYSTEM_EXECUTOR_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_GENERIC_SEQ_PACKET_PROTOCOL_HPP
-#define ASIO_GENERIC_SEQ_PACKET_PROTOCOL_HPP
+#ifndef XIO_GENERIC_SEQ_PACKET_PROTOCOL_HPP
+#define XIO_GENERIC_SEQ_PACKET_PROTOCOL_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -70,7 +70,7 @@ namespace xio {
 
             /// Obtain an identifier for the type of the protocol.
             int type() const noexcept {
-                return ASIO_OS_DEF(SOCK_SEQPACKET);
+                return XIO_OS_DEF(SOCK_SEQPACKET);
             }
 
             /// Obtain an identifier for the protocol.
@@ -111,4 +111,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_GENERIC_SEQ_PACKET_PROTOCOL_HPP
+#endif // XIO_GENERIC_SEQ_PACKET_PROTOCOL_HPP

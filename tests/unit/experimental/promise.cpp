@@ -63,10 +63,10 @@ void promise_tester()
       xio::is_async_operation<decltype(p1)>::value,
       "promise is async_op");
 
-  ASIO_CHECK(timer2_done + milliseconds(1) > started_when);
-  ASIO_CHECK(completed_when > timer2_done);
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == error::operation_aborted);
+  XIO_CHECK(timer2_done + milliseconds(1) > started_when);
+  XIO_CHECK(completed_when > timer2_done);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == error::operation_aborted);
 
   timer1.expires_after(milliseconds(0));
   auto p2 = timer1.async_wait(
@@ -77,13 +77,13 @@ void promise_tester()
 
   p2([&](xio::error_code ec_, int i)
       {
-        ASIO_CHECK(i == 123);
+        XIO_CHECK(i == 123);
         ec = ec_;
         called = true;
       });
 
-  ASIO_CHECK(ec == xio::error::would_block);
-  ASIO_CHECK(!called);
+  XIO_CHECK(ec == xio::error::would_block);
+  XIO_CHECK(!called);
 
   ctx.restart();
   ctx.run();
@@ -92,8 +92,8 @@ void promise_tester()
       xio::is_async_operation<decltype(p2)>::value,
       "promise is async_op");
 
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(called);
+  XIO_CHECK(!ec);
+  XIO_CHECK(called);
 }
 
 void promise_slot_tester()
@@ -139,10 +139,10 @@ void promise_slot_tester()
       xio::is_async_operation<decltype(p)>::value,
       "promise is async_op");
 
-  ASIO_CHECK(timer2_done + milliseconds(1) > started_when);
-  ASIO_CHECK(completed_when > timer2_done);
-  ASIO_CHECK(called);
-  ASIO_CHECK(ec == error::operation_aborted);
+  XIO_CHECK(timer2_done + milliseconds(1) > started_when);
+  XIO_CHECK(completed_when > timer2_done);
+  XIO_CHECK(called);
+  XIO_CHECK(ec == error::operation_aborted);
 }
 
 void early_completion()
@@ -154,14 +154,14 @@ void early_completion()
   auto p = xio::post(ctx, xio::experimental::use_promise);
   ctx.run();
 
-  ASIO_CHECK(p.completed());
+  XIO_CHECK(p.completed());
 
   bool completed = false;
   p([&]{completed = true;});
-  ASIO_CHECK(!completed);
+  XIO_CHECK(!completed);
   ctx.restart();
   ctx.run();
-  ASIO_CHECK(completed);
+  XIO_CHECK(completed);
 }
 
 struct test_cancel_impl_op
@@ -183,7 +183,7 @@ struct test_cancel_impl_op
 };
 
 template <typename CompletionToken>
-ASIO_INITFN_AUTO_RESULT_TYPE(
+XIO_INITFN_AUTO_RESULT_TYPE(
     CompletionToken, void(xio::error_code))
 test_cancel_impl(xio::steady_timer & tim,
                  xio::error_code &ec,
@@ -206,18 +206,18 @@ void test_cancel()
 
   ctx.run();
 
-  ASIO_CHECK_MESSAGE(
+  XIO_CHECK_MESSAGE(
       ec == xio::error::operation_aborted,
       ec.message());
 }
 
 } // namespace promise
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "promise",
-  ASIO_TEST_CASE(promise::promise_tester)
-  ASIO_TEST_CASE(promise::promise_slot_tester)
-  ASIO_TEST_CASE(promise::early_completion)
-  ASIO_TEST_CASE(promise::test_cancel)
+  XIO_TEST_CASE(promise::promise_tester)
+  XIO_TEST_CASE(promise::promise_slot_tester)
+  XIO_TEST_CASE(promise::early_completion)
+  XIO_TEST_CASE(promise::test_cancel)
 )

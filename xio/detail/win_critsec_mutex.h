@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WIN_CRITSEC_MUTEX_HPP
-#define ASIO_DETAIL_WIN_CRITSEC_MUTEX_HPP
+#ifndef XIO_DETAIL_WIN_CRITSEC_MUTEX_HPP
+#define XIO_DETAIL_WIN_CRITSEC_MUTEX_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 
 #include <xio/detail/noncopyable.h>
 #include <xio/detail/scoped_lock.h>
@@ -35,7 +35,7 @@ namespace xio {
             typedef xio::detail::scoped_lock<win_critsec_mutex> scoped_lock;
 
             // Constructor.
-            ASIO_DECL win_critsec_mutex();
+            XIO_DECL win_critsec_mutex();
 
             // Destructor.
             ~win_critsec_mutex() {
@@ -61,7 +61,7 @@ namespace xio {
             // Initialisation must be performed in a separate function to the constructor
             // since the compiler does not support the use of structured exceptions and
             // C++ exceptions in the same function.
-  ASIO_DECL int do_init();
+  XIO_DECL int do_init();
 
             ::CRITICAL_SECTION crit_section_;
         };
@@ -72,6 +72,6 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 
-#endif // ASIO_DETAIL_WIN_CRITSEC_MUTEX_HPP
+#endif // XIO_DETAIL_WIN_CRITSEC_MUTEX_HPP

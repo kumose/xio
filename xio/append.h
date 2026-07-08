@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_APPEND_HPP
-#define ASIO_APPEND_HPP
+#ifndef XIO_APPEND_HPP
+#define XIO_APPEND_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -64,4 +64,4 @@ namespace xio {
 
 #include <xio/impl/append.h>
 
-#endif // ASIO_APPEND_HPP
+#endif // XIO_APPEND_HPP

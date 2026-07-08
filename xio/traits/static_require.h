@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_TRAITS_STATIC_REQUIRE_HPP
-#define ASIO_TRAITS_STATIC_REQUIRE_HPP
+#ifndef XIO_TRAITS_STATIC_REQUIRE_HPP
+#define XIO_TRAITS_STATIC_REQUIRE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -19,7 +19,7 @@
 #include <xio/detail/type_traits.h>
 #include <xio/traits/static_query.h>
 
-#define ASIO_HAS_DEDUCED_STATIC_REQUIRE_TRAIT 1
+#define XIO_HAS_DEDUCED_STATIC_REQUIRE_TRAIT 1
 
 #include <xio/detail/push_options.h>
 
@@ -74,4 +74,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_TRAITS_STATIC_REQUIRE_HPP
+#endif // XIO_TRAITS_STATIC_REQUIRE_HPP

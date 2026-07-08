@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_TIMED_CANCEL_OP_HPP
-#define ASIO_DETAIL_TIMED_CANCEL_OP_HPP
+#ifndef XIO_DETAIL_TIMED_CANCEL_OP_HPP
+#define XIO_DETAIL_TIMED_CANCEL_OP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -43,7 +43,7 @@ namespace xio {
         public:
             using handler_type = Handler;
 
-            ASIO_DEFINE_TAGGED_HANDLER_PTR(
+            XIO_DEFINE_TAGGED_HANDLER_PTR(
                 thread_info_base::timed_cancel_tag, timed_cancel_op);
 
             timed_cancel_op(Handler &handler, Timer timer,
@@ -337,4 +337,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_TIMED_CANCEL_OP_HPP
+#endif // XIO_DETAIL_TIMED_CANCEL_OP_HPP

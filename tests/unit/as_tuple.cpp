@@ -34,15 +34,15 @@ void as_tuple_test() {
                                    ++count;
                                })));
 
-    ASIO_CHECK(count == 0);
+    XIO_CHECK(count == 0);
 
     io1.run();
 
-    ASIO_CHECK(count == 0);
+    XIO_CHECK(count == 0);
 
     io2.run();
 
-    ASIO_CHECK(count == 1);
+    XIO_CHECK(count == 1);
 
     timer1.async_wait(
         xio::as_tuple(
@@ -52,36 +52,36 @@ void as_tuple_test() {
             ++count;
         });
 
-    ASIO_CHECK(count == 1);
+    XIO_CHECK(count == 1);
 
     io1.restart();
     io1.run();
 
-    ASIO_CHECK(count == 1);
+    XIO_CHECK(count == 1);
 
     io2.restart();
     io2.run();
 
-    ASIO_CHECK(count == 2);
+    XIO_CHECK(count == 2);
 
     std::future<std::tuple<xio::error_code> > f = timer1.async_wait(
         xio::as_tuple(
             xio::bind_executor(io2.get_executor(),
                                xio::use_future)));
 
-    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+    XIO_CHECK(f.wait_for(std::chrono::seconds(0))
         == std::future_status::timeout);
 
     io1.restart();
     io1.run();
 
-    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+    XIO_CHECK(f.wait_for(std::chrono::seconds(0))
         == std::future_status::timeout);
 
     io2.restart();
     io2.run();
 
-    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+    XIO_CHECK(f.wait_for(std::chrono::seconds(0))
         == std::future_status::ready);
 }
 
@@ -116,15 +116,15 @@ void partial_as_tuple_test() {
                                ++count;
                            }));
 
-    ASIO_CHECK(count == 0);
+    XIO_CHECK(count == 0);
 
     io1.run();
 
-    ASIO_CHECK(count == 0);
+    XIO_CHECK(count == 0);
 
     io2.run();
 
-    ASIO_CHECK(count == 1);
+    XIO_CHECK(count == 1);
 
     timer1.async_wait(xio::as_tuple)(
         xio::bind_executor(io2.get_executor(),
@@ -133,17 +133,17 @@ void partial_as_tuple_test() {
             ++count;
         });
 
-    ASIO_CHECK(count == 1);
+    XIO_CHECK(count == 1);
 
     io1.restart();
     io1.run();
 
-    ASIO_CHECK(count == 1);
+    XIO_CHECK(count == 1);
 
     io2.restart();
     io2.run();
 
-    ASIO_CHECK(count == 2);
+    XIO_CHECK(count == 2);
 
 
     std::future<std::tuple<xio::error_code> > f
@@ -151,27 +151,27 @@ void partial_as_tuple_test() {
                 xio::bind_executor(io2.get_executor(),
                                    xio::use_future));
 
-    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+    XIO_CHECK(f.wait_for(std::chrono::seconds(0))
         == std::future_status::timeout);
 
     io1.restart();
     io1.run();
 
-    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+    XIO_CHECK(f.wait_for(std::chrono::seconds(0))
         == std::future_status::timeout);
 
     io2.restart();
     io2.run();
 
-    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+    XIO_CHECK(f.wait_for(std::chrono::seconds(0))
         == std::future_status::ready);
 
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
     "as_tuple",
-    ASIO_TEST_CASE(as_tuple_test)
-    ASIO_COMPILE_TEST_CASE(as_tuple_constness_test)
-    ASIO_TEST_CASE(partial_as_tuple_test)
+    XIO_TEST_CASE(as_tuple_test)
+    XIO_COMPILE_TEST_CASE(as_tuple_constness_test)
+    XIO_TEST_CASE(partial_as_tuple_test)
 )

@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_IMPL_NETWORK_V4_IPP
-#define ASIO_IP_IMPL_NETWORK_V4_IPP
+#ifndef XIO_IP_IMPL_NETWORK_V4_IPP
+#define XIO_IP_IMPL_NETWORK_V4_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -116,13 +116,13 @@ namespace xio {
             using namespace std; // For sprintf.
             ec = xio::error_code();
             char prefix_len[16];
-#if defined(ASIO_HAS_SNPRINTF)
+#if defined(XIO_HAS_SNPRINTF)
             snprintf(prefix_len, sizeof(prefix_len), "/%u", prefix_length_);
-#elif defined(ASIO_HAS_SECURE_RTL)
+#elif defined(XIO_HAS_SECURE_RTL)
             sprintf_s(prefix_len, sizeof(prefix_len), "/%u", prefix_length_);
-#else // defined(ASIO_HAS_SECURE_RTL)
+#else // defined(XIO_HAS_SECURE_RTL)
             sprintf(prefix_len, "/%u", prefix_length_);
-#endif // defined(ASIO_HAS_SECURE_RTL)
+#endif // defined(XIO_HAS_SECURE_RTL)
             return address_.to_string() + prefix_len;
         }
 
@@ -190,4 +190,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_IMPL_NETWORK_V4_IPP
+#endif // XIO_IP_IMPL_NETWORK_V4_IPP

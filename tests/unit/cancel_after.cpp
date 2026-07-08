@@ -41,7 +41,7 @@ void cancel_after_function_object_test()
 
   ioc.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -52,7 +52,7 @@ void cancel_after_function_object_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::milliseconds(100));
   t.async_wait(
@@ -64,7 +64,7 @@ void cancel_after_function_object_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -76,7 +76,7 @@ void cancel_after_function_object_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -88,7 +88,7 @@ void cancel_after_function_object_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 }
 
 void cancel_after_timer_function_object_test()
@@ -106,7 +106,7 @@ void cancel_after_timer_function_object_test()
 
   ioc.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -117,7 +117,7 @@ void cancel_after_timer_function_object_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::milliseconds(100));
   t.async_wait(
@@ -129,7 +129,7 @@ void cancel_after_timer_function_object_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -141,7 +141,7 @@ void cancel_after_timer_function_object_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -153,7 +153,7 @@ void cancel_after_timer_function_object_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 }
 
 struct incrementer_token_v1
@@ -200,7 +200,7 @@ void cancel_after_completion_token_v1_test()
 
   ioc.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -211,7 +211,7 @@ void cancel_after_completion_token_v1_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::milliseconds(100));
   t.async_wait(
@@ -222,7 +222,7 @@ void cancel_after_completion_token_v1_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -233,7 +233,7 @@ void cancel_after_completion_token_v1_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -244,7 +244,7 @@ void cancel_after_completion_token_v1_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 }
 
 void cancel_after_timer_completion_token_v1_test()
@@ -261,7 +261,7 @@ void cancel_after_timer_completion_token_v1_test()
 
   ioc.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -272,7 +272,7 @@ void cancel_after_timer_completion_token_v1_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::milliseconds(100));
   t.async_wait(
@@ -283,7 +283,7 @@ void cancel_after_timer_completion_token_v1_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -294,7 +294,7 @@ void cancel_after_timer_completion_token_v1_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -305,7 +305,7 @@ void cancel_after_timer_completion_token_v1_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 }
 
 struct incrementer_token_v2
@@ -345,7 +345,7 @@ void cancel_after_completion_token_v2_test()
 
   ioc.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -355,7 +355,7 @@ void cancel_after_completion_token_v2_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::milliseconds(100));
   t.async_wait(
@@ -366,7 +366,7 @@ void cancel_after_completion_token_v2_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -377,7 +377,7 @@ void cancel_after_completion_token_v2_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -388,7 +388,7 @@ void cancel_after_completion_token_v2_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 }
 
 void cancel_after_timer_completion_token_v2_test()
@@ -405,7 +405,7 @@ void cancel_after_timer_completion_token_v2_test()
 
   ioc.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -415,7 +415,7 @@ void cancel_after_timer_completion_token_v2_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::milliseconds(100));
   t.async_wait(
@@ -426,7 +426,7 @@ void cancel_after_timer_completion_token_v2_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -437,7 +437,7 @@ void cancel_after_timer_completion_token_v2_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(
@@ -448,7 +448,7 @@ void cancel_after_timer_completion_token_v2_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 }
 
 void partial_cancel_after_test()
@@ -462,7 +462,7 @@ void partial_cancel_after_test()
 
   ioc.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(cancel_after(chronons::milliseconds(100)))(
@@ -471,7 +471,7 @@ void partial_cancel_after_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 }
 
 void partial_cancel_after_timer_test()
@@ -486,7 +486,7 @@ void partial_cancel_after_timer_test()
 
   ioc.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   t.expires_after(chronons::seconds(5));
   t.async_wait(cancel_after(cancellation_timer, chronons::milliseconds(100)))(
@@ -495,18 +495,18 @@ void partial_cancel_after_timer_test()
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "cancel_after",
-  ASIO_TEST_CASE(cancel_after_function_object_test)
-  ASIO_TEST_CASE(cancel_after_timer_function_object_test)
-  ASIO_TEST_CASE(cancel_after_completion_token_v1_test)
-  ASIO_TEST_CASE(cancel_after_timer_completion_token_v1_test)
-  ASIO_TEST_CASE(cancel_after_completion_token_v2_test)
-  ASIO_TEST_CASE(cancel_after_timer_completion_token_v2_test)
-  ASIO_TEST_CASE(partial_cancel_after_test)
-  ASIO_TEST_CASE(partial_cancel_after_timer_test)
+  XIO_TEST_CASE(cancel_after_function_object_test)
+  XIO_TEST_CASE(cancel_after_timer_function_object_test)
+  XIO_TEST_CASE(cancel_after_completion_token_v1_test)
+  XIO_TEST_CASE(cancel_after_timer_completion_token_v1_test)
+  XIO_TEST_CASE(cancel_after_completion_token_v2_test)
+  XIO_TEST_CASE(cancel_after_timer_completion_token_v2_test)
+  XIO_TEST_CASE(partial_cancel_after_test)
+  XIO_TEST_CASE(partial_cancel_after_timer_test)
 )

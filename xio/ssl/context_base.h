@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SSL_CONTEXT_BASE_HPP
-#define ASIO_SSL_CONTEXT_BASE_HPP
+#ifndef XIO_SSL_CONTEXT_BASE_HPP
+#define XIO_SSL_CONTEXT_BASE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -106,64 +106,35 @@ namespace xio {
             /// Bitmask type for SSL options.
             typedef uint64_t options;
 
-#if defined(GENERATING_DOCUMENTATION)
-            /// Implement various bug workarounds.
-            static const uint64_t default_workarounds = implementation_defined;
+            XIO_STATIC_CONSTANT(uint64_t, default_workarounds = SSL_OP_ALL);
 
-            /// Always create a new key when using tmp_dh parameters.
-            static const uint64_t single_dh_use = implementation_defined;
+            XIO_STATIC_CONSTANT(uint64_t, single_dh_use = SSL_OP_SINGLE_DH_USE);
 
-            /// Disable SSL v2.
-            static const uint64_t no_sslv2 = implementation_defined;
+            XIO_STATIC_CONSTANT(uint64_t, no_sslv2 = SSL_OP_NO_SSLv2);
 
-            /// Disable SSL v3.
-            static const uint64_t no_sslv3 = implementation_defined;
+            XIO_STATIC_CONSTANT(uint64_t, no_sslv3 = SSL_OP_NO_SSLv3);
 
-            /// Disable TLS v1.
-            static const uint64_t no_tlsv1 = implementation_defined;
-
-            /// Disable TLS v1.1.
-            static const uint64_t no_tlsv1_1 = implementation_defined;
-
-            /// Disable TLS v1.2.
-            static const uint64_t no_tlsv1_2 = implementation_defined;
-
-            /// Disable TLS v1.3.
-            static const uint64_t no_tlsv1_3 = implementation_defined;
-
-            /// Disable compression. Compression is disabled by default.
-            static const uint64_t no_compression = implementation_defined;
-#else
-            ASIO_STATIC_CONSTANT(uint64_t, default_workarounds = SSL_OP_ALL);
-
-            ASIO_STATIC_CONSTANT(uint64_t, single_dh_use = SSL_OP_SINGLE_DH_USE);
-
-            ASIO_STATIC_CONSTANT(uint64_t, no_sslv2 = SSL_OP_NO_SSLv2);
-
-            ASIO_STATIC_CONSTANT(uint64_t, no_sslv3 = SSL_OP_NO_SSLv3);
-
-            ASIO_STATIC_CONSTANT(uint64_t, no_tlsv1 = SSL_OP_NO_TLSv1);
+            XIO_STATIC_CONSTANT(uint64_t, no_tlsv1 = SSL_OP_NO_TLSv1);
 # if defined(SSL_OP_NO_TLSv1_1)
-            ASIO_STATIC_CONSTANT(uint64_t, no_tlsv1_1 = SSL_OP_NO_TLSv1_1);
+            XIO_STATIC_CONSTANT(uint64_t, no_tlsv1_1 = SSL_OP_NO_TLSv1_1);
 # else // defined(SSL_OP_NO_TLSv1_1)
-            ASIO_STATIC_CONSTANT(uint64_t, no_tlsv1_1 = 0x10000000L);
+            XIO_STATIC_CONSTANT(uint64_t, no_tlsv1_1 = 0x10000000L);
 # endif // defined(SSL_OP_NO_TLSv1_1)
 # if defined(SSL_OP_NO_TLSv1_2)
-            ASIO_STATIC_CONSTANT(uint64_t, no_tlsv1_2 = SSL_OP_NO_TLSv1_2);
+            XIO_STATIC_CONSTANT(uint64_t, no_tlsv1_2 = SSL_OP_NO_TLSv1_2);
 # else // defined(SSL_OP_NO_TLSv1_2)
-            ASIO_STATIC_CONSTANT(uint64_t, no_tlsv1_2 = 0x08000000L);
+            XIO_STATIC_CONSTANT(uint64_t, no_tlsv1_2 = 0x08000000L);
 # endif // defined(SSL_OP_NO_TLSv1_2)
 # if defined(SSL_OP_NO_TLSv1_3)
-            ASIO_STATIC_CONSTANT(uint64_t, no_tlsv1_3 = SSL_OP_NO_TLSv1_3);
+            XIO_STATIC_CONSTANT(uint64_t, no_tlsv1_3 = SSL_OP_NO_TLSv1_3);
 # else // defined(SSL_OP_NO_TLSv1_3)
-            ASIO_STATIC_CONSTANT(uint64_t, no_tlsv1_3 = 0x20000000L);
+            XIO_STATIC_CONSTANT(uint64_t, no_tlsv1_3 = 0x20000000L);
 # endif // defined(SSL_OP_NO_TLSv1_3)
 # if defined(SSL_OP_NO_COMPRESSION)
-            ASIO_STATIC_CONSTANT(uint64_t, no_compression = SSL_OP_NO_COMPRESSION);
+            XIO_STATIC_CONSTANT(uint64_t, no_compression = SSL_OP_NO_COMPRESSION);
 # else // defined(SSL_OP_NO_COMPRESSION)
-            ASIO_STATIC_CONSTANT(uint64_t, no_compression = 0x20000L);
+            XIO_STATIC_CONSTANT(uint64_t, no_compression = 0x20000L);
 # endif // defined(SSL_OP_NO_COMPRESSION)
-#endif
 
             /// File format types.
             enum file_format {
@@ -174,21 +145,19 @@ namespace xio {
                 pem
             };
 
-#if !defined(GENERATING_DOCUMENTATION)
             // The following types and constants are preserved for backward compatibility.
             // New programs should use the equivalents of the same names that are defined
             // in the xio::ssl namespace.
             typedef int verify_mode;
 
-            ASIO_STATIC_CONSTANT(int, verify_none = SSL_VERIFY_NONE);
+            XIO_STATIC_CONSTANT(int, verify_none = SSL_VERIFY_NONE);
 
-            ASIO_STATIC_CONSTANT(int, verify_peer = SSL_VERIFY_PEER);
+            XIO_STATIC_CONSTANT(int, verify_peer = SSL_VERIFY_PEER);
 
-            ASIO_STATIC_CONSTANT(int,
+            XIO_STATIC_CONSTANT(int,
                                  verify_fail_if_no_peer_cert = SSL_VERIFY_FAIL_IF_NO_PEER_CERT);
 
-            ASIO_STATIC_CONSTANT(int, verify_client_once = SSL_VERIFY_CLIENT_ONCE);
-#endif
+            XIO_STATIC_CONSTANT(int, verify_client_once = SSL_VERIFY_CLIENT_ONCE);
 
             /// Purpose of PEM password.
             enum password_purpose {
@@ -210,4 +179,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_SSL_CONTEXT_BASE_HPP
+#endif // XIO_SSL_CONTEXT_BASE_HPP

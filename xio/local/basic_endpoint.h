@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_LOCAL_BASIC_ENDPOINT_HPP
-#define ASIO_LOCAL_BASIC_ENDPOINT_HPP
+#ifndef XIO_LOCAL_BASIC_ENDPOINT_HPP
+#define XIO_LOCAL_BASIC_ENDPOINT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,14 +18,13 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_LOCAL_SOCKETS) \
-  || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_LOCAL_SOCKETS)
 
 #include <xio/local/detail/endpoint.h>
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 # include <iosfwd>
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
 
 #include <xio/detail/push_options.h>
 
@@ -51,11 +50,7 @@ namespace xio {
 
             /// The type of the endpoint structure. This type is dependent on the
               /// underlying implementation of the socket layer.
-#if defined(GENERATING_DOCUMENTATION)
-            typedef implementation_defined data_type;
-#else
             typedef xio::detail::socket_addr_type data_type;
-#endif
 
             /// Default constructor.
             basic_endpoint() noexcept {
@@ -208,7 +203,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_LOCAL_SOCKETS)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_LOCAL_SOCKETS)
 
-#endif // ASIO_LOCAL_BASIC_ENDPOINT_HPP
+#endif // XIO_LOCAL_BASIC_ENDPOINT_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXPERIMENTAL_DETAIL_CHANNEL_SEND_FUNCTIONS_HPP
-#define ASIO_EXPERIMENTAL_DETAIL_CHANNEL_SEND_FUNCTIONS_HPP
+#ifndef XIO_EXPERIMENTAL_DETAIL_CHANNEL_SEND_FUNCTIONS_HPP
+#define XIO_EXPERIMENTAL_DETAIL_CHANNEL_SEND_FUNCTIONS_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -115,11 +115,11 @@ namespace xio {
                 }
 
                 template<
-                    ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
-                    CompletionToken ASIO_DEFAULT_COMPLETION_TOKEN_TYPE(Executor)>
+                    XIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
+                    CompletionToken XIO_DEFAULT_COMPLETION_TOKEN_TYPE(Executor)>
                 auto async_send(Args... args,
                                 CompletionToken &&token
-                                ASIO_DEFAULT_COMPLETION_TOKEN (Executor))
+                                XIO_DEFAULT_COMPLETION_TOKEN (Executor))
                     -> decltype(
                         async_initiate<CompletionToken, void(xio::error_code)>(
                             std::declval < typename std::conditional_t < false, CompletionToken,
@@ -224,11 +224,11 @@ namespace xio {
                 }
 
                 template<
-                    ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
-                    CompletionToken ASIO_DEFAULT_COMPLETION_TOKEN_TYPE(Executor)>
+                    XIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
+                    CompletionToken XIO_DEFAULT_COMPLETION_TOKEN_TYPE(Executor)>
                 auto async_send(Args... args,
                                 CompletionToken &&token
-                                ASIO_DEFAULT_COMPLETION_TOKEN (Executor))
+                                XIO_DEFAULT_COMPLETION_TOKEN (Executor))
                     -> decltype(
                         async_initiate<CompletionToken, void(xio::error_code)>(
                             std::declval < typename std::conditional_t < false, CompletionToken,
@@ -250,4 +250,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXPERIMENTAL_DETAIL_CHANNEL_SEND_FUNCTIONS_HPP
+#endif // XIO_EXPERIMENTAL_DETAIL_CHANNEL_SEND_FUNCTIONS_HPP

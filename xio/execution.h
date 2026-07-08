@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXECUTION_HPP
-#define ASIO_EXECUTION_HPP
+#ifndef XIO_EXECUTION_HPP
+#define XIO_EXECUTION_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -31,4 +31,4 @@
 #include <xio/execution/prefer_only.h>
 #include <xio/execution/relationship.h>
 
-#endif // ASIO_EXECUTION_HPP
+#endif // XIO_EXECUTION_HPP

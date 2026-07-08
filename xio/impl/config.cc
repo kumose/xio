@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_CONFIG_IPP
-#define ASIO_IMPL_CONFIG_IPP
+#ifndef XIO_IMPL_CONFIG_IPP
+#define XIO_IMPL_CONFIG_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -55,11 +55,11 @@ namespace xio {
                                   char *value, std::size_t value_len) const override {
                 if (std::strcmp(section, "scheduler") == 0) {
                     if (std::strcmp(key_name, "concurrency_hint") == 0) {
-                        if (ASIO_CONCURRENCY_HINT_IS_SPECIAL(concurrency_hint_)) {
+                        if (XIO_CONCURRENCY_HINT_IS_SPECIAL(concurrency_hint_)) {
                             return
-                                    !ASIO_CONCURRENCY_HINT_IS_LOCKING(
+                                    !XIO_CONCURRENCY_HINT_IS_LOCKING(
                                         SCHEDULER, concurrency_hint_) ||
-                                    !ASIO_CONCURRENCY_HINT_IS_LOCKING(
+                                    !XIO_CONCURRENCY_HINT_IS_LOCKING(
                                         REACTOR_IO, concurrency_hint_)
                                         ? "1"
                                         : "-1";
@@ -68,19 +68,19 @@ namespace xio {
                             return value;
                         }
                     } else if (std::strcmp(key_name, "locking") == 0) {
-                        return ASIO_CONCURRENCY_HINT_IS_LOCKING(
+                        return XIO_CONCURRENCY_HINT_IS_LOCKING(
                                    SCHEDULER, concurrency_hint_)
                                    ? "1"
                                    : "0";
                     }
                 } else if (std::strcmp(section, "reactor") == 0) {
                     if (std::strcmp(key_name, "io_locking") == 0) {
-                        return ASIO_CONCURRENCY_HINT_IS_LOCKING(
+                        return XIO_CONCURRENCY_HINT_IS_LOCKING(
                                    REACTOR_IO, concurrency_hint_)
                                    ? "1"
                                    : "0";
                     } else if (std::strcmp(key_name, "registration_locking") == 0) {
-                        return ASIO_CONCURRENCY_HINT_IS_LOCKING(
+                        return XIO_CONCURRENCY_HINT_IS_LOCKING(
                                    REACTOR_REGISTRATION, concurrency_hint_)
                                    ? "1"
                                    : "0";
@@ -95,13 +95,13 @@ namespace xio {
     } // namespace detail
 
     config_from_concurrency_hint::config_from_concurrency_hint()
-        : concurrency_hint_(ASIO_CONCURRENCY_HINT_DEFAULT) {
+        : concurrency_hint_(XIO_CONCURRENCY_HINT_DEFAULT) {
     }
 
     void config_from_concurrency_hint::make(execution_context &ctx) const {
         (void) make_service<detail::config_from_concurrency_hint_service>(ctx,
                                                                           concurrency_hint_ == 1
-                                                                              ? ASIO_CONCURRENCY_HINT_1
+                                                                              ? XIO_CONCURRENCY_HINT_1
                                                                               : concurrency_hint_);
     }
 
@@ -263,10 +263,10 @@ namespace xio {
     }
 
     namespace detail {
-#if defined(ASIO_MSVC)
+#if defined(XIO_MSVC)
 # pragma warning (push)
 # pragma warning (disable:4996) // suppress unsafe warning for std::getenv
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 
         class config_from_env_service : public config_service {
         public:
@@ -297,9 +297,9 @@ namespace xio {
             std::string prefix_;
         };
 
-#if defined(ASIO_MSVC)
+#if defined(XIO_MSVC)
 # pragma warning (pop)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
     } // namespace detail
 
     config_from_env::config_from_env()
@@ -315,4 +315,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_CONFIG_IPP
+#endif // XIO_IMPL_CONFIG_IPP

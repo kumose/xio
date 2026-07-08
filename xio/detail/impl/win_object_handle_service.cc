@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_WIN_OBJECT_HANDLE_SERVICE_IPP
-#define ASIO_DETAIL_IMPL_WIN_OBJECT_HANDLE_SERVICE_IPP
+#ifndef XIO_DETAIL_IMPL_WIN_OBJECT_HANDLE_SERVICE_IPP
+#define XIO_DETAIL_IMPL_WIN_OBJECT_HANDLE_SERVICE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,7 +18,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_WINDOWS_OBJECT_HANDLE)
+#if defined(XIO_HAS_WINDOWS_OBJECT_HANDLE)
 
 #include <xio/detail/win_object_handle_service.h>
 
@@ -167,7 +167,7 @@ namespace xio {
             impl.prev_ = 0;
 
             if (is_open(impl)) {
-                ASIO_HANDLER_OPERATION((scheduler_.context(), "object_handle",
+                XIO_HANDLER_OPERATION((scheduler_.context(), "object_handle",
                                         &impl, reinterpret_cast<uintmax_t>(impl.wait_handle_), "close"));
 
                 HANDLE wait_handle = impl.wait_handle_;
@@ -200,7 +200,7 @@ namespace xio {
             const native_handle_type &handle, xio::error_code &ec) {
             if (is_open(impl)) {
                 ec = xio::error::already_open;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -213,7 +213,7 @@ namespace xio {
             win_object_handle_service::implementation_type &impl,
             xio::error_code &ec) {
             if (is_open(impl)) {
-                ASIO_HANDLER_OPERATION((scheduler_.context(), "object_handle",
+                XIO_HANDLER_OPERATION((scheduler_.context(), "object_handle",
                                         &impl, reinterpret_cast<uintmax_t>(impl.wait_handle_), "close"));
 
                 mutex::scoped_lock lock(mutex_);
@@ -250,7 +250,7 @@ namespace xio {
                 ec = xio::error_code();
             }
 
-            ASIO_ERROR_LOCATION(ec);
+            XIO_ERROR_LOCATION(ec);
             return ec;
         }
 
@@ -258,7 +258,7 @@ namespace xio {
             win_object_handle_service::implementation_type &impl,
             xio::error_code &ec) {
             if (is_open(impl)) {
-                ASIO_HANDLER_OPERATION((scheduler_.context(), "object_handle",
+                XIO_HANDLER_OPERATION((scheduler_.context(), "object_handle",
                                         &impl, reinterpret_cast<uintmax_t>(impl.wait_handle_), "cancel"));
 
                 mutex::scoped_lock lock(mutex_);
@@ -288,7 +288,7 @@ namespace xio {
                 ec = xio::error::bad_descriptor;
             }
 
-            ASIO_ERROR_LOCATION(ec);
+            XIO_ERROR_LOCATION(ec);
             return ec;
         }
 
@@ -300,7 +300,7 @@ namespace xio {
                     DWORD last_error = ::GetLastError();
                     ec = xio::error_code(last_error,
                                          xio::error::get_system_category());
-                    ASIO_ERROR_LOCATION(ec);
+                    XIO_ERROR_LOCATION(ec);
                     break;
                 }
                 case WAIT_OBJECT_0:
@@ -402,6 +402,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_WINDOWS_OBJECT_HANDLE)
+#endif // defined(XIO_HAS_WINDOWS_OBJECT_HANDLE)
 
-#endif // ASIO_DETAIL_IMPL_WIN_OBJECT_HANDLE_SERVICE_IPP
+#endif // XIO_DETAIL_IMPL_WIN_OBJECT_HANDLE_SERVICE_IPP

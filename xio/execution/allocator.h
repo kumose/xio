@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXECUTION_ALLOCATOR_HPP
-#define ASIO_EXECUTION_ALLOCATOR_HPP
+#ifndef XIO_EXECUTION_ALLOCATOR_HPP
+#define XIO_EXECUTION_ALLOCATOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -25,50 +25,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
-#if defined(GENERATING_DOCUMENTATION)
-
-    namespace execution {
-        /// A property to describe which allocator an executor will use to allocate the
-/// memory required to store a submitted function object.
-        template<typename ProtoAllocator>
-        struct allocator_t {
-            /// The allocator_t property applies to executors.
-            template<typename T>
-            static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-            /// The allocator_t property can be required.
-            static constexpr bool is_requirable = true;
-
-            /// The allocator_t property can be preferred.
-            static constexpr bool is_preferable = true;
-
-            /// Default constructor.
-            constexpr allocator_t();
-
-            /// Obtain the allocator stored in the allocator_t property object.
-            /**
-   * Present only if @c ProtoAllocator is non-void.
-   */
-            constexpr ProtoAllocator value() const;
-
-            /// Create an allocator_t object with a different allocator.
-            /**
-   * Present only if @c ProtoAllocator is void.
-   */
-            template<typename OtherAllocator>
-            allocator_t<OtherAllocator operator()(const OtherAllocator & a);
-        };
-
-        /// A special value used for accessing the allocator_t property.
-        constexpr allocator_t<void> allocator;
-    } // namespace execution
-
-#else // defined(GENERATING_DOCUMENTATION)
-
-
-
 
     namespace execution {
         template<typename ProtoAllocator>
@@ -199,12 +155,8 @@ namespace xio {
     } // namespace execution
 
 
-
-#endif // defined(GENERATING_DOCUMENTATION)
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXECUTION_ALLOCATOR_HPP
+#endif // XIO_EXECUTION_ALLOCATOR_HPP

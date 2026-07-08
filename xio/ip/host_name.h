@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_HOST_NAME_HPP
-#define ASIO_IP_HOST_NAME_HPP
+#ifndef XIO_IP_HOST_NAME_HPP
+#define XIO_IP_HOST_NAME_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -26,10 +26,10 @@ namespace xio {
 
     namespace ip {
         /// Get the current host name.
-        ASIO_DECL std::string host_name();
+        XIO_DECL std::string host_name();
 
         /// Get the current host name.
-        ASIO_DECL std::string host_name(xio::error_code & ec);
+        XIO_DECL std::string host_name(xio::error_code & ec);
     } // namespace ip
 
 } // namespace xio
@@ -37,4 +37,4 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // ASIO_IP_HOST_NAME_HPP
+#endif // XIO_IP_HOST_NAME_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_READ_UNTIL_HPP
-#define ASIO_IMPL_READ_UNTIL_HPP
+#ifndef XIO_IMPL_READ_UNTIL_HPP
+#define XIO_IMPL_READ_UNTIL_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -67,7 +67,7 @@ namespace xio {
 
     } // namespace detail
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     template<typename SyncReadStream, typename DynamicBuffer_v1>
     inline std::size_t read_until(SyncReadStream &s,
@@ -208,7 +208,7 @@ namespace xio {
         }
     }
 
-#if !defined(ASIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_EXTENSIONS)
 
     template<typename SyncReadStream,
         typename DynamicBuffer_v1, typename MatchCondition>
@@ -289,7 +289,7 @@ namespace xio {
         }
     }
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 
     template<typename SyncReadStream, typename Allocator>
     inline std::size_t read_until(SyncReadStream &s,
@@ -335,9 +335,9 @@ namespace xio {
         return read_until(s, basic_streambuf_ref<Allocator>(b), match_condition, ec);
     }
 
-#endif // !defined(ASIO_NO_IOSTREAM)
-#endif // !defined(ASIO_NO_EXTENSIONS)
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     template<typename SyncReadStream, typename DynamicBuffer_v2>
     inline std::size_t read_until(SyncReadStream &s,
@@ -469,7 +469,7 @@ namespace xio {
         }
     }
 
-#if !defined(ASIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_EXTENSIONS)
 
     template<typename SyncReadStream,
         typename DynamicBuffer_v2, typename MatchCondition>
@@ -545,9 +545,9 @@ namespace xio {
         }
     }
 
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     namespace detail {
         template<typename AsyncReadStream,
@@ -639,7 +639,7 @@ namespace xio {
 
                             // Start a new asynchronous read operation to obtain more data.
                             {
-                                ASIO_HANDLER_LOCATION((
+                                XIO_HANDLER_LOCATION((
                                     __FILE__, __LINE__, "async_read_until"));
                                 stream_.async_read_some(buffers_.prepare(bytes_to_read),
                                                         static_cast<read_until_delim_op_v1 &&>(*this));
@@ -709,7 +709,7 @@ namespace xio {
                             char delim) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a ReadHandler.
-                ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+                XIO_READ_HANDLER_CHECK(ReadHandler, handler)
                 type_check;
 
                 non_const_lvalue<ReadHandler> handler2(handler);
@@ -725,7 +725,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename AsyncReadStream, typename DynamicBuffer_v1,
@@ -750,7 +749,6 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
     namespace detail {
         template<typename AsyncReadStream,
@@ -850,7 +848,7 @@ namespace xio {
 
                             // Start a new asynchronous read operation to obtain more data.
                             {
-                                ASIO_HANDLER_LOCATION((
+                                XIO_HANDLER_LOCATION((
                                     __FILE__, __LINE__, "async_read_until"));
                                 stream_.async_read_some(buffers_.prepare(bytes_to_read),
                                                         static_cast<read_until_delim_string_op_v1 &&>(*this));
@@ -920,7 +918,7 @@ namespace xio {
                             const std::string &delim) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a ReadHandler.
-                ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+                XIO_READ_HANDLER_CHECK(ReadHandler, handler)
                 type_check;
 
                 non_const_lvalue<ReadHandler> handler2(handler);
@@ -936,7 +934,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename AsyncReadStream, typename DynamicBuffer_v1,
@@ -961,9 +958,8 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
-#if !defined(ASIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_EXTENSIONS)
 
     namespace detail {
         template<typename AsyncReadStream, typename DynamicBuffer_v1,
@@ -1062,7 +1058,7 @@ namespace xio {
 
                             // Start a new asynchronous read operation to obtain more data.
                             {
-                                ASIO_HANDLER_LOCATION((
+                                XIO_HANDLER_LOCATION((
                                     __FILE__, __LINE__, "async_read_until"));
                                 stream_.async_read_some(buffers_.prepare(bytes_to_read),
                                                         static_cast<read_until_match_op_v1 &&>(*this));
@@ -1133,7 +1129,7 @@ namespace xio {
                             MatchCondition match_condition) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a ReadHandler.
-                ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+                XIO_READ_HANDLER_CHECK(ReadHandler, handler)
                 type_check;
 
                 non_const_lvalue<ReadHandler> handler2(handler);
@@ -1149,7 +1145,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename AsyncReadStream, typename DynamicBuffer_v1,
@@ -1174,10 +1169,9 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
-#endif // !defined(ASIO_NO_EXTENSIONS)
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     namespace detail {
         template<typename AsyncReadStream,
@@ -1276,7 +1270,7 @@ namespace xio {
                             pos = buffers_.size();
                             buffers_.grow(bytes_to_read_);
                             {
-                                ASIO_HANDLER_LOCATION((
+                                XIO_HANDLER_LOCATION((
                                     __FILE__, __LINE__, "async_read_until"));
                                 stream_.async_read_some(buffers_.data(pos, bytes_to_read_),
                                                         static_cast<read_until_delim_op_v2 &&>(*this));
@@ -1346,7 +1340,7 @@ namespace xio {
                             DynamicBuffer_v2 &&buffers, char delim) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a ReadHandler.
-                ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+                XIO_READ_HANDLER_CHECK(ReadHandler, handler)
                 type_check;
 
                 non_const_lvalue<ReadHandler> handler2(handler);
@@ -1362,7 +1356,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename AsyncReadStream, typename DynamicBuffer_v2,
@@ -1387,7 +1380,6 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
     namespace detail {
         template<typename AsyncReadStream,
@@ -1494,7 +1486,7 @@ namespace xio {
                             pos = buffers_.size();
                             buffers_.grow(bytes_to_read_);
                             {
-                                ASIO_HANDLER_LOCATION((
+                                XIO_HANDLER_LOCATION((
                                     __FILE__, __LINE__, "async_read_until"));
                                 stream_.async_read_some(buffers_.data(pos, bytes_to_read_),
                                                         static_cast<read_until_delim_string_op_v2 &&>(*this));
@@ -1565,7 +1557,7 @@ namespace xio {
                             const std::string &delim) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a ReadHandler.
-                ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+                XIO_READ_HANDLER_CHECK(ReadHandler, handler)
                 type_check;
 
                 non_const_lvalue<ReadHandler> handler2(handler);
@@ -1581,7 +1573,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename AsyncReadStream, typename DynamicBuffer_v2,
@@ -1606,9 +1597,8 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
-#if !defined(ASIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_EXTENSIONS)
 
 
     namespace detail {
@@ -1715,7 +1705,7 @@ namespace xio {
                             pos = buffers_.size();
                             buffers_.grow(bytes_to_read_);
                             {
-                                ASIO_HANDLER_LOCATION((
+                                XIO_HANDLER_LOCATION((
                                     __FILE__, __LINE__, "async_read_until"));
                                 stream_.async_read_some(buffers_.data(pos, bytes_to_read_),
                                                         static_cast<read_until_match_op_v2 &&>(*this));
@@ -1787,7 +1777,7 @@ namespace xio {
                             MatchCondition match_condition) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a ReadHandler.
-                ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+                XIO_READ_HANDLER_CHECK(ReadHandler, handler)
                 type_check;
 
                 non_const_lvalue<ReadHandler> handler2(handler);
@@ -1802,7 +1792,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename AsyncReadStream, typename DynamicBuffer_v2,
@@ -1827,13 +1816,12 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_READ_UNTIL_HPP
+#endif // XIO_IMPL_READ_UNTIL_HPP

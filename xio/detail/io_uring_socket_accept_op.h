@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IO_URING_SOCKET_ACCEPT_OP_HPP
-#define ASIO_DETAIL_IO_URING_SOCKET_ACCEPT_OP_HPP
+#ifndef XIO_DETAIL_IO_URING_SOCKET_ACCEPT_OP_HPP
+#define XIO_DETAIL_IO_URING_SOCKET_ACCEPT_OP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
 
 #include <xio/detail/bind_handler.h>
 #include <xio/detail/fenced_block.h>
@@ -53,7 +53,7 @@ namespace xio {
             }
 
             static void do_prepare(io_uring_operation *base, ::io_uring_sqe *sqe) {
-                ASIO_ASSUME(base != 0);
+                XIO_ASSUME(base != 0);
                 io_uring_socket_accept_op_base *o(
                     static_cast<io_uring_socket_accept_op_base *>(base));
 
@@ -67,7 +67,7 @@ namespace xio {
             }
 
             static bool do_perform(io_uring_operation *base, bool after_completion) {
-                ASIO_ASSUME(base != 0);
+                XIO_ASSUME(base != 0);
                 io_uring_socket_accept_op_base *o(
                     static_cast<io_uring_socket_accept_op_base *>(base));
 
@@ -120,7 +120,7 @@ namespace xio {
         class io_uring_socket_accept_op :
                 public io_uring_socket_accept_op_base<Socket, Protocol> {
         public:
-            ASIO_DEFINE_HANDLER_PTR(io_uring_socket_accept_op);
+            XIO_DEFINE_HANDLER_PTR(io_uring_socket_accept_op);
 
             io_uring_socket_accept_op(const xio::error_code &success_ec,
                                       socket_type socket, socket_ops::state_type state, Socket &peer,
@@ -137,7 +137,7 @@ namespace xio {
                                     const xio::error_code & /*ec*/,
                                     std::size_t /*bytes_transferred*/) {
                 // Take ownership of the handler object.
-                ASIO_ASSUME(base != 0);
+                XIO_ASSUME(base != 0);
                 io_uring_socket_accept_op *o(static_cast<io_uring_socket_accept_op *>(base));
                 ptr p = {xio::detail::addressof(o->handler_), o, o};
 
@@ -145,14 +145,14 @@ namespace xio {
                 if (owner)
                     o->do_assign();
 
-                ASIO_HANDLER_COMPLETION((*o));
+                XIO_HANDLER_COMPLETION((*o));
 
                 // Take ownership of the operation's outstanding work.
                 handler_work<Handler, IoExecutor> w(
                     static_cast<handler_work<Handler, IoExecutor> &&>(
                         o->work_));
 
-                ASIO_ERROR_LOCATION(o->ec_);
+                XIO_ERROR_LOCATION(o->ec_);
 
                 // Make a copy of the handler so that the memory can be deallocated before
                 // the upcall is made. Even if we're not about to make an upcall, a
@@ -168,9 +168,9 @@ namespace xio {
                 // Make the upcall if required.
                 if (owner) {
                     fenced_block b(fenced_block::half);
-                    ASIO_HANDLER_INVOCATION_BEGIN((handler.arg1_));
+                    XIO_HANDLER_INVOCATION_BEGIN((handler.arg1_));
                     w.complete(handler, handler.handler_);
-                    ASIO_HANDLER_INVOCATION_END;
+                    XIO_HANDLER_INVOCATION_END;
                 }
             }
 
@@ -187,7 +187,7 @@ namespace xio {
                     typename Protocol::socket::template rebind_executor<PeerIoExecutor>::other,
                     Protocol> {
         public:
-            ASIO_DEFINE_HANDLER_PTR(io_uring_socket_move_accept_op);
+            XIO_DEFINE_HANDLER_PTR(io_uring_socket_move_accept_op);
 
             io_uring_socket_move_accept_op(const xio::error_code &success_ec,
                                            const PeerIoExecutor &peer_io_ex, socket_type socket,
@@ -206,7 +206,7 @@ namespace xio {
                                     const xio::error_code & /*ec*/,
                                     std::size_t /*bytes_transferred*/) {
                 // Take ownership of the handler object.
-                ASIO_ASSUME(base != 0);
+                XIO_ASSUME(base != 0);
                 io_uring_socket_move_accept_op *o(
                     static_cast<io_uring_socket_move_accept_op *>(base));
                 ptr p = {xio::detail::addressof(o->handler_), o, o};
@@ -215,14 +215,14 @@ namespace xio {
                 if (owner)
                     o->do_assign();
 
-                ASIO_HANDLER_COMPLETION((*o));
+                XIO_HANDLER_COMPLETION((*o));
 
                 // Take ownership of the operation's outstanding work.
                 handler_work<Handler, IoExecutor> w(
                     static_cast<handler_work<Handler, IoExecutor> &&>(
                         o->work_));
 
-                ASIO_ERROR_LOCATION(o->ec_);
+                XIO_ERROR_LOCATION(o->ec_);
 
                 // Make a copy of the handler so that the memory can be deallocated before
                 // the upcall is made. Even if we're not about to make an upcall, a
@@ -240,9 +240,9 @@ namespace xio {
                 // Make the upcall if required.
                 if (owner) {
                     fenced_block b(fenced_block::half);
-                    ASIO_HANDLER_INVOCATION_BEGIN((handler.arg1_, "..."));
+                    XIO_HANDLER_INVOCATION_BEGIN((handler.arg1_, "..."));
                     w.complete(handler, handler.handler_);
-                    ASIO_HANDLER_INVOCATION_END;
+                    XIO_HANDLER_INVOCATION_END;
                 }
             }
 
@@ -259,6 +259,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
 
-#endif // ASIO_DETAIL_IO_URING_SOCKET_ACCEPT_OP_HPP
+#endif // XIO_DETAIL_IO_URING_SOCKET_ACCEPT_OP_HPP

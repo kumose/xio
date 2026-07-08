@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_MULTIPLE_EXCEPTIONS_HPP
-#define ASIO_MULTIPLE_EXCEPTIONS_HPP
+#ifndef XIO_MULTIPLE_EXCEPTIONS_HPP
+#define XIO_MULTIPLE_EXCEPTIONS_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -54,4 +54,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_MULTIPLE_EXCEPTIONS_HPP
+#endif // XIO_MULTIPLE_EXCEPTIONS_HPP

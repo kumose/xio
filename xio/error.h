@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_ERROR_HPP
-#define ASIO_ERROR_HPP
+#ifndef XIO_ERROR_HPP
+#define XIO_ERROR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,48 +18,37 @@
 #include <xio/detail/config.h>
 #include <xio/error_code.h>
 #include <system_error>
-#if defined(ASIO_WINDOWS) \
-  || defined(ASIO_CYGWIN_W32_SOCKETS) \
-  || defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS) \
+  || defined(XIO_CYGWIN_W32_SOCKETS) \
+  || defined(XIO_WINDOWS_RUNTIME)
 # include <winerror.h>
 #else
 # include <cerrno>
 # include <netdb.h>
 #endif
 
-#if defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_CYGWIN_W32_SOCKETS)
 #include <xio/detail/socket_types.h>
-#endif // defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_CYGWIN_W32_SOCKETS)
 
-#if defined(GENERATING_DOCUMENTATION)
-/// INTERNAL ONLY.
-# define ASIO_NATIVE_ERROR(e) implementation_defined
-/// INTERNAL ONLY.
-# define ASIO_SOCKET_ERROR(e) implementation_defined
-/// INTERNAL ONLY.
-# define ASIO_NETDB_ERROR(e) implementation_defined
-/// INTERNAL ONLY.
-# define ASIO_GETADDRINFO_ERROR(e) implementation_defined
-/// INTERNAL ONLY.
-# define ASIO_WIN_OR_POSIX(e_win, e_posix) implementation_defined
-#elif defined(ASIO_WINDOWS_RUNTIME)
-# define ASIO_NATIVE_ERROR(e) __HRESULT_FROM_WIN32(e)
-# define ASIO_SOCKET_ERROR(e) __HRESULT_FROM_WIN32(WSA ## e)
-# define ASIO_NETDB_ERROR(e) __HRESULT_FROM_WIN32(WSA ## e)
-# define ASIO_GETADDRINFO_ERROR(e) __HRESULT_FROM_WIN32(WSA ## e)
-# define ASIO_WIN_OR_POSIX(e_win, e_posix) e_win
-#elif defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
-# define ASIO_NATIVE_ERROR(e) e
-# define ASIO_SOCKET_ERROR(e) WSA ## e
-# define ASIO_NETDB_ERROR(e) WSA ## e
-# define ASIO_GETADDRINFO_ERROR(e) WSA ## e
-# define ASIO_WIN_OR_POSIX(e_win, e_posix) e_win
+#if defined(XIO_WINDOWS_RUNTIME)
+# define XIO_NATIVE_ERROR(e) __HRESULT_FROM_WIN32(e)
+# define XIO_SOCKET_ERROR(e) __HRESULT_FROM_WIN32(WSA ## e)
+# define XIO_NETDB_ERROR(e) __HRESULT_FROM_WIN32(WSA ## e)
+# define XIO_GETADDRINFO_ERROR(e) __HRESULT_FROM_WIN32(WSA ## e)
+# define XIO_WIN_OR_POSIX(e_win, e_posix) e_win
+#elif defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
+# define XIO_NATIVE_ERROR(e) e
+# define XIO_SOCKET_ERROR(e) WSA ## e
+# define XIO_NETDB_ERROR(e) WSA ## e
+# define XIO_GETADDRINFO_ERROR(e) WSA ## e
+# define XIO_WIN_OR_POSIX(e_win, e_posix) e_win
 #else
-# define ASIO_NATIVE_ERROR(e) e
-# define ASIO_SOCKET_ERROR(e) e
-# define ASIO_NETDB_ERROR(e) e
-# define ASIO_GETADDRINFO_ERROR(e) e
-# define ASIO_WIN_OR_POSIX(e_win, e_posix) e_posix
+# define XIO_NATIVE_ERROR(e) e
+# define XIO_SOCKET_ERROR(e) e
+# define XIO_NETDB_ERROR(e) e
+# define XIO_GETADDRINFO_ERROR(e) e
+# define XIO_WIN_OR_POSIX(e_win, e_posix) e_posix
 #endif
 
 #include <xio/detail/push_options.h>
@@ -68,144 +57,144 @@ namespace xio {
     namespace error {
         enum basic_errors {
             /// Permission denied.
-            access_denied = ASIO_SOCKET_ERROR(EACCES),
+            access_denied = XIO_SOCKET_ERROR(EACCES),
 
             /// Address family not supported by protocol.
-            address_family_not_supported = ASIO_SOCKET_ERROR(EAFNOSUPPORT),
+            address_family_not_supported = XIO_SOCKET_ERROR(EAFNOSUPPORT),
 
             /// Address already in use.
-            address_in_use = ASIO_SOCKET_ERROR(EADDRINUSE),
+            address_in_use = XIO_SOCKET_ERROR(EADDRINUSE),
 
             /// Transport endpoint is already connected.
-            already_connected = ASIO_SOCKET_ERROR(EISCONN),
+            already_connected = XIO_SOCKET_ERROR(EISCONN),
 
             /// Operation already in progress.
-            already_started = ASIO_SOCKET_ERROR(EALREADY),
+            already_started = XIO_SOCKET_ERROR(EALREADY),
 
             /// Broken pipe.
-            broken_pipe = ASIO_WIN_OR_POSIX(
-                ASIO_NATIVE_ERROR(ERROR_BROKEN_PIPE),
-                ASIO_NATIVE_ERROR(EPIPE)),
+            broken_pipe = XIO_WIN_OR_POSIX(
+                XIO_NATIVE_ERROR(ERROR_BROKEN_PIPE),
+                XIO_NATIVE_ERROR(EPIPE)),
 
             /// A connection has been aborted.
-            connection_aborted = ASIO_SOCKET_ERROR(ECONNABORTED),
+            connection_aborted = XIO_SOCKET_ERROR(ECONNABORTED),
 
             /// Connection refused.
-            connection_refused = ASIO_SOCKET_ERROR(ECONNREFUSED),
+            connection_refused = XIO_SOCKET_ERROR(ECONNREFUSED),
 
             /// Connection reset by peer.
-            connection_reset = ASIO_SOCKET_ERROR(ECONNRESET),
+            connection_reset = XIO_SOCKET_ERROR(ECONNRESET),
 
             /// Bad file descriptor.
-            bad_descriptor = ASIO_SOCKET_ERROR(EBADF),
+            bad_descriptor = XIO_SOCKET_ERROR(EBADF),
 
             /// Bad address.
-            fault = ASIO_SOCKET_ERROR(EFAULT),
+            fault = XIO_SOCKET_ERROR(EFAULT),
 
             /// No route to host.
-            host_unreachable = ASIO_SOCKET_ERROR(EHOSTUNREACH),
+            host_unreachable = XIO_SOCKET_ERROR(EHOSTUNREACH),
 
             /// Operation now in progress.
-            in_progress = ASIO_SOCKET_ERROR(EINPROGRESS),
+            in_progress = XIO_SOCKET_ERROR(EINPROGRESS),
 
             /// Interrupted system call.
-            interrupted = ASIO_SOCKET_ERROR(EINTR),
+            interrupted = XIO_SOCKET_ERROR(EINTR),
 
             /// Invalid argument.
-            invalid_argument = ASIO_SOCKET_ERROR(EINVAL),
+            invalid_argument = XIO_SOCKET_ERROR(EINVAL),
 
             /// Message too long.
-            message_size = ASIO_SOCKET_ERROR(EMSGSIZE),
+            message_size = XIO_SOCKET_ERROR(EMSGSIZE),
 
             /// The name was too long.
-            name_too_long = ASIO_SOCKET_ERROR(ENAMETOOLONG),
+            name_too_long = XIO_SOCKET_ERROR(ENAMETOOLONG),
 
             /// Network is down.
-            network_down = ASIO_SOCKET_ERROR(ENETDOWN),
+            network_down = XIO_SOCKET_ERROR(ENETDOWN),
 
             /// Network dropped connection on reset.
-            network_reset = ASIO_SOCKET_ERROR(ENETRESET),
+            network_reset = XIO_SOCKET_ERROR(ENETRESET),
 
             /// Network is unreachable.
-            network_unreachable = ASIO_SOCKET_ERROR(ENETUNREACH),
+            network_unreachable = XIO_SOCKET_ERROR(ENETUNREACH),
 
             /// Too many open files.
-            no_descriptors = ASIO_SOCKET_ERROR(EMFILE),
+            no_descriptors = XIO_SOCKET_ERROR(EMFILE),
 
             /// No buffer space available.
-            no_buffer_space = ASIO_SOCKET_ERROR(ENOBUFS),
+            no_buffer_space = XIO_SOCKET_ERROR(ENOBUFS),
 
             /// Cannot allocate memory.
-            no_memory = ASIO_WIN_OR_POSIX(
-                ASIO_NATIVE_ERROR(ERROR_OUTOFMEMORY),
-                ASIO_NATIVE_ERROR(ENOMEM)),
+            no_memory = XIO_WIN_OR_POSIX(
+                XIO_NATIVE_ERROR(ERROR_OUTOFMEMORY),
+                XIO_NATIVE_ERROR(ENOMEM)),
 
             /// Operation not permitted.
-            no_permission = ASIO_WIN_OR_POSIX(
-                ASIO_NATIVE_ERROR(ERROR_ACCESS_DENIED),
-                ASIO_NATIVE_ERROR(EPERM)),
+            no_permission = XIO_WIN_OR_POSIX(
+                XIO_NATIVE_ERROR(ERROR_ACCESS_DENIED),
+                XIO_NATIVE_ERROR(EPERM)),
 
             /// Protocol not available.
-            no_protocol_option = ASIO_SOCKET_ERROR(ENOPROTOOPT),
+            no_protocol_option = XIO_SOCKET_ERROR(ENOPROTOOPT),
 
             /// No such device.
-            no_such_device = ASIO_WIN_OR_POSIX(
-                ASIO_NATIVE_ERROR(ERROR_BAD_UNIT),
-                ASIO_NATIVE_ERROR(ENODEV)),
+            no_such_device = XIO_WIN_OR_POSIX(
+                XIO_NATIVE_ERROR(ERROR_BAD_UNIT),
+                XIO_NATIVE_ERROR(ENODEV)),
 
             /// Transport endpoint is not connected.
-            not_connected = ASIO_SOCKET_ERROR(ENOTCONN),
+            not_connected = XIO_SOCKET_ERROR(ENOTCONN),
 
             /// Socket operation on non-socket.
-            not_socket = ASIO_SOCKET_ERROR(ENOTSOCK),
+            not_socket = XIO_SOCKET_ERROR(ENOTSOCK),
 
             /// Operation cancelled.
-            operation_aborted = ASIO_WIN_OR_POSIX(
-                ASIO_NATIVE_ERROR(ERROR_OPERATION_ABORTED),
-                ASIO_NATIVE_ERROR(ECANCELED)),
+            operation_aborted = XIO_WIN_OR_POSIX(
+                XIO_NATIVE_ERROR(ERROR_OPERATION_ABORTED),
+                XIO_NATIVE_ERROR(ECANCELED)),
 
             /// Operation not supported.
-            operation_not_supported = ASIO_SOCKET_ERROR(EOPNOTSUPP),
+            operation_not_supported = XIO_SOCKET_ERROR(EOPNOTSUPP),
 
             /// Cannot send after transport endpoint shutdown.
-            shut_down = ASIO_SOCKET_ERROR(ESHUTDOWN),
+            shut_down = XIO_SOCKET_ERROR(ESHUTDOWN),
 
             /// Connection timed out.
-            timed_out = ASIO_SOCKET_ERROR(ETIMEDOUT),
+            timed_out = XIO_SOCKET_ERROR(ETIMEDOUT),
 
             /// Resource temporarily unavailable.
-            try_again = ASIO_WIN_OR_POSIX(
-                ASIO_NATIVE_ERROR(ERROR_RETRY),
-                ASIO_NATIVE_ERROR(EAGAIN)),
+            try_again = XIO_WIN_OR_POSIX(
+                XIO_NATIVE_ERROR(ERROR_RETRY),
+                XIO_NATIVE_ERROR(EAGAIN)),
 
             /// The socket is marked non-blocking and the requested operation would block.
-            would_block = ASIO_SOCKET_ERROR(EWOULDBLOCK)
+            would_block = XIO_SOCKET_ERROR(EWOULDBLOCK)
         };
 
         enum netdb_errors {
             /// Host not found (authoritative).
-            host_not_found = ASIO_NETDB_ERROR(HOST_NOT_FOUND),
+            host_not_found = XIO_NETDB_ERROR(HOST_NOT_FOUND),
 
             /// Host not found (non-authoritative).
-            host_not_found_try_again = ASIO_NETDB_ERROR(TRY_AGAIN),
+            host_not_found_try_again = XIO_NETDB_ERROR(TRY_AGAIN),
 
             /// The query is valid but does not have associated address data.
-            no_data = ASIO_NETDB_ERROR(NO_DATA),
+            no_data = XIO_NETDB_ERROR(NO_DATA),
 
             /// A non-recoverable error occurred.
-            no_recovery = ASIO_NETDB_ERROR(NO_RECOVERY)
+            no_recovery = XIO_NETDB_ERROR(NO_RECOVERY)
         };
 
         enum addrinfo_errors {
             /// The service is not supported for the given socket type.
-            service_not_found = ASIO_WIN_OR_POSIX(
-                ASIO_NATIVE_ERROR(WSATYPE_NOT_FOUND),
-                ASIO_GETADDRINFO_ERROR(EAI_SERVICE)),
+            service_not_found = XIO_WIN_OR_POSIX(
+                XIO_NATIVE_ERROR(WSATYPE_NOT_FOUND),
+                XIO_GETADDRINFO_ERROR(EAI_SERVICE)),
 
             /// The socket type is not supported.
-            socket_type_not_supported = ASIO_WIN_OR_POSIX(
-                ASIO_NATIVE_ERROR(WSAESOCKTNOSUPPORT),
-                ASIO_GETADDRINFO_ERROR(EAI_SOCKTYPE))
+            socket_type_not_supported = XIO_WIN_OR_POSIX(
+                XIO_NATIVE_ERROR(WSAESOCKTNOSUPPORT),
+                XIO_GETADDRINFO_ERROR(EAI_SOCKTYPE))
         };
 
         enum misc_errors {
@@ -222,9 +211,9 @@ namespace xio {
             fd_set_failure
         };
 
-#if !defined(ASIO_ERROR_LOCATION)
-# define ASIO_ERROR_LOCATION(e) (void)0
-#endif // !defined(ASIO_ERROR_LOCATION)
+#if !defined(XIO_ERROR_LOCATION)
+# define XIO_ERROR_LOCATION(e) (void)0
+#endif // !defined(XIO_ERROR_LOCATION)
 
 
         inline void clear(xio::error_code &ec) {
@@ -235,21 +224,21 @@ namespace xio {
             return xio::system_category();
         }
 
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS)
 
         extern
 
-        ASIO_DECL
+        XIO_DECL
         const xio::error_category &get_netdb_category();
 
         extern
 
-        ASIO_DECL
+        XIO_DECL
         const xio::error_category &get_addrinfo_category();
 
-#else // !defined(ASIO_WINDOWS)
-        //   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // !defined(XIO_WINDOWS)
+        //   && !defined(XIO_CYGWIN_W32_SOCKETS)
 
         inline const xio::error_category &get_netdb_category() {
             return get_system_category();
@@ -259,25 +248,25 @@ namespace xio {
             return get_system_category();
         }
 
-#endif // !defined(ASIO_WINDOWS)
-        //   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // !defined(XIO_WINDOWS)
+        //   && !defined(XIO_CYGWIN_W32_SOCKETS)
 
         extern
 
-        ASIO_DECL
+        XIO_DECL
         const xio::error_category &get_misc_category();
 
         inline const xio::error_category &
-                system_category ASIO_UNUSED_VARIABLE
+                system_category XIO_UNUSED_VARIABLE
                 = xio::error::get_system_category();
         inline const xio::error_category &
-                netdb_category ASIO_UNUSED_VARIABLE
+                netdb_category XIO_UNUSED_VARIABLE
                 = xio::error::get_netdb_category();
         inline const xio::error_category &
-                addrinfo_category ASIO_UNUSED_VARIABLE
+                addrinfo_category XIO_UNUSED_VARIABLE
                 = xio::error::get_addrinfo_category();
         inline const xio::error_category &
-                misc_category ASIO_UNUSED_VARIABLE
+                misc_category XIO_UNUSED_VARIABLE
                 = xio::error::get_misc_category();
     } // namespace error
 } // namespace xio
@@ -328,7 +317,7 @@ namespace xio {
 
         // boostify: non-boost code starts here
         namespace detail {
-            ASIO_DECL std::error_condition error_number_to_condition(int ev);
+            XIO_DECL std::error_condition error_number_to_condition(int ev);
         } // namespace detail
         // boostify: non-boost code ends here
     } // namespace error
@@ -352,10 +341,10 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#undef ASIO_NATIVE_ERROR
-#undef ASIO_SOCKET_ERROR
-#undef ASIO_NETDB_ERROR
-#undef ASIO_GETADDRINFO_ERROR
-#undef ASIO_WIN_OR_POSIX
+#undef XIO_NATIVE_ERROR
+#undef XIO_SOCKET_ERROR
+#undef XIO_NETDB_ERROR
+#undef XIO_GETADDRINFO_ERROR
+#undef XIO_WIN_OR_POSIX
 
-#endif // ASIO_ERROR_HPP
+#endif // XIO_ERROR_HPP

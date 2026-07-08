@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BASIC_SERIAL_PORT_HPP
-#define ASIO_BASIC_SERIAL_PORT_HPP
+#ifndef XIO_BASIC_SERIAL_PORT_HPP
+#define XIO_BASIC_SERIAL_PORT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,9 +18,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_SERIAL_PORT) \
-  || defined(GENERATING_DOCUMENTATION)
-
+#if defined(XIO_HAS_SERIAL_PORT)
 #include <string>
 #include <utility>
 #include <xio/any_io_executor.h>
@@ -33,7 +31,7 @@
 #include <xio/error.h>
 #include <xio/execution_context.h>
 #include <xio/serial_port_base.h>
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 #include <xio/detail/win_iocp_serial_port_service.h>
 #else
 #include <xio/detail/posix_serial_port_service.h>
@@ -44,14 +42,14 @@
 namespace xio {
 
 
-#if !defined(ASIO_BASIC_SERIAL_PORT_FWD_DECL)
-#define ASIO_BASIC_SERIAL_PORT_FWD_DECL
+#if !defined(XIO_BASIC_SERIAL_PORT_FWD_DECL)
+#define XIO_BASIC_SERIAL_PORT_FWD_DECL
 
 // Forward declaration with defaulted arguments.
 template<typename Executor = any_io_executor>
 class basic_serial_port;
 
-#endif // !defined(ASIO_BASIC_SERIAL_PORT_FWD_DECL)
+#endif // !defined(XIO_BASIC_SERIAL_PORT_FWD_DECL)
 
 /// Provides serial port functionality.
 /**
@@ -81,9 +79,7 @@ public:
     };
 
 /// The native representation of a serial port.
-#if defined(GENERATING_DOCUMENTATION)
-typedef implementation_defined native_handle_type;
-#elif defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 typedef detail::win_iocp_serial_port_service::native_handle_type
 native_handle_type;
 #else
@@ -395,10 +391,10 @@ void open(const std::string &device) {
    *
    * @param ec Set the indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID open(const std::string &device,
+XIO_SYNC_OP_VOID open(const std::string &device,
                        xio::error_code &ec) {
     impl_.get_service().open(impl_.get_implementation(), device, ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Assign an existing native serial port to the serial port.
@@ -424,11 +420,11 @@ void assign(const native_handle_type &native_serial_port) {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID assign(const native_handle_type &native_serial_port,
+XIO_SYNC_OP_VOID assign(const native_handle_type &native_serial_port,
                          xio::error_code &ec) {
     impl_.get_service().assign(impl_.get_implementation(),
                                native_serial_port, ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Determine whether the serial port is open.
@@ -458,9 +454,9 @@ void close() {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID close(xio::error_code &ec) {
+XIO_SYNC_OP_VOID close(xio::error_code &ec) {
     impl_.get_service().close(impl_.get_implementation(), ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Get the native serial port representation.
@@ -495,9 +491,9 @@ void cancel() {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
+XIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
     impl_.get_service().cancel(impl_.get_implementation(), ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Send a break sequence to the serial port.
@@ -520,9 +516,9 @@ void send_break() {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID send_break(xio::error_code &ec) {
+XIO_SYNC_OP_VOID send_break(xio::error_code &ec) {
     impl_.get_service().send_break(impl_.get_implementation(), ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Set an option on the serial port.
@@ -563,10 +559,10 @@ void set_option(const SettableSerialPortOption &option) {
    * xio::serial_port_base::character_size
    */
 template<typename SettableSerialPortOption>
-ASIO_SYNC_OP_VOID set_option(const SettableSerialPortOption &option,
+XIO_SYNC_OP_VOID set_option(const SettableSerialPortOption &option,
                              xio::error_code &ec) {
     impl_.get_service().set_option(impl_.get_implementation(), option, ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Get an option from the serial port.
@@ -609,10 +605,10 @@ void get_option(GettableSerialPortOption &option) const {
    * xio::serial_port_base::character_size
    */
 template<typename GettableSerialPortOption>
-ASIO_SYNC_OP_VOID get_option(GettableSerialPortOption &option,
+XIO_SYNC_OP_VOID get_option(GettableSerialPortOption &option,
                              xio::error_code &ec) const {
     impl_.get_service().get_option(impl_.get_implementation(), option, ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Write some data to the serial port.
@@ -727,7 +723,7 @@ std::size_t write_some(const ConstBufferSequence &buffers,
    * @li @c cancellation_type::total
    */
 template<typename ConstBufferSequence,
-    ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+    XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
     std::size_t)) WriteToken = default_completion_token_t<executor_type> >
 auto async_write_some(const ConstBufferSequence &buffers,
                       WriteToken &&token = default_completion_token_t<executor_type>())
@@ -855,7 +851,7 @@ std::size_t read_some(const MutableBufferSequence &buffers,
    * @li @c cancellation_type::total
    */
 template<typename MutableBufferSequence,
-    ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+    XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
     std::size_t)) ReadToken = default_completion_token_t<executor_type> >
 auto async_read_some(const MutableBufferSequence &buffers,
                      ReadToken &&token = default_completion_token_t<executor_type>())
@@ -890,7 +886,7 @@ public:
                     const ConstBufferSequence &buffers) const {
         // If you get an error on the following line it means that your handler
         // does not meet the documented type requirements for a WriteHandler.
-        ASIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
+        XIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
         type_check;
 
         detail::non_const_lvalue<WriteHandler> handler2(handler);
@@ -920,7 +916,7 @@ public:
                     const MutableBufferSequence &buffers) const {
         // If you get an error on the following line it means that your handler
         // does not meet the documented type requirements for a ReadHandler.
-        ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+        XIO_READ_HANDLER_CHECK(ReadHandler, handler)
         type_check;
 
         detail::non_const_lvalue<ReadHandler> handler2(handler);
@@ -933,7 +929,7 @@ private:
     basic_serial_port *self_;
 };
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 detail::io_object_impl<detail::win_iocp_serial_port_service, Executor> impl_;
 #else
 detail::io_object_impl<detail::posix_serial_port_service, Executor> impl_;
@@ -944,7 +940,6 @@ detail::io_object_impl<detail::posix_serial_port_service, Executor> impl_;
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_SERIAL_PORT)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_SERIAL_PORT)
 
-#endif // ASIO_BASIC_SERIAL_PORT_HPP
+#endif // XIO_BASIC_SERIAL_PORT_HPP

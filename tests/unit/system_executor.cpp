@@ -34,52 +34,52 @@ void increment(xio::detail::atomic_count* count)
 
 void system_executor_query_test()
 {
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(system_executor(),
         xio::execution::context)
       != static_cast<const system_context*>(0));
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(system_executor(),
         xio::execution::blocking)
       == xio::execution::blocking.possibly);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(system_executor(),
         xio::execution::blocking.possibly)
       == xio::execution::blocking.possibly);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(system_executor(),
         xio::execution::outstanding_work)
       == xio::execution::outstanding_work.untracked);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(system_executor(),
         xio::execution::outstanding_work.untracked)
       == xio::execution::outstanding_work.untracked);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(system_executor(),
         xio::execution::relationship)
       == xio::execution::relationship.fork);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(system_executor(),
         xio::execution::relationship.fork)
       == xio::execution::relationship.fork);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(system_executor(),
         xio::execution::mapping)
       == xio::execution::mapping.thread);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(system_executor(),
         xio::execution::inline_exception_handling)
       == xio::execution::inline_exception_handling.terminate);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(system_executor(),
         xio::execution::allocator)
       == std::allocator<void>());
@@ -138,12 +138,12 @@ void system_executor_execute_test()
 
   xio::query(system_executor(), execution::context).join();
 
-  ASIO_CHECK(count == 9);
+  XIO_CHECK(count == 9);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "system_executor",
-  ASIO_TEST_CASE(system_executor_query_test)
-  ASIO_TEST_CASE(system_executor_execute_test)
+  XIO_TEST_CASE(system_executor_query_test)
+  XIO_TEST_CASE(system_executor_execute_test)
 )

@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SERIAL_PORT_BASE_HPP
-#define ASIO_SERIAL_PORT_BASE_HPP
+#ifndef XIO_SERIAL_PORT_BASE_HPP
+#define XIO_SERIAL_PORT_BASE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,25 +18,18 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_SERIAL_PORT) \
-  || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_SERIAL_PORT)
 
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS)
 # include <termios.h>
-#endif // !defined(ASIO_WINDOWS)
-//   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // !defined(XIO_WINDOWS)
+//   && !defined(XIO_CYGWIN_W32_SOCKETS)
 
 #include <xio/detail/socket_types.h>
 #include <xio/error_code.h>
 
-#if defined(GENERATING_DOCUMENTATION)
-# define ASIO_OPTION_STORAGE implementation_defined
-#elif defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
-# define ASIO_OPTION_STORAGE DCB
-#else
-# define ASIO_OPTION_STORAGE termios
-#endif
+# define XIO_OPTION_STORAGE termios
 
 #include <xio/detail/push_options.h>
 
@@ -57,12 +50,12 @@ namespace xio {
 
             unsigned int value() const;
 
-    ASIO_DECL ASIO_SYNC_OP_VOID store(
-                ASIO_OPTION_STORAGE &storage,
+    XIO_DECL XIO_SYNC_OP_VOID store(
+                XIO_OPTION_STORAGE &storage,
                 xio::error_code &ec) const;
 
-    ASIO_DECL ASIO_SYNC_OP_VOID load(
-                const ASIO_OPTION_STORAGE &storage,
+    XIO_DECL XIO_SYNC_OP_VOID load(
+                const XIO_OPTION_STORAGE &storage,
                 xio::error_code &ec);
 
         private:
@@ -77,16 +70,16 @@ namespace xio {
         public:
             enum type { none, software, hardware };
 
-            ASIO_DECL explicit flow_control(type t = none);
+            XIO_DECL explicit flow_control(type t = none);
 
             type value() const;
 
-    ASIO_DECL ASIO_SYNC_OP_VOID store(
-                ASIO_OPTION_STORAGE &storage,
+    XIO_DECL XIO_SYNC_OP_VOID store(
+                XIO_OPTION_STORAGE &storage,
                 xio::error_code &ec) const;
 
-    ASIO_DECL ASIO_SYNC_OP_VOID load(
-                const ASIO_OPTION_STORAGE &storage,
+    XIO_DECL XIO_SYNC_OP_VOID load(
+                const XIO_OPTION_STORAGE &storage,
                 xio::error_code &ec);
 
         private:
@@ -101,16 +94,16 @@ namespace xio {
         public:
             enum type { none, odd, even };
 
-            ASIO_DECL explicit parity(type t = none);
+            XIO_DECL explicit parity(type t = none);
 
             type value() const;
 
-    ASIO_DECL ASIO_SYNC_OP_VOID store(
-                ASIO_OPTION_STORAGE &storage,
+    XIO_DECL XIO_SYNC_OP_VOID store(
+                XIO_OPTION_STORAGE &storage,
                 xio::error_code &ec) const;
 
-    ASIO_DECL ASIO_SYNC_OP_VOID load(
-                const ASIO_OPTION_STORAGE &storage,
+    XIO_DECL XIO_SYNC_OP_VOID load(
+                const XIO_OPTION_STORAGE &storage,
                 xio::error_code &ec);
 
         private:
@@ -125,16 +118,16 @@ namespace xio {
         public:
             enum type { one, onepointfive, two };
 
-            ASIO_DECL explicit stop_bits(type t = one);
+            XIO_DECL explicit stop_bits(type t = one);
 
             type value() const;
 
-    ASIO_DECL ASIO_SYNC_OP_VOID store(
-                ASIO_OPTION_STORAGE &storage,
+    XIO_DECL XIO_SYNC_OP_VOID store(
+                XIO_OPTION_STORAGE &storage,
                 xio::error_code &ec) const;
 
-    ASIO_DECL ASIO_SYNC_OP_VOID load(
-                const ASIO_OPTION_STORAGE &storage,
+    XIO_DECL XIO_SYNC_OP_VOID load(
+                const XIO_OPTION_STORAGE &storage,
                 xio::error_code &ec);
 
         private:
@@ -147,16 +140,16 @@ namespace xio {
    */
         class character_size {
         public:
-            ASIO_DECL explicit character_size(unsigned int t = 8);
+            XIO_DECL explicit character_size(unsigned int t = 8);
 
             unsigned int value() const;
 
-    ASIO_DECL ASIO_SYNC_OP_VOID store(
-                ASIO_OPTION_STORAGE &storage,
+    XIO_DECL XIO_SYNC_OP_VOID store(
+                XIO_OPTION_STORAGE &storage,
                 xio::error_code &ec) const;
 
-    ASIO_DECL ASIO_SYNC_OP_VOID load(
-                const ASIO_OPTION_STORAGE &storage,
+    XIO_DECL XIO_SYNC_OP_VOID load(
+                const XIO_OPTION_STORAGE &storage,
                 xio::error_code &ec);
 
         private:
@@ -174,12 +167,11 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#undef ASIO_OPTION_STORAGE
+#undef XIO_OPTION_STORAGE
 
 #include <xio/impl/serial_port_base.h>
 
 
-#endif // defined(ASIO_HAS_SERIAL_PORT)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_SERIAL_PORT)
 
-#endif // ASIO_SERIAL_PORT_BASE_HPP
+#endif // XIO_SERIAL_PORT_BASE_HPP

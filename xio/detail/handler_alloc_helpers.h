@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_HANDLER_ALLOC_HELPERS_HPP
-#define ASIO_DETAIL_HANDLER_ALLOC_HELPERS_HPP
+#ifndef XIO_DETAIL_HANDLER_ALLOC_HELPERS_HPP
+#define XIO_DETAIL_HANDLER_ALLOC_HELPERS_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -22,7 +22,7 @@
 
 #include <xio/detail/push_options.h>
 
-#define ASIO_DEFINE_TAGGED_HANDLER_PTR(purpose, op) \
+#define XIO_DEFINE_TAGGED_HANDLER_PTR(purpose, op) \
   struct ptr \
   { \
     Handler* h; \
@@ -38,7 +38,7 @@
         Handler>::type associated_allocator_type; \
       typedef typename ::xio::detail::get_recycling_allocator< \
         associated_allocator_type, purpose>::type default_allocator_type; \
-      ASIO_REBIND_ALLOC(default_allocator_type, op) a( \
+      XIO_REBIND_ALLOC(default_allocator_type, op) a( \
             ::xio::detail::get_recycling_allocator< \
               associated_allocator_type, purpose>::get( \
                 ::xio::get_associated_allocator(handler))); \
@@ -57,7 +57,7 @@
           Handler>::type associated_allocator_type; \
         typedef typename ::xio::detail::get_recycling_allocator< \
           associated_allocator_type, purpose>::type default_allocator_type; \
-        ASIO_REBIND_ALLOC(default_allocator_type, op) a( \
+        XIO_REBIND_ALLOC(default_allocator_type, op) a( \
               ::xio::detail::get_recycling_allocator< \
                 associated_allocator_type, purpose>::get( \
                   ::xio::get_associated_allocator(*h))); \
@@ -68,12 +68,12 @@
   } \
   /**/
 
-#define ASIO_DEFINE_HANDLER_PTR(op) \
-  ASIO_DEFINE_TAGGED_HANDLER_PTR( \
+#define XIO_DEFINE_HANDLER_PTR(op) \
+  XIO_DEFINE_TAGGED_HANDLER_PTR( \
       ::xio::detail::thread_info_base::default_tag, op ) \
   /**/
 
-#define ASIO_DEFINE_TAGGED_HANDLER_ALLOCATOR_PTR(purpose, op) \
+#define XIO_DEFINE_TAGGED_HANDLER_ALLOCATOR_PTR(purpose, op) \
   struct ptr \
   { \
     const Alloc* a; \
@@ -87,7 +87,7 @@
     { \
       typedef typename ::xio::detail::get_recycling_allocator< \
         Alloc, purpose>::type recycling_allocator_type; \
-      ASIO_REBIND_ALLOC(recycling_allocator_type, op) a1( \
+      XIO_REBIND_ALLOC(recycling_allocator_type, op) a1( \
             ::xio::detail::get_recycling_allocator< \
               Alloc, purpose>::get(a)); \
       return a1.allocate(1); \
@@ -103,7 +103,7 @@
       { \
         typedef typename ::xio::detail::get_recycling_allocator< \
           Alloc, purpose>::type recycling_allocator_type; \
-        ASIO_REBIND_ALLOC(recycling_allocator_type, op) a1( \
+        XIO_REBIND_ALLOC(recycling_allocator_type, op) a1( \
               ::xio::detail::get_recycling_allocator< \
                 Alloc, purpose>::get(*a)); \
         a1.deallocate(static_cast<op*>(v), 1); \
@@ -113,11 +113,11 @@
   } \
   /**/
 
-#define ASIO_DEFINE_HANDLER_ALLOCATOR_PTR(op) \
-  ASIO_DEFINE_TAGGED_HANDLER_ALLOCATOR_PTR( \
+#define XIO_DEFINE_HANDLER_ALLOCATOR_PTR(op) \
+  XIO_DEFINE_TAGGED_HANDLER_ALLOCATOR_PTR( \
       ::xio::detail::thread_info_base::default_tag, op ) \
   /**/
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_HANDLER_ALLOC_HELPERS_HPP
+#endif // XIO_DETAIL_HANDLER_ALLOC_HELPERS_HPP

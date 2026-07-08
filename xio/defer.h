@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DEFER_HPP
-#define ASIO_DEFER_HPP
+#ifndef XIO_DEFER_HPP
+#define XIO_DEFER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -82,7 +82,7 @@ namespace xio {
  */
 
 
-    template<ASIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = deferred_t>
+    template<XIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = deferred_t>
     inline auto defer(NullaryToken && token = deferred_t())
     ->
     decltype(
@@ -165,7 +165,7 @@ namespace xio {
  * @code void() @endcode
  */
     template<typename Executor,
-        ASIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<Executor> >
+        XIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<Executor> >
     inline auto defer(const Executor &ex,
                       NullaryToken &&token = default_completion_token_t<Executor>(),
                       constraint_t<
@@ -196,7 +196,7 @@ namespace xio {
  * @code void() @endcode
  */
     template<typename ExecutionContext,
-        ASIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<typename
+        XIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<typename
             ExecutionContext::executor_type> >
     inline auto defer(ExecutionContext & ctx,
                       NullaryToken && token = default_completion_token_t<
@@ -323,7 +323,7 @@ namespace xio {
  * @code void() @endcode
  */
     template<typename Function, typename Executor,
-        ASIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<Executor> >
+        XIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<Executor> >
     inline auto defer(Function &&function, const Executor &ex,
                       NullaryToken &&token = default_completion_token_t<Executor>(),
                       constraint_t<
@@ -451,7 +451,7 @@ namespace xio {
  * @code void(std::decay_t<result_of_t<std::decay_t<Function>()>>) @endcode
  */
     template<typename Function, typename Executor,
-        ASIO_COMPLETION_TOKEN_FOR(
+        XIO_COMPLETION_TOKEN_FOR(
         void(std::decay_t<result_of_t < std::decay_t<Function>()> >
 
 
@@ -505,7 +505,7 @@ namespace xio {
  * @code void() @endcode
  */
     template<typename Function, typename ExecutionContext,
-        ASIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<typename
+        XIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<typename
             ExecutionContext::executor_type> >
     inline auto defer(Function && function, ExecutionContext & ctx,
                       NullaryToken && token = default_completion_token_t<
@@ -552,7 +552,7 @@ namespace xio {
  * @code void(std::decay_t<result_of_t<std::decay_t<Function>()>>) @endcode
  */
     template<typename Function, typename ExecutionContext,
-        ASIO_COMPLETION_TOKEN_FOR(
+        XIO_COMPLETION_TOKEN_FOR(
         void(std::decay_t<result_of_t < std::decay_t<Function>()> >
 
 
@@ -589,4 +589,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DEFER_HPP
+#endif // XIO_DEFER_HPP

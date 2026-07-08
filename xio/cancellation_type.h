@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_CANCELLATION_TYPE_HPP
-#define ASIO_CANCELLATION_TYPE_HPP
+#ifndef XIO_CANCELLATION_TYPE_HPP
+#define XIO_CANCELLATION_TYPE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -22,37 +22,6 @@
 namespace xio {
 
 
-# if defined(GENERATING_DOCUMENTATION)
-
-    /// Enumeration representing the different types of cancellation that may
-/// be requested from or implemented by an asynchronous operation.
-    enum cancellation_type {
-        /// Bitmask representing no types of cancellation.
-        none = 0,
-
-        /// Requests cancellation where, following a successful cancellation, the only
-  /// safe operations on the I/O object are closure or destruction.
-        terminal = 1,
-
-        /// Requests cancellation where a successful cancellation may result in
-  /// partial side effects or no side effects. Following cancellation, the I/O
-  /// object is in a well-known state, and may be used for further operations.
-        partial = 2,
-
-        /// Requests cancellation where a successful cancellation results in no
-  /// apparent side effects. Following cancellation, the I/O object is in the
-  /// same observable state as it was prior to the operation.
-        total = 4,
-
-        /// Bitmask representing all types of cancellation.
-        all = 0xFFFFFFFF
-    };
-
-    /// Portability typedef.
-    typedef cancellation_type cancellation_type_t;
-
-#else // defined(GENERATING_DOCUMENTATION)
-
     enum class cancellation_type : unsigned int {
         none = 0,
         terminal = 1,
@@ -63,7 +32,6 @@ namespace xio {
 
     typedef cancellation_type cancellation_type_t;
 
-#endif // defined(GENERATING_DOCUMENTATION)
 
     /// Negation operator.
     /**
@@ -146,4 +114,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_CANCELLATION_TYPE_HPP
+#endif // XIO_CANCELLATION_TYPE_HPP

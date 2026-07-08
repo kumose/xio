@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETACHED_HPP
-#define ASIO_DETACHED_HPP
+#ifndef XIO_DETACHED_HPP
+#define XIO_DETACHED_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -98,4 +98,4 @@ inline constexpr detached_t detached;
 
 #include <xio/impl/detached.h>
 
-#endif // ASIO_DETACHED_HPP
+#endif // XIO_DETACHED_HPP

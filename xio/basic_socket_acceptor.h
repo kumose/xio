@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BASIC_SOCKET_ACCEPTOR_HPP
-#define ASIO_BASIC_SOCKET_ACCEPTOR_HPP
+#ifndef XIO_BASIC_SOCKET_ACCEPTOR_HPP
+#define XIO_BASIC_SOCKET_ACCEPTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -28,11 +28,11 @@
 #include <xio/execution_context.h>
 #include <xio/socket_base.h>
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 #include <xio/detail/null_socket_service.h>
-#elif defined(ASIO_HAS_IOCP)
+#elif defined(XIO_HAS_IOCP)
 #include <xio/detail/win_iocp_socket_service.h>
-#elif defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#elif defined(XIO_HAS_IO_URING_AS_DEFAULT)
 #include <xio/detail/io_uring_socket_service.h>
 #else
 #include <xio/detail/reactive_socket_service.h>
@@ -43,8 +43,8 @@
 namespace xio {
 
 
-#if !defined(ASIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL)
-#define ASIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL
+#if !defined(XIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL)
+#define XIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL
 
     // Forward declaration with defaulted arguments.
 
@@ -52,7 +52,7 @@ namespace xio {
     template<typename Protocol, typename Executor = any_io_executor>
     class basic_socket_acceptor;
 
-#endif // !defined(ASIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL)
+#endif // !defined(XIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL)
 
     /// Provides the ability to accept new connections.
     /**
@@ -100,15 +100,13 @@ namespace xio {
         };
 
         /// The native representation of an acceptor.
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined native_handle_type;
-#elif defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
         typedef typename detail::null_socket_service<
             Protocol>::native_handle_type native_handle_type;
-#elif defined(ASIO_HAS_IOCP)
+#elif defined(XIO_HAS_IOCP)
         typedef typename detail::win_iocp_socket_service<
             Protocol>::native_handle_type native_handle_type;
-#elif defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#elif defined(XIO_HAS_IO_URING_AS_DEFAULT)
         typedef typename detail::io_uring_socket_service<
             Protocol>::native_handle_type native_handle_type;
 #else
@@ -479,10 +477,10 @@ namespace xio {
    * }
    * @endcode
    */
-        ASIO_SYNC_OP_VOID open(const protocol_type &protocol,
+        XIO_SYNC_OP_VOID open(const protocol_type &protocol,
                                xio::error_code &ec) {
             impl_.get_service().open(impl_.get_implementation(), protocol, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Assigns an existing native acceptor to the acceptor.
@@ -513,11 +511,11 @@ namespace xio {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-        ASIO_SYNC_OP_VOID assign(const protocol_type &protocol,
+        XIO_SYNC_OP_VOID assign(const protocol_type &protocol,
                                  const native_handle_type &native_acceptor, xio::error_code &ec) {
             impl_.get_service().assign(impl_.get_implementation(),
                                        protocol, native_acceptor, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Determine whether the acceptor is open.
@@ -572,10 +570,10 @@ namespace xio {
    * }
    * @endcode
    */
-        ASIO_SYNC_OP_VOID bind(const endpoint_type &endpoint,
+        XIO_SYNC_OP_VOID bind(const endpoint_type &endpoint,
                                xio::error_code &ec) {
             impl_.get_service().bind(impl_.get_implementation(), endpoint, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Place the acceptor into the state where it will listen for new
@@ -616,9 +614,9 @@ namespace xio {
    * }
    * @endcode
    */
-        ASIO_SYNC_OP_VOID listen(int backlog, xio::error_code &ec) {
+        XIO_SYNC_OP_VOID listen(int backlog, xio::error_code &ec) {
             impl_.get_service().listen(impl_.get_implementation(), backlog, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Close the acceptor.
@@ -659,9 +657,9 @@ namespace xio {
    * }
    * @endcode
    */
-        ASIO_SYNC_OP_VOID close(xio::error_code &ec) {
+        XIO_SYNC_OP_VOID close(xio::error_code &ec) {
             impl_.get_service().close(impl_.get_implementation(), ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Release ownership of the underlying native acceptor.
@@ -677,7 +675,7 @@ namespace xio {
    * 8.1, and will fail with xio::error::operation_not_supported on
    * these platforms.
    */
-#if defined(ASIO_MSVC) && (ASIO_MSVC >= 1400) \
+#if defined(XIO_MSVC) && (XIO_MSVC >= 1400) \
   && (!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0603)
         __declspec(deprecated("This function always fails with "
         "operation_not_supported when used on Windows versions "
@@ -704,7 +702,7 @@ namespace xio {
    * 8.1, and will fail with xio::error::operation_not_supported on
    * these platforms.
    */
-#if defined(ASIO_MSVC) && (ASIO_MSVC >= 1400) \
+#if defined(XIO_MSVC) && (XIO_MSVC >= 1400) \
   && (!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0603)
         __declspec(deprecated("This function always fails with "
         "operation_not_supported when used on Windows versions "
@@ -746,9 +744,9 @@ namespace xio {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-        ASIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
+        XIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
             impl_.get_service().cancel(impl_.get_implementation(), ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Set an option on the acceptor.
@@ -806,10 +804,10 @@ namespace xio {
    * @endcode
    */
         template<typename SettableSocketOption>
-        ASIO_SYNC_OP_VOID set_option(const SettableSocketOption &option,
+        XIO_SYNC_OP_VOID set_option(const SettableSocketOption &option,
                                      xio::error_code &ec) {
             impl_.get_service().set_option(impl_.get_implementation(), option, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Get an option from the acceptor.
@@ -869,10 +867,10 @@ namespace xio {
    * @endcode
    */
         template<typename GettableSocketOption>
-        ASIO_SYNC_OP_VOID get_option(GettableSocketOption &option,
+        XIO_SYNC_OP_VOID get_option(GettableSocketOption &option,
                                      xio::error_code &ec) const {
             impl_.get_service().get_option(impl_.get_implementation(), option, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Perform an IO control command on the acceptor.
@@ -928,10 +926,10 @@ namespace xio {
    * @endcode
    */
         template<typename IoControlCommand>
-        ASIO_SYNC_OP_VOID io_control(IoControlCommand &command,
+        XIO_SYNC_OP_VOID io_control(IoControlCommand &command,
                                      xio::error_code &ec) {
             impl_.get_service().io_control(impl_.get_implementation(), command, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Gets the non-blocking mode of the acceptor.
@@ -981,10 +979,10 @@ namespace xio {
    * operations. Asynchronous operations will never fail with the error
    * xio::error::would_block.
    */
-        ASIO_SYNC_OP_VOID non_blocking(
+        XIO_SYNC_OP_VOID non_blocking(
             bool mode, xio::error_code &ec) {
             impl_.get_service().non_blocking(impl_.get_implementation(), mode, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Gets the non-blocking mode of the native acceptor implementation.
@@ -1042,11 +1040,11 @@ namespace xio {
    * function fails with xio::error::invalid_argument, as the
    * combination does not make sense.
    */
-        ASIO_SYNC_OP_VOID native_non_blocking(
+        XIO_SYNC_OP_VOID native_non_blocking(
             bool mode, xio::error_code &ec) {
             impl_.get_service().native_non_blocking(
                 impl_.get_implementation(), mode, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Get the local endpoint of the acceptor.
@@ -1139,9 +1137,9 @@ namespace xio {
    * acceptor.wait(xio::ip::tcp::acceptor::wait_read, ec);
    * @endcode
    */
-        ASIO_SYNC_OP_VOID wait(wait_type w, xio::error_code &ec) {
+        XIO_SYNC_OP_VOID wait(wait_type w, xio::error_code &ec) {
             impl_.get_service().wait(impl_.get_implementation(), w, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Asynchronously wait for the acceptor to become ready to read, ready to
@@ -1200,7 +1198,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
             WaitToken = default_completion_token_t<executor_type> >
         auto async_wait(wait_type w,
                         WaitToken &&token = default_completion_token_t<executor_type>())
@@ -1211,7 +1209,7 @@ namespace xio {
                 initiate_async_wait(this), token, w);
         }
 
-#if !defined(ASIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_EXTENSIONS)
         /// Accept a new connection.
         /**
    * This function is used to accept a new connection from a peer into the
@@ -1265,14 +1263,14 @@ namespace xio {
    * @endcode
    */
         template<typename Protocol1, typename Executor1>
-        ASIO_SYNC_OP_VOID accept(
+        XIO_SYNC_OP_VOID accept(
             basic_socket<Protocol1, Executor1> &peer, xio::error_code &ec,
             constraint_t<
                 std::is_convertible<Protocol, Protocol1>::value
             > = 0) {
             impl_.get_service().accept(impl_.get_implementation(),
                                        peer, static_cast<endpoint_type *>(0), ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Start an asynchronous accept.
@@ -1331,7 +1329,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<typename Protocol1, typename Executor1,
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
             AcceptToken = default_completion_token_t<executor_type> >
         auto async_accept(basic_socket<Protocol1, Executor1> &peer,
                           AcceptToken &&token = default_completion_token_t<executor_type>(),
@@ -1408,11 +1406,11 @@ namespace xio {
    * @endcode
    */
         template<typename Executor1>
-        ASIO_SYNC_OP_VOID accept(basic_socket<protocol_type, Executor1> &peer,
+        XIO_SYNC_OP_VOID accept(basic_socket<protocol_type, Executor1> &peer,
                                  endpoint_type &peer_endpoint, xio::error_code &ec) {
             impl_.get_service().accept(
                 impl_.get_implementation(), peer, &peer_endpoint, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Start an asynchronous accept.
@@ -1458,7 +1456,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<typename Executor1,
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
             AcceptToken = default_completion_token_t<executor_type> >
         auto async_accept(basic_socket<protocol_type, Executor1> &peer,
                           endpoint_type &peer_endpoint,
@@ -1469,7 +1467,7 @@ namespace xio {
             return async_initiate<AcceptToken, void(xio::error_code)>(
                 initiate_async_accept(this), token, &peer, &peer_endpoint);
         }
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
         /// Accept a new connection.
         /**
@@ -1595,7 +1593,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             typename Protocol::socket::template rebind_executor<
                 executor_type>::other)) MoveAcceptToken = default_completion_token_t<executor_type> >
         auto async_accept(
@@ -1839,7 +1837,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<typename Executor1,
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             typename Protocol::socket::template rebind_executor<
                 constraint_t < is_executor<Executor1>::value
                 || execution::is_executor<Executor1>::value,
@@ -1941,7 +1939,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<typename ExecutionContext,
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             typename Protocol::socket::template rebind_executor<
                 typename ExecutionContext::executor_type>::other)) MoveAcceptToken = default_completion_token_t<
                 executor_type> >
@@ -2109,7 +2107,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             typename Protocol::socket::template rebind_executor<
                 executor_type>::other)) MoveAcceptToken = default_completion_token_t<executor_type> >
         auto async_accept(endpoint_type &peer_endpoint,
@@ -2385,7 +2383,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<typename Executor1,
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             typename Protocol::socket::template rebind_executor<
                 constraint_t < is_executor<Executor1>::value
                 || execution::is_executor<Executor1>::value,
@@ -2491,7 +2489,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<typename ExecutionContext,
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             typename Protocol::socket::template rebind_executor<
                 typename ExecutionContext::executor_type>::other)) MoveAcceptToken = default_completion_token_t<
                 executor_type> >
@@ -2542,7 +2540,7 @@ namespace xio {
             void operator()(WaitHandler &&handler, wait_type w) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a WaitHandler.
-                ASIO_WAIT_HANDLER_CHECK(WaitHandler, handler)
+                XIO_WAIT_HANDLER_CHECK(WaitHandler, handler)
                 type_check;
 
                 detail::non_const_lvalue<WaitHandler> handler2(handler);
@@ -2573,7 +2571,7 @@ namespace xio {
                             endpoint_type *peer_endpoint) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a AcceptHandler.
-                ASIO_ACCEPT_HANDLER_CHECK(AcceptHandler, handler)
+                XIO_ACCEPT_HANDLER_CHECK(AcceptHandler, handler)
                 type_check;
 
                 detail::non_const_lvalue<AcceptHandler> handler2(handler);
@@ -2603,7 +2601,7 @@ namespace xio {
                             const Executor1 &peer_ex, endpoint_type *peer_endpoint, Socket *) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a MoveAcceptHandler.
-                ASIO_MOVE_ACCEPT_HANDLER_CHECK(
+                XIO_MOVE_ACCEPT_HANDLER_CHECK(
                     MoveAcceptHandler, handler, Socket)
                 type_check;
 
@@ -2617,13 +2615,13 @@ namespace xio {
             basic_socket_acceptor *self_;
         };
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
         detail::io_object_impl<
             detail::null_socket_service<Protocol>, Executor> impl_;
-#elif defined(ASIO_HAS_IOCP)
+#elif defined(XIO_HAS_IOCP)
         detail::io_object_impl<
             detail::win_iocp_socket_service<Protocol>, Executor> impl_;
-#elif defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#elif defined(XIO_HAS_IO_URING_AS_DEFAULT)
         detail::io_object_impl<
             detail::io_uring_socket_service<Protocol>, Executor> impl_;
 #else
@@ -2637,4 +2635,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_BASIC_SOCKET_ACCEPTOR_HPP
+#endif // XIO_BASIC_SOCKET_ACCEPTOR_HPP

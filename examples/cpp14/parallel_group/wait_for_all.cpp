@@ -12,7 +12,7 @@
 #include <xio/experimental/parallel_group.h>
 #include <iostream>
 
-#ifdef ASIO_HAS_POSIX_STREAM_DESCRIPTOR
+#ifdef XIO_HAS_POSIX_STREAM_DESCRIPTOR
 
 int main()
 {
@@ -59,6 +59,6 @@ int main()
   ctx.run();
 }
 
-#else // defined(ASIO_HAS_POSIX_STREAM_DESCRIPTOR)
+#else // defined(XIO_HAS_POSIX_STREAM_DESCRIPTOR)
 int main() {}
-#endif // defined(ASIO_HAS_POSIX_STREAM_DESCRIPTOR)
+#endif // defined(XIO_HAS_POSIX_STREAM_DESCRIPTOR)

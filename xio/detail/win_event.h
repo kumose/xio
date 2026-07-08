@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WIN_EVENT_HPP
-#define ASIO_DETAIL_WIN_EVENT_HPP
+#ifndef XIO_DETAIL_WIN_EVENT_HPP
+#define XIO_DETAIL_WIN_EVENT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 
 #include <cstddef>
 # include <cassert>
@@ -34,10 +34,10 @@ namespace xio {
                 : private noncopyable {
         public:
             // Constructor.
-            ASIO_DECL win_event();
+            XIO_DECL win_event();
 
             // Destructor.
-            ASIO_DECL ~win_event();
+            XIO_DECL ~win_event();
 
             // Signal the event. (Retained for backward compatibility.)
             template<typename Lock>
@@ -105,11 +105,11 @@ namespace xio {
                 while ((state_ & 1) == 0) {
                     state_ += 2;
                     lock.unlock();
-#if defined(ASIO_WINDOWS_APP)
+#if defined(XIO_WINDOWS_APP)
 ::WaitForMultipleObjectsEx (2, events_, false, INFINITE, false);
-#else // defined(ASIO_WINDOWS_APP)
+#else // defined(XIO_WINDOWS_APP)
 ::WaitForMultipleObjects (2, events_, false, INFINITE);
-#endif // defined(ASIO_WINDOWS_APP)
+#endif // defined(XIO_WINDOWS_APP)
 lock.lock();
 state_-= 2;
     }
@@ -123,11 +123,11 @@ bool wait_for_usec(Lock &lock, long usec) {
         state_ += 2;
         lock.unlock();
         DWORD msec = usec > 0 ? (usec < 1000 ? 1 : usec / 1000) : 0;
-#if defined(ASIO_WINDOWS_APP)
+#if defined(XIO_WINDOWS_APP)
 ::WaitForMultipleObjectsEx (2, events_, false, msec, false);
-#else // defined(ASIO_WINDOWS_APP)
+#else // defined(XIO_WINDOWS_APP)
 ::WaitForMultipleObjects (2, events_, false, msec);
-#endif // defined(ASIO_WINDOWS_APP)
+#endif // defined(XIO_WINDOWS_APP)
 lock.lock();
 state_-= 2;
     }
@@ -145,6 +145,6 @@ std::size_t state_;
 #include <xio/detail/pop_options.h>
 
 
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 
-#endif // ASIO_DETAIL_WIN_EVENT_HPP
+#endif // XIO_DETAIL_WIN_EVENT_HPP

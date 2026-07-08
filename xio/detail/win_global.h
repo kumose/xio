@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WIN_GLOBAL_HPP
-#define ASIO_DETAIL_WIN_GLOBAL_HPP
+#ifndef XIO_DETAIL_WIN_GLOBAL_HPP
+#define XIO_DETAIL_WIN_GLOBAL_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -42,7 +42,7 @@ namespace xio {
         win_global_impl<T> win_global_impl<T>::instance_ = {0};
 
         template<typename T>
-        static_mutex win_global_impl<T>::mutex_ = ASIO_STATIC_MUTEX_INIT;
+        static_mutex win_global_impl<T>::mutex_ = XIO_STATIC_MUTEX_INIT;
 
         template<typename T>
         tss_ptr<T> win_global_impl<T>::tss_ptr_;
@@ -65,4 +65,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_WIN_GLOBAL_HPP
+#endif // XIO_DETAIL_WIN_GLOBAL_HPP

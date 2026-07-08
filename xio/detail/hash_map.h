@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_HASH_MAP_HPP
-#define ASIO_DETAIL_HASH_MAP_HPP
+#ifndef XIO_DETAIL_HASH_MAP_HPP
+#define XIO_DETAIL_HASH_MAP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -21,9 +21,9 @@
 # include <cassert>
 #include <xio/detail/noncopyable.h>
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 #include <xio/detail/socket_types.h>
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 
 #include <xio/detail/push_options.h>
 
@@ -40,11 +40,11 @@ namespace xio {
                    + (reinterpret_cast<std::size_t>(p) >> 3);
         }
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
         inline std::size_t calculate_hash_value(SOCKET s) {
             return static_cast<std::size_t>(s);
         }
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 
         // Note: assumes K and V are POD types.
         template<typename K, typename V>
@@ -200,13 +200,13 @@ namespace xio {
             static std::size_t hash_size(std::size_t num_elems) {
                 static std::size_t sizes[] =
                 {
-#if defined(ASIO_HASH_MAP_BUCKETS)
-                    ASIO_HASH_MAP_BUCKETS
-#else // ASIO_HASH_MAP_BUCKETS
+#if defined(XIO_HASH_MAP_BUCKETS)
+                    XIO_HASH_MAP_BUCKETS
+#else // XIO_HASH_MAP_BUCKETS
                     3, 13, 23, 53, 97, 193, 389, 769, 1543, 3079, 6151, 12289, 24593,
                     49157, 98317, 196613, 393241, 786433, 1572869, 3145739, 6291469,
                     12582917, 25165843
-#endif // ASIO_HASH_MAP_BUCKETS
+#endif // XIO_HASH_MAP_BUCKETS
                 };
                 const std::size_t nth_size = sizeof(sizes) / sizeof(std::size_t) - 1;
                 for (std::size_t i = 0; i < nth_size; ++i)
@@ -292,4 +292,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_HASH_MAP_HPP
+#endif // XIO_DETAIL_HASH_MAP_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_SCHEDULER_IPP
-#define ASIO_DETAIL_IMPL_SCHEDULER_IPP
+#ifndef XIO_DETAIL_IMPL_SCHEDULER_IPP
+#define XIO_DETAIL_IMPL_SCHEDULER_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -24,11 +24,11 @@
 #include <xio/detail/scheduler_thread_info.h>
 #include <xio/detail/signal_blocker.h>
 
-#if defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#if defined(XIO_HAS_IO_URING_AS_DEFAULT)
 #include <xio/detail/io_uring_service.h>
-#else // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#else // defined(XIO_HAS_IO_URING_AS_DEFAULT)
 #include <xio/detail/reactor.h>
-#endif // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#endif // defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
 #include <xio/detail/push_options.h>
 
@@ -84,12 +84,12 @@ namespace xio {
                 }
                 this_thread_->private_outstanding_work = 0;
 
-#if defined(ASIO_HAS_THREADS)
+#if defined(XIO_HAS_THREADS)
                 if (!this_thread_->private_op_queue.empty()) {
                     lock_->lock();
                     scheduler_->op_queue_.push(this_thread_->private_op_queue);
                 }
-#endif // defined(ASIO_HAS_THREADS)
+#endif // defined(XIO_HAS_THREADS)
             }
 
             scheduler *scheduler_;
@@ -114,7 +114,7 @@ namespace xio {
               task_usec_(config(ctx).get("scheduler", "task_usec", -1L)),
               wait_usec_(config(ctx).get("scheduler", "wait_usec", -1L)),
               thread_() {
-            ASIO_HANDLER_TRACKING_INIT;
+            XIO_HANDLER_TRACKING_INIT;
 
             if (own_thread) {
                 ++outstanding_work_;
@@ -136,7 +136,7 @@ namespace xio {
               outstanding_work_(0),
               task_usec_(-1L),
               wait_usec_(-1L) {
-            ASIO_HANDLER_TRACKING_INIT;
+            XIO_HANDLER_TRACKING_INIT;
         }
 
         scheduler::~scheduler() {
@@ -245,14 +245,14 @@ namespace xio {
 
             mutex::scoped_lock lock(mutex_);
 
-#if defined(ASIO_HAS_THREADS)
+#if defined(XIO_HAS_THREADS)
             // We want to support nested calls to poll() and poll_one(), so any handlers
             // that are already on a thread-private queue need to be put on to the main
             // queue now.
             if (one_thread_)
                 if (thread_info *outer_info = static_cast<thread_info *>(ctx.next_by_key()))
                     op_queue_.push(outer_info->private_op_queue);
-#endif // defined(ASIO_HAS_THREADS)
+#endif // defined(XIO_HAS_THREADS)
 
             std::size_t n = 0;
             for (; do_poll_one(lock, this_thread, ec); lock.lock())
@@ -274,14 +274,14 @@ namespace xio {
 
             mutex::scoped_lock lock(mutex_);
 
-#if defined(ASIO_HAS_THREADS)
+#if defined(XIO_HAS_THREADS)
             // We want to support nested calls to poll() and poll_one(), so any handlers
             // that are already on a thread-private queue need to be put on to the main
             // queue now.
             if (one_thread_)
                 if (thread_info *outer_info = static_cast<thread_info *>(ctx.next_by_key()))
                     op_queue_.push(outer_info->private_op_queue);
-#endif // defined(ASIO_HAS_THREADS)
+#endif // defined(XIO_HAS_THREADS)
 
             return do_poll_one(lock, this_thread, ec);
         }
@@ -303,7 +303,7 @@ namespace xio {
 
         void scheduler::compensating_work_started() {
             thread_info_base *this_thread = thread_call_stack::contains(this);
-            ASIO_ASSUME(this_thread != 0); // Only called from inside scheduler.
+            XIO_ASSUME(this_thread != 0); // Only called from inside scheduler.
             ++static_cast<thread_info *>(this_thread)->private_outstanding_work;
         }
 
@@ -318,7 +318,7 @@ namespace xio {
 
         void scheduler::post_immediate_completion(
             scheduler::operation *op, bool is_continuation) {
-#if defined(ASIO_HAS_THREADS)
+#if defined(XIO_HAS_THREADS)
             if (assume_continuation_ || is_continuation) {
                 if (thread_info_base *this_thread = thread_call_stack::contains(this)) {
                     ++static_cast<thread_info *>(this_thread)->private_outstanding_work;
@@ -326,9 +326,9 @@ namespace xio {
                     return;
                 }
             }
-#else // defined(ASIO_HAS_THREADS)
+#else // defined(XIO_HAS_THREADS)
             (void) is_continuation;
-#endif // defined(ASIO_HAS_THREADS)
+#endif // defined(XIO_HAS_THREADS)
 
             work_started();
             mutex::scoped_lock lock(mutex_);
@@ -338,7 +338,7 @@ namespace xio {
 
         void scheduler::post_immediate_completions(std::size_t n,
                                                    op_queue<scheduler::operation> &ops, bool is_continuation) {
-#if defined(ASIO_HAS_THREADS)
+#if defined(XIO_HAS_THREADS)
             if (assume_continuation_ || is_continuation) {
                 if (thread_info_base *this_thread = thread_call_stack::contains(this)) {
                     static_cast<thread_info *>(this_thread)->private_outstanding_work
@@ -347,9 +347,9 @@ namespace xio {
                     return;
                 }
             }
-#else // defined(ASIO_HAS_THREADS)
+#else // defined(XIO_HAS_THREADS)
             (void) is_continuation;
-#endif // defined(ASIO_HAS_THREADS)
+#endif // defined(XIO_HAS_THREADS)
 
             increment(outstanding_work_, static_cast<long>(n));
             mutex::scoped_lock lock(mutex_);
@@ -358,14 +358,14 @@ namespace xio {
         }
 
         void scheduler::post_deferred_completion(scheduler::operation *op) {
-#if defined(ASIO_HAS_THREADS)
+#if defined(XIO_HAS_THREADS)
             if (assume_continuation_) {
                 if (thread_info_base *this_thread = thread_call_stack::contains(this)) {
                     static_cast<thread_info *>(this_thread)->private_op_queue.push(op);
                     return;
                 }
             }
-#endif // defined(ASIO_HAS_THREADS)
+#endif // defined(XIO_HAS_THREADS)
 
             mutex::scoped_lock lock(mutex_);
             op_queue_.push(op);
@@ -375,14 +375,14 @@ namespace xio {
         void scheduler::post_deferred_completions(
             op_queue<scheduler::operation> &ops) {
             if (!ops.empty()) {
-#if defined(ASIO_HAS_THREADS)
+#if defined(XIO_HAS_THREADS)
                 if (assume_continuation_) {
                     if (thread_info_base *this_thread = thread_call_stack::contains(this)) {
                         static_cast<thread_info *>(this_thread)->private_op_queue.push(ops);
                         return;
                     }
                 }
-#endif // defined(ASIO_HAS_THREADS)
+#endif // defined(XIO_HAS_THREADS)
 
                 mutex::scoped_lock lock(mutex_);
                 op_queue_.push(ops);
@@ -610,11 +610,11 @@ namespace xio {
         }
 
         scheduler_task *scheduler::get_default_task(xio::execution_context &ctx) {
-#if defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#if defined(XIO_HAS_IO_URING_AS_DEFAULT)
             return &use_service<io_uring_service>(ctx);
-#else // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#else // defined(XIO_HAS_IO_URING_AS_DEFAULT)
             return &use_service<reactor>(ctx);
-#endif // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#endif // defined(XIO_HAS_IO_URING_AS_DEFAULT)
         }
     } // namespace detail
 
@@ -622,4 +622,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_IMPL_SCHEDULER_IPP
+#endif // XIO_DETAIL_IMPL_SCHEDULER_IPP

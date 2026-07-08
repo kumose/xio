@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_MULTICAST_HPP
-#define ASIO_IP_MULTICAST_HPP
+#ifndef XIO_IP_MULTICAST_HPP
+#define XIO_IP_MULTICAST_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -44,15 +44,11 @@ namespace xio {
  * @par Concepts:
  * SettableSocketOption.
  */
-#if defined(GENERATING_DOCUMENTATION)
-            typedef implementation_defined join_group;
-#else
             typedef xio::ip::detail::socket_option::multicast_request<
-                ASIO_OS_DEF(IPPROTO_IP),
-                ASIO_OS_DEF(IP_ADD_MEMBERSHIP),
-                ASIO_OS_DEF(IPPROTO_IPV6),
-                ASIO_OS_DEF(IPV6_JOIN_GROUP)> join_group;
-#endif
+                XIO_OS_DEF(IPPROTO_IP),
+                XIO_OS_DEF(IP_ADD_MEMBERSHIP),
+                XIO_OS_DEF(IPPROTO_IPV6),
+                XIO_OS_DEF(IPV6_JOIN_GROUP)> join_group;
 
             /// Socket option to leave a multicast group on a specified interface.
             /**
@@ -72,15 +68,11 @@ namespace xio {
  * @par Concepts:
  * SettableSocketOption.
  */
-#if defined(GENERATING_DOCUMENTATION)
-            typedef implementation_defined leave_group;
-#else
             typedef xio::ip::detail::socket_option::multicast_request<
-                ASIO_OS_DEF(IPPROTO_IP),
-                ASIO_OS_DEF(IP_DROP_MEMBERSHIP),
-                ASIO_OS_DEF(IPPROTO_IPV6),
-                ASIO_OS_DEF(IPV6_LEAVE_GROUP)> leave_group;
-#endif
+                XIO_OS_DEF(IPPROTO_IP),
+                XIO_OS_DEF(IP_DROP_MEMBERSHIP),
+                XIO_OS_DEF(IPPROTO_IPV6),
+                XIO_OS_DEF(IPV6_LEAVE_GROUP)> leave_group;
 
             /// Socket option for local interface to use for outgoing multicast packets.
             /**
@@ -104,15 +96,11 @@ namespace xio {
  * @par Concepts:
  * SettableSocketOption.
  */
-#if defined(GENERATING_DOCUMENTATION)
-            typedef implementation_defined outbound_interface;
-#else
             typedef xio::ip::detail::socket_option::network_interface<
-                ASIO_OS_DEF(IPPROTO_IP),
-                ASIO_OS_DEF(IP_MULTICAST_IF),
-                ASIO_OS_DEF(IPPROTO_IPV6),
-                ASIO_OS_DEF(IPV6_MULTICAST_IF)> outbound_interface;
-#endif
+                XIO_OS_DEF(IPPROTO_IP),
+                XIO_OS_DEF(IP_MULTICAST_IF),
+                XIO_OS_DEF(IPPROTO_IPV6),
+                XIO_OS_DEF(IPV6_MULTICAST_IF)> outbound_interface;
 
             /// Socket option for time-to-live associated with outgoing multicast packets.
             /**
@@ -140,15 +128,11 @@ namespace xio {
  * @par Concepts:
  * GettableSocketOption, SettableSocketOption.
  */
-#if defined(GENERATING_DOCUMENTATION)
-            typedef implementation_defined hops;
-#else
             typedef xio::ip::detail::socket_option::multicast_hops<
-                ASIO_OS_DEF(IPPROTO_IP),
-                ASIO_OS_DEF(IP_MULTICAST_TTL),
-                ASIO_OS_DEF(IPPROTO_IPV6),
-                ASIO_OS_DEF(IPV6_MULTICAST_HOPS)> hops;
-#endif
+                XIO_OS_DEF(IPPROTO_IP),
+                XIO_OS_DEF(IP_MULTICAST_TTL),
+                XIO_OS_DEF(IPPROTO_IPV6),
+                XIO_OS_DEF(IPV6_MULTICAST_HOPS)> hops;
 
             /// Socket option determining whether outgoing multicast packets will be
 /// received on the same socket if it is a member of the multicast group.
@@ -177,15 +161,11 @@ namespace xio {
  * @par Concepts:
  * GettableSocketOption, SettableSocketOption.
  */
-#if defined(GENERATING_DOCUMENTATION)
-            typedef implementation_defined enable_loopback;
-#else
             typedef xio::ip::detail::socket_option::multicast_enable_loopback<
-                ASIO_OS_DEF(IPPROTO_IP),
-                ASIO_OS_DEF(IP_MULTICAST_LOOP),
-                ASIO_OS_DEF(IPPROTO_IPV6),
-                ASIO_OS_DEF(IPV6_MULTICAST_LOOP)> enable_loopback;
-#endif
+                XIO_OS_DEF(IPPROTO_IP),
+                XIO_OS_DEF(IP_MULTICAST_LOOP),
+                XIO_OS_DEF(IPPROTO_IPV6),
+                XIO_OS_DEF(IPV6_MULTICAST_LOOP)> enable_loopback;
         } // namespace multicast
     } // namespace ip
 
@@ -193,4 +173,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_MULTICAST_HPP
+#endif // XIO_IP_MULTICAST_HPP

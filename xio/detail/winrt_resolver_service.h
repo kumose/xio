@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WINRT_RESOLVER_SERVICE_HPP
-#define ASIO_DETAIL_WINRT_RESOLVER_SERVICE_HPP
+#ifndef XIO_DETAIL_WINRT_RESOLVER_SERVICE_HPP
+#define XIO_DETAIL_WINRT_RESOLVER_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 
 #include <xio/ip/basic_resolver_query.h>
 #include <xio/ip/basic_resolver_results.h>
@@ -29,11 +29,11 @@
 #include <xio/detail/winrt_resolve_op.h>
 #include <xio/detail/winrt_utils.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 #include <xio/detail/win_iocp_io_context.h>
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 #include <xio/detail/scheduler.h>
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
 #include <xio/detail/push_options.h>
 
@@ -144,7 +144,7 @@ namespace xio {
                 };
                 p.p = new(p.v) op(query, handler, io_ex);
 
-                ASIO_HANDLER_CREATION((scheduler_.context(),
+                XIO_HANDLER_CREATION((scheduler_.context(),
                                        *p.p, "resolver", &impl, 0, "async_resolve"));
                 (void) impl;
 
@@ -185,7 +185,7 @@ namespace xio {
 
         private:
 // The scheduler implementation used for delivering completions.
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 typedef class win_iocp_io_context scheduler_impl;
 #else
 typedef class scheduler scheduler_impl;
@@ -200,6 +200,6 @@ winrt_async_manager &async_manager_;
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
 
-#endif // ASIO_DETAIL_WINRT_RESOLVER_SERVICE_HPP
+#endif // XIO_DETAIL_WINRT_RESOLVER_SERVICE_HPP

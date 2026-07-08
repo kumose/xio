@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_CONNECT_HPP
-#define ASIO_IMPL_CONNECT_HPP
+#ifndef XIO_IMPL_CONNECT_HPP
+#define XIO_IMPL_CONNECT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -280,7 +280,7 @@ namespace xio {
 
                             if (iter != end) {
                                 socket_.close(ec);
-                                ASIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_connect"));
+                                XIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_connect"));
                                 socket_.async_connect(*iter,
                                                       static_cast<range_connect_op &&>(*this));
                                 return;
@@ -288,7 +288,7 @@ namespace xio {
 
                             if (start) {
                                 ec = xio::error::not_found;
-                                ASIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_connect"));
+                                XIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_connect"));
                                 xio::post(socket_.get_executor(),
                                           detail::bind_handler(
                                               static_cast<range_connect_op &&>(*this), ec));
@@ -363,7 +363,7 @@ namespace xio {
                 // If you get an error on the following line it means that your
                 // handler does not meet the documented type requirements for an
                 // RangeConnectHandler.
-                ASIO_RANGE_CONNECT_HANDLER_CHECK(RangeConnectHandler,
+                XIO_RANGE_CONNECT_HANDLER_CHECK(RangeConnectHandler,
                                                  handler, typename Protocol::endpoint)
                 type_check;
 
@@ -427,7 +427,7 @@ namespace xio {
 
                             if (iter_ != end_) {
                                 socket_.close(ec);
-                                ASIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_connect"));
+                                XIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_connect"));
                                 socket_.async_connect(*iter_,
                                                       static_cast<iterator_connect_op &&>(*this));
                                 return;
@@ -435,7 +435,7 @@ namespace xio {
 
                             if (start) {
                                 ec = xio::error::not_found;
-                                ASIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_connect"));
+                                XIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_connect"));
                                 xio::post(socket_.get_executor(),
                                           detail::bind_handler(
                                               static_cast<iterator_connect_op &&>(*this), ec));
@@ -510,7 +510,7 @@ namespace xio {
                 // If you get an error on the following line it means that your
                 // handler does not meet the documented type requirements for an
                 // IteratorConnectHandler.
-                ASIO_ITERATOR_CONNECT_HANDLER_CHECK(
+                XIO_ITERATOR_CONNECT_HANDLER_CHECK(
                     IteratorConnectHandler, handler, Iterator)
                 type_check;
 
@@ -524,8 +524,6 @@ namespace xio {
             basic_socket<Protocol, Executor> &socket_;
         };
     } // namespace detail
-
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename Protocol, typename Executor, typename EndpointSequence,
@@ -582,11 +580,9 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
-
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_CONNECT_HPP
+#endif // XIO_IMPL_CONNECT_HPP

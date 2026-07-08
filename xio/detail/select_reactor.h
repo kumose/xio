@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_SELECT_REACTOR_HPP
-#define ASIO_DETAIL_SELECT_REACTOR_HPP
+#ifndef XIO_DETAIL_SELECT_REACTOR_HPP
+#define XIO_DETAIL_SELECT_REACTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,11 +17,11 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IOCP) \
-  || (!defined(ASIO_HAS_DEV_POLL) \
-      && !defined(ASIO_HAS_EPOLL) \
-      && !defined(ASIO_HAS_KQUEUE) \
-      && !defined(ASIO_WINDOWS_RUNTIME))
+#if defined(XIO_HAS_IOCP) \
+  || (!defined(XIO_HAS_DEV_POLL) \
+      && !defined(XIO_HAS_EPOLL) \
+      && !defined(XIO_HAS_KQUEUE) \
+      && !defined(XIO_WINDOWS_RUNTIME))
 
 #include <cstddef>
 #include <xio/detail/fd_set_adapter.h>
@@ -38,9 +38,9 @@
 #include <xio/detail/wait_op.h>
 #include <xio/execution_context.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 #include <xio/detail/thread.h>
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
 #include <xio/detail/push_options.h>
 
@@ -50,50 +50,50 @@ namespace xio {
     namespace detail {
         class select_reactor
                 : public execution_context_service_base<select_reactor>
-#if !defined(ASIO_HAS_IOCP)
+#if !defined(XIO_HAS_IOCP)
                   , public scheduler_task
-#endif // !defined(ASIO_HAS_IOCP)
+#endif // !defined(XIO_HAS_IOCP)
         {
         public:
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             enum op_types {
                 read_op = 0, write_op = 1, except_op = 2,
                 max_select_ops = 3, connect_op = 3, max_ops = 4
             };
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             enum op_types {
                 read_op = 0, write_op = 1, except_op = 2,
                 max_select_ops = 3, connect_op = 1, max_ops = 3
             };
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 
             // Per-descriptor data.
             struct per_descriptor_data {
             };
 
             // Constructor.
-            ASIO_DECL select_reactor(xio::execution_context &ctx);
+            XIO_DECL select_reactor(xio::execution_context &ctx);
 
             // Destructor.
-            ASIO_DECL ~select_reactor();
+            XIO_DECL ~select_reactor();
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void shutdown();
+  XIO_DECL void shutdown();
 
             // Recreate internal descriptors following a fork.
-  ASIO_DECL void notify_fork(
+  XIO_DECL void notify_fork(
                 xio::execution_context::fork_event fork_ev);
 
             // Initialise the task, but only if the reactor is not in its own thread.
-  ASIO_DECL void init_task();
+  XIO_DECL void init_task();
 
             // Register a socket with the reactor. Returns 0 on success, system error
             // code on failure.
-  ASIO_DECL int register_descriptor(socket_type, per_descriptor_data &);
+  XIO_DECL int register_descriptor(socket_type, per_descriptor_data &);
 
             // Register a descriptor with an associated single operation. Returns 0 on
             // success, system error code on failure.
-  ASIO_DECL int register_internal_descriptor(
+  XIO_DECL int register_internal_descriptor(
                 int op_type, socket_type descriptor,
                 per_descriptor_data &descriptor_data, reactor_op *op);
 
@@ -101,12 +101,12 @@ namespace xio {
             void post_immediate_completion(operation *op, bool is_continuation) const;
 
             // Post a reactor operation for immediate completion.
-  ASIO_DECL static void call_post_immediate_completion(
+  XIO_DECL static void call_post_immediate_completion(
                 operation *op, bool is_continuation, const void *self);
 
             // Start a new operation. The reactor operation will be performed when the
             // given descriptor is flagged as ready, or an error has occurred.
-  ASIO_DECL void start_op(int op_type, socket_type descriptor,
+  XIO_DECL void start_op(int op_type, socket_type descriptor,
                           per_descriptor_data &, reactor_op *op, bool is_continuation, bool,
                           void (*on_immediate)(operation *, bool, const void *),
                           const void *immediate_arg);
@@ -124,33 +124,33 @@ namespace xio {
             // Cancel all operations associated with the given descriptor. The
             // handlers associated with the descriptor will be invoked with the
             // operation_aborted error.
-  ASIO_DECL void cancel_ops(socket_type descriptor, per_descriptor_data &);
+  XIO_DECL void cancel_ops(socket_type descriptor, per_descriptor_data &);
 
             // Cancel all operations associated with the given descriptor and key. The
             // handlers associated with the descriptor will be invoked with the
             // operation_aborted error.
-  ASIO_DECL void cancel_ops_by_key(socket_type descriptor,
+  XIO_DECL void cancel_ops_by_key(socket_type descriptor,
                                    per_descriptor_data &descriptor_data,
                                    int op_type, void *cancellation_key);
 
             // Cancel any operations that are running against the descriptor and remove
             // its registration from the reactor. The reactor resources associated with
             // the descriptor must be released by calling cleanup_descriptor_data.
-  ASIO_DECL void deregister_descriptor(socket_type descriptor,
+  XIO_DECL void deregister_descriptor(socket_type descriptor,
                                        per_descriptor_data &, bool closing);
 
             // Remove the descriptor's registration from the reactor. The reactor
             // resources associated with the descriptor must be released by calling
             // cleanup_descriptor_data.
-  ASIO_DECL void deregister_internal_descriptor(
+  XIO_DECL void deregister_internal_descriptor(
                 socket_type descriptor, per_descriptor_data &);
 
             // Perform any post-deregistration cleanup tasks associated with the
             // descriptor data.
-  ASIO_DECL void cleanup_descriptor_data(per_descriptor_data &);
+  XIO_DECL void cleanup_descriptor_data(per_descriptor_data &);
 
             // Move descriptor registration from one descriptor_data object to another.
-  ASIO_DECL void move_descriptor(socket_type descriptor,
+  XIO_DECL void move_descriptor(socket_type descriptor,
                                  per_descriptor_data &target_descriptor_data,
                                  per_descriptor_data &source_descriptor_data);
 
@@ -190,37 +190,37 @@ namespace xio {
                             typename timer_queue<TimeTraits, Allocator>::per_timer_data &source);
 
             // Run select once until interrupted or events are ready to be dispatched.
-  ASIO_DECL void run(long usec, op_queue<operation> &ops);
+  XIO_DECL void run(long usec, op_queue<operation> &ops);
 
             // Interrupt the select loop.
-  ASIO_DECL void interrupt();
+  XIO_DECL void interrupt();
 
         private:
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
             // Run the select loop in the thread.
-  ASIO_DECL void run_thread();
-#endif // defined(ASIO_HAS_IOCP)
+  XIO_DECL void run_thread();
+#endif // defined(XIO_HAS_IOCP)
 
             // Helper function to add a new timer queue.
-  ASIO_DECL void do_add_timer_queue(timer_queue_base &queue);
+  XIO_DECL void do_add_timer_queue(timer_queue_base &queue);
 
             // Helper function to remove a timer queue.
-  ASIO_DECL void do_remove_timer_queue(timer_queue_base &queue);
+  XIO_DECL void do_remove_timer_queue(timer_queue_base &queue);
 
             // Get the timeout value for the select call.
-  ASIO_DECL timeval *get_timeout(long usec, timeval &tv);
+  XIO_DECL timeval *get_timeout(long usec, timeval &tv);
 
             // Cancel all operations associated with the given descriptor. This function
             // does not acquire the select_reactor's mutex.
-  ASIO_DECL void cancel_ops_unlocked(socket_type descriptor,
+  XIO_DECL void cancel_ops_unlocked(socket_type descriptor,
                                      const xio::error_code &ec);
 
             // The scheduler implementation used to post completions.
-# if defined(ASIO_HAS_IOCP)
+# if defined(XIO_HAS_IOCP)
             typedef class win_iocp_io_context scheduler_type;
-# else // defined(ASIO_HAS_IOCP)
+# else // defined(XIO_HAS_IOCP)
             typedef class scheduler scheduler_type;
-# endif // defined(ASIO_HAS_IOCP)
+# endif // defined(XIO_HAS_IOCP)
             scheduler_type &scheduler_;
 
             // Mutex to protect access to internal data.
@@ -238,7 +238,7 @@ namespace xio {
             // The timer queues.
             timer_queue_set timer_queues_;
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
             // Helper class to run the reactor loop in a thread.
             class thread_function;
             friend class thread_function;
@@ -257,7 +257,7 @@ namespace xio {
                       reactor_(r) {
                 }
 
-    ASIO_DECL static void do_complete(void *owner, operation *base,
+    XIO_DECL static void do_complete(void *owner, operation *base,
                                       const xio::error_code &ec, std::size_t bytes_transferred);
 
             private:
@@ -268,7 +268,7 @@ namespace xio {
 
             // Operation used to join and restart the reactor thread.
             restart_reactor restart_reactor_;
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
             // Whether the service has been shut down.
             bool shutdown_;
@@ -282,10 +282,10 @@ namespace xio {
 #include <xio/detail/impl/select_reactor.h>
 
 
-#endif // defined(ASIO_HAS_IOCP)
-//   || (!defined(ASIO_HAS_DEV_POLL)
-//       && !defined(ASIO_HAS_EPOLL)
-//       && !defined(ASIO_HAS_KQUEUE)
-//       && !defined(ASIO_WINDOWS_RUNTIME))
+#endif // defined(XIO_HAS_IOCP)
+//   || (!defined(XIO_HAS_DEV_POLL)
+//       && !defined(XIO_HAS_EPOLL)
+//       && !defined(XIO_HAS_KQUEUE)
+//       && !defined(XIO_WINDOWS_RUNTIME))
 
-#endif // ASIO_DETAIL_SELECT_REACTOR_HPP
+#endif // XIO_DETAIL_SELECT_REACTOR_HPP

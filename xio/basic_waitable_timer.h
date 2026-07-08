@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BASIC_WAITABLE_TIMER_HPP
-#define ASIO_BASIC_WAITABLE_TIMER_HPP
+#ifndef XIO_BASIC_WAITABLE_TIMER_HPP
+#define XIO_BASIC_WAITABLE_TIMER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -33,8 +33,8 @@
 namespace xio {
 
 
-#if !defined(ASIO_BASIC_WAITABLE_TIMER_FWD_DECL)
-#define ASIO_BASIC_WAITABLE_TIMER_FWD_DECL
+#if !defined(XIO_BASIC_WAITABLE_TIMER_FWD_DECL)
+#define XIO_BASIC_WAITABLE_TIMER_FWD_DECL
 
     // Forward declaration with defaulted arguments.
 
@@ -44,7 +44,7 @@ namespace xio {
         typename Executor = any_io_executor>
     class basic_waitable_timer;
 
-#endif // !defined(ASIO_BASIC_WAITABLE_TIMER_FWD_DECL)
+#endif // !defined(XIO_BASIC_WAITABLE_TIMER_FWD_DECL)
 
     /// Provides waitable timer functionality.
     /**
@@ -564,7 +564,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
             WaitToken = default_completion_token_t<executor_type> >
         auto async_wait(
             WaitToken &&token = default_completion_token_t<executor_type>())
@@ -597,7 +597,7 @@ namespace xio {
             void operator()(WaitHandler &&handler) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a WaitHandler.
-                ASIO_WAIT_HANDLER_CHECK(WaitHandler, handler)
+                XIO_WAIT_HANDLER_CHECK(WaitHandler, handler)
                 type_check;
 
                 detail::non_const_lvalue<WaitHandler> handler2(handler);
@@ -621,4 +621,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_BASIC_WAITABLE_TIMER_HPP
+#endif // XIO_BASIC_WAITABLE_TIMER_HPP

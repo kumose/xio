@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_STRAND_SERVICE_HPP
-#define ASIO_DETAIL_IMPL_STRAND_SERVICE_HPP
+#ifndef XIO_DETAIL_IMPL_STRAND_SERVICE_HPP
+#define XIO_DETAIL_IMPL_STRAND_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -49,7 +49,7 @@ namespace xio {
             };
             p.p = new(p.v) op(handler, io_context_.get_executor());
 
-            ASIO_HANDLER_CREATION((this->context(),
+            XIO_HANDLER_CREATION((this->context(),
                                    *p.p, "strand", impl, 0, "dispatch"));
 
             operation *o = p.p;
@@ -72,7 +72,7 @@ namespace xio {
             };
             p.p = new(p.v) op(handler, io_context_.get_executor());
 
-            ASIO_HANDLER_CREATION((this->context(),
+            XIO_HANDLER_CREATION((this->context(),
                                    *p.p, "strand", impl, 0, "post"));
 
             do_post(impl, p.p, is_continuation);
@@ -84,4 +84,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_IMPL_STRAND_SERVICE_HPP
+#endif // XIO_DETAIL_IMPL_STRAND_SERVICE_HPP

@@ -8,14 +8,14 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_EPOLL_REACTOR_HPP
-#define ASIO_DETAIL_IMPL_EPOLL_REACTOR_HPP
+#ifndef XIO_DETAIL_IMPL_EPOLL_REACTOR_HPP
+#define XIO_DETAIL_IMPL_EPOLL_REACTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
-#if defined(ASIO_HAS_EPOLL)
+#if defined(XIO_HAS_EPOLL)
 
 #include <xio/detail/scheduler.h>
 
@@ -102,6 +102,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_EPOLL)
+#endif // defined(XIO_HAS_EPOLL)
 
-#endif // ASIO_DETAIL_IMPL_EPOLL_REACTOR_HPP
+#endif // XIO_DETAIL_IMPL_EPOLL_REACTOR_HPP

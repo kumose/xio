@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_SERVICE_REGISTRY_HPP
-#define ASIO_DETAIL_IMPL_SERVICE_REGISTRY_HPP
+#ifndef XIO_DETAIL_IMPL_SERVICE_REGISTRY_HPP
+#define XIO_DETAIL_IMPL_SERVICE_REGISTRY_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -70,7 +70,7 @@ namespace xio {
             init_key_from_id(key, Service::id);
         }
 
-#if !defined(ASIO_NO_TYPEID)
+#if !defined(XIO_NO_TYPEID)
         template<typename Service>
         void service_registry::init_key(execution_context::service::key & key,
                                         std::enable_if_t < std::is_base_of < typename Service::key_type, Service > ::value > *) {
@@ -84,7 +84,7 @@ namespace xio {
             key.type_info_ = &typeid(typeid_wrapper<Service>);
             key.id_ = 0;
         }
-#endif // !defined(ASIO_NO_TYPEID)
+#endif // !defined(XIO_NO_TYPEID)
 
         template<typename Service, typename Owner, typename... Args>
         execution_context::service *service_registry::create(
@@ -107,4 +107,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_IMPL_SERVICE_REGISTRY_HPP
+#endif // XIO_DETAIL_IMPL_SERVICE_REGISTRY_HPP

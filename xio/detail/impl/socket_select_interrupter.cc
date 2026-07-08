@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_SOCKET_SELECT_INTERRUPTER_IPP
-#define ASIO_DETAIL_IMPL_SOCKET_SELECT_INTERRUPTER_IPP
+#ifndef XIO_DETAIL_IMPL_SOCKET_SELECT_INTERRUPTER_IPP
+#define XIO_DETAIL_IMPL_SOCKET_SELECT_INTERRUPTER_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,10 +17,10 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
 
-#if defined(ASIO_WINDOWS) \
-  || defined(ASIO_CYGWIN_W32_SOCKETS) \
+#if defined(XIO_WINDOWS) \
+  || defined(XIO_CYGWIN_W32_SOCKETS) \
   || defined(__SYMBIAN32__)
 
 #include <cstdlib>
@@ -169,10 +169,10 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_WINDOWS)
-// || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS)
+// || defined(XIO_CYGWIN_W32_SOCKETS)
 // || defined(__SYMBIAN32__)
 
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
-#endif // ASIO_DETAIL_IMPL_SOCKET_SELECT_INTERRUPTER_IPP
+#endif // XIO_DETAIL_IMPL_SOCKET_SELECT_INTERRUPTER_IPP

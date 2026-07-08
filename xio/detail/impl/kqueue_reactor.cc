@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_KQUEUE_REACTOR_IPP
-#define ASIO_DETAIL_IMPL_KQUEUE_REACTOR_IPP
+#ifndef XIO_DETAIL_IMPL_KQUEUE_REACTOR_IPP
+#define XIO_DETAIL_IMPL_KQUEUE_REACTOR_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,7 +18,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_KQUEUE)
+#if defined(XIO_HAS_KQUEUE)
 
 #include <xio/config.h>
 #include <xio/detail/kqueue_reactor.h>
@@ -33,11 +33,11 @@
 #include <xio/detail/push_options.h>
 
 #if defined(__NetBSD__) && __NetBSD_Version__ < 999001500
-# define ASIO_KQUEUE_EV_SET(ev, ident, filt, flags, fflags, data, udata) \
+# define XIO_KQUEUE_EV_SET(ev, ident, filt, flags, fflags, data, udata) \
     EV_SET(ev, ident, filt, flags, fflags, data, \
       reinterpret_cast<intptr_t>(static_cast<void*>(udata)))
 #else
-# define ASIO_KQUEUE_EV_SET(ev, ident, filt, flags, fflags, data, udata) \
+# define XIO_KQUEUE_EV_SET(ev, ident, filt, flags, fflags, data, udata) \
     EV_SET(ev, ident, filt, flags, fflags, data, udata)
 #endif
 
@@ -61,7 +61,7 @@ namespace xio {
                                       config(ctx).get("reactor", "preallocated_io_objects", 0U),
                                       io_locking_, io_locking_spin_count_) {
             struct kevent events[1];
-            ASIO_KQUEUE_EV_SET(&events[0], interrupter_.read_descriptor(),
+            XIO_KQUEUE_EV_SET(&events[0], interrupter_.read_descriptor(),
                                EVFILT_READ, EV_ADD, 0, 0, &interrupter_);
             if (::kevent(kqueue_fd_, events, 1, 0, 0, 0) == -1) {
                 xio::error_code error(errno,
@@ -103,7 +103,7 @@ namespace xio {
                 interrupter_.recreate();
 
                 struct kevent events[2];
-                ASIO_KQUEUE_EV_SET(&events[0], interrupter_.read_descriptor(),
+                XIO_KQUEUE_EV_SET(&events[0], interrupter_.read_descriptor(),
                                    EVFILT_READ, EV_ADD, 0, 0, &interrupter_);
                 if (::kevent(kqueue_fd_, events, 1, 0, 0, 0) == -1) {
                     xio::error_code ec(errno,
@@ -116,9 +116,9 @@ namespace xio {
                 for (descriptor_state *state = registered_descriptors_.first();
                      state != 0; state = state->next_) {
                     if (state->num_kevents_ > 0) {
-                        ASIO_KQUEUE_EV_SET(&events[0], state->descriptor_,
+                        XIO_KQUEUE_EV_SET(&events[0], state->descriptor_,
                                            EVFILT_READ, EV_ADD | EV_CLEAR, 0, 0, state);
-                        ASIO_KQUEUE_EV_SET(&events[1], state->descriptor_,
+                        XIO_KQUEUE_EV_SET(&events[1], state->descriptor_,
                                            EVFILT_WRITE, EV_ADD | EV_CLEAR, 0, 0, state);
                         if (::kevent(kqueue_fd_, events, state->num_kevents_, 0, 0, 0) == -1) {
                             xio::error_code ec(errno,
@@ -138,7 +138,7 @@ namespace xio {
                                                 kqueue_reactor::per_descriptor_data &descriptor_data) {
             descriptor_data = allocate_descriptor_state();
 
-            ASIO_HANDLER_REACTOR_REGISTRATION((
+            XIO_HANDLER_REACTOR_REGISTRATION((
                 context(), static_cast<uintmax_t>(descriptor),
                 reinterpret_cast<uintmax_t>(descriptor_data)));
 
@@ -156,7 +156,7 @@ namespace xio {
             kqueue_reactor::per_descriptor_data &descriptor_data, reactor_op *op) {
             descriptor_data = allocate_descriptor_state();
 
-            ASIO_HANDLER_REACTOR_REGISTRATION((
+            XIO_HANDLER_REACTOR_REGISTRATION((
                 context(), static_cast<uintmax_t>(descriptor),
                 reinterpret_cast<uintmax_t>(descriptor_data)));
 
@@ -168,7 +168,7 @@ namespace xio {
             descriptor_data->op_queue_[op_type].push(op);
 
             struct kevent events[1];
-            ASIO_KQUEUE_EV_SET(&events[0], descriptor, EVFILT_READ,
+            XIO_KQUEUE_EV_SET(&events[0], descriptor, EVFILT_READ,
                                EV_ADD | EV_CLEAR, 0, 0, descriptor_data);
             if (::kevent(kqueue_fd_, events, 1, 0, 0, 0) == -1)
                 return errno;
@@ -221,9 +221,9 @@ namespace xio {
 
                     if (descriptor_data->num_kevents_ < num_kevents[op_type]) {
                         struct kevent events[2];
-                        ASIO_KQUEUE_EV_SET(&events[0], descriptor, EVFILT_READ,
+                        XIO_KQUEUE_EV_SET(&events[0], descriptor, EVFILT_READ,
                                            EV_ADD | EV_CLEAR, 0, 0, descriptor_data);
-                        ASIO_KQUEUE_EV_SET(&events[1], descriptor, EVFILT_WRITE,
+                        XIO_KQUEUE_EV_SET(&events[1], descriptor, EVFILT_WRITE,
                                            EV_ADD | EV_CLEAR, 0, 0, descriptor_data);
                         if (::kevent(kqueue_fd_, events, num_kevents[op_type], 0, 0, 0) != -1) {
                             descriptor_data->num_kevents_ = num_kevents[op_type];
@@ -239,9 +239,9 @@ namespace xio {
                         descriptor_data->num_kevents_ = num_kevents[op_type];
 
                     struct kevent events[2];
-                    ASIO_KQUEUE_EV_SET(&events[0], descriptor, EVFILT_READ,
+                    XIO_KQUEUE_EV_SET(&events[0], descriptor, EVFILT_READ,
                                        EV_ADD | EV_CLEAR, 0, 0, descriptor_data);
-                    ASIO_KQUEUE_EV_SET(&events[1], descriptor, EVFILT_WRITE,
+                    XIO_KQUEUE_EV_SET(&events[1], descriptor, EVFILT_WRITE,
                                        EV_ADD | EV_CLEAR, 0, 0, descriptor_data);
                     ::kevent(kqueue_fd_, events, descriptor_data->num_kevents_, 0, 0, 0);
                 }
@@ -310,9 +310,9 @@ namespace xio {
                     // is closed.
                 } else {
                     struct kevent events[2];
-                    ASIO_KQUEUE_EV_SET(&events[0], descriptor,
+                    XIO_KQUEUE_EV_SET(&events[0], descriptor,
                                        EVFILT_READ, EV_DELETE, 0, 0, 0);
-                    ASIO_KQUEUE_EV_SET(&events[1], descriptor,
+                    XIO_KQUEUE_EV_SET(&events[1], descriptor,
                                        EVFILT_WRITE, EV_DELETE, 0, 0, 0);
                     ::kevent(kqueue_fd_, events, descriptor_data->num_kevents_, 0, 0, 0);
                 }
@@ -331,7 +331,7 @@ namespace xio {
 
                 descriptor_lock.unlock();
 
-                ASIO_HANDLER_REACTOR_DEREGISTRATION((
+                XIO_HANDLER_REACTOR_DEREGISTRATION((
                     context(), static_cast<uintmax_t>(descriptor),
                     reinterpret_cast<uintmax_t>(descriptor_data)));
 
@@ -355,9 +355,9 @@ namespace xio {
 
             if (!descriptor_data->shutdown_) {
                 struct kevent events[2];
-                ASIO_KQUEUE_EV_SET(&events[0], descriptor,
+                XIO_KQUEUE_EV_SET(&events[0], descriptor,
                                    EVFILT_READ, EV_DELETE, 0, 0, 0);
-                ASIO_KQUEUE_EV_SET(&events[1], descriptor,
+                XIO_KQUEUE_EV_SET(&events[1], descriptor,
                                    EVFILT_WRITE, EV_DELETE, 0, 0, 0);
                 ::kevent(kqueue_fd_, events, descriptor_data->num_kevents_, 0, 0, 0);
 
@@ -370,7 +370,7 @@ namespace xio {
 
                 descriptor_lock.unlock();
 
-                ASIO_HANDLER_REACTOR_DEREGISTRATION((
+                XIO_HANDLER_REACTOR_DEREGISTRATION((
                     context(), static_cast<uintmax_t>(descriptor),
                     reinterpret_cast<uintmax_t>(descriptor_data)));
 
@@ -407,7 +407,7 @@ namespace xio {
             if (num_events > 0)
                 (void) ref_count_read_acquire(allocation_counter_);
 
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
 // Trace the waiting events.
 for (int i = 0; i<num_events;++i)
   {
@@ -418,19 +418,19 @@ for (int i = 0; i<num_events;++i)
       switch (events[i].filter)
       {
       case EVFILT_READ:
-        event_mask |= ASIO_HANDLER_REACTOR_READ_EVENT;
+        event_mask |= XIO_HANDLER_REACTOR_READ_EVENT;
         break;
       case EVFILT_WRITE:
-        event_mask |= ASIO_HANDLER_REACTOR_WRITE_EVENT;
+        event_mask |= XIO_HANDLER_REACTOR_WRITE_EVENT;
         break;
       }
       if ((events[i].flags & (EV_ERROR | EV_OOBAND)) != 0)
-        event_mask |= ASIO_HANDLER_REACTOR_ERROR_EVENT;
-      ASIO_HANDLER_REACTOR_EVENTS((context(),
+        event_mask |= XIO_HANDLER_REACTOR_ERROR_EVENT;
+      XIO_HANDLER_REACTOR_EVENTS((context(),
             reinterpret_cast<uintmax_t>(ptr), event_mask));
     }
   }
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 
 // Dispatch the waiting events.
 for (int i = 0; i<num_events;++i)
@@ -454,7 +454,7 @@ for (int i = 0; i<num_events;++i)
         // operations we'll remove the EVFILT_WRITE registration here so that
         // we don't end up in a tight spin.
         struct kevent delete_events[1];
-        ASIO_KQUEUE_EV_SET(&delete_events[0],
+        XIO_KQUEUE_EV_SET(&delete_events[0],
             descriptor_data->descriptor_, EVFILT_WRITE, EV_DELETE, 0, 0, 0);
         ::kevent(kqueue_fd_, delete_events, 1, 0, 0, 0);
         descriptor_data->num_kevents_ = 1;
@@ -552,10 +552,10 @@ timespec *kqueue_reactor::get_timeout(long usec, timespec &ts) {
 } // namespace detail
 } // namespace xio
 
-#undef ASIO_KQUEUE_EV_SET
+#undef XIO_KQUEUE_EV_SET
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_KQUEUE)
+#endif // defined(XIO_HAS_KQUEUE)
 
-#endif // ASIO_DETAIL_IMPL_KQUEUE_REACTOR_IPP
+#endif // XIO_DETAIL_IMPL_KQUEUE_REACTOR_IPP

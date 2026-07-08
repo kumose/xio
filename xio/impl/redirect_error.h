@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_REDIRECT_ERROR_HPP
-#define ASIO_IMPL_REDIRECT_ERROR_HPP
+#ifndef XIO_IMPL_REDIRECT_ERROR_HPP
+#define XIO_IMPL_REDIRECT_ERROR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -117,7 +117,7 @@ namespace xio {
             typedef R type(Args...) &&;
         };
 
-#if defined(ASIO_HAS_NOEXCEPT_FUNCTION_TYPE)
+#if defined(XIO_HAS_NOEXCEPT_FUNCTION_TYPE)
 
         template<typename R, typename... Args>
         struct redirect_error_signature<
@@ -155,10 +155,9 @@ namespace xio {
             typedef R type(Args...) && noexcept;
         };
 
-#endif // defined(ASIO_HAS_NOEXCEPT_FUNCTION_TYPE)
+#endif // defined(XIO_HAS_NOEXCEPT_FUNCTION_TYPE)
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<typename CompletionToken, typename Signature>
     struct async_result<redirect_error_t<CompletionToken>, Signature>
@@ -276,11 +275,9 @@ namespace xio {
   }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
-
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_REDIRECT_ERROR_HPP
+#endif // XIO_IMPL_REDIRECT_ERROR_HPP

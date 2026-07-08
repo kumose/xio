@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_INLINE_EXECUTOR_HPP
-#define ASIO_INLINE_EXECUTOR_HPP
+#ifndef XIO_INLINE_EXECUTOR_HPP
+#define XIO_INLINE_EXECUTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -37,12 +37,10 @@ namespace xio {
         basic_inline_executor() noexcept {
         }
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     private:
         friend struct XIO_VERSIONED_NAME (require_fn)::impl;
         friend struct XIO_VERSIONED_NAME (prefer_fn)::impl;
-#endif // !defined(GENERATING_DOCUMENTATION)
 
         /// Obtain an executor with the @c inline_exception_handling.propagate
   /// property.
@@ -78,14 +76,12 @@ namespace xio {
                 execution::inline_exception_handling_t::terminate_t>();
         }
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     private:
         friend struct XIO_VERSIONED_NAME (query_fn)::impl;
         friend struct xio::execution::detail::blocking_t<0>;
         friend struct xio::execution::detail::mapping_t<0>;
         friend struct xio::execution::detail::inline_exception_handling_t<0>;
-#endif // !defined(GENERATING_DOCUMENTATION)
 
         /// Query the current value of the @c mapping property.
         /**
@@ -158,14 +154,14 @@ namespace xio {
         /// Execution function.
         template<typename Function>
         void execute(Function &&f) const {
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             try
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
             {
                 detail::non_const_lvalue<Function> f2(f);
                 static_cast<std::decay_t<Function> &&>(f2.value)();
             }
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             catch (...) {
                 if (std::is_same<InlineExceptionHandling,
                     execution::inline_exception_handling_t::terminate_t>::value) {
@@ -174,7 +170,7 @@ namespace xio {
                     throw;
                 }
             }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
         }
     };
 
@@ -188,4 +184,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_INLINE_EXECUTOR_HPP
+#endif // XIO_INLINE_EXECUTOR_HPP

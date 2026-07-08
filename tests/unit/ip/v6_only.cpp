@@ -84,38 +84,38 @@ void test()
   {
     ip::v6_only v6_only1;
     acceptor_v6.get_option(v6_only1, ec);
-    ASIO_CHECK(!ec);
+    XIO_CHECK(!ec);
     bool have_dual_stack = !v6_only1.value();
 
     if (have_dual_stack)
     {
       ip::v6_only v6_only2(false);
-      ASIO_CHECK(!v6_only2.value());
-      ASIO_CHECK(!static_cast<bool>(v6_only2));
-      ASIO_CHECK(!v6_only2);
+      XIO_CHECK(!v6_only2.value());
+      XIO_CHECK(!static_cast<bool>(v6_only2));
+      XIO_CHECK(!v6_only2);
       acceptor_v6.set_option(v6_only2, ec);
-      ASIO_CHECK(!ec);
+      XIO_CHECK(!ec);
 
       ip::v6_only v6_only3;
       acceptor_v6.get_option(v6_only3, ec);
-      ASIO_CHECK(!ec);
-      ASIO_CHECK(!v6_only3.value());
-      ASIO_CHECK(!static_cast<bool>(v6_only3));
-      ASIO_CHECK(!v6_only3);
+      XIO_CHECK(!ec);
+      XIO_CHECK(!v6_only3.value());
+      XIO_CHECK(!static_cast<bool>(v6_only3));
+      XIO_CHECK(!v6_only3);
 
       ip::v6_only v6_only4(true);
-      ASIO_CHECK(v6_only4.value());
-      ASIO_CHECK(static_cast<bool>(v6_only4));
-      ASIO_CHECK(!!v6_only4);
+      XIO_CHECK(v6_only4.value());
+      XIO_CHECK(static_cast<bool>(v6_only4));
+      XIO_CHECK(!!v6_only4);
       acceptor_v6.set_option(v6_only4, ec);
-      ASIO_CHECK(!ec);
+      XIO_CHECK(!ec);
 
       ip::v6_only v6_only5;
       acceptor_v6.get_option(v6_only5, ec);
-      ASIO_CHECK(!ec);
-      ASIO_CHECK(v6_only5.value());
-      ASIO_CHECK(static_cast<bool>(v6_only5));
-      ASIO_CHECK(!!v6_only5);
+      XIO_CHECK(!ec);
+      XIO_CHECK(v6_only5.value());
+      XIO_CHECK(static_cast<bool>(v6_only5));
+      XIO_CHECK(!!v6_only5);
     }
   }
 }
@@ -124,9 +124,9 @@ void test()
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "ip/v6_only",
-  ASIO_COMPILE_TEST_CASE(ip_v6_only_compile::test)
-  ASIO_TEST_CASE(ip_v6_only_runtime::test)
+  XIO_COMPILE_TEST_CASE(ip_v6_only_compile::test)
+  XIO_TEST_CASE(ip_v6_only_runtime::test)
 )

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_DESCRIPTOR_OPS_IPP
-#define ASIO_DETAIL_IMPL_DESCRIPTOR_OPS_IPP
+#ifndef XIO_DETAIL_IMPL_DESCRIPTOR_OPS_IPP
+#define XIO_DETAIL_IMPL_DESCRIPTOR_OPS_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -20,9 +20,9 @@
 #include <xio/detail/descriptor_ops.h>
 #include <xio/error.h>
 
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_WINDOWS_RUNTIME) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_WINDOWS_RUNTIME) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS)
 
 #include <xio/detail/push_options.h>
 
@@ -482,7 +482,7 @@ namespace xio {
                 }
             }
 
-#if defined(ASIO_HAS_FILE)
+#if defined(XIO_HAS_FILE)
 
             std::size_t sync_read_at(int d, state_type state, uint64_t offset,
                                      buf *bufs, std::size_t count, bool all_empty, xio::error_code &ec) {
@@ -765,7 +765,7 @@ namespace xio {
                 }
             }
 
-#endif // defined(ASIO_HAS_FILE)
+#endif // defined(XIO_HAS_FILE)
 
             int ioctl(int d, state_type &state, long cmd,
                       ioctl_arg_type *arg, xio::error_code &ec) {
@@ -884,8 +884,8 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(ASIO_WINDOWS)
-//   && !defined(ASIO_WINDOWS_RUNTIME)
-//   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // !defined(XIO_WINDOWS)
+//   && !defined(XIO_WINDOWS_RUNTIME)
+//   && !defined(XIO_CYGWIN_W32_SOCKETS)
 
-#endif // ASIO_DETAIL_IMPL_DESCRIPTOR_OPS_IPP
+#endif // XIO_DETAIL_IMPL_DESCRIPTOR_OPS_IPP

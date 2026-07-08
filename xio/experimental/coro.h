@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXPERIMENTAL_CORO_HPP
-#define ASIO_EXPERIMENTAL_CORO_HPP
+#ifndef XIO_EXPERIMENTAL_CORO_HPP
+#define XIO_EXPERIMENTAL_CORO_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -83,10 +83,8 @@ namespace xio {
             /// The internal promise-type of the coroutine.
             using promise_type = detail::coro_promise<Yield, Return, Executor, Allocator>;
 
-#if !defined(GENERATING_DOCUMENTATION)
             template<typename T, typename Coroutine>
             friend struct detail::coro_with_arg;
-#endif // !defined(GENERATING_DOCUMENTATION)
 
             /// The executor type.
             using executor_type = Executor;
@@ -94,9 +92,7 @@ namespace xio {
             /// The allocator type.
             using allocator_type = Allocator;
 
-#if !defined(GENERATING_DOCUMENTATION)
             friend struct detail::coro_promise<Yield, Return, Executor, Allocator>;
-#endif // !defined(GENERATING_DOCUMENTATION)
 
             /// The default constructor, gives an invalid coroutine.
             coro() = default;
@@ -277,4 +273,4 @@ namespace xio {
 
 #include <xio/experimental/impl/coro.h>
 
-#endif // ASIO_EXPERIMENTAL_CORO_HPP
+#endif // XIO_EXPERIMENTAL_CORO_HPP

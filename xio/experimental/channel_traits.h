@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXPERIMENTAL_CHANNEL_TRAITS_HPP
-#define ASIO_EXPERIMENTAL_CHANNEL_TRAITS_HPP
+#ifndef XIO_EXPERIMENTAL_CHANNEL_TRAITS_HPP
+#define XIO_EXPERIMENTAL_CHANNEL_TRAITS_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -28,46 +28,7 @@ namespace xio {
 
 
     namespace experimental {
-#if defined(GENERATING_DOCUMENTATION)
 
-        template<typename... Signatures>
-        struct channel_traits {
-            /// Rebind the traits to a new set of signatures.
-            /**
-   * This nested structure must have a single nested type @c other that
-   * aliases a traits type with the specified set of signatures.
-   */
-            template<typename... NewSignatures>
-            struct rebind {
-                typedef user_defined other;
-            };
-
-            /// Determine the container for the specified elements.
-            /**
-   * This nested structure must have a single nested type @c other that
-   * aliases a container type for the specified element type.
-   */
-            template<typename Element>
-            struct container {
-                typedef user_defined type;
-            };
-
-            /// The signature of a channel cancellation notification.
-            typedef void receive_cancelled_signature(...);
-
-            /// Invoke the specified handler with a cancellation notification.
-            template<typename F>
-            static void invoke_receive_cancelled(F f);
-
-            /// The signature of a channel closed notification.
-            typedef void receive_closed_signature(...);
-
-            /// Invoke the specified handler with a closed notification.
-            template<typename F>
-            static void invoke_receive_closed(F f);
-        };
-
-#else // defined(GENERATING_DOCUMENTATION)
 
         /// Traits used for customising channel behaviour.
         template<typename... Signatures>
@@ -258,11 +219,10 @@ namespace xio {
             }
         };
 
-#endif // defined(GENERATING_DOCUMENTATION)
     } // namespace experimental
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXPERIMENTAL_CHANNEL_TRAITS_HPP
+#endif // XIO_EXPERIMENTAL_CHANNEL_TRAITS_HPP

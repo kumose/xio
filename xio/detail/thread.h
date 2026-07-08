@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_THREAD_HPP
-#define ASIO_DETAIL_THREAD_HPP
+#ifndef XIO_DETAIL_THREAD_HPP
+#define XIO_DETAIL_THREAD_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,14 +17,14 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_HAS_THREADS)
+#if !defined(XIO_HAS_THREADS)
 #include <xio/detail/null_thread.h>
-#elif defined(ASIO_HAS_PTHREADS)
+#elif defined(XIO_HAS_PTHREADS)
 #include <xio/detail/posix_thread.h>
-#elif defined(ASIO_WINDOWS)
+#elif defined(XIO_WINDOWS)
 # if defined(UNDER_CE)
 #  include "xio/detail/wince_thread.hpp"
-# elif defined(ASIO_WINDOWS_APP)
+# elif defined(XIO_WINDOWS_APP)
 #  include "xio/detail/winapp_thread.hpp"
 # else
 #  include "xio/detail/win_thread.hpp"
@@ -37,14 +37,14 @@ namespace xio {
 
 
     namespace detail {
-#if !defined(ASIO_HAS_THREADS)
+#if !defined(XIO_HAS_THREADS)
         typedef null_thread thread;
-#elif defined(ASIO_HAS_PTHREADS)
+#elif defined(XIO_HAS_PTHREADS)
         typedef posix_thread thread;
-#elif defined(ASIO_WINDOWS)
+#elif defined(XIO_WINDOWS)
 # if defined(UNDER_CE)
         typedef wince_thread thread;
-# elif defined(ASIO_WINDOWS_APP)
+# elif defined(XIO_WINDOWS_APP)
         typedef winapp_thread thread;
 # else
         typedef win_thread thread;
@@ -56,4 +56,4 @@ namespace xio {
 
 } // namespace xio
 
-#endif // ASIO_DETAIL_THREAD_HPP
+#endif // XIO_DETAIL_THREAD_HPP

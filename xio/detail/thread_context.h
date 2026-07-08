@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_THREAD_CONTEXT_HPP
-#define ASIO_DETAIL_THREAD_CONTEXT_HPP
+#ifndef XIO_DETAIL_THREAD_CONTEXT_HPP
+#define XIO_DETAIL_THREAD_CONTEXT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -32,7 +32,7 @@ namespace xio {
         public:
             // Obtain a pointer to the top of the thread call stack. Returns null when
             // not running inside a thread context.
-            ASIO_DECL static thread_info_base *top_of_thread_call_stack();
+            XIO_DECL static thread_info_base *top_of_thread_call_stack();
 
         protected:
             // Per-thread call stack to track the state of each thread in the context.
@@ -45,4 +45,4 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // ASIO_DETAIL_THREAD_CONTEXT_HPP
+#endif // XIO_DETAIL_THREAD_CONTEXT_HPP

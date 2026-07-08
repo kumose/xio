@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SSL_ERROR_HPP
-#define ASIO_SSL_ERROR_HPP
+#ifndef XIO_SSL_ERROR_HPP
+#define XIO_SSL_ERROR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -30,46 +30,33 @@ namespace xio {
         };
 
         extern
-        ASIO_DECL
+        XIO_DECL
         const xio::error_category &get_ssl_category();
 
         inline const xio::error_category &
-                ssl_category ASIO_UNUSED_VARIABLE
+                ssl_category XIO_UNUSED_VARIABLE
                 = xio::error::get_ssl_category();
     } // namespace error
     namespace ssl {
         namespace error {
             enum stream_errors {
-#if defined(GENERATING_DOCUMENTATION)
-                /// The underlying stream closed before the ssl stream gracefully shut down.
-                stream_truncated,
-
-                /// The underlying SSL library returned a system error without providing
-  /// further information.
-                unspecified_system_error,
-
-                /// The underlying SSL library generated an unexpected result from a function
-  /// call.
-                unexpected_result
-#else // defined(GENERATING_DOCUMENTATION)
 # if (OPENSSL_VERSION_NUMBER < 0x10100000L) \
     && !defined(OPENSSL_IS_BORINGSSL) \
-    && !defined(ASIO_USE_WOLFSSL)
+    && !defined(XIO_USE_WOLFSSL)
                 stream_truncated= ERR_PACK(ERR_LIB_SSL, 0, SSL_R_SHORT_READ),
 # else
                 stream_truncated = 1,
 # endif
                 unspecified_system_error = 2,
                 unexpected_result = 3
-#endif // defined(GENERATING_DOCUMENTATION)
             };
 
             extern
-            ASIO_DECL
+            XIO_DECL
             const xio::error_category &get_stream_category();
 
             inline const xio::error_category &
-                    stream_category ASIO_UNUSED_VARIABLE
+                    stream_category XIO_UNUSED_VARIABLE
                     = xio::ssl::error::get_stream_category();
         } // namespace error
     } // namespace ssl
@@ -111,4 +98,4 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // ASIO_SSL_ERROR_HPP
+#endif // XIO_SSL_ERROR_HPP

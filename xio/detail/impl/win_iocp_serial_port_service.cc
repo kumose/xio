@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_WIN_IOCP_SERIAL_PORT_SERVICE_IPP
-#define ASIO_DETAIL_IMPL_WIN_IOCP_SERIAL_PORT_SERVICE_IPP
+#ifndef XIO_DETAIL_IMPL_WIN_IOCP_SERIAL_PORT_SERVICE_IPP
+#define XIO_DETAIL_IMPL_WIN_IOCP_SERIAL_PORT_SERVICE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,7 +18,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IOCP) && defined(ASIO_HAS_SERIAL_PORT)
+#if defined(XIO_HAS_IOCP) && defined(XIO_HAS_SERIAL_PORT)
 
 #include <cstring>
 #include <xio/detail/win_iocp_serial_port_service.h>
@@ -43,7 +43,7 @@ namespace xio {
             const std::string &device, xio::error_code &ec) {
             if (is_open(impl)) {
                 ec = xio::error::already_open;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -58,7 +58,7 @@ namespace xio {
                 DWORD last_error = ::GetLastError();
                 ec = xio::error_code(last_error,
                                      xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -72,7 +72,7 @@ namespace xio {
                 ::CloseHandle(handle);
                 ec = xio::error_code(last_error,
                                      xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -98,7 +98,7 @@ namespace xio {
                 ::CloseHandle(handle);
                 ec = xio::error_code(last_error,
                                      xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -116,7 +116,7 @@ namespace xio {
                 ::CloseHandle(handle);
                 ec = xio::error_code(last_error,
                                      xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -139,7 +139,7 @@ namespace xio {
                 DWORD last_error = ::GetLastError();
                 ec = xio::error_code(last_error,
                                      xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -150,7 +150,7 @@ namespace xio {
                 DWORD last_error = ::GetLastError();
                 ec = xio::error_code(last_error,
                                      xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -171,7 +171,7 @@ namespace xio {
                 DWORD last_error = ::GetLastError();
                 ec = xio::error_code(last_error,
                                      xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -183,6 +183,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IOCP) && defined(ASIO_HAS_SERIAL_PORT)
+#endif // defined(XIO_HAS_IOCP) && defined(XIO_HAS_SERIAL_PORT)
 
-#endif // ASIO_DETAIL_IMPL_WIN_IOCP_SERIAL_PORT_SERVICE_IPP
+#endif // XIO_DETAIL_IMPL_WIN_IOCP_SERIAL_PORT_SERVICE_IPP

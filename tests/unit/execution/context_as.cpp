@@ -26,7 +26,7 @@ void context_as_executor_query_test()
 {
   static_thread_pool pool(1);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(pool.executor(),
         execution::context_as_t<static_thread_pool&>())
         == &pool);
@@ -35,16 +35,16 @@ void context_as_executor_query_test()
       execution::context_as_t<static_thread_pool&>
     > ex1 = pool.executor();
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(ex1,
         execution::context_as_t<static_thread_pool&>())
         == &pool);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(ex1, execution::context)
         == &pool);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(pool.executor(),
         execution::context_as_t<const static_thread_pool&>())
         == &pool);
@@ -53,18 +53,18 @@ void context_as_executor_query_test()
       execution::context_as_t<const static_thread_pool&>
     > ex2 = pool.executor();
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(ex2,
         execution::context_as_t<const static_thread_pool&>())
         == &pool);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(ex2, execution::context)
         == &pool);
 
   io_context io_ctx;
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(io_ctx.get_executor(),
         execution::context_as_t<io_context&>())
         == &io_ctx);
@@ -73,16 +73,16 @@ void context_as_executor_query_test()
       execution::context_as_t<io_context&>
     > ex3 = io_ctx.get_executor();
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(ex3,
         execution::context_as_t<io_context&>())
         == &io_ctx);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(ex3, execution::context)
         == &io_ctx);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(io_ctx.get_executor(),
         execution::context_as_t<const io_context&>())
         == &io_ctx);
@@ -91,16 +91,16 @@ void context_as_executor_query_test()
       execution::context_as_t<const io_context&>
     > ex4 = io_ctx.get_executor();
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(ex4,
         execution::context_as_t<const io_context&>())
         == &io_ctx);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(ex4, execution::context)
         == &io_ctx);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(io_ctx.get_executor(),
         execution::context_as_t<execution_context&>())
         == &io_ctx);
@@ -109,16 +109,16 @@ void context_as_executor_query_test()
       execution::context_as_t<execution_context&>
     > ex5 = io_ctx.get_executor();
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(ex5,
         execution::context_as_t<execution_context&>())
         == &io_ctx);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(ex5, execution::context)
         == &io_ctx);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(io_ctx.get_executor(),
         execution::context_as_t<const execution_context&>())
         == &io_ctx);
@@ -127,18 +127,18 @@ void context_as_executor_query_test()
       execution::context_as_t<const execution_context&>
     > ex6 = io_ctx.get_executor();
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(ex6,
         execution::context_as_t<const execution_context&>())
         == &io_ctx);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(ex6, execution::context)
         == &io_ctx);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "context_as",
-  ASIO_TEST_CASE(context_as_executor_query_test)
+  XIO_TEST_CASE(context_as_executor_query_test)
 )

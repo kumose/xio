@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_WIN_IOCP_FILE_SERVICE_IPP
-#define ASIO_DETAIL_IMPL_WIN_IOCP_FILE_SERVICE_IPP
+#ifndef XIO_DETAIL_IMPL_WIN_IOCP_FILE_SERVICE_IPP
+#define XIO_DETAIL_IMPL_WIN_IOCP_FILE_SERVICE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,8 +17,8 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_FILE) \
-  && defined(ASIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE)
+#if defined(XIO_HAS_FILE) \
+  && defined(XIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE)
 
 #include <cstring>
 #include <sys/stat.h>
@@ -53,7 +53,7 @@ namespace xio {
             xio::error_code &ec) {
             if (is_open(impl)) {
                 ec = xio::error::already_open;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -62,7 +62,7 @@ namespace xio {
             if (required_path_length == 0) {
                 DWORD last_error = ::GetLastError();
                 ec.assign(last_error, xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -72,7 +72,7 @@ namespace xio {
             if (result == 0) {
                 DWORD last_error = ::GetLastError();
                 ec.assign(last_error, xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -117,7 +117,7 @@ namespace xio {
                             DWORD last_error = ::GetLastError();
                             ::CloseHandle(handle);
                             ec.assign(last_error, xio::error::get_system_category());
-                            ASIO_ERROR_LOCATION(ec);
+                            XIO_ERROR_LOCATION(ec);
                             return ec;
                         }
                     }
@@ -132,7 +132,7 @@ namespace xio {
                             DWORD last_error = ::GetLastError();
                             ::CloseHandle(handle);
                             ec.assign(last_error, xio::error::get_system_category());
-                            ASIO_ERROR_LOCATION(ec);
+                            XIO_ERROR_LOCATION(ec);
                             return ec;
                         }
                     }
@@ -141,12 +141,12 @@ namespace xio {
                 handle_service_.assign(impl, handle, ec);
                 if (ec)
                     ::CloseHandle(handle);
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             } else {
                 DWORD last_error = ::GetLastError();
                 ec.assign(last_error, xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
         }
@@ -161,7 +161,7 @@ namespace xio {
             } else {
                 DWORD last_error = ::GetLastError();
                 ec.assign(last_error, xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return 0;
             }
         }
@@ -185,12 +185,12 @@ namespace xio {
                     xio::error::clear(ec);
                 else
                     ec.assign(last_error, xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             } else {
                 DWORD last_error = ::GetLastError();
                 ec.assign(last_error, xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
         }
@@ -205,7 +205,7 @@ namespace xio {
             } else {
                 DWORD last_error = ::GetLastError();
                 ec.assign(last_error, xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
         }
@@ -241,7 +241,7 @@ namespace xio {
                     break;
                 default:
                     ec = xio::error::invalid_argument;
-                    ASIO_ERROR_LOCATION(ec);
+                    XIO_ERROR_LOCATION(ec);
                     return 0;
             }
 
@@ -254,7 +254,7 @@ namespace xio {
             } else {
                 DWORD last_error = ::GetLastError();
                 ec.assign(last_error, xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return 0;
             }
         }
@@ -264,7 +264,7 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_FILE)
-//   && defined(ASIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE)
+#endif // defined(XIO_HAS_FILE)
+//   && defined(XIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE)
 
-#endif // ASIO_DETAIL_IMPL_WIN_IOCP_FILE_SERVICE_IPP
+#endif // XIO_DETAIL_IMPL_WIN_IOCP_FILE_SERVICE_IPP

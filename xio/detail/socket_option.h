@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_SOCKET_OPTION_HPP
-#define ASIO_DETAIL_SOCKET_OPTION_HPP
+#ifndef XIO_DETAIL_SOCKET_OPTION_HPP
+#define XIO_DETAIL_SOCKET_OPTION_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -197,7 +197,7 @@ namespace xio {
                 // Construct with specific option values.
                 linger(bool e, int t) {
                     enabled(e);
-                    timeout ASIO_PREVENT_MACRO_SUBSTITUTION(t);
+                    timeout XIO_PREVENT_MACRO_SUBSTITUTION(t);
                 }
 
                 // Set the value for whether linger is enabled.
@@ -211,7 +211,7 @@ namespace xio {
                 }
 
                 // Set the value for the linger timeout.
-                void timeout ASIO_PREVENT_MACRO_SUBSTITUTION(int value) {
+                void timeout XIO_PREVENT_MACRO_SUBSTITUTION(int value) {
 #if defined(WIN32)
                     value_.l_linger = static_cast<u_short>(value);
 #else
@@ -220,7 +220,7 @@ namespace xio {
                 }
 
                 // Get the value for the linger timeout.
-                int timeout ASIO_PREVENT_MACRO_SUBSTITUTION() const {
+                int timeout XIO_PREVENT_MACRO_SUBSTITUTION() const {
                     return static_cast<int>(value_.l_linger);
                 }
 
@@ -273,4 +273,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_SOCKET_OPTION_HPP
+#endif // XIO_DETAIL_SOCKET_OPTION_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_AS_TUPLE_HPP
-#define ASIO_AS_TUPLE_HPP
+#ifndef XIO_AS_TUPLE_HPP
+#define XIO_AS_TUPLE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -148,4 +148,4 @@ inline constexpr partial_as_tuple as_tuple;
 
 #include <xio/impl/as_tuple.h>
 
-#endif // ASIO_AS_TUPLE_HPP
+#endif // XIO_AS_TUPLE_HPP

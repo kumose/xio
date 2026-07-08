@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WIN_THREAD_HPP
-#define ASIO_DETAIL_WIN_THREAD_HPP
+#ifndef XIO_DETAIL_WIN_THREAD_HPP
+#define XIO_DETAIL_WIN_THREAD_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,8 +17,8 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS) \
-  && !defined(ASIO_WINDOWS_APP) \
+#if defined(XIO_WINDOWS) \
+  && !defined(XIO_WINDOWS_APP) \
   && !defined(UNDER_CE)
 
 #include <cstddef>
@@ -31,12 +31,12 @@ namespace xio {
 
 
     namespace detail {
-ASIO_DECL unsigned int __stdcall win_thread_function(void *arg);
+XIO_DECL unsigned int __stdcall win_thread_function(void *arg);
 
 #if defined(WINVER) && (WINVER < 0x0500)
-ASIO_DECL void __stdcall apc_function(ULONG data);
+XIO_DECL void __stdcall apc_function(ULONG data);
 #else
-ASIO_DECL void __stdcall apc_function(ULONG_PTR data);
+XIO_DECL void __stdcall apc_function(ULONG_PTR data);
 #endif
 
 template<typename T>
@@ -86,7 +86,7 @@ public:
     }
 
     // Destructor.
-    ASIO_DECL ~win_thread();
+    XIO_DECL ~win_thread();
 
     // Move assignment.
     win_thread &operator=(win_thread &&other) noexcept {
@@ -101,18 +101,18 @@ public:
     }
 
     // Wait for the thread to exit.
-  ASIO_DECL void join();
+  XIO_DECL void join();
 
     // Get number of CPUs.
-    ASIO_DECL static std::size_t hardware_concurrency();
+    XIO_DECL static std::size_t hardware_concurrency();
 
 private:
-    friend ASIO_DECL unsigned int __stdcall win_thread_function(void *arg);
+    friend XIO_DECL unsigned int __stdcall win_thread_function(void *arg);
 
 #if defined(WINVER) && (WINVER < 0x0500)
-friend ASIO_DECL void __stdcall apc_function(ULONG);
+friend XIO_DECL void __stdcall apc_function(ULONG);
 #else
-friend ASIO_DECL void __stdcall apc_function(ULONG_PTR);
+friend XIO_DECL void __stdcall apc_function(ULONG_PTR);
 #endif
 
 class func_base {
@@ -151,7 +151,7 @@ private:
     Allocator allocator_;
 };
 
-  ASIO_DECL func_base *start_thread(
+  XIO_DECL func_base *start_thread(
     func_base *arg, unsigned int stack_size);
 
 func_base *arg_;
@@ -163,8 +163,8 @@ func_base *arg_;
 #include <xio/detail/pop_options.h>
 
 
-#endif // defined(ASIO_WINDOWS)
-// && !defined(ASIO_WINDOWS_APP)
+#endif // defined(XIO_WINDOWS)
+// && !defined(XIO_WINDOWS_APP)
 // && !defined(UNDER_CE)
 
-#endif // ASIO_DETAIL_WIN_THREAD_HPP
+#endif // XIO_DETAIL_WIN_THREAD_HPP

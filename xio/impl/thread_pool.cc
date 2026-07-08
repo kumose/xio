@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_THREAD_POOL_IPP
-#define ASIO_IMPL_THREAD_POOL_IPP
+#ifndef XIO_IMPL_THREAD_POOL_IPP
+#define XIO_IMPL_THREAD_POOL_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -29,20 +29,20 @@ namespace xio {
         detail::scheduler *scheduler_;
 
         void operator()() {
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             try {
-#endif// !defined(ASIO_NO_EXCEPTIONS)
+#endif// !defined(XIO_NO_EXCEPTIONS)
                 xio::error_code ec;
                 scheduler_->run(ec);
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             } catch (...) {
                 std::terminate();
             }
-#endif// !defined(ASIO_NO_EXCEPTIONS)
+#endif// !defined(XIO_NO_EXCEPTIONS)
         }
     };
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
 
     long thread_pool::default_thread_pool_size() {
         std::size_t num_threads = detail::thread::hardware_concurrency() * 2;
@@ -58,7 +58,7 @@ namespace xio {
         start();
     }
 
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
     long thread_pool::clamp_thread_pool_size(std::size_t n) {
         if (n > 0x7FFFFFFF) {
@@ -126,4 +126,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_THREAD_POOL_IPP
+#endif // XIO_IMPL_THREAD_POOL_IPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_DEV_POLL_REACTOR_HPP
-#define ASIO_DETAIL_DEV_POLL_REACTOR_HPP
+#ifndef XIO_DETAIL_DEV_POLL_REACTOR_HPP
+#define XIO_DETAIL_DEV_POLL_REACTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_DEV_POLL)
+#if defined(XIO_HAS_DEV_POLL)
 
 #include <cstddef>
 #include <vector>
@@ -56,33 +56,33 @@ namespace xio {
             };
 
             // Constructor.
-            ASIO_DECL dev_poll_reactor(xio::execution_context &ctx);
+            XIO_DECL dev_poll_reactor(xio::execution_context &ctx);
 
             // Destructor.
-            ASIO_DECL ~dev_poll_reactor();
+            XIO_DECL ~dev_poll_reactor();
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void shutdown();
+  XIO_DECL void shutdown();
 
             // Recreate internal descriptors following a fork.
-  ASIO_DECL void notify_fork(
+  XIO_DECL void notify_fork(
                 xio::execution_context::fork_event fork_ev);
 
             // Initialise the task.
-  ASIO_DECL void init_task();
+  XIO_DECL void init_task();
 
             // Register a socket with the reactor. Returns 0 on success, system error
             // code on failure.
-  ASIO_DECL int register_descriptor(socket_type, per_descriptor_data &);
+  XIO_DECL int register_descriptor(socket_type, per_descriptor_data &);
 
             // Register a descriptor with an associated single operation. Returns 0 on
             // success, system error code on failure.
-  ASIO_DECL int register_internal_descriptor(
+  XIO_DECL int register_internal_descriptor(
                 int op_type, socket_type descriptor,
                 per_descriptor_data &descriptor_data, reactor_op *op);
 
             // Move descriptor registration from one descriptor_data object to another.
-  ASIO_DECL void move_descriptor(socket_type descriptor,
+  XIO_DECL void move_descriptor(socket_type descriptor,
                                  per_descriptor_data &target_descriptor_data,
                                  per_descriptor_data &source_descriptor_data);
 
@@ -90,12 +90,12 @@ namespace xio {
             void post_immediate_completion(operation *op, bool is_continuation) const;
 
             // Post a reactor operation for immediate completion.
-  ASIO_DECL static void call_post_immediate_completion(
+  XIO_DECL static void call_post_immediate_completion(
                 operation *op, bool is_continuation, const void *self);
 
             // Start a new operation. The reactor operation will be performed when the
             // given descriptor is flagged as ready, or an error has occurred.
-  ASIO_DECL void start_op(int op_type, socket_type descriptor,
+  XIO_DECL void start_op(int op_type, socket_type descriptor,
                           per_descriptor_data &, reactor_op *op,
                           bool is_continuation, bool allow_speculative,
                           void (*on_immediate)(operation *, bool, const void *),
@@ -114,30 +114,30 @@ namespace xio {
             // Cancel all operations associated with the given descriptor. The
             // handlers associated with the descriptor will be invoked with the
             // operation_aborted error.
-  ASIO_DECL void cancel_ops(socket_type descriptor, per_descriptor_data &);
+  XIO_DECL void cancel_ops(socket_type descriptor, per_descriptor_data &);
 
             // Cancel all operations associated with the given descriptor and key. The
             // handlers associated with the descriptor will be invoked with the
             // operation_aborted error.
-  ASIO_DECL void cancel_ops_by_key(socket_type descriptor,
+  XIO_DECL void cancel_ops_by_key(socket_type descriptor,
                                    per_descriptor_data &descriptor_data,
                                    int op_type, void *cancellation_key);
 
             // Cancel any operations that are running against the descriptor and remove
             // its registration from the reactor. The reactor resources associated with
             // the descriptor must be released by calling cleanup_descriptor_data.
-  ASIO_DECL void deregister_descriptor(socket_type descriptor,
+  XIO_DECL void deregister_descriptor(socket_type descriptor,
                                        per_descriptor_data &, bool closing);
 
             // Remove the descriptor's registration from the reactor. The reactor
             // resources associated with the descriptor must be released by calling
             // cleanup_descriptor_data.
-  ASIO_DECL void deregister_internal_descriptor(
+  XIO_DECL void deregister_internal_descriptor(
                 socket_type descriptor, per_descriptor_data &);
 
             // Perform any post-deregistration cleanup tasks associated with the
             // descriptor data.
-  ASIO_DECL void cleanup_descriptor_data(per_descriptor_data &);
+  XIO_DECL void cleanup_descriptor_data(per_descriptor_data &);
 
             // Add a new timer queue to the reactor.
             template<typename TimeTraits, typename Allocator>
@@ -175,35 +175,35 @@ namespace xio {
                             typename timer_queue<TimeTraits, Allocator>::per_timer_data &source);
 
             // Run /dev/poll once until interrupted or events are ready to be dispatched.
-  ASIO_DECL void run(long usec, op_queue<operation> &ops);
+  XIO_DECL void run(long usec, op_queue<operation> &ops);
 
             // Interrupt the select loop.
-  ASIO_DECL void interrupt();
+  XIO_DECL void interrupt();
 
         private:
             // Create the /dev/poll file descriptor. Throws an exception if the descriptor
             // cannot be created.
-  ASIO_DECL static int do_dev_poll_create();
+  XIO_DECL static int do_dev_poll_create();
 
             // Helper function to add a new timer queue.
-  ASIO_DECL void do_add_timer_queue(timer_queue_base &queue);
+  XIO_DECL void do_add_timer_queue(timer_queue_base &queue);
 
             // Helper function to remove a timer queue.
-  ASIO_DECL void do_remove_timer_queue(timer_queue_base &queue);
+  XIO_DECL void do_remove_timer_queue(timer_queue_base &queue);
 
             // Get the timeout value for the /dev/poll DP_POLL operation. The timeout
             // value is returned as a number of milliseconds. A return value of -1
             // indicates that the poll should block indefinitely.
-  ASIO_DECL int get_timeout(int msec);
+  XIO_DECL int get_timeout(int msec);
 
             // Cancel all operations associated with the given descriptor. The do_cancel
             // function of the handler objects will be invoked. This function does not
             // acquire the dev_poll_reactor's mutex.
-  ASIO_DECL void cancel_ops_unlocked(socket_type descriptor,
+  XIO_DECL void cancel_ops_unlocked(socket_type descriptor,
                                      const xio::error_code &ec);
 
             // Add a pending event entry for the given descriptor.
-            ASIO_DECL::pollfd &add_pending_event_change(int descriptor);
+            XIO_DECL::pollfd &add_pending_event_change(int descriptor);
 
             // The scheduler implementation used to post completions.
             scheduler &scheduler_;
@@ -241,6 +241,6 @@ namespace xio {
 #include <xio/detail/impl/dev_poll_reactor.h>
 
 
-#endif // defined(ASIO_HAS_DEV_POLL)
+#endif // defined(XIO_HAS_DEV_POLL)
 
-#endif // ASIO_DETAIL_DEV_POLL_REACTOR_HPP
+#endif // XIO_DETAIL_DEV_POLL_REACTOR_HPP

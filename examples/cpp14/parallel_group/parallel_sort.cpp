@@ -19,7 +19,7 @@
 template <
     typename Executor,
     typename RandomAccessIterator,
-    ASIO_COMPLETION_TOKEN_FOR(void()) CompletionToken>
+    XIO_COMPLETION_TOKEN_FOR(void()) CompletionToken>
 auto parallel_sort(
     Executor executor,
     RandomAccessIterator begin,
@@ -71,7 +71,7 @@ void parallel_sort_impl(
 template <
     typename Executor,
     typename RandomAccessIterator,
-    ASIO_COMPLETION_TOKEN_FOR(void()) CompletionToken>
+    XIO_COMPLETION_TOKEN_FOR(void()) CompletionToken>
 auto parallel_sort(
     Executor executor,
     RandomAccessIterator begin,

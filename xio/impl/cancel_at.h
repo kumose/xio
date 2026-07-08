@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_CANCEL_AT_HPP
-#define ASIO_IMPL_CANCEL_AT_HPP
+#ifndef XIO_IMPL_CANCEL_AT_HPP
+#define XIO_IMPL_CANCEL_AT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -128,7 +128,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<typename CompletionToken, typename Clock,
         typename WaitTraits, typename... Signatures>
@@ -288,11 +287,8 @@ namespace xio {
   }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_CANCEL_AT_HPP
+#endif // XIO_IMPL_CANCEL_AT_HPP

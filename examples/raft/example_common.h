@@ -149,9 +149,9 @@ void init_raft(ptr<state_machine> sm_instance) {
     // State manager.
     stuff.sm_ = sm_instance;
 
-    // ASIO options.
-    xio_service::options asio_opt;
-    asio_opt.thread_pool_size_ = 4;
+    // XIO options.
+    xio_service::options xio_opt;
+    xio_opt.thread_pool_size_ = 4;
 
     // Raft parameters.
     raft_params params;
@@ -180,7 +180,7 @@ void init_raft(ptr<state_machine> sm_instance) {
     stuff.raft_instance_ = stuff.launcher_.init(stuff.sm_,
                                                 stuff.smgr_,
                                                 stuff.port_,
-                                                asio_opt,
+                                                xio_opt,
                                                 params);
     if (!stuff.raft_instance_) {
         std::cerr << "Failed to initialize launcher (see the message "

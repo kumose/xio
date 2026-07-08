@@ -51,9 +51,9 @@ void test()
   namespace generic = xio::generic;
   typedef generic::raw_protocol rp;
 
-  const int af_inet = ASIO_OS_DEF(AF_INET);
-  const int ipproto_icmp = ASIO_OS_DEF(IPPROTO_ICMP);
-  const int sock_raw = ASIO_OS_DEF(SOCK_RAW);
+  const int af_inet = XIO_OS_DEF(AF_INET);
+  const int ipproto_icmp = XIO_OS_DEF(IPPROTO_ICMP);
+  const int sock_raw = XIO_OS_DEF(SOCK_RAW);
 
   try
   {
@@ -71,11 +71,11 @@ void test()
     rp::socket socket1(ioc);
     rp::socket socket2(ioc, rp(af_inet, ipproto_icmp));
     rp::socket socket3(ioc, rp::endpoint());
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     rp::socket::native_handle_type native_socket1
       = ::socket(af_inet, sock_raw, 0);
     rp::socket socket4(ioc, rp(af_inet, ipproto_icmp), native_socket1);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     rp::socket socket5(std::move(socket4));
     xio::ip::icmp::socket icmp_socket(ioc);
@@ -100,14 +100,14 @@ void test()
     socket1.open(rp(af_inet, ipproto_icmp));
     socket1.open(rp(af_inet, ipproto_icmp), ec);
 
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     rp::socket::native_handle_type native_socket2
       = ::socket(af_inet, sock_raw, 0);
     socket1.assign(rp(af_inet, ipproto_icmp), native_socket2);
     rp::socket::native_handle_type native_socket3
       = ::socket(af_inet, sock_raw, 0);
     socket1.assign(rp(af_inet, ipproto_icmp), native_socket3, ec);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     bool is_open = socket1.is_open();
     (void)is_open;
@@ -283,8 +283,8 @@ void test()
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "generic/raw_protocol",
-  ASIO_COMPILE_TEST_CASE(generic_raw_protocol_socket_compile::test)
+  XIO_COMPILE_TEST_CASE(generic_raw_protocol_socket_compile::test)
 )

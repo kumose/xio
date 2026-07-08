@@ -50,8 +50,8 @@ void test()
   namespace generic = xio::generic;
   typedef generic::seq_packet_protocol spp;
 
-  const int af_inet = ASIO_OS_DEF(AF_INET);
-  const int sock_seqpacket = ASIO_OS_DEF(SOCK_SEQPACKET);
+  const int af_inet = XIO_OS_DEF(AF_INET);
+  const int sock_seqpacket = XIO_OS_DEF(SOCK_SEQPACKET);
 
   try
   {
@@ -70,11 +70,11 @@ void test()
     spp::socket socket1(ioc);
     spp::socket socket2(ioc, spp(af_inet, 0));
     spp::socket socket3(ioc, spp::endpoint());
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     spp::socket::native_handle_type native_socket1
       = ::socket(af_inet, sock_seqpacket, 0);
     spp::socket socket4(ioc, spp(af_inet, 0), native_socket1);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     spp::socket socket5(std::move(socket4));
 
@@ -96,14 +96,14 @@ void test()
     socket1.open(spp(af_inet, 0));
     socket1.open(spp(af_inet, 0), ec);
 
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     spp::socket::native_handle_type native_socket2
       = ::socket(af_inet, sock_seqpacket, 0);
     socket1.assign(spp(af_inet, 0), native_socket2);
     spp::socket::native_handle_type native_socket3
       = ::socket(af_inet, sock_seqpacket, 0);
     socket1.assign(spp(af_inet, 0), native_socket3, ec);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     bool is_open = socket1.is_open();
     (void)is_open;
@@ -202,8 +202,8 @@ void test()
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "generic/seq_packet_protocol",
-  ASIO_COMPILE_TEST_CASE(generic_seq_packet_protocol_socket_compile::test)
+  XIO_COMPILE_TEST_CASE(generic_seq_packet_protocol_socket_compile::test)
 )

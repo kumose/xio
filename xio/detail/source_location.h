@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_SOURCE_LOCATION_HPP
-#define ASIO_DETAIL_SOURCE_LOCATION_HPP
+#ifndef XIO_DETAIL_SOURCE_LOCATION_HPP
+#define XIO_DETAIL_SOURCE_LOCATION_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,16 +17,16 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_HAS_SOURCE_LOCATION)
 
-#if defined(ASIO_HAS_STD_SOURCE_LOCATION)
+#if defined(XIO_HAS_STD_SOURCE_LOCATION)
 # include <source_location>
-#elif defined(ASIO_HAS_STD_EXPERIMENTAL_SOURCE_LOCATION)
+#elif defined(XIO_HAS_STD_EXPERIMENTAL_SOURCE_LOCATION)
 # include <experimental/source_location>
-#else // defined(ASIO_HAS_STD_EXPERIMENTAL_SOURCE_LOCATION)
-# error ASIO_HAS_SOURCE_LOCATION is set \
+#else // defined(XIO_HAS_STD_EXPERIMENTAL_SOURCE_LOCATION)
+# error XIO_HAS_SOURCE_LOCATION is set \
   but no source_location is available
-#endif // defined(ASIO_HAS_STD_EXPERIMENTAL_SOURCE_LOCATION)
+#endif // defined(XIO_HAS_STD_EXPERIMENTAL_SOURCE_LOCATION)
 
 namespace xio {
 
@@ -35,15 +35,15 @@ namespace xio {
 
 
 
-#if defined(ASIO_HAS_STD_SOURCE_LOCATION)
+#if defined(XIO_HAS_STD_SOURCE_LOCATION)
 using std::source_location;
-#elif defined(ASIO_HAS_STD_EXPERIMENTAL_SOURCE_LOCATION)
+#elif defined(XIO_HAS_STD_EXPERIMENTAL_SOURCE_LOCATION)
 using std::experimental::source_location;
-#endif // defined(ASIO_HAS_STD_EXPERIMENTAL_SOURCE_LOCATION)
+#endif // defined(XIO_HAS_STD_EXPERIMENTAL_SOURCE_LOCATION)
 
 } // namespace detail
 } // namespace xio
 
-#endif // defined(ASIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_HAS_SOURCE_LOCATION)
 
-#endif // ASIO_DETAIL_SOURCE_LOCATION_HPP
+#endif // XIO_DETAIL_SOURCE_LOCATION_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SSL_DETAIL_IO_HPP
-#define ASIO_SSL_DETAIL_IO_HPP
+#ifndef XIO_SSL_DETAIL_IO_HPP
+#define XIO_SSL_DETAIL_IO_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -168,7 +168,7 @@ namespace xio {
                                             // Prevent other read operations from being started.
                                             core_.pending_read_.expires_at(core_.pos_infin());
 
-                                            ASIO_HANDLER_LOCATION((
+                                            XIO_HANDLER_LOCATION((
                                                 __FILE__, __LINE__, Operation::tracking_name()));
 
                                             // Start reading some data from the underlying transport.
@@ -176,7 +176,7 @@ namespace xio {
                                                 xio::buffer(core_.input_buffer()),
                                                 static_cast<io_op &&>(*this));
                                         } else {
-                                            ASIO_HANDLER_LOCATION((
+                                            XIO_HANDLER_LOCATION((
                                                 __FILE__, __LINE__, Operation::tracking_name()));
 
                                             // Wait until the current read operation completes.
@@ -198,7 +198,7 @@ namespace xio {
                                             // Prevent other write operations from being started.
                                             core_.pending_write_.expires_at(core_.pos_infin());
 
-                                            ASIO_HANDLER_LOCATION((
+                                            XIO_HANDLER_LOCATION((
                                                 __FILE__, __LINE__, Operation::tracking_name()));
 
                                             // Start writing all the data to the underlying transport.
@@ -206,7 +206,7 @@ namespace xio {
                                                              core_.engine_.get_output(core_.output_buffer()),
                                                              transfer_unlimited(), static_cast<io_op &&>(*this));
                                         } else {
-                                            ASIO_HANDLER_LOCATION((
+                                            XIO_HANDLER_LOCATION((
                                                 __FILE__, __LINE__, Operation::tracking_name()));
 
                                             // Wait until the current write operation completes.
@@ -225,7 +225,7 @@ namespace xio {
                                         // allowed to call the handler directly. Instead, issue a zero-sized
                                         // read so the handler runs "as-if" posted using io_context::post().
                                         if (start) {
-                                            ASIO_HANDLER_LOCATION((
+                                            XIO_HANDLER_LOCATION((
                                                 __FILE__, __LINE__, Operation::tracking_name()));
 
                                             next_layer_.async_read_some(
@@ -362,4 +362,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_SSL_DETAIL_IO_HPP
+#endif // XIO_SSL_DETAIL_IO_HPP

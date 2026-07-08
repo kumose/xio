@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_GENERIC_STREAM_PROTOCOL_HPP
-#define ASIO_GENERIC_STREAM_PROTOCOL_HPP
+#ifndef XIO_GENERIC_STREAM_PROTOCOL_HPP
+#define XIO_GENERIC_STREAM_PROTOCOL_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -72,7 +72,7 @@ namespace xio {
 
             /// Obtain an identifier for the type of the protocol.
             int type() const noexcept {
-                return ASIO_OS_DEF(SOCK_STREAM);
+                return XIO_OS_DEF(SOCK_STREAM);
             }
 
             /// Obtain an identifier for the protocol.
@@ -101,10 +101,10 @@ namespace xio {
             /// The generic socket type.
             typedef basic_stream_socket<stream_protocol> socket;
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
             /// The generic socket iostream type.
             typedef basic_socket_iostream<stream_protocol> iostream;
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
 
         private:
             int family_;
@@ -116,4 +116,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_GENERIC_STREAM_PROTOCOL_HPP
+#endif // XIO_GENERIC_STREAM_PROTOCOL_HPP

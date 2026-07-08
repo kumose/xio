@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SSL_DETAIL_IMPL_ENGINE_IPP
-#define ASIO_SSL_DETAIL_IMPL_ENGINE_IPP
+#ifndef XIO_SSL_DETAIL_IMPL_ENGINE_IPP
+#define XIO_SSL_DETAIL_IMPL_ENGINE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -244,7 +244,7 @@ namespace xio {
 
 #if (OPENSSL_VERSION_NUMBER < 0x10000000L)
             xio::detail::static_mutex &engine::accept_mutex() {
-                static xio::detail::static_mutex mutex = ASIO_STATIC_MUTEX_INIT;
+                static xio::detail::static_mutex mutex = XIO_STATIC_MUTEX_INIT;
                 return mutex;
             }
 #endif // (OPENSSL_VERSION_NUMBER < 0x10000000L)
@@ -337,4 +337,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_SSL_DETAIL_IMPL_ENGINE_IPP
+#endif // XIO_SSL_DETAIL_IMPL_ENGINE_IPP

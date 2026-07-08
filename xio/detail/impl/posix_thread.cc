@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_POSIX_THREAD_IPP
-#define ASIO_DETAIL_IMPL_POSIX_THREAD_IPP
+#ifndef XIO_DETAIL_IMPL_POSIX_THREAD_IPP
+#define XIO_DETAIL_IMPL_POSIX_THREAD_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_PTHREADS)
+#if defined(XIO_HAS_PTHREADS)
 
 #include <xio/detail/posix_thread.h>
 #include <xio/detail/throw_error.h>
@@ -76,6 +76,6 @@ void *XIO_VERSIONED_NAME(detail_posix_thread_function)(void *arg)
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_PTHREADS)
+#endif // defined(XIO_HAS_PTHREADS)
 
-#endif // ASIO_DETAIL_IMPL_POSIX_THREAD_IPP
+#endif // XIO_DETAIL_IMPL_POSIX_THREAD_IPP

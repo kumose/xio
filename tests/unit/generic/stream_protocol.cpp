@@ -59,9 +59,9 @@ void test()
   namespace generic = xio::generic;
   typedef generic::stream_protocol sp;
 
-  const int af_inet = ASIO_OS_DEF(AF_INET);
-  const int ipproto_tcp = ASIO_OS_DEF(IPPROTO_TCP);
-  const int sock_stream = ASIO_OS_DEF(SOCK_STREAM);
+  const int af_inet = XIO_OS_DEF(AF_INET);
+  const int ipproto_tcp = XIO_OS_DEF(IPPROTO_TCP);
+  const int sock_stream = XIO_OS_DEF(SOCK_STREAM);
 
   try
   {
@@ -79,12 +79,12 @@ void test()
     sp::socket socket1(ioc);
     sp::socket socket2(ioc, sp(af_inet, ipproto_tcp));
     sp::socket socket3(ioc, sp::endpoint());
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
     Windows::Networking::Sockets::StreamSocket^ native_socket1 = nullptr;
-#else // defined(ASIO_WINDOWS_RUNTIME)
+#else // defined(XIO_WINDOWS_RUNTIME)
     sp::socket::native_handle_type native_socket1
       = ::socket(af_inet, sock_stream, 0);
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
     sp::socket socket4(ioc, sp(af_inet, ipproto_tcp), native_socket1);
 
     sp::socket socket5(std::move(socket4));
@@ -110,19 +110,19 @@ void test()
     socket1.open(sp(af_inet, ipproto_tcp));
     socket1.open(sp(af_inet, ipproto_tcp), ec);
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
     Windows::Networking::Sockets::StreamSocket^ native_socket2 = nullptr;
-#else // defined(ASIO_WINDOWS_RUNTIME)
+#else // defined(XIO_WINDOWS_RUNTIME)
     sp::socket::native_handle_type native_socket2
       = ::socket(af_inet, sock_stream, 0);
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
     socket1.assign(sp(af_inet, ipproto_tcp), native_socket2);
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
     Windows::Networking::Sockets::StreamSocket^ native_socket3 = nullptr;
-#else // defined(ASIO_WINDOWS_RUNTIME)
+#else // defined(XIO_WINDOWS_RUNTIME)
     sp::socket::native_handle_type native_socket3
       = ::socket(af_inet, sock_stream, 0);
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
     socket1.assign(sp(af_inet, ipproto_tcp), native_socket3, ec);
 
     bool is_open = socket1.is_open();
@@ -253,8 +253,8 @@ void test()
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "generic/stream_protocol",
-  ASIO_COMPILE_TEST_CASE(generic_stream_protocol_socket_compile::test)
+  XIO_COMPILE_TEST_CASE(generic_stream_protocol_socket_compile::test)
 )

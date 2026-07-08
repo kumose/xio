@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_FWD_HPP
-#define ASIO_FWD_HPP
+#ifndef XIO_FWD_HPP
+#define XIO_FWD_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -23,9 +23,6 @@
 #include <xio/buffered_write_stream_fwd.h>
 
 #include <memory>
-
-#if !defined(GENERATING_DOCUMENTATION)
-
 #include <xio/detail/push_options.h>
 
 namespace xio {
@@ -36,13 +33,13 @@ namespace xio {
     template<typename Clock>
     struct wait_traits;
 
-#if !defined(ASIO_EXECUTOR_WORK_GUARD_DECL)
-#define ASIO_EXECUTOR_WORK_GUARD_DECL
+#if !defined(XIO_EXECUTOR_WORK_GUARD_DECL)
+#define XIO_EXECUTOR_WORK_GUARD_DECL
 
     template<typename Executor, typename = void, typename = void>
     class executor_work_guard;
 
-#endif // !defined(ASIO_EXECUTOR_WORK_GUARD_DECL)
+#endif // !defined(XIO_EXECUTOR_WORK_GUARD_DECL)
 
     template<typename Blocking, typename Relationship, typename Allocator>
     class basic_system_executor;
@@ -50,35 +47,35 @@ namespace xio {
     template<typename InlineExceptionHandling>
     class basic_inline_executor;
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
 
     class executor;
 
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
-#if defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#if defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
     typedef executor any_io_executor;
 
     typedef executor any_completion_executor;
 
-#else // defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#else // defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
     namespace execution {
-#if !defined(ASIO_EXECUTION_ANY_EXECUTOR_FWD_DECL)
-#define ASIO_EXECUTION_ANY_EXECUTOR_FWD_DECL
+#if !defined(XIO_EXECUTION_ANY_EXECUTOR_FWD_DECL)
+#define XIO_EXECUTION_ANY_EXECUTOR_FWD_DECL
 
         template<typename... SupportableProperties>
         class any_executor;
 
-#endif // !defined(ASIO_EXECUTION_ANY_EXECUTOR_FWD_DECL)
+#endif // !defined(XIO_EXECUTION_ANY_EXECUTOR_FWD_DECL)
     } // namespace execution
 
     class any_io_executor;
 
     class any_completion_executor;
 
-#endif // defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#endif // defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
     template<typename... Signatures>
     class any_completion_handler;
@@ -94,57 +91,57 @@ namespace xio {
 
     class thread;
 
-#if !defined(ASIO_BASIC_SOCKET_FWD_DECL)
-#define ASIO_BASIC_SOCKET_FWD_DECL
+#if !defined(XIO_BASIC_SOCKET_FWD_DECL)
+#define XIO_BASIC_SOCKET_FWD_DECL
 
     template<typename Protocol, typename Executor = any_io_executor>
     class basic_socket;
 
-#endif // !defined(ASIO_BASIC_SOCKET_FWD_DECL)
+#endif // !defined(XIO_BASIC_SOCKET_FWD_DECL)
 
-#if !defined(ASIO_BASIC_DATAGRAM_SOCKET_FWD_DECL)
-#define ASIO_BASIC_DATAGRAM_SOCKET_FWD_DECL
+#if !defined(XIO_BASIC_DATAGRAM_SOCKET_FWD_DECL)
+#define XIO_BASIC_DATAGRAM_SOCKET_FWD_DECL
 
     template<typename Protocol, typename Executor = any_io_executor>
     class basic_datagram_socket;
 
-#endif // !defined(ASIO_BASIC_DATAGRAM_SOCKET_FWD_DECL)
+#endif // !defined(XIO_BASIC_DATAGRAM_SOCKET_FWD_DECL)
 
-#if !defined(ASIO_BASIC_STREAM_SOCKET_FWD_DECL)
-#define ASIO_BASIC_STREAM_SOCKET_FWD_DECL
+#if !defined(XIO_BASIC_STREAM_SOCKET_FWD_DECL)
+#define XIO_BASIC_STREAM_SOCKET_FWD_DECL
 
     // Forward declaration with defaulted arguments.
     template<typename Protocol, typename Executor = any_io_executor>
     class basic_stream_socket;
 
-#endif // !defined(ASIO_BASIC_STREAM_SOCKET_FWD_DECL)
+#endif // !defined(XIO_BASIC_STREAM_SOCKET_FWD_DECL)
 
-#if !defined(ASIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL)
-#define ASIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL
+#if !defined(XIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL)
+#define XIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL
 
     template<typename Protocol, typename Executor = any_io_executor>
     class basic_socket_acceptor;
 
-#endif // !defined(ASIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL)
+#endif // !defined(XIO_BASIC_SOCKET_ACCEPTOR_FWD_DECL)
 
-#if !defined(ASIO_BASIC_RAW_SOCKET_FWD_DECL)
-#define ASIO_BASIC_RAW_SOCKET_FWD_DECL
+#if !defined(XIO_BASIC_RAW_SOCKET_FWD_DECL)
+#define XIO_BASIC_RAW_SOCKET_FWD_DECL
 
     template<typename Protocol, typename Executor = any_io_executor>
     class basic_raw_socket;
 
-#endif // !defined(ASIO_BASIC_RAW_SOCKET_FWD_DECL)
+#endif // !defined(XIO_BASIC_RAW_SOCKET_FWD_DECL)
 
-#if !defined(ASIO_BASIC_SEQ_PACKET_SOCKET_FWD_DECL)
-#define ASIO_BASIC_SEQ_PACKET_SOCKET_FWD_DECL
+#if !defined(XIO_BASIC_SEQ_PACKET_SOCKET_FWD_DECL)
+#define XIO_BASIC_SEQ_PACKET_SOCKET_FWD_DECL
 
     template<typename Protocol, typename Executor = any_io_executor>
     class basic_seq_packet_socket;
 
-#endif // !defined(ASIO_BASIC_SEQ_PACKET_SOCKET_FWD_DECL)
+#endif // !defined(XIO_BASIC_SEQ_PACKET_SOCKET_FWD_DECL)
 
-#if !defined(ASIO_BASIC_SOCKET_STREAMBUF_FWD_DECL)
-#define ASIO_BASIC_SOCKET_STREAMBUF_FWD_DECL
+#if !defined(XIO_BASIC_SOCKET_STREAMBUF_FWD_DECL)
+#define XIO_BASIC_SOCKET_STREAMBUF_FWD_DECL
 
     // Forward declaration with defaulted arguments.
     template<typename Protocol,
@@ -152,10 +149,10 @@ namespace xio {
         typename WaitTraits = wait_traits<Clock> >
     class basic_socket_streambuf;
 
-#endif // !defined(ASIO_BASIC_SOCKET_STREAMBUF_FWD_DECL)
+#endif // !defined(XIO_BASIC_SOCKET_STREAMBUF_FWD_DECL)
 
-#if !defined(ASIO_BASIC_SOCKET_IOSTREAM_FWD_DECL)
-#define ASIO_BASIC_SOCKET_IOSTREAM_FWD_DECL
+#if !defined(XIO_BASIC_SOCKET_IOSTREAM_FWD_DECL)
+#define XIO_BASIC_SOCKET_IOSTREAM_FWD_DECL
 
     // Forward declaration with defaulted arguments.
     template<typename Protocol,
@@ -163,78 +160,78 @@ namespace xio {
         typename WaitTraits = wait_traits<Clock> >
     class basic_socket_iostream;
 
-#endif // !defined(ASIO_BASIC_SOCKET_IOSTREAM_FWD_DECL)
+#endif // !defined(XIO_BASIC_SOCKET_IOSTREAM_FWD_DECL)
 
-#if !defined(ASIO_BASIC_FILE_FWD_DECL)
-#define ASIO_BASIC_FILE_FWD_DECL
+#if !defined(XIO_BASIC_FILE_FWD_DECL)
+#define XIO_BASIC_FILE_FWD_DECL
 
     template<typename Executor = any_io_executor>
     class basic_file;
 
-#endif // !defined(ASIO_BASIC_FILE_FWD_DECL)
+#endif // !defined(XIO_BASIC_FILE_FWD_DECL)
 
-#if !defined(ASIO_BASIC_RANDOM_ACCESS_FILE_FWD_DECL)
-#define ASIO_BASIC_RANDOM_ACCESS_FILE_FWD_DECL
+#if !defined(XIO_BASIC_RANDOM_ACCESS_FILE_FWD_DECL)
+#define XIO_BASIC_RANDOM_ACCESS_FILE_FWD_DECL
 
     template<typename Executor = any_io_executor>
     class basic_random_access_file;
 
-#endif // !defined(ASIO_BASIC_RANDOM_ACCESS_FILE_FWD_DECL)
+#endif // !defined(XIO_BASIC_RANDOM_ACCESS_FILE_FWD_DECL)
 
     typedef basic_random_access_file<> random_access_file;
 
-#if !defined(ASIO_BASIC_STREAM_FILE_FWD_DECL)
-#define ASIO_BASIC_STREAM_FILE_FWD_DECL
+#if !defined(XIO_BASIC_STREAM_FILE_FWD_DECL)
+#define XIO_BASIC_STREAM_FILE_FWD_DECL
 
     template<typename Executor = any_io_executor>
     class basic_stream_file;
 
-#endif // !defined(ASIO_BASIC_STREAM_FILE_FWD_DECL)
+#endif // !defined(XIO_BASIC_STREAM_FILE_FWD_DECL)
 
     typedef basic_stream_file<> stream_file;
 
-#if !defined(ASIO_BASIC_READABLE_PIPE_FWD_DECL)
-#define ASIO_BASIC_READABLE_PIPE_FWD_DECL
+#if !defined(XIO_BASIC_READABLE_PIPE_FWD_DECL)
+#define XIO_BASIC_READABLE_PIPE_FWD_DECL
 
     template<typename Executor = any_io_executor>
     class basic_readable_pipe;
 
-#endif // !defined(ASIO_BASIC_READABLE_PIPE_FWD_DECL)
+#endif // !defined(XIO_BASIC_READABLE_PIPE_FWD_DECL)
 
     typedef basic_readable_pipe<> readable_pipe;
 
-#if !defined(ASIO_BASIC_WRITABLE_PIPE_FWD_DECL)
-#define ASIO_BASIC_WRITABLE_PIPE_FWD_DECL
+#if !defined(XIO_BASIC_WRITABLE_PIPE_FWD_DECL)
+#define XIO_BASIC_WRITABLE_PIPE_FWD_DECL
 
     template<typename Executor = any_io_executor>
     class basic_writable_pipe;
 
-#endif // !defined(ASIO_BASIC_WRITABLE_PIPE_FWD_DECL)
+#endif // !defined(XIO_BASIC_WRITABLE_PIPE_FWD_DECL)
 
     typedef basic_writable_pipe<> writable_pipe;
 
-#if !defined(ASIO_BASIC_SERIAL_PORT_FWD_DECL)
-#define ASIO_BASIC_SERIAL_PORT_FWD_DECL
+#if !defined(XIO_BASIC_SERIAL_PORT_FWD_DECL)
+#define XIO_BASIC_SERIAL_PORT_FWD_DECL
 
     template<typename Executor = any_io_executor>
     class basic_serial_port;
 
-#endif // !defined(ASIO_BASIC_SERIAL_PORT_FWD_DECL)
+#endif // !defined(XIO_BASIC_SERIAL_PORT_FWD_DECL)
 
     typedef basic_serial_port<> serial_port;
 
-#if !defined(ASIO_BASIC_SIGNAL_SET_FWD_DECL)
-#define ASIO_BASIC_SIGNAL_SET_FWD_DECL
+#if !defined(XIO_BASIC_SIGNAL_SET_FWD_DECL)
+#define XIO_BASIC_SIGNAL_SET_FWD_DECL
 
     template<typename Executor = any_io_executor>
     class basic_signal_set;
 
-#endif // !defined(ASIO_BASIC_SIGNAL_SET_FWD_DECL)
+#endif // !defined(XIO_BASIC_SIGNAL_SET_FWD_DECL)
 
     typedef basic_signal_set<> signal_set;
 
-#if !defined(ASIO_BASIC_WAITABLE_TIMER_FWD_DECL)
-#define ASIO_BASIC_WAITABLE_TIMER_FWD_DECL
+#if !defined(XIO_BASIC_WAITABLE_TIMER_FWD_DECL)
+#define XIO_BASIC_WAITABLE_TIMER_FWD_DECL
 
     // Forward declaration with defaulted arguments.
     template<typename Clock,
@@ -242,7 +239,7 @@ namespace xio {
         typename Executor = any_io_executor>
     class basic_waitable_timer;
 
-#endif // !defined(ASIO_BASIC_WAITABLE_TIMER_FWD_DECL)
+#endif // !defined(XIO_BASIC_WAITABLE_TIMER_FWD_DECL)
 
     typedef basic_waitable_timer<std::chrono::system_clock> system_timer;
 
@@ -269,24 +266,24 @@ namespace xio {
     template<typename Elem, typename Allocator>
     class dynamic_vector_buffer;
 
-#if !defined(ASIO_BUFFER_REGISTRATION_FWD_DECL)
-#define ASIO_BUFFER_REGISTRATION_FWD_DECL
+#if !defined(XIO_BUFFER_REGISTRATION_FWD_DECL)
+#define XIO_BUFFER_REGISTRATION_FWD_DECL
 
     // Forward declaration with defaulted arguments.
     template<typename MutableBufferSequence,
         typename Allocator = std::allocator<void> >
     class buffer_registration;
 
-#endif // !defined(ASIO_BUFFER_REGISTRATION_FWD_DECL)
+#endif // !defined(XIO_BUFFER_REGISTRATION_FWD_DECL)
 
-#if !defined(ASIO_BUFFERS_ITERATOR_FWD_DECL)
-#define ASIO_BUFFERS_ITERATOR_FWD_DECL
+#if !defined(XIO_BUFFERS_ITERATOR_FWD_DECL)
+#define XIO_BUFFERS_ITERATOR_FWD_DECL
 
     // Forward declaration with defaulted arguments.
     template<typename BufferSequence, typename ByteType = char>
     class buffers_iterator;
 
-#endif // !defined(ASIO_BUFFERS_ITERATOR_FWD_DECL)
+#endif // !defined(XIO_BUFFERS_ITERATOR_FWD_DECL)
 
     class cancellation_signal;
 
@@ -339,13 +336,13 @@ namespace xio {
         template<typename InternetProtocol>
         class basic_resolver_results;
 
-#if !defined(ASIO_IP_BASIC_RESOLVER_FWD_DECL)
-#define ASIO_IP_BASIC_RESOLVER_FWD_DECL
+#if !defined(XIO_IP_BASIC_RESOLVER_FWD_DECL)
+#define XIO_IP_BASIC_RESOLVER_FWD_DECL
 
         template<typename InternetProtocol, typename Executor = any_io_executor>
         class basic_resolver;
 
-#endif // !defined(ASIO_IP_BASIC_RESOLVER_FWD_DECL)
+#endif // !defined(XIO_IP_BASIC_RESOLVER_FWD_DECL)
 
         class tcp;
 
@@ -379,65 +376,65 @@ namespace xio {
     } // namespace generic
 
     namespace posix {
-#if !defined(ASIO_POSIX_BASIC_DESCRIPTOR_FWD_DECL)
-#define ASIO_POSIX_BASIC_DESCRIPTOR_FWD_DECL
+#if !defined(XIO_POSIX_BASIC_DESCRIPTOR_FWD_DECL)
+#define XIO_POSIX_BASIC_DESCRIPTOR_FWD_DECL
 
         template<typename Executor = any_io_executor>
         class basic_descriptor;
 
-#endif // !defined(ASIO_POSIX_BASIC_DESCRIPTOR_FWD_DECL)
+#endif // !defined(XIO_POSIX_BASIC_DESCRIPTOR_FWD_DECL)
 
         typedef basic_descriptor<> descriptor;
 
-#if !defined(ASIO_POSIX_BASIC_STREAM_DESCRIPTOR_FWD_DECL)
-#define ASIO_POSIX_BASIC_STREAM_DESCRIPTOR_FWD_DECL
+#if !defined(XIO_POSIX_BASIC_STREAM_DESCRIPTOR_FWD_DECL)
+#define XIO_POSIX_BASIC_STREAM_DESCRIPTOR_FWD_DECL
 
         template<typename Executor = any_io_executor>
         class basic_stream_descriptor;
 
-#endif // !defined(ASIO_POSIX_BASIC_STREAM_DESCRIPTOR_FWD_DECL)
+#endif // !defined(XIO_POSIX_BASIC_STREAM_DESCRIPTOR_FWD_DECL)
 
         typedef basic_stream_descriptor<> stream_descriptor;
     } // namespace posix
 
     namespace windows {
-#if !defined(ASIO_WINDOWS_BASIC_OBJECT_HANDLE_FWD_DECL)
-#define ASIO_WINDOWS_BASIC_OBJECT_HANDLE_FWD_DECL
+#if !defined(XIO_WINDOWS_BASIC_OBJECT_HANDLE_FWD_DECL)
+#define XIO_WINDOWS_BASIC_OBJECT_HANDLE_FWD_DECL
 
         template<typename Executor = any_io_executor>
         class basic_object_handle;
 
-#endif // !defined(ASIO_WINDOWS_BASIC_OBJECT_HANDLE_FWD_DECL)
+#endif // !defined(XIO_WINDOWS_BASIC_OBJECT_HANDLE_FWD_DECL)
 
         typedef basic_object_handle<> object_handle;
 
-#if !defined(ASIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_FWD_DECL)
-#define ASIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_FWD_DECL
+#if !defined(XIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_FWD_DECL)
+#define XIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_FWD_DECL
 
         template<typename Executor = any_io_executor>
         class basic_overlapped_handle;
 
-#endif // !defined(ASIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_FWD_DECL)
+#endif // !defined(XIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_FWD_DECL)
 
         typedef basic_overlapped_handle<> overlapped_handle;
 
-#if !defined(ASIO_WINDOWS_BASIC_RANDOM_ACCESS_HANDLE_FWD_DECL)
-#define ASIO_WINDOWS_BASIC_RANDOM_ACCESS_HANDLE_FWD_DECL
+#if !defined(XIO_WINDOWS_BASIC_RANDOM_ACCESS_HANDLE_FWD_DECL)
+#define XIO_WINDOWS_BASIC_RANDOM_ACCESS_HANDLE_FWD_DECL
 
         template<typename Executor = any_io_executor>
         class basic_random_access_handle;
 
-#endif // !defined(ASIO_WINDOWS_BASIC_RANDOM_ACCESS_HANDLE_FWD_DECL)
+#endif // !defined(XIO_WINDOWS_BASIC_RANDOM_ACCESS_HANDLE_FWD_DECL)
 
         typedef basic_random_access_handle<> random_access_handle;
 
-#if !defined(ASIO_WINDOWS_BASIC_STREAM_HANDLE_FWD_DECL)
-#define ASIO_WINDOWS_BASIC_STREAM_HANDLE_FWD_DECL
+#if !defined(XIO_WINDOWS_BASIC_STREAM_HANDLE_FWD_DECL)
+#define XIO_WINDOWS_BASIC_STREAM_HANDLE_FWD_DECL
 
         template<typename Executor = any_io_executor>
         class basic_stream_handle;
 
-#endif // !defined(ASIO_WINDOWS_BASIC_STREAM_HANDLE_FWD_DECL)
+#endif // !defined(XIO_WINDOWS_BASIC_STREAM_HANDLE_FWD_DECL)
 
         typedef basic_stream_handle<> stream_handle;
 
@@ -456,6 +453,5 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
-#endif // ASIO_FWD_HPP
+#endif // XIO_FWD_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_GENERIC_BASIC_ENDPOINT_HPP
-#define ASIO_GENERIC_BASIC_ENDPOINT_HPP
+#ifndef XIO_GENERIC_BASIC_ENDPOINT_HPP
+#define XIO_GENERIC_BASIC_ENDPOINT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -21,8 +21,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace generic {
         /// Describes an endpoint for any socket type.
         /**
@@ -46,12 +44,8 @@ namespace xio {
             typedef Protocol protocol_type;
 
             /// The type of the endpoint structure. This type is dependent on the
-  /// underlying implementation of the socket layer.
-#if defined(GENERATING_DOCUMENTATION)
-            typedef implementation_defined data_type;
-#else
+            /// underlying implementation of the socket layer.
             typedef xio::detail::socket_addr_type data_type;
-#endif
 
             /// Default constructor.
             basic_endpoint() noexcept {
@@ -162,9 +156,8 @@ namespace xio {
             xio::generic::detail::endpoint impl_;
         };
     } // namespace generic
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_GENERIC_BASIC_ENDPOINT_HPP
+#endif // XIO_GENERIC_BASIC_ENDPOINT_HPP

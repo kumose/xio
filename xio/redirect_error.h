@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_REDIRECT_ERROR_HPP
-#define ASIO_REDIRECT_ERROR_HPP
+#ifndef XIO_REDIRECT_ERROR_HPP
+#define XIO_REDIRECT_ERROR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -103,4 +103,4 @@ namespace xio {
 
 #include <xio/impl/redirect_error.h>
 
-#endif // ASIO_REDIRECT_ERROR_HPP
+#endif // XIO_REDIRECT_ERROR_HPP

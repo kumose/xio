@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BUFFERED_WRITE_STREAM_HPP
-#define ASIO_BUFFERED_WRITE_STREAM_HPP
+#ifndef XIO_BUFFERED_WRITE_STREAM_HPP
+#define XIO_BUFFERED_WRITE_STREAM_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -64,12 +64,7 @@ namespace xio {
         /// The type of the executor associated with the object.
         typedef typename lowest_layer_type::executor_type executor_type;
 
-#if defined(GENERATING_DOCUMENTATION)
-        /// The default buffer size.
-        static const std::size_t default_buffer_size = implementation_defined;
-#else
-        ASIO_STATIC_CONSTANT(std::size_t, default_buffer_size = 1024);
-#endif
+        XIO_STATIC_CONSTANT(std::size_t, default_buffer_size = 1024);
 
         /// Construct, passing the specified argument to initialise the next layer.
         template<typename Arg>
@@ -112,9 +107,9 @@ namespace xio {
         }
 
         /// Close the stream.
-        ASIO_SYNC_OP_VOID close(xio::error_code &ec) {
+        XIO_SYNC_OP_VOID close(xio::error_code &ec) {
             next_layer_.close(ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Flush all data from the buffer to the next layer. Returns the number of
@@ -133,7 +128,7 @@ namespace xio {
    * @code void(xio::error_code, std::size_t) @endcode
    */
         template<
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) WriteHandler = default_completion_token_t<executor_type> >
         auto async_flush(
             WriteHandler &&handler = default_completion_token_t<executor_type>())
@@ -161,7 +156,7 @@ namespace xio {
    * @code void(xio::error_code, std::size_t) @endcode
    */
         template<typename ConstBufferSequence,
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) WriteHandler = default_completion_token_t<executor_type> >
         auto async_write_some(const ConstBufferSequence &buffers,
                               WriteHandler &&handler = default_completion_token_t<executor_type>())
@@ -193,7 +188,7 @@ namespace xio {
    * @code void(xio::error_code, std::size_t) @endcode
    */
         template<typename MutableBufferSequence,
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) ReadHandler = default_completion_token_t<executor_type> >
         auto async_read_some(const MutableBufferSequence &buffers,
                              ReadHandler &&handler = default_completion_token_t<executor_type>())
@@ -249,4 +244,4 @@ namespace xio {
 
 #include <xio/impl/buffered_write_stream.h>
 
-#endif // ASIO_BUFFERED_WRITE_STREAM_HPP
+#endif // XIO_BUFFERED_WRITE_STREAM_HPP

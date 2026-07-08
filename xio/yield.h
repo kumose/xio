@@ -12,13 +12,13 @@
 #include <xio/coroutine.h>
 
 #ifndef reenter
-# define reenter(c) ASIO_CORO_REENTER(c)
+# define reenter(c) XIO_CORO_REENTER(c)
 #endif
 
 #ifndef yield
-# define yield ASIO_CORO_YIELD
+# define yield XIO_CORO_YIELD
 #endif
 
 #ifndef fork
-# define fork ASIO_CORO_FORK
+# define fork XIO_CORO_FORK
 #endif

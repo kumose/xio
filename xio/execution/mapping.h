@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXECUTION_MAPPING_HPP
-#define ASIO_EXECUTION_MAPPING_HPP
+#ifndef XIO_EXECUTION_MAPPING_HPP
+#define XIO_EXECUTION_MAPPING_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -29,144 +29,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
-#if defined(GENERATING_DOCUMENTATION)
-
-    namespace execution {
-        /// A property to describe what guarantees an executor makes about the mapping
-/// of execution agents on to threads of execution.
-        struct mapping_t {
-            /// The mapping_t property applies to executors.
-            template<typename T>
-            static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-            /// The top-level mapping_t property cannot be required.
-            static constexpr bool is_requirable = false;
-
-            /// The top-level mapping_t property cannot be preferred.
-            static constexpr bool is_preferable = false;
-
-            /// The type returned by queries against an @c any_executor.
-            typedef mapping_t polymorphic_query_result_type;
-
-            /// A sub-property that indicates that execution agents are mapped on to
-  /// threads of execution.
-            struct thread_t {
-                /// The mapping_t::thread_t property applies to executors.
-                template<typename T>
-                static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-                /// The mapping_t::thread_t property can be required.
-                static constexpr bool is_requirable = true;
-
-                /// The mapping_t::thread_t property can be preferred.
-                static constexpr bool is_preferable = true;
-
-                /// The type returned by queries against an @c any_executor.
-                typedef mapping_t polymorphic_query_result_type;
-
-                /// Default constructor.
-                constexpr thread_t();
-
-                /// Get the value associated with a property object.
-                /**
-     * @returns thread_t();
-     */
-                static constexpr mapping_t value();
-            };
-
-            /// A sub-property that indicates that execution agents are mapped on to
-  /// new threads of execution.
-            struct new_thread_t {
-                /// The mapping_t::new_thread_t property applies to executors.
-                template<typename T>
-                static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-                /// The mapping_t::new_thread_t property can be required.
-                static constexpr bool is_requirable = true;
-
-                /// The mapping_t::new_thread_t property can be preferred.
-                static constexpr bool is_preferable = true;
-
-                /// The type returned by queries against an @c any_executor.
-                typedef mapping_t polymorphic_query_result_type;
-
-                /// Default constructor.
-                constexpr new_thread_t();
-
-                /// Get the value associated with a property object.
-                /**
-     * @returns new_thread_t();
-     */
-                static constexpr mapping_t value();
-            };
-
-            /// A sub-property that indicates that the mapping of execution agents is
-  /// implementation-defined.
-            struct other_t {
-                /// The mapping_t::other_t property applies to executors.
-                template<typename T>
-                static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-                /// The mapping_t::other_t property can be required.
-                static constexpr bool is_requirable = true;
-
-                /// The mapping_t::other_t property can be preferred.
-                static constexpr bool is_preferable = true;
-
-                /// The type returned by queries against an @c any_executor.
-                typedef mapping_t polymorphic_query_result_type;
-
-                /// Default constructor.
-                constexpr other_t();
-
-                /// Get the value associated with a property object.
-                /**
-     * @returns other_t();
-     */
-                static constexpr mapping_t value();
-            };
-
-            /// A special value used for accessing the mapping_t::thread_t property.
-            static constexpr thread_t thread;
-
-            /// A special value used for accessing the mapping_t::new_thread_t property.
-            static constexpr new_thread_t new_thread;
-
-            /// A special value used for accessing the mapping_t::other_t property.
-            static constexpr other_t other;
-
-            /// Default constructor.
-            constexpr mapping_t();
-
-            /// Construct from a sub-property value.
-            constexpr mapping_t(thread_t);
-
-            /// Construct from a sub-property value.
-            constexpr mapping_t(new_thread_t);
-
-            /// Construct from a sub-property value.
-            constexpr mapping_t(other_t);
-
-            /// Compare property values for equality.
-            friend constexpr bool operator==(
-                const mapping_t &a, const mapping_t &b) noexcept;
-
-            /// Compare property values for inequality.
-            friend constexpr bool operator!=(
-                const mapping_t &a, const mapping_t &b) noexcept;
-        };
-
-        /// A special value used for accessing the mapping_t property.
-        constexpr mapping_t mapping;
-    } // namespace execution
-
-#else // defined(GENERATING_DOCUMENTATION)
-
-
-
-
     namespace execution {
         namespace detail {
             namespace mapping {
@@ -221,7 +83,6 @@ namespace xio {
                                 std::declval<std::conditional_t<true, T, P> >().query(static_cast<P &&>(p))
                             );
                     };
-
                 };
 
                 template<typename T>
@@ -231,16 +92,15 @@ namespace xio {
                         static constexpr auto query(P &&p)
                             noexcept(
                                 noexcept(
-                                    std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                    std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
                                 )
                             )
                             -> decltype(
-                                std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
                             ) {
                             return T::query(static_cast<P &&>(p));
                         }
                     };
-
                 };
 
                 template<typename T>
@@ -346,11 +206,11 @@ namespace xio {
                         can_query<const Executor &, thread_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
-#if defined(ASIO_MSVC) // Visual C++ wants the type to be qualified.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
                 noexcept(is_nothrow_query<const Executor &, mapping_t<>::thread_t>::value)
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                     noexcept(is_nothrow_query<const Executor &, thread_t>::value)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 #endif // !defined(__clang__)
                 {
                     return xio::query(ex, thread_t());
@@ -366,12 +226,12 @@ namespace xio {
                         can_query<const Executor &, new_thread_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
-#if defined(ASIO_MSVC) // Visual C++ wants the type to be qualified.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
                 noexcept(
                     is_nothrow_query<const Executor &, mapping_t<>::new_thread_t>::value)
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                     noexcept(is_nothrow_query<const Executor &, new_thread_t>::value)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 #endif // !defined(__clang__)
                 {
                     return xio::query(ex, new_thread_t());
@@ -390,21 +250,21 @@ namespace xio {
                         can_query<const Executor &, other_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
-#if defined(ASIO_MSVC) // Visual C++ wants the type to be qualified.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
                 noexcept(is_nothrow_query<const Executor &, mapping_t<>::other_t>::value)
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                     noexcept(is_nothrow_query<const Executor &, other_t>::value)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 #endif // !defined(__clang__)
                 {
                     return xio::query(ex, other_t());
                 }
 
-                ASIO_STATIC_CONSTEXPR_DEFAULT_INIT(thread_t, thread);
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(thread_t, thread);
 
-                ASIO_STATIC_CONSTEXPR_DEFAULT_INIT(new_thread_t, new_thread);
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(new_thread_t, new_thread);
 
-                ASIO_STATIC_CONSTEXPR_DEFAULT_INIT(other_t, other);
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(other_t, other);
 
             private:
                 int value_;
@@ -653,20 +513,15 @@ namespace xio {
                 template<int I>
                 template<typename E, typename T>
                 const T other_t<I>::static_query_v;
-
             } // namespace mapping
         } // namespace detail
 
         typedef detail::mapping_t<> mapping_t;
 
-inline constexpr mapping_t mapping;
+        inline constexpr mapping_t mapping;
     } // namespace execution
-
-#endif // defined(GENERATING_DOCUMENTATION)
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXECUTION_MAPPING_HPP
+#endif // XIO_EXECUTION_MAPPING_HPP

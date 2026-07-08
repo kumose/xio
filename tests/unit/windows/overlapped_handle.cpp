@@ -16,8 +16,8 @@
 #include <xio/xio.h>
 #include "../unit_test.hpp"
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "windows/overlapped_handle",
-  ASIO_TEST_CASE(null_test)
+  XIO_TEST_CASE(null_test)
 )

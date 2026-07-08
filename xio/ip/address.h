@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_ADDRESS_HPP
-#define ASIO_IP_ADDRESS_HPP
+#ifndef XIO_IP_ADDRESS_HPP
+#define XIO_IP_ADDRESS_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -26,9 +26,9 @@
 #include <xio/ip/address_v6.h>
 #include <xio/ip/bad_address_cast.h>
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 # include <iosfwd>
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
 
 #include <xio/detail/push_options.h>
 
@@ -46,34 +46,34 @@ namespace xio {
         class address {
         public:
             /// Default constructor.
-            ASIO_DECL address() noexcept;
+            XIO_DECL address() noexcept;
 
             /// Construct an address from an IPv4 address.
-            ASIO_DECL address(
+            XIO_DECL address(
                 const xio::ip::address_v4 &ipv4_address) noexcept;
 
             /// Construct an address from an IPv6 address.
-            ASIO_DECL address(
+            XIO_DECL address(
                 const xio::ip::address_v6 &ipv6_address) noexcept;
 
             /// Copy constructor.
-            ASIO_DECL address(const address &other) noexcept;
+            XIO_DECL address(const address &other) noexcept;
 
             /// Move constructor.
-            ASIO_DECL address(address &&other) noexcept;
+            XIO_DECL address(address &&other) noexcept;
 
             /// Assign from another address.
-            ASIO_DECL address &operator=(const address &other) noexcept;
+            XIO_DECL address &operator=(const address &other) noexcept;
 
             /// Move-assign from another address.
-            ASIO_DECL address &operator=(address &&other) noexcept;
+            XIO_DECL address &operator=(address &&other) noexcept;
 
             /// Assign from an IPv4 address.
-            ASIO_DECL address &operator=(
+            XIO_DECL address &operator=(
                 const xio::ip::address_v4 &ipv4_address) noexcept;
 
             /// Assign from an IPv6 address.
-            ASIO_DECL address &operator=(
+            XIO_DECL address &operator=(
                 const xio::ip::address_v6 &ipv6_address) noexcept;
 
             /// Get whether the address is an IP version 4 address.
@@ -87,25 +87,25 @@ namespace xio {
             }
 
             /// Get the address as an IP version 4 address.
-            ASIO_DECL xio::ip::address_v4 to_v4() const;
+            XIO_DECL xio::ip::address_v4 to_v4() const;
 
             /// Get the address as an IP version 6 address.
-            ASIO_DECL xio::ip::address_v6 to_v6() const;
+            XIO_DECL xio::ip::address_v6 to_v6() const;
 
             /// Get the address as a string.
-            ASIO_DECL std::string to_string() const;
+            XIO_DECL std::string to_string() const;
 
             /// Determine whether the address is a loopback address.
-            ASIO_DECL bool is_loopback() const noexcept;
+            XIO_DECL bool is_loopback() const noexcept;
 
             /// Determine whether the address is unspecified.
-            ASIO_DECL bool is_unspecified() const noexcept;
+            XIO_DECL bool is_unspecified() const noexcept;
 
             /// Determine whether the address is a multicast address.
-            ASIO_DECL bool is_multicast() const noexcept;
+            XIO_DECL bool is_multicast() const noexcept;
 
             /// Compare two addresses for equality.
-            ASIO_DECL friend bool operator==(const address &a1,
+            XIO_DECL friend bool operator==(const address &a1,
                                              const address &a2) noexcept;
 
             /// Compare two addresses for inequality.
@@ -115,7 +115,7 @@ namespace xio {
             }
 
             /// Compare addresses for ordering.
-            ASIO_DECL friend bool operator<(const address &a1,
+            XIO_DECL friend bool operator<(const address &a1,
                                             const address &a2) noexcept;
 
             /// Compare addresses for ordering.
@@ -152,14 +152,14 @@ namespace xio {
         /**
  * @relates address
  */
-        ASIO_DECL address make_address(const char *str);
+        XIO_DECL address make_address(const char *str);
 
         /// Create an address from an IPv4 address string in dotted decimal form,
 /// or from an IPv6 address in hexadecimal notation.
         /**
  * @relates address
  */
-        ASIO_DECL address make_address(const char *str,
+        XIO_DECL address make_address(const char *str,
                                        xio::error_code &ec) noexcept;
 
         /// Create an address from an IPv4 address string in dotted decimal form,
@@ -167,14 +167,14 @@ namespace xio {
         /**
  * @relates address
  */
-        ASIO_DECL address make_address(const std::string &str);
+        XIO_DECL address make_address(const std::string &str);
 
         /// Create an address from an IPv4 address string in dotted decimal form,
 /// or from an IPv6 address in hexadecimal notation.
         /**
  * @relates address
  */
-        ASIO_DECL address make_address(const std::string &str,
+        XIO_DECL address make_address(const std::string &str,
                                        xio::error_code &ec) noexcept;
 
 
@@ -183,18 +183,18 @@ namespace xio {
         /**
  * @relates address
  */
-        ASIO_DECL address make_address(std::string_view str);
+        XIO_DECL address make_address(std::string_view str);
 
         /// Create an address from an IPv4 address string in dotted decimal form,
 /// or from an IPv6 address in hexadecimal notation.
         /**
  * @relates address
  */
-        ASIO_DECL address make_address(std::string_view str,
+        XIO_DECL address make_address(std::string_view str,
                                        xio::error_code &ec) noexcept;
 
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 
         /// Output an address as a string.
         /**
@@ -212,7 +212,7 @@ namespace xio {
         std::basic_ostream<Elem, Traits> &operator<<(
             std::basic_ostream<Elem, Traits> &os, const address &addr);
 
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
     } // namespace ip
 } // namespace xio
 
@@ -232,4 +232,4 @@ namespace std {
 
 #include <xio/ip/impl/address.h>
 
-#endif // ASIO_IP_ADDRESS_HPP
+#endif // XIO_IP_ADDRESS_HPP

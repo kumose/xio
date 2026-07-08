@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_REACTIVE_DESCRIPTOR_SERVICE_HPP
-#define ASIO_DETAIL_REACTIVE_DESCRIPTOR_SERVICE_HPP
+#ifndef XIO_DETAIL_REACTIVE_DESCRIPTOR_SERVICE_HPP
+#define XIO_DETAIL_REACTIVE_DESCRIPTOR_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,10 +17,10 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_WINDOWS_RUNTIME) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS) \
-  && !defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_WINDOWS_RUNTIME) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS) \
+  && !defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
 #include <xio/associated_cancellation_slot.h>
 #include <xio/associated_immediate_executor.h>
@@ -77,28 +77,28 @@ namespace xio {
             };
 
             // Constructor.
-            ASIO_DECL reactive_descriptor_service(execution_context &context);
+            XIO_DECL reactive_descriptor_service(execution_context &context);
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void shutdown();
+  XIO_DECL void shutdown();
 
             // Construct a new descriptor implementation.
-  ASIO_DECL void construct(implementation_type &impl);
+  XIO_DECL void construct(implementation_type &impl);
 
             // Move-construct a new descriptor implementation.
-  ASIO_DECL void move_construct(implementation_type &impl,
+  XIO_DECL void move_construct(implementation_type &impl,
                                 implementation_type &other_impl) noexcept;
 
             // Move-assign from another descriptor implementation.
-  ASIO_DECL void move_assign(implementation_type &impl,
+  XIO_DECL void move_assign(implementation_type &impl,
                              reactive_descriptor_service &other_service,
                              implementation_type &other_impl);
 
             // Destroy a descriptor implementation.
-  ASIO_DECL void destroy(implementation_type &impl);
+  XIO_DECL void destroy(implementation_type &impl);
 
             // Assign a native descriptor to a descriptor implementation.
-            ASIO_DECL xio::error_code assign(implementation_type &impl,
+            XIO_DECL xio::error_code assign(implementation_type &impl,
                                              const native_handle_type &native_descriptor,
                                              xio::error_code &ec);
 
@@ -108,7 +108,7 @@ namespace xio {
             }
 
             // Destroy a descriptor implementation.
-            ASIO_DECL xio::error_code close(implementation_type &impl,
+            XIO_DECL xio::error_code close(implementation_type &impl,
                                             xio::error_code &ec);
 
             // Get the native descriptor representation.
@@ -117,7 +117,7 @@ namespace xio {
             }
 
             // Release ownership of the native descriptor representation.
-  ASIO_DECL native_handle_type release(implementation_type &impl);
+  XIO_DECL native_handle_type release(implementation_type &impl);
 
             // Release ownership of the native descriptor representation.
             native_handle_type release(implementation_type &impl,
@@ -127,7 +127,7 @@ namespace xio {
             }
 
             // Cancel all operations associated with the descriptor.
-            ASIO_DECL xio::error_code cancel(implementation_type &impl,
+            XIO_DECL xio::error_code cancel(implementation_type &impl,
                                              xio::error_code &ec);
 
             // Perform an IO control command on the descriptor.
@@ -136,7 +136,7 @@ namespace xio {
                                        IO_Control_Command &command, xio::error_code &ec) {
                 descriptor_ops::ioctl(impl.descriptor_, impl.state_,
                                       command.name(), static_cast<ioctl_arg_type *>(command.data()), ec);
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -150,7 +150,7 @@ namespace xio {
                                          bool mode, xio::error_code &ec) {
                 descriptor_ops::set_user_non_blocking(
                     impl.descriptor_, impl.state_, mode, ec);
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -186,7 +186,7 @@ namespace xio {
                         break;
                 }
 
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -210,7 +210,7 @@ namespace xio {
                 };
                 p.p = new(p.v) op(success_ec_, handler, io_ex);
 
-                ASIO_HANDLER_CREATION((reactor_.context(), *p.p, "descriptor",
+                XIO_HANDLER_CREATION((reactor_.context(), *p.p, "descriptor",
                                        &impl, impl.descriptor_, "async_wait"));
 
                 int op_type;
@@ -263,7 +263,7 @@ namespace xio {
                                                    bufs.buffers(), bufs.count(), bufs.all_empty(), ec);
                 }
 
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return n;
             }
 
@@ -272,7 +272,7 @@ namespace xio {
                               const null_buffers &, xio::error_code &ec) {
                 // Wait for descriptor to become ready.
                 descriptor_ops::poll_write(impl.descriptor_, impl.state_, ec);
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return 0;
             }
 
@@ -304,7 +304,7 @@ namespace xio {
                                 impl.descriptor_, reactor::write_op);
                 }
 
-                ASIO_HANDLER_CREATION((reactor_.context(), *p.p, "descriptor",
+                XIO_HANDLER_CREATION((reactor_.context(), *p.p, "descriptor",
                                        &impl, impl.descriptor_, "async_write_some"));
 
                 start_op(impl, reactor::write_op, p.p, is_continuation, true,
@@ -339,7 +339,7 @@ namespace xio {
                                 impl.descriptor_, reactor::write_op);
                 }
 
-                ASIO_HANDLER_CREATION((reactor_.context(), *p.p, "descriptor",
+                XIO_HANDLER_CREATION((reactor_.context(), *p.p, "descriptor",
                                        &impl, impl.descriptor_, "async_write_some(null_buffers)"));
 
                 start_op(impl, reactor::write_op, p.p,
@@ -366,7 +366,7 @@ namespace xio {
                                                   bufs.buffers(), bufs.count(), bufs.all_empty(), ec);
                 }
 
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return n;
             }
 
@@ -375,7 +375,7 @@ namespace xio {
                              const null_buffers &, xio::error_code &ec) {
                 // Wait for descriptor to become ready.
                 descriptor_ops::poll_read(impl.descriptor_, impl.state_, ec);
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return 0;
             }
 
@@ -408,7 +408,7 @@ namespace xio {
                                 impl.descriptor_, reactor::read_op);
                 }
 
-                ASIO_HANDLER_CREATION((reactor_.context(), *p.p, "descriptor",
+                XIO_HANDLER_CREATION((reactor_.context(), *p.p, "descriptor",
                                        &impl, impl.descriptor_, "async_read_some"));
 
                 start_op(impl, reactor::read_op, p.p, is_continuation, true,
@@ -443,7 +443,7 @@ namespace xio {
                                 impl.descriptor_, reactor::read_op);
                 }
 
-                ASIO_HANDLER_CREATION((reactor_.context(), *p.p, "descriptor",
+                XIO_HANDLER_CREATION((reactor_.context(), *p.p, "descriptor",
                                        &impl, impl.descriptor_, "async_read_some(null_buffers)"));
 
                 start_op(impl, reactor::read_op, p.p,
@@ -453,7 +453,7 @@ namespace xio {
 
         private:
             // Start the asynchronous operation.
-  ASIO_DECL void do_start_op(implementation_type &impl,
+  XIO_DECL void do_start_op(implementation_type &impl,
                              int op_type, reactor_op *op, bool is_continuation,
                              bool allow_speculative, bool noop, bool needs_non_blocking,
                              void (*on_immediate)(operation *op, bool, const void *),
@@ -530,9 +530,9 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // !defined(ASIO_WINDOWS)
-//   && !defined(ASIO_WINDOWS_RUNTIME)
-//   && !defined(ASIO_CYGWIN_W32_SOCKETS)
-//   && !defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#endif // !defined(XIO_WINDOWS)
+//   && !defined(XIO_WINDOWS_RUNTIME)
+//   && !defined(XIO_CYGWIN_W32_SOCKETS)
+//   && !defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
-#endif // ASIO_DETAIL_REACTIVE_DESCRIPTOR_SERVICE_HPP
+#endif // XIO_DETAIL_REACTIVE_DESCRIPTOR_SERVICE_HPP

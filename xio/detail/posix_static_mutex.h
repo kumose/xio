@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_POSIX_STATIC_MUTEX_HPP
-#define ASIO_DETAIL_POSIX_STATIC_MUTEX_HPP
+#ifndef XIO_DETAIL_POSIX_STATIC_MUTEX_HPP
+#define XIO_DETAIL_POSIX_STATIC_MUTEX_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_PTHREADS)
+#if defined(XIO_HAS_PTHREADS)
 
 #include <pthread.h>
 #include <xio/detail/scoped_lock.h>
@@ -49,13 +49,13 @@ namespace xio {
             ::pthread_mutex_t mutex_;
         };
 
-#define ASIO_POSIX_STATIC_MUTEX_INIT { PTHREAD_MUTEX_INITIALIZER }
+#define XIO_POSIX_STATIC_MUTEX_INIT { PTHREAD_MUTEX_INITIALIZER }
     } // namespace detail
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_PTHREADS)
+#endif // defined(XIO_HAS_PTHREADS)
 
-#endif // ASIO_DETAIL_POSIX_STATIC_MUTEX_HPP
+#endif // XIO_DETAIL_POSIX_STATIC_MUTEX_HPP

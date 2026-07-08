@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BUFFERED_STREAM_HPP
-#define ASIO_BUFFERED_STREAM_HPP
+#ifndef XIO_BUFFERED_STREAM_HPP
+#define XIO_BUFFERED_STREAM_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -99,9 +99,9 @@ namespace xio {
         }
 
         /// Close the stream.
-        ASIO_SYNC_OP_VOID close(xio::error_code &ec) {
+        XIO_SYNC_OP_VOID close(xio::error_code &ec) {
             stream_impl_.close(ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Flush all data from the buffer to the next layer. Returns the number of
@@ -124,7 +124,7 @@ namespace xio {
    * @code void(xio::error_code, std::size_t) @endcode
    */
         template<
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) WriteHandler = default_completion_token_t<executor_type> >
         auto async_flush(
             WriteHandler &&handler = default_completion_token_t<executor_type>())
@@ -157,7 +157,7 @@ namespace xio {
    * @code void(xio::error_code, std::size_t) @endcode
    */
         template<typename ConstBufferSequence,
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) WriteHandler = default_completion_token_t<executor_type> >
         auto async_write_some(const ConstBufferSequence &buffers,
                               WriteHandler &&handler = default_completion_token_t<executor_type>())
@@ -186,7 +186,7 @@ namespace xio {
    * @code void(xio::error_code, std::size_t) @endcode
    */
         template<
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) ReadHandler = default_completion_token_t<executor_type> >
         auto async_fill(
             ReadHandler &&handler = default_completion_token_t<executor_type>())
@@ -219,7 +219,7 @@ namespace xio {
    * @code void(xio::error_code, std::size_t) @endcode
    */
         template<typename MutableBufferSequence,
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) ReadHandler = default_completion_token_t<executor_type> >
         auto async_read_some(const MutableBufferSequence &buffers,
                              ReadHandler &&handler = default_completion_token_t<executor_type>())
@@ -270,4 +270,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_BUFFERED_STREAM_HPP
+#endif // XIO_BUFFERED_STREAM_HPP

@@ -34,59 +34,59 @@ void increment(xio::detail::atomic_count* count)
 
 void inline_executor_query_test()
 {
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(inline_executor(),
         xio::execution::blocking)
       == xio::execution::blocking.always);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(inline_executor(),
         xio::execution::blocking.possibly)
       == xio::execution::blocking.always);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(inline_executor(),
         xio::execution::outstanding_work)
       == xio::execution::outstanding_work.untracked);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(inline_executor(),
         xio::execution::outstanding_work.untracked)
       == xio::execution::outstanding_work.untracked);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(inline_executor(),
         xio::execution::relationship)
       == xio::execution::relationship.fork);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(inline_executor(),
         xio::execution::relationship.fork)
       == xio::execution::relationship.fork);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(inline_executor(),
         xio::execution::mapping)
       == xio::execution::mapping.thread);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(inline_executor(),
         xio::execution::inline_exception_handling)
       == xio::execution::inline_exception_handling.propagate);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(inline_executor(),
         xio::execution::inline_exception_handling.propagate)
       == xio::execution::inline_exception_handling.propagate);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(
         xio::require(inline_executor(),
           xio::execution::inline_exception_handling.terminate),
         xio::execution::inline_exception_handling)
       == xio::execution::inline_exception_handling.terminate);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(
         xio::require(inline_executor(),
           xio::execution::inline_exception_handling.terminate),
@@ -112,7 +112,7 @@ void inline_executor_execute_test()
 
   ex.execute(bindns::bind(increment, &count));
 
-  ASIO_CHECK(count == 4);
+  XIO_CHECK(count == 4);
 }
 
 void inline_executor_dispatch_test()
@@ -127,7 +127,7 @@ void inline_executor_dispatch_test()
         xio::execution::inline_exception_handling.terminate),
       bindns::bind(increment, &count));
 
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 }
 
 void throw_exception()
@@ -137,7 +137,7 @@ void throw_exception()
 
 void inline_executor_exception_test()
 {
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
   bool caught = false;
 
   try
@@ -149,15 +149,15 @@ void inline_executor_exception_test()
     caught = true;
   }
 
-  ASIO_CHECK(caught);
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+  XIO_CHECK(caught);
+#endif // !defined(XIO_NO_EXCEPTIONS)
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "inline_executor",
-  ASIO_TEST_CASE(inline_executor_query_test)
-  ASIO_TEST_CASE(inline_executor_execute_test)
-  ASIO_TEST_CASE(inline_executor_dispatch_test)
-  ASIO_TEST_CASE(inline_executor_exception_test)
+  XIO_TEST_CASE(inline_executor_query_test)
+  XIO_TEST_CASE(inline_executor_execute_test)
+  XIO_TEST_CASE(inline_executor_dispatch_test)
+  XIO_TEST_CASE(inline_executor_exception_test)
 )

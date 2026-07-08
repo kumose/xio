@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WINRT_SSOCKET_SERVICE_HPP
-#define ASIO_DETAIL_WINRT_SSOCKET_SERVICE_HPP
+#ifndef XIO_DETAIL_WINRT_SSOCKET_SERVICE_HPP
+#define XIO_DETAIL_WINRT_SSOCKET_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 
 #include <xio/error.h>
 #include <xio/execution_context.h>
@@ -220,7 +220,7 @@ namespace xio {
                 };
                 p.p = new(p.v) op(handler, io_ex);
 
-                ASIO_HANDLER_CREATION((scheduler_.context(),
+                XIO_HANDLER_CREATION((scheduler_.context(),
                                        *p.p, "socket", &impl, 0, "async_connect"));
 
                 start_connect_op(impl, peer_endpoint.data(), p.p, is_continuation);
@@ -233,6 +233,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
 
-#endif // ASIO_DETAIL_WINRT_SSOCKET_SERVICE_HPP
+#endif // XIO_DETAIL_WINRT_SSOCKET_SERVICE_HPP

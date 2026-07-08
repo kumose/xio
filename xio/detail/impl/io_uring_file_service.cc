@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_IO_URING_FILE_SERVICE_IPP
-#define ASIO_DETAIL_IMPL_IO_URING_FILE_SERVICE_IPP
+#ifndef XIO_DETAIL_IMPL_IO_URING_FILE_SERVICE_IPP
+#define XIO_DETAIL_IMPL_IO_URING_FILE_SERVICE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,8 +17,8 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_FILE) \
-  && defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_FILE) \
+  && defined(XIO_HAS_IO_URING)
 
 #include <cstring>
 #include <sys/stat.h>
@@ -46,14 +46,14 @@ namespace xio {
             xio::error_code &ec) {
             if (is_open(impl)) {
                 ec = xio::error::already_open;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
             descriptor_ops::state_type state = 0;
             int fd = descriptor_ops::open(path, static_cast<int>(open_flags), 0777, ec);
             if (fd < 0) {
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -66,7 +66,7 @@ namespace xio {
             (void) ::posix_fadvise(native_handle(impl), 0, 0,
                                    impl.is_stream_ ? POSIX_FADV_SEQUENTIAL : POSIX_FADV_RANDOM);
 
-            ASIO_ERROR_LOCATION(ec);
+            XIO_ERROR_LOCATION(ec);
             return ec;
         }
 
@@ -76,7 +76,7 @@ namespace xio {
             struct stat s;
             int result = ::fstat(native_handle(impl), &s);
             descriptor_ops::get_last_error(ec, result != 0);
-            ASIO_ERROR_LOCATION(ec);
+            XIO_ERROR_LOCATION(ec);
             return !ec ? s.st_size : 0;
         }
 
@@ -85,7 +85,7 @@ namespace xio {
             uint64_t n, xio::error_code &ec) {
             int result = ::ftruncate(native_handle(impl), n);
             descriptor_ops::get_last_error(ec, result != 0);
-            ASIO_ERROR_LOCATION(ec);
+            XIO_ERROR_LOCATION(ec);
             return ec;
         }
 
@@ -108,7 +108,7 @@ int result = ::fdatasync(native_handle(impl));
 int result = ::fsync(native_handle(impl));
 #endif // defined(_POSIX_SYNCHRONIZED_IO)
 descriptor_ops::get_last_error(ec, result != 0);
-ASIO_ERROR_LOCATION (ec);
+XIO_ERROR_LOCATION (ec);
   return ec;
 }
 
@@ -117,7 +117,7 @@ uint64_t io_uring_file_service::seek(
     file_base::seek_basis whence, xio::error_code &ec) {
     int64_t result = ::lseek(native_handle(impl), offset, whence);
     descriptor_ops::get_last_error(ec, result < 0);
-    ASIO_ERROR_LOCATION(ec);
+    XIO_ERROR_LOCATION(ec);
     return !ec ? static_cast<uint64_t>(result) : 0;
 }
 
@@ -126,7 +126,7 @@ uint64_t io_uring_file_service::seek(
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_FILE)
-//   && defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_FILE)
+//   && defined(XIO_HAS_IO_URING)
 
-#endif // ASIO_DETAIL_IMPL_IO_URING_FILE_SERVICE_IPP
+#endif // XIO_DETAIL_IMPL_IO_URING_FILE_SERVICE_IPP

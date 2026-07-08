@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_TS_TIMER_HPP
-#define ASIO_TS_TIMER_HPP
+#ifndef XIO_TS_TIMER_HPP
+#define XIO_TS_TIMER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -23,4 +23,4 @@
 #include <xio/steady_timer.h>
 #include <xio/high_resolution_timer.h>
 
-#endif // ASIO_TS_TIMER_HPP
+#endif // XIO_TS_TIMER_HPP

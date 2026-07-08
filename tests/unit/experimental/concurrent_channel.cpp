@@ -27,18 +27,18 @@ void unbuffered_concurrent_channel_test()
 
   concurrent_channel<void(xio::error_code, std::string)> ch1(ctx);
 
-  ASIO_CHECK(ch1.is_open());
-  ASIO_CHECK(!ch1.ready());
+  XIO_CHECK(ch1.is_open());
+  XIO_CHECK(!ch1.ready());
 
   bool b1 = ch1.try_send(xio::error::eof, "hello");
 
-  ASIO_CHECK(!b1);
+  XIO_CHECK(!b1);
 
   std::string s1 = "abcdefghijklmnopqrstuvwxyz";
   bool b2 = ch1.try_send(xio::error::eof, std::move(s1));
 
-  ASIO_CHECK(!b2);
-  ASIO_CHECK(!s1.empty());
+  XIO_CHECK(!b2);
+  XIO_CHECK(!s1.empty());
 
   xio::error_code ec1;
   std::string s2;
@@ -51,17 +51,17 @@ void unbuffered_concurrent_channel_test()
 
   bool b3 = ch1.try_send(xio::error::eof, std::move(s1));
 
-  ASIO_CHECK(b3);
-  ASIO_CHECK(s1.empty());
+  XIO_CHECK(b3);
+  XIO_CHECK(s1.empty());
 
   ctx.run();
 
-  ASIO_CHECK(ec1 == xio::error::eof);
-  ASIO_CHECK(s2 == "abcdefghijklmnopqrstuvwxyz");
+  XIO_CHECK(ec1 == xio::error::eof);
+  XIO_CHECK(s2 == "abcdefghijklmnopqrstuvwxyz");
 
   bool b4 = ch1.try_receive([](xio::error_code, std::string){});
 
-  ASIO_CHECK(!b4);
+  XIO_CHECK(!b4);
 
   xio::error_code ec2 = xio::error::would_block;
   std::string s3 = "zyxwvutsrqponmlkjihgfedcba";
@@ -80,14 +80,14 @@ void unbuffered_concurrent_channel_test()
         s4 = s;
       });
 
-  ASIO_CHECK(b5);
-  ASIO_CHECK(ec3 == xio::error::eof);
-  ASIO_CHECK(s4 == "zyxwvutsrqponmlkjihgfedcba");
+  XIO_CHECK(b5);
+  XIO_CHECK(ec3 == xio::error::eof);
+  XIO_CHECK(s4 == "zyxwvutsrqponmlkjihgfedcba");
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(!ec2);
+  XIO_CHECK(!ec2);
 };
 
 void buffered_concurrent_channel_test()
@@ -96,18 +96,18 @@ void buffered_concurrent_channel_test()
 
   concurrent_channel<void(xio::error_code, std::string)> ch1(ctx, 1);
 
-  ASIO_CHECK(ch1.is_open());
-  ASIO_CHECK(!ch1.ready());
+  XIO_CHECK(ch1.is_open());
+  XIO_CHECK(!ch1.ready());
 
   bool b1 = ch1.try_send(xio::error::eof, "hello");
 
-  ASIO_CHECK(b1);
+  XIO_CHECK(b1);
 
   std::string s1 = "abcdefghijklmnopqrstuvwxyz";
   bool b2 = ch1.try_send(xio::error::eof, std::move(s1));
 
-  ASIO_CHECK(!b2);
-  ASIO_CHECK(!s1.empty());
+  XIO_CHECK(!b2);
+  XIO_CHECK(!s1.empty());
 
   xio::error_code ec1;
   std::string s2;
@@ -120,12 +120,12 @@ void buffered_concurrent_channel_test()
 
   ctx.run();
 
-  ASIO_CHECK(ec1 == xio::error::eof);
-  ASIO_CHECK(s2 == "hello");
+  XIO_CHECK(ec1 == xio::error::eof);
+  XIO_CHECK(s2 == "hello");
 
   bool b4 = ch1.try_receive([](xio::error_code, std::string){});
 
-  ASIO_CHECK(!b4);
+  XIO_CHECK(!b4);
 
   xio::error_code ec2 = xio::error::would_block;
   std::string s3 = "zyxwvutsrqponmlkjihgfedcba";
@@ -144,14 +144,14 @@ void buffered_concurrent_channel_test()
         s4 = s;
       });
 
-  ASIO_CHECK(b5);
-  ASIO_CHECK(ec3 == xio::error::eof);
-  ASIO_CHECK(s4 == "zyxwvutsrqponmlkjihgfedcba");
+  XIO_CHECK(b5);
+  XIO_CHECK(ec3 == xio::error::eof);
+  XIO_CHECK(s4 == "zyxwvutsrqponmlkjihgfedcba");
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(!ec2);
+  XIO_CHECK(!ec2);
 };
 
 void concurrent_channel_move_test()
@@ -168,10 +168,10 @@ void concurrent_channel_move_test()
   (void)ch4;
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "experimental/concurrent_channel",
-  ASIO_TEST_CASE(unbuffered_concurrent_channel_test)
-  ASIO_TEST_CASE(buffered_concurrent_channel_test)
-  ASIO_COMPILE_TEST_CASE(concurrent_channel_move_test)
+  XIO_TEST_CASE(unbuffered_concurrent_channel_test)
+  XIO_TEST_CASE(buffered_concurrent_channel_test)
+  XIO_COMPILE_TEST_CASE(concurrent_channel_move_test)
 )

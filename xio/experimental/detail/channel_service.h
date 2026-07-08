@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXPERIMENTAL_DETAIL_CHANNEL_SERVICE_HPP
-#define ASIO_EXPERIMENTAL_DETAIL_CHANNEL_SERVICE_HPP
+#ifndef XIO_EXPERIMENTAL_DETAIL_CHANNEL_SERVICE_HPP
+#define XIO_EXPERIMENTAL_DETAIL_CHANNEL_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -172,7 +172,7 @@ namespace xio {
                                     this, &impl);
                     }
 
-                    ASIO_HANDLER_CREATION((this->context(), *p.p,
+                    XIO_HANDLER_CREATION((this->context(), *p.p,
                                            "channel", &impl, 0, "async_send"));
 
                     start_send_op(impl, p.p);
@@ -209,7 +209,7 @@ namespace xio {
                                     this, &impl);
                     }
 
-                    ASIO_HANDLER_CREATION((this->context(), *p.p,
+                    XIO_HANDLER_CREATION((this->context(), *p.p,
                                            "channel", &impl, 0, "async_receive"));
 
                     start_receive_op(impl, p.p);
@@ -649,4 +649,4 @@ namespace xio {
 
 #include <xio/experimental/detail/impl/channel_service.h>
 
-#endif // ASIO_EXPERIMENTAL_DETAIL_CHANNEL_SERVICE_HPP
+#endif // XIO_EXPERIMENTAL_DETAIL_CHANNEL_SERVICE_HPP

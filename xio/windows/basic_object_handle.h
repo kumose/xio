@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_WINDOWS_BASIC_OBJECT_HANDLE_HPP
-#define ASIO_WINDOWS_BASIC_OBJECT_HANDLE_HPP
+#ifndef XIO_WINDOWS_BASIC_OBJECT_HANDLE_HPP
+#define XIO_WINDOWS_BASIC_OBJECT_HANDLE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,8 +18,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_WINDOWS_OBJECT_HANDLE) \
-  || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_WINDOWS_OBJECT_HANDLE)
 
 #include <utility>
 #include <xio/any_io_executor.h>
@@ -39,14 +38,14 @@ namespace xio {
 
 
 
-#if !defined(ASIO_WINDOWS_BASIC_OBJECT_HANDLE_FWD_DECL)
-#define ASIO_WINDOWS_BASIC_OBJECT_HANDLE_FWD_DECL
+#if !defined(XIO_WINDOWS_BASIC_OBJECT_HANDLE_FWD_DECL)
+#define XIO_WINDOWS_BASIC_OBJECT_HANDLE_FWD_DECL
 
 // Forward declaration with defaulted arguments.
 template<typename Executor = any_io_executor>
 class basic_object_handle;
 
-#endif // !defined(ASIO_WINDOWS_BASIC_OBJECT_HANDLE_FWD_DECL)
+#endif // !defined(XIO_WINDOWS_BASIC_OBJECT_HANDLE_FWD_DECL)
 
 /// Provides object-oriented handle functionality.
 /**
@@ -74,12 +73,9 @@ public:
     };
 
 /// The native representation of a handle.
-#if defined(GENERATING_DOCUMENTATION)
-typedef implementation_defined native_handle_type;
-#else
+
 typedef xio::detail::win_object_handle_service::native_handle_type
 native_handle_type;
-#endif
 
 /// An object handle is always the lowest layer.
 typedef basic_object_handle lowest_layer_type;
@@ -286,10 +282,10 @@ void assign(const native_handle_type &handle) {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID assign(const native_handle_type &handle,
+XIO_SYNC_OP_VOID assign(const native_handle_type &handle,
                          xio::error_code &ec) {
     impl_.get_service().assign(impl_.get_implementation(), handle, ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Determine whether the handle is open.
@@ -319,9 +315,9 @@ void close() {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID close(xio::error_code &ec) {
+XIO_SYNC_OP_VOID close(xio::error_code &ec) {
     impl_.get_service().close(impl_.get_implementation(), ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Get the native handle representation.
@@ -356,9 +352,9 @@ void cancel() {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
+XIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
     impl_.get_service().cancel(impl_.get_implementation(), ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Perform a blocking wait on the object handle.
@@ -410,7 +406,7 @@ void wait(xio::error_code &ec) {
    * @code void(xio::error_code) @endcode
    */
 template<
-    ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
+    XIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
     WaitToken = default_completion_token_t<executor_type> >
 auto async_wait(
     WaitToken && token = default_completion_token_t<executor_type>())
@@ -442,7 +438,7 @@ public:
     void operator()(WaitHandler &&handler) const {
         // If you get an error on the following line it means that your handler
         // does not meet the documented type requirements for a WaitHandler.
-        ASIO_WAIT_HANDLER_CHECK(WaitHandler, handler)
+        XIO_WAIT_HANDLER_CHECK(WaitHandler, handler)
         type_check;
 
         detail::non_const_lvalue<WaitHandler> handler2(handler);
@@ -464,7 +460,6 @@ xio::detail::io_object_impl<
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_WINDOWS_OBJECT_HANDLE)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_WINDOWS_OBJECT_HANDLE)
 
-#endif // ASIO_WINDOWS_BASIC_OBJECT_HANDLE_HPP
+#endif // XIO_WINDOWS_BASIC_OBJECT_HANDLE_HPP

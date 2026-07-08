@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_BUFFER_SEQUENCE_ADAPTER_HPP
-#define ASIO_DETAIL_BUFFER_SEQUENCE_ADAPTER_HPP
+#ifndef XIO_DETAIL_BUFFER_SEQUENCE_ADAPTER_HPP
+#define XIO_DETAIL_BUFFER_SEQUENCE_ADAPTER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -28,7 +28,7 @@ namespace xio {
 
     namespace detail {
         class buffer_sequence_adapter_base {
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
         public:
             // The maximum number of buffers to support in a single operation.
             enum { max_buffers = 1 };
@@ -36,14 +36,14 @@ namespace xio {
         protected:
             typedef Windows::Storage::Streams::IBuffer^ native_buffer_type;
 
-  ASIO_DECL static void init_native_buffer(
+  XIO_DECL static void init_native_buffer(
                 native_buffer_type &buf,
                 const xio::mutable_buffer &buffer);
 
-  ASIO_DECL static void init_native_buffer(
+  XIO_DECL static void init_native_buffer(
                 native_buffer_type &buf,
                 const xio::const_buffer &buffer);
-#elif defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#elif defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
         public:
             // The maximum number of buffers to support in a single operation.
             enum { max_buffers = 64 < max_iov_len ? 64 : max_iov_len };
@@ -62,7 +62,7 @@ namespace xio {
                 buf.buf = const_cast<char *>(static_cast<const char *>(buffer.data()));
                 buf.len = static_cast<ULONG>(buffer.size());
             }
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 
         public:
             // The maximum number of buffers to support in a single operation.
@@ -91,7 +91,7 @@ namespace xio {
                 init_iov_base(iov.iov_base, const_cast<void *>(buffer.data()));
                 iov.iov_len = buffer.size();
             }
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
         };
 
         // Helper class to translate buffers into the native buffer representation.
@@ -541,4 +541,4 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // ASIO_DETAIL_BUFFER_SEQUENCE_ADAPTER_HPP
+#endif // XIO_DETAIL_BUFFER_SEQUENCE_ADAPTER_HPP

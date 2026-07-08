@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_THREAD_INFO_BASE_HPP
-#define ASIO_DETAIL_THREAD_INFO_BASE_HPP
+#ifndef XIO_DETAIL_THREAD_INFO_BASE_HPP
+#define XIO_DETAIL_THREAD_INFO_BASE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -21,10 +21,10 @@
 #include <xio/detail/memory.h>
 #include <xio/detail/noncopyable.h>
 
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
 # include <exception>
 #include <xio/multiple_exceptions.h>
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
 
 #include <xio/detail/push_options.h>
 
@@ -32,16 +32,16 @@ namespace xio {
 
 
     namespace detail {
-#ifndef ASIO_RECYCLING_ALLOCATOR_CACHE_SIZE
-# define ASIO_RECYCLING_ALLOCATOR_CACHE_SIZE 2
-#endif // ASIO_RECYCLING_ALLOCATOR_CACHE_SIZE
+#ifndef XIO_RECYCLING_ALLOCATOR_CACHE_SIZE
+# define XIO_RECYCLING_ALLOCATOR_CACHE_SIZE 2
+#endif // XIO_RECYCLING_ALLOCATOR_CACHE_SIZE
 
         class thread_info_base
                 : private noncopyable {
         public:
             struct default_tag {
                 enum {
-                    cache_size = ASIO_RECYCLING_ALLOCATOR_CACHE_SIZE,
+                    cache_size = XIO_RECYCLING_ALLOCATOR_CACHE_SIZE,
                     begin_mem_index = 0,
                     end_mem_index = cache_size
                 };
@@ -49,7 +49,7 @@ namespace xio {
 
             struct awaitable_frame_tag {
                 enum {
-                    cache_size = ASIO_RECYCLING_ALLOCATOR_CACHE_SIZE,
+                    cache_size = XIO_RECYCLING_ALLOCATOR_CACHE_SIZE,
                     begin_mem_index = default_tag::end_mem_index,
                     end_mem_index = begin_mem_index + cache_size
                 };
@@ -57,7 +57,7 @@ namespace xio {
 
             struct executor_function_tag {
                 enum {
-                    cache_size = ASIO_RECYCLING_ALLOCATOR_CACHE_SIZE,
+                    cache_size = XIO_RECYCLING_ALLOCATOR_CACHE_SIZE,
                     begin_mem_index = awaitable_frame_tag::end_mem_index,
                     end_mem_index = begin_mem_index + cache_size
                 };
@@ -65,7 +65,7 @@ namespace xio {
 
             struct cancellation_signal_tag {
                 enum {
-                    cache_size = ASIO_RECYCLING_ALLOCATOR_CACHE_SIZE,
+                    cache_size = XIO_RECYCLING_ALLOCATOR_CACHE_SIZE,
                     begin_mem_index = executor_function_tag::end_mem_index,
                     end_mem_index = begin_mem_index + cache_size
                 };
@@ -73,7 +73,7 @@ namespace xio {
 
             struct parallel_group_tag {
                 enum {
-                    cache_size = ASIO_RECYCLING_ALLOCATOR_CACHE_SIZE,
+                    cache_size = XIO_RECYCLING_ALLOCATOR_CACHE_SIZE,
                     begin_mem_index = cancellation_signal_tag::end_mem_index,
                     end_mem_index = begin_mem_index + cache_size
                 };
@@ -81,7 +81,7 @@ namespace xio {
 
             struct timed_cancel_tag {
                 enum {
-                    cache_size = ASIO_RECYCLING_ALLOCATOR_CACHE_SIZE,
+                    cache_size = XIO_RECYCLING_ALLOCATOR_CACHE_SIZE,
                     begin_mem_index = parallel_group_tag::end_mem_index,
                     end_mem_index = begin_mem_index + cache_size
                 };
@@ -90,9 +90,9 @@ namespace xio {
             enum { max_mem_index = timed_cancel_tag::end_mem_index };
 
             thread_info_base()
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
                 : has_pending_exception_(0)
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
             {
                 for (int i = 0; i < max_mem_index; ++i)
                     reusable_memory_[i] = 0;
@@ -109,7 +109,7 @@ namespace xio {
             }
 
             static void *allocate(thread_info_base *this_thread,
-                                  std::size_t size, std::size_t align = ASIO_DEFAULT_ALIGN) {
+                                  std::size_t size, std::size_t align = XIO_DEFAULT_ALIGN) {
                 return allocate(default_tag(), this_thread, size, align);
             }
 
@@ -120,7 +120,7 @@ namespace xio {
 
             template<typename Purpose>
             static void *allocate(Purpose, thread_info_base *this_thread,
-                                  std::size_t size, std::size_t align = ASIO_DEFAULT_ALIGN) {
+                                  std::size_t size, std::size_t align = XIO_DEFAULT_ALIGN) {
                 std::size_t chunks = (size + chunk_size - 1) / chunk_size;
 
                 if (this_thread) {
@@ -176,7 +176,7 @@ namespace xio {
             }
 
             void capture_current_exception() {
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
                 switch (has_pending_exception_) {
                     case 0:
                         has_pending_exception_ = 1;
@@ -191,11 +191,11 @@ namespace xio {
                     default:
                         break;
                 }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
             }
 
             void rethrow_pending_exception() {
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
                 if (has_pending_exception_ > 0) {
                     has_pending_exception_ = 0;
                     std::exception_ptr ex(
@@ -203,21 +203,21 @@ namespace xio {
                             pending_exception_));
                     std::rethrow_exception(ex);
                 }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
             }
 
         private:
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
             enum { chunk_size = 8 };
-#else // defined(ASIO_HAS_IO_URING)
+#else // defined(XIO_HAS_IO_URING)
             enum { chunk_size = 4 };
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
             void *reusable_memory_[max_mem_index];
 
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             int has_pending_exception_;
             std::exception_ptr pending_exception_;
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
         };
     } // namespace detail
 
@@ -225,4 +225,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_THREAD_INFO_BASE_HPP
+#endif // XIO_DETAIL_THREAD_INFO_BASE_HPP

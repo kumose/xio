@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_SELECT_REACTOR_IPP
-#define ASIO_DETAIL_IMPL_SELECT_REACTOR_IPP
+#ifndef XIO_DETAIL_IMPL_SELECT_REACTOR_IPP
+#define XIO_DETAIL_IMPL_SELECT_REACTOR_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,22 +17,22 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IOCP) \
-  || (!defined(ASIO_HAS_DEV_POLL) \
-      && !defined(ASIO_HAS_EPOLL) \
-      && !defined(ASIO_HAS_KQUEUE) \
-      && !defined(ASIO_WINDOWS_RUNTIME))
+#if defined(XIO_HAS_IOCP) \
+  || (!defined(XIO_HAS_DEV_POLL) \
+      && !defined(XIO_HAS_EPOLL) \
+      && !defined(XIO_HAS_KQUEUE) \
+      && !defined(XIO_WINDOWS_RUNTIME))
 
 #include <xio/detail/fd_set_adapter.h>
 #include <xio/detail/select_reactor.h>
 #include <xio/detail/signal_blocker.h>
 #include <xio/detail/socket_ops.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 #include <xio/detail/win_iocp_io_context.h>
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 #include <xio/detail/scheduler.h>
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
 #include <xio/detail/push_options.h>
 
@@ -40,7 +40,7 @@ namespace xio {
 
 
     namespace detail {
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
         class select_reactor::thread_function {
         public:
             explicit thread_function(select_reactor *r)
@@ -54,23 +54,23 @@ namespace xio {
         private:
             select_reactor *this_;
         };
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
         select_reactor::select_reactor(xio::execution_context &ctx)
             : execution_context_service_base<select_reactor>(ctx),
               scheduler_(use_service<scheduler_type>(ctx)),
               mutex_(),
               interrupter_(),
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
               stop_thread_(false),
                       thread_(),
                       restart_reactor_(this),
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
               shutdown_(false) {
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
             xio::detail::signal_blocker sb;
             thread_ = thread(thread_function(this));
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
         }
 
         select_reactor::~select_reactor() {
@@ -80,16 +80,16 @@ namespace xio {
         void select_reactor::shutdown() {
             xio::detail::mutex::scoped_lock lock(mutex_);
             shutdown_ = true;
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
             stop_thread_ = true;
             if (thread_.joinable())
                 interrupter_.interrupt();
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
             lock.unlock();
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
             thread_.join();
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
             op_queue<operation> ops;
 
@@ -103,12 +103,12 @@ namespace xio {
 
         void select_reactor::notify_fork(
             xio::execution_context::fork_event fork_ev) {
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
             (void) fork_ev;
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
             if (fork_ev == xio::execution_context::fork_child)
                 interrupter_.recreate();
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
         }
 
         void select_reactor::init_task() {
@@ -198,11 +198,11 @@ namespace xio {
         void select_reactor::run(long usec, op_queue<operation> &ops) {
             xio::detail::mutex::scoped_lock lock(mutex_);
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
             // Check if the thread is supposed to stop.
             if (stop_thread_)
                 return;
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
             // Set up the descriptor sets.
             for (int i = 0; i < max_select_ops; ++i)
@@ -217,7 +217,7 @@ namespace xio {
                     max_fd = fd_sets_[i].max_descriptor();
             }
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             // Connection operations on Windows use both except and write fd_sets.
             have_work_to_do = have_work_to_do || !op_queue_[connect_op].empty();
             fd_sets_[write_op].set(op_queue_[connect_op], ops);
@@ -226,7 +226,7 @@ namespace xio {
             fd_sets_[except_op].set(op_queue_[connect_op], ops);
             if (fd_sets_[except_op].max_descriptor() > max_fd)
                 max_fd = fd_sets_[except_op].max_descriptor();
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 
             // We can return immediately if there's no work to do and the reactor is
             // not supposed to block.
@@ -248,12 +248,12 @@ namespace xio {
             if (retval > 0 && fd_sets_[read_op].is_set(interrupter_.read_descriptor())) {
                 if (!interrupter_.reset()) {
                     lock.lock();
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
                     stop_thread_ = true;
                     scheduler_.post_immediate_completion(&restart_reactor_, false);
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
                     interrupter_.recreate();
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
                 }
                 --retval;
             }
@@ -262,11 +262,11 @@ namespace xio {
 
             // Dispatch all ready operations.
             if (retval > 0) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 // Connection operations on Windows use both except and write fd_sets.
                 fd_sets_[except_op].perform(op_queue_[connect_op], ops);
                 fd_sets_[write_op].perform(op_queue_[connect_op], ops);
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 
                 // Exception operations must be processed first to ensure that any
                 // out-of-band data is read before normal data.
@@ -280,7 +280,7 @@ namespace xio {
             interrupter_.interrupt();
         }
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
         void select_reactor::run_thread() {
             xio::detail::mutex::scoped_lock lock(mutex_);
             while (!stop_thread_) {
@@ -309,7 +309,7 @@ namespace xio {
                 reactor->thread_ = thread(thread_function(reactor));
             }
         }
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
         void select_reactor::do_add_timer_queue(timer_queue_base &queue) {
             mutex::scoped_lock lock(mutex_);
@@ -349,10 +349,10 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IOCP)
-//   || (!defined(ASIO_HAS_DEV_POLL)
-//       && !defined(ASIO_HAS_EPOLL)
-//       && !defined(ASIO_HAS_KQUEUE))
-//       && !defined(ASIO_WINDOWS_RUNTIME))
+#endif // defined(XIO_HAS_IOCP)
+//   || (!defined(XIO_HAS_DEV_POLL)
+//       && !defined(XIO_HAS_EPOLL)
+//       && !defined(XIO_HAS_KQUEUE))
+//       && !defined(XIO_WINDOWS_RUNTIME))
 
-#endif // ASIO_DETAIL_IMPL_SELECT_REACTOR_IPP
+#endif // XIO_DETAIL_IMPL_SELECT_REACTOR_IPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DISPATCH_HPP
-#define ASIO_DISPATCH_HPP
+#ifndef XIO_DISPATCH_HPP
+#define XIO_DISPATCH_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -72,7 +72,7 @@ namespace xio {
  */
 
 
-    template<ASIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = deferred_t>
+    template<XIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = deferred_t>
     inline auto dispatch(NullaryToken && token = deferred_t())
     ->
     decltype(
@@ -146,7 +146,7 @@ namespace xio {
  * @code void() @endcode
  */
     template<typename Executor,
-        ASIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<Executor> >
+        XIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<Executor> >
     inline auto dispatch(const Executor &ex,
                          NullaryToken &&token = default_completion_token_t<Executor>(),
                          constraint_t<
@@ -175,7 +175,7 @@ namespace xio {
  * @code void() @endcode
  */
     template<typename ExecutionContext,
-        ASIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<typename
+        XIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<typename
             ExecutionContext::executor_type> >
     inline auto dispatch(ExecutionContext & ctx,
                          NullaryToken && token = default_completion_token_t<
@@ -279,7 +279,7 @@ namespace xio {
  * @code void() @endcode
  */
     template<typename Function, typename Executor,
-        ASIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<Executor> >
+        XIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<Executor> >
     inline auto dispatch(Function &&function, const Executor &ex,
                          NullaryToken &&token = default_completion_token_t<Executor>(),
                          constraint_t<
@@ -385,7 +385,7 @@ namespace xio {
  * @code void(std::decay_t<result_of_t<std::decay_t<Function>()>>) @endcode
  */
     template<typename Function, typename Executor,
-        ASIO_COMPLETION_TOKEN_FOR(
+        XIO_COMPLETION_TOKEN_FOR(
         void(std::decay_t<result_of_t < std::decay_t<Function>()> >
 
 
@@ -439,7 +439,7 @@ namespace xio {
  * @code void() @endcode
  */
     template<typename Function, typename ExecutionContext,
-        ASIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<typename
+        XIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<typename
             ExecutionContext::executor_type> >
     inline auto dispatch(Function && function, ExecutionContext & ctx,
                          NullaryToken && token = default_completion_token_t<
@@ -486,7 +486,7 @@ namespace xio {
  * @code void(std::decay_t<result_of_t<std::decay_t<Function>()>>) @endcode
  */
     template<typename Function, typename ExecutionContext,
-        ASIO_COMPLETION_TOKEN_FOR(
+        XIO_COMPLETION_TOKEN_FOR(
         void(std::decay_t<result_of_t < std::decay_t<Function>()> >
 
 
@@ -523,4 +523,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DISPATCH_HPP
+#endif // XIO_DISPATCH_HPP

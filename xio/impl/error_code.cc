@@ -8,17 +8,17 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_ERROR_CODE_IPP
-#define ASIO_IMPL_ERROR_CODE_IPP
+#ifndef XIO_IMPL_ERROR_CODE_IPP
+#define XIO_IMPL_ERROR_CODE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include <xio/detail/config.h>
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 # include <winerror.h>
-#elif defined(ASIO_WINDOWS_RUNTIME)
+#elif defined(XIO_WINDOWS_RUNTIME)
 # include <windows.h>
 #else
 # include <cerrno>
@@ -36,7 +36,7 @@ namespace xio {
 
     namespace error {
         namespace detail {
-            ASIO_DECL std::error_condition error_number_to_condition(int ev);
+            XIO_DECL std::error_condition error_number_to_condition(int ev);
         } // namespace detail
     } // namespace error
     namespace detail {
@@ -47,7 +47,7 @@ namespace xio {
             }
 
             std::string message(int value) const {
-#if defined(ASIO_WINDOWS_RUNTIME) || defined(ASIO_WINDOWS_APP)
+#if defined(XIO_WINDOWS_RUNTIME) || defined(XIO_WINDOWS_APP)
                 std::wstring wmsg(128, wchar_t());
                 for (;;) {
                     DWORD wlength = ::FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM
@@ -74,7 +74,7 @@ namespace xio {
                     } else
                         return "xio.system error";
                 }
-#elif defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#elif defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 char *msg = 0;
                 DWORD length = ::FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER
                                                 | FORMAT_MESSAGE_FROM_SYSTEM
@@ -89,8 +89,8 @@ namespace xio {
                     return msg;
                 else
                     return "xio.system error";
-#else // defined(ASIO_WINDOWS_DESKTOP)
-                //   || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS_DESKTOP)
+                //   || defined(XIO_CYGWIN_W32_SOCKETS)
 #if !defined(__sun)
                 if (value == ECANCELED)
                     return "Operation aborted.";
@@ -103,8 +103,8 @@ namespace xio {
                 using namespace std;
                 return strerror_result(strerror_r(value, buf, sizeof(buf)), buf);
 #endif
-#endif // defined(ASIO_WINDOWS_DESKTOP)
-                //   || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS_DESKTOP)
+                //   || defined(XIO_CYGWIN_W32_SOCKETS)
             }
 
             std::error_condition default_error_condition(int ev) const noexcept {
@@ -131,4 +131,4 @@ namespace xio {
 // For implementation of xio::error::detail::error_number_to_condition.
 #include <xio/error.h>
 
-#endif // ASIO_IMPL_ERROR_CODE_IPP
+#endif // XIO_IMPL_ERROR_CODE_IPP

@@ -8,14 +8,14 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_IO_URING_SERVICE_HPP
-#define ASIO_DETAIL_IMPL_IO_URING_SERVICE_HPP
+#ifndef XIO_DETAIL_IMPL_IO_URING_SERVICE_HPP
+#define XIO_DETAIL_IMPL_IO_URING_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
 
 #include <xio/detail/scheduler.h>
 
@@ -105,6 +105,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
 
-#endif // ASIO_DETAIL_IMPL_IO_URING_SERVICE_HPP
+#endif // XIO_DETAIL_IMPL_IO_URING_SERVICE_HPP

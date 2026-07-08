@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_READ_AT_HPP
-#define ASIO_READ_AT_HPP
+#ifndef XIO_READ_AT_HPP
+#define XIO_READ_AT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -22,9 +22,9 @@
 #include <cstdint>
 #include <xio/error.h>
 
-#if !defined(ASIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_EXTENSIONS)
 #include <xio/basic_streambuf_fwd.h>
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
 #include <xio/detail/push_options.h>
 
@@ -34,10 +34,10 @@ namespace xio {
     namespace detail {
         template<typename>
         class initiate_async_read_at;
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
         template<typename>
         class initiate_async_read_at_streambuf;
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
     } // namespace detail
 
     /**
@@ -249,8 +249,8 @@ namespace xio {
                             is_completion_condition<CompletionCondition>::value
                         > = 0);
 
-#if !defined(ASIO_NO_EXTENSIONS)
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_IOSTREAM)
 
     /// Attempt to read a certain amount of data at the specified offset before
 /// returning.
@@ -410,8 +410,8 @@ namespace xio {
                             is_completion_condition<CompletionCondition>::value
                         > = 0);
 
-#endif // !defined(ASIO_NO_IOSTREAM)
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
     /*@}*/
     /**
@@ -499,7 +499,7 @@ namespace xio {
  * async_read_some_at operation.
  */
     template<typename AsyncRandomAccessReadDevice, typename MutableBufferSequence,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncRandomAccessReadDevice::executor_type> >
     inline auto async_read_at(AsyncRandomAccessReadDevice &d,
@@ -604,7 +604,7 @@ namespace xio {
  */
     template<typename AsyncRandomAccessReadDevice,
         typename MutableBufferSequence, typename CompletionCondition,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncRandomAccessReadDevice::executor_type> >
     inline auto async_read_at(AsyncRandomAccessReadDevice &d,
@@ -628,8 +628,8 @@ namespace xio {
             static_cast<CompletionCondition &&>(completion_condition));
     }
 
-#if !defined(ASIO_NO_EXTENSIONS)
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_IOSTREAM)
 
     /// Start an asynchronous operation to read a certain amount of data at the
 /// specified offset.
@@ -694,7 +694,7 @@ namespace xio {
  * async_read_some_at operation.
  */
     template<typename AsyncRandomAccessReadDevice, typename Allocator,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncRandomAccessReadDevice::executor_type> >
     inline auto async_read_at(AsyncRandomAccessReadDevice &d,
@@ -788,7 +788,7 @@ namespace xio {
  */
     template<typename AsyncRandomAccessReadDevice,
         typename Allocator, typename CompletionCondition,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncRandomAccessReadDevice::executor_type> >
     inline auto async_read_at(AsyncRandomAccessReadDevice &d, uint64_t offset,
@@ -812,8 +812,8 @@ namespace xio {
             static_cast<CompletionCondition &&>(completion_condition));
     }
 
-#endif // !defined(ASIO_NO_IOSTREAM)
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
     /*@}*/
 
@@ -824,4 +824,4 @@ namespace xio {
 
 #include <xio/impl/read_at.h>
 
-#endif // ASIO_READ_AT_HPP
+#endif // XIO_READ_AT_HPP

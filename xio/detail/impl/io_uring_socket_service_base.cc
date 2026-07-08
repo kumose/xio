@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_IO_URING_SOCKET_SERVICE_BASE_IPP
-#define ASIO_DETAIL_IMPL_IO_URING_SOCKET_SERVICE_BASE_IPP
+#ifndef XIO_DETAIL_IMPL_IO_URING_SOCKET_SERVICE_BASE_IPP
+#define XIO_DETAIL_IMPL_IO_URING_SOCKET_SERVICE_BASE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
 
 #include <xio/detail/io_uring_socket_service_base.h>
 
@@ -76,7 +76,7 @@ namespace xio {
         void io_uring_socket_service_base::destroy(
             io_uring_socket_service_base::base_implementation_type &impl) {
             if (impl.socket_ != invalid_socket) {
-                ASIO_HANDLER_OPERATION((io_uring_service_.context(),
+                XIO_HANDLER_OPERATION((io_uring_service_.context(),
                                         "socket", &impl, impl.socket_, "close"));
 
                 io_uring_service_.deregister_io_object(impl.io_object_data_);
@@ -90,7 +90,7 @@ namespace xio {
             io_uring_socket_service_base::base_implementation_type &impl,
             xio::error_code &ec) {
             if (is_open(impl)) {
-                ASIO_HANDLER_OPERATION((io_uring_service_.context(),
+                XIO_HANDLER_OPERATION((io_uring_service_.context(),
                                         "socket", &impl, impl.socket_, "close"));
 
                 io_uring_service_.deregister_io_object(impl.io_object_data_);
@@ -118,7 +118,7 @@ namespace xio {
                 return invalid_socket;
             }
 
-            ASIO_HANDLER_OPERATION((io_uring_service_.context(),
+            XIO_HANDLER_OPERATION((io_uring_service_.context(),
                                     "socket", &impl, impl.socket_, "release"));
 
             io_uring_service_.deregister_io_object(impl.io_object_data_);
@@ -137,7 +137,7 @@ namespace xio {
                 return ec;
             }
 
-            ASIO_HANDLER_OPERATION((io_uring_service_.context(),
+            XIO_HANDLER_OPERATION((io_uring_service_.context(),
                                     "socket", &impl, impl.socket_, "cancel"));
 
             io_uring_service_.cancel_ops(impl.io_object_data_);
@@ -224,6 +224,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
 
-#endif // ASIO_DETAIL_IMPL_IO_URING_SOCKET_SERVICE_BASE_IPP
+#endif // XIO_DETAIL_IMPL_IO_URING_SOCKET_SERVICE_BASE_IPP

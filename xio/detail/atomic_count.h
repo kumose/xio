@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_ATOMIC_COUNT_HPP
-#define ASIO_DETAIL_ATOMIC_COUNT_HPP
+#ifndef XIO_DETAIL_ATOMIC_COUNT_HPP
+#define XIO_DETAIL_ATOMIC_COUNT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,20 +17,20 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_HAS_THREADS)
+#if !defined(XIO_HAS_THREADS)
 // Nothing to include.
-#else // !defined(ASIO_HAS_THREADS)
+#else // !defined(XIO_HAS_THREADS)
 # include <atomic>
-# if defined(ASIO_HAS_THREAD_SANITIZER)
+# if defined(XIO_HAS_THREAD_SANITIZER)
 #  include <sanitizer/tsan_interface.h>
-# endif // defined(ASIO_HAS_THREAD_SANITIZER)
-#endif // !defined(ASIO_HAS_THREADS)
+# endif // defined(XIO_HAS_THREAD_SANITIZER)
+#endif // !defined(XIO_HAS_THREADS)
 
 namespace xio {
 
 
     namespace detail {
-#if !defined(ASIO_HAS_THREADS)
+#if !defined(XIO_HAS_THREADS)
         typedef long atomic_count;
         inline void increment(atomic_count &a, long b) { a += b; }
         inline void decrement(atomic_count &a, long b) { a -= b; }
@@ -38,7 +38,7 @@ namespace xio {
         inline bool ref_count_down(atomic_count &a) { return --a == 0; }
         inline void ref_count_up_release(atomic_count &a) { ++a; }
         inline long ref_count_read_acquire(atomic_count &a) { return a; }
-#else // !defined(ASIO_HAS_THREADS)
+#else // !defined(XIO_HAS_THREADS)
         typedef std::atomic<long> atomic_count;
         inline void increment(atomic_count &a, long b) { a += b; }
         inline void decrement(atomic_count &a, long b) { a -= b; }
@@ -49,11 +49,11 @@ namespace xio {
 
         inline bool ref_count_down(atomic_count &a) {
             if (a.fetch_sub(1, std::memory_order_release) == 1) {
-#if defined(ASIO_HAS_THREAD_SANITIZER)
+#if defined(XIO_HAS_THREAD_SANITIZER)
         __tsan_acquire (&a);
-#else // defined(ASIO_HAS_THREAD_SANITIZER)
+#else // defined(XIO_HAS_THREAD_SANITIZER)
         std::atomic_thread_fence (std::memory_order_acquire);
-#endif // defined(ASIO_HAS_THREAD_SANITIZER)
+#endif // defined(XIO_HAS_THREAD_SANITIZER)
         return true;
   }
   return false;
@@ -67,9 +67,9 @@ namespace xio {
             return a.load(std::memory_order_acquire);
         }
 
-#endif // !defined(ASIO_HAS_THREADS)
+#endif // !defined(XIO_HAS_THREADS)
     } // namespace detail
 
 } // namespace xio
 
-#endif // ASIO_DETAIL_ATOMIC_COUNT_HPP
+#endif // XIO_DETAIL_ATOMIC_COUNT_HPP

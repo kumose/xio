@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_IMPL_ADDRESS_IPP
-#define ASIO_IP_IMPL_ADDRESS_IPP
+#ifndef XIO_IP_IMPL_ADDRESS_IPP
+#define XIO_IP_IMPL_ADDRESS_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -197,4 +197,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_IMPL_ADDRESS_IPP
+#endif // XIO_IP_IMPL_ADDRESS_IPP

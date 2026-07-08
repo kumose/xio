@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WIN_TSS_PTR_HPP
-#define ASIO_DETAIL_WIN_TSS_PTR_HPP
+#ifndef XIO_DETAIL_WIN_TSS_PTR_HPP
+#define XIO_DETAIL_WIN_TSS_PTR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 
 #include <xio/detail/noncopyable.h>
 #include <xio/detail/socket_types.h>
@@ -29,7 +29,7 @@ namespace xio {
 
     namespace detail {
         // Helper function to create thread-specific storage.
-ASIO_DECL DWORD win_tss_ptr_create();
+XIO_DECL DWORD win_tss_ptr_create();
 
         template<typename T>
         class win_tss_ptr
@@ -67,6 +67,6 @@ ASIO_DECL DWORD win_tss_ptr_create();
 #include <xio/detail/pop_options.h>
 
 
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 
-#endif // ASIO_DETAIL_WIN_TSS_PTR_HPP
+#endif // XIO_DETAIL_WIN_TSS_PTR_HPP

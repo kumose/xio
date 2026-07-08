@@ -53,7 +53,7 @@ struct executor
 namespace xio {
 namespace traits {
 
-#if !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
 
 template <typename F>
 struct execute_member<executor, F>
@@ -63,8 +63,8 @@ struct execute_member<executor, F>
   typedef void result_type;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_SET_ERROR_MEMBER_TRAIT)
-#if !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_SET_ERROR_MEMBER_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
 template <>
 struct equality_comparable<executor>
@@ -73,31 +73,31 @@ struct equality_comparable<executor>
   static constexpr bool is_noexcept = true;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
 } // namespace traits
 } // namespace xio
 
 void is_executor_test()
 {
-  ASIO_CHECK((
+  XIO_CHECK((
       !xio::execution::is_executor<
         void
       >::value));
 
-  ASIO_CHECK((
+  XIO_CHECK((
       !xio::execution::is_executor<
         not_an_executor
       >::value));
 
-  ASIO_CHECK((
+  XIO_CHECK((
       xio::execution::is_executor<
         executor
       >::value));
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "executor",
-  ASIO_TEST_CASE(is_executor_test)
+  XIO_TEST_CASE(is_executor_test)
 )

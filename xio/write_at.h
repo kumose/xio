@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_WRITE_AT_HPP
-#define ASIO_WRITE_AT_HPP
+#ifndef XIO_WRITE_AT_HPP
+#define XIO_WRITE_AT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -22,9 +22,9 @@
 #include <cstdint>
 #include <xio/error.h>
 
-#if !defined(ASIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_EXTENSIONS)
 #include <xio/basic_streambuf_fwd.h>
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
 #include <xio/detail/push_options.h>
 
@@ -34,10 +34,10 @@ namespace xio {
     namespace detail {
         template<typename>
         class initiate_async_write_at;
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
         template<typename>
         class initiate_async_write_at_streambuf;
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
     } // namespace detail
 
     /**
@@ -245,8 +245,8 @@ namespace xio {
                              is_completion_condition<CompletionCondition>::value
                          > = 0);
 
-#if !defined(ASIO_NO_EXTENSIONS)
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_IOSTREAM)
 
     /// Write all of the supplied data at the specified offset before returning.
     /**
@@ -409,8 +409,8 @@ namespace xio {
                              is_completion_condition<CompletionCondition>::value
                          > = 0);
 
-#endif // !defined(ASIO_NO_IOSTREAM)
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
     /*@}*/
     /**
@@ -496,7 +496,7 @@ namespace xio {
  * async_write_some_at operation.
  */
     template<typename AsyncRandomAccessWriteDevice, typename ConstBufferSequence,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) WriteToken = default_completion_token_t<
             typename AsyncRandomAccessWriteDevice::executor_type> >
     inline auto async_write_at(AsyncRandomAccessWriteDevice &d,
@@ -608,7 +608,7 @@ namespace xio {
  */
     template<typename AsyncRandomAccessWriteDevice,
         typename ConstBufferSequence, typename CompletionCondition,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) WriteToken = default_completion_token_t<
             typename AsyncRandomAccessWriteDevice::executor_type> >
     inline auto async_write_at(AsyncRandomAccessWriteDevice &d,
@@ -633,8 +633,8 @@ namespace xio {
             static_cast<CompletionCondition &&>(completion_condition));
     }
 
-#if !defined(ASIO_NO_EXTENSIONS)
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_IOSTREAM)
 
     /// Start an asynchronous operation to write all of the supplied data at the
 /// specified offset.
@@ -699,7 +699,7 @@ namespace xio {
  * async_write_some_at operation.
  */
     template<typename AsyncRandomAccessWriteDevice, typename Allocator,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) WriteToken = default_completion_token_t<
             typename AsyncRandomAccessWriteDevice::executor_type> >
     inline auto async_write_at(AsyncRandomAccessWriteDevice &d,
@@ -800,7 +800,7 @@ namespace xio {
  */
     template<typename AsyncRandomAccessWriteDevice,
         typename Allocator, typename CompletionCondition,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) WriteToken = default_completion_token_t<
             typename AsyncRandomAccessWriteDevice::executor_type> >
     inline auto async_write_at(AsyncRandomAccessWriteDevice &d, uint64_t offset,
@@ -825,8 +825,8 @@ namespace xio {
             static_cast<CompletionCondition &&>(completion_condition));
     }
 
-#endif // !defined(ASIO_NO_IOSTREAM)
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
     /*@}*/
 
@@ -837,4 +837,4 @@ namespace xio {
 
 #include <xio/impl/write_at.h>
 
-#endif // ASIO_WRITE_AT_HPP
+#endif // XIO_WRITE_AT_HPP

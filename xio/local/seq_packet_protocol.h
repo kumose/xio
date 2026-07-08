@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_LOCAL_SEQ_PACKET_PROTOCOL_HPP
-#define ASIO_LOCAL_SEQ_PACKET_PROTOCOL_HPP
+#ifndef XIO_LOCAL_SEQ_PACKET_PROTOCOL_HPP
+#define XIO_LOCAL_SEQ_PACKET_PROTOCOL_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,8 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_LOCAL_SOCKETS) \
-  || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_LOCAL_SOCKETS)
 
 #include <xio/basic_socket_acceptor.h>
 #include <xio/basic_seq_packet_socket.h>
@@ -75,7 +74,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_LOCAL_SOCKETS)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_LOCAL_SOCKETS)
 
-#endif // ASIO_LOCAL_SEQ_PACKET_PROTOCOL_HPP
+#endif // XIO_LOCAL_SEQ_PACKET_PROTOCOL_HPP

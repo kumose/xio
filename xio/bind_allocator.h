@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BIND_ALLOCATOR_HPP
-#define ASIO_BIND_ALLOCATOR_HPP
+#ifndef XIO_BIND_ALLOCATOR_HPP
+#define XIO_BIND_ALLOCATOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -145,11 +145,9 @@ namespace xio {
 /// to an object of type @c T.
     template<typename T, typename Allocator>
     class allocator_binder
-#if !defined(GENERATING_DOCUMENTATION)
             : public detail::allocator_binder_result_type<T>,
               public detail::allocator_binder_argument_type<T>,
               public detail::allocator_binder_argument_types<T>
-#endif // !defined(GENERATING_DOCUMENTATION)
     {
     public:
         /// The type of the target object.
@@ -157,68 +155,6 @@ namespace xio {
 
         /// The type of the associated allocator.
         typedef Allocator allocator_type;
-
-#if defined(GENERATING_DOCUMENTATION)
-        /// The return type if a function.
-        /**
-   * The type of @c result_type is based on the type @c T of the wrapper's
-   * target object:
-   *
-   * @li if @c T is a pointer to function type, @c result_type is a synonym for
-   * the return type of @c T;
-   *
-   * @li if @c T is a class type with a member type @c result_type, then @c
-   * result_type is a synonym for @c T::result_type;
-   *
-   * @li otherwise @c result_type is not defined.
-   */
-        typedef see_below result_type;
-
-        /// The type of the function's argument.
-        /**
-   * The type of @c argument_type is based on the type @c T of the wrapper's
-   * target object:
-   *
-   * @li if @c T is a pointer to a function type accepting a single argument,
-   * @c argument_type is a synonym for the return type of @c T;
-   *
-   * @li if @c T is a class type with a member type @c argument_type, then @c
-   * argument_type is a synonym for @c T::argument_type;
-   *
-   * @li otherwise @c argument_type is not defined.
-   */
-        typedef see_below argument_type;
-
-        /// The type of the function's first argument.
-        /**
-   * The type of @c first_argument_type is based on the type @c T of the
-   * wrapper's target object:
-   *
-   * @li if @c T is a pointer to a function type accepting two arguments, @c
-   * first_argument_type is a synonym for the return type of @c T;
-   *
-   * @li if @c T is a class type with a member type @c first_argument_type,
-   * then @c first_argument_type is a synonym for @c T::first_argument_type;
-   *
-   * @li otherwise @c first_argument_type is not defined.
-   */
-        typedef see_below first_argument_type;
-
-        /// The type of the function's second argument.
-        /**
-   * The type of @c second_argument_type is based on the type @c T of the
-   * wrapper's target object:
-   *
-   * @li if @c T is a pointer to a function type accepting two arguments, @c
-   * second_argument_type is a synonym for the return type of @c T;
-   *
-   * @li if @c T is a class type with a member type @c first_argument_type,
-   * then @c second_argument_type is a synonym for @c T::second_argument_type;
-   *
-   * @li otherwise @c second_argument_type is not defined.
-   */
-        typedef see_below second_argument_type;
-#endif // defined(GENERATING_DOCUMENTATION)
 
         /// Construct an allocator wrapper for the specified object.
         /**
@@ -394,8 +330,6 @@ namespace xio {
     bind_allocator(const Allocator &s, T &&t) {
         return allocator_binder<std::decay_t<T>, Allocator>(s, static_cast<T &&>(t));
     }
-
-#if !defined(GENERATING_DOCUMENTATION)
 
     namespace detail {
         template<typename TargetAsyncResult, typename Allocator, typename = void>
@@ -574,11 +508,9 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
-
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_BIND_ALLOCATOR_HPP
+#endif // XIO_BIND_ALLOCATOR_HPP

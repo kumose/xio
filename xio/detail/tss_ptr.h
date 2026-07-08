@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_TSS_PTR_HPP
-#define ASIO_DETAIL_TSS_PTR_HPP
+#ifndef XIO_DETAIL_TSS_PTR_HPP
+#define XIO_DETAIL_TSS_PTR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,13 +17,13 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_HAS_THREADS)
+#if !defined(XIO_HAS_THREADS)
 #include <xio/detail/null_tss_ptr.h>
-#elif defined(ASIO_HAS_THREAD_KEYWORD_EXTENSION)
+#elif defined(XIO_HAS_THREAD_KEYWORD_EXTENSION)
 #include <xio/detail/keyword_tss_ptr.h>
-#elif defined(ASIO_WINDOWS)
+#elif defined(XIO_WINDOWS)
 #include <xio/detail/win_tss_ptr.h>
-#elif defined(ASIO_HAS_PTHREADS)
+#elif defined(XIO_HAS_PTHREADS)
 #include <xio/detail/posix_tss_ptr.h>
 #else
 # error Only Windows and POSIX are supported!
@@ -37,25 +37,25 @@ namespace xio {
     namespace detail {
         template<typename T>
         class tss_ptr
-#if !defined(ASIO_HAS_THREADS)
+#if !defined(XIO_HAS_THREADS)
                 : public null_tss_ptr<T>
-#elif defined(ASIO_HAS_THREAD_KEYWORD_EXTENSION)
+#elif defined(XIO_HAS_THREAD_KEYWORD_EXTENSION)
                 : public keyword_tss_ptr<T>
-#elif defined(ASIO_WINDOWS)
+#elif defined(XIO_WINDOWS)
                 : public win_tss_ptr<T>
-#elif defined(ASIO_HAS_PTHREADS)
+#elif defined(XIO_HAS_PTHREADS)
                 : public posix_tss_ptr<T>
 #endif
         {
         public:
             void operator=(T *value) {
-#if !defined(ASIO_HAS_THREADS)
+#if !defined(XIO_HAS_THREADS)
                 null_tss_ptr<T>::operator=(value);
-#elif defined(ASIO_HAS_THREAD_KEYWORD_EXTENSION)
+#elif defined(XIO_HAS_THREAD_KEYWORD_EXTENSION)
                 keyword_tss_ptr<T>::operator=(value);
-#elif defined(ASIO_WINDOWS)
+#elif defined(XIO_WINDOWS)
                 win_tss_ptr<T>::operator=(value);
-#elif defined(ASIO_HAS_PTHREADS)
+#elif defined(XIO_HAS_PTHREADS)
                 posix_tss_ptr<T>::operator=(value);
 #endif
             }
@@ -66,4 +66,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_TSS_PTR_HPP
+#endif // XIO_DETAIL_TSS_PTR_HPP

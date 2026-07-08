@@ -84,15 +84,15 @@ void test()
     net1 = ip::make_network_v6("10.0.0.0/8", ec);
     net1 = ip::make_network_v6(s1);
     net1 = ip::make_network_v6(s1, ec);
-#if defined(ASIO_HAS_STRING_VIEW)
-# if defined(ASIO_HAS_STD_STRING_VIEW)
+#if defined(XIO_HAS_STRING_VIEW)
+# if defined(XIO_HAS_STD_STRING_VIEW)
     std::string_view string_view_value("0::0/8");
-# elif defined(ASIO_HAS_STD_EXPERIMENTAL_STRING_VIEW)
+# elif defined(XIO_HAS_STD_EXPERIMENTAL_STRING_VIEW)
     std::experimental::std::string_view string_view_value("0::0/8");
-# endif // defined(ASIO_HAS_STD_EXPERIMENTAL_STRING_VIEW)
+# endif // defined(XIO_HAS_STD_EXPERIMENTAL_STRING_VIEW)
     net1 = ip::make_network_v6(string_view_value);
     net1 = ip::make_network_v6(string_view_value, ec);
-#endif // defined(ASIO_STD_STRING_VIEW)
+#endif // defined(XIO_STD_STRING_VIEW)
 
     // network_v6 I/O.
 
@@ -138,61 +138,61 @@ void test()
   {
     msg = ex.what();
   }
-  ASIO_CHECK(msg == std::string("prefix length too large"));
+  XIO_CHECK(msg == std::string("prefix length too large"));
 
   // construct address range from address and prefix length
-  ASIO_CHECK(network_v6(make_address_v6("2001:370::10:7344"), 128).network() == make_address_v6("2001:370::10:7344"));
-  ASIO_CHECK(network_v6(make_address_v6("2001:370::10:7344"), 64).network() == make_address_v6("2001:370::"));
-  ASIO_CHECK(network_v6(make_address_v6("2001:370::10:7344"), 27).network() == make_address_v6("2001:360::"));
+  XIO_CHECK(network_v6(make_address_v6("2001:370::10:7344"), 128).network() == make_address_v6("2001:370::10:7344"));
+  XIO_CHECK(network_v6(make_address_v6("2001:370::10:7344"), 64).network() == make_address_v6("2001:370::"));
+  XIO_CHECK(network_v6(make_address_v6("2001:370::10:7344"), 27).network() == make_address_v6("2001:360::"));
 
   // construct address range from string in CIDR notation
-  ASIO_CHECK(make_network_v6("2001:370::10:7344/128").network() == make_address_v6("2001:370::10:7344"));
-  ASIO_CHECK(make_network_v6("2001:370::10:7344/64").network() == make_address_v6("2001:370::"));
-  ASIO_CHECK(make_network_v6("2001:370::10:7344/27").network() == make_address_v6("2001:360::"));
+  XIO_CHECK(make_network_v6("2001:370::10:7344/128").network() == make_address_v6("2001:370::10:7344"));
+  XIO_CHECK(make_network_v6("2001:370::10:7344/64").network() == make_address_v6("2001:370::"));
+  XIO_CHECK(make_network_v6("2001:370::10:7344/27").network() == make_address_v6("2001:360::"));
 
   // construct network from invalid string
   xio::error_code ec;
   make_network_v6("a:b/24", ec);
-  ASIO_CHECK(!!ec);
+  XIO_CHECK(!!ec);
   make_network_v6("2001:370::10:7344/129", ec);
-  ASIO_CHECK(!!ec);
+  XIO_CHECK(!!ec);
   make_network_v6("2001:370::10:7344/-1", ec);
-  ASIO_CHECK(!!ec);
+  XIO_CHECK(!!ec);
   make_network_v6("2001:370::10:7344/", ec);
-  ASIO_CHECK(!!ec);
+  XIO_CHECK(!!ec);
   make_network_v6("2001:370::10:7344", ec);
-  ASIO_CHECK(!!ec);
+  XIO_CHECK(!!ec);
 
   // prefix length
-  ASIO_CHECK(make_network_v6("2001:370::10:7344/128").prefix_length() == 128);
-  ASIO_CHECK(network_v6(make_address_v6("2001:370::10:7344"), 27).prefix_length() == 27);
+  XIO_CHECK(make_network_v6("2001:370::10:7344/128").prefix_length() == 128);
+  XIO_CHECK(network_v6(make_address_v6("2001:370::10:7344"), 27).prefix_length() == 27);
 
   // to string
   std::string a("2001:370::10:7344/64");
-  ASIO_CHECK(make_network_v6(a.c_str()).to_string() == a);
-  ASIO_CHECK(network_v6(make_address_v6("2001:370::10:7344"), 27).to_string() == std::string("2001:370::10:7344/27"));
+  XIO_CHECK(make_network_v6(a.c_str()).to_string() == a);
+  XIO_CHECK(network_v6(make_address_v6("2001:370::10:7344"), 27).to_string() == std::string("2001:370::10:7344/27"));
 
   // return host part
-  ASIO_CHECK(make_network_v6("2001:370::10:7344/64").address() == make_address_v6("2001:370::10:7344"));
-  ASIO_CHECK(make_network_v6("2001:370::10:7344/27").address().to_string() == "2001:370::10:7344");
+  XIO_CHECK(make_network_v6("2001:370::10:7344/64").address() == make_address_v6("2001:370::10:7344"));
+  XIO_CHECK(make_network_v6("2001:370::10:7344/27").address().to_string() == "2001:370::10:7344");
 
   // return network in CIDR notation
-  ASIO_CHECK(make_network_v6("2001:370::10:7344/27").canonical().to_string() == "2001:360::/27");
+  XIO_CHECK(make_network_v6("2001:370::10:7344/27").canonical().to_string() == "2001:360::/27");
 
   // is host
-  ASIO_CHECK(make_network_v6("2001:370::10:7344/128").is_host());
-  ASIO_CHECK(!make_network_v6("2001:370::10:7344/127").is_host());
+  XIO_CHECK(make_network_v6("2001:370::10:7344/128").is_host());
+  XIO_CHECK(!make_network_v6("2001:370::10:7344/127").is_host());
 
   // is real subnet of
-  ASIO_CHECK(make_network_v6("2001:370::10:3744/64").is_subnet_of(make_network_v6("2001:370::/16")));
-  ASIO_CHECK(make_network_v6("2001:370::/64").is_subnet_of(make_network_v6("2001:370::/16")));
-  ASIO_CHECK(make_network_v6("2001:0db8:85a3::/64").is_subnet_of(make_network_v6("2001:0d00::/24")));
+  XIO_CHECK(make_network_v6("2001:370::10:3744/64").is_subnet_of(make_network_v6("2001:370::/16")));
+  XIO_CHECK(make_network_v6("2001:370::/64").is_subnet_of(make_network_v6("2001:370::/16")));
+  XIO_CHECK(make_network_v6("2001:0db8:85a3::/64").is_subnet_of(make_network_v6("2001:0d00::/24")));
 
-  ASIO_CHECK(!make_network_v6("2001:370::10:3744/128").is_subnet_of(make_network_v6("2001:370::10:3744/128")));
-  ASIO_CHECK(make_network_v6("2001:0db8:85a3::/64").is_subnet_of(make_network_v6("2001:0dc0::/24")));
+  XIO_CHECK(!make_network_v6("2001:370::10:3744/128").is_subnet_of(make_network_v6("2001:370::10:3744/128")));
+  XIO_CHECK(make_network_v6("2001:0db8:85a3::/64").is_subnet_of(make_network_v6("2001:0dc0::/24")));
 
   network_v6 r(make_network_v6("2001:370::/64"));
-  ASIO_CHECK(!r.is_subnet_of(r));
+  XIO_CHECK(!r.is_subnet_of(r));
 
   network_v6 net12(make_network_v6("2001:370::10:7344/64"));
   network_v6 net13(make_network_v6("2001:0db8::/127"));
@@ -200,36 +200,36 @@ void test()
   network_v6 net15(make_network_v6("2001:0db8::/119"));
 
   // network
-  ASIO_CHECK(net12.network() == make_address_v6("2001:370::"));
-  ASIO_CHECK(net13.network() == make_address_v6("2001:0db8::"));
-  ASIO_CHECK(net14.network() == make_address_v6("2001:0db8::"));
-  ASIO_CHECK(net15.network() == make_address_v6("2001:0db8::"));
+  XIO_CHECK(net12.network() == make_address_v6("2001:370::"));
+  XIO_CHECK(net13.network() == make_address_v6("2001:0db8::"));
+  XIO_CHECK(net14.network() == make_address_v6("2001:0db8::"));
+  XIO_CHECK(net15.network() == make_address_v6("2001:0db8::"));
 
   // iterator
-  //ASIO_CHECK(std::distance(net12.hosts().begin(),net12.hosts().end()) == 18446744073709552000);
-  ASIO_CHECK(std::distance(net13.hosts().begin(),net13.hosts().end()) == 2);
-  ASIO_CHECK(std::distance(net14.hosts().begin(),net14.hosts().end()) == 8);
-  ASIO_CHECK(std::distance(net15.hosts().begin(),net15.hosts().end()) == 512);
-  ASIO_CHECK(*net12.hosts().begin() == make_address_v6("2001:0370::"));
-  ASIO_CHECK(net12.hosts().end() != net12.hosts().find(make_address_v6("2001:0370::ffff:ffff:ffff:ffff")));
-  ASIO_CHECK(*net13.hosts().begin() == make_address_v6("2001:0db8::"));
-  ASIO_CHECK(net13.hosts().end() != net13.hosts().find(make_address_v6("2001:0db8::1")));
-  ASIO_CHECK(net13.hosts().end() == net13.hosts().find(make_address_v6("2001:0db8::2")));
-  ASIO_CHECK(*net14.hosts().begin() == make_address_v6("2001:0db8::"));
-  ASIO_CHECK(net14.hosts().end() != net14.hosts().find(make_address_v6("2001:0db8::7")));
-  ASIO_CHECK(net14.hosts().end() == net14.hosts().find(make_address_v6("2001:0db8::8")));
-  ASIO_CHECK(*net15.hosts().begin() == make_address_v6("2001:0db8::"));
-  ASIO_CHECK(net15.hosts().end() != net15.hosts().find(make_address_v6("2001:0db8::01ff")));
-  ASIO_CHECK(net15.hosts().end() == net15.hosts().find(make_address_v6("2001:0db8::0200")));
+  //XIO_CHECK(std::distance(net12.hosts().begin(),net12.hosts().end()) == 18446744073709552000);
+  XIO_CHECK(std::distance(net13.hosts().begin(),net13.hosts().end()) == 2);
+  XIO_CHECK(std::distance(net14.hosts().begin(),net14.hosts().end()) == 8);
+  XIO_CHECK(std::distance(net15.hosts().begin(),net15.hosts().end()) == 512);
+  XIO_CHECK(*net12.hosts().begin() == make_address_v6("2001:0370::"));
+  XIO_CHECK(net12.hosts().end() != net12.hosts().find(make_address_v6("2001:0370::ffff:ffff:ffff:ffff")));
+  XIO_CHECK(*net13.hosts().begin() == make_address_v6("2001:0db8::"));
+  XIO_CHECK(net13.hosts().end() != net13.hosts().find(make_address_v6("2001:0db8::1")));
+  XIO_CHECK(net13.hosts().end() == net13.hosts().find(make_address_v6("2001:0db8::2")));
+  XIO_CHECK(*net14.hosts().begin() == make_address_v6("2001:0db8::"));
+  XIO_CHECK(net14.hosts().end() != net14.hosts().find(make_address_v6("2001:0db8::7")));
+  XIO_CHECK(net14.hosts().end() == net14.hosts().find(make_address_v6("2001:0db8::8")));
+  XIO_CHECK(*net15.hosts().begin() == make_address_v6("2001:0db8::"));
+  XIO_CHECK(net15.hosts().end() != net15.hosts().find(make_address_v6("2001:0db8::01ff")));
+  XIO_CHECK(net15.hosts().end() == net15.hosts().find(make_address_v6("2001:0db8::0200")));
 }
 
 } // namespace ip_network_v6_runtime
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "ip/network_v6",
-  ASIO_COMPILE_TEST_CASE(ip_network_v6_compile::test)
-  ASIO_TEST_CASE(ip_network_v6_runtime::test)
+  XIO_COMPILE_TEST_CASE(ip_network_v6_compile::test)
+  XIO_TEST_CASE(ip_network_v6_runtime::test)
 )

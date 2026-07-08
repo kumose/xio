@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_POSIX_SERIAL_PORT_SERVICE_IPP
-#define ASIO_DETAIL_IMPL_POSIX_SERIAL_PORT_SERVICE_IPP
+#ifndef XIO_DETAIL_IMPL_POSIX_SERIAL_PORT_SERVICE_IPP
+#define XIO_DETAIL_IMPL_POSIX_SERIAL_PORT_SERVICE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,10 +18,10 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_SERIAL_PORT)
+#if defined(XIO_HAS_SERIAL_PORT)
 
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS)
 
 #include <cstring>
 #include <xio/detail/posix_serial_port_service.h>
@@ -47,7 +47,7 @@ namespace xio {
             const std::string &device, xio::error_code &ec) {
             if (is_open(impl)) {
                 ec = xio::error::already_open;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -55,7 +55,7 @@ namespace xio {
             int fd = descriptor_ops::open(device.c_str(),
                                           O_RDWR | O_NONBLOCK | O_NOCTTY, ec);
             if (fd < 0) {
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -65,7 +65,7 @@ namespace xio {
             if (s < 0) {
                 xio::error_code ignored_ec;
                 descriptor_ops::close(fd, state, ignored_ec);
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -92,7 +92,7 @@ descriptor_ops::get_last_error(ec, s < 0);
   if (s<0) {
     xio::error_code ignored_ec;
     descriptor_ops::close(fd, state, ignored_ec);
-    ASIO_ERROR_LOCATION(ec);
+    XIO_ERROR_LOCATION(ec);
     return ec;
 }
 
@@ -103,7 +103,7 @@ descriptor_ops::get_last_error(ec, s < 0);
     descriptor_ops::close(fd, state, ignored_ec);
   }
 
-ASIO_ERROR_LOCATION (ec);
+XIO_ERROR_LOCATION (ec);
   return ec;
 }
 
@@ -115,18 +115,18 @@ xio::error_code posix_serial_port_service::do_set_option(
     int s = ::tcgetattr(descriptor_service_.native_handle(impl), &ios);
     descriptor_ops::get_last_error(ec, s < 0);
     if (s < 0) {
-        ASIO_ERROR_LOCATION(ec);
+        XIO_ERROR_LOCATION(ec);
         return ec;
     }
 
     if (store(option, ios, ec)) {
-        ASIO_ERROR_LOCATION(ec);
+        XIO_ERROR_LOCATION(ec);
         return ec;
     }
 
     s = ::tcsetattr(descriptor_service_.native_handle(impl), TCSANOW, &ios);
     descriptor_ops::get_last_error(ec, s < 0);
-    ASIO_ERROR_LOCATION(ec);
+    XIO_ERROR_LOCATION(ec);
     return ec;
 }
 
@@ -138,12 +138,12 @@ xio::error_code posix_serial_port_service::do_get_option(
     int s = ::tcgetattr(descriptor_service_.native_handle(impl), &ios);
     descriptor_ops::get_last_error(ec, s < 0);
     if (s < 0) {
-        ASIO_ERROR_LOCATION(ec);
+        XIO_ERROR_LOCATION(ec);
         return ec;
     }
 
     load(option, ios, ec);
-    ASIO_ERROR_LOCATION(ec);
+    XIO_ERROR_LOCATION(ec);
     return ec;
 }
 
@@ -152,9 +152,9 @@ xio::error_code posix_serial_port_service::do_get_option(
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(ASIO_WINDOWS)
-//   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // !defined(XIO_WINDOWS)
+//   && !defined(XIO_CYGWIN_W32_SOCKETS)
 
-#endif // defined(ASIO_HAS_SERIAL_PORT)
+#endif // defined(XIO_HAS_SERIAL_PORT)
 
-#endif // ASIO_DETAIL_IMPL_POSIX_SERIAL_PORT_SERVICE_IPP
+#endif // XIO_DETAIL_IMPL_POSIX_SERIAL_PORT_SERVICE_IPP

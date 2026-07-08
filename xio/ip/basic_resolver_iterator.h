@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_BASIC_RESOLVER_ITERATOR_HPP
-#define ASIO_IP_BASIC_RESOLVER_ITERATOR_HPP
+#ifndef XIO_IP_BASIC_RESOLVER_ITERATOR_HPP
+#define XIO_IP_BASIC_RESOLVER_ITERATOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -26,9 +26,9 @@
 #include <xio/detail/socket_types.h>
 #include <xio/ip/basic_resolver_entry.h>
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 #include <xio/detail/winrt_utils.h>
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
 
 #include <xio/detail/push_options.h>
 
@@ -169,4 +169,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_BASIC_RESOLVER_ITERATOR_HPP
+#endif // XIO_IP_BASIC_RESOLVER_ITERATOR_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_STRAND_EXECUTOR_SERVICE_IPP
-#define ASIO_DETAIL_IMPL_STRAND_EXECUTOR_SERVICE_IPP
+#ifndef XIO_DETAIL_IMPL_STRAND_EXECUTOR_SERVICE_IPP
+#define XIO_DETAIL_IMPL_STRAND_EXECUTOR_SERVICE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -27,11 +27,11 @@ namespace xio {
         strand_executor_service::strand_executor_service(execution_context &ctx)
             : execution_context_service_base<strand_executor_service>(ctx),
               mutex_(),
-#if !defined(ASIO_HAS_STD_ATOMIC_WAIT) \
-  && !defined(ASIO_HAS_FUTEX)
+#if !defined(XIO_HAS_STD_ATOMIC_WAIT) \
+  && !defined(XIO_HAS_FUTEX)
               salt_(0),
-#endif // !defined(ASIO_HAS_STD_ATOMIC_WAIT)
-              //   && !defined(ASIO_HAS_FUTEX)
+#endif // !defined(XIO_HAS_STD_ATOMIC_WAIT)
+              //   && !defined(XIO_HAS_FUTEX)
               impl_list_(0) {
         }
 
@@ -60,8 +60,8 @@ namespace xio {
 
             xio::detail::mutex::scoped_lock lock(mutex_);
 
-#if !defined(ASIO_HAS_STD_ATOMIC_WAIT) \
-  && !defined(ASIO_HAS_FUTEX)
+#if !defined(XIO_HAS_STD_ATOMIC_WAIT) \
+  && !defined(XIO_HAS_FUTEX)
             // Select a mutex from the pool of shared mutexes.
             std::size_t salt = salt_++;
             std::size_t mutex_index = reinterpret_cast<std::size_t>(new_impl.get());
@@ -71,8 +71,8 @@ namespace xio {
             if (!mutexes_[mutex_index])
                 mutexes_[mutex_index] = allocate_shared<mutex>(alloc);
             new_impl->mutex_ = mutexes_[mutex_index].get();
-#endif // !defined(ASIO_HAS_STD_ATOMIC_WAIT)
-            //   && !defined(ASIO_HAS_FUTEX)
+#endif // !defined(XIO_HAS_STD_ATOMIC_WAIT)
+            //   && !defined(XIO_HAS_FUTEX)
 
             // Insert implementation into linked list of all implementations.
             new_impl->next_ = impl_list_;
@@ -149,4 +149,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_IMPL_STRAND_EXECUTOR_SERVICE_IPP
+#endif // XIO_DETAIL_IMPL_STRAND_EXECUTOR_SERVICE_IPP

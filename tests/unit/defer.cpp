@@ -102,11 +102,11 @@ void defer_no_args_test()
       xio::bind_executor(ctx,
         bindns::bind(void_handler, &handler_count)));
 
-  ASIO_CHECK(handler_count == 0);
+  XIO_CHECK(handler_count == 0);
 
   ctx.run();
 
-  ASIO_CHECK(handler_count == 1);
+  XIO_CHECK(handler_count == 1);
 }
 
 void defer_function_test()
@@ -118,54 +118,54 @@ void defer_function_test()
   defer(void_function, ctx.get_executor(),
       bindns::bind(void_handler, &handler_count));
 
-  ASIO_CHECK(function_count == 0);
-  ASIO_CHECK(handler_count == 0);
+  XIO_CHECK(function_count == 0);
+  XIO_CHECK(handler_count == 0);
 
   ctx.run();
 
-  ASIO_CHECK(function_count == 1);
-  ASIO_CHECK(handler_count == 1);
+  XIO_CHECK(function_count == 1);
+  XIO_CHECK(handler_count == 1);
 
   function_count = 0;
   handler_count = 0;
   defer(void_function, ctx, bindns::bind(void_handler, &handler_count));
 
-  ASIO_CHECK(function_count == 0);
-  ASIO_CHECK(handler_count == 0);
+  XIO_CHECK(function_count == 0);
+  XIO_CHECK(handler_count == 0);
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(function_count == 1);
-  ASIO_CHECK(handler_count == 1);
+  XIO_CHECK(function_count == 1);
+  XIO_CHECK(handler_count == 1);
 
   function_count = 0;
   handler_count = 0;
   defer(void_function_object(), ctx.get_executor(),
       bindns::bind(void_handler, &handler_count));
 
-  ASIO_CHECK(function_count == 0);
-  ASIO_CHECK(handler_count == 0);
+  XIO_CHECK(function_count == 0);
+  XIO_CHECK(handler_count == 0);
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(function_count == 1);
-  ASIO_CHECK(handler_count == 1);
+  XIO_CHECK(function_count == 1);
+  XIO_CHECK(handler_count == 1);
 
   function_count = 0;
   handler_count = 0;
   defer(void_function_object(), ctx,
       bindns::bind(void_handler, &handler_count));
 
-  ASIO_CHECK(function_count == 0);
-  ASIO_CHECK(handler_count == 0);
+  XIO_CHECK(function_count == 0);
+  XIO_CHECK(handler_count == 0);
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(function_count == 1);
-  ASIO_CHECK(handler_count == 1);
+  XIO_CHECK(function_count == 1);
+  XIO_CHECK(handler_count == 1);
 
   function_count = 0;
   handler_count = 0;
@@ -174,16 +174,16 @@ void defer_function_test()
       bindns::bind(move_only_result_handler, _1,
         &handler_count, &handler_result));
 
-  ASIO_CHECK(function_count == 0);
-  ASIO_CHECK(handler_count == 0);
-  ASIO_CHECK(handler_result == 0);
+  XIO_CHECK(function_count == 0);
+  XIO_CHECK(handler_count == 0);
+  XIO_CHECK(handler_result == 0);
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(function_count == 1);
-  ASIO_CHECK(handler_count == 1);
-  ASIO_CHECK(handler_result == 42);
+  XIO_CHECK(function_count == 1);
+  XIO_CHECK(handler_count == 1);
+  XIO_CHECK(handler_result == 42);
 
   function_count = 0;
   handler_count = 0;
@@ -192,16 +192,16 @@ void defer_function_test()
       bindns::bind(move_only_result_handler, _1,
         &handler_count, &handler_result));
 
-  ASIO_CHECK(function_count == 0);
-  ASIO_CHECK(handler_count == 0);
-  ASIO_CHECK(handler_result == 0);
+  XIO_CHECK(function_count == 0);
+  XIO_CHECK(handler_count == 0);
+  XIO_CHECK(handler_result == 0);
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(function_count == 1);
-  ASIO_CHECK(handler_count == 1);
-  ASIO_CHECK(handler_result == 42);
+  XIO_CHECK(function_count == 1);
+  XIO_CHECK(handler_count == 1);
+  XIO_CHECK(handler_result == 42);
 
   function_count = 0;
   handler_count = 0;
@@ -210,16 +210,16 @@ void defer_function_test()
       bindns::bind(move_only_result_handler, _1,
         &handler_count, &handler_result));
 
-  ASIO_CHECK(function_count == 0);
-  ASIO_CHECK(handler_count == 0);
-  ASIO_CHECK(handler_result == 0);
+  XIO_CHECK(function_count == 0);
+  XIO_CHECK(handler_count == 0);
+  XIO_CHECK(handler_result == 0);
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(function_count == 1);
-  ASIO_CHECK(handler_count == 1);
-  ASIO_CHECK(handler_result == 42);
+  XIO_CHECK(function_count == 1);
+  XIO_CHECK(handler_count == 1);
+  XIO_CHECK(handler_result == 42);
 
   function_count = 0;
   handler_count = 0;
@@ -228,21 +228,21 @@ void defer_function_test()
       bindns::bind(move_only_result_handler, _1,
         &handler_count, &handler_result));
 
-  ASIO_CHECK(function_count == 0);
-  ASIO_CHECK(handler_count == 0);
-  ASIO_CHECK(handler_result == 0);
+  XIO_CHECK(function_count == 0);
+  XIO_CHECK(handler_count == 0);
+  XIO_CHECK(handler_result == 0);
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(function_count == 1);
-  ASIO_CHECK(handler_count == 1);
-  ASIO_CHECK(handler_result == 42);
+  XIO_CHECK(function_count == 1);
+  XIO_CHECK(handler_count == 1);
+  XIO_CHECK(handler_result == 42);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "defer",
-  ASIO_TEST_CASE(defer_no_args_test)
-  ASIO_TEST_CASE(defer_function_test)
+  XIO_TEST_CASE(defer_no_args_test)
+  XIO_TEST_CASE(defer_function_test)
 )

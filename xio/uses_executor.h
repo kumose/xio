@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_USES_EXECUTOR_HPP
-#define ASIO_USES_EXECUTOR_HPP
+#ifndef XIO_USES_EXECUTOR_HPP
+#define XIO_USES_EXECUTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -65,4 +65,4 @@ inline constexpr executor_arg_t executor_arg;
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_USES_EXECUTOR_HPP
+#endif // XIO_USES_EXECUTOR_HPP

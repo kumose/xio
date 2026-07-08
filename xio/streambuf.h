@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_STREAMBUF_HPP
-#define ASIO_STREAMBUF_HPP
+#ifndef XIO_STREAMBUF_HPP
+#define XIO_STREAMBUF_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 
 #include <xio/basic_streambuf.h>
 
@@ -30,6 +30,6 @@ namespace xio {
 
 } // namespace xio
 
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
 
-#endif // ASIO_STREAMBUF_HPP
+#endif // XIO_STREAMBUF_HPP

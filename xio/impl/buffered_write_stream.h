@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_BUFFERED_WRITE_STREAM_HPP
-#define ASIO_IMPL_BUFFERED_WRITE_STREAM_HPP
+#ifndef XIO_IMPL_BUFFERED_WRITE_STREAM_HPP
+#define XIO_IMPL_BUFFERED_WRITE_STREAM_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -101,7 +101,7 @@ namespace xio {
                             buffered_stream_storage *storage) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a WriteHandler.
-                ASIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
+                XIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
                 type_check;
 
                 non_const_lvalue<WriteHandler> handler2(handler);
@@ -114,8 +114,6 @@ namespace xio {
             std::remove_reference_t<Stream> &next_layer_;
         };
     } // namespace detail
-
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename WriteHandler, typename DefaultCandidate>
@@ -135,11 +133,10 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
     template<typename Stream>
     template<
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) WriteHandler>
     inline auto buffered_write_stream<Stream>::async_flush(WriteHandler &&handler)
         -> decltype(
@@ -261,7 +258,7 @@ namespace xio {
                             const ConstBufferSequence &buffers) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a WriteHandler.
-                ASIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
+                XIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
                 type_check;
 
                 using xio::buffer_size;
@@ -285,7 +282,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename ConstBufferSequence, typename WriteHandler,
@@ -309,11 +305,9 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
-
     template<typename Stream>
     template<typename ConstBufferSequence,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) WriteHandler>
     inline auto buffered_write_stream<Stream>::async_write_some(
         const ConstBufferSequence &buffers, WriteHandler &&handler)
@@ -347,4 +341,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_BUFFERED_WRITE_STREAM_HPP
+#endif // XIO_IMPL_BUFFERED_WRITE_STREAM_HPP

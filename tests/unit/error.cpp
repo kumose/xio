@@ -19,23 +19,23 @@
 void test_error_code(const xio::error_code& code)
 {
   xio::error_code error(code);
-  ASIO_CHECK(code == error);
+  XIO_CHECK(code == error);
 
-  ASIO_CHECK(!code || error);
-  ASIO_CHECK(!code || !!error);
+  XIO_CHECK(!code || error);
+  XIO_CHECK(!code || !!error);
 
   xio::error_code error2(error);
-  ASIO_CHECK(error == error2);
-  ASIO_CHECK(!(error != error2));
+  XIO_CHECK(error == error2);
+  XIO_CHECK(!(error != error2));
 
   xio::error_code error3;
   error3 = error;
-  ASIO_CHECK(error == error3);
-  ASIO_CHECK(!(error != error3));
+  XIO_CHECK(error == error3);
+  XIO_CHECK(!(error != error3));
 
   std::ostringstream os;
   os << error;
-  ASIO_CHECK(!os.str().empty());
+  XIO_CHECK(!os.str().empty());
 }
 
 void error_test()
@@ -79,8 +79,8 @@ void error_test()
   test_error_code(xio::error::would_block);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "error",
-  ASIO_TEST_CASE(error_test)
+  XIO_TEST_CASE(error_test)
 )

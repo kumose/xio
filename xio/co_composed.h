@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_CO_COMPOSED_HPP
-#define ASIO_CO_COMPOSED_HPP
+#ifndef XIO_CO_COMPOSED_HPP
+#define XIO_CO_COMPOSED_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_CO_AWAIT) || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_CO_AWAIT)
 
 #include <new>
 #include <tuple>
@@ -32,17 +32,17 @@
 #include <xio/detail/type_traits.h>
 #include <xio/error.h>
 
-#if defined(ASIO_HAS_STD_COROUTINE)
+#if defined(XIO_HAS_STD_COROUTINE)
 # include <coroutine>
-#else // defined(ASIO_HAS_STD_COROUTINE)
+#else // defined(XIO_HAS_STD_COROUTINE)
 # include <experimental/coroutine>
-#endif // defined(ASIO_HAS_STD_COROUTINE)
+#endif // defined(XIO_HAS_STD_COROUTINE)
 
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
 #  include "xio/detail/source_location.hpp"
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 
 #include <xio/detail/push_options.h>
 
@@ -53,15 +53,15 @@ namespace xio {
 
 
 
-#if defined(ASIO_HAS_STD_COROUTINE)
+#if defined(XIO_HAS_STD_COROUTINE)
 using std::coroutine_handle;
 using std::suspend_always;
 using std::suspend_never;
-#else // defined(ASIO_HAS_STD_COROUTINE)
+#else // defined(XIO_HAS_STD_COROUTINE)
 using std::experimental::coroutine_handle;
 using std::experimental::suspend_always;
 using std::experimental::suspend_never;
-#endif // defined(ASIO_HAS_STD_COROUTINE)
+#endif // defined(XIO_HAS_STD_COROUTINE)
 
 using xio::detail::composed_io_executors;
 using xio::detail::composed_work;
@@ -80,7 +80,7 @@ class co_composed_handler_base;
 template<typename Executors, typename Handler, typename Return>
 class co_composed_promise;
 
-template<ASIO_COMPLETION_SIGNATURE... Signatures>
+template<XIO_COMPLETION_SIGNATURE... Signatures>
 class co_composed_returns {
 };
 
@@ -753,40 +753,40 @@ public:
     void unhandled_exception() {
         if (owner_)
             *owner_ = this;
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
 throw;
-#else // !defined(ASIO_NO_EXCEPTIONS)
+#else // !defined(XIO_NO_EXCEPTIONS)
 std::terminate();
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
 }
 
-template<ASIO_ASYNC_OPERATION Op>
+template<XIO_ASYNC_OPERATION Op>
 auto await_transform(Op && op,
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
 xio::detail::source_location location
                 = xio::detail::source_location::current(),
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 constraint_t<is_async_operation<Op>::value> =0)
   {
     class [[nodiscard]] awaitable
     {
     public:
       awaitable(Op&& op, co_composed_promise& promise
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
 , const xio::detail::source_location &location
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 )
         : op_ (static_cast<Op &&>(op)),
 promise_ (promise)
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
 , location_ (location)
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 {
       }
 
@@ -799,14 +799,14 @@ void await_suspend(coroutine_handle<co_composed_promise>) {
         promise_.state_.on_suspend_->arg_ = this;
         promise_.state_.on_suspend_->fn_ =
                 [](void *p) {
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
-ASIO_HANDLER_LOCATION ((
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
+XIO_HANDLER_LOCATION ((
                   static_cast<awaitable *>(p)->location_.file_name(),
                   static_cast<awaitable *>(p)->location_.line(),
                   static_cast<awaitable *>(p)->location_.function_name()));
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 static_cast<Op &&>(static_cast<awaitable *>(p)->op_)(
     co_composed_handler<Executors, Handler,
         Return, completion_signature_of_t<Op> >(
@@ -823,21 +823,21 @@ auto await_resume() {
     private:
 Op &&op_;
 co_composed_promise &promise_;
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
 xio::detail::source_location location_;
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 };
 
 state_.check_for_cancellation_on_transform();
     return awaitable {
     static_cast<Op &&>(op), *this
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
 , location
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 };
   }
 
@@ -897,13 +897,13 @@ associated_allocator_t<Handler, recycling_allocator<void> >;
 union block {
 
 
-#if defined(ASIO_MSVC) && !defined(__clang__)
+#if defined(XIO_MSVC) && !defined(__clang__)
 // Force 16-byte alignment as std::max_align_t is only 8-byte aligned on
 // MSVC, but the compiler may emit aligned SSE stores into the storage.
 alignas(16) std::max_align_t max_align;
-#else // defined(ASIO_MSVC) && !defined(__clang__)
+#else // defined(XIO_MSVC) && !defined(__clang__)
 std::max_align_t max_align;
-#endif // defined(ASIO_MSVC) && !defined(__clang__)
+#endif // defined(XIO_MSVC) && !defined(__clang__)
 alignas(allocator_type) char pad[alignof(allocator_type)];
   };
 
@@ -1017,7 +1017,6 @@ make_initiate_co_composed(Implementation &&implementation,
 
 } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
 template<template <typename, typename> class Associator,
     typename Executors, typename Handler, typename Return,
@@ -1045,21 +1044,19 @@ struct associator<Associator,
     }
 };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
 } // namespace xio
 
-#if !defined(GENERATING_DOCUMENTATION)
-# if defined(ASIO_HAS_STD_COROUTINE)
+# if defined(XIO_HAS_STD_COROUTINE)
 namespace std {
 
 
-# else // defined(ASIO_HAS_STD_COROUTINE)
+# else // defined(XIO_HAS_STD_COROUTINE)
 namespace std {
     namespace experimental {
 
 
-# endif // defined(ASIO_HAS_STD_COROUTINE)
+# endif // defined(XIO_HAS_STD_COROUTINE)
 
 template<typename C, typename Executors,
     typename Handler, typename Return, typename... Args>
@@ -1085,12 +1082,11 @@ struct coroutine_traits<void,
     xio::detail::co_composed_promise<Executors, Handler, Return>;
 };
 
-# if defined(ASIO_HAS_STD_COROUTINE)
+# if defined(XIO_HAS_STD_COROUTINE)
 } // namespace std
-# else // defined(ASIO_HAS_STD_COROUTINE)
+# else // defined(XIO_HAS_STD_COROUTINE)
 }} // namespace std::experimental
-# endif // defined(ASIO_HAS_STD_COROUTINE)
-#endif // !defined(GENERATING_DOCUMENTATION)
+# endif // defined(XIO_HAS_STD_COROUTINE)
 
 namespace xio {
 
@@ -1204,7 +1200,7 @@ namespace xio {
 
 
 
-    template<ASIO_COMPLETION_SIGNATURE... Signatures,
+    template<XIO_COMPLETION_SIGNATURE... Signatures,
         typename Implementation, typename... IoObjectsOrExecutors>
     inline auto co_composed(Implementation &&implementation,
                             IoObjectsOrExecutors &&... io_objects_or_executors) {
@@ -1224,6 +1220,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_CO_AWAIT) || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_CO_AWAIT)
 
-#endif // ASIO_CO_COMPOSED_HPP
+#endif // XIO_CO_COMPOSED_HPP

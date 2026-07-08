@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_WRITE_AT_HPP
-#define ASIO_IMPL_WRITE_AT_HPP
+#ifndef XIO_IMPL_WRITE_AT_HPP
+#define XIO_IMPL_WRITE_AT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -101,8 +101,8 @@ namespace xio {
         return bytes_transferred;
     }
 
-#if !defined(ASIO_NO_EXTENSIONS)
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_IOSTREAM)
 
     template<typename SyncRandomAccessWriteDevice, typename Allocator,
         typename CompletionCondition>
@@ -149,8 +149,8 @@ namespace xio {
         return bytes_transferred;
     }
 
-#endif // !defined(ASIO_NO_IOSTREAM)
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
     namespace detail {
         template<typename AsyncRandomAccessWriteDevice,
@@ -203,7 +203,7 @@ namespace xio {
                         max_size = this->check_for_completion(ec, buffers_.total_consumed());
                         for (;;) {
                             {
-                                ASIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_write_at"));
+                                XIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_write_at"));
                                 device_.async_write_some_at(
                                     offset_ + buffers_.total_consumed(), buffers_.prepare(max_size),
                                     static_cast<write_at_op &&>(*this));
@@ -285,7 +285,7 @@ namespace xio {
                             CompletionCondition &&completion_cond) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a WriteHandler.
-                ASIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
+                XIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
                 type_check;
 
                 non_const_lvalue<WriteHandler> handler2(handler);
@@ -299,8 +299,6 @@ namespace xio {
             AsyncRandomAccessWriteDevice &device_;
         };
     } // namespace detail
-
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename AsyncRandomAccessWriteDevice, typename ConstBufferSequence,
@@ -328,10 +326,8 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
-
-#if !defined(ASIO_NO_EXTENSIONS)
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_IOSTREAM)
 
     namespace detail {
         template<typename Allocator, typename WriteHandler>
@@ -394,7 +390,7 @@ namespace xio {
                             CompletionCondition &&completion_condition) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a WriteHandler.
-                ASIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
+                XIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
                 type_check;
 
                 non_const_lvalue<WriteHandler> handler2(handler);
@@ -409,7 +405,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename Executor, typename WriteHandler, typename DefaultCandidate>
@@ -430,14 +425,13 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
-#endif // !defined(ASIO_NO_IOSTREAM)
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_WRITE_AT_HPP
+#endif // XIO_IMPL_WRITE_AT_HPP

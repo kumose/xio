@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_NULL_EVENT_IPP
-#define ASIO_DETAIL_IMPL_NULL_EVENT_IPP
+#ifndef XIO_DETAIL_IMPL_NULL_EVENT_IPP
+#define XIO_DETAIL_IMPL_NULL_EVENT_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,9 +17,9 @@
 
 #include <xio/detail/config.h>
 #include <xio/detail/null_event.h>
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 # include <thread>
-#elif defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#elif defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 #include <xio/detail/socket_types.h>
 #else
 # include <unistd.h>
@@ -38,9 +38,9 @@ namespace xio {
 
     namespace detail {
         void null_event::do_wait() {
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
             std::this_thread::sleep_until((std::chrono::steady_clock::time_point::max)());
-#elif defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#elif defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             ::Sleep(INFINITE);
 #else
             ::pause();
@@ -48,9 +48,9 @@ namespace xio {
         }
 
         void null_event::do_wait_for_usec(long usec) {
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
             std::this_thread::sleep_for(std::chrono::microseconds(usec));
-#elif defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#elif defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             ::Sleep(usec / 1000);
 #elif defined(__hpux) && defined(__SELECT)
             timespec ts;
@@ -70,4 +70,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_IMPL_NULL_EVENT_IPP
+#endif // XIO_DETAIL_IMPL_NULL_EVENT_IPP

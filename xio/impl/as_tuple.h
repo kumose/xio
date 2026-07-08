@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_AS_TUPLE_HPP
-#define ASIO_IMPL_AS_TUPLE_HPP
+#ifndef XIO_IMPL_AS_TUPLE_HPP
+#define XIO_IMPL_AS_TUPLE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -82,7 +82,7 @@ namespace xio {
             typedef R type(std::tuple<std::decay_t<Args>...>) &&;
         };
 
-#if defined(ASIO_HAS_NOEXCEPT_FUNCTION_TYPE)
+#if defined(XIO_HAS_NOEXCEPT_FUNCTION_TYPE)
 
         template<typename R, typename... Args>
         struct as_tuple_signature<R(Args...) noexcept> {
@@ -99,10 +99,8 @@ namespace xio {
             typedef R type(std::tuple<std::decay_t<Args>...>) && noexcept;
         };
 
-#endif // defined(ASIO_HAS_NOEXCEPT_FUNCTION_TYPE)
+#endif // defined(XIO_HAS_NOEXCEPT_FUNCTION_TYPE)
     } // namespace detail
-
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<typename CompletionToken, typename... Signatures>
     struct async_result<as_tuple_t<CompletionToken>, Signatures...>
@@ -152,7 +150,7 @@ namespace xio {
         }
     };
 
-#if defined(ASIO_MSVC)
+#if defined(XIO_MSVC)
 
     // Workaround for MSVC internal compiler error.
 
@@ -204,7 +202,7 @@ namespace xio {
         }
     };
 
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 
     template<template <typename, typename> class Associator,
         typename Handler, typename DefaultCandidate>
@@ -264,11 +262,10 @@ namespace xio {
   }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_AS_TUPLE_HPP
+#endif // XIO_IMPL_AS_TUPLE_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXECUTION_OCCUPANCY_HPP
-#define ASIO_EXECUTION_OCCUPANCY_HPP
+#ifndef XIO_EXECUTION_OCCUPANCY_HPP
+#define XIO_EXECUTION_OCCUPANCY_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -25,37 +25,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
-#if defined(GENERATING_DOCUMENTATION)
-
-    namespace execution {
-        /// A property that gives an estimate of the number of execution agents that
-/// should occupy the associated execution context.
-        struct occupancy_t {
-            /// The occupancy_t property applies to executors.
-            template<typename T>
-            static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-            /// The occupancy_t property cannot be required.
-            static constexpr bool is_requirable = false;
-
-            /// The occupancy_t property cannot be preferred.
-            static constexpr bool is_preferable = false;
-
-            /// The type returned by queries against an @c any_executor.
-            typedef std::size_t polymorphic_query_result_type;
-        };
-
-        /// A special value used for accessing the occupancy_t property.
-        constexpr occupancy_t occupancy;
-    } // namespace execution
-
-#else // defined(GENERATING_DOCUMENTATION)
-
-
-
-
     namespace execution {
         namespace detail {
             template<int I = 0>
@@ -77,11 +46,11 @@ namespace xio {
                         static constexpr auto query(P &&p)
                             noexcept(
                                 noexcept(
-                                    std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                    std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
                                 )
                             )
                             -> decltype(
-                                std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
                             ) {
                             return T::query(static_cast<P &&>(p));
                         }
@@ -103,29 +72,20 @@ namespace xio {
 
                 template<typename E, typename T = decltype(occupancy_t::static_query<E>())>
                 static constexpr const T static_query_v = occupancy_t::static_query<E>();
-
             };
 
 
             template<int I>
             template<typename E, typename T>
             const T occupancy_t<I>::static_query_v;
-
         } // namespace detail
 
         typedef detail::occupancy_t<> occupancy_t;
 
-inline constexpr occupancy_t occupancy;
+        inline constexpr occupancy_t occupancy;
     } // namespace execution
-
-
-
-
-#endif // defined(GENERATING_DOCUMENTATION)
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXECUTION_OCCUPANCY_HPP
+#endif // XIO_EXECUTION_OCCUPANCY_HPP

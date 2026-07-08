@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SOCKET_BASE_HPP
-#define ASIO_SOCKET_BASE_HPP
+#ifndef XIO_SOCKET_BASE_HPP
+#define XIO_SOCKET_BASE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -32,50 +32,28 @@ namespace xio {
     public:
         /// Different ways a socket may be shutdown.
         enum shutdown_type {
-#if defined(GENERATING_DOCUMENTATION)
-            /// Shutdown the receive side of the socket.
-            shutdown_receive= implementation_defined,
 
-            /// Shutdown the send side of the socket.
-            shutdown_send= implementation_defined,
+            shutdown_receive = XIO_OS_DEF(SHUT_RD),
+            shutdown_send = XIO_OS_DEF(SHUT_WR),
+            shutdown_both = XIO_OS_DEF(SHUT_RDWR)
 
-            /// Shutdown both send and receive on the socket.
-            shutdown_both= implementation_defined
-#else
-            shutdown_receive = ASIO_OS_DEF(SHUT_RD),
-            shutdown_send = ASIO_OS_DEF(SHUT_WR),
-            shutdown_both = ASIO_OS_DEF(SHUT_RDWR)
-#endif
         };
 
         /// Bitmask type for flags that can be passed to send and receive operations.
         typedef int message_flags;
 
-#if defined(GENERATING_DOCUMENTATION)
-        /// Peek at incoming data without removing it from the input queue.
-        static const int message_peek = implementation_defined;
 
-        /// Process out-of-band data.
-        static const int message_out_of_band = implementation_defined;
+        XIO_STATIC_CONSTANT(int,
+                             message_peek = XIO_OS_DEF(MSG_PEEK));
 
-        /// Specify that the data should not be subject to routing.
-        static const int message_do_not_route = implementation_defined;
+        XIO_STATIC_CONSTANT(int,
+                             message_out_of_band = XIO_OS_DEF(MSG_OOB));
 
-        /// Specifies that the data marks the end of a record.
-        static const int message_end_of_record = implementation_defined;
-#else
-        ASIO_STATIC_CONSTANT(int,
-                             message_peek = ASIO_OS_DEF(MSG_PEEK));
+        XIO_STATIC_CONSTANT(int,
+                             message_do_not_route = XIO_OS_DEF(MSG_DONTROUTE));
 
-        ASIO_STATIC_CONSTANT(int,
-                             message_out_of_band = ASIO_OS_DEF(MSG_OOB));
-
-        ASIO_STATIC_CONSTANT(int,
-                             message_do_not_route = ASIO_OS_DEF(MSG_DONTROUTE));
-
-        ASIO_STATIC_CONSTANT(int,
-                             message_end_of_record = ASIO_OS_DEF(MSG_EOR));
-#endif
+        XIO_STATIC_CONSTANT(int,
+                             message_end_of_record = XIO_OS_DEF(MSG_EOR));
 
         /// Wait types.
         /**
@@ -118,13 +96,10 @@ namespace xio {
    * @par Concepts:
    * Socket_Option, Boolean_Socket_Option.
    */
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined broadcast;
-#else
+
         typedef xio::detail::socket_option::boolean<
-            ASIO_OS_DEF(SOL_SOCKET), ASIO_OS_DEF(SO_BROADCAST)>
+            XIO_OS_DEF(SOL_SOCKET), XIO_OS_DEF(SO_BROADCAST)>
         broadcast;
-#endif
 
         /// Socket option to enable socket-level debugging.
         /**
@@ -152,12 +127,9 @@ namespace xio {
    * @par Concepts:
    * Socket_Option, Boolean_Socket_Option.
    */
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined debug;
-#else
+
         typedef xio::detail::socket_option::boolean<
-            ASIO_OS_DEF(SOL_SOCKET), ASIO_OS_DEF(SO_DEBUG)> debug;
-#endif
+            XIO_OS_DEF(SOL_SOCKET), XIO_OS_DEF(SO_DEBUG)> debug;
 
         /// Socket option to prevent routing, use local interfaces only.
         /**
@@ -185,13 +157,10 @@ namespace xio {
    * @par Concepts:
    * Socket_Option, Boolean_Socket_Option.
    */
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined do_not_route;
-#else
+
         typedef xio::detail::socket_option::boolean<
-            ASIO_OS_DEF(SOL_SOCKET), ASIO_OS_DEF(SO_DONTROUTE)>
+            XIO_OS_DEF(SOL_SOCKET), XIO_OS_DEF(SO_DONTROUTE)>
         do_not_route;
-#endif
 
         /// Socket option to send keep-alives.
         /**
@@ -219,12 +188,9 @@ namespace xio {
    * @par Concepts:
    * Socket_Option, Boolean_Socket_Option.
    */
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined keep_alive;
-#else
+
         typedef xio::detail::socket_option::boolean<
-            ASIO_OS_DEF(SOL_SOCKET), ASIO_OS_DEF(SO_KEEPALIVE)> keep_alive;
-#endif
+            XIO_OS_DEF(SOL_SOCKET), XIO_OS_DEF(SO_KEEPALIVE)> keep_alive;
 
         /// Socket option for the send buffer size of a socket.
         /**
@@ -252,13 +218,10 @@ namespace xio {
    * @par Concepts:
    * Socket_Option, Integer_Socket_Option.
    */
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined send_buffer_size;
-#else
+
         typedef xio::detail::socket_option::integer<
-            ASIO_OS_DEF(SOL_SOCKET), ASIO_OS_DEF(SO_SNDBUF)>
+            XIO_OS_DEF(SOL_SOCKET), XIO_OS_DEF(SO_SNDBUF)>
         send_buffer_size;
-#endif
 
         /// Socket option for the send low watermark.
         /**
@@ -286,14 +249,10 @@ namespace xio {
    * @par Concepts:
    * Socket_Option, Integer_Socket_Option.
    */
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined send_low_watermark;
-#else
-        typedef xio::detail::socket_option::integer<
-            ASIO_OS_DEF(SOL_SOCKET), ASIO_OS_DEF(SO_SNDLOWAT)>
-        send_low_watermark;
-#endif
 
+        typedef xio::detail::socket_option::integer<
+            XIO_OS_DEF(SOL_SOCKET), XIO_OS_DEF(SO_SNDLOWAT)>
+        send_low_watermark;
         /// Socket option for the receive buffer size of a socket.
         /**
    * Implements the SOL_SOCKET/SO_RCVBUF socket option.
@@ -320,13 +279,10 @@ namespace xio {
    * @par Concepts:
    * Socket_Option, Integer_Socket_Option.
    */
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined receive_buffer_size;
-#else
+
         typedef xio::detail::socket_option::integer<
-            ASIO_OS_DEF(SOL_SOCKET), ASIO_OS_DEF(SO_RCVBUF)>
+            XIO_OS_DEF(SOL_SOCKET), XIO_OS_DEF(SO_RCVBUF)>
         receive_buffer_size;
-#endif
 
         /// Socket option for the receive low watermark.
         /**
@@ -354,13 +310,10 @@ namespace xio {
    * @par Concepts:
    * Socket_Option, Integer_Socket_Option.
    */
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined receive_low_watermark;
-#else
+
         typedef xio::detail::socket_option::integer<
-            ASIO_OS_DEF(SOL_SOCKET), ASIO_OS_DEF(SO_RCVLOWAT)>
+            XIO_OS_DEF(SOL_SOCKET), XIO_OS_DEF(SO_RCVLOWAT)>
         receive_low_watermark;
-#endif
 
         /// Socket option to allow the socket to be bound to an address that is
   /// already in use.
@@ -389,13 +342,10 @@ namespace xio {
    * @par Concepts:
    * Socket_Option, Boolean_Socket_Option.
    */
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined reuse_address;
-#else
+
         typedef xio::detail::socket_option::boolean<
-            ASIO_OS_DEF(SOL_SOCKET), ASIO_OS_DEF(SO_REUSEADDR)>
+            XIO_OS_DEF(SOL_SOCKET), XIO_OS_DEF(SO_REUSEADDR)>
         reuse_address;
-#endif
 
         /// Socket option to specify whether the socket lingers on close if unsent
   /// data is present.
@@ -425,13 +375,10 @@ namespace xio {
    * @par Concepts:
    * Socket_Option, Linger_Socket_Option.
    */
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined linger;
-#else
+
         typedef xio::detail::socket_option::linger<
-            ASIO_OS_DEF(SOL_SOCKET), ASIO_OS_DEF(SO_LINGER)>
+            XIO_OS_DEF(SOL_SOCKET), XIO_OS_DEF(SO_LINGER)>
         linger;
-#endif
 
         /// Socket option for putting received out-of-band data inline.
         /**
@@ -459,13 +406,10 @@ namespace xio {
    * @par Concepts:
    * Socket_Option, Boolean_Socket_Option.
    */
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined out_of_band_inline;
-#else
+
         typedef xio::detail::socket_option::boolean<
-            ASIO_OS_DEF(SOL_SOCKET), ASIO_OS_DEF(SO_OOBINLINE)>
+            XIO_OS_DEF(SOL_SOCKET), XIO_OS_DEF(SO_OOBINLINE)>
         out_of_band_inline;
-#endif
 
         /// Socket option to report aborted connections on accept.
         /**
@@ -495,14 +439,10 @@ namespace xio {
    * @par Concepts:
    * Socket_Option, Boolean_Socket_Option.
    */
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined enable_connection_aborted;
-#else
         typedef xio::detail::socket_option::boolean<
             xio::detail::custom_socket_option_level,
             xio::detail::enable_connection_aborted_option>
         enable_connection_aborted;
-#endif
 
         /// IO control command to get the amount of data that can be read without
   /// blocking.
@@ -521,18 +461,11 @@ namespace xio {
    * @par Concepts:
    * IO_Control_Command, Size_IO_Control_Command.
    */
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined bytes_readable;
-#else
         typedef xio::detail::io_control::bytes_readable bytes_readable;
-#endif
 
         /// The maximum length of the queue of pending incoming connections.
-#if defined(GENERATING_DOCUMENTATION)
-        static const int max_listen_connections = implementation_defined;
-#else
-        ASIO_STATIC_CONSTANT(int, max_listen_connections = ASIO_OS_DEF(SOMAXCONN));
-#endif
+
+        XIO_STATIC_CONSTANT(int, max_listen_connections = XIO_OS_DEF(SOMAXCONN));
 
     protected:
         /// Protected destructor to prevent deletion through this type.
@@ -545,4 +478,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_SOCKET_BASE_HPP
+#endif // XIO_SOCKET_BASE_HPP

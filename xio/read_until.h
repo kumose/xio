@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_READ_UNTIL_HPP
-#define ASIO_READ_UNTIL_HPP
+#ifndef XIO_READ_UNTIL_HPP
+#define XIO_READ_UNTIL_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -25,9 +25,9 @@
 #include <xio/detail/type_traits.h>
 #include <xio/error.h>
 
-#if !defined(ASIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_EXTENSIONS)
 #include <xio/basic_streambuf_fwd.h>
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
 #include <xio/detail/push_options.h>
 
@@ -43,7 +43,7 @@ namespace xio {
             enum { value = (sizeof((has_result_type_helper)((T *) (0))) == 1) };
         };
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
         template<typename>
         class initiate_async_read_until_delim_v1;
         template<typename>
@@ -51,7 +51,7 @@ namespace xio {
 
         template<typename>
         class initiate_async_read_until_match_v1;
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
         template<typename>
         class initiate_async_read_until_delim_v2;
         template<typename>
@@ -65,15 +65,11 @@ namespace xio {
 /// function with read_until and async_read_until.
     template<typename T>
     struct is_match_condition {
-#if defined(GENERATING_DOCUMENTATION)
-        /// The value member is true if the type may be used as a match condition.
-        static const bool value;
-#else
+
         enum {
             value = std::is_function<std::remove_pointer_t<T> >::value
                     || detail::has_result_type<T>::value
         };
-#endif
     };
 
     /**
@@ -86,7 +82,7 @@ namespace xio {
  */
     /*@{*/
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     /// Read data into a dynamic buffer sequence until it contains a specified
 /// delimiter.
@@ -304,7 +300,7 @@ namespace xio {
                                !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                            > = 0);
 
-#if !defined(ASIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_EXTENSIONS)
 
     /// Read data into a dynamic buffer sequence until a function object indicates a
 /// match.
@@ -491,7 +487,7 @@ namespace xio {
                                !is_dynamic_buffer_v2<std::decay_t<DynamicBuffer_v1> >::value
                            > = 0);
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 
     /// Read data into a streambuf until it contains a specified delimiter.
     /**
@@ -831,9 +827,9 @@ namespace xio {
                            MatchCondition match_condition, xio::error_code &ec,
                            constraint_t<is_match_condition<MatchCondition>::value> = 0);
 
-#endif // !defined(ASIO_NO_IOSTREAM)
-#endif // !defined(ASIO_NO_EXTENSIONS)
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     /// Read data into a dynamic buffer sequence until it contains a specified
 /// delimiter.
@@ -1034,7 +1030,7 @@ namespace xio {
                                is_dynamic_buffer_v2<DynamicBuffer_v2>::value
                            > = 0);
 
-#if !defined(ASIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_EXTENSIONS)
 
     /// Read data into a dynamic buffer sequence until a function object indicates a
 /// match.
@@ -1213,7 +1209,7 @@ namespace xio {
                                is_dynamic_buffer_v2<DynamicBuffer_v2>::value
                            > = 0);
 
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
     /*@}*/
     /**
@@ -1226,7 +1222,7 @@ namespace xio {
  */
     /*@{*/
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     /// Start an asynchronous operation to read data into a dynamic buffer sequence
 /// until it contains a specified delimiter.
@@ -1326,7 +1322,7 @@ namespace xio {
  * @c async_read_some operation.
  */
     template<typename AsyncReadStream, typename DynamicBuffer_v1,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s,
@@ -1448,7 +1444,7 @@ namespace xio {
  * @c async_read_some operation.
  */
     template<typename AsyncReadStream, typename DynamicBuffer_v1,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s,
@@ -1476,7 +1472,7 @@ namespace xio {
             static_cast<std::string>(delim));
     }
 
-#if !defined(ASIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_EXTENSIONS)
 
     /// Start an asynchronous operation to read data into a dynamic buffer sequence
 /// until a function object indicates a match.
@@ -1624,7 +1620,7 @@ namespace xio {
  */
     template<typename AsyncReadStream,
         typename DynamicBuffer_v1, typename MatchCondition,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s,
@@ -1653,7 +1649,7 @@ namespace xio {
             match_condition);
     }
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 
     /// Start an asynchronous operation to read data into a streambuf until it
 /// contains a specified delimiter.
@@ -1751,7 +1747,7 @@ namespace xio {
  * @c async_read_some operation.
  */
     template<typename AsyncReadStream, typename Allocator,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s,
@@ -1865,7 +1861,7 @@ namespace xio {
  * @c async_read_some operation.
  */
     template<typename AsyncReadStream, typename Allocator,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s,
@@ -2029,7 +2025,7 @@ namespace xio {
  * @c async_read_some operation.
  */
     template<typename AsyncReadStream, typename Allocator, typename MatchCondition,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s,
@@ -2048,9 +2044,9 @@ namespace xio {
             token, basic_streambuf_ref<Allocator>(b), match_condition);
     }
 
-#endif // !defined(ASIO_NO_IOSTREAM)
-#endif // !defined(ASIO_NO_EXTENSIONS)
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     /// Start an asynchronous operation to read data into a dynamic buffer sequence
 /// until it contains a specified delimiter.
@@ -2151,7 +2147,7 @@ namespace xio {
  * @c async_read_some operation.
  */
     template<typename AsyncReadStream, typename DynamicBuffer_v2,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s,
@@ -2270,7 +2266,7 @@ namespace xio {
  * @c async_read_some operation.
  */
     template<typename AsyncReadStream, typename DynamicBuffer_v2,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s, DynamicBuffer_v2 buffers,
@@ -2294,7 +2290,7 @@ namespace xio {
             static_cast<std::string>(delim));
     }
 
-#if !defined(ASIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_EXTENSIONS)
     /// Start an asynchronous operation to read data into a dynamic buffer sequence
 /// until a function object indicates a match.
     /**
@@ -2441,7 +2437,7 @@ namespace xio {
  */
     template<typename AsyncReadStream,
         typename DynamicBuffer_v2, typename MatchCondition,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncReadStream::executor_type> >
     inline auto async_read_until(AsyncReadStream &s,
@@ -2466,7 +2462,7 @@ namespace xio {
             match_condition);
     }
 
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
     /*@}*/
 } // namespace xio
@@ -2475,4 +2471,4 @@ namespace xio {
 
 #include <xio/impl/read_until.h>
 
-#endif // ASIO_READ_UNTIL_HPP
+#endif // XIO_READ_UNTIL_HPP

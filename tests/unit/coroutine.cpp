@@ -34,11 +34,11 @@ void yield_break_coro(xio::coroutine& coro)
 void yield_break_test()
 {
   xio::coroutine coro;
-  ASIO_CHECK(!coro.is_complete());
+  XIO_CHECK(!coro.is_complete());
   yield_break_coro(coro);
-  ASIO_CHECK(!coro.is_complete());
+  XIO_CHECK(!coro.is_complete());
   yield_break_coro(coro);
-  ASIO_CHECK(coro.is_complete());
+  XIO_CHECK(coro.is_complete());
 }
 
 //------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ void return_test()
 {
   xio::coroutine coro;
   return_coro(coro);
-  ASIO_CHECK(coro.is_complete());
+  XIO_CHECK(coro.is_complete());
 }
 
 //------------------------------------------------------------------------------
@@ -76,7 +76,7 @@ void exception_test()
 {
   xio::coroutine coro;
   try { exception_coro(coro); } catch (int) {}
-  ASIO_CHECK(coro.is_complete());
+  XIO_CHECK(coro.is_complete());
 }
 
 //------------------------------------------------------------------------------
@@ -94,16 +94,16 @@ void fall_off_end_test()
 {
   xio::coroutine coro;
   fall_off_end_coro(coro);
-  ASIO_CHECK(coro.is_complete());
+  XIO_CHECK(coro.is_complete());
 }
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "coroutine",
-  ASIO_TEST_CASE(yield_break_test)
-  ASIO_TEST_CASE(return_test)
-  ASIO_TEST_CASE(exception_test)
-  ASIO_TEST_CASE(fall_off_end_test)
+  XIO_TEST_CASE(yield_break_test)
+  XIO_TEST_CASE(return_test)
+  XIO_TEST_CASE(exception_test)
+  XIO_TEST_CASE(fall_off_end_test)
 )

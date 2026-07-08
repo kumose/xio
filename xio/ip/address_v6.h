@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_ADDRESS_V6_HPP
-#define ASIO_IP_ADDRESS_V6_HPP
+#ifndef XIO_IP_ADDRESS_V6_HPP
+#define XIO_IP_ADDRESS_V6_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -26,9 +26,9 @@
 #include <xio/error_code.h>
 #include <xio/ip/address_v4.h>
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 # include <iosfwd>
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
 
 #include <xio/detail/push_options.h>
 
@@ -58,11 +58,7 @@ namespace xio {
    * @note This type is defined in terms of the C++0x template @c std::array
    * when it is available. Otherwise, it uses @c boost:array.
    */
-#if defined(GENERATING_DOCUMENTATION)
-            typedef array<unsigned char, 16> bytes_type;
-#else
             typedef std::array<unsigned char, 16> bytes_type;
-#endif
 
             /// Default constructor.
             /**
@@ -70,7 +66,7 @@ namespace xio {
    * @li <tt>to_bytes()</tt> yields <tt>{0, 0, ..., 0}</tt>; and
    * @li <tt>scope_id() == 0</tt>.
    */
-            ASIO_DECL address_v6() noexcept;
+            XIO_DECL address_v6() noexcept;
 
             /// Construct an address from raw bytes and scope ID.
             /**
@@ -82,21 +78,21 @@ namespace xio {
    * <tt>0 - 0xFF</tt>. Note that no range checking is required for platforms
    * where <tt>std::numeric_limits<unsigned char>::max()</tt> is <tt>0xFF</tt>.
    */
-            ASIO_DECL explicit address_v6(const bytes_type &bytes,
+            XIO_DECL explicit address_v6(const bytes_type &bytes,
                                           scope_id_type scope_id = 0);
 
             /// Copy constructor.
-            ASIO_DECL address_v6(const address_v6 &other) noexcept;
+            XIO_DECL address_v6(const address_v6 &other) noexcept;
 
             /// Move constructor.
-            ASIO_DECL address_v6(address_v6 &&other) noexcept;
+            XIO_DECL address_v6(address_v6 &&other) noexcept;
 
             /// Assign from another address.
-  ASIO_DECL address_v6 &operator=(
+  XIO_DECL address_v6 &operator=(
                 const address_v6 &other) noexcept;
 
             /// Move-assign from another address.
-  ASIO_DECL address_v6 &operator=(address_v6 &&other) noexcept;
+  XIO_DECL address_v6 &operator=(address_v6 &&other) noexcept;
 
             /// The scope ID of the address.
             /**
@@ -117,54 +113,54 @@ namespace xio {
             }
 
             /// Get the address in bytes, in network byte order.
-  ASIO_DECL bytes_type to_bytes() const noexcept;
+  XIO_DECL bytes_type to_bytes() const noexcept;
 
             /// Get the address as a string.
-            ASIO_DECL std::string to_string() const;
+            XIO_DECL std::string to_string() const;
 
             /// Determine whether the address is a loopback address.
             /**
    * This function tests whether the address is the loopback address
    * <tt>::1</tt>.
    */
-  ASIO_DECL bool is_loopback() const noexcept;
+  XIO_DECL bool is_loopback() const noexcept;
 
             /// Determine whether the address is unspecified.
             /**
    * This function tests whether the address is the loopback address
    * <tt>::</tt>.
    */
-  ASIO_DECL bool is_unspecified() const noexcept;
+  XIO_DECL bool is_unspecified() const noexcept;
 
             /// Determine whether the address is link local.
-  ASIO_DECL bool is_link_local() const noexcept;
+  XIO_DECL bool is_link_local() const noexcept;
 
             /// Determine whether the address is site local.
-  ASIO_DECL bool is_site_local() const noexcept;
+  XIO_DECL bool is_site_local() const noexcept;
 
             /// Determine whether the address is a mapped IPv4 address.
-  ASIO_DECL bool is_v4_mapped() const noexcept;
+  XIO_DECL bool is_v4_mapped() const noexcept;
 
             /// Determine whether the address is a multicast address.
-  ASIO_DECL bool is_multicast() const noexcept;
+  XIO_DECL bool is_multicast() const noexcept;
 
             /// Determine whether the address is a global multicast address.
-  ASIO_DECL bool is_multicast_global() const noexcept;
+  XIO_DECL bool is_multicast_global() const noexcept;
 
             /// Determine whether the address is a link-local multicast address.
-  ASIO_DECL bool is_multicast_link_local() const noexcept;
+  XIO_DECL bool is_multicast_link_local() const noexcept;
 
             /// Determine whether the address is a node-local multicast address.
-  ASIO_DECL bool is_multicast_node_local() const noexcept;
+  XIO_DECL bool is_multicast_node_local() const noexcept;
 
             /// Determine whether the address is a org-local multicast address.
-  ASIO_DECL bool is_multicast_org_local() const noexcept;
+  XIO_DECL bool is_multicast_org_local() const noexcept;
 
             /// Determine whether the address is a site-local multicast address.
-  ASIO_DECL bool is_multicast_site_local() const noexcept;
+  XIO_DECL bool is_multicast_site_local() const noexcept;
 
             /// Compare two addresses for equality.
-  ASIO_DECL friend bool operator==(const address_v6 &a1,
+  XIO_DECL friend bool operator==(const address_v6 &a1,
                                    const address_v6 &a2) noexcept;
 
             /// Compare two addresses for inequality.
@@ -174,7 +170,7 @@ namespace xio {
             }
 
             /// Compare addresses for ordering.
-  ASIO_DECL friend bool operator<(const address_v6 &a1,
+  XIO_DECL friend bool operator<(const address_v6 &a1,
                                   const address_v6 &a2) noexcept;
 
             /// Compare addresses for ordering.
@@ -211,7 +207,7 @@ namespace xio {
    * This function returns an address that represents the well-known loopback
    * address <tt>::1</tt>.
    */
-  ASIO_DECL static address_v6 loopback() noexcept;
+  XIO_DECL static address_v6 loopback() noexcept;
 
         private:
             friend class basic_address_iterator<address_v6>;
@@ -236,26 +232,26 @@ namespace xio {
         /**
  * @relates address_v6
  */
-ASIO_DECL address_v6 make_address_v6(const char *str);
+XIO_DECL address_v6 make_address_v6(const char *str);
 
         /// Create an IPv6 address from an IP address string.
         /**
  * @relates address_v6
  */
-ASIO_DECL address_v6 make_address_v6(const char *str,
+XIO_DECL address_v6 make_address_v6(const char *str,
                                      xio::error_code &ec) noexcept;
 
         /// Createan IPv6 address from an IP address string.
         /**
  * @relates address_v6
  */
-ASIO_DECL address_v6 make_address_v6(const std::string &str);
+XIO_DECL address_v6 make_address_v6(const std::string &str);
 
         /// Create an IPv6 address from an IP address string.
         /**
  * @relates address_v6
  */
-ASIO_DECL address_v6 make_address_v6(const std::string &str,
+XIO_DECL address_v6 make_address_v6(const std::string &str,
                                      xio::error_code &ec) noexcept;
 
 
@@ -264,13 +260,13 @@ ASIO_DECL address_v6 make_address_v6(const std::string &str,
         /**
  * @relates address_v6
  */
-ASIO_DECL address_v6 make_address_v6(std::string_view str);
+XIO_DECL address_v6 make_address_v6(std::string_view str);
 
         /// Create an IPv6 address from an IP address string.
         /**
  * @relates address_v6
  */
-ASIO_DECL address_v6 make_address_v6(std::string_view str,
+XIO_DECL address_v6 make_address_v6(std::string_view str,
                                      xio::error_code &ec) noexcept;
 
 
@@ -282,17 +278,17 @@ ASIO_DECL address_v6 make_address_v6(std::string_view str,
         /**
  * @relates address_v4
  */
-ASIO_DECL address_v4 make_address_v4(
+XIO_DECL address_v4 make_address_v4(
             v4_mapped_t, const address_v6 &v6_addr);
 
         /// Create an IPv4-mapped IPv6 address from an IPv4 address.
         /**
  * @relates address_v6
  */
-ASIO_DECL address_v6 make_address_v6(
+XIO_DECL address_v6 make_address_v6(
             v4_mapped_t, const address_v4 &v4_addr);
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 
         /// Output an address as a string.
         /**
@@ -310,7 +306,7 @@ ASIO_DECL address_v6 make_address_v6(
         std::basic_ostream<Elem, Traits> &operator<<(
             std::basic_ostream<Elem, Traits> &os, const address_v6 &addr);
 
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
     } // namespace ip
 
 } // namespace xio
@@ -346,4 +342,4 @@ namespace std {
 #include <xio/ip/impl/address_v6.h>
 
 
-#endif // ASIO_IP_ADDRESS_V6_HPP
+#endif // XIO_IP_ADDRESS_V6_HPP

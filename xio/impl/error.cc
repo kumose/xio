@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_ERROR_IPP
-#define ASIO_IMPL_ERROR_IPP
+#ifndef XIO_IMPL_ERROR_IPP
+#define XIO_IMPL_ERROR_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -104,8 +104,8 @@ namespace xio {
         } // namespace detail
         // boostify: non-boost code ends here
 
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS)
 
         namespace detail {
             class netdb_category : public xio::error_category {
@@ -155,8 +155,8 @@ namespace xio {
             return instance;
         }
 
-#endif // !defined(ASIO_WINDOWS)
-        //   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // !defined(XIO_WINDOWS)
+        //   && !defined(XIO_CYGWIN_W32_SOCKETS)
 
         namespace detail {
             class misc_category : public xio::error_category {
@@ -189,4 +189,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_ERROR_IPP
+#endif // XIO_IMPL_ERROR_IPP

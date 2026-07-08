@@ -50,18 +50,18 @@ void redirect_disposition_test()
         xio::bind_executor(io2.get_executor(),
           redirect_disposition_handler(&count)), ec));
 
-  ASIO_CHECK(ec == xio::error::would_block);
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(ec == xio::error::would_block);
+  XIO_CHECK(count == 0);
 
   io1.run();
 
-  ASIO_CHECK(ec == xio::error::would_block);
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(ec == xio::error::would_block);
+  XIO_CHECK(count == 0);
 
   io2.run();
 
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(!ec);
+  XIO_CHECK(count == 1);
 
   ec = xio::error::would_block;
   timer1.async_wait(
@@ -69,20 +69,20 @@ void redirect_disposition_test()
         xio::bind_executor(io2.get_executor(),
           xio::deferred), ec))(redirect_disposition_handler(&count));
 
-  ASIO_CHECK(ec == xio::error::would_block);
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ec == xio::error::would_block);
+  XIO_CHECK(count == 1);
 
   io1.restart();
   io1.run();
 
-  ASIO_CHECK(ec == xio::error::would_block);
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ec == xio::error::would_block);
+  XIO_CHECK(count == 1);
 
   io2.restart();
   io2.run();
 
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(!ec);
+  XIO_CHECK(count == 2);
 
 
   ec = xio::error::would_block;
@@ -91,22 +91,22 @@ void redirect_disposition_test()
         xio::bind_executor(io2.get_executor(),
           xio::use_future), ec));
 
-  ASIO_CHECK(ec == xio::error::would_block);
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+  XIO_CHECK(ec == xio::error::would_block);
+  XIO_CHECK(f.wait_for(std::chrono::seconds(0))
       == std::future_status::timeout);
 
   io1.restart();
   io1.run();
 
-  ASIO_CHECK(ec == xio::error::would_block);
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+  XIO_CHECK(ec == xio::error::would_block);
+  XIO_CHECK(f.wait_for(std::chrono::seconds(0))
       == std::future_status::timeout);
 
   io2.restart();
   io2.run();
 
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+  XIO_CHECK(!ec);
+  XIO_CHECK(f.wait_for(std::chrono::seconds(0))
       == std::future_status::ready);
 
 }
@@ -124,79 +124,79 @@ void partial_redirect_disposition_test()
       xio::bind_executor(io2.get_executor(),
         redirect_disposition_handler(&count)));
 
-  ASIO_CHECK(ec == xio::error::would_block);
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(ec == xio::error::would_block);
+  XIO_CHECK(count == 0);
 
   io1.run();
 
-  ASIO_CHECK(ec == xio::error::would_block);
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(ec == xio::error::would_block);
+  XIO_CHECK(count == 0);
 
   io2.run();
 
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(!ec);
+  XIO_CHECK(count == 1);
 
   ec = xio::error::would_block;
   timer1.async_wait(xio::redirect_disposition(ec))(
       xio::bind_executor(io2.get_executor(),
         xio::deferred))(redirect_disposition_handler(&count));
 
-  ASIO_CHECK(ec == xio::error::would_block);
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ec == xio::error::would_block);
+  XIO_CHECK(count == 1);
 
   io1.restart();
   io1.run();
 
-  ASIO_CHECK(ec == xio::error::would_block);
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ec == xio::error::would_block);
+  XIO_CHECK(count == 1);
 
   io2.restart();
   io2.run();
 
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(!ec);
+  XIO_CHECK(count == 2);
 
   ec = xio::error::would_block;
   timer1.async_wait()(xio::redirect_disposition(ec))(
       xio::bind_executor(io2.get_executor(),
         xio::deferred))(redirect_disposition_handler(&count));
 
-  ASIO_CHECK(ec == xio::error::would_block);
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(ec == xio::error::would_block);
+  XIO_CHECK(count == 2);
 
   io1.restart();
   io1.run();
 
-  ASIO_CHECK(ec == xio::error::would_block);
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(ec == xio::error::would_block);
+  XIO_CHECK(count == 2);
 
   io2.restart();
   io2.run();
 
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(!ec);
+  XIO_CHECK(count == 3);
 
   ec = xio::error::would_block;
   std::future<void> f = timer1.async_wait(xio::redirect_disposition(ec))(
       xio::bind_executor(io2.get_executor(), xio::use_future));
 
-  ASIO_CHECK(ec == xio::error::would_block);
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+  XIO_CHECK(ec == xio::error::would_block);
+  XIO_CHECK(f.wait_for(std::chrono::seconds(0))
       == std::future_status::timeout);
 
   io1.restart();
   io1.run();
 
-  ASIO_CHECK(ec == xio::error::would_block);
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+  XIO_CHECK(ec == xio::error::would_block);
+  XIO_CHECK(f.wait_for(std::chrono::seconds(0))
       == std::future_status::timeout);
 
   io2.restart();
   io2.run();
 
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+  XIO_CHECK(!ec);
+  XIO_CHECK(f.wait_for(std::chrono::seconds(0))
       == std::future_status::ready);
 }
 
@@ -215,29 +215,29 @@ void redirect_disposition_to_exception_ptr_test()
           redirect_disposition_handler(&count)), ex));
   timer1.cancel();
 
-  ASIO_CHECK(ex == nullptr);
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(ex == nullptr);
+  XIO_CHECK(count == 0);
 
   io1.run();
 
-  ASIO_CHECK(ex == nullptr);
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(ex == nullptr);
+  XIO_CHECK(count == 0);
 
   io2.run();
 
-  ASIO_CHECK(ex != nullptr);
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ex != nullptr);
+  XIO_CHECK(count == 1);
 
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
   try
   {
     std::rethrow_exception(ex);
   }
   catch (const std::system_error& e)
   {
-    ASIO_CHECK(e.code() == xio::error::operation_aborted);
+    XIO_CHECK(e.code() == xio::error::operation_aborted);
   }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
 
   ex = nullptr;
   timer1.async_wait(
@@ -246,31 +246,31 @@ void redirect_disposition_to_exception_ptr_test()
           xio::deferred), ex))(redirect_disposition_handler(&count));
   timer1.cancel();
 
-  ASIO_CHECK(ex == nullptr);
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ex == nullptr);
+  XIO_CHECK(count == 1);
 
   io1.restart();
   io1.run();
 
-  ASIO_CHECK(ex == nullptr);
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ex == nullptr);
+  XIO_CHECK(count == 1);
 
   io2.restart();
   io2.run();
 
-  ASIO_CHECK(ex != nullptr);
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(ex != nullptr);
+  XIO_CHECK(count == 2);
 
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
   try
   {
     std::rethrow_exception(ex);
   }
   catch (const std::system_error& e)
   {
-    ASIO_CHECK(e.code() == xio::error::operation_aborted);
+    XIO_CHECK(e.code() == xio::error::operation_aborted);
   }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
 
   ex = nullptr;
   std::future<void> f = timer1.async_wait(
@@ -279,22 +279,22 @@ void redirect_disposition_to_exception_ptr_test()
           xio::use_future), ex));
   timer1.cancel();
 
-  ASIO_CHECK(ex == nullptr);
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+  XIO_CHECK(ex == nullptr);
+  XIO_CHECK(f.wait_for(std::chrono::seconds(0))
       == std::future_status::timeout);
 
   io1.restart();
   io1.run();
 
-  ASIO_CHECK(ex == nullptr);
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+  XIO_CHECK(ex == nullptr);
+  XIO_CHECK(f.wait_for(std::chrono::seconds(0))
       == std::future_status::timeout);
 
   io2.restart();
   io2.run();
 
-  ASIO_CHECK(ex != nullptr);
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+  XIO_CHECK(ex != nullptr);
+  XIO_CHECK(f.wait_for(std::chrono::seconds(0))
       == std::future_status::ready);
 }
 
@@ -312,29 +312,29 @@ void partial_redirect_disposition_to_exception_ptr_test()
         redirect_disposition_handler(&count)));
   timer1.cancel();
 
-  ASIO_CHECK(ex == nullptr);
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(ex == nullptr);
+  XIO_CHECK(count == 0);
 
   io1.run();
 
-  ASIO_CHECK(ex == nullptr);
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(ex == nullptr);
+  XIO_CHECK(count == 0);
 
   io2.run();
 
-  ASIO_CHECK(ex != nullptr);
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ex != nullptr);
+  XIO_CHECK(count == 1);
 
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
   try
   {
     std::rethrow_exception(ex);
   }
   catch (const std::system_error& e)
   {
-    ASIO_CHECK(e.code() == xio::error::operation_aborted);
+    XIO_CHECK(e.code() == xio::error::operation_aborted);
   }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
 
   ex = nullptr;
   timer1.async_wait(xio::redirect_disposition(ex))(
@@ -342,31 +342,31 @@ void partial_redirect_disposition_to_exception_ptr_test()
         xio::deferred))(redirect_disposition_handler(&count));
   timer1.cancel();
 
-  ASIO_CHECK(ex == nullptr);
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ex == nullptr);
+  XIO_CHECK(count == 1);
 
   io1.restart();
   io1.run();
 
-  ASIO_CHECK(ex == nullptr);
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ex == nullptr);
+  XIO_CHECK(count == 1);
 
   io2.restart();
   io2.run();
 
-  ASIO_CHECK(ex != nullptr);
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(ex != nullptr);
+  XIO_CHECK(count == 2);
 
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
   try
   {
     std::rethrow_exception(ex);
   }
   catch (const std::system_error& e)
   {
-    ASIO_CHECK(e.code() == xio::error::operation_aborted);
+    XIO_CHECK(e.code() == xio::error::operation_aborted);
   }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
 
   ex = nullptr;
   timer1.async_wait()(xio::redirect_disposition(ex))(
@@ -374,62 +374,62 @@ void partial_redirect_disposition_to_exception_ptr_test()
         xio::deferred))(redirect_disposition_handler(&count));
   timer1.cancel();
 
-  ASIO_CHECK(ex == nullptr);
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(ex == nullptr);
+  XIO_CHECK(count == 2);
 
   io1.restart();
   io1.run();
 
-  ASIO_CHECK(ex == nullptr);
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(ex == nullptr);
+  XIO_CHECK(count == 2);
 
   io2.restart();
   io2.run();
 
-  ASIO_CHECK(ex != nullptr);
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(ex != nullptr);
+  XIO_CHECK(count == 3);
 
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
   try
   {
     std::rethrow_exception(ex);
   }
   catch (const std::system_error& e)
   {
-    ASIO_CHECK(e.code() == xio::error::operation_aborted);
+    XIO_CHECK(e.code() == xio::error::operation_aborted);
   }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
 
   ex = nullptr;
   std::future<void> f = timer1.async_wait(xio::redirect_disposition(ex))(
       xio::bind_executor(io2.get_executor(), xio::use_future));
   timer1.cancel();
 
-  ASIO_CHECK(ex == nullptr);
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+  XIO_CHECK(ex == nullptr);
+  XIO_CHECK(f.wait_for(std::chrono::seconds(0))
       == std::future_status::timeout);
 
   io1.restart();
   io1.run();
 
-  ASIO_CHECK(ex == nullptr);
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+  XIO_CHECK(ex == nullptr);
+  XIO_CHECK(f.wait_for(std::chrono::seconds(0))
       == std::future_status::timeout);
 
   io2.restart();
   io2.run();
 
-  ASIO_CHECK(ex != nullptr);
-  ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+  XIO_CHECK(ex != nullptr);
+  XIO_CHECK(f.wait_for(std::chrono::seconds(0))
       == std::future_status::ready);
 
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "redirect_disposition",
-  ASIO_TEST_CASE(redirect_disposition_test)
-  ASIO_TEST_CASE(partial_redirect_disposition_test)
-  ASIO_TEST_CASE(redirect_disposition_to_exception_ptr_test)
-  ASIO_TEST_CASE(partial_redirect_disposition_to_exception_ptr_test)
+  XIO_TEST_CASE(redirect_disposition_test)
+  XIO_TEST_CASE(partial_redirect_disposition_test)
+  XIO_TEST_CASE(redirect_disposition_to_exception_ptr_test)
+  XIO_TEST_CASE(partial_redirect_disposition_to_exception_ptr_test)
 )

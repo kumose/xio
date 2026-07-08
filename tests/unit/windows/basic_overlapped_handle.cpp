@@ -15,8 +15,8 @@
 
 #include "../unit_test.hpp"
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "basic_overlapped_handle",
-  ASIO_TEST_CASE(null_test)
+  XIO_TEST_CASE(null_test)
 )

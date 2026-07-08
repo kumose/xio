@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXECUTION_BLOCKING_ADAPTATION_HPP
-#define ASIO_EXECUTION_BLOCKING_ADAPTATION_HPP
+#ifndef XIO_EXECUTION_BLOCKING_ADAPTATION_HPP
+#define XIO_EXECUTION_BLOCKING_ADAPTATION_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -35,112 +35,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
-#if defined(GENERATING_DOCUMENTATION)
-
-    namespace execution {
-        /// A property to describe whether automatic adaptation of an executor is
-/// allowed in order to apply the blocking_adaptation_t::allowed_t property.
-        struct blocking_adaptation_t {
-            /// The blocking_adaptation_t property applies to executors.
-            template<typename T>
-            static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-            /// The top-level blocking_adaptation_t property cannot be required.
-            static constexpr bool is_requirable = false;
-
-            /// The top-level blocking_adaptation_t property cannot be preferred.
-            static constexpr bool is_preferable = false;
-
-            /// The type returned by queries against an @c any_executor.
-            typedef blocking_adaptation_t polymorphic_query_result_type;
-
-            /// A sub-property that indicates that automatic adaptation is not allowed.
-            struct disallowed_t {
-                /// The blocking_adaptation_t::disallowed_t property applies to executors.
-                template<typename T>
-                static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-                /// The blocking_adaptation_t::disallowed_t property can be required.
-                static constexpr bool is_requirable = true;
-
-                /// The blocking_adaptation_t::disallowed_t property can be preferred.
-                static constexpr bool is_preferable = true;
-
-                /// The type returned by queries against an @c any_executor.
-                typedef blocking_adaptation_t polymorphic_query_result_type;
-
-                /// Default constructor.
-                constexpr disallowed_t();
-
-                /// Get the value associated with a property object.
-                /**
-     * @returns disallowed_t();
-     */
-                static constexpr blocking_adaptation_t value();
-            };
-
-            /// A sub-property that indicates that automatic adaptation is allowed.
-            struct allowed_t {
-                /// The blocking_adaptation_t::allowed_t property applies to executors.
-                template<typename T>
-                static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-                /// The blocking_adaptation_t::allowed_t property can be required.
-                static constexpr bool is_requirable = true;
-
-                /// The blocking_adaptation_t::allowed_t property can be preferred.
-                static constexpr bool is_preferable = false;
-
-                /// The type returned by queries against an @c any_executor.
-                typedef blocking_adaptation_t polymorphic_query_result_type;
-
-                /// Default constructor.
-                constexpr allowed_t();
-
-                /// Get the value associated with a property object.
-                /**
-     * @returns allowed_t();
-     */
-                static constexpr blocking_adaptation_t value();
-            };
-
-            /// A special value used for accessing the blocking_adaptation_t::disallowed_t
-  /// property.
-            static constexpr disallowed_t disallowed;
-
-            /// A special value used for accessing the blocking_adaptation_t::allowed_t
-  /// property.
-            static constexpr allowed_t allowed;
-
-            /// Default constructor.
-            constexpr blocking_adaptation_t();
-
-            /// Construct from a sub-property value.
-            constexpr blocking_adaptation_t(disallowed_t);
-
-            /// Construct from a sub-property value.
-            constexpr blocking_adaptation_t(allowed_t);
-
-            /// Compare property values for equality.
-            friend constexpr bool operator==(
-                const blocking_adaptation_t &a, const blocking_adaptation_t &b) noexcept;
-
-            /// Compare property values for inequality.
-            friend constexpr bool operator!=(
-                const blocking_adaptation_t &a, const blocking_adaptation_t &b) noexcept;
-        };
-
-        /// A special value used for accessing the blocking_adaptation_t property.
-        constexpr blocking_adaptation_t blocking_adaptation;
-    } // namespace execution
-
-#else // defined(GENERATING_DOCUMENTATION)
-
-
-
-
     namespace execution {
         namespace detail {
             namespace blocking_adaptation {
@@ -188,7 +82,6 @@ namespace xio {
                                 std::declval<std::conditional_t<true, T, P> >().query(static_cast<P &&>(p))
                             );
                     };
-
                 };
 
                 template<typename T>
@@ -198,16 +91,15 @@ namespace xio {
                         static constexpr auto query(P &&p)
                             noexcept(
                                 noexcept(
-                                    std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                    std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
                                 )
                             )
                             -> decltype(
-                                std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
                             ) {
                             return T::query(static_cast<P &&>(p));
                         }
                     };
-
                 };
 
                 template<typename T>
@@ -293,12 +185,12 @@ namespace xio {
                         can_query<const Executor &, disallowed_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
-#if defined(ASIO_MSVC) // Visual C++ wants the type to be qualified.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
                 noexcept(is_nothrow_query<const Executor &,
                     blocking_adaptation_t<>::disallowed_t>::value)
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                     noexcept(is_nothrow_query<const Executor &, disallowed_t>::value)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 #endif // !defined(__clang__)
                 {
                     return xio::query(ex, disallowed_t());
@@ -314,20 +206,20 @@ namespace xio {
                         can_query<const Executor &, allowed_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
-#if defined(ASIO_MSVC) // Visual C++ wants the type to be qualified.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
                 noexcept(is_nothrow_query<const Executor &,
                     blocking_adaptation_t<>::allowed_t>::value)
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                     noexcept(is_nothrow_query<const Executor &, allowed_t>::value)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 #endif // !defined(__clang__)
                 {
                     return xio::query(ex, allowed_t());
                 }
 
-                ASIO_STATIC_CONSTEXPR_DEFAULT_INIT(disallowed_t, disallowed);
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(disallowed_t, disallowed);
 
-                ASIO_STATIC_CONSTEXPR_DEFAULT_INIT(allowed_t, allowed);
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(allowed_t, allowed);
 
             private:
                 int value_;
@@ -676,16 +568,10 @@ namespace xio {
 
         typedef detail::blocking_adaptation_t<> blocking_adaptation_t;
 
-inline constexpr blocking_adaptation_t blocking_adaptation;
+        inline constexpr blocking_adaptation_t blocking_adaptation;
     } // namespace execution
-
-
-
-#endif // defined(GENERATING_DOCUMENTATION)
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXECUTION_BLOCKING_ADAPTATION_HPP
+#endif // XIO_EXECUTION_BLOCKING_ADAPTATION_HPP

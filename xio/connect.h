@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_CONNECT_HPP
-#define ASIO_CONNECT_HPP
+#ifndef XIO_CONNECT_HPP
+#define XIO_CONNECT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -91,26 +91,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if defined(GENERATING_DOCUMENTATION)
-
-    /// Type trait used to determine whether a type is an endpoint sequence that can
-/// be used with with @c connect and @c async_connect.
-    template<typename T>
-    struct is_endpoint_sequence {
-        /// The value member is true if the type may be used as an endpoint sequence.
-        static const bool value = automatically_determined;
-    };
-
-    /// Trait for determining whether a function object is a connect condition that
-/// can be used with @c connect and @c async_connect.
-    template<typename T, typename Iterator>
-    struct is_connect_condition {
-        /// The value member is true if the type may be used as a connect condition.
-        static constexpr bool value = automatically_determined;
-    };
-
-#else // defined(GENERATING_DOCUMENTATION)
-
     template<typename T>
     struct is_endpoint_sequence : detail::is_endpoint_sequence_helper<T> {
     };
@@ -118,8 +98,6 @@ namespace xio {
     template<typename T, typename Iterator>
     struct is_connect_condition : detail::is_connect_condition_helper<T, Iterator> {
     };
-
-#endif // defined(GENERATING_DOCUMENTATION)
 
     /**
  * @defgroup connect xio::connect
@@ -623,7 +601,7 @@ namespace xio {
  * if they are also supported by the socket's @c async_connect operation.
  */
     template<typename Protocol, typename Executor, typename EndpointSequence,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         typename Protocol::endpoint)) RangeConnectToken = default_completion_token_t<Executor> >
     inline auto async_connect(basic_socket<Protocol, Executor> &s,
                               const EndpointSequence &endpoints,
@@ -712,7 +690,7 @@ namespace xio {
  * if they are also supported by the socket's @c async_connect operation.
  */
     template<typename Protocol, typename Executor, typename Iterator,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         Iterator)) IteratorConnectToken = default_completion_token_t<Executor> >
     inline auto async_connect(
         basic_socket<Protocol, Executor> &s, Iterator begin, Iterator end,
@@ -844,7 +822,7 @@ namespace xio {
  */
     template<typename Protocol, typename Executor,
         typename EndpointSequence, typename ConnectCondition,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         typename Protocol::endpoint)) RangeConnectToken = default_completion_token_t<Executor> >
     inline auto async_connect(basic_socket<Protocol, Executor> &s,
                               const EndpointSequence &endpoints, ConnectCondition connect_condition,
@@ -983,7 +961,7 @@ namespace xio {
  */
     template<typename Protocol, typename Executor,
         typename Iterator, typename ConnectCondition,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         Iterator)) IteratorConnectToken = default_completion_token_t<Executor> >
     inline auto async_connect(basic_socket<Protocol, Executor> &s,
                               Iterator begin, Iterator end, ConnectCondition connect_condition,
@@ -1011,4 +989,4 @@ namespace xio {
 
 #include <xio/impl/connect.h>
 
-#endif // ASIO_CONNECT_HPP
+#endif // XIO_CONNECT_HPP

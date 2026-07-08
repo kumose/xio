@@ -270,8 +270,8 @@ void test()
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "buffers_iterator",
-  ASIO_COMPILE_TEST_CASE(buffers_iterator_compile::test)
+  XIO_COMPILE_TEST_CASE(buffers_iterator_compile::test)
 )

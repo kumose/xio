@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXPERIMENTAL_USE_CORO_HPP
-#define ASIO_EXPERIMENTAL_USE_CORO_HPP
+#ifndef XIO_EXPERIMENTAL_USE_CORO_HPP
+#define XIO_EXPERIMENTAL_USE_CORO_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -60,25 +60,25 @@ namespace xio {
             /// Default constructor.
             constexpr use_coro_t(
                 allocator_type allocator = allocator_type{}
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
                 , xio::detail::source_location location =
                         xio::detail::source_location::current()
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
             )
                 : allocator_(allocator)
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
     , file_name_(location.file_name()),
       line_(location.line()),
       function_name_(location.function_name())
-# else // defined(ASIO_HAS_SOURCE_LOCATION)
+# else // defined(XIO_HAS_SOURCE_LOCATION)
     , file_name_(0),
       line_(0),
       function_name_(0)
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
             {
             }
 
@@ -97,17 +97,17 @@ namespace xio {
             constexpr use_coro_t(const char *file_name,
                                  int line, const char *function_name,
                                  allocator_type allocator = allocator_type{}) :
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
                 file_name_(file_name),
                         line_(line),
                         function_name_(function_name),
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
                 allocator_(allocator) {
-#if !defined(ASIO_ENABLE_HANDLER_TRACKING)
+#if !defined(XIO_ENABLE_HANDLER_TRACKING)
                 (void) file_name;
                 (void) line;
                 (void) function_name;
-#endif // !defined(ASIO_ENABLE_HANDLER_TRACKING)
+#endif // !defined(XIO_ENABLE_HANDLER_TRACKING)
             }
 
             /// Adapts an executor to add the @c use_coro_t completion token as the
@@ -149,11 +149,11 @@ namespace xio {
                 >::other(static_cast<T &&>(object));
             }
 
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
             const char *file_name_;
             int line_;
             const char *function_name_;
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 
         private:
             Allocator allocator_;
@@ -164,11 +164,7 @@ namespace xio {
         /**
  * See the documentation for xio::use_coro_t for a usage example.
  */
-#if defined(GENERATING_DOCUMENTATION)
-        inline constexpr use_coro_t<> use_coro;
-#else
         inline constexpr use_coro_t<> use_coro(0, 0, 0);
-#endif
     } // namespace experimental
 
 } // namespace xio
@@ -178,4 +174,4 @@ namespace xio {
 #include <xio/experimental/impl/use_coro.h>
 #include <xio/experimental/coro.h>
 
-#endif // ASIO_EXPERIMENTAL_USE_CORO_HPP
+#endif // XIO_EXPERIMENTAL_USE_CORO_HPP

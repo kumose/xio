@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXPERIMENTAL_DETAIL_CHANNEL_SEND_OP_HPP
-#define ASIO_EXPERIMENTAL_DETAIL_CHANNEL_SEND_OP_HPP
+#ifndef XIO_EXPERIMENTAL_DETAIL_CHANNEL_SEND_OP_HPP
+#define XIO_EXPERIMENTAL_DETAIL_CHANNEL_SEND_OP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -65,7 +65,7 @@ namespace xio {
             template<typename Payload, typename Handler, typename IoExecutor>
             class channel_send_op : public channel_send<Payload> {
             public:
-                ASIO_DEFINE_HANDLER_PTR(channel_send_op);
+                XIO_DEFINE_HANDLER_PTR(channel_send_op);
 
                 channel_send_op(Payload &&payload,
                                 Handler &handler, const IoExecutor &io_ex)
@@ -81,7 +81,7 @@ namespace xio {
                     channel_send_op *o(static_cast<channel_send_op *>(base));
                     ptr p = {xio::detail::addressof(o->handler_), o, o};
 
-                    ASIO_HANDLER_COMPLETION((*o));
+                    XIO_HANDLER_COMPLETION((*o));
 
                     // Take ownership of the operation's outstanding work.
                     channel_operation::handler_work<Handler, IoExecutor> w(
@@ -113,12 +113,12 @@ namespace xio {
 
                     // Post the completion if required.
                     if (a != channel_operation::destroy_op) {
-                        ASIO_HANDLER_INVOCATION_BEGIN((handler.arg1_));
+                        XIO_HANDLER_INVOCATION_BEGIN((handler.arg1_));
                         if (a == channel_operation::immediate_op)
                             w.immediate(handler, handler.handler_, 0);
                         else
                             w.post(handler, handler.handler_);
-                        ASIO_HANDLER_INVOCATION_END;
+                        XIO_HANDLER_INVOCATION_END;
                     }
                 }
 
@@ -133,4 +133,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXPERIMENTAL_DETAIL_CHANNEL_SEND_OP_HPP
+#endif // XIO_EXPERIMENTAL_DETAIL_CHANNEL_SEND_OP_HPP

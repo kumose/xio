@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_WIN_IOCP_IO_CONTEXT_HPP
-#define ASIO_DETAIL_IMPL_WIN_IOCP_IO_CONTEXT_HPP
+#ifndef XIO_DETAIL_IMPL_WIN_IOCP_IO_CONTEXT_HPP
+#define XIO_DETAIL_IMPL_WIN_IOCP_IO_CONTEXT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 
 #include <xio/detail/completion_handler.h>
 #include <xio/detail/fenced_block.h>
@@ -112,6 +112,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
-#endif // ASIO_DETAIL_IMPL_WIN_IOCP_IO_CONTEXT_HPP
+#endif // XIO_DETAIL_IMPL_WIN_IOCP_IO_CONTEXT_HPP

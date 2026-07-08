@@ -97,22 +97,22 @@ void test()
     ip::udp::socket socket3(ioc, ip::udp::v6());
     ip::udp::socket socket4(ioc, ip::udp::endpoint(ip::udp::v4(), 0));
     ip::udp::socket socket5(ioc, ip::udp::endpoint(ip::udp::v6(), 0));
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     ip::udp::socket::native_handle_type native_socket1
       = ::socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     ip::udp::socket socket6(ioc, ip::udp::v4(), native_socket1);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     ip::udp::socket socket7(ioc_ex);
     ip::udp::socket socket8(ioc_ex, ip::udp::v4());
     ip::udp::socket socket9(ioc_ex, ip::udp::v6());
     ip::udp::socket socket10(ioc_ex, ip::udp::endpoint(ip::udp::v4(), 0));
     ip::udp::socket socket11(ioc_ex, ip::udp::endpoint(ip::udp::v6(), 0));
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     ip::udp::socket::native_handle_type native_socket2
       = ::socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     ip::udp::socket socket12(ioc_ex, ip::udp::v4(), native_socket2);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     ip::udp::socket socket13(std::move(socket6));
 
@@ -141,14 +141,14 @@ void test()
     socket1.open(ip::udp::v4(), ec);
     socket1.open(ip::udp::v6(), ec);
 
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     ip::udp::socket::native_handle_type native_socket3
       = ::socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     socket1.assign(ip::udp::v4(), native_socket3);
     ip::udp::socket::native_handle_type native_socket4
       = ::socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
     socket1.assign(ip::udp::v4(), native_socket4, ec);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     bool is_open = socket1.is_open();
     (void)is_open;
@@ -485,15 +485,15 @@ namespace ip_udp_socket_runtime {
 void handle_send(size_t expected_bytes_sent,
     const xio::error_code& err, size_t bytes_sent)
 {
-  ASIO_CHECK(!err);
-  ASIO_CHECK(expected_bytes_sent == bytes_sent);
+  XIO_CHECK(!err);
+  XIO_CHECK(expected_bytes_sent == bytes_sent);
 }
 
 void handle_recv(size_t expected_bytes_recvd,
     const xio::error_code& err, size_t bytes_recvd)
 {
-  ASIO_CHECK(!err);
-  ASIO_CHECK(expected_bytes_recvd == bytes_recvd);
+  XIO_CHECK(!err);
+  XIO_CHECK(expected_bytes_recvd == bytes_recvd);
 }
 
 void test()
@@ -523,8 +523,8 @@ void test()
   size_t bytes_recvd = s1.receive_from(buffer(recv_msg, sizeof(recv_msg)),
       sender_endpoint);
 
-  ASIO_CHECK(bytes_recvd == sizeof(send_msg));
-  ASIO_CHECK(memcmp(send_msg, recv_msg, sizeof(send_msg)) == 0);
+  XIO_CHECK(bytes_recvd == sizeof(send_msg));
+  XIO_CHECK(memcmp(send_msg, recv_msg, sizeof(send_msg)) == 0);
 
   memset(recv_msg, 0, sizeof(recv_msg));
 
@@ -536,7 +536,7 @@ void test()
 
   ioc.run();
 
-  ASIO_CHECK(memcmp(send_msg, recv_msg, sizeof(send_msg)) == 0);
+  XIO_CHECK(memcmp(send_msg, recv_msg, sizeof(send_msg)) == 0);
 }
 
 } // namespace ip_udp_socket_runtime
@@ -663,10 +663,10 @@ void test()
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "ip/udp",
-  ASIO_COMPILE_TEST_CASE(ip_udp_socket_compile::test)
-  ASIO_TEST_CASE(ip_udp_socket_runtime::test)
-  ASIO_COMPILE_TEST_CASE(ip_udp_resolver_compile::test)
+  XIO_COMPILE_TEST_CASE(ip_udp_socket_compile::test)
+  XIO_TEST_CASE(ip_udp_socket_runtime::test)
+  XIO_COMPILE_TEST_CASE(ip_udp_resolver_compile::test)
 )

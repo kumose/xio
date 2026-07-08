@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_WRITE_HPP
-#define ASIO_IMPL_WRITE_HPP
+#ifndef XIO_IMPL_WRITE_HPP
+#define XIO_IMPL_WRITE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -106,7 +106,7 @@ namespace xio {
         return bytes_transferred;
     }
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     template<typename SyncWriteStream, typename DynamicBuffer_v1,
         typename CompletionCondition>
@@ -184,8 +184,8 @@ namespace xio {
         return bytes_transferred;
     }
 
-#if !defined(ASIO_NO_EXTENSIONS)
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_IOSTREAM)
 
     template<typename SyncWriteStream, typename Allocator,
         typename CompletionCondition>
@@ -224,9 +224,9 @@ namespace xio {
                      static_cast<CompletionCondition &&>(completion_condition));
     }
 
-#endif // !defined(ASIO_NO_IOSTREAM)
-#endif // !defined(ASIO_NO_EXTENSIONS)
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     template<typename SyncWriteStream, typename DynamicBuffer_v2,
         typename CompletionCondition>
@@ -332,7 +332,7 @@ namespace xio {
                         max_size = this->check_for_completion(ec, buffers_.total_consumed());
                         for (;;) {
                             {
-                                ASIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_write"));
+                                XIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_write"));
                                 stream_.async_write_some(buffers_.prepare(max_size),
                                                          static_cast<write_op &&>(*this));
                             }
@@ -411,7 +411,7 @@ namespace xio {
                             CompletionCondition &&completion_cond) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a WriteHandler.
-                ASIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
+                XIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
                 type_check;
 
                 non_const_lvalue<WriteHandler> handler2(handler);
@@ -426,7 +426,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename AsyncWriteStream, typename ConstBufferSequence,
@@ -452,9 +451,8 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     namespace detail {
         template<typename AsyncWriteStream, typename DynamicBuffer_v1,
@@ -540,7 +538,7 @@ namespace xio {
                             CompletionCondition &&completion_cond) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a WriteHandler.
-                ASIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
+                XIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
                 type_check;
 
                 non_const_lvalue<WriteHandler> handler2(handler);
@@ -558,7 +556,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename AsyncWriteStream, typename DynamicBuffer_v1,
@@ -584,9 +581,8 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     namespace detail {
         template<typename AsyncWriteStream, typename DynamicBuffer_v2,
@@ -672,7 +668,7 @@ namespace xio {
                             CompletionCondition &&completion_cond) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a WriteHandler.
-                ASIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
+                XIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
                 type_check;
 
                 non_const_lvalue<WriteHandler> handler2(handler);
@@ -689,7 +685,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename AsyncWriteStream, typename DynamicBuffer_v2,
@@ -715,11 +710,10 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_WRITE_HPP
+#endif // XIO_IMPL_WRITE_HPP

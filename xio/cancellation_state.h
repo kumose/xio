@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_CANCELLATION_STATE_HPP
-#define ASIO_CANCELLATION_STATE_HPP
+#ifndef XIO_CANCELLATION_STATE_HPP
+#define XIO_CANCELLATION_STATE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -49,19 +49,6 @@ namespace xio {
     typedef cancellation_filter<cancellation_type::terminal>
     enable_terminal_cancellation;
 
-#if defined(GENERATING_DOCUMENTATION)
-
-    /// A cancellation filter that enables terminal and partial cancellation.
-    typedef cancellation_filter<
-        cancellation_type::terminal | cancellation_type::partial>
-    enable_partial_cancellation;
-
-    /// A cancellation filter that enables terminal, partial and total cancellation.
-    typedef cancellation_filter<cancellation_type::terminal
-                                | cancellation_type::partial | cancellation_type::total>
-    enable_total_cancellation;
-
-#else // defined(GENERATING_DOCUMENTATION)
 
     typedef cancellation_filter<
         static_cast<cancellation_type_t>(
@@ -75,8 +62,6 @@ namespace xio {
             | static_cast<unsigned int>(cancellation_type::partial)
             | static_cast<unsigned int>(cancellation_type::total))>
     enable_total_cancellation;
-
-#endif // defined(GENERATING_DOCUMENTATION)
 
     /// A cancellation state is used for chaining signals and slots in compositions.
     class cancellation_state {
@@ -222,4 +207,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_CANCELLATION_STATE_HPP
+#endif // XIO_CANCELLATION_STATE_HPP

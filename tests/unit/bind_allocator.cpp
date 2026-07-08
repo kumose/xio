@@ -90,13 +90,13 @@ void bind_allocator_to_function_object_test()
         test_allocator<int>(&allocations),
         bindns::bind(&increment, &count)));
 
-  ASIO_CHECK(count == 0);
-  ASIO_CHECK(allocations == 1);
+  XIO_CHECK(count == 0);
+  XIO_CHECK(allocations == 1);
 
   ioc.run();
 
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(allocations == 0);
+  XIO_CHECK(count == 1);
+  XIO_CHECK(allocations == 0);
 
   t.async_wait(
       bind_allocator(
@@ -105,14 +105,14 @@ void bind_allocator_to_function_object_test()
           std::allocator<void>(),
           bindns::bind(&increment, &count))));
 
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(allocations == 1);
+  XIO_CHECK(count == 1);
+  XIO_CHECK(allocations == 1);
 
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 2);
-  ASIO_CHECK(allocations == 0);
+  XIO_CHECK(count == 2);
+  XIO_CHECK(allocations == 0);
 }
 
 struct incrementer_token_v1
@@ -155,13 +155,13 @@ void bind_allocator_to_completion_token_v1_test()
         test_allocator<int>(&allocations),
         incrementer_token_v1(&count)));
 
-  ASIO_CHECK(count == 0);
-  ASIO_CHECK(allocations == 1);
+  XIO_CHECK(count == 0);
+  XIO_CHECK(allocations == 1);
 
   ioc.run();
 
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(allocations == 0);
+  XIO_CHECK(count == 1);
+  XIO_CHECK(allocations == 0);
 }
 
 struct incrementer_token_v2
@@ -176,9 +176,9 @@ template <>
 class async_result<incrementer_token_v2, void(xio::error_code)>
 {
 public:
-#if !defined(ASIO_HAS_RETURN_TYPE_DEDUCTION)
+#if !defined(XIO_HAS_RETURN_TYPE_DEDUCTION)
   typedef void return_type;
-#endif // !defined(ASIO_HAS_RETURN_TYPE_DEDUCTION)
+#endif // !defined(XIO_HAS_RETURN_TYPE_DEDUCTION)
 
   template <typename Initiation, typename... Args>
   static void initiate(Initiation initiation,
@@ -204,13 +204,13 @@ void bind_allocator_to_completion_token_v2_test()
         test_allocator<int>(&allocations),
         incrementer_token_v2(&count)));
 
-  ASIO_CHECK(count == 0);
-  ASIO_CHECK(allocations == 1);
+  XIO_CHECK(count == 0);
+  XIO_CHECK(allocations == 1);
 
   ioc.run();
 
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(allocations == 0);
+  XIO_CHECK(count == 1);
+  XIO_CHECK(allocations == 0);
 }
 
 void partial_bind_allocator_test()
@@ -224,33 +224,33 @@ void partial_bind_allocator_test()
   t.async_wait(bind_allocator(test_allocator<int>(&allocations)))(
       bindns::bind(&increment, &count));
 
-  ASIO_CHECK(count == 0);
-  ASIO_CHECK(allocations == 1);
+  XIO_CHECK(count == 0);
+  XIO_CHECK(allocations == 1);
 
   ioc.run();
 
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(allocations == 0);
+  XIO_CHECK(count == 1);
+  XIO_CHECK(allocations == 0);
 
   t.expires_after(chronons::seconds(1));
   t.async_wait()(
       bind_allocator(test_allocator<int>(&allocations)))(
         incrementer_token_v2(&count));
 
-  ASIO_CHECK(count == 0);
-  ASIO_CHECK(allocations == 1);
+  XIO_CHECK(count == 0);
+  XIO_CHECK(allocations == 1);
 
   ioc.restart();
   ioc.run();
 
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(allocations == 0);
+  XIO_CHECK(count == 1);
+  XIO_CHECK(allocations == 0);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "bind_allocator",
-  ASIO_TEST_CASE(bind_allocator_to_function_object_test)
-  ASIO_TEST_CASE(bind_allocator_to_completion_token_v1_test)
-  ASIO_TEST_CASE(bind_allocator_to_completion_token_v2_test)
+  XIO_TEST_CASE(bind_allocator_to_function_object_test)
+  XIO_TEST_CASE(bind_allocator_to_completion_token_v1_test)
+  XIO_TEST_CASE(bind_allocator_to_completion_token_v2_test)
 )

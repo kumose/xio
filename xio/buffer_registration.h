@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BUFFER_REGISTRATION_HPP
-#define ASIO_BUFFER_REGISTRATION_HPP
+#ifndef XIO_BUFFER_REGISTRATION_HPP
+#define XIO_BUFFER_REGISTRATION_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -27,16 +27,16 @@
 #include <xio/query.h>
 #include <xio/registered_buffer.h>
 
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
 #include <xio/detail/scheduler.h>
 #include <xio/detail/io_uring_service.h>
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
 
 #include <xio/detail/push_options.h>
 
 namespace xio {
-#if !defined(ASIO_BUFFER_REGISTRATION_FWD_DECL)
-#define ASIO_BUFFER_REGISTRATION_FWD_DECL
+#if !defined(XIO_BUFFER_REGISTRATION_FWD_DECL)
+#define XIO_BUFFER_REGISTRATION_FWD_DECL
 
     // Forward declaration with defaulted arguments.
 
@@ -45,7 +45,7 @@ namespace xio {
         typename Allocator = std::allocator<void> >
     class buffer_registration;
 
-#endif // !defined(ASIO_BUFFER_REGISTRATION_FWD_DECL)
+#endif // !defined(XIO_BUFFER_REGISTRATION_FWD_DECL)
 
     namespace detail {
         class buffer_registration_base {
@@ -69,16 +69,8 @@ namespace xio {
         /// The allocator type used for allocating storage for the buffers container.
         typedef Allocator allocator_type;
 
-#if defined(GENERATING_DOCUMENTATION)
-        /// The type of an iterator over the registered buffers.
-        typedef unspecified iterator;
-
-        /// The type of a const iterator over the registered buffers.
-        typedef unspecified const_iterator;
-#else // defined(GENERATING_DOCUMENTATION)
         typedef std::vector<mutable_registered_buffer>::const_iterator iterator;
         typedef std::vector<mutable_registered_buffer>::const_iterator const_iterator;
-#endif // defined(GENERATING_DOCUMENTATION)
 
         /// Register buffers with an executor's execution context.
         template<typename Executor>
@@ -90,7 +82,7 @@ namespace xio {
                             > = 0)
             : buffer_sequence_(buffer_sequence),
               buffers_(
-                  ASIO_REBIND_ALLOC(allocator_type,
+                  XIO_REBIND_ALLOC(allocator_type,
                                     mutable_registered_buffer)(alloc)) {
             init_buffers(buffer_registration::get_context(ex),
                          xio::buffer_sequence_begin(buffer_sequence_),
@@ -107,7 +99,7 @@ namespace xio {
                             > = 0)
             : buffer_sequence_(buffer_sequence),
               buffers_(
-                  ASIO_REBIND_ALLOC(allocator_type,
+                  XIO_REBIND_ALLOC(allocator_type,
                                     mutable_registered_buffer)(alloc)) {
             init_buffers(ctx,
                          xio::buffer_sequence_begin(buffer_sequence_),
@@ -118,18 +110,18 @@ namespace xio {
         buffer_registration(buffer_registration &&other) noexcept
             : buffer_sequence_(std::move(other.buffer_sequence_)),
               buffers_(std::move(other.buffers_)) {
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
             service_ = other.service_;
             other.service_ = 0;
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
         }
 
         /// Unregisters the buffers.
         ~buffer_registration() {
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
             if (service_)
                 service_->unregister_buffers();
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
         }
 
         /// Move assignment.
@@ -137,12 +129,12 @@ namespace xio {
             if (this != &other) {
                 buffer_sequence_ = std::move(other.buffer_sequence_);
                 buffers_ = std::move(other.buffers_);
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
                 if (service_)
                     service_->unregister_buffers();
                 service_ = other.service_;
                 other.service_ = 0;
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
             }
             return *this;
         }
@@ -208,13 +200,13 @@ namespace xio {
             std::size_t n = std::distance(begin, end);
             buffers_.resize(n);
 
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
             service_ = &use_service<detail::io_uring_service>(ctx);
             std::vector<iovec,
-                ASIO_REBIND_ALLOC(allocator_type, iovec) > iovecs(n,
-                                                                  ASIO_REBIND_ALLOC(allocator_type, iovec)(
+                XIO_REBIND_ALLOC(allocator_type, iovec) > iovecs(n,
+                                                                  XIO_REBIND_ALLOC(allocator_type, iovec)(
                                                                       buffers_.get_allocator()));
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
 
             Iterator iter = begin;
             for (int index = 0; iter != end; ++index, ++iter) {
@@ -222,27 +214,27 @@ namespace xio {
                 std::size_t i = static_cast<std::size_t>(index);
                 buffers_[i] = this->make_buffer(b, &ctx, index);
 
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
                 iovecs[i].iov_base = buffers_[i].data();
                 iovecs[i].iov_len = buffers_[i].size();
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
             }
 
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
             if (n > 0) {
                 service_->register_buffers(&iovecs[0],
                                            static_cast<unsigned>(iovecs.size()));
             }
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
         }
 
         MutableBufferSequence buffer_sequence_;
         std::vector<mutable_registered_buffer,
-            ASIO_REBIND_ALLOC(allocator_type,
+            XIO_REBIND_ALLOC(allocator_type,
                               mutable_registered_buffer) > buffers_;
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
         detail::io_uring_service *service_;
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
     };
 
     /// Register buffers with an execution context.
@@ -303,4 +295,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_BUFFER_REGISTRATION_HPP
+#endif // XIO_BUFFER_REGISTRATION_HPP

@@ -42,7 +42,7 @@ Threading Model
 ---------------
 Threads can be categorized into two groups.
 
-* User threads and threads from Asio thread pool: execute Raft operations. APIs called by this thread group need to be lightweight so as not to block threads long time. It will invoke
+* User threads and threads from Xio thread pool: execute Raft operations. APIs called by this thread group need to be lightweight so as not to block threads long time. It will invoke
     * Log store operations.
     * State machine's pre-commit and rollback.
     * Reading/writing snapshot chunks via the below APIs:

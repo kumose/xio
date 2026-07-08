@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_REACTIVE_DESCRIPTOR_SERVICE_IPP
-#define ASIO_DETAIL_IMPL_REACTIVE_DESCRIPTOR_SERVICE_IPP
+#ifndef XIO_DETAIL_IMPL_REACTIVE_DESCRIPTOR_SERVICE_IPP
+#define XIO_DETAIL_IMPL_REACTIVE_DESCRIPTOR_SERVICE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,10 +17,10 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_WINDOWS_RUNTIME) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS) \
-  && !defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_WINDOWS_RUNTIME) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS) \
+  && !defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
 #include <xio/error.h>
 #include <xio/detail/reactive_descriptor_service.h>
@@ -81,7 +81,7 @@ namespace xio {
         void reactive_descriptor_service::destroy(
             reactive_descriptor_service::implementation_type &impl) {
             if (is_open(impl)) {
-                ASIO_HANDLER_OPERATION((reactor_.context(),
+                XIO_HANDLER_OPERATION((reactor_.context(),
                                         "descriptor", &impl, impl.descriptor_, "close"));
 
                 reactor_.deregister_descriptor(impl.descriptor_, impl.reactor_data_,
@@ -99,7 +99,7 @@ namespace xio {
             const native_handle_type &native_descriptor, xio::error_code &ec) {
             if (is_open(impl)) {
                 ec = xio::error::already_open;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -107,7 +107,7 @@ namespace xio {
                 native_descriptor, impl.reactor_data_)) {
                 ec = xio::error_code(err,
                                      xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -121,7 +121,7 @@ namespace xio {
             reactive_descriptor_service::implementation_type &impl,
             xio::error_code &ec) {
             if (is_open(impl)) {
-                ASIO_HANDLER_OPERATION((reactor_.context(),
+                XIO_HANDLER_OPERATION((reactor_.context(),
                                         "descriptor", &impl, impl.descriptor_, "close"));
 
                 reactor_.deregister_descriptor(impl.descriptor_, impl.reactor_data_,
@@ -142,7 +142,7 @@ namespace xio {
             // We'll just have to assume that other OSes follow the same behaviour.)
             construct(impl);
 
-            ASIO_ERROR_LOCATION(ec);
+            XIO_ERROR_LOCATION(ec);
             return ec;
         }
 
@@ -152,7 +152,7 @@ namespace xio {
             native_handle_type descriptor = impl.descriptor_;
 
             if (is_open(impl)) {
-                ASIO_HANDLER_OPERATION((reactor_.context(),
+                XIO_HANDLER_OPERATION((reactor_.context(),
                                         "descriptor", &impl, impl.descriptor_, "release"));
 
                 reactor_.deregister_descriptor(impl.descriptor_, impl.reactor_data_, false);
@@ -168,11 +168,11 @@ namespace xio {
             xio::error_code &ec) {
             if (!is_open(impl)) {
                 ec = xio::error::bad_descriptor;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
-            ASIO_HANDLER_OPERATION((reactor_.context(),
+            XIO_HANDLER_OPERATION((reactor_.context(),
                                     "descriptor", &impl, impl.descriptor_, "cancel"));
 
             reactor_.cancel_ops(impl.descriptor_, impl.reactor_data_);
@@ -204,9 +204,9 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(ASIO_WINDOWS)
-//   && !defined(ASIO_WINDOWS_RUNTIME)
-//   && !defined(ASIO_CYGWIN_W32_SOCKETS)
-//   && !defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#endif // !defined(XIO_WINDOWS)
+//   && !defined(XIO_WINDOWS_RUNTIME)
+//   && !defined(XIO_CYGWIN_W32_SOCKETS)
+//   && !defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
-#endif // ASIO_DETAIL_IMPL_REACTIVE_DESCRIPTOR_SERVICE_IPP
+#endif // XIO_DETAIL_IMPL_REACTIVE_DESCRIPTOR_SERVICE_IPP

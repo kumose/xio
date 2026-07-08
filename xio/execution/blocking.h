@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXECUTION_BLOCKING_HPP
-#define ASIO_EXECUTION_BLOCKING_HPP
+#ifndef XIO_EXECUTION_BLOCKING_HPP
+#define XIO_EXECUTION_BLOCKING_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -32,147 +32,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
-#if defined(GENERATING_DOCUMENTATION)
-
-    namespace execution {
-        /// A property to describe what guarantees an executor makes about the blocking
-/// behaviour of their execution functions.
-        struct blocking_t {
-            /// The blocking_t property applies to executors.
-            template<typename T>
-            static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-            /// The top-level blocking_t property cannot be required.
-            static constexpr bool is_requirable = false;
-
-            /// The top-level blocking_t property cannot be preferred.
-            static constexpr bool is_preferable = false;
-
-            /// The type returned by queries against an @c any_executor.
-            typedef blocking_t polymorphic_query_result_type;
-
-            /// A sub-property that indicates that invocation of an executor's execution
-  /// function may block pending completion of one or more invocations of the
-  /// submitted function object.
-            struct possibly_t {
-                /// The blocking_t::possibly_t property applies to executors.
-                template<typename T>
-                static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-                /// The blocking_t::possibly_t property can be required.
-                static constexpr bool is_requirable = true;
-
-                /// The blocking_t::possibly_t property can be preferred.
-                static constexpr bool is_preferable = true;
-
-                /// The type returned by queries against an @c any_executor.
-                typedef blocking_t polymorphic_query_result_type;
-
-                /// Default constructor.
-                constexpr possibly_t();
-
-                /// Get the value associated with a property object.
-                /**
-     * @returns possibly_t();
-     */
-                static constexpr blocking_t value();
-            };
-
-            /// A sub-property that indicates that invocation of an executor's execution
-  /// function shall block until completion of all invocations of the submitted
-  /// function object.
-            struct always_t {
-                /// The blocking_t::always_t property applies to executors.
-                template<typename T>
-                static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-                /// The blocking_t::always_t property can be required.
-                static constexpr bool is_requirable = true;
-
-                /// The blocking_t::always_t property can be preferred.
-                static constexpr bool is_preferable = false;
-
-                /// The type returned by queries against an @c any_executor.
-                typedef blocking_t polymorphic_query_result_type;
-
-                /// Default constructor.
-                constexpr always_t();
-
-                /// Get the value associated with a property object.
-                /**
-     * @returns always_t();
-     */
-                static constexpr blocking_t value();
-            };
-
-            /// A sub-property that indicates that invocation of an executor's execution
-  /// function shall not block pending completion of the invocations of the
-  /// submitted function object.
-            struct never_t {
-                /// The blocking_t::never_t property applies to executors.
-                template<typename T>
-                static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-                /// The blocking_t::never_t property can be required.
-                static constexpr bool is_requirable = true;
-
-                /// The blocking_t::never_t property can be preferred.
-                static constexpr bool is_preferable = true;
-
-                /// The type returned by queries against an @c any_executor.
-                typedef blocking_t polymorphic_query_result_type;
-
-                /// Default constructor.
-                constexpr never_t();
-
-                /// Get the value associated with a property object.
-                /**
-     * @returns never_t();
-     */
-                static constexpr blocking_t value();
-            };
-
-            /// A special value used for accessing the blocking_t::possibly_t property.
-            static constexpr possibly_t possibly;
-
-            /// A special value used for accessing the blocking_t::always_t property.
-            static constexpr always_t always;
-
-            /// A special value used for accessing the blocking_t::never_t property.
-            static constexpr never_t never;
-
-            /// Default constructor.
-            constexpr blocking_t();
-
-            /// Construct from a sub-property value.
-            constexpr blocking_t(possibly_t);
-
-            /// Construct from a sub-property value.
-            constexpr blocking_t(always_t);
-
-            /// Construct from a sub-property value.
-            constexpr blocking_t(never_t);
-
-            /// Compare property values for equality.
-            friend constexpr bool operator==(
-                const blocking_t &a, const blocking_t &b) noexcept;
-
-            /// Compare property values for inequality.
-            friend constexpr bool operator!=(
-                const blocking_t &a, const blocking_t &b) noexcept;
-        };
-
-        /// A special value used for accessing the blocking_t property.
-        constexpr blocking_t blocking;
-    } // namespace execution
-
-#else // defined(GENERATING_DOCUMENTATION)
-
-
-
-
     namespace execution {
         namespace detail {
             namespace blocking {
@@ -236,7 +95,6 @@ namespace xio {
                                 std::declval<std::conditional_t<true, T, P> >().query(static_cast<P &&>(p))
                             );
                     };
-
                 };
 
                 template<typename T>
@@ -246,16 +104,15 @@ namespace xio {
                         static constexpr auto query(P &&p)
                             noexcept(
                                 noexcept(
-                                    std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                    std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
                                 )
                             )
                             -> decltype(
-                                std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
                             ) {
                             return T::query(static_cast<P &&>(p));
                         }
                     };
-
                 };
 
                 template<typename T>
@@ -361,11 +218,11 @@ namespace xio {
                         can_query<const Executor &, possibly_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
-#if defined(ASIO_MSVC) // Visual C++ wants the type to be qualified.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
                 noexcept(is_nothrow_query<const Executor &, blocking_t<>::possibly_t>::value)
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                     noexcept(is_nothrow_query<const Executor &, possibly_t>::value)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 #endif // !defined(__clang__)
                 {
                     return xio::query(ex, possibly_t());
@@ -381,11 +238,11 @@ namespace xio {
                         can_query<const Executor &, always_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
-#if defined(ASIO_MSVC) // Visual C++ wants the type to be qualified.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
                 noexcept(is_nothrow_query<const Executor &, blocking_t<>::always_t>::value)
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                     noexcept(is_nothrow_query<const Executor &, always_t>::value)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 #endif // !defined(__clang__)
                 {
                     return xio::query(ex, always_t());
@@ -404,21 +261,21 @@ namespace xio {
                         can_query<const Executor &, never_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
-#if defined(ASIO_MSVC) // Visual C++ wants the type to be qualified.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
                 noexcept(is_nothrow_query<const Executor &, blocking_t<>::never_t>::value)
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                     noexcept(is_nothrow_query<const Executor &, never_t>::value)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 #endif // !defined(__clang__)
                 {
                     return xio::query(ex, never_t());
                 }
 
-                ASIO_STATIC_CONSTEXPR_DEFAULT_INIT(possibly_t, possibly);
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(possibly_t, possibly);
 
-                ASIO_STATIC_CONSTEXPR_DEFAULT_INIT(always_t, always);
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(always_t, always);
 
-                ASIO_STATIC_CONSTEXPR_DEFAULT_INIT(never_t, never);
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(never_t, never);
 
             private:
                 int value_;
@@ -803,15 +660,10 @@ namespace xio {
 
         typedef detail::blocking_t<> blocking_t;
 
-inline constexpr blocking_t blocking;
+        inline constexpr blocking_t blocking;
     } // namespace execution
-
-
-#endif // defined(GENERATING_DOCUMENTATION)
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXECUTION_BLOCKING_HPP
+#endif // XIO_EXECUTION_BLOCKING_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BASIC_IO_OBJECT_HPP
-#define ASIO_BASIC_IO_OBJECT_HPP
+#ifndef XIO_BASIC_IO_OBJECT_HPP
+#define XIO_BASIC_IO_OBJECT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,8 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_NO_DEPRECATED) \
-  || defined(GENERATING_DOCUMENTATION)
+#if !defined(XIO_NO_DEPRECATED)
 
 #include <xio/io_context.h>
 
@@ -52,16 +51,9 @@ namespace xio {
  * @note All I/O objects are non-copyable. However, when using C++0x, certain
  * I/O objects do support move construction and move assignment.
  */
-#if defined(GENERATING_DOCUMENTATION)
-    template<typename IoObjectService>
-
-
-
-#else
     template<typename IoObjectService,
         bool Movable = detail::service_has_move<IoObjectService>::value>
-#endif
-    class ASIO_DEPRECATED_MSG(
+    class XIO_DEPRECATED_MSG(
 
                 "Deprecated without replacement"
             )
@@ -120,33 +112,6 @@ namespace xio {
             service_.construct(implementation_);
         }
 
-#if defined(GENERATING_DOCUMENTATION)
-        /// Move-construct a basic_io_object.
-        /**
-   * Performs:
-   * @code get_service().move_construct(
-   *     get_implementation(), other.get_implementation()); @endcode
-   *
-   * @note Available only for services that support movability,
-   */
-        basic_io_object(basic_io_object &&other);
-
-        /// Move-assign a basic_io_object.
-        /**
-   * Performs:
-   * @code get_service().move_assign(get_implementation(),
-   *     other.get_service(), other.get_implementation()); @endcode
-   *
-   * @note Available only for services that support movability,
-   */
-        basic_io_object &operator=(basic_io_object &&other);
-
-        /// Perform a converting move-construction of a basic_io_object.
-        template<typename IoObjectService1>
-        basic_io_object(IoObjectService1 &other_service,
-                        typename IoObjectService1::implementation_type &other_implementation);
-#endif // defined(GENERATING_DOCUMENTATION)
-
         /// Protected destructor to prevent deletion through this type.
         /**
    * Performs:
@@ -191,7 +156,7 @@ namespace xio {
 
     // Specialisation for movable objects.
     template<typename IoObjectService>
-    class ASIO_DEPRECATED_MSG(
+    class XIO_DEPRECATED_MSG(
 
                 "Deprecated without replacement"
             )
@@ -280,7 +245,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(ASIO_NO_DEPRECATED)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // !defined(XIO_NO_DEPRECATED)
 
-#endif // ASIO_BASIC_IO_OBJECT_HPP
+#endif // XIO_BASIC_IO_OBJECT_HPP

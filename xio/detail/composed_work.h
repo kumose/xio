@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_COMPOSED_WORK_HPP
-#define ASIO_DETAIL_COMPOSED_WORK_HPP
+#ifndef XIO_DETAIL_COMPOSED_WORK_HPP
+#define XIO_DETAIL_COMPOSED_WORK_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -67,7 +67,7 @@ namespace xio {
             }
         };
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
 
         template<typename Executor>
         struct composed_work_guard<Executor,
@@ -84,7 +84,7 @@ namespace xio {
             }
         };
 
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
         template<typename>
         struct composed_io_executors;
@@ -223,4 +223,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_COMPOSED_WORK_HPP
+#endif // XIO_DETAIL_COMPOSED_WORK_HPP

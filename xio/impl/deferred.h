@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_DEFERRED_HPP
-#define ASIO_IMPL_DEFERRED_HPP
+#ifndef XIO_IMPL_DEFERRED_HPP
+#define XIO_IMPL_DEFERRED_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,9 +18,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
-#if !defined(GENERATING_DOCUMENTATION)
 
 
 
@@ -198,11 +195,8 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_DEFERRED_HPP
+#endif // XIO_IMPL_DEFERRED_HPP

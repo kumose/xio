@@ -8,31 +8,31 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_ANY_IO_EXECUTOR_HPP
-#define ASIO_ANY_IO_EXECUTOR_HPP
+#ifndef XIO_ANY_IO_EXECUTOR_HPP
+#define XIO_ANY_IO_EXECUTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include <xio/detail/config.h>
-#if defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#if defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 #include <xio/executor.h>
-#else // defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#else // defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 #include <xio/execution.h>
 #include <xio/execution_context.h>
-#endif // defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#endif // defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
 #include <xio/detail/push_options.h>
 
 namespace xio {
 
 
-#if defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#if defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
     typedef executor any_io_executor;
 
-#else // defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#else // defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
     /// Polymorphic executor type for use with I/O objects.
     /**
@@ -50,9 +50,7 @@ namespace xio {
  * > @endcode
  */
     class any_io_executor :
-#if defined(GENERATING_DOCUMENTATION)
-            public execution::any_executor<...>
-#else // defined(GENERATING_DOCUMENTATION)
+
             public execution::any_executor<
                 execution::context_as_t<execution_context &>,
                 execution::blocking_t::never_t,
@@ -62,10 +60,8 @@ namespace xio {
                 execution::prefer_only<execution::relationship_t::fork_t>,
                 execution::prefer_only<execution::relationship_t::continuation_t>
             >
-#endif // defined(GENERATING_DOCUMENTATION)
     {
     public:
-#if !defined(GENERATING_DOCUMENTATION)
         typedef execution::any_executor<
             execution::context_as_t<execution_context &>,
             execution::blocking_t::never_t,
@@ -84,25 +80,22 @@ namespace xio {
             execution::prefer_only<execution::outstanding_work_t::untracked_t>,
             execution::prefer_only<execution::relationship_t::fork_t>,
             execution::prefer_only<execution::relationship_t::continuation_t>);
-#endif // !defined(GENERATING_DOCUMENTATION)
+
 
         /// Default constructor.
-        ASIO_DECL any_io_executor() noexcept;
+        XIO_DECL any_io_executor() noexcept;
 
         /// Construct in an empty state. Equivalent effects to default constructor.
-        ASIO_DECL any_io_executor(nullptr_t) noexcept;
+        XIO_DECL any_io_executor(nullptr_t) noexcept;
 
         /// Copy constructor.
-        ASIO_DECL any_io_executor(const any_io_executor &e) noexcept;
+        XIO_DECL any_io_executor(const any_io_executor &e) noexcept;
 
         /// Move constructor.
-        ASIO_DECL any_io_executor(any_io_executor &&e) noexcept;
+        XIO_DECL any_io_executor(any_io_executor &&e) noexcept;
 
         /// Construct to point to the same target as another any_executor.
-#if defined(GENERATING_DOCUMENTATION)
-        template<class... OtherSupportableProperties>
-        any_io_executor(execution::any_executor<OtherSupportableProperties...> e);
-#else // defined(GENERATING_DOCUMENTATION)
+
         template<typename OtherAnyExecutor>
         any_io_executor(OtherAnyExecutor e,
                         constraint_t<
@@ -118,14 +111,8 @@ namespace xio {
                         > = 0)
             : base_type(static_cast<OtherAnyExecutor &&>(e)) {
         }
-#endif // defined(GENERATING_DOCUMENTATION)
 
         /// Construct to point to the same target as another any_executor.
-#if defined(GENERATING_DOCUMENTATION)
-        template<class... OtherSupportableProperties>
-        any_io_executor(std::nothrow_t,
-                        execution::any_executor<OtherSupportableProperties...> e);
-#else // defined(GENERATING_DOCUMENTATION)
         template<typename OtherAnyExecutor>
         any_io_executor(std::nothrow_t, OtherAnyExecutor e,
                         constraint_t<
@@ -141,21 +128,17 @@ namespace xio {
                         > = 0) noexcept
             : base_type(std::nothrow, static_cast<OtherAnyExecutor &&>(e)) {
         }
-#endif // defined(GENERATING_DOCUMENTATION)
 
         /// Construct to point to the same target as another any_executor.
-        ASIO_DECL any_io_executor(std::nothrow_t,
+        XIO_DECL any_io_executor(std::nothrow_t,
                                   const any_io_executor &e) noexcept;
 
         /// Construct to point to the same target as another any_executor.
-        ASIO_DECL any_io_executor(std::nothrow_t, any_io_executor &&e) noexcept;
+        XIO_DECL any_io_executor(std::nothrow_t, any_io_executor &&e) noexcept;
 
         /// Construct a polymorphic wrapper for the specified executor.
-#if defined(GENERATING_DOCUMENTATION)
-        template<ASIO_EXECUTION_EXECUTOR Executor>
-        any_io_executor(Executor e);
-#else // defined(GENERATING_DOCUMENTATION)
-        template<ASIO_EXECUTION_EXECUTOR Executor>
+
+        template<XIO_EXECUTION_EXECUTOR Executor>
         any_io_executor(Executor e,
                         constraint_t<
                             std::conditional_t<
@@ -169,14 +152,11 @@ namespace xio {
                         > = 0)
             : base_type(static_cast<Executor &&>(e)) {
         }
-#endif // defined(GENERATING_DOCUMENTATION)
+
 
         /// Construct a polymorphic wrapper for the specified executor.
-#if defined(GENERATING_DOCUMENTATION)
-        template<ASIO_EXECUTION_EXECUTOR Executor>
-        any_io_executor(std::nothrow_t, Executor e);
-#else // defined(GENERATING_DOCUMENTATION)
-        template<ASIO_EXECUTION_EXECUTOR Executor>
+
+        template<XIO_EXECUTION_EXECUTOR Executor>
         any_io_executor(std::nothrow_t, Executor e,
                         constraint_t<
                             std::conditional_t<
@@ -190,23 +170,22 @@ namespace xio {
                         > = 0) noexcept
             : base_type(std::nothrow, static_cast<Executor &&>(e)) {
         }
-#endif // defined(GENERATING_DOCUMENTATION)
 
         /// Assignment operator.
-        ASIO_DECL any_io_executor &operator=(
+        XIO_DECL any_io_executor &operator=(
             const any_io_executor &e) noexcept;
 
         /// Move assignment operator.
-        ASIO_DECL any_io_executor &operator=(any_io_executor &&e) noexcept;
+        XIO_DECL any_io_executor &operator=(any_io_executor &&e) noexcept;
 
         /// Assignment operator that sets the polymorphic wrapper to the empty state.
-        ASIO_DECL any_io_executor &operator=(nullptr_t);
+        XIO_DECL any_io_executor &operator=(nullptr_t);
 
         /// Destructor.
-        ASIO_DECL ~any_io_executor();
+        XIO_DECL ~any_io_executor();
 
         /// Swap targets with another polymorphic wrapper.
-        ASIO_DECL void swap(any_io_executor &other) noexcept;
+        XIO_DECL void swap(any_io_executor &other) noexcept;
 
         /// Obtain a polymorphic wrapper with the specified property.
         /**
@@ -243,35 +222,31 @@ namespace xio {
         }
     };
 
-#if !defined(GENERATING_DOCUMENTATION)
-
     template<>
-    ASIO_DECL any_io_executor any_io_executor::require(
+    XIO_DECL any_io_executor any_io_executor::require(
         const execution::blocking_t::never_t &, int) const;
 
     template<>
-    ASIO_DECL any_io_executor any_io_executor::prefer(
+    XIO_DECL any_io_executor any_io_executor::prefer(
         const execution::blocking_t::possibly_t &, int) const;
 
     template<>
-    ASIO_DECL any_io_executor any_io_executor::prefer(
+    XIO_DECL any_io_executor any_io_executor::prefer(
         const execution::outstanding_work_t::tracked_t &, int) const;
 
     template<>
-    ASIO_DECL any_io_executor any_io_executor::prefer(
+    XIO_DECL any_io_executor any_io_executor::prefer(
         const execution::outstanding_work_t::untracked_t &, int) const;
 
     template<>
-    ASIO_DECL any_io_executor any_io_executor::prefer(
+    XIO_DECL any_io_executor any_io_executor::prefer(
         const execution::relationship_t::fork_t &, int) const;
 
     template<>
-    ASIO_DECL any_io_executor any_io_executor::prefer(
+    XIO_DECL any_io_executor any_io_executor::prefer(
         const execution::relationship_t::continuation_t &, int) const;
 
-#endif // !defined(GENERATING_DOCUMENTATION)
-
-#endif // defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#endif // defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
 
 } // namespace xio
@@ -279,4 +254,4 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // ASIO_ANY_IO_EXECUTOR_HPP
+#endif // XIO_ANY_IO_EXECUTOR_HPP

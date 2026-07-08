@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_TS_BUFFER_HPP
-#define ASIO_TS_BUFFER_HPP
+#ifndef XIO_TS_BUFFER_HPP
+#define XIO_TS_BUFFER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -21,4 +21,4 @@
 #include <xio/write.h>
 #include <xio/read_until.h>
 
-#endif // ASIO_TS_BUFFER_HPP
+#endif // XIO_TS_BUFFER_HPP

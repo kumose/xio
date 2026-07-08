@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_EXECUTOR_HPP
-#define ASIO_IMPL_EXECUTOR_HPP
+#ifndef XIO_IMPL_EXECUTOR_HPP
+#define XIO_IMPL_EXECUTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
 
 #include <new>
 #include <xio/detail/atomic_count.h>
@@ -30,9 +30,6 @@
 
 namespace xio {
 
-
-#if !defined(GENERATING_DOCUMENTATION)
-
     // Default polymorphic executor implementation.
 
 
@@ -42,7 +39,7 @@ namespace xio {
     class executor::impl
             : public executor::impl_base {
     public:
-        typedef ASIO_REBIND_ALLOC(Allocator, impl) allocator_type;
+        typedef XIO_REBIND_ALLOC(Allocator, impl) allocator_type;
 
         static impl_base *create(const Executor &e, Allocator a = Allocator()) {
             raw_mem mem(a);
@@ -270,13 +267,11 @@ namespace xio {
                    : 0;
     }
 
-#endif // !defined(GENERATING_DOCUMENTATION)
-
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
-#endif // ASIO_IMPL_EXECUTOR_HPP
+#endif // XIO_IMPL_EXECUTOR_HPP

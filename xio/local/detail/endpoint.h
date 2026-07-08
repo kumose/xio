@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_LOCAL_DETAIL_ENDPOINT_HPP
-#define ASIO_LOCAL_DETAIL_ENDPOINT_HPP
+#ifndef XIO_LOCAL_DETAIL_ENDPOINT_HPP
+#define XIO_LOCAL_DETAIL_ENDPOINT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,7 +18,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_LOCAL_SOCKETS)
+#if defined(XIO_HAS_LOCAL_SOCKETS)
 
 #include <cstddef>
 #include <string>
@@ -36,16 +36,16 @@ namespace xio {
             class endpoint {
             public:
                 // Default constructor.
-                ASIO_DECL endpoint() noexcept;
+                XIO_DECL endpoint() noexcept;
 
                 // Construct an endpoint using the specified path name.
-                ASIO_DECL endpoint(const char *path_name);
+                XIO_DECL endpoint(const char *path_name);
 
                 // Construct an endpoint using the specified path name.
-                ASIO_DECL endpoint(const std::string &path_name);
+                XIO_DECL endpoint(const std::string &path_name);
 
 // Construct an endpoint using the specified path name.
-ASIO_DECL endpoint(std::string_view path_name);
+XIO_DECL endpoint(std::string_view path_name);
 
 // Copy constructor.
 endpoint(const endpoint &other) noexcept
@@ -77,7 +77,7 @@ std::size_t size() const noexcept {
 }
 
 // Set the underlying size of the endpoint in the native type.
-  ASIO_DECL void resize(std::size_t size);
+  XIO_DECL void resize(std::size_t size);
 
 // Get the capacity of the endpoint in the native type.
 std::size_t capacity() const noexcept {
@@ -85,20 +85,20 @@ std::size_t capacity() const noexcept {
 }
 
 // Get the path associated with the endpoint.
-ASIO_DECL std::string path() const;
+XIO_DECL std::string path() const;
 
 // Set the path associated with the endpoint.
-  ASIO_DECL void path(const char *p);
+  XIO_DECL void path(const char *p);
 
 // Set the path associated with the endpoint.
-  ASIO_DECL void path(const std::string &p);
+  XIO_DECL void path(const std::string &p);
 
 // Compare two endpoints for equality.
-  ASIO_DECL friend bool operator==(
+  XIO_DECL friend bool operator==(
     const endpoint &e1, const endpoint &e2) noexcept;
 
 // Compare endpoints for ordering.
-  ASIO_DECL friend bool operator<(
+  XIO_DECL friend bool operator<(
     const endpoint &e1, const endpoint &e2) noexcept;
 
 private:
@@ -112,7 +112,7 @@ union data_union {
 std::size_t path_length_;
 
 // Initialise with a specified path.
-  ASIO_DECL void init(const char *path, std::size_t path_length);
+  XIO_DECL void init(const char *path, std::size_t path_length);
 };
 
 } // namespace detail
@@ -122,6 +122,6 @@ std::size_t path_length_;
 #include <xio/detail/pop_options.h>
 
 
-#endif // defined(ASIO_HAS_LOCAL_SOCKETS)
+#endif // defined(XIO_HAS_LOCAL_SOCKETS)
 
-#endif // ASIO_LOCAL_DETAIL_ENDPOINT_HPP
+#endif // XIO_LOCAL_DETAIL_ENDPOINT_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_SYSTEM_EXECUTOR_HPP
-#define ASIO_IMPL_SYSTEM_EXECUTOR_HPP
+#ifndef XIO_IMPL_SYSTEM_EXECUTOR_HPP
+#define XIO_IMPL_SYSTEM_EXECUTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -47,16 +47,16 @@ namespace xio {
         // Obtain a non-const instance of the function.
         detail::non_const_lvalue<Function> f2(f);
 
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
         try {
-#endif// !defined(ASIO_NO_EXCEPTIONS)
+#endif// !defined(XIO_NO_EXCEPTIONS)
             detail::fenced_block b(detail::fenced_block::full);
             static_cast<std::decay_t<Function> &&>(f2.value)();
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
         } catch (...) {
             std::terminate();
         }
-#endif// !defined(ASIO_NO_EXCEPTIONS)
+#endif// !defined(XIO_NO_EXCEPTIONS)
     }
 
     template<typename Blocking, typename Relationship, typename Allocator>
@@ -67,16 +67,16 @@ namespace xio {
         // Obtain a non-const instance of the function.
         detail::non_const_lvalue<Function> f2(f);
 
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
         try {
-#endif// !defined(ASIO_NO_EXCEPTIONS)
+#endif// !defined(XIO_NO_EXCEPTIONS)
             detail::fenced_block b(detail::fenced_block::full);
             static_cast<std::decay_t<Function> &&>(f2.value)();
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
         } catch (...) {
             std::terminate();
         }
-#endif// !defined(ASIO_NO_EXCEPTIONS)
+#endif// !defined(XIO_NO_EXCEPTIONS)
     }
 
     template<typename Blocking, typename Relationship, typename Allocator>
@@ -94,10 +94,10 @@ namespace xio {
         p.p = new(p.v) op(static_cast<Function &&>(f), allocator_);
 
         if (std::is_same<Relationship, execution::relationship_t::continuation_t>::value) {
-            ASIO_HANDLER_CREATION((ctx, *p.p,
+            XIO_HANDLER_CREATION((ctx, *p.p,
                                    "system_executor", &ctx, 0, "execute(blk=never,rel=cont)"));
         } else {
-            ASIO_HANDLER_CREATION((ctx, *p.p,
+            XIO_HANDLER_CREATION((ctx, *p.p,
                                    "system_executor", &ctx, 0, "execute(blk=never,rel=fork)"));
         }
 
@@ -107,7 +107,7 @@ namespace xio {
         p.v = p.p = 0;
     }
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
     template<typename Blocking, typename Relationship, typename Allocator>
     inline system_context &basic_system_executor<
         Blocking, Relationship, Allocator>::context() const noexcept {
@@ -132,7 +132,7 @@ namespace xio {
         typename op::ptr p = {detail::addressof(a), op::ptr::allocate(a), 0};
         p.p = new(p.v) op(static_cast<Function &&>(f), a);
 
-        ASIO_HANDLER_CREATION((ctx, *p.p,
+        XIO_HANDLER_CREATION((ctx, *p.p,
                                "system_executor", &this->context(), 0, "post"));
 
         ctx.scheduler_.post_immediate_completion(p.p, false);
@@ -150,17 +150,17 @@ namespace xio {
         typename op::ptr p = {detail::addressof(a), op::ptr::allocate(a), 0};
         p.p = new(p.v) op(static_cast<Function &&>(f), a);
 
-        ASIO_HANDLER_CREATION((ctx, *p.p,
+        XIO_HANDLER_CREATION((ctx, *p.p,
                                "system_executor", &this->context(), 0, "defer"));
 
         ctx.scheduler_.post_immediate_completion(p.p, true);
         p.v = p.p = 0;
     }
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_SYSTEM_EXECUTOR_HPP
+#endif // XIO_IMPL_SYSTEM_EXECUTOR_HPP

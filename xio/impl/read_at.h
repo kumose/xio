@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_READ_AT_HPP
-#define ASIO_IMPL_READ_AT_HPP
+#ifndef XIO_IMPL_READ_AT_HPP
+#define XIO_IMPL_READ_AT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -103,8 +103,8 @@ namespace xio {
         return bytes_transferred;
     }
 
-#if !defined(ASIO_NO_EXTENSIONS)
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_IOSTREAM)
 
     template<typename SyncRandomAccessReadDevice, typename Allocator,
         typename CompletionCondition>
@@ -163,8 +163,8 @@ namespace xio {
         return bytes_transferred;
     }
 
-#endif // !defined(ASIO_NO_IOSTREAM)
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
     namespace detail {
         template<typename AsyncRandomAccessReadDevice,
@@ -217,7 +217,7 @@ namespace xio {
                         max_size = this->check_for_completion(ec, buffers_.total_consumed());
                         for (;;) {
                             {
-                                ASIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_read_at"));
+                                XIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_read_at"));
                                 device_.async_read_some_at(
                                     offset_ + buffers_.total_consumed(), buffers_.prepare(max_size),
                                     static_cast<read_at_op &&>(*this));
@@ -299,7 +299,7 @@ namespace xio {
                             CompletionCondition &&completion_cond) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a ReadHandler.
-                ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+                XIO_READ_HANDLER_CHECK(ReadHandler, handler)
                 type_check;
 
                 non_const_lvalue<ReadHandler> handler2(handler);
@@ -314,7 +314,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename AsyncRandomAccessReadDevice, typename MutableBufferSequence,
@@ -342,10 +341,9 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
-#if !defined(ASIO_NO_EXTENSIONS)
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_IOSTREAM)
 
     namespace detail {
         template<typename AsyncRandomAccessReadDevice, typename Allocator,
@@ -401,7 +399,7 @@ namespace xio {
                         bytes_available = read_size_helper(streambuf_, max_size);
                         for (;;) {
                             {
-                                ASIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_read_at"));
+                                XIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_read_at"));
                                 device_.async_read_some_at(offset_ + total_transferred_,
                                                            streambuf_.prepare(bytes_available),
                                                            static_cast<read_at_streambuf_op &&>(*this));
@@ -468,7 +466,7 @@ namespace xio {
                             CompletionCondition &&completion_cond) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a ReadHandler.
-                ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+                XIO_READ_HANDLER_CHECK(ReadHandler, handler)
                 type_check;
 
                 non_const_lvalue<ReadHandler> handler2(handler);
@@ -484,7 +482,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename AsyncRandomAccessReadDevice, typename Executor,
@@ -510,14 +507,13 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
-#endif // !defined(ASIO_NO_IOSTREAM)
-#endif // !defined(ASIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_READ_AT_HPP
+#endif // XIO_IMPL_READ_AT_HPP

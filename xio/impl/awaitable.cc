@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_AWAITABLE_IPP
-#define ASIO_IMPL_AWAITABLE_IPP
+#ifndef XIO_IMPL_AWAITABLE_IPP
+#define XIO_IMPL_AWAITABLE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_CO_AWAIT)
+#if defined(XIO_HAS_CO_AWAIT)
 
 #include <xio/awaitable.h>
 #include <xio/detail/call_stack.h>
@@ -42,6 +42,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_CO_AWAIT)
+#endif // defined(XIO_HAS_CO_AWAIT)
 
-#endif // ASIO_IMPL_AWAITABLE_IPP
+#endif // XIO_IMPL_AWAITABLE_IPP

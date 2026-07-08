@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BASIC_FILE_HPP
-#define ASIO_BASIC_FILE_HPP
+#ifndef XIO_BASIC_FILE_HPP
+#define XIO_BASIC_FILE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,8 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_FILE) \
-  || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_FILE)
 
 #include <string>
 #include <utility>
@@ -34,9 +33,9 @@
 #include <xio/execution_context.h>
 #include <xio/post.h>
 #include <xio/file_base.h>
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 #include <xio/detail/win_iocp_file_service.h>
-#elif defined(ASIO_HAS_IO_URING)
+#elif defined(XIO_HAS_IO_URING)
 #include <xio/detail/io_uring_file_service.h>
 #endif
 
@@ -45,14 +44,14 @@
 namespace xio {
 
 
-#if !defined(ASIO_BASIC_FILE_FWD_DECL)
-#define ASIO_BASIC_FILE_FWD_DECL
+#if !defined(XIO_BASIC_FILE_FWD_DECL)
+#define XIO_BASIC_FILE_FWD_DECL
 
 // Forward declaration with defaulted arguments.
 template<typename Executor = any_io_executor>
 class basic_file;
 
-#endif // !defined(ASIO_BASIC_FILE_FWD_DECL)
+#endif // !defined(XIO_BASIC_FILE_FWD_DECL)
 
 /// Provides file functionality.
 /**
@@ -78,11 +77,9 @@ public:
     };
 
 /// The native representation of a file.
-#if defined(GENERATING_DOCUMENTATION)
-typedef implementation_defined native_handle_type;
-#elif defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 typedef detail::win_iocp_file_service::native_handle_type native_handle_type;
-#elif defined(ASIO_HAS_IO_URING)
+#elif defined(XIO_HAS_IO_URING)
 typedef detail::io_uring_file_service::native_handle_type native_handle_type;
 #endif
 
@@ -457,10 +454,10 @@ void open(const char *path, file_base::flags open_flags) {
    * }
    * @endcode
    */
-ASIO_SYNC_OP_VOID open(const char *path,
+XIO_SYNC_OP_VOID open(const char *path,
                        file_base::flags open_flags, xio::error_code &ec) {
     impl_.get_service().open(impl_.get_implementation(), path, open_flags, ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Open the file using the specified path.
@@ -537,11 +534,11 @@ void open(const std::string &path, file_base::flags open_flags) {
    * }
    * @endcode
    */
-ASIO_SYNC_OP_VOID open(const std::string &path,
+XIO_SYNC_OP_VOID open(const std::string &path,
                        file_base::flags open_flags, xio::error_code &ec) {
     impl_.get_service().open(impl_.get_implementation(),
                              path.c_str(), open_flags, ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Assign an existing native file to the file.
@@ -567,11 +564,11 @@ void assign(const native_handle_type &native_file) {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID assign(const native_handle_type &native_file,
+XIO_SYNC_OP_VOID assign(const native_handle_type &native_file,
                          xio::error_code &ec) {
     impl_.get_service().assign(
         impl_.get_implementation(), native_file, ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Determine whether the file is open.
@@ -615,9 +612,9 @@ void close() {
    * }
    * @endcode
    */
-ASIO_SYNC_OP_VOID close(xio::error_code &ec) {
+XIO_SYNC_OP_VOID close(xio::error_code &ec) {
     impl_.get_service().close(impl_.get_implementation(), ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Release ownership of the underlying native file.
@@ -633,7 +630,7 @@ ASIO_SYNC_OP_VOID close(xio::error_code &ec) {
    * 8.1, and will fail with xio::error::operation_not_supported on
    * these platforms.
    */
-#if defined(ASIO_MSVC) && (ASIO_MSVC >= 1400) \
+#if defined(XIO_MSVC) && (XIO_MSVC >= 1400) \
   && (!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0603)
 __declspec(deprecated("This function always fails with "
 "operation_not_supported when used on Windows versions "
@@ -660,7 +657,7 @@ native_handle_type release() {
    * 8.1, and will fail with xio::error::operation_not_supported on
    * these platforms.
    */
-#if defined(ASIO_MSVC) && (ASIO_MSVC >= 1400) \
+#if defined(XIO_MSVC) && (XIO_MSVC >= 1400) \
   && (!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0603)
 __declspec(deprecated("This function always fails with "
 "operation_not_supported when used on Windows versions "
@@ -691,7 +688,7 @@ native_handle_type native_handle() {
    * @note Calls to cancel() will always fail with
    * xio::error::operation_not_supported when run on Windows XP, Windows
    * Server 2003, and earlier versions of Windows, unless
-   * ASIO_ENABLE_CANCELIO is defined. However, the CancelIo function has
+   * XIO_ENABLE_CANCELIO is defined. However, the CancelIo function has
    * two issues that should be considered before enabling its use:
    *
    * @li It will only cancel asynchronous operations that were initiated in the
@@ -708,9 +705,9 @@ native_handle_type native_handle() {
    * CancelIoEx function is always used. This function does not have the
    * problems described above.
    */
-#if defined(ASIO_MSVC) && (ASIO_MSVC >= 1400) \
+#if defined(XIO_MSVC) && (XIO_MSVC >= 1400) \
   && (!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0600) \
-  && !defined(ASIO_ENABLE_CANCELIO)
+  && !defined(XIO_ENABLE_CANCELIO)
 __declspec(deprecated("By default, this function always fails with "
 "operation_not_supported when used on Windows XP, Windows Server 2003, "
 "or earlier. Consult documentation for details."))
@@ -732,7 +729,7 @@ void cancel() {
    * @note Calls to cancel() will always fail with
    * xio::error::operation_not_supported when run on Windows XP, Windows
    * Server 2003, and earlier versions of Windows, unless
-   * ASIO_ENABLE_CANCELIO is defined. However, the CancelIo function has
+   * XIO_ENABLE_CANCELIO is defined. However, the CancelIo function has
    * two issues that should be considered before enabling its use:
    *
    * @li It will only cancel asynchronous operations that were initiated in the
@@ -749,16 +746,16 @@ void cancel() {
    * CancelIoEx function is always used. This function does not have the
    * problems described above.
    */
-#if defined(ASIO_MSVC) && (ASIO_MSVC >= 1400) \
+#if defined(XIO_MSVC) && (XIO_MSVC >= 1400) \
   && (!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0600) \
-  && !defined(ASIO_ENABLE_CANCELIO)
+  && !defined(XIO_ENABLE_CANCELIO)
 __declspec(deprecated("By default, this function always fails with "
 "operation_not_supported when used on Windows XP, Windows Server 2003, "
 "or earlier. Consult documentation for details."))
 #endif
-ASIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
+XIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
     impl_.get_service().cancel(impl_.get_implementation(), ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Get the size of the file.
@@ -812,9 +809,9 @@ void resize(uint64_t n) {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID resize(uint64_t n, xio::error_code &ec) {
+XIO_SYNC_OP_VOID resize(uint64_t n, xio::error_code &ec) {
     impl_.get_service().resize(impl_.get_implementation(), n, ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Synchronise the file to disk.
@@ -837,9 +834,9 @@ void sync_all() {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID sync_all(xio::error_code &ec) {
+XIO_SYNC_OP_VOID sync_all(xio::error_code &ec) {
     impl_.get_service().sync_all(impl_.get_implementation(), ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Synchronise the file data to disk.
@@ -862,9 +859,9 @@ void sync_data() {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID sync_data(xio::error_code &ec) {
+XIO_SYNC_OP_VOID sync_data(xio::error_code &ec) {
     impl_.get_service().sync_data(impl_.get_implementation(), ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 protected:
@@ -876,9 +873,9 @@ protected:
 ~basic_file() {
 }
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 detail::io_object_impl<detail::win_iocp_file_service, Executor> impl_;
-#elif defined(ASIO_HAS_IO_URING)
+#elif defined(XIO_HAS_IO_URING)
 detail::io_object_impl<detail::io_uring_file_service, Executor> impl_;
 #endif
 
@@ -892,7 +889,6 @@ basic_file &operator=(const basic_file &) = delete;
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_FILE)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_FILE)
 
-#endif // ASIO_BASIC_FILE_HPP
+#endif // XIO_BASIC_FILE_HPP

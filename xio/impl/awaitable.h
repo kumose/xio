@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_AWAITABLE_HPP
-#define ASIO_IMPL_AWAITABLE_HPP
+#ifndef XIO_IMPL_AWAITABLE_HPP
+#define XIO_IMPL_AWAITABLE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -32,12 +32,12 @@
 #include <system_error>
 #include <xio/this_coro.h>
 
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
 #  include "xio/detail/handler_tracking.hpp"
 #  include "xio/detail/source_location.hpp"
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 
 #include <xio/detail/push_options.h>
 
@@ -88,9 +88,9 @@ namespace xio {
 
         class awaitable_launch_context {
         public:
-  ASIO_DECL void launch(void (*pump_fn)(void *), void *arg);
+  XIO_DECL void launch(void (*pump_fn)(void *), void *arg);
 
-  ASIO_DECL bool is_launching();
+  XIO_DECL bool is_launching();
         };
 
         struct awaitable_thread_is_launching {
@@ -99,7 +99,7 @@ namespace xio {
         template<typename Executor>
         class awaitable_frame_base : public awaitable_launch_context {
         public:
-#if !defined(ASIO_DISABLE_AWAITABLE_FRAME_RECYCLING)
+#if !defined(XIO_DISABLE_AWAITABLE_FRAME_RECYCLING)
             void *operator new(std::size_t size) {
                 return xio::detail::thread_info_base::allocate(
                     xio::detail::thread_info_base::awaitable_frame_tag(),
@@ -113,7 +113,7 @@ namespace xio {
                     xio::detail::thread_context::top_of_thread_call_stack(),
                     pointer, size);
             }
-#endif // !defined(ASIO_DISABLE_AWAITABLE_FRAME_RECYCLING)
+#endif // !defined(XIO_DISABLE_AWAITABLE_FRAME_RECYCLING)
 
             // The frame starts in a suspended state until the awaitable_thread object
             // pumps the stack.
@@ -172,11 +172,11 @@ namespace xio {
             template<typename Op>
             auto await_transform(Op &&op,
                                  constraint_t<is_async_operation<Op>::value> = 0
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
                                  , detail::source_location location = detail::source_location::current()
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
             ) {
                 if (attached_thread_->entry_point()->throw_if_cancelled_)
                     if (!!attached_thread_->get_cancellation_state().cancelled())
@@ -185,11 +185,11 @@ namespace xio {
                 return awaitable_async_op<
                     completion_signature_of_t<Op>, std::decay_t<Op>, Executor>{
                     std::forward<Op>(op), this
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
         , location
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
                 };
             }
 
@@ -920,20 +920,20 @@ namespace xio {
             typedef awaitable_async_op_handler<Signature, Executor> handler_type;
 
             awaitable_async_op(Op &&o, awaitable_frame_base<Executor> *frame
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
                                , const detail::source_location &location
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
             )
                 : op_(std::forward<Op>(o)),
                   frame_(frame),
                   result_()
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
     , location_(location)
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
             {
             }
 
@@ -945,12 +945,12 @@ namespace xio {
                 frame_->after_suspend(
                     [](void *arg) {
                         awaitable_async_op *self = static_cast<awaitable_async_op *>(arg);
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
-                        ASIO_HANDLER_LOCATION((self->location_.file_name(),
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
+                        XIO_HANDLER_LOCATION((self->location_.file_name(),
                                                self->location_.line(), self->location_.function_name()));
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
                         std::forward<Op &&>(self->op_)(
                             handler_type(self->frame_->detach_thread(), self->result_));
                     }, this);
@@ -964,18 +964,17 @@ namespace xio {
             Op &&op_;
             awaitable_frame_base<Executor> *frame_;
             typename handler_type::result_type result_;
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
             detail::source_location location_;
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
         };
     } // namespace detail
 
 } // namespace xio
 
-#if !defined(GENERATING_DOCUMENTATION)
-# if defined(ASIO_HAS_STD_COROUTINE)
+# if defined(XIO_HAS_STD_COROUTINE)
 
 namespace std {
     template<typename T, typename Executor, typename... Args>
@@ -984,7 +983,7 @@ namespace std {
     };
 } // namespace std
 
-# else // defined(ASIO_HAS_STD_COROUTINE)
+# else // defined(XIO_HAS_STD_COROUTINE)
 
 namespace std {
     namespace experimental {
@@ -995,9 +994,8 @@ namespace std {
     }
 } // namespace std::experimental
 
-# endif // defined(ASIO_HAS_STD_COROUTINE)
-#endif // !defined(GENERATING_DOCUMENTATION)
+# endif // defined(XIO_HAS_STD_COROUTINE)
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_AWAITABLE_HPP
+#endif // XIO_IMPL_AWAITABLE_HPP

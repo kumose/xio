@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_USE_AWAITABLE_HPP
-#define ASIO_USE_AWAITABLE_HPP
+#ifndef XIO_USE_AWAITABLE_HPP
+#define XIO_USE_AWAITABLE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,16 +17,16 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_CO_AWAIT) || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_CO_AWAIT)
 
 #include <xio/awaitable.h>
 #include <xio/detail/handler_tracking.h>
 
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
 #  include "xio/detail/source_location.hpp"
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 
 #include <xio/detail/push_options.h>
 
@@ -58,40 +58,40 @@ namespace xio {
     struct use_awaitable_t {
         /// Default constructor.
         constexpr use_awaitable_t (
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
 detail::source_location location = detail::source_location::current()
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 )
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
-# if defined(ASIO_HAS_SOURCE_LOCATION)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
+# if defined(XIO_HAS_SOURCE_LOCATION)
 : file_name_ (location.file_name()),
 line_ (location.line()),
 function_name_ (location.function_name())
-# else // defined(ASIO_HAS_SOURCE_LOCATION)
+# else // defined(XIO_HAS_SOURCE_LOCATION)
 : file_name_ (0),
 line_ (0),
 function_name_ (0)
-# endif // defined(ASIO_HAS_SOURCE_LOCATION)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+# endif // defined(XIO_HAS_SOURCE_LOCATION)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 {
   }
 
 /// Constructor used to specify file name, line, and function name.
 constexpr use_awaitable_t(const char *file_name,
                           int line, const char *function_name)
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
 : file_name_ (file_name),
         line_(line),
         function_name_(function_name)
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 {
-#if !defined(ASIO_ENABLE_HANDLER_TRACKING)
+#if !defined(XIO_ENABLE_HANDLER_TRACKING)
 (void)file_name;
 (void)line;
 (void)function_name;
-#endif // !defined(ASIO_ENABLE_HANDLER_TRACKING)
+#endif // !defined(XIO_ENABLE_HANDLER_TRACKING)
 }
 
 /// Adapts an executor to add the @c use_awaitable_t completion token as the
@@ -133,11 +133,11 @@ as_default_on(T &&object) {
     >::other(static_cast<T &&>(object));
 }
 
-#if defined(ASIO_ENABLE_HANDLER_TRACKING)
+#if defined(XIO_ENABLE_HANDLER_TRACKING)
 const char *file_name_;
 int line_;
 const char *function_name_;
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 };
 
 /// A @ref completion_token object that represents the currently executing
@@ -145,11 +145,8 @@ const char *function_name_;
 /**
  * See the documentation for xio::use_awaitable_t for a usage example.
  */
-#if defined(GENERATING_DOCUMENTATION)
-inline constexpr use_awaitable_t<> use_awaitable;
-#else
+
 inline constexpr use_awaitable_t<> use_awaitable(0, 0, 0);
-#endif
 
 } // namespace xio
 
@@ -157,6 +154,6 @@ inline constexpr use_awaitable_t<> use_awaitable(0, 0, 0);
 
 #include <xio/impl/use_awaitable.h>
 
-#endif // defined(ASIO_HAS_CO_AWAIT) || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_CO_AWAIT)
 
-#endif // ASIO_USE_AWAITABLE_HPP
+#endif // XIO_USE_AWAITABLE_HPP

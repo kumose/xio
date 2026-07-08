@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SSL_DETAIL_OPENSSL_TYPES_HPP
-#define ASIO_SSL_DETAIL_OPENSSL_TYPES_HPP
+#ifndef XIO_SSL_DETAIL_OPENSSL_TYPES_HPP
+#define XIO_SSL_DETAIL_OPENSSL_TYPES_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,9 +17,9 @@
 
 #include <xio/detail/config.h>
 #include <xio/detail/socket_types.h>
-#if defined(ASIO_USE_WOLFSSL)
+#if defined(XIO_USE_WOLFSSL)
 # include <wolfssl/options.h>
-#endif // defined(ASIO_USE_WOLFSSL)
+#endif // defined(XIO_USE_WOLFSSL)
 #include <openssl/conf.h>
 #include <openssl/ssl.h>
 #if !defined(OPENSSL_NO_ENGINE)
@@ -31,4 +31,4 @@
 #include <openssl/x509.h>
 #include <openssl/x509v3.h>
 
-#endif // ASIO_SSL_DETAIL_OPENSSL_TYPES_HPP
+#endif // XIO_SSL_DETAIL_OPENSSL_TYPES_HPP

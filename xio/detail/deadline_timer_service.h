@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_DEADLINE_TIMER_SERVICE_HPP
-#define ASIO_DETAIL_DEADLINE_TIMER_SERVICE_HPP
+#ifndef XIO_DETAIL_DEADLINE_TIMER_SERVICE_HPP
+#define XIO_DETAIL_DEADLINE_TIMER_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -33,10 +33,10 @@
 #include <xio/detail/wait_handler.h>
 #include <xio/detail/wait_op.h>
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 # include <chrono>
 # include <thread>
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
 
 #include <xio/detail/push_options.h>
 
@@ -151,7 +151,7 @@ namespace xio {
                     return 0;
                 }
 
-                ASIO_HANDLER_OPERATION((scheduler_.context(),
+                XIO_HANDLER_OPERATION((scheduler_.context(),
                                         "deadline_timer", &impl, 0, "cancel"));
 
                 std::size_t count = scheduler_.cancel_timer(timer_queue_, impl.timer_data);
@@ -168,7 +168,7 @@ namespace xio {
                     return 0;
                 }
 
-                ASIO_HANDLER_OPERATION((scheduler_.context(),
+                XIO_HANDLER_OPERATION((scheduler_.context(),
                                         "deadline_timer", &impl, 0, "cancel_one"));
 
                 std::size_t count = scheduler_.cancel_timer(
@@ -251,7 +251,7 @@ namespace xio {
 
                 impl.might_have_pending_waits = true;
 
-                ASIO_HANDLER_CREATION((scheduler_.context(),
+                XIO_HANDLER_CREATION((scheduler_.context(),
                                        *p.p, "deadline_timer", &impl, 0, "async_wait"));
 
                 scheduler_.schedule_timer(timer_queue_, impl.expiry, impl.timer_data, p.p);
@@ -264,17 +264,17 @@ namespace xio {
             // required subset of its interface.
             template<typename Duration>
             void do_wait(const Duration &timeout, xio::error_code &ec) {
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
                 std::this_thread::sleep_for(
                     std::chrono::seconds(timeout.total_seconds())
                     + std::chrono::microseconds(timeout.total_microseconds()));
                 ec = xio::error_code();
-#else // defined(ASIO_WINDOWS_RUNTIME)
+#else // defined(XIO_WINDOWS_RUNTIME)
                 ::timeval tv;
                 tv.tv_sec = timeout.total_seconds();
                 tv.tv_usec = timeout.total_microseconds() % 1000000;
                 socket_ops::select(0, 0, 0, 0, &tv, ec);
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
             }
 
             // Helper class used to implement per-operation cancellation.
@@ -314,4 +314,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_DEADLINE_TIMER_SERVICE_HPP
+#endif // XIO_DETAIL_DEADLINE_TIMER_SERVICE_HPP

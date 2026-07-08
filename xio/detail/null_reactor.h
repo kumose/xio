@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_NULL_REACTOR_HPP
-#define ASIO_DETAIL_NULL_REACTOR_HPP
+#ifndef XIO_DETAIL_NULL_REACTOR_HPP
+#define XIO_DETAIL_NULL_REACTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,9 +17,9 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IOCP) \
-  || defined(ASIO_WINDOWS_RUNTIME) \
-  || defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#if defined(XIO_HAS_IOCP) \
+  || defined(XIO_WINDOWS_RUNTIME) \
+  || defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
 #include <xio/detail/scheduler_operation.h>
 #include <xio/detail/scheduler_task.h>
@@ -69,8 +69,8 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IOCP)
-//   || defined(ASIO_WINDOWS_RUNTIME)
-//   || defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#endif // defined(XIO_HAS_IOCP)
+//   || defined(XIO_WINDOWS_RUNTIME)
+//   || defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
-#endif // ASIO_DETAIL_NULL_REACTOR_HPP
+#endif // XIO_DETAIL_NULL_REACTOR_HPP

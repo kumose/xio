@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_WIN_CRITSEC_MUTEX_IPP
-#define ASIO_DETAIL_IMPL_WIN_CRITSEC_MUTEX_IPP
+#ifndef XIO_DETAIL_IMPL_WIN_CRITSEC_MUTEX_IPP
+#define XIO_DETAIL_IMPL_WIN_CRITSEC_MUTEX_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 
 #include <xio/detail/throw_error.h>
 #include <xio/detail/win_critsec_mutex.h>
@@ -44,7 +44,7 @@ namespace xio {
 // we'll just call the Windows API and hope.
 # if defined(UNDER_CE)
 ::InitializeCriticalSection (&crit_section_);
-# elif defined(ASIO_WINDOWS_APP)
+# elif defined(XIO_WINDOWS_APP)
 if (!::InitializeCriticalSectionEx (&crit_section_, 0, 0))
     return ::GetLastError();
 # else
@@ -57,7 +57,7 @@ __try
   {
 # if defined(UNDER_CE)
 ::InitializeCriticalSection (&crit_section_);
-# elif defined(ASIO_WINDOWS_APP)
+# elif defined(XIO_WINDOWS_APP)
 if (!::InitializeCriticalSectionEx (&crit_section_, 0, 0))
       return ::GetLastError();
 # else
@@ -79,6 +79,6 @@ if (!::InitializeCriticalSectionAndSpinCount (&crit_section_, 0x80000000))
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 
-#endif // ASIO_DETAIL_IMPL_WIN_CRITSEC_MUTEX_IPP
+#endif // XIO_DETAIL_IMPL_WIN_CRITSEC_MUTEX_IPP

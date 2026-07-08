@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_REACTIVE_SOCKET_SERVICE_BASE_HPP
-#define ASIO_DETAIL_REACTIVE_SOCKET_SERVICE_BASE_HPP
+#ifndef XIO_DETAIL_REACTIVE_SOCKET_SERVICE_BASE_HPP
+#define XIO_DETAIL_REACTIVE_SOCKET_SERVICE_BASE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,9 +17,9 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_HAS_IOCP) \
-  && !defined(ASIO_WINDOWS_RUNTIME) \
-  && !defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#if !defined(XIO_HAS_IOCP) \
+  && !defined(XIO_WINDOWS_RUNTIME) \
+  && !defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
 #include <xio/associated_cancellation_slot.h>
 #include <xio/buffer.h>
@@ -64,25 +64,25 @@ namespace xio {
             };
 
             // Constructor.
-            ASIO_DECL reactive_socket_service_base(execution_context &context);
+            XIO_DECL reactive_socket_service_base(execution_context &context);
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void base_shutdown();
+  XIO_DECL void base_shutdown();
 
             // Construct a new socket implementation.
-  ASIO_DECL void construct(base_implementation_type &impl);
+  XIO_DECL void construct(base_implementation_type &impl);
 
             // Move-construct a new socket implementation.
-  ASIO_DECL void base_move_construct(base_implementation_type &impl,
+  XIO_DECL void base_move_construct(base_implementation_type &impl,
                                      base_implementation_type &other_impl) noexcept;
 
             // Move-assign from another socket implementation.
-  ASIO_DECL void base_move_assign(base_implementation_type &impl,
+  XIO_DECL void base_move_assign(base_implementation_type &impl,
                                   reactive_socket_service_base &other_service,
                                   base_implementation_type &other_impl);
 
             // Destroy a socket implementation.
-  ASIO_DECL void destroy(base_implementation_type &impl);
+  XIO_DECL void destroy(base_implementation_type &impl);
 
             // Determine whether the socket is open.
             bool is_open(const base_implementation_type &impl) const {
@@ -90,11 +90,11 @@ namespace xio {
             }
 
             // Destroy a socket implementation.
-            ASIO_DECL xio::error_code close(
+            XIO_DECL xio::error_code close(
                 base_implementation_type &impl, xio::error_code &ec);
 
             // Release ownership of the socket.
-  ASIO_DECL socket_type release(
+  XIO_DECL socket_type release(
                 base_implementation_type &impl, xio::error_code &ec);
 
             // Get the native socket representation.
@@ -103,7 +103,7 @@ namespace xio {
             }
 
             // Cancel all operations associated with the socket.
-            ASIO_DECL xio::error_code cancel(
+            XIO_DECL xio::error_code cancel(
                 base_implementation_type &impl, xio::error_code &ec);
 
             // Determine whether the socket is at the out-of-band data mark.
@@ -199,7 +199,7 @@ namespace xio {
                 };
                 p.p = new(p.v) op(success_ec_, handler, io_ex);
 
-                ASIO_HANDLER_CREATION((reactor_.context(), *p.p, "socket",
+                XIO_HANDLER_CREATION((reactor_.context(), *p.p, "socket",
                                        &impl, impl.socket_, "async_wait"));
 
                 int op_type;
@@ -290,14 +290,14 @@ namespace xio {
                                 &reactor_, &impl.reactor_data_, impl.socket_, reactor::write_op);
                 }
 
-                ASIO_HANDLER_CREATION((reactor_.context(), *p.p, "socket",
+                XIO_HANDLER_CREATION((reactor_.context(), *p.p, "socket",
                                        &impl, impl.socket_, "async_send"));
 
                 start_op(impl, reactor::write_op, p.p, is_continuation, true,
                          ((impl.state_ & socket_ops::stream_oriented)
                           && buffer_sequence_adapter<xio::const_buffer,
                               ConstBufferSequence>::all_empty(buffers)),
-                         ASIO_OS_DEF(MSG_DONTWAIT) == 0, &io_ex, 0);
+                         XIO_OS_DEF(MSG_DONTWAIT) == 0, &io_ex, 0);
                 p.v = p.p = 0;
             }
 
@@ -326,7 +326,7 @@ namespace xio {
                                 &reactor_, &impl.reactor_data_, impl.socket_, reactor::write_op);
                 }
 
-                ASIO_HANDLER_CREATION((reactor_.context(), *p.p, "socket",
+                XIO_HANDLER_CREATION((reactor_.context(), *p.p, "socket",
                                        &impl, impl.socket_, "async_send(null_buffers)"));
 
                 start_op(impl, reactor::write_op, p.p,
@@ -392,7 +392,7 @@ namespace xio {
                                 &reactor_, &impl.reactor_data_, impl.socket_, reactor::read_op);
                 }
 
-                ASIO_HANDLER_CREATION((reactor_.context(), *p.p, "socket",
+                XIO_HANDLER_CREATION((reactor_.context(), *p.p, "socket",
                                        &impl, impl.socket_, "async_receive"));
 
                 start_op(impl,
@@ -404,7 +404,7 @@ namespace xio {
                          ((impl.state_ & socket_ops::stream_oriented)
                           && buffer_sequence_adapter<xio::mutable_buffer,
                               MutableBufferSequence>::all_empty(buffers)),
-                         ASIO_OS_DEF(MSG_DONTWAIT) == 0, &io_ex, 0);
+                         XIO_OS_DEF(MSG_DONTWAIT) == 0, &io_ex, 0);
                 p.v = p.p = 0;
             }
 
@@ -434,7 +434,7 @@ namespace xio {
                                 &reactor_, &impl.reactor_data_, impl.socket_, reactor::read_op);
                 }
 
-                ASIO_HANDLER_CREATION((reactor_.context(), *p.p, "socket",
+                XIO_HANDLER_CREATION((reactor_.context(), *p.p, "socket",
                                        &impl, impl.socket_, "async_receive(null_buffers)"));
 
                 start_op(impl,
@@ -504,7 +504,7 @@ namespace xio {
                                 &reactor_, &impl.reactor_data_, impl.socket_, reactor::read_op);
                 }
 
-                ASIO_HANDLER_CREATION((reactor_.context(), *p.p, "socket",
+                XIO_HANDLER_CREATION((reactor_.context(), *p.p, "socket",
                                        &impl, impl.socket_, "async_receive_with_flags"));
 
                 start_op(impl,
@@ -513,7 +513,7 @@ namespace xio {
                              : reactor::read_op,
                          p.p, is_continuation,
                          (in_flags & socket_base::message_out_of_band) == 0,
-                         false, ASIO_OS_DEF(MSG_DONTWAIT) == 0, &io_ex, 0);
+                         false, XIO_OS_DEF(MSG_DONTWAIT) == 0, &io_ex, 0);
                 p.v = p.p = 0;
             }
 
@@ -544,7 +544,7 @@ namespace xio {
                                 &reactor_, &impl.reactor_data_, impl.socket_, reactor::read_op);
                 }
 
-                ASIO_HANDLER_CREATION((reactor_.context(), *p.p, "socket",
+                XIO_HANDLER_CREATION((reactor_.context(), *p.p, "socket",
                                        &impl, impl.socket_, "async_receive_with_flags(null_buffers)"));
 
                 // Clear out_flags, since we cannot give it any other sensible value when
@@ -561,17 +561,17 @@ namespace xio {
 
         protected:
             // Open a new socket implementation.
-            ASIO_DECL xio::error_code do_open(
+            XIO_DECL xio::error_code do_open(
                 base_implementation_type &impl, int af,
                 int type, int protocol, xio::error_code &ec);
 
             // Assign a native socket to a socket implementation.
-            ASIO_DECL xio::error_code do_assign(
+            XIO_DECL xio::error_code do_assign(
                 base_implementation_type &impl, int type,
                 const native_handle_type &native_socket, xio::error_code &ec);
 
             // Start the asynchronous read or write operation.
-  ASIO_DECL void do_start_op(base_implementation_type &impl,
+  XIO_DECL void do_start_op(base_implementation_type &impl,
                              int op_type, reactor_op *op, bool is_continuation,
                              bool allow_speculative, bool noop, bool needs_non_blocking,
                              void (*on_immediate)(operation *op, bool, const void *),
@@ -608,7 +608,7 @@ namespace xio {
             }
 
             // Start the asynchronous accept operation.
-  ASIO_DECL void do_start_accept_op(base_implementation_type &impl,
+  XIO_DECL void do_start_accept_op(base_implementation_type &impl,
                                     reactor_op *op, bool is_continuation, bool peer_is_open,
                                     void (*on_immediate)(operation *op, bool, const void *),
                                     const void *immediate_arg);
@@ -641,7 +641,7 @@ namespace xio {
             }
 
             // Start the asynchronous connect operation.
-  ASIO_DECL void do_start_connect_op(base_implementation_type &impl,
+  XIO_DECL void do_start_connect_op(base_implementation_type &impl,
                                      reactor_op *op, bool is_continuation, const void *addr, size_t addrlen,
                                      void (*on_immediate)(operation *op, bool, const void *),
                                      const void *immediate_arg);
@@ -718,8 +718,8 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // !defined(ASIO_HAS_IOCP)
-//   && !defined(ASIO_WINDOWS_RUNTIME)
-//   && !defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#endif // !defined(XIO_HAS_IOCP)
+//   && !defined(XIO_WINDOWS_RUNTIME)
+//   && !defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
-#endif // ASIO_DETAIL_REACTIVE_SOCKET_SERVICE_BASE_HPP
+#endif // XIO_DETAIL_REACTIVE_SOCKET_SERVICE_BASE_HPP

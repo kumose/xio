@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_CO_SPAWN_HPP
-#define ASIO_IMPL_CO_SPAWN_HPP
+#ifndef XIO_IMPL_CO_SPAWN_HPP
+#define XIO_IMPL_CO_SPAWN_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -53,7 +53,7 @@ namespace xio {
             executor_type executor_;
         };
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
 
         template<typename Executor>
         struct co_spawn_work_guard<Executor,
@@ -70,7 +70,7 @@ namespace xio {
             }
         };
 
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
         template<typename Handler, typename Executor,
             typename Function, typename = void>
@@ -132,9 +132,9 @@ namespace xio {
 
             std::exception_ptr e = nullptr;
             bool done = false;
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             try
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
             {
                 T t = co_await s.function();
 
@@ -153,14 +153,14 @@ namespace xio {
 
                 co_return;
             }
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             catch (...) {
                 if (done)
                     throw;
 
                 e = std::current_exception();
             }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
 
             bool is_launching = (co_await awaitable_thread_is_launching{});
             if (is_launching) {
@@ -180,17 +180,17 @@ namespace xio {
             (void) co_await co_spawn_dispatch{};
 
             std::exception_ptr e = nullptr;
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             try
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
             {
                 co_await s.function();
             }
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             catch (...) {
                 e = std::current_exception();
             }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
 
             bool is_launching = (co_await awaitable_thread_is_launching{});
             if (is_launching) {
@@ -314,9 +314,9 @@ namespace xio {
     } // namespace detail
 
     template<typename Executor, typename T, typename AwaitableExecutor,
-        ASIO_COMPLETION_TOKEN_FOR(
+        XIO_COMPLETION_TOKEN_FOR(
         void(std::exception_ptr, T)) CompletionToken>
-    inline ASIO_INITFN_AUTO_RESULT_TYPE(
+    inline XIO_INITFN_AUTO_RESULT_TYPE(
         CompletionToken, void(std::exception_ptr, T))
 
     co_spawn(const Executor &ex,
@@ -331,9 +331,9 @@ namespace xio {
     }
 
     template<typename Executor, typename AwaitableExecutor,
-        ASIO_COMPLETION_TOKEN_FOR(
+        XIO_COMPLETION_TOKEN_FOR(
             void (std::exception_ptr)) CompletionToken>
-    inline ASIO_INITFN_AUTO_RESULT_TYPE(
+    inline XIO_INITFN_AUTO_RESULT_TYPE(
         CompletionToken, void(std::exception_ptr))
 
     co_spawn(const Executor &ex,
@@ -349,9 +349,9 @@ namespace xio {
     }
 
     template<typename ExecutionContext, typename T, typename AwaitableExecutor,
-        ASIO_COMPLETION_TOKEN_FOR(
+        XIO_COMPLETION_TOKEN_FOR(
         void(std::exception_ptr, T)) CompletionToken>
-    inline ASIO_INITFN_AUTO_RESULT_TYPE(
+    inline XIO_INITFN_AUTO_RESULT_TYPE(
         CompletionToken, void(std::exception_ptr, T))
 
     co_spawn(ExecutionContext &ctx,
@@ -366,9 +366,9 @@ namespace xio {
     }
 
     template<typename ExecutionContext, typename AwaitableExecutor,
-        ASIO_COMPLETION_TOKEN_FOR(
+        XIO_COMPLETION_TOKEN_FOR(
             void (std::exception_ptr)) CompletionToken>
-    inline ASIO_INITFN_AUTO_RESULT_TYPE(
+    inline XIO_INITFN_AUTO_RESULT_TYPE(
         CompletionToken, void(std::exception_ptr))
 
     co_spawn(ExecutionContext &ctx,
@@ -383,9 +383,9 @@ namespace xio {
     }
 
     template<typename Executor, typename F,
-        ASIO_COMPLETION_TOKEN_FOR(typename detail::awaitable_signature<
+        XIO_COMPLETION_TOKEN_FOR(typename detail::awaitable_signature<
             result_of_t<F()> >::type) CompletionToken>
-    inline ASIO_INITFN_AUTO_RESULT_TYPE(CompletionToken,
+    inline XIO_INITFN_AUTO_RESULT_TYPE(CompletionToken,
                                         typename detail::awaitable_signature<result_of_t<F()> >::type)
 
     co_spawn(const Executor &ex, F &&f, CompletionToken &&token,
@@ -400,9 +400,9 @@ namespace xio {
     }
 
     template<typename ExecutionContext, typename F,
-        ASIO_COMPLETION_TOKEN_FOR(typename detail::awaitable_signature<
+        XIO_COMPLETION_TOKEN_FOR(typename detail::awaitable_signature<
             result_of_t<F()> >::type) CompletionToken>
-    inline ASIO_INITFN_AUTO_RESULT_TYPE(CompletionToken,
+    inline XIO_INITFN_AUTO_RESULT_TYPE(CompletionToken,
                                         typename detail::awaitable_signature<result_of_t<F()> >::type)
 
     co_spawn(ExecutionContext &ctx, F &&f, CompletionToken &&token,
@@ -418,4 +418,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_CO_SPAWN_HPP
+#endif // XIO_IMPL_CO_SPAWN_HPP

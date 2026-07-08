@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_POSIX_TSS_PTR_HPP
-#define ASIO_DETAIL_POSIX_TSS_PTR_HPP
+#ifndef XIO_DETAIL_POSIX_TSS_PTR_HPP
+#define XIO_DETAIL_POSIX_TSS_PTR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_PTHREADS)
+#if defined(XIO_HAS_PTHREADS)
 
 #include <pthread.h>
 #include <xio/detail/noncopyable.h>
@@ -29,7 +29,7 @@ namespace xio {
 
     namespace detail {
         // Helper function to create thread-specific storage.
-        ASIO_DECL void posix_tss_ptr_create(pthread_key_t &key);
+        XIO_DECL void posix_tss_ptr_create(pthread_key_t &key);
 
         template<typename T>
         class posix_tss_ptr
@@ -67,6 +67,6 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // defined(ASIO_HAS_PTHREADS)
+#endif // defined(XIO_HAS_PTHREADS)
 
-#endif // ASIO_DETAIL_POSIX_TSS_PTR_HPP
+#endif // XIO_DETAIL_POSIX_TSS_PTR_HPP

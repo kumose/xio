@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_BASIC_RESOLVER_QUERY_HPP
-#define ASIO_IP_BASIC_RESOLVER_QUERY_HPP
+#ifndef XIO_IP_BASIC_RESOLVER_QUERY_HPP
+#define XIO_IP_BASIC_RESOLVER_QUERY_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -149,7 +149,7 @@ namespace xio {
                   service_name_(service) {
                 typename InternetProtocol::endpoint endpoint;
                 hints_.ai_flags = static_cast<int>(resolve_flags);
-                hints_.ai_family = ASIO_OS_DEF(AF_UNSPEC);
+                hints_.ai_family = XIO_OS_DEF(AF_UNSPEC);
                 hints_.ai_socktype = endpoint.protocol().type();
                 hints_.ai_protocol = endpoint.protocol().protocol();
                 hints_.ai_addrlen = 0;
@@ -248,4 +248,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_BASIC_RESOLVER_QUERY_HPP
+#endif // XIO_IP_BASIC_RESOLVER_QUERY_HPP

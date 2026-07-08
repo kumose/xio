@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_TCP_HPP
-#define ASIO_IP_TCP_HPP
+#ifndef XIO_IP_TCP_HPP
+#define XIO_IP_TCP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -50,22 +50,22 @@ namespace xio {
 
             /// Construct to represent the IPv4 TCP protocol.
             static tcp v4() noexcept {
-                return tcp(ASIO_OS_DEF(AF_INET));
+                return tcp(XIO_OS_DEF(AF_INET));
             }
 
             /// Construct to represent the IPv6 TCP protocol.
             static tcp v6() noexcept {
-                return tcp(ASIO_OS_DEF(AF_INET6));
+                return tcp(XIO_OS_DEF(AF_INET6));
             }
 
             /// Obtain an identifier for the type of the protocol.
             int type() const noexcept {
-                return ASIO_OS_DEF(SOCK_STREAM);
+                return XIO_OS_DEF(SOCK_STREAM);
             }
 
             /// Obtain an identifier for the protocol.
             int protocol() const noexcept {
-                return ASIO_OS_DEF(IPPROTO_TCP);
+                return XIO_OS_DEF(IPPROTO_TCP);
             }
 
             /// Obtain an identifier for the protocol family.
@@ -82,10 +82,10 @@ namespace xio {
             /// The TCP resolver type.
             typedef basic_resolver<tcp> resolver;
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
             /// The TCP iostream type.
             typedef basic_socket_iostream<tcp> iostream;
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
 
             /// Socket option for disabling the Nagle algorithm.
             /**
@@ -113,12 +113,8 @@ namespace xio {
    * @par Concepts:
    * Socket_Option, Boolean_Socket_Option.
    */
-#if defined(GENERATING_DOCUMENTATION)
-            typedef implementation_defined no_delay;
-#else
             typedef xio::detail::socket_option::boolean<
-                ASIO_OS_DEF(IPPROTO_TCP), ASIO_OS_DEF(TCP_NODELAY)> no_delay;
-#endif
+                XIO_OS_DEF(IPPROTO_TCP), XIO_OS_DEF(TCP_NODELAY)> no_delay;
 
             /// Compare two protocols for equality.
             friend bool operator==(const tcp &p1, const tcp &p2) {
@@ -144,4 +140,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_TCP_HPP
+#endif // XIO_IP_TCP_HPP

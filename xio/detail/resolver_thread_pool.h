@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_RESOLVER_THREAD_POOL_HPP
-#define ASIO_DETAIL_RESOLVER_THREAD_POOL_HPP
+#ifndef XIO_DETAIL_RESOLVER_THREAD_POOL_HPP
+#define XIO_DETAIL_RESOLVER_THREAD_POOL_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -22,11 +22,11 @@
 #include <xio/detail/scheduler.h>
 #include <xio/detail/thread_group.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 #include <xio/detail/win_iocp_io_context.h>
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 #include <xio/detail/scheduler.h>
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
 #include <xio/detail/push_options.h>
 
@@ -37,26 +37,26 @@ namespace xio {
         class resolver_thread_pool :
                 public execution_context_service_base<resolver_thread_pool> {
         public:
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
             typedef class win_iocp_io_context scheduler_impl;
 #else
             typedef class scheduler scheduler_impl;
 #endif
 
             // Constructor.
-            ASIO_DECL resolver_thread_pool(execution_context &context);
+            XIO_DECL resolver_thread_pool(execution_context &context);
 
             // Destructor.
-            ASIO_DECL ~resolver_thread_pool();
+            XIO_DECL ~resolver_thread_pool();
 
             // Destroy all user-defined handler objects owned by the service.
-            ASIO_DECL void shutdown();
+            XIO_DECL void shutdown();
 
             // Perform any fork-related housekeeping.
-            ASIO_DECL void notify_fork(execution_context::fork_event fork_ev);
+            XIO_DECL void notify_fork(execution_context::fork_event fork_ev);
 
             // Helper function to start an asynchronous resolve operation.
-            ASIO_DECL void start_resolve_op(resolve_op *op);
+            XIO_DECL void start_resolve_op(resolve_op *op);
 
             // Get the underlying scheduler implementation.
             scheduler_impl &scheduler() {
@@ -68,7 +68,7 @@ namespace xio {
             class work_scheduler_runner;
 
             // Start the work scheduler if it's not already running.
-            ASIO_DECL void start_work_threads();
+            XIO_DECL void start_work_threads();
 
             // The scheduler implementation used to post completions.
             scheduler_impl &scheduler_;
@@ -98,4 +98,4 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // ASIO_DETAIL_RESOLVER_THREAD_POOL_HPP
+#endif // XIO_DETAIL_RESOLVER_THREAD_POOL_HPP

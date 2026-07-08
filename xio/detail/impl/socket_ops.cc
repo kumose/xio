@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_SOCKET_OPS_IPP
-#define ASIO_DETAIL_SOCKET_OPS_IPP
+#ifndef XIO_DETAIL_SOCKET_OPS_IPP
+#define XIO_DETAIL_SOCKET_OPS_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -27,18 +27,18 @@
 #include <xio/detail/socket_ops.h>
 #include <xio/error.h>
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 # include <codecvt>
 # include <locale>
 # include <string>
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS) \
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS) \
   || defined(__MACH__) && defined(__APPLE__)
-# if defined(ASIO_HAS_PTHREADS)
+# if defined(XIO_HAS_PTHREADS)
 #  include <pthread.h>
-# endif // defined(ASIO_HAS_PTHREADS)
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+# endif // defined(XIO_HAS_PTHREADS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 // || defined(__MACH__) && defined(__APPLE__)
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1800)
@@ -52,13 +52,13 @@ namespace xio {
 
     namespace detail {
         namespace socket_ops {
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             struct msghdr {
                 int msg_namelen;
             };
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 
 #if defined(__hpux)
             // HP-UX doesn't declare these functions extern "C", so they are declared again
@@ -67,24 +67,24 @@ namespace xio {
             extern "C" unsigned int if_nametoindex(const char *);
 #endif // defined(__hpux)
 
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
             inline void clear_last_error() {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 WSASetLastError(0);
 #else
                 errno = 0;
 #endif
             }
 
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
 
             inline void get_last_error(
                 xio::error_code &ec, bool is_error_condition) {
                 if (!is_error_condition) {
                     xio::error::clear(ec);
                 } else {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                     ec = xio::error_code(WSAGetLastError(),
                                          xio::error::get_system_category());
 #else
@@ -171,7 +171,7 @@ namespace xio {
                 }
             }
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 
             void complete_iocp_accept(socket_type s, void *output_buffer,
                                       DWORD address_length, void *addr, std::size_t *addrlen,
@@ -209,7 +209,7 @@ namespace xio {
                 }
             }
 
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 
             bool non_blocking_accept(socket_type s,
                                      state_type state, void *addr, std::size_t *addrlen,
@@ -249,7 +249,7 @@ namespace xio {
                 }
             }
 
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
             template<typename SockLenType>
             inline int call_bind(SockLenType msghdr::*,
@@ -286,11 +286,11 @@ namespace xio {
                                                SO_LINGER, &opt, sizeof(opt), ignored_ec);
                     }
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                     result = ::closesocket(s);
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                     result = ::close(s);
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                     get_last_error(ec, result != 0);
 
                     if (result != 0
@@ -302,10 +302,10 @@ namespace xio {
                         // current OS where this behaviour is seen, Windows, says that the socket
                         // remains open. Therefore we'll put the descriptor back into blocking
                         // mode and have another attempt at closing it.
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                         ioctl_arg_type arg = 0;
                         ::ioctlsocket(s, FIONBIO, &arg);
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 # if defined(__SYMBIAN32__) || defined(__EMSCRIPTEN__)
                         int flags = ::fcntl(s, F_GETFL, 0);
                         if (flags >= 0)
@@ -329,14 +329,14 @@ namespace xio {
                                 ::fcntl(s, F_SETFL, flags & ~O_NONBLOCK);
                         }
 # endif // defined(__SYMBIAN32__) || defined(__EMSCRIPTEN__)
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                         state &= ~non_blocking;
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                         result = ::closesocket(s);
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                         result = ::close(s);
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                         get_last_error(ec, result != 0);
                     }
                 }
@@ -351,7 +351,7 @@ namespace xio {
                     return false;
                 }
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 ioctl_arg_type arg = (value ? 1 : 0);
                 int result = ::ioctlsocket(s, FIONBIO, &arg);
                 get_last_error(ec, result < 0);
@@ -418,7 +418,7 @@ namespace xio {
                     return false;
                 }
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 ioctl_arg_type arg = (value ? 1 : 0);
                 int result = ::ioctlsocket(s, FIONBIO, &arg);
                 get_last_error(ec, result < 0);
@@ -530,7 +530,7 @@ namespace xio {
                                      xio::error::get_system_category());
             }
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 
             void complete_iocp_connect(socket_type s, xio::error_code &ec) {
                 // Map non-portable errors to their portable counterparts.
@@ -561,13 +561,13 @@ namespace xio {
                 }
             }
 
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
             bool non_blocking_connect(socket_type s, xio::error_code &ec) {
                 // Check if the connect operation has finished. This is required since we may
                 // get spurious readiness notifications from the reactor.
-#if defined(ASIO_WINDOWS) \
-  || defined(ASIO_CYGWIN_W32_SOCKETS) \
+#if defined(XIO_WINDOWS) \
+  || defined(XIO_CYGWIN_W32_SOCKETS) \
   || defined(__SYMBIAN32__)
                 fd_set write_fds;
                 FD_ZERO(&write_fds);
@@ -579,16 +579,16 @@ namespace xio {
                 zero_timeout.tv_sec = 0;
                 zero_timeout.tv_usec = 0;
                 int ready = ::select(s + 1, 0, &write_fds, &except_fds, &zero_timeout);
-#else // defined(ASIO_WINDOWS)
-                // || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS)
+                // || defined(XIO_CYGWIN_W32_SOCKETS)
                 // || defined(__SYMBIAN32__)
                 pollfd fds;
                 fds.fd = s;
                 fds.events = POLLOUT;
                 fds.revents = 0;
                 int ready = ::poll(&fds, 1, 0);
-#endif // defined(ASIO_WINDOWS)
-                // || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS)
+                // || defined(XIO_CYGWIN_W32_SOCKETS)
                 // || defined(__SYMBIAN32__)
                 if (ready == 0) {
                     // The asynchronous connect operation is still in progress.
@@ -612,7 +612,7 @@ namespace xio {
 
             int socketpair(int af, int type, int protocol,
                            socket_type sv[2], xio::error_code &ec) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 (void) (af);
                 (void) (type);
                 (void) (protocol);
@@ -634,11 +634,11 @@ namespace xio {
 
 #if defined(SIOCATMARK)
                 ioctl_arg_type value = 0;
-# if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+# if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 int result = ::ioctlsocket(s, SIOCATMARK, &value);
-# else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+# else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 int result = ::ioctl(s, SIOCATMARK, &value);
-# endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+# endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 get_last_error(ec, result < 0);
 # if defined(ENOTTY)
                 if (ec.value() == ENOTTY)
@@ -659,11 +659,11 @@ namespace xio {
                 }
 
                 ioctl_arg_type value = 0;
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 int result = ::ioctlsocket(s, FIONREAD, &value);
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 int result = ::ioctl(s, FIONREAD, &value);
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 get_last_error(ec, result < 0);
 #if defined(ENOTTY)
                 if (ec.value() == ENOTTY)
@@ -693,30 +693,30 @@ namespace xio {
                 base = static_cast<T>(addr);
             }
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             typedef WSABUF buf;
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             typedef iovec buf;
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 
             void init_buf(buf &b, void *data, size_t size) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 b.buf = static_cast<char *>(data);
                 b.len = static_cast<u_long>(size);
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 init_buf_iov_base(b.iov_base, data);
                 b.iov_len = size;
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             }
 
             void init_buf(buf &b, const void *data, size_t size) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 b.buf = static_cast<char *>(const_cast<void *>(data));
                 b.len = static_cast<u_long>(size);
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 init_buf_iov_base(b.iov_base, const_cast<void *>(data));
                 b.iov_len = size;
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             }
 
             inline void init_msghdr_msg_name(void *&name, void *addr) {
@@ -739,7 +739,7 @@ namespace xio {
 
             signed_size_type recv(socket_type s, buf *bufs, size_t count,
                                   int flags, xio::error_code &ec) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 // Receive some data.
                 DWORD recv_buf_count = static_cast<DWORD>(count);
                 DWORD bytes_transferred = 0;
@@ -757,19 +757,19 @@ namespace xio {
                     return socket_error_retval;
                 xio::error::clear(ec);
                 return bytes_transferred;
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 msghdr msg = msghdr();
                 msg.msg_iov = bufs;
                 msg.msg_iovlen = static_cast<int>(count);
                 signed_size_type result = ::recvmsg(s, &msg, flags);
                 get_last_error(ec, result < 0);
                 return result;
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             }
 
             signed_size_type recv1(socket_type s, void *data, size_t size,
                                    int flags, xio::error_code &ec) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 // Receive some data.
                 WSABUF buf;
                 buf.buf = const_cast<char *>(static_cast<const char *>(data));
@@ -789,11 +789,11 @@ namespace xio {
                     return socket_error_retval;
                 xio::error::clear(ec);
                 return bytes_transferred;
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 signed_size_type result = ::recv(s, static_cast<char *>(data), size, flags);
                 get_last_error(ec, result < 0);
                 return result;
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             }
 
             size_t sync_recv(socket_type s, state_type state, buf *bufs,
@@ -876,7 +876,7 @@ namespace xio {
                 }
             }
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 
             void complete_iocp_recv(state_type state,
                                     const weak_cancel_token_type &cancel_token, bool all_empty,
@@ -901,12 +901,12 @@ namespace xio {
                 }
             }
 
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 
             bool non_blocking_recv(socket_type s,
                                    buf *bufs, size_t count, int flags, bool is_stream,
                                    xio::error_code &ec, size_t &bytes_transferred) {
-                flags |= ASIO_OS_DEF(MSG_DONTWAIT);
+                flags |= XIO_OS_DEF(MSG_DONTWAIT);
                 for (;;) {
                     // Read some data.
                     signed_size_type bytes = socket_ops::recv(s, bufs, count, flags, ec);
@@ -941,7 +941,7 @@ namespace xio {
             bool non_blocking_recv1(socket_type s,
                                     void *data, size_t size, int flags, bool is_stream,
                                     xio::error_code &ec, size_t &bytes_transferred) {
-                flags |= ASIO_OS_DEF(MSG_DONTWAIT);
+                flags |= XIO_OS_DEF(MSG_DONTWAIT);
                 for (;;) {
                     // Read some data.
                     signed_size_type bytes = socket_ops::recv1(s, data, size, flags, ec);
@@ -973,11 +973,11 @@ namespace xio {
                 }
             }
 
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
             signed_size_type recvfrom(socket_type s, buf *bufs, size_t count,
                                       int flags, void *addr, std::size_t *addrlen, xio::error_code &ec) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 // Receive some data.
                 DWORD recv_buf_count = static_cast<DWORD>(count);
                 DWORD bytes_transferred = 0;
@@ -997,7 +997,7 @@ namespace xio {
                     return socket_error_retval;
                 xio::error::clear(ec);
                 return bytes_transferred;
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 msghdr msg = msghdr();
                 init_msghdr_msg_name(msg.msg_name, addr);
                 msg.msg_namelen = static_cast<int>(*addrlen);
@@ -1007,7 +1007,7 @@ namespace xio {
                 get_last_error(ec, result < 0);
                 *addrlen = msg.msg_namelen;
                 return result;
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             }
 
             template<typename SockLenType>
@@ -1025,7 +1025,7 @@ namespace xio {
 
             signed_size_type recvfrom1(socket_type s, void *data, size_t size,
                                        int flags, void *addr, std::size_t *addrlen, xio::error_code &ec) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 // Receive some data.
                 WSABUF buf;
                 buf.buf = static_cast<char *>(data);
@@ -1047,12 +1047,12 @@ namespace xio {
                     return socket_error_retval;
                 xio::error::clear(ec);
                 return bytes_transferred;
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 signed_size_type result = call_recvfrom(&msghdr::msg_namelen,
                                                         s, data, size, flags, addr, addrlen);
                 get_last_error(ec, result < 0);
                 return result;
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             }
 
             size_t sync_recvfrom(socket_type s, state_type state, buf *bufs, size_t count,
@@ -1113,7 +1113,7 @@ namespace xio {
                 }
             }
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 
             void complete_iocp_recvfrom(
                 const weak_cancel_token_type &cancel_token,
@@ -1131,12 +1131,12 @@ namespace xio {
                 }
             }
 
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 
             bool non_blocking_recvfrom(socket_type s, buf *bufs,
                                        size_t count, int flags, void *addr, std::size_t *addrlen,
                                        xio::error_code &ec, size_t &bytes_transferred) {
-                flags |= ASIO_OS_DEF(MSG_DONTWAIT);
+                flags |= XIO_OS_DEF(MSG_DONTWAIT);
                 for (;;) {
                     // Read some data.
                     signed_size_type bytes = socket_ops::recvfrom(
@@ -1166,7 +1166,7 @@ namespace xio {
             bool non_blocking_recvfrom1(socket_type s, void *data,
                                         size_t size, int flags, void *addr, std::size_t *addrlen,
                                         xio::error_code &ec, size_t &bytes_transferred) {
-                flags |= ASIO_OS_DEF(MSG_DONTWAIT);
+                flags |= XIO_OS_DEF(MSG_DONTWAIT);
                 for (;;) {
                     // Read some data.
                     signed_size_type bytes = socket_ops::recvfrom1(
@@ -1193,14 +1193,14 @@ namespace xio {
                 }
             }
 
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
             signed_size_type recvmsg(socket_type s, buf *bufs, size_t count,
                                      int in_flags, int &out_flags, xio::error_code &ec) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 out_flags = 0;
                 return socket_ops::recv(s, bufs, count, in_flags, ec);
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 msghdr msg = msghdr();
                 msg.msg_iov = bufs;
                 msg.msg_iovlen = static_cast<int>(count);
@@ -1211,7 +1211,7 @@ namespace xio {
                 else
                     out_flags = 0;
                 return result;
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             }
 
             size_t sync_recvmsg(socket_type s, state_type state,
@@ -1244,7 +1244,7 @@ namespace xio {
                 }
             }
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 
             void complete_iocp_recvmsg(
                 const weak_cancel_token_type &cancel_token,
@@ -1262,12 +1262,12 @@ namespace xio {
                 }
             }
 
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 
             bool non_blocking_recvmsg(socket_type s,
                                       buf *bufs, size_t count, int in_flags, int &out_flags,
                                       xio::error_code &ec, size_t &bytes_transferred) {
-                in_flags |= ASIO_OS_DEF(MSG_DONTWAIT);
+                in_flags |= XIO_OS_DEF(MSG_DONTWAIT);
                 for (;;) {
                     // Read some data.
                     signed_size_type bytes = socket_ops::recvmsg(
@@ -1294,11 +1294,11 @@ namespace xio {
                 }
             }
 
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
             signed_size_type send(socket_type s, const buf *bufs, size_t count,
                                   int flags, xio::error_code &ec) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 // Send the data.
                 DWORD send_buf_count = static_cast<DWORD>(count);
                 DWORD bytes_transferred = 0;
@@ -1314,22 +1314,22 @@ namespace xio {
                     return socket_error_retval;
                 xio::error::clear(ec);
                 return bytes_transferred;
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 msghdr msg = msghdr();
                 msg.msg_iov = const_cast<buf *>(bufs);
                 msg.msg_iovlen = static_cast<int>(count);
-#if defined(ASIO_HAS_MSG_NOSIGNAL)
+#if defined(XIO_HAS_MSG_NOSIGNAL)
                 flags |= MSG_NOSIGNAL;
-#endif // defined(ASIO_HAS_MSG_NOSIGNAL)
+#endif // defined(XIO_HAS_MSG_NOSIGNAL)
                 signed_size_type result = ::sendmsg(s, &msg, flags);
                 get_last_error(ec, result < 0);
                 return result;
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             }
 
             signed_size_type send1(socket_type s, const void *data, size_t size,
                                    int flags, xio::error_code &ec) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 // Send the data.
                 WSABUF buf;
                 buf.buf = const_cast<char *>(static_cast<const char *>(data));
@@ -1347,15 +1347,15 @@ namespace xio {
                     return socket_error_retval;
                 xio::error::clear(ec);
                 return bytes_transferred;
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
-#if defined(ASIO_HAS_MSG_NOSIGNAL)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_HAS_MSG_NOSIGNAL)
                 flags |= MSG_NOSIGNAL;
-#endif // defined(ASIO_HAS_MSG_NOSIGNAL)
+#endif // defined(XIO_HAS_MSG_NOSIGNAL)
                 signed_size_type result = ::send(s,
                                                  static_cast<const char *>(data), size, flags);
                 get_last_error(ec, result < 0);
                 return result;
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             }
 
             size_t sync_send(socket_type s, state_type state, const buf *bufs,
@@ -1426,7 +1426,7 @@ namespace xio {
                 }
             }
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 
             void complete_iocp_send(
                 const weak_cancel_token_type &cancel_token,
@@ -1442,12 +1442,12 @@ namespace xio {
                 }
             }
 
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 
             bool non_blocking_send(socket_type s,
                                    const buf *bufs, size_t count, int flags,
                                    xio::error_code &ec, size_t &bytes_transferred) {
-                flags |= ASIO_OS_DEF(MSG_DONTWAIT);
+                flags |= XIO_OS_DEF(MSG_DONTWAIT);
                 for (;;) {
                     // Write some data.
                     signed_size_type bytes = socket_ops::send(s, bufs, count, flags, ec);
@@ -1476,7 +1476,7 @@ namespace xio {
             bool non_blocking_send1(socket_type s,
                                     const void *data, size_t size, int flags,
                                     xio::error_code &ec, size_t &bytes_transferred) {
-                flags |= ASIO_OS_DEF(MSG_DONTWAIT);
+                flags |= XIO_OS_DEF(MSG_DONTWAIT);
                 for (;;) {
                     // Write some data.
                     signed_size_type bytes = socket_ops::send1(s, data, size, flags, ec);
@@ -1502,12 +1502,12 @@ namespace xio {
                 }
             }
 
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
             signed_size_type sendto(socket_type s, const buf *bufs,
                                     size_t count, int flags, const void *addr,
                                     std::size_t addrlen, xio::error_code &ec) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 // Send the data.
                 DWORD send_buf_count = static_cast<DWORD>(count);
                 DWORD bytes_transferred = 0;
@@ -1524,19 +1524,19 @@ namespace xio {
                     return socket_error_retval;
                 xio::error::clear(ec);
                 return bytes_transferred;
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 msghdr msg = msghdr();
                 init_msghdr_msg_name(msg.msg_name, addr);
                 msg.msg_namelen = static_cast<int>(addrlen);
                 msg.msg_iov = const_cast<buf *>(bufs);
                 msg.msg_iovlen = static_cast<int>(count);
-#if defined(ASIO_HAS_MSG_NOSIGNAL)
+#if defined(XIO_HAS_MSG_NOSIGNAL)
                 flags |= MSG_NOSIGNAL;
-#endif // defined(ASIO_HAS_MSG_NOSIGNAL)
+#endif // defined(XIO_HAS_MSG_NOSIGNAL)
                 signed_size_type result = ::sendmsg(s, &msg, flags);
                 get_last_error(ec, result < 0);
                 return result;
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             }
 
             template<typename SockLenType>
@@ -1550,7 +1550,7 @@ namespace xio {
             signed_size_type sendto1(socket_type s, const void *data,
                                      size_t size, int flags, const void *addr,
                                      std::size_t addrlen, xio::error_code &ec) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 // Send the data.
                 WSABUF buf;
                 buf.buf = const_cast<char *>(static_cast<const char *>(data));
@@ -1568,15 +1568,15 @@ namespace xio {
                     return socket_error_retval;
                 xio::error::clear(ec);
                 return bytes_transferred;
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
-#if defined(ASIO_HAS_MSG_NOSIGNAL)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_HAS_MSG_NOSIGNAL)
                 flags |= MSG_NOSIGNAL;
-#endif // defined(ASIO_HAS_MSG_NOSIGNAL)
+#endif // defined(XIO_HAS_MSG_NOSIGNAL)
                 signed_size_type result = call_sendto(&msghdr::msg_namelen,
                                                       s, data, size, flags, addr, addrlen);
                 get_last_error(ec, result < 0);
                 return result;
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             }
 
             size_t sync_sendto(socket_type s, state_type state,
@@ -1639,13 +1639,13 @@ namespace xio {
                 }
             }
 
-#if !defined(ASIO_HAS_IOCP)
+#if !defined(XIO_HAS_IOCP)
 
             bool non_blocking_sendto(socket_type s,
                                      const buf *bufs, size_t count, int flags,
                                      const void *addr, std::size_t addrlen,
                                      xio::error_code &ec, size_t &bytes_transferred) {
-                flags |= ASIO_OS_DEF(MSG_DONTWAIT);
+                flags |= XIO_OS_DEF(MSG_DONTWAIT);
                 for (;;) {
                     // Write some data.
                     signed_size_type bytes = socket_ops::sendto(
@@ -1676,7 +1676,7 @@ namespace xio {
                                       const void *data, size_t size, int flags,
                                       const void *addr, std::size_t addrlen,
                                       xio::error_code &ec, size_t &bytes_transferred) {
-                flags |= ASIO_OS_DEF(MSG_DONTWAIT);
+                flags |= XIO_OS_DEF(MSG_DONTWAIT);
                 for (;;) {
                     // Write some data.
                     signed_size_type bytes = socket_ops::sendto1(
@@ -1703,17 +1703,17 @@ namespace xio {
                 }
             }
 
-#endif // !defined(ASIO_HAS_IOCP)
+#endif // !defined(XIO_HAS_IOCP)
 
             socket_type socket(int af, int type, int protocol,
                                xio::error_code &ec) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 socket_type s = ::WSASocketW(af, type, protocol, 0, 0, WSA_FLAG_OVERLAPPED);
                 get_last_error(ec, s == invalid_socket);
                 if (s == invalid_socket)
                     return s;
 
-                if (af == ASIO_OS_DEF(AF_INET6)) {
+                if (af == XIO_OS_DEF(AF_INET6)) {
                     // Try to enable the POSIX default behaviour of having IPV6_V6ONLY set to
                     // false. This will only succeed on Windows Vista and later versions of
                     // Windows, where a dual-stack IPv4/v6 implementation is available.
@@ -1889,7 +1889,7 @@ namespace xio {
                 }
                 ec = xio::error::fault;
                 return socket_error_retval;
-#elif defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#elif defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 int result = call_getsockopt(&msghdr::msg_namelen,
                                              s, level, optname, optval, optlen);
                 get_last_error(ec, result != 0);
@@ -1904,7 +1904,7 @@ namespace xio {
                     xio::error::clear(ec);
                 }
                 return result;
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 int result = call_getsockopt(&msghdr::msg_namelen,
                                              s, level, optname, optval, optlen);
                 get_last_error(ec, result != 0);
@@ -1920,7 +1920,7 @@ namespace xio {
                 }
 #endif // defined(__linux__)
                 return result;
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             }
 
             template<typename SockLenType>
@@ -1940,8 +1940,8 @@ namespace xio {
                     return socket_error_retval;
                 }
 
-#if defined(ASIO_WINDOWS) && !defined(ASIO_WINDOWS_APP) \
-  || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) && !defined(XIO_WINDOWS_APP) \
+  || defined(XIO_CYGWIN_W32_SOCKETS)
                 if (cached) {
                     // Check if socket is still connected.
                     DWORD connect_time = 0;
@@ -1959,11 +1959,11 @@ namespace xio {
                     xio::error::clear(ec);
                     return 0;
                 }
-#else // defined(ASIO_WINDOWS) && !defined(ASIO_WINDOWS_APP)
-                // || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) && !defined(XIO_WINDOWS_APP)
+                // || defined(XIO_CYGWIN_W32_SOCKETS)
                 (void) cached;
-#endif // defined(ASIO_WINDOWS) && !defined(ASIO_WINDOWS_APP)
-                // || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) && !defined(XIO_WINDOWS_APP)
+                // || defined(XIO_CYGWIN_W32_SOCKETS)
 
                 int result = call_getpeername(&msghdr::msg_namelen, s, addr, addrlen);
                 get_last_error(ec, result != 0);
@@ -1999,7 +1999,7 @@ namespace xio {
                     return socket_error_retval;
                 }
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 int result = ::ioctlsocket(s, cmd, arg);
 #elif defined(__MACH__) && defined(__APPLE__) \
   || defined(__NetBSD__) || defined(__FreeBSD__) || defined(__OpenBSD__)
@@ -2034,7 +2034,7 @@ namespace xio {
 #if defined(__EMSCRIPTEN__)
                 exceptfds = 0;
 #endif // defined(__EMSCRIPTEN__)
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 if (!readfds && !writefds && !exceptfds && timeout) {
                     DWORD milliseconds = timeout->tv_sec * 1000 + timeout->tv_usec / 1000;
                     if (milliseconds == 0)
@@ -2053,7 +2053,7 @@ namespace xio {
                 if (timeout && timeout->tv_sec == 0
                     && timeout->tv_usec > 0 && timeout->tv_usec < 1000)
                     timeout->tv_usec = 1000;
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 
 #if defined(__hpux) && defined(__SELECT)
                 timespec ts;
@@ -2061,7 +2061,7 @@ namespace xio {
                 ts.tv_nsec = timeout ? timeout->tv_usec * 1000 : 0;
                 int result = ::pselect(nfds, readfds,
                                        writefds, exceptfds, timeout ? &ts : 0, 0);
-#elif defined(ASIO_CYGWIN_W32_SOCKETS)
+#elif defined(XIO_CYGWIN_W32_SOCKETS)
                 TIMEVAL tv;
                 tv.tv_sec = timeout ? timeout->tv_sec : 0;
                 tv.tv_usec = timeout ? timeout->tv_usec : 0;
@@ -2080,8 +2080,8 @@ namespace xio {
                     return socket_error_retval;
                 }
 
-#if defined(ASIO_WINDOWS) \
-  || defined(ASIO_CYGWIN_W32_SOCKETS) \
+#if defined(XIO_WINDOWS) \
+  || defined(XIO_CYGWIN_W32_SOCKETS) \
   || defined(__SYMBIAN32__)
                 fd_set fds;
                 FD_ZERO(&fds);
@@ -2100,8 +2100,8 @@ namespace xio {
                     timeout = 0;
                 int result = ::select(s + 1, &fds, 0, 0, timeout);
                 get_last_error(ec, result < 0);
-#else // defined(ASIO_WINDOWS)
-                // || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS)
+                // || defined(XIO_CYGWIN_W32_SOCKETS)
                 // || defined(__SYMBIAN32__)
                 pollfd fds;
                 fds.fd = s;
@@ -2110,8 +2110,8 @@ namespace xio {
                 int timeout = (state & user_set_non_blocking) ? 0 : msec;
                 int result = ::poll(&fds, 1, timeout);
                 get_last_error(ec, result < 0);
-#endif // defined(ASIO_WINDOWS)
-                // || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS)
+                // || defined(XIO_CYGWIN_W32_SOCKETS)
                 // || defined(__SYMBIAN32__)
                 if (result == 0)
                     if (state & user_set_non_blocking)
@@ -2126,8 +2126,8 @@ namespace xio {
                     return socket_error_retval;
                 }
 
-#if defined(ASIO_WINDOWS) \
-  || defined(ASIO_CYGWIN_W32_SOCKETS) \
+#if defined(XIO_WINDOWS) \
+  || defined(XIO_CYGWIN_W32_SOCKETS) \
   || defined(__SYMBIAN32__)
                 fd_set fds;
                 FD_ZERO(&fds);
@@ -2146,8 +2146,8 @@ namespace xio {
                     timeout = 0;
                 int result = ::select(s + 1, 0, &fds, 0, timeout);
                 get_last_error(ec, result < 0);
-#else // defined(ASIO_WINDOWS)
-                // || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS)
+                // || defined(XIO_CYGWIN_W32_SOCKETS)
                 // || defined(__SYMBIAN32__)
                 pollfd fds;
                 fds.fd = s;
@@ -2156,8 +2156,8 @@ namespace xio {
                 int timeout = (state & user_set_non_blocking) ? 0 : msec;
                 int result = ::poll(&fds, 1, timeout);
                 get_last_error(ec, result < 0);
-#endif // defined(ASIO_WINDOWS)
-                // || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS)
+                // || defined(XIO_CYGWIN_W32_SOCKETS)
                 // || defined(__SYMBIAN32__)
                 if (result == 0)
                     if (state & user_set_non_blocking)
@@ -2172,8 +2172,8 @@ namespace xio {
                     return socket_error_retval;
                 }
 
-#if defined(ASIO_WINDOWS) \
-  || defined(ASIO_CYGWIN_W32_SOCKETS) \
+#if defined(XIO_WINDOWS) \
+  || defined(XIO_CYGWIN_W32_SOCKETS) \
   || defined(__SYMBIAN32__)
                 fd_set fds;
                 FD_ZERO(&fds);
@@ -2192,8 +2192,8 @@ namespace xio {
                     timeout = 0;
                 int result = ::select(s + 1, 0, 0, &fds, timeout);
                 get_last_error(ec, result < 0);
-#else // defined(ASIO_WINDOWS)
-                // || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS)
+                // || defined(XIO_CYGWIN_W32_SOCKETS)
                 // || defined(__SYMBIAN32__)
                 pollfd fds;
                 fds.fd = s;
@@ -2202,8 +2202,8 @@ namespace xio {
                 int timeout = (state & user_set_non_blocking) ? 0 : msec;
                 int result = ::poll(&fds, 1, timeout);
                 get_last_error(ec, result < 0);
-#endif // defined(ASIO_WINDOWS)
-                // || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS)
+                // || defined(XIO_CYGWIN_W32_SOCKETS)
                 // || defined(__SYMBIAN32__)
                 if (result == 0)
                     if (state & user_set_non_blocking)
@@ -2217,8 +2217,8 @@ namespace xio {
                     return socket_error_retval;
                 }
 
-#if defined(ASIO_WINDOWS) \
-  || defined(ASIO_CYGWIN_W32_SOCKETS) \
+#if defined(XIO_WINDOWS) \
+  || defined(XIO_CYGWIN_W32_SOCKETS) \
   || defined(__SYMBIAN32__)
                 fd_set write_fds;
                 FD_ZERO(&write_fds);
@@ -2237,8 +2237,8 @@ namespace xio {
                 int result = ::select(s + 1, 0, &write_fds, &except_fds, timeout);
                 get_last_error(ec, result < 0);
                 return result;
-#else // defined(ASIO_WINDOWS)
-                // || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS)
+                // || defined(XIO_CYGWIN_W32_SOCKETS)
                 // || defined(__SYMBIAN32__)
                 pollfd fds;
                 fds.fd = s;
@@ -2247,24 +2247,24 @@ namespace xio {
                 int result = ::poll(&fds, 1, msec);
                 get_last_error(ec, result < 0);
                 return result;
-#endif // defined(ASIO_WINDOWS)
-                // || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS)
+                // || defined(XIO_CYGWIN_W32_SOCKETS)
                 // || defined(__SYMBIAN32__)
             }
 
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
             const char *inet_ntop(int af, const void *src, char *dest, size_t length,
                                   unsigned long scope_id, xio::error_code &ec) {
                 clear_last_error();
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
                 using namespace std; // For sprintf.
                 const unsigned char *bytes = static_cast<const unsigned char *>(src);
-                if (af == ASIO_OS_DEF(AF_INET)) {
+                if (af == XIO_OS_DEF(AF_INET)) {
                     sprintf_s(dest, length, "%u.%u.%u.%u",
                               bytes[0], bytes[1], bytes[2], bytes[3]);
                     return dest;
-                } else if (af == ASIO_OS_DEF(AF_INET6)) {
+                } else if (af == XIO_OS_DEF(AF_INET6)) {
                     size_t n = 0, b = 0, z = 0;
                     while (n < length && b < 16) {
                         if (bytes[b] == 0 && bytes[b + 1] == 0 && z == 0) {
@@ -2283,10 +2283,10 @@ namespace xio {
                     ec = xio::error::address_family_not_supported;
                     return 0;
                 }
-#elif defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#elif defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 using namespace std; // For memcpy.
 
-                if (af != ASIO_OS_DEF(AF_INET) && af != ASIO_OS_DEF(AF_INET6)) {
+                if (af != XIO_OS_DEF(AF_INET) && af != XIO_OS_DEF(AF_INET6)) {
                     ec = xio::error::address_family_not_supported;
                     return 0;
                 }
@@ -2298,15 +2298,15 @@ namespace xio {
                     sockaddr_in6_type v6;
                 } address;
                 DWORD address_length;
-                if (af == ASIO_OS_DEF(AF_INET)) {
+                if (af == XIO_OS_DEF(AF_INET)) {
                     address_length = sizeof(sockaddr_in4_type);
-                    address.v4.sin_family = ASIO_OS_DEF(AF_INET);
+                    address.v4.sin_family = XIO_OS_DEF(AF_INET);
                     address.v4.sin_port = 0;
                     memcpy(&address.v4.sin_addr, src, sizeof(in4_addr_type));
                 } else // AF_INET6
                 {
                     address_length = sizeof(sockaddr_in6_type);
-                    address.v6.sin6_family = ASIO_OS_DEF(AF_INET6);
+                    address.v6.sin6_family = XIO_OS_DEF(AF_INET6);
                     address.v6.sin6_port = 0;
                     address.v6.sin6_flowinfo = 0;
                     address.v6.sin6_scope_id = scope_id;
@@ -2336,12 +2336,12 @@ namespace xio {
                     ec = xio::error::invalid_argument;
 
                 return result == socket_error_retval ? 0 : dest;
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 const char *result = ::inet_ntop(af, src, dest, static_cast<int>(length));
                 get_last_error(ec, true);
                 if (result == 0 && !ec)
                     ec = xio::error::invalid_argument;
-                if (result != 0 && af == ASIO_OS_DEF(AF_INET6) && scope_id != 0) {
+                if (result != 0 && af == XIO_OS_DEF(AF_INET6) && scope_id != 0) {
                     using namespace std; // For strcat and sprintf.
                     char if_name[(IF_NAMESIZE > 21 ? IF_NAMESIZE : 21) + 1] = "%";
                     const in6_addr_type *ipv6_address = static_cast<const in6_addr_type *>(src);
@@ -2351,26 +2351,26 @@ namespace xio {
                                                     && ((ipv6_address->s6_addr[1] & 0x0f) == 0x02));
                     if ((!is_link_local && !is_multicast_link_local)
                         || if_indextoname(static_cast<unsigned>(scope_id), if_name + 1) == 0)
-#if defined(ASIO_HAS_SNPRINTF)
+#if defined(XIO_HAS_SNPRINTF)
                     snprintf(if_name + 1, sizeof(if_name) - 1, "%lu", scope_id);
-#elif defined(ASIO_HAS_SECURE_RTL)
+#elif defined(XIO_HAS_SECURE_RTL)
                     sprintf_s(if_name + 1, sizeof(if_name) - 1, "%lu", scope_id);
-#else // defined(ASIO_HAS_SECURE_RTL)
+#else // defined(XIO_HAS_SECURE_RTL)
                         sprintf(if_name + 1, "%lu", scope_id);
-#endif // defined(ASIO_HAS_SECURE_RTL)
+#endif // defined(XIO_HAS_SECURE_RTL)
                     strcat(dest, if_name);
                 }
                 return result;
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             }
 
             int inet_pton(int af, const char *src, void *dest,
                           unsigned long *scope_id, xio::error_code &ec) {
                 clear_last_error();
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
                 using namespace std; // For sscanf.
                 unsigned char *bytes = static_cast<unsigned char *>(dest);
-                if (af == ASIO_OS_DEF(AF_INET)) {
+                if (af == XIO_OS_DEF(AF_INET)) {
                     unsigned int b0, b1, b2, b3;
                     if (sscanf_s(src, "%u.%u.%u.%u", &b0, &b1, &b2, &b3) != 4) {
                         ec = xio::error::invalid_argument;
@@ -2386,7 +2386,7 @@ namespace xio {
                     bytes[3] = static_cast<unsigned char>(b3);
                     xio::error::clear(ec);
                     return 1;
-                } else if (af == ASIO_OS_DEF(AF_INET6)) {
+                } else if (af == XIO_OS_DEF(AF_INET6)) {
                     unsigned char *bytes = static_cast<unsigned char *>(dest);
                     std::memset(bytes, 0, 16);
                     unsigned char back_bytes[16] = {0};
@@ -2494,10 +2494,10 @@ namespace xio {
                     ec = xio::error::address_family_not_supported;
                     return -1;
                 }
-#elif defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#elif defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 using namespace std; // For memcpy and strcmp.
 
-                if (af != ASIO_OS_DEF(AF_INET) && af != ASIO_OS_DEF(AF_INET6)) {
+                if (af != XIO_OS_DEF(AF_INET) && af != XIO_OS_DEF(AF_INET6)) {
                     ec = xio::error::address_family_not_supported;
                     return -1;
                 }
@@ -2522,7 +2522,7 @@ namespace xio {
                 get_last_error(ec, true);
 #endif
 
-                if (af == ASIO_OS_DEF(AF_INET)) {
+                if (af == XIO_OS_DEF(AF_INET)) {
                     if (result != socket_error_retval) {
                         memcpy(dest, &address.v4.sin_addr, sizeof(in4_addr_type));
                         xio::error::clear(ec);
@@ -2548,12 +2548,12 @@ namespace xio {
                     xio::error::clear(ec);
 
                 return result == socket_error_retval ? -1 : 1;
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 using namespace std; // For strchr, memcpy and atoi.
 
                 // On some platforms, inet_pton fails if an address string contains a scope
                 // id. Detect and remove the scope id before passing the string to inet_pton.
-                const bool is_v6 = (af == ASIO_OS_DEF(AF_INET6));
+                const bool is_v6 = (af == XIO_OS_DEF(AF_INET6));
                 const char *if_name = is_v6 ? strchr(src, '%') : 0;
                 char src_buf[max_addr_v6_str_len + 1];
                 const char *src_ptr = src;
@@ -2587,11 +2587,11 @@ namespace xio {
                     }
                 }
                 return result;
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
             }
 
             int gethostname(char *name, int namelen, xio::error_code &ec) {
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
                 try {
                     using namespace Windows::Foundation::Collections;
                     using namespace Windows::Networking;
@@ -2615,16 +2615,16 @@ namespace xio {
                                          xio::system_category());
                     return -1;
                 }
-#else // defined(ASIO_WINDOWS_RUNTIME)
+#else // defined(XIO_WINDOWS_RUNTIME)
                 int result = ::gethostname(name, namelen);
                 get_last_error(ec, result != 0);
                 return result;
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
             }
 
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
 
-#if !defined(ASIO_HAS_GETADDRINFO)
+#if !defined(XIO_HAS_GETADDRINFO)
 
             // The following functions are only needed for emulation of getaddrinfo and
             // getnameinfo.
@@ -2649,7 +2649,7 @@ namespace xio {
 
             inline hostent *gethostbyaddr(const char *addr, int length, int af,
                                           hostent *result, char *buffer, int buflength, xio::error_code &ec) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 (void) (buffer);
                 (void) (buflength);
                 hostent *retval = ::gethostbyaddr(addr, length, af);
@@ -2693,11 +2693,11 @@ namespace xio {
 
             inline hostent *gethostbyname(const char *name, int af, struct hostent *result,
                                           char *buffer, int buflength, int ai_flags, xio::error_code &ec) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 (void) (buffer);
                 (void) (buflength);
                 (void) (ai_flags);
-                if (af != ASIO_OS_DEF(AF_INET)) {
+                if (af != XIO_OS_DEF(AF_INET)) {
                     ec = xio::error::address_family_not_supported;
                     return 0;
                 }
@@ -2709,7 +2709,7 @@ namespace xio {
                 return result;
 #elif defined(__sun) || defined(__QNX__)
                 (void) (ai_flags);
-                if (af != ASIO_OS_DEF(AF_INET)) {
+                if (af != XIO_OS_DEF(AF_INET)) {
                     ec = xio::error::address_family_not_supported;
                     return 0;
                 }
@@ -2733,7 +2733,7 @@ namespace xio {
                 return retval;
 #else
                 (void) (ai_flags);
-                if (af != ASIO_OS_DEF(AF_INET)) {
+                if (af != XIO_OS_DEF(AF_INET)) {
                     ec = xio::error::address_family_not_supported;
                     return 0;
                 }
@@ -2772,22 +2772,22 @@ namespace xio {
                     if (hints->ai_flags & AI_PASSIVE) {
                         // No host and AI_PASSIVE implies wildcard bind.
                         switch (hints->ai_family) {
-                            case ASIO_OS_DEF(AF_INET):
+                            case XIO_OS_DEF(AF_INET):
                                 search[search_count].host = "0.0.0.0";
-                                search[search_count].family = ASIO_OS_DEF(AF_INET);
+                                search[search_count].family = XIO_OS_DEF(AF_INET);
                                 ++search_count;
                                 break;
-                            case ASIO_OS_DEF(AF_INET6):
+                            case XIO_OS_DEF(AF_INET6):
                                 search[search_count].host = "0::0";
-                                search[search_count].family = ASIO_OS_DEF(AF_INET6);
+                                search[search_count].family = XIO_OS_DEF(AF_INET6);
                                 ++search_count;
                                 break;
-                            case ASIO_OS_DEF(AF_UNSPEC):
+                            case XIO_OS_DEF(AF_UNSPEC):
                                 search[search_count].host = "0::0";
-                                search[search_count].family = ASIO_OS_DEF(AF_INET6);
+                                search[search_count].family = XIO_OS_DEF(AF_INET6);
                                 ++search_count;
                                 search[search_count].host = "0.0.0.0";
-                                search[search_count].family = ASIO_OS_DEF(AF_INET);
+                                search[search_count].family = XIO_OS_DEF(AF_INET);
                                 ++search_count;
                                 break;
                             default:
@@ -2796,22 +2796,22 @@ namespace xio {
                     } else {
                         // No host and not AI_PASSIVE means connect to local host.
                         switch (hints->ai_family) {
-                            case ASIO_OS_DEF(AF_INET):
+                            case XIO_OS_DEF(AF_INET):
                                 search[search_count].host = "localhost";
-                                search[search_count].family = ASIO_OS_DEF(AF_INET);
+                                search[search_count].family = XIO_OS_DEF(AF_INET);
                                 ++search_count;
                                 break;
-                            case ASIO_OS_DEF(AF_INET6):
+                            case XIO_OS_DEF(AF_INET6):
                                 search[search_count].host = "localhost";
-                                search[search_count].family = ASIO_OS_DEF(AF_INET6);
+                                search[search_count].family = XIO_OS_DEF(AF_INET6);
                                 ++search_count;
                                 break;
-                            case ASIO_OS_DEF(AF_UNSPEC):
+                            case XIO_OS_DEF(AF_UNSPEC):
                                 search[search_count].host = "localhost";
-                                search[search_count].family = ASIO_OS_DEF(AF_INET6);
+                                search[search_count].family = XIO_OS_DEF(AF_INET6);
                                 ++search_count;
                                 search[search_count].host = "localhost";
-                                search[search_count].family = ASIO_OS_DEF(AF_INET);
+                                search[search_count].family = XIO_OS_DEF(AF_INET);
                                 ++search_count;
                                 break;
                             default:
@@ -2821,22 +2821,22 @@ namespace xio {
                 } else {
                     // Host is specified.
                     switch (hints->ai_family) {
-                        case ASIO_OS_DEF(AF_INET):
+                        case XIO_OS_DEF(AF_INET):
                             search[search_count].host = host;
-                            search[search_count].family = ASIO_OS_DEF(AF_INET);
+                            search[search_count].family = XIO_OS_DEF(AF_INET);
                             ++search_count;
                             break;
-                        case ASIO_OS_DEF(AF_INET6):
+                        case XIO_OS_DEF(AF_INET6):
                             search[search_count].host = host;
-                            search[search_count].family = ASIO_OS_DEF(AF_INET6);
+                            search[search_count].family = XIO_OS_DEF(AF_INET6);
                             ++search_count;
                             break;
-                        case ASIO_OS_DEF(AF_UNSPEC):
+                        case XIO_OS_DEF(AF_UNSPEC):
                             search[search_count].host = host;
-                            search[search_count].family = ASIO_OS_DEF(AF_INET6);
+                            search[search_count].family = XIO_OS_DEF(AF_INET6);
                             ++search_count;
                             search[search_count].host = host;
-                            search[search_count].family = ASIO_OS_DEF(AF_INET);
+                            search[search_count].family = XIO_OS_DEF(AF_INET);
                             ++search_count;
                             break;
                         default:
@@ -2861,13 +2861,13 @@ namespace xio {
 
             inline void gai_strcpy(char *target, const char *source, std::size_t max_size) {
                 using namespace std;
-#if defined(ASIO_HAS_SECURE_RTL)
+#if defined(XIO_HAS_SECURE_RTL)
                 strcpy_s(target, max_size, source);
-#else // defined(ASIO_HAS_SECURE_RTL)
+#else // defined(XIO_HAS_SECURE_RTL)
                 *target = 0;
                 if (max_size > 0)
                     strncat(target, source, max_size - 1);
-#endif // defined(ASIO_HAS_SECURE_RTL)
+#endif // defined(XIO_HAS_SECURE_RTL)
             }
 
             enum { gai_clone_flag = 1 << 30 };
@@ -2892,21 +2892,21 @@ namespace xio {
                 ai->ai_family = family;
 
                 switch (ai->ai_family) {
-                    case ASIO_OS_DEF(AF_INET): {
+                    case XIO_OS_DEF(AF_INET): {
                         sockaddr_in4_type *sinptr = gai_alloc<sockaddr_in4_type>();
                         if (sinptr == 0)
                             return EAI_MEMORY;
-                        sinptr->sin_family = ASIO_OS_DEF(AF_INET);
+                        sinptr->sin_family = XIO_OS_DEF(AF_INET);
                         memcpy(&sinptr->sin_addr, addr, sizeof(in4_addr_type));
                         ai->ai_addr = reinterpret_cast<sockaddr *>(sinptr);
                         ai->ai_addrlen = sizeof(sockaddr_in4_type);
                         break;
                     }
-                    case ASIO_OS_DEF(AF_INET6): {
+                    case XIO_OS_DEF(AF_INET6): {
                         sockaddr_in6_type *sin6ptr = gai_alloc<sockaddr_in6_type>();
                         if (sin6ptr == 0)
                             return EAI_MEMORY;
-                        sin6ptr->sin6_family = ASIO_OS_DEF(AF_INET6);
+                        sin6ptr->sin6_family = XIO_OS_DEF(AF_INET6);
                         memcpy(&sin6ptr->sin6_addr, addr, sizeof(in6_addr_type));
                         ai->ai_addr = reinterpret_cast<sockaddr *>(sin6ptr);
                         ai->ai_addrlen = sizeof(sockaddr_in6_type);
@@ -2960,14 +2960,14 @@ namespace xio {
                     ai->ai_socktype = socktype;
 
                     switch (ai->ai_family) {
-                        case ASIO_OS_DEF(AF_INET): {
+                        case XIO_OS_DEF(AF_INET): {
                             sockaddr_in4_type *sinptr =
                                     reinterpret_cast<sockaddr_in4_type *>(ai->ai_addr);
                             sinptr->sin_port = port;
                             ++num_found;
                             break;
                         }
-                        case ASIO_OS_DEF(AF_INET6): {
+                        case XIO_OS_DEF(AF_INET6): {
                             sockaddr_in6_type *sin6ptr =
                                     reinterpret_cast<sockaddr_in6_type *>(ai->ai_addr);
                             sin6ptr->sin6_port = port;
@@ -3058,10 +3058,10 @@ namespace xio {
 
                 // Check combination of family and socket type.
                 switch (family) {
-                    case ASIO_OS_DEF(AF_UNSPEC):
+                    case XIO_OS_DEF(AF_UNSPEC):
                         break;
-                    case ASIO_OS_DEF(AF_INET):
-                    case ASIO_OS_DEF(AF_INET6):
+                    case XIO_OS_DEF(AF_INET):
+                    case XIO_OS_DEF(AF_INET6):
                         if (service != 0 && service[0] != '\0')
                             if (socktype != 0 && socktype != SOCK_STREAM && socktype != SOCK_DGRAM)
                                 return EAI_SOCKTYPE;
@@ -3093,18 +3093,18 @@ namespace xio {
 
                 // Supply default hints if not specified by caller.
                 addrinfo_type hints = addrinfo_type();
-                hints.ai_family = ASIO_OS_DEF(AF_UNSPEC);
+                hints.ai_family = XIO_OS_DEF(AF_UNSPEC);
                 if (hintsp)
                     hints = *hintsp;
 
                 // If the resolution is not specifically for AF_INET6, remove the AI_V4MAPPED
                 // and AI_ALL flags.
 #if defined(AI_V4MAPPED)
-                if (hints.ai_family != ASIO_OS_DEF(AF_INET6))
+                if (hints.ai_family != XIO_OS_DEF(AF_INET6))
                     hints.ai_flags &= ~AI_V4MAPPED;
 #endif
 #if defined(AI_ALL)
-                if (hints.ai_family != ASIO_OS_DEF(AF_INET6))
+                if (hints.ai_family != XIO_OS_DEF(AF_INET6))
                     hints.ai_flags &= ~AI_ALL;
 #endif
 
@@ -3122,16 +3122,16 @@ namespace xio {
                     // Check for IPv4 dotted decimal string.
                     in4_addr_type inaddr;
                     xio::error_code ec;
-                    if (socket_ops::inet_pton(ASIO_OS_DEF(AF_INET),
+                    if (socket_ops::inet_pton(XIO_OS_DEF(AF_INET),
                                               sptr->host, &inaddr, 0, ec) == 1) {
-                        if (hints.ai_family != ASIO_OS_DEF(AF_UNSPEC)
-                            && hints.ai_family != ASIO_OS_DEF(AF_INET)) {
+                        if (hints.ai_family != XIO_OS_DEF(AF_UNSPEC)
+                            && hints.ai_family != XIO_OS_DEF(AF_INET)) {
                             freeaddrinfo_emulation(aihead);
                             gai_free(canon);
                             return EAI_FAMILY;
                         }
-                        if (sptr->family == ASIO_OS_DEF(AF_INET)) {
-                            rc = gai_aistruct(&ainext, &hints, &inaddr, ASIO_OS_DEF(AF_INET));
+                        if (sptr->family == XIO_OS_DEF(AF_INET)) {
+                            rc = gai_aistruct(&ainext, &hints, &inaddr, XIO_OS_DEF(AF_INET));
                             if (rc != 0) {
                                 freeaddrinfo_emulation(aihead);
                                 gai_free(canon);
@@ -3143,17 +3143,17 @@ namespace xio {
 
                     // Check for IPv6 hex string.
                     in6_addr_type in6addr;
-                    if (socket_ops::inet_pton(ASIO_OS_DEF(AF_INET6),
+                    if (socket_ops::inet_pton(XIO_OS_DEF(AF_INET6),
                                               sptr->host, &in6addr, 0, ec) == 1) {
-                        if (hints.ai_family != ASIO_OS_DEF(AF_UNSPEC)
-                            && hints.ai_family != ASIO_OS_DEF(AF_INET6)) {
+                        if (hints.ai_family != XIO_OS_DEF(AF_UNSPEC)
+                            && hints.ai_family != XIO_OS_DEF(AF_INET6)) {
                             freeaddrinfo_emulation(aihead);
                             gai_free(canon);
                             return EAI_FAMILY;
                         }
-                        if (sptr->family == ASIO_OS_DEF(AF_INET6)) {
+                        if (sptr->family == XIO_OS_DEF(AF_INET6)) {
                             rc = gai_aistruct(&ainext, &hints, &in6addr,
-                                              ASIO_OS_DEF(AF_INET6));
+                                              XIO_OS_DEF(AF_INET6));
                             if (rc != 0) {
                                 freeaddrinfo_emulation(aihead);
                                 gai_free(canon);
@@ -3188,7 +3188,7 @@ namespace xio {
                     }
 
                     // Check for address family mismatch if one was specified.
-                    if (hints.ai_family != ASIO_OS_DEF(AF_UNSPEC)
+                    if (hints.ai_family != XIO_OS_DEF(AF_UNSPEC)
                         && hints.ai_family != hptr->h_addrtype) {
                         freeaddrinfo_emulation(aihead);
                         gai_free(canon);
@@ -3270,7 +3270,7 @@ namespace xio {
                 size_t addr_len;
                 unsigned short port;
                 switch (sa->sa_family) {
-                    case ASIO_OS_DEF(AF_INET):
+                    case XIO_OS_DEF(AF_INET):
                         if (salen != sizeof(sockaddr_in4_type)) {
                             return ec = xio::error::invalid_argument;
                         }
@@ -3279,7 +3279,7 @@ namespace xio {
                         addr_len = sizeof(in4_addr_type);
                         port = reinterpret_cast<const sockaddr_in4_type *>(sa)->sin_port;
                         break;
-                    case ASIO_OS_DEF(AF_INET6):
+                    case XIO_OS_DEF(AF_INET6):
                         if (salen != sizeof(sockaddr_in6_type)) {
                             return ec = xio::error::invalid_argument;
                         }
@@ -3330,18 +3330,18 @@ namespace xio {
                         if (servlen < 6) {
                             return ec = xio::error::no_buffer_space;
                         }
-#if defined(ASIO_HAS_SNPRINTF)
+#if defined(XIO_HAS_SNPRINTF)
                         snprintf(serv, servlen, "%u", ntohs(port));
-#elif defined(ASIO_HAS_SECURE_RTL)
+#elif defined(XIO_HAS_SECURE_RTL)
                         sprintf_s(serv, servlen, "%u", ntohs(port));
-#else // defined(ASIO_HAS_SECURE_RTL)
+#else // defined(XIO_HAS_SECURE_RTL)
                         sprintf(serv, "%u", ntohs(port));
-#endif // defined(ASIO_HAS_SECURE_RTL)
+#endif // defined(XIO_HAS_SECURE_RTL)
                     } else {
-#if defined(ASIO_HAS_PTHREADS)
+#if defined(XIO_HAS_PTHREADS)
                         static ::pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
                         ::pthread_mutex_lock(&mutex);
-#endif // defined(ASIO_HAS_PTHREADS)
+#endif // defined(XIO_HAS_PTHREADS)
                         servent *sptr = ::getservbyport(port, (flags & NI_DGRAM) ? "udp" : 0);
                         if (sptr && sptr->s_name && sptr->s_name[0] != '\0') {
                             gai_strcpy(serv, sptr->s_name, servlen);
@@ -3349,17 +3349,17 @@ namespace xio {
                             if (servlen < 6) {
                                 return ec = xio::error::no_buffer_space;
                             }
-#if defined(ASIO_HAS_SNPRINTF)
+#if defined(XIO_HAS_SNPRINTF)
                             snprintf(serv, servlen, "%u", ntohs(port));
-#elif defined(ASIO_HAS_SECURE_RTL)
+#elif defined(XIO_HAS_SECURE_RTL)
                             sprintf_s(serv, servlen, "%u", ntohs(port));
-#else // defined(ASIO_HAS_SECURE_RTL)
+#else // defined(XIO_HAS_SECURE_RTL)
                             sprintf(serv, "%u", ntohs(port));
-#endif // defined(ASIO_HAS_SECURE_RTL)
+#endif // defined(XIO_HAS_SECURE_RTL)
                         }
-#if defined(ASIO_HAS_PTHREADS)
+#if defined(XIO_HAS_PTHREADS)
                         ::pthread_mutex_unlock(&mutex);
-#endif // defined(ASIO_HAS_PTHREADS)
+#endif // defined(XIO_HAS_PTHREADS)
                     }
                 }
 
@@ -3367,7 +3367,7 @@ namespace xio {
                 return ec;
             }
 
-#endif // !defined(ASIO_HAS_GETADDRINFO)
+#endif // !defined(XIO_HAS_GETADDRINFO)
 
             inline xio::error_code translate_addrinfo_error(int error) {
                 switch (error) {
@@ -3396,7 +3396,7 @@ namespace xio {
                     case EAI_SOCKTYPE:
                         return xio::error::socket_type_not_supported;
                     default: // Possibly the non-portable EAI_SYSTEM.
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                         return xio::error_code(
                             WSAGetLastError(), xio::error::get_system_category());
 #else
@@ -3412,8 +3412,8 @@ namespace xio {
                 host = (host && *host) ? host : 0;
                 service = (service && *service) ? service : 0;
                 clear_last_error();
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
-# if defined(ASIO_HAS_GETADDRINFO)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
+# if defined(XIO_HAS_GETADDRINFO)
                 // Building for Windows XP, Windows Server 2003, or later.
                 int error = ::getaddrinfo(host, service, &hints, result);
                 return ec = translate_addrinfo_error(error);
@@ -3430,7 +3430,7 @@ namespace xio {
                 int error = getaddrinfo_emulation(host, service, &hints, result);
                 return ec = translate_addrinfo_error(error);
 # endif
-#elif !defined(ASIO_HAS_GETADDRINFO)
+#elif !defined(XIO_HAS_GETADDRINFO)
                 int error = getaddrinfo_emulation(host, service, &hints, result);
                 return ec = translate_addrinfo_error(error);
 #else
@@ -3441,14 +3441,14 @@ namespace xio {
                     u_short_type port = host_to_network_short(atoi(service));
                     for (addrinfo_type *ai = *result; ai; ai = ai->ai_next) {
                         switch (ai->ai_family) {
-                            case ASIO_OS_DEF(AF_INET): {
+                            case XIO_OS_DEF(AF_INET): {
                                 sockaddr_in4_type *sinptr =
                                         reinterpret_cast<sockaddr_in4_type *>(ai->ai_addr);
                                 if (sinptr->sin_port == 0)
                                     sinptr->sin_port = port;
                                 break;
                             }
-                            case ASIO_OS_DEF(AF_INET6): {
+                            case XIO_OS_DEF(AF_INET6): {
                                 sockaddr_in6_type *sin6ptr =
                                         reinterpret_cast<sockaddr_in6_type *>(ai->ai_addr);
                                 if (sin6ptr->sin6_port == 0)
@@ -3477,8 +3477,8 @@ namespace xio {
             }
 
             void freeaddrinfo(addrinfo_type *ai) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
-# if defined(ASIO_HAS_GETADDRINFO)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
+# if defined(XIO_HAS_GETADDRINFO)
                 // Building for Windows XP, Windows Server 2003, or later.
                 ::freeaddrinfo(ai);
 # else
@@ -3492,7 +3492,7 @@ namespace xio {
                 }
                 freeaddrinfo_emulation(ai);
 # endif
-#elif !defined(ASIO_HAS_GETADDRINFO)
+#elif !defined(XIO_HAS_GETADDRINFO)
                 freeaddrinfo_emulation(ai);
 #else
                 ::freeaddrinfo(ai);
@@ -3502,8 +3502,8 @@ namespace xio {
             xio::error_code getnameinfo(const void *addr,
                                         std::size_t addrlen, char *host, std::size_t hostlen,
                                         char *serv, std::size_t servlen, int flags, xio::error_code &ec) {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
-# if defined(ASIO_HAS_GETADDRINFO)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
+# if defined(XIO_HAS_GETADDRINFO)
                 // Building for Windows XP, Windows Server 2003, or later.
                 clear_last_error();
                 int error = ::getnameinfo(static_cast<const socket_addr_type *>(addr),
@@ -3527,7 +3527,7 @@ namespace xio {
                 return getnameinfo_emulation(static_cast<const socket_addr_type *>(addr),
                                              addrlen, host, hostlen, serv, servlen, flags, ec);
 # endif
-#elif !defined(ASIO_HAS_GETADDRINFO)
+#elif !defined(XIO_HAS_GETADDRINFO)
                 using namespace std; // For memcpy.
                 sockaddr_storage_type tmp_addr;
                 memcpy(&tmp_addr, addr, addrlen);
@@ -3581,23 +3581,23 @@ namespace xio {
                 return ec;
             }
 
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
             u_long_type network_to_host_long(u_long_type value) {
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
                 unsigned char *value_p = reinterpret_cast<unsigned char *>(&value);
                 u_long_type result = (static_cast<u_long_type>(value_p[0]) << 24)
                                      | (static_cast<u_long_type>(value_p[1]) << 16)
                                      | (static_cast<u_long_type>(value_p[2]) << 8)
                                      | static_cast<u_long_type>(value_p[3]);
                 return result;
-#else // defined(ASIO_WINDOWS_RUNTIME)
+#else // defined(XIO_WINDOWS_RUNTIME)
                 return ntohl(value);
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
             }
 
             u_long_type host_to_network_long(u_long_type value) {
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
                 u_long_type result;
                 unsigned char *result_p = reinterpret_cast<unsigned char *>(&result);
                 result_p[0] = static_cast<unsigned char>((value >> 24) & 0xFF);
@@ -3605,32 +3605,32 @@ namespace xio {
                 result_p[2] = static_cast<unsigned char>((value >> 8) & 0xFF);
                 result_p[3] = static_cast<unsigned char>(value & 0xFF);
                 return result;
-#else // defined(ASIO_WINDOWS_RUNTIME)
+#else // defined(XIO_WINDOWS_RUNTIME)
                 return htonl(value);
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
             }
 
             u_short_type network_to_host_short(u_short_type value) {
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
                 unsigned char *value_p = reinterpret_cast<unsigned char *>(&value);
                 u_short_type result = (static_cast<u_short_type>(value_p[0]) << 8)
                                       | static_cast<u_short_type>(value_p[1]);
                 return result;
-#else // defined(ASIO_WINDOWS_RUNTIME)
+#else // defined(XIO_WINDOWS_RUNTIME)
                 return ntohs(value);
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
             }
 
             u_short_type host_to_network_short(u_short_type value) {
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
                 u_short_type result;
                 unsigned char *result_p = reinterpret_cast<unsigned char *>(&result);
                 result_p[0] = static_cast<unsigned char>((value >> 8) & 0xFF);
                 result_p[1] = static_cast<unsigned char>(value & 0xFF);
                 return result;
-#else // defined(ASIO_WINDOWS_RUNTIME)
+#else // defined(XIO_WINDOWS_RUNTIME)
                 return htons(value);
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
             }
         } // namespace socket_ops
     } // namespace detail
@@ -3639,4 +3639,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_SOCKET_OPS_IPP
+#endif // XIO_DETAIL_SOCKET_OPS_IPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_KEYWORD_TSS_PTR_HPP
-#define ASIO_DETAIL_KEYWORD_TSS_PTR_HPP
+#ifndef XIO_DETAIL_KEYWORD_TSS_PTR_HPP
+#define XIO_DETAIL_KEYWORD_TSS_PTR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_THREAD_KEYWORD_EXTENSION)
+#if defined(XIO_HAS_THREAD_KEYWORD_EXTENSION)
 
 #include <xio/detail/noncopyable.h>
 
@@ -50,17 +50,17 @@ namespace xio {
             }
 
         private:
-            static ASIO_THREAD_KEYWORD T *value_;
+            static XIO_THREAD_KEYWORD T *value_;
         };
 
         template<typename T>
-ASIO_THREAD_KEYWORD T *keyword_tss_ptr<T>::value_;
+XIO_THREAD_KEYWORD T *keyword_tss_ptr<T>::value_;
     } // namespace detail
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_THREAD_KEYWORD_EXTENSION)
+#endif // defined(XIO_HAS_THREAD_KEYWORD_EXTENSION)
 
-#endif // ASIO_DETAIL_KEYWORD_TSS_PTR_HPP
+#endif // XIO_DETAIL_KEYWORD_TSS_PTR_HPP

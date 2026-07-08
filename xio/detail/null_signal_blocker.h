@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_NULL_SIGNAL_BLOCKER_HPP
-#define ASIO_DETAIL_NULL_SIGNAL_BLOCKER_HPP
+#ifndef XIO_DETAIL_NULL_SIGNAL_BLOCKER_HPP
+#define XIO_DETAIL_NULL_SIGNAL_BLOCKER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,10 +17,10 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_HAS_THREADS) \
-  || defined(ASIO_WINDOWS) \
-  || defined(ASIO_WINDOWS_RUNTIME) \
-  || defined(ASIO_CYGWIN_W32_SOCKETS) \
+#if !defined(XIO_HAS_THREADS) \
+  || defined(XIO_WINDOWS) \
+  || defined(XIO_WINDOWS_RUNTIME) \
+  || defined(XIO_CYGWIN_W32_SOCKETS) \
   || defined(__SYMBIAN32__)
 
 #include <xio/detail/noncopyable.h>
@@ -56,10 +56,10 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(ASIO_HAS_THREADS)
-// || defined(ASIO_WINDOWS)
-// || defined(ASIO_WINDOWS_RUNTIME)
-// || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // !defined(XIO_HAS_THREADS)
+// || defined(XIO_WINDOWS)
+// || defined(XIO_WINDOWS_RUNTIME)
+// || defined(XIO_CYGWIN_W32_SOCKETS)
 // || defined(__SYMBIAN32__)
 
-#endif // ASIO_DETAIL_NULL_SIGNAL_BLOCKER_HPP
+#endif // XIO_DETAIL_NULL_SIGNAL_BLOCKER_HPP

@@ -79,23 +79,23 @@ xio::awaitable<void> throwing_generator_test()
     {
       for (int i = 0; i < 10; i++)
       {
-        ASIO_CHECK(val == i);
+        XIO_CHECK(val == i);
         const auto next = co_await gi.async_resume(xio::use_awaitable);
-        ASIO_CHECK(next);
-        ASIO_CHECK(val == *next);
-        ASIO_CHECK(val == i + 1);
+        XIO_CHECK(next);
+        XIO_CHECK(val == *next);
+        XIO_CHECK(val == i + 1);
       }
     }
     catch (std::runtime_error &err)
     {
       caught = true;
       using std::operator ""sv;
-      ASIO_CHECK(err.what() == "throwing-generator"sv);
+      XIO_CHECK(err.what() == "throwing-generator"sv);
     }
-    ASIO_CHECK(val == 3);
-    ASIO_CHECK(caught);
+    XIO_CHECK(val == 3);
+    XIO_CHECK(caught);
   }
-  ASIO_CHECK(destr);
+  XIO_CHECK(destr);
 };
 
 void run_throwing_generator_test()
@@ -109,14 +109,14 @@ xio::experimental::coro<int(int)> throwing_stacked(
     xio::any_io_executor exec, int &val,
     bool &destroyed_inner, bool &destroyed)
 {
-  ASIO_CHECK((co_await xio::this_coro::throw_if_cancelled()));
+  XIO_CHECK((co_await xio::this_coro::throw_if_cancelled()));
 
   on_scope_exit x = [&]() noexcept { destroyed = true; };
   (void)x;
 
   auto gen = throwing_generator(exec, val, destroyed_inner);
   while (auto next = co_await gen) // 1, 2, 4, 8, ...
-    ASIO_CHECK(42 ==(co_yield *next)); // offset is delayed by one cycle
+    XIO_CHECK(42 ==(co_yield *next)); // offset is delayed by one cycle
 }
 
 xio::awaitable<void> throwing_generator_stacked_test()
@@ -132,25 +132,25 @@ xio::awaitable<void> throwing_generator_stacked_test()
     {
       for (int i = 0; i < 10; i++)
       {
-        ASIO_CHECK(val == i);
+        XIO_CHECK(val == i);
         const auto next =
           co_await gi.async_resume(42, xio::use_awaitable);
-        ASIO_CHECK(next);
-        ASIO_CHECK(val == *next);
-        ASIO_CHECK(val == i + 1);
+        XIO_CHECK(next);
+        XIO_CHECK(val == *next);
+        XIO_CHECK(val == i + 1);
       }
     }
     catch (std::runtime_error &err)
     {
       caught = true;
       using std::operator ""sv;
-      ASIO_CHECK(err.what() == "throwing-generator"sv);
+      XIO_CHECK(err.what() == "throwing-generator"sv);
     }
-    ASIO_CHECK(val == 3);
-    ASIO_CHECK(caught);
+    XIO_CHECK(val == 3);
+    XIO_CHECK(caught);
   }
-  ASIO_CHECK(destr);
-  ASIO_CHECK(destr_inner);
+  XIO_CHECK(destr);
+  XIO_CHECK(destr_inner);
 };
 
 void run_throwing_generator_stacked_test()
@@ -164,9 +164,9 @@ void run_throwing_generator_stacked_test()
 
 } // namespace coro
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "coro/exception",
-  ASIO_TEST_CASE(::coro::run_throwing_generator_stacked_test)
-  ASIO_TEST_CASE(::coro::run_throwing_generator_test)
+  XIO_TEST_CASE(::coro::run_throwing_generator_stacked_test)
+  XIO_TEST_CASE(::coro::run_throwing_generator_test)
 )

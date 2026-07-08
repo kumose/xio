@@ -44,7 +44,7 @@ private:
 
 void test()
 {
-#if defined(ASIO_HAS_FILE)
+#if defined(XIO_HAS_FILE)
   using namespace xio;
 
   try
@@ -156,13 +156,13 @@ void test()
   catch (std::exception&)
   {
   }
-#endif // defined(ASIO_HAS_FILE)
+#endif // defined(XIO_HAS_FILE)
 }
 
 } // namespace random_access_file_compile
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "random_access_file",
-  ASIO_COMPILE_TEST_CASE(random_access_file_compile::test)
+  XIO_COMPILE_TEST_CASE(random_access_file_compile::test)
 )

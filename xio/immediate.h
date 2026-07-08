@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMMEDIATE_HPP
-#define ASIO_IMMEDIATE_HPP
+#ifndef XIO_IMMEDIATE_HPP
+#define XIO_IMMEDIATE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -73,7 +73,7 @@ namespace xio {
  * @code void() @endcode
  */
     template<typename Executor,
-        ASIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<Executor> >
+        XIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<Executor> >
     inline auto async_immediate(const Executor &ex,
                                 NullaryToken &&token = default_completion_token_t<Executor>(),
                                 constraint_t<
@@ -110,7 +110,7 @@ namespace xio {
  * @code void() @endcode
  */
     template<typename ExecutionContext,
-        ASIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<typename
+        XIO_COMPLETION_TOKEN_FOR(void ()) NullaryToken = default_completion_token_t<typename
             ExecutionContext::executor_type> >
     inline auto async_immediate(ExecutionContext & ctx,
                                 NullaryToken && token = default_completion_token_t<
@@ -134,4 +134,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMMEDIATE_HPP
+#endif // XIO_IMMEDIATE_HPP

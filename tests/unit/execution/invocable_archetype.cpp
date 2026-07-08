@@ -15,8 +15,8 @@
 
 #include "../unit_test.hpp"
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "invocable_archetype",
-  ASIO_TEST_CASE(null_test)
+  XIO_TEST_CASE(null_test)
 )

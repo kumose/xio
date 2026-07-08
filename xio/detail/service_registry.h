@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_SERVICE_REGISTRY_HPP
-#define ASIO_DETAIL_SERVICE_REGISTRY_HPP
+#ifndef XIO_DETAIL_SERVICE_REGISTRY_HPP
+#define XIO_DETAIL_SERVICE_REGISTRY_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -38,19 +38,19 @@ namespace xio {
                 : private noncopyable {
         public:
             // Constructor.
-            ASIO_DECL service_registry(execution_context &owner);
+            XIO_DECL service_registry(execution_context &owner);
 
             // Destructor.
-            ASIO_DECL ~service_registry();
+            XIO_DECL ~service_registry();
 
             // Shutdown all services.
-  ASIO_DECL void shutdown_services();
+  XIO_DECL void shutdown_services();
 
             // Destroy all services.
-  ASIO_DECL void destroy_services();
+  XIO_DECL void destroy_services();
 
             // Notify all services of a fork event.
-  ASIO_DECL void notify_fork(execution_context::fork_event fork_ev);
+  XIO_DECL void notify_fork(execution_context::fork_event fork_ev);
 
             // Get the service object corresponding to the specified service type. Will
             // create a new service object automatically if no such object already
@@ -84,27 +84,27 @@ namespace xio {
             template<typename Service>
             static void init_key(execution_context::service::key &key, ...);
 
-#if !defined(ASIO_NO_TYPEID)
+#if !defined(XIO_NO_TYPEID)
             // Initialise a service's key when the key_type typedef is available.
             template<typename Service>
             static void init_key(execution_context::service::key &key,
                                  std::enable_if_t<std::is_base_of < typename Service::key_type, Service>::value>*);
-#endif // !defined(ASIO_NO_TYPEID)
+#endif // !defined(XIO_NO_TYPEID)
 
             // Initialise a service's key based on its id.
-  ASIO_DECL static void init_key_from_id(
+  XIO_DECL static void init_key_from_id(
                 execution_context::service::key &key,
                 const execution_context::id &id);
 
-#if !defined(ASIO_NO_TYPEID)
+#if !defined(XIO_NO_TYPEID)
             // Initialise a service's key based on its id.
             template<typename Service>
             static void init_key_from_id(execution_context::service::key &key,
                                          const service_id<Service> & /*id*/);
-#endif // !defined(ASIO_NO_TYPEID)
+#endif // !defined(XIO_NO_TYPEID)
 
             // Check if a service matches the given id.
-  ASIO_DECL static bool keys_match(
+  XIO_DECL static bool keys_match(
                 const execution_context::service::key &key1,
                 const execution_context::service::key &key2);
 
@@ -121,7 +121,7 @@ namespace xio {
             static void destroy_allocated(execution_context::service *service);
 
             // Helper function to destroy an added service instance.
-  ASIO_DECL static void destroy_added(
+  XIO_DECL static void destroy_added(
                 execution_context::service *service);
 
             // Helper class to manage service pointers.
@@ -131,24 +131,24 @@ namespace xio {
             struct auto_service_ptr {
                 execution_context::service *ptr_;
 
-                ASIO_DECL ~auto_service_ptr();
+                XIO_DECL ~auto_service_ptr();
             };
 
             // Get the service object corresponding to the specified service key. Will
             // create a new service object automatically if no such object already
             // exists. Ownership of the service object is not transferred to the caller.
-            ASIO_DECL execution_context::service *do_use_service(
+            XIO_DECL execution_context::service *do_use_service(
                 const execution_context::service::key &key,
                 factory_type factory, void *owner);
 
             // Add a service object. Throws on error, in which case ownership of the
             // object is retained by the caller.
-  ASIO_DECL void do_add_service(
+  XIO_DECL void do_add_service(
                 const execution_context::service::key &key,
                 execution_context::service *new_service);
 
             // Check whether a service object with the specified key already exists.
-  ASIO_DECL bool do_has_service(
+  XIO_DECL bool do_has_service(
                 const execution_context::service::key &key) const;
 
             // Mutex to protect access to internal data.
@@ -169,4 +169,4 @@ namespace xio {
 #include <xio/detail/impl/service_registry.h>
 
 
-#endif // ASIO_DETAIL_SERVICE_REGISTRY_HPP
+#endif // XIO_DETAIL_SERVICE_REGISTRY_HPP

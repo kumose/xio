@@ -37,7 +37,7 @@ void read_some_handler(const xio::error_code&, std::size_t)
 
 void test()
 {
-#if defined(ASIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE)
+#if defined(XIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE)
   using namespace xio;
   namespace win = xio::windows;
 
@@ -55,7 +55,7 @@ void test()
 
     win::random_access_handle handle1(ioc);
     HANDLE native_handle1 = INVALID_HANDLE_VALUE;
-#if defined(ASIO_MSVC) && (_MSC_VER < 1910)
+#if defined(XIO_MSVC) && (_MSC_VER < 1910)
     // Skip this on older MSVC due to mysterious ambiguous overload errors.
 #else
     win::random_access_handle handle2(ioc, native_handle1);
@@ -145,15 +145,15 @@ void test()
   catch (std::exception&)
   {
   }
-#endif // defined(ASIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE)
+#endif // defined(XIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE)
 }
 
 } // namespace windows_random_access_handle_compile
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "windows/random_access_handle",
-  ASIO_COMPILE_TEST_CASE(windows_random_access_handle_compile::test)
+  XIO_COMPILE_TEST_CASE(windows_random_access_handle_compile::test)
 )

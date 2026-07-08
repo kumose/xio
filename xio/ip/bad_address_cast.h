@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_BAD_ADDRESS_CAST_HPP
-#define ASIO_IP_BAD_ADDRESS_CAST_HPP
+#ifndef XIO_IP_BAD_ADDRESS_CAST_HPP
+#define XIO_IP_BAD_ADDRESS_CAST_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -26,7 +26,7 @@ namespace xio {
     namespace ip {
         /// Thrown to indicate a failed address conversion.
         class bad_address_cast :
-#if defined(ASIO_MSVC) && defined(_HAS_EXCEPTIONS) && !_HAS_EXCEPTIONS
+#if defined(XIO_MSVC) && defined(_HAS_EXCEPTIONS) && !_HAS_EXCEPTIONS
                 public std::exception
 #else
                 public std::bad_cast
@@ -39,7 +39,7 @@ namespace xio {
 
             /// Copy constructor.
             bad_address_cast(const bad_address_cast &other) noexcept
-#if defined(ASIO_MSVC) && defined(_HAS_EXCEPTIONS) && !_HAS_EXCEPTIONS
+#if defined(XIO_MSVC) && defined(_HAS_EXCEPTIONS) && !_HAS_EXCEPTIONS
             : std::exception (static_cast<const std::exception &>(other))
 #else
                 : std::bad_cast(static_cast<const std::bad_cast &>(other))
@@ -62,4 +62,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_ADDRESS_HPP
+#endif // XIO_IP_ADDRESS_HPP

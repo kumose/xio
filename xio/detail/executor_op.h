@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_EXECUTOR_OP_HPP
-#define ASIO_DETAIL_EXECUTOR_OP_HPP
+#ifndef XIO_DETAIL_EXECUTOR_OP_HPP
+#define XIO_DETAIL_EXECUTOR_OP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -30,7 +30,7 @@ namespace xio {
             typename Operation = scheduler_operation>
         class executor_op : public Operation {
         public:
-            ASIO_DEFINE_HANDLER_ALLOCATOR_PTR(executor_op);
+            XIO_DEFINE_HANDLER_ALLOCATOR_PTR(executor_op);
 
             template<typename H>
             executor_op(H &&h, const Alloc &allocator)
@@ -43,12 +43,12 @@ namespace xio {
                                     const xio::error_code & /*ec*/,
                                     std::size_t /*bytes_transferred*/) {
                 // Take ownership of the handler object.
-                ASIO_ASSUME(base != 0);
+                XIO_ASSUME(base != 0);
                 executor_op *o(static_cast<executor_op *>(base));
                 Alloc allocator(o->allocator_);
                 ptr p = {detail::addressof(allocator), o, o};
 
-                ASIO_HANDLER_COMPLETION((*o));
+                XIO_HANDLER_COMPLETION((*o));
 
                 // Make a copy of the handler so that the memory can be deallocated before
                 // the upcall is made. Even if we're not about to make an upcall, a
@@ -62,9 +62,9 @@ namespace xio {
                 // Make the upcall if required.
                 if (owner) {
                     fenced_block b(fenced_block::half);
-                    ASIO_HANDLER_INVOCATION_BEGIN(());
+                    XIO_HANDLER_INVOCATION_BEGIN(());
                     static_cast<Handler &&>(handler)();
-                    ASIO_HANDLER_INVOCATION_END;
+                    XIO_HANDLER_INVOCATION_END;
                 }
             }
 
@@ -78,4 +78,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_EXECUTOR_OP_HPP
+#endif // XIO_DETAIL_EXECUTOR_OP_HPP

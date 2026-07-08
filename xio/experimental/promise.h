@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXPERIMENTAL_PROMISE_HPP
-#define ASIO_EXPERIMENTAL_PROMISE_HPP
+#ifndef XIO_EXPERIMENTAL_PROMISE_HPP
+#define XIO_EXPERIMENTAL_PROMISE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -61,44 +61,8 @@ namespace xio {
             using type = std::tuple<>;
         };
 
-#if defined(GENERATING_DOCUMENTATION)
-        /// A disposable handle for an eager operation.
-        /**
- * @tparam Signature The signature of the operation.
- *
- * @tparam Executor The executor to be used by the promise (taken from the
- * operation).
- *
- * @tparam Allocator The allocator used for the promise. Can be set through
- * use_allocator.
- *
- * A promise can be used to initiate an asynchronous option that can be
- * completed later. If the promise gets destroyed before completion, the
- * operation gets a cancel signal and the result is ignored.
- *
- * A promise fulfills the requirements of async_operation.
- *
- * @par Examples
- * Reading and writing from one coroutine.
- * @code
- * awaitable<void> read_write_some(xio::ip::tcp::socket & sock,
- *     xio::mutable_buffer read_buf, xio::const_buffer to_write)
- * {
- *   auto p = xio::async_read(read_buf,
- *       xio::experimental::use_promise);
- *   co_await xio::async_write_some(to_write);
- *   co_await p;
- * }
- * @endcode
- */
-        template<typename Signature = void(),
-            typename Executor = xio::any_io_executor,
-            typename Allocator = std::allocator<void> >
-        struct promise
-#else
         template<typename... Ts, typename Executor, typename Allocator>
         struct promise<void(Ts...), Executor, Allocator>
-#endif // defined(GENERATING_DOCUMENTATION)
         {
             /// The value that's returned by the promise.
             using value_type = typename promise_value_type<Ts...>::type;
@@ -117,8 +81,8 @@ namespace xio {
             }
 
             /// Wait for the promise to become ready.
-            template<ASIO_COMPLETION_TOKEN_FOR(void (Ts...)) CompletionToken>
-            inline ASIO_INITFN_AUTO_RESULT_TYPE(CompletionToken, void (Ts...))
+            template<XIO_COMPLETION_TOKEN_FOR(void (Ts...)) CompletionToken>
+            inline XIO_INITFN_AUTO_RESULT_TYPE(CompletionToken, void (Ts...))
 
             operator()(CompletionToken &&token) {
                 assert(impl_);
@@ -140,11 +104,9 @@ namespace xio {
             ~promise() { cancel(); }
 
         private:
-#if !defined(GENERATING_DOCUMENTATION)
             template<typename, typename, typename>
             friend struct promise;
             friend struct detail::promise_handler<void(Ts...), Executor, Allocator>;
-#endif // !defined(GENERATING_DOCUMENTATION)
 
             std::shared_ptr<detail::promise_impl<
                 void(Ts...), Executor, Allocator> > impl_;
@@ -209,4 +171,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXPERIMENTAL_PROMISE_HPP
+#endif // XIO_EXPERIMENTAL_PROMISE_HPP

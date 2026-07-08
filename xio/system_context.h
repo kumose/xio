@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SYSTEM_CONTEXT_HPP
-#define ASIO_SYSTEM_CONTEXT_HPP
+#ifndef XIO_SYSTEM_CONTEXT_HPP
+#define XIO_SYSTEM_CONTEXT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -39,25 +39,22 @@ namespace xio {
         > executor_type;
 
         /// Destructor shuts down all threads in the system thread pool.
-        ASIO_DECL ~system_context();
+        XIO_DECL ~system_context();
 
         /// Obtain an executor for the context.
         executor_type get_executor() noexcept;
 
         /// Signal all threads in the system thread pool to stop.
-  ASIO_DECL void stop();
+  XIO_DECL void stop();
 
         /// Determine whether the system thread pool has been stopped.
-  ASIO_DECL bool stopped() const noexcept;
+  XIO_DECL bool stopped() const noexcept;
 
         /// Join all threads in the system thread pool.
-  ASIO_DECL void join();
+  XIO_DECL void join();
 
-#if defined(GENERATING_DOCUMENTATION)
-    private:
-#endif // defined(GENERATING_DOCUMENTATION)
         // Constructor creates all threads in the system thread pool.
-        ASIO_DECL system_context();
+        XIO_DECL system_context();
 
     private:
         template<typename, typename, typename>
@@ -66,7 +63,7 @@ namespace xio {
         struct thread_function;
 
         // Helper function to create the underlying scheduler.
-        ASIO_DECL detail::scheduler &add_scheduler(detail::scheduler *s);
+        XIO_DECL detail::scheduler &add_scheduler(detail::scheduler *s);
 
         // The underlying scheduler.
         detail::scheduler &scheduler_;
@@ -86,4 +83,4 @@ namespace xio {
 #include <xio/impl/system_context.h>
 
 
-#endif // ASIO_SYSTEM_CONTEXT_HPP
+#endif // XIO_SYSTEM_CONTEXT_HPP

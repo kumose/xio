@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_SCHEDULER_HPP
-#define ASIO_DETAIL_SCHEDULER_HPP
+#ifndef XIO_DETAIL_SCHEDULER_HPP
+#define XIO_DETAIL_SCHEDULER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -51,46 +51,46 @@ namespace xio {
                 xio::execution_context &);
 
             // Constructor.
-            ASIO_DECL scheduler(xio::execution_context &ctx,
+            XIO_DECL scheduler(xio::execution_context &ctx,
                                 bool own_thread = true,
                                 get_task_func_type get_task = &scheduler::get_default_task);
 
             // Construct as an internal scheduler.
-            ASIO_DECL scheduler(internal, xio::execution_context &ctx);
+            XIO_DECL scheduler(internal, xio::execution_context &ctx);
 
             // Destructor.
-            ASIO_DECL ~scheduler();
+            XIO_DECL ~scheduler();
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void shutdown();
+  XIO_DECL void shutdown();
 
             // Initialise the task, if required.
-  ASIO_DECL void init_task();
+  XIO_DECL void init_task();
 
             // Run the event loop until interrupted or no more work.
-            ASIO_DECL std::size_t run(xio::error_code &ec);
+            XIO_DECL std::size_t run(xio::error_code &ec);
 
             // Run until interrupted or one operation is performed.
-            ASIO_DECL std::size_t run_one(xio::error_code &ec);
+            XIO_DECL std::size_t run_one(xio::error_code &ec);
 
             // Run until timeout, interrupted, or one operation is performed.
-            ASIO_DECL std::size_t wait_one(
+            XIO_DECL std::size_t wait_one(
                 long usec, xio::error_code &ec);
 
             // Poll for operations without blocking.
-            ASIO_DECL std::size_t poll(xio::error_code &ec);
+            XIO_DECL std::size_t poll(xio::error_code &ec);
 
             // Poll for one operation without blocking.
-            ASIO_DECL std::size_t poll_one(xio::error_code &ec);
+            XIO_DECL std::size_t poll_one(xio::error_code &ec);
 
             // Interrupt the event processing loop.
-  ASIO_DECL void stop();
+  XIO_DECL void stop();
 
             // Determine whether the scheduler is stopped.
-  ASIO_DECL bool stopped() const;
+  XIO_DECL bool stopped() const;
 
             // Restart in preparation for a subsequent run invocation.
-  ASIO_DECL void restart();
+  XIO_DECL void restart();
 
             // Notify that some work has started.
             void work_started() {
@@ -99,7 +99,7 @@ namespace xio {
 
             // Used to compensate for a forthcoming work_finished call. Must be called
             // from within a scheduler-owned thread.
-  ASIO_DECL void compensating_work_started();
+  XIO_DECL void compensating_work_started();
 
             // Notify that some work has finished.
             void work_finished() {
@@ -108,36 +108,36 @@ namespace xio {
             }
 
             // Return whether a handler can be dispatched immediately.
-  ASIO_DECL bool can_dispatch();
+  XIO_DECL bool can_dispatch();
 
             /// Capture the current exception so it can be rethrown from a run function.
-  ASIO_DECL void capture_current_exception();
+  XIO_DECL void capture_current_exception();
 
             // Request invocation of the given operation and return immediately. Assumes
             // that work_started() has not yet been called for the operation.
-  ASIO_DECL void post_immediate_completion(
+  XIO_DECL void post_immediate_completion(
                 operation *op, bool is_continuation);
 
             // Request invocation of the given operations and return immediately. Assumes
             // that work_started() has not yet been called for the operations.
-  ASIO_DECL void post_immediate_completions(std::size_t n,
+  XIO_DECL void post_immediate_completions(std::size_t n,
                                             op_queue<operation> &ops, bool is_continuation);
 
             // Request invocation of the given operation and return immediately. Assumes
             // that work_started() was previously called for the operation.
-  ASIO_DECL void post_deferred_completion(operation *op);
+  XIO_DECL void post_deferred_completion(operation *op);
 
             // Request invocation of the given operations and return immediately. Assumes
             // that work_started() was previously called for each operation.
-  ASIO_DECL void post_deferred_completions(op_queue<operation> &ops);
+  XIO_DECL void post_deferred_completions(op_queue<operation> &ops);
 
             // Enqueue the given operation following a failed attempt to dispatch the
             // operation for immediate invocation.
-  ASIO_DECL void do_dispatch(operation *op);
+  XIO_DECL void do_dispatch(operation *op);
 
             // Process unfinished operations as part of a shutdownoperation. Assumes that
             // work_started() was previously called for the operations.
-  ASIO_DECL void abandon_operations(op_queue<operation> &ops);
+  XIO_DECL void abandon_operations(op_queue<operation> &ops);
 
         private:
             // The mutex type used by this scheduler.
@@ -150,26 +150,26 @@ namespace xio {
             typedef scheduler_thread_info thread_info;
 
             // Run at most one operation. May block.
-            ASIO_DECL std::size_t do_run_one(mutex::scoped_lock &lock,
+            XIO_DECL std::size_t do_run_one(mutex::scoped_lock &lock,
                                              thread_info &this_thread, const xio::error_code &ec);
 
             // Run at most one operation with a timeout. May block.
-            ASIO_DECL std::size_t do_wait_one(mutex::scoped_lock &lock,
+            XIO_DECL std::size_t do_wait_one(mutex::scoped_lock &lock,
                                               thread_info &this_thread, long usec, const xio::error_code &ec);
 
             // Poll for at most one operation.
-            ASIO_DECL std::size_t do_poll_one(mutex::scoped_lock &lock,
+            XIO_DECL std::size_t do_poll_one(mutex::scoped_lock &lock,
                                               thread_info &this_thread, const xio::error_code &ec);
 
             // Stop the task and all idle threads.
-  ASIO_DECL void stop_all_threads(mutex::scoped_lock &lock);
+  XIO_DECL void stop_all_threads(mutex::scoped_lock &lock);
 
             // Wake a single idle thread, or the task, and always unlock the mutex.
-  ASIO_DECL void wake_one_thread_and_unlock(
+  XIO_DECL void wake_one_thread_and_unlock(
                 mutex::scoped_lock &lock);
 
             // Get the default task.
-  ASIO_DECL static scheduler_task *get_default_task(
+  XIO_DECL static scheduler_task *get_default_task(
                 xio::execution_context &ctx);
 
             // Helper class to run the scheduler in its own thread.
@@ -239,4 +239,4 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // ASIO_DETAIL_SCHEDULER_HPP
+#endif // XIO_DETAIL_SCHEDULER_HPP

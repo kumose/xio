@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXECUTION_OUTSTANDING_WORK_HPP
-#define ASIO_EXECUTION_OUTSTANDING_WORK_HPP
+#ifndef XIO_EXECUTION_OUTSTANDING_WORK_HPP
+#define XIO_EXECUTION_OUTSTANDING_WORK_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -29,113 +29,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
-#if defined(GENERATING_DOCUMENTATION)
-
-    namespace execution {
-        /// A property to describe whether task submission is likely in the future.
-        struct outstanding_work_t {
-            /// The outstanding_work_t property applies to executors.
-            template<typename T>
-            static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-            /// The top-level outstanding_work_t property cannot be required.
-            static constexpr bool is_requirable = false;
-
-            /// The top-level outstanding_work_t property cannot be preferred.
-            static constexpr bool is_preferable = false;
-
-            /// The type returned by queries against an @c any_executor.
-            typedef outstanding_work_t polymorphic_query_result_type;
-
-            /// A sub-property that indicates that the executor does not represent likely
-  /// future submission of a function object.
-            struct untracked_t {
-                /// The outstanding_work_t::untracked_t property applies to executors.
-                template<typename T>
-                static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-                /// The outstanding_work_t::untracked_t property can be required.
-                static constexpr bool is_requirable = true;
-
-                /// The outstanding_work_t::untracked_t property can be preferred.
-                static constexpr bool is_preferable = true;
-
-                /// The type returned by queries against an @c any_executor.
-                typedef outstanding_work_t polymorphic_query_result_type;
-
-                /// Default constructor.
-                constexpr untracked_t();
-
-                /// Get the value associated with a property object.
-                /**
-     * @returns untracked_t();
-     */
-                static constexpr outstanding_work_t value();
-            };
-
-            /// A sub-property that indicates that the executor represents likely
-  /// future submission of a function object.
-            struct tracked_t {
-                /// The outstanding_work_t::untracked_t property applies to executors.
-                template<typename T>
-                static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-                /// The outstanding_work_t::tracked_t property can be required.
-                static constexpr bool is_requirable = true;
-
-                /// The outstanding_work_t::tracked_t property can be preferred.
-                static constexpr bool is_preferable = true;
-
-                /// The type returned by queries against an @c any_executor.
-                typedef outstanding_work_t polymorphic_query_result_type;
-
-                /// Default constructor.
-                constexpr tracked_t();
-
-                /// Get the value associated with a property object.
-                /**
-     * @returns tracked_t();
-     */
-                static constexpr outstanding_work_t value();
-            };
-
-            /// A special value used for accessing the outstanding_work_t::untracked_t
-  /// property.
-            static constexpr untracked_t untracked;
-
-            /// A special value used for accessing the outstanding_work_t::tracked_t
-  /// property.
-            static constexpr tracked_t tracked;
-
-            /// Default constructor.
-            constexpr outstanding_work_t();
-
-            /// Construct from a sub-property value.
-            constexpr outstanding_work_t(untracked_t);
-
-            /// Construct from a sub-property value.
-            constexpr outstanding_work_t(tracked_t);
-
-            /// Compare property values for equality.
-            friend constexpr bool operator==(
-                const outstanding_work_t &a, const outstanding_work_t &b) noexcept;
-
-            /// Compare property values for inequality.
-            friend constexpr bool operator!=(
-                const outstanding_work_t &a, const outstanding_work_t &b) noexcept;
-        };
-
-        /// A special value used for accessing the outstanding_work_t property.
-        constexpr outstanding_work_t outstanding_work;
-    } // namespace execution
-
-#else // defined(GENERATING_DOCUMENTATION)
-
-
-
-
     namespace execution {
         namespace detail {
             namespace outstanding_work {
@@ -183,7 +76,6 @@ namespace xio {
                                 std::declval<std::conditional_t<true, T, P> >().query(static_cast<P &&>(p))
                             );
                     };
-
                 };
 
                 template<typename T>
@@ -193,16 +85,15 @@ namespace xio {
                         static constexpr auto query(P &&p)
                             noexcept(
                                 noexcept(
-                                    std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                    std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
                                 )
                             )
                             -> decltype(
-                                std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
                             ) {
                             return T::query(static_cast<P &&>(p));
                         }
                     };
-
                 };
 
                 template<typename T>
@@ -286,12 +177,12 @@ namespace xio {
                         can_query<const Executor &, untracked_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
-#if defined(ASIO_MSVC) // Visual C++ wants the type to be qualified.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
                 noexcept(is_nothrow_query<const Executor &,
                     outstanding_work_t<>::untracked_t>::value)
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                     noexcept(is_nothrow_query<const Executor &, untracked_t>::value)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 #endif // !defined(__clang__)
                 {
                     return xio::query(ex, untracked_t());
@@ -307,20 +198,20 @@ namespace xio {
                         can_query<const Executor &, tracked_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
-#if defined(ASIO_MSVC) // Visual C++ wants the type to be qualified.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
                 noexcept(is_nothrow_query<const Executor &,
                     outstanding_work_t<>::tracked_t>::value)
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                     noexcept(is_nothrow_query<const Executor &, tracked_t>::value)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 #endif // !defined(__clang__)
                 {
                     return xio::query(ex, tracked_t());
                 }
 
-                ASIO_STATIC_CONSTEXPR_DEFAULT_INIT(untracked_t, untracked);
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(untracked_t, untracked);
 
-                ASIO_STATIC_CONSTEXPR_DEFAULT_INIT(tracked_t, tracked);
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(tracked_t, tracked);
 
             private:
                 int value_;
@@ -480,21 +371,15 @@ namespace xio {
                 template<int I>
                 template<typename E, typename T>
                 const T tracked_t<I>::static_query_v;
-
             } // namespace outstanding_work
         } // namespace detail
 
         typedef detail::outstanding_work_t<> outstanding_work_t;
 
-inline constexpr outstanding_work_t outstanding_work;
+        inline constexpr outstanding_work_t outstanding_work;
     } // namespace execution
-
-
-#endif // defined(GENERATING_DOCUMENTATION)
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXECUTION_OUTSTANDING_WORK_HPP
+#endif // XIO_EXECUTION_OUTSTANDING_WORK_HPP

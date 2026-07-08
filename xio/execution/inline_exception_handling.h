@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXECUTION_INLINE_EXCEPTION_HANDLING_HPP
-#define ASIO_EXECUTION_INLINE_EXCEPTION_HANDLING_HPP
+#ifndef XIO_EXECUTION_INLINE_EXCEPTION_HANDLING_HPP
+#define XIO_EXECUTION_INLINE_EXCEPTION_HANDLING_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -32,153 +32,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
-#if defined(GENERATING_DOCUMENTATION)
-
-    namespace execution {
-        /// A property to describe what guarantees an executor makes about the treatment
-/// of exceptions that are thrown by a submitted function, when that function
-/// is executed inline within @c execute.
-        struct inline_exception_handling_t {
-            /// The inline_exception_handling property applies to executors.
-            template<typename T>
-            static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-            /// The top-level inline_exception_handling property cannot be required.
-            static constexpr bool is_requirable = false;
-
-            /// The top-level inline_exception_handling property cannot be preferred.
-            static constexpr bool is_preferable = false;
-
-            /// The type returned by queries against an @c any_executor.
-            typedef inline_exception_handling_t polymorphic_query_result_type;
-
-            /// A sub-property that indicates that invocation of an executor's execution
-  /// function will propagate any exceptions that are thrown by the submitted
-  /// function object, if that function object is executed inline.
-            struct propagate_t {
-                /// The inline_exception_handling_t::propagate_t property applies to
-    /// executors.
-                template<typename T>
-                static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-                /// The inline_exception_handling_t::propagate_t property can be required.
-                static constexpr bool is_requirable = true;
-
-                /// The inline_exception_handling_t::propagate_t property can be preferred.
-                static constexpr bool is_preferable = true;
-
-                /// The type returned by queries against an @c any_executor.
-                typedef inline_exception_handling_t polymorphic_query_result_type;
-
-                /// Default constructor.
-                constexpr propagate_t();
-
-                /// Get the value associated with a property object.
-                /**
-     * @returns propagate_t();
-     */
-                static constexpr inline_exception_handling_t value();
-            };
-
-            /// A sub-property that indicates that invocation of an executor's execution
-  /// function will capture any exceptions that are thrown by the submitted
-  /// function object, if that function object is executed inline. Captured
-  /// exceptions are forwarded to an executor-defined handling mechanism.
-            struct capture_t {
-                /// The inline_exception_handling_t::capture_t property applies to
-    /// executors.
-                template<typename T>
-                static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-                /// The inline_exception_handling_t::capture_t property can be required.
-                static constexpr bool is_requirable = true;
-
-                /// The inline_exception_handling_t::capture_t property can be preferred.
-                static constexpr bool is_preferable = false;
-
-                /// The type returned by queries against an @c any_executor.
-                typedef inline_exception_handling_t polymorphic_query_result_type;
-
-                /// Default constructor.
-                constexpr capture_t();
-
-                /// Get the value associated with a property object.
-                /**
-     * @returns capture_t();
-     */
-                static constexpr inline_exception_handling_t value();
-            };
-
-            /// A sub-property that indicates that invocation of an executor's execution
-  /// function will terminate the program if any exceptions that are thrown by
-  /// the submitted function object, if that function object is executed inline.
-            struct terminate_t {
-                /// The inline_exception_handling_t::terminate_t property applies to
-    /// executors.
-                template<typename T>
-                static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-                /// The inline_exception_handling_t::terminate_t property can be required.
-                static constexpr bool is_requirable = true;
-
-                /// The inline_exception_handling_t::terminate_t property can be preferred.
-                static constexpr bool is_preferable = true;
-
-                /// The type returned by queries against an @c any_executor.
-                typedef inline_exception_handling_t polymorphic_query_result_type;
-
-                /// Default constructor.
-                constexpr terminate_t();
-
-                /// Get the value associated with a property object.
-                /**
-     * @returns terminate_t();
-     */
-                static constexpr inline_exception_handling_t value();
-            };
-
-            /// A special value used for accessing the
-  /// inline_exception_handling_t::propagate_t property.
-            static constexpr propagate_t propagate;
-
-            /// A special value used for accessing the
-  /// inline_exception_handling_t::capture_t property.
-            static constexpr capture_t capture;
-
-            /// A special value used for accessing the
-  /// inline_exception_handling_t::terminate_t property.
-            static constexpr terminate_t terminate;
-
-            /// Default constructor.
-            constexpr inline_exception_handling_t();
-
-            /// Construct from a sub-property value.
-            constexpr inline_exception_handling_t(propagate_t);
-
-            /// Construct from a sub-property value.
-            constexpr inline_exception_handling_t(capture_t);
-
-            /// Construct from a sub-property value.
-            constexpr inline_exception_handling_t(terminate_t);
-
-            /// Compare property values for equality.
-            friend constexpr bool operator==(const inline_exception_handling_t &a,
-                                             const inline_exception_handling_t &b) noexcept;
-
-            /// Compare property values for inequality.
-            friend constexpr bool operator!=(const inline_exception_handling_t &a,
-                                             const inline_exception_handling_t &b) noexcept;
-        };
-
-        /// A special value used for accessing the inline_exception_handling property.
-        constexpr inline_exception_handling_t inline_exception_handling;
-    } // namespace execution
-
-#else // defined(GENERATING_DOCUMENTATION)
-
-
 
 
     namespace execution {
@@ -363,12 +216,12 @@ namespace xio {
                         can_query<const Executor &, propagate_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
-#if defined(ASIO_MSVC) // Visual C++ wants the type to be qualified.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
                 noexcept(is_nothrow_query<const Executor &,
                     inline_exception_handling_t<>::propagate_t>::value)
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                     noexcept(is_nothrow_query<const Executor &, propagate_t>::value)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 #endif // !defined(__clang__)
                 {
                     return xio::query(ex, propagate_t());
@@ -384,12 +237,12 @@ namespace xio {
                         can_query<const Executor &, capture_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
-#if defined(ASIO_MSVC) // Visual C++ wants the type to be qualified.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
                 noexcept(is_nothrow_query<const Executor &,
                     inline_exception_handling_t<>::capture_t>::value)
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                     noexcept(is_nothrow_query<const Executor &, capture_t>::value)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 #endif // !defined(__clang__)
                 {
                     return xio::query(ex, capture_t());
@@ -408,22 +261,22 @@ namespace xio {
                         can_query<const Executor &, terminate_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
-#if defined(ASIO_MSVC) // Visual C++ wants the type to be qualified.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
                 noexcept(is_nothrow_query<const Executor &,
                     inline_exception_handling_t<>::terminate_t>::value)
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                     noexcept(is_nothrow_query<const Executor &, terminate_t>::value)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 #endif // !defined(__clang__)
                 {
                     return xio::query(ex, terminate_t());
                 }
 
-                ASIO_STATIC_CONSTEXPR_DEFAULT_INIT(propagate_t, propagate);
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(propagate_t, propagate);
 
-                ASIO_STATIC_CONSTEXPR_DEFAULT_INIT(capture_t, capture);
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(capture_t, capture);
 
-                ASIO_STATIC_CONSTEXPR_DEFAULT_INIT(terminate_t, terminate);
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(terminate_t, terminate);
 
             private:
                 int value_;
@@ -706,11 +559,9 @@ namespace xio {
         inline_exception_handling_t inline_exception_handling;
     } // namespace execution
 
-#endif // defined(GENERATING_DOCUMENTATION)
-
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXECUTION_INLINE_EXCEPTION_HANDLING_HPP
+#endif // XIO_EXECUTION_INLINE_EXCEPTION_HANDLING_HPP

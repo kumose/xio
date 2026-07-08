@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_WINRT_TIMER_SCHEDULER_IPP
-#define ASIO_DETAIL_IMPL_WINRT_TIMER_SCHEDULER_IPP
+#ifndef XIO_DETAIL_IMPL_WINRT_TIMER_SCHEDULER_IPP
+#define XIO_DETAIL_IMPL_WINRT_TIMER_SCHEDULER_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 
 #include <xio/detail/bind_handler.h>
 #include <xio/detail/winrt_timer_scheduler.h>
@@ -99,6 +99,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
 
-#endif // ASIO_DETAIL_IMPL_WINRT_TIMER_SCHEDULER_IPP
+#endif // XIO_DETAIL_IMPL_WINRT_TIMER_SCHEDULER_IPP

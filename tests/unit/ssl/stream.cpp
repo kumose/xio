@@ -189,8 +189,8 @@ void test()
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "ssl/stream",
-  ASIO_COMPILE_TEST_CASE(ssl_stream_compile::test)
+  XIO_COMPILE_TEST_CASE(ssl_stream_compile::test)
 )

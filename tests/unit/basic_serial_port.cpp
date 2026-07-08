@@ -16,8 +16,8 @@
 
 #include "unit_test.hpp"
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "basic_serial_port",
-  ASIO_TEST_CASE(null_test)
+  XIO_TEST_CASE(null_test)
 )

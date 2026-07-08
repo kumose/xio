@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_RECYCLING_ALLOCATOR_HPP
-#define ASIO_DETAIL_RECYCLING_ALLOCATOR_HPP
+#ifndef XIO_DETAIL_RECYCLING_ALLOCATOR_HPP
+#define XIO_DETAIL_RECYCLING_ALLOCATOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -44,24 +44,24 @@ namespace xio {
             }
 
             T *allocate(std::size_t n) {
-#if !defined(ASIO_DISABLE_SMALL_BLOCK_RECYCLING)
+#if !defined(XIO_DISABLE_SMALL_BLOCK_RECYCLING)
                 void *p = thread_info_base::allocate(Purpose(),
                                                      thread_context::top_of_thread_call_stack(),
                                                      sizeof(T) * n, alignof(T));
-#else // !defined(ASIO_DISABLE_SMALL_BLOCK_RECYCLING)
+#else // !defined(XIO_DISABLE_SMALL_BLOCK_RECYCLING)
                 void *p = xio::aligned_new(alignof(T), sizeof(T) * n);
-#endif // !defined(ASIO_DISABLE_SMALL_BLOCK_RECYCLING)
+#endif // !defined(XIO_DISABLE_SMALL_BLOCK_RECYCLING)
                 return static_cast<T *>(p);
             }
 
             void deallocate(T *p, std::size_t n) {
-#if !defined(ASIO_DISABLE_SMALL_BLOCK_RECYCLING)
+#if !defined(XIO_DISABLE_SMALL_BLOCK_RECYCLING)
                 thread_info_base::deallocate(Purpose(),
                                              thread_context::top_of_thread_call_stack(), p, sizeof(T) * n);
-#else // !defined(ASIO_DISABLE_SMALL_BLOCK_RECYCLING)
+#else // !defined(XIO_DISABLE_SMALL_BLOCK_RECYCLING)
                 (void) n;
                 xio::aligned_delete(p);
-#endif // !defined(ASIO_DISABLE_SMALL_BLOCK_RECYCLING)
+#endif // !defined(XIO_DISABLE_SMALL_BLOCK_RECYCLING)
             }
         };
 
@@ -100,4 +100,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_RECYCLING_ALLOCATOR_HPP
+#endif // XIO_DETAIL_RECYCLING_ALLOCATOR_HPP

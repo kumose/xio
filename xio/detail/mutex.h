@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_MUTEX_HPP
-#define ASIO_DETAIL_MUTEX_HPP
+#ifndef XIO_DETAIL_MUTEX_HPP
+#define XIO_DETAIL_MUTEX_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,13 +17,13 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_HAS_THREADS)
+#if !defined(XIO_HAS_THREADS)
 #include <xio/detail/null_mutex.h>
-#elif defined(ASIO_WINDOWS) && defined(ASIO_HAS_WINDOWS_SRWLOCK)
+#elif defined(XIO_WINDOWS) && defined(XIO_HAS_WINDOWS_SRWLOCK)
 #include <xio/detail/win_mutex.h>
-#elif defined(ASIO_WINDOWS)
+#elif defined(XIO_WINDOWS)
 #include <xio/detail/win_critsec_mutex.h>
-#elif defined(ASIO_HAS_PTHREADS)
+#elif defined(XIO_HAS_PTHREADS)
 #include <xio/detail/posix_mutex.h>
 #else
 #include <xio/detail/std_mutex.h>
@@ -33,13 +33,13 @@ namespace xio {
 
 
     namespace detail {
-#if !defined(ASIO_HAS_THREADS)
+#if !defined(XIO_HAS_THREADS)
         typedef null_mutex mutex;
-#elif defined(ASIO_WINDOWS) && defined(ASIO_HAS_WINDOWS_SRWLOCK)
+#elif defined(XIO_WINDOWS) && defined(XIO_HAS_WINDOWS_SRWLOCK)
         typedef win_mutex mutex;
-#elif defined(ASIO_WINDOWS)
+#elif defined(XIO_WINDOWS)
         typedef win_critsec_mutex mutex;
-#elif defined(ASIO_HAS_PTHREADS)
+#elif defined(XIO_HAS_PTHREADS)
         typedef posix_mutex mutex;
 #else
         typedef std_mutex mutex;
@@ -48,4 +48,4 @@ namespace xio {
 
 } // namespace xio
 
-#endif // ASIO_DETAIL_MUTEX_HPP
+#endif // XIO_DETAIL_MUTEX_HPP

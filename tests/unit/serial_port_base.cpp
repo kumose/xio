@@ -29,7 +29,7 @@ namespace serial_port_base_compile {
 
 void test()
 {
-#if defined(ASIO_HAS_SERIAL_PORT)
+#if defined(XIO_HAS_SERIAL_PORT)
   using namespace xio;
 
   try
@@ -82,15 +82,15 @@ void test()
   catch (std::exception&)
   {
   }
-#endif // defined(ASIO_HAS_SERIAL_PORT)
+#endif // defined(XIO_HAS_SERIAL_PORT)
 }
 
 } // namespace serial_port_base_compile
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "serial_port_base",
-  ASIO_COMPILE_TEST_CASE(serial_port_base_compile::test)
+  XIO_COMPILE_TEST_CASE(serial_port_base_compile::test)
 )

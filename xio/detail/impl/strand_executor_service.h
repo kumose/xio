@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_STRAND_EXECUTOR_SERVICE_HPP
-#define ASIO_DETAIL_IMPL_STRAND_EXECUTOR_SERVICE_HPP
+#ifndef XIO_DETAIL_IMPL_STRAND_EXECUTOR_SERVICE_HPP
+#define XIO_DETAIL_IMPL_STRAND_EXECUTOR_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -119,7 +119,7 @@ namespace xio {
             executor_type executor_;
         };
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
 
         template<typename Executor>
         class strand_executor_service::invoker<Executor,
@@ -176,7 +176,7 @@ private:
   executor_work_guard<Executor> work_;
 };
 
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
         template<typename Executor, typename Function>
         inline void strand_executor_service::execute(const implementation_type &impl,
@@ -222,7 +222,7 @@ private:
             typename op::ptr p = {detail::addressof(a), op::ptr::allocate(a), 0};
             p.p = new(p.v) op(static_cast<Function &&>(function), a);
 
-            ASIO_HANDLER_CREATION((impl->service_->context(), *p.p,
+            XIO_HANDLER_CREATION((impl->service_->context(), *p.p,
                                    "strand_executor", impl.get(), 0, "execute"));
 
             // Add the function to the strand and schedule the strand if required.
@@ -253,7 +253,7 @@ private:
             typename op::ptr p = {detail::addressof(a), op::ptr::allocate(a), 0};
             p.p = new(p.v) op(static_cast<Function &&>(function), a);
 
-            ASIO_HANDLER_CREATION((impl->service_->context(), *p.p,
+            XIO_HANDLER_CREATION((impl->service_->context(), *p.p,
                                    "strand_executor", impl.get(), 0, "dispatch"));
 
             // Add the function to the strand and schedule the strand if required.
@@ -277,7 +277,7 @@ private:
             typename op::ptr p = {detail::addressof(a), op::ptr::allocate(a), 0};
             p.p = new(p.v) op(static_cast<Function &&>(function), a);
 
-            ASIO_HANDLER_CREATION((impl->service_->context(), *p.p,
+            XIO_HANDLER_CREATION((impl->service_->context(), *p.p,
                                    "strand_executor", impl.get(), 0, "post"));
 
             // Add the function to the strand and schedule the strand if required.
@@ -301,7 +301,7 @@ private:
             typename op::ptr p = {detail::addressof(a), op::ptr::allocate(a), 0};
             p.p = new(p.v) op(static_cast<Function &&>(function), a);
 
-            ASIO_HANDLER_CREATION((impl->service_->context(), *p.p,
+            XIO_HANDLER_CREATION((impl->service_->context(), *p.p,
                                    "strand_executor", impl.get(), 0, "defer"));
 
             // Add the function to the strand and schedule the strand if required.
@@ -319,4 +319,4 @@ private:
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_IMPL_STRAND_EXECUTOR_SERVICE_HPP
+#endif // XIO_DETAIL_IMPL_STRAND_EXECUTOR_SERVICE_HPP

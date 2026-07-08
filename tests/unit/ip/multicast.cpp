@@ -128,17 +128,17 @@ void test()
   sock_v6.bind(ep_v6, ec);
   bool have_v6 = !ec;
 
-  ASIO_CHECK(have_v4 || have_v6);
+  XIO_CHECK(have_v4 || have_v6);
 
-#if defined(ASIO_WINDOWS) && defined(UNDER_CE)
+#if defined(XIO_WINDOWS) && defined(UNDER_CE)
   // Windows CE seems to have problems with some multicast group addresses.
   // The following address works on CE, but as it is not a private multicast
   // address it will not be used on other platforms.
   const ip::address multicast_address_v4 = ip::make_address("239.0.0.4", ec);
-#else // defined(ASIO_WINDOWS) && defined(UNDER_CE)
+#else // defined(XIO_WINDOWS) && defined(UNDER_CE)
   const ip::address multicast_address_v4 = ip::make_address("239.255.0.1", ec);
-#endif // defined(ASIO_WINDOWS) && defined(UNDER_CE)
-  ASIO_CHECK(!have_v4 || !ec);
+#endif // defined(XIO_WINDOWS) && defined(UNDER_CE)
+  XIO_CHECK(!have_v4 || !ec);
 
 #if (defined(__MACH__) && defined(__APPLE__)) \
   || defined(__FreeBSD__) \
@@ -154,7 +154,7 @@ void test()
        //   || defined(__FreeBSD__)
        //   || defined(__NetBSD__)
        //   || defined(__OpenBSD__)
-  ASIO_CHECK(!have_v6 || !ec);
+  XIO_CHECK(!have_v6 || !ec);
 
   // join_group class.
 
@@ -162,7 +162,7 @@ void test()
   {
     ip::multicast::join_group join_group(multicast_address_v4);
     sock_v4.set_option(join_group, ec);
-    ASIO_CHECK_MESSAGE(!ec || ec == error::no_such_device,
+    XIO_CHECK_MESSAGE(!ec || ec == error::no_such_device,
                        ec.value() << ", " << ec.message());
 
     if (!ec)
@@ -171,7 +171,7 @@ void test()
 
       ip::multicast::leave_group leave_group(multicast_address_v4);
       sock_v4.set_option(leave_group, ec);
-      ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+      XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
     }
   }
 
@@ -179,7 +179,7 @@ void test()
   {
     ip::multicast::join_group join_group(multicast_address_v6);
     sock_v6.set_option(join_group, ec);
-    ASIO_CHECK_MESSAGE(!ec || ec == error::no_such_device,
+    XIO_CHECK_MESSAGE(!ec || ec == error::no_such_device,
                        ec.value() << ", " << ec.message());
 
     if (!ec)
@@ -188,7 +188,7 @@ void test()
 
       ip::multicast::leave_group leave_group(multicast_address_v6);
       sock_v6.set_option(leave_group, ec);
-      ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+      XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
     }
   }
 
@@ -199,7 +199,7 @@ void test()
     ip::multicast::outbound_interface outbound_interface(
         ip::address_v4::loopback());
     sock_v4.set_option(outbound_interface, ec);
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
   }
 
   if (have_v6)
@@ -210,7 +210,7 @@ void test()
     ip::multicast::outbound_interface outbound_interface(1);
 #endif
     sock_v6.set_option(outbound_interface, ec);
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
   }
 
   // hops class.
@@ -218,47 +218,47 @@ void test()
   if (have_v4)
   {
     ip::multicast::hops hops1(1);
-    ASIO_CHECK(hops1.value() == 1);
+    XIO_CHECK(hops1.value() == 1);
     sock_v4.set_option(hops1, ec);
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
 
     ip::multicast::hops hops2;
     sock_v4.get_option(hops2, ec);
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
-    ASIO_CHECK(hops2.value() == 1);
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+    XIO_CHECK(hops2.value() == 1);
 
     ip::multicast::hops hops3(0);
-    ASIO_CHECK(hops3.value() == 0);
+    XIO_CHECK(hops3.value() == 0);
     sock_v4.set_option(hops3, ec);
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
 
     ip::multicast::hops hops4;
     sock_v4.get_option(hops4, ec);
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
-    ASIO_CHECK(hops4.value() == 0);
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+    XIO_CHECK(hops4.value() == 0);
   }
 
   if (have_v6)
   {
     ip::multicast::hops hops1(1);
-    ASIO_CHECK(hops1.value() == 1);
+    XIO_CHECK(hops1.value() == 1);
     sock_v6.set_option(hops1, ec);
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
 
     ip::multicast::hops hops2;
     sock_v6.get_option(hops2, ec);
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
-    ASIO_CHECK(hops2.value() == 1);
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+    XIO_CHECK(hops2.value() == 1);
 
     ip::multicast::hops hops3(0);
-    ASIO_CHECK(hops3.value() == 0);
+    XIO_CHECK(hops3.value() == 0);
     sock_v6.set_option(hops3, ec);
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
 
     ip::multicast::hops hops4;
     sock_v6.get_option(hops4, ec);
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
-    ASIO_CHECK(hops4.value() == 0);
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+    XIO_CHECK(hops4.value() == 0);
   }
 
   // enable_loopback class.
@@ -266,85 +266,85 @@ void test()
   if (have_v4)
   {
     ip::multicast::enable_loopback enable_loopback1(true);
-    ASIO_CHECK(enable_loopback1.value());
-    ASIO_CHECK(static_cast<bool>(enable_loopback1));
-    ASIO_CHECK(!!enable_loopback1);
+    XIO_CHECK(enable_loopback1.value());
+    XIO_CHECK(static_cast<bool>(enable_loopback1));
+    XIO_CHECK(!!enable_loopback1);
     sock_v4.set_option(enable_loopback1, ec);
-#if defined(ASIO_WINDOWS) && defined(UNDER_CE)
+#if defined(XIO_WINDOWS) && defined(UNDER_CE)
     // Option is not supported under Windows CE.
-    ASIO_CHECK_MESSAGE(ec == xio::error::no_protocol_option,
+    XIO_CHECK_MESSAGE(ec == xio::error::no_protocol_option,
         ec.value() << ", " << ec.message());
-#else // defined(ASIO_WINDOWS) && defined(UNDER_CE)
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
-#endif // defined(ASIO_WINDOWS) && defined(UNDER_CE)
+#else // defined(XIO_WINDOWS) && defined(UNDER_CE)
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+#endif // defined(XIO_WINDOWS) && defined(UNDER_CE)
 
     ip::multicast::enable_loopback enable_loopback2;
     sock_v4.get_option(enable_loopback2, ec);
-#if defined(ASIO_WINDOWS) && defined(UNDER_CE)
+#if defined(XIO_WINDOWS) && defined(UNDER_CE)
     // Not supported under Windows CE but can get value.
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
-#else // defined(ASIO_WINDOWS) && defined(UNDER_CE)
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
-    ASIO_CHECK(enable_loopback2.value());
-    ASIO_CHECK(static_cast<bool>(enable_loopback2));
-    ASIO_CHECK(!!enable_loopback2);
-#endif // defined(ASIO_WINDOWS) && defined(UNDER_CE)
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+#else // defined(XIO_WINDOWS) && defined(UNDER_CE)
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+    XIO_CHECK(enable_loopback2.value());
+    XIO_CHECK(static_cast<bool>(enable_loopback2));
+    XIO_CHECK(!!enable_loopback2);
+#endif // defined(XIO_WINDOWS) && defined(UNDER_CE)
 
     ip::multicast::enable_loopback enable_loopback3(false);
-    ASIO_CHECK(!enable_loopback3.value());
-    ASIO_CHECK(!static_cast<bool>(enable_loopback3));
-    ASIO_CHECK(!enable_loopback3);
+    XIO_CHECK(!enable_loopback3.value());
+    XIO_CHECK(!static_cast<bool>(enable_loopback3));
+    XIO_CHECK(!enable_loopback3);
     sock_v4.set_option(enable_loopback3, ec);
-#if defined(ASIO_WINDOWS) && defined(UNDER_CE)
+#if defined(XIO_WINDOWS) && defined(UNDER_CE)
     // Option is not supported under Windows CE.
-    ASIO_CHECK_MESSAGE(ec == xio::error::no_protocol_option,
+    XIO_CHECK_MESSAGE(ec == xio::error::no_protocol_option,
         ec.value() << ", " << ec.message());
-#else // defined(ASIO_WINDOWS) && defined(UNDER_CE)
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
-#endif // defined(ASIO_WINDOWS) && defined(UNDER_CE)
+#else // defined(XIO_WINDOWS) && defined(UNDER_CE)
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+#endif // defined(XIO_WINDOWS) && defined(UNDER_CE)
 
     ip::multicast::enable_loopback enable_loopback4;
     sock_v4.get_option(enable_loopback4, ec);
-#if defined(ASIO_WINDOWS) && defined(UNDER_CE)
+#if defined(XIO_WINDOWS) && defined(UNDER_CE)
     // Not supported under Windows CE but can get value.
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
-#else // defined(ASIO_WINDOWS) && defined(UNDER_CE)
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
-    ASIO_CHECK(!enable_loopback4.value());
-    ASIO_CHECK(!static_cast<bool>(enable_loopback4));
-    ASIO_CHECK(!enable_loopback4);
-#endif // defined(ASIO_WINDOWS) && defined(UNDER_CE)
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+#else // defined(XIO_WINDOWS) && defined(UNDER_CE)
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+    XIO_CHECK(!enable_loopback4.value());
+    XIO_CHECK(!static_cast<bool>(enable_loopback4));
+    XIO_CHECK(!enable_loopback4);
+#endif // defined(XIO_WINDOWS) && defined(UNDER_CE)
   }
 
   if (have_v6)
   {
     ip::multicast::enable_loopback enable_loopback1(true);
-    ASIO_CHECK(enable_loopback1.value());
-    ASIO_CHECK(static_cast<bool>(enable_loopback1));
-    ASIO_CHECK(!!enable_loopback1);
+    XIO_CHECK(enable_loopback1.value());
+    XIO_CHECK(static_cast<bool>(enable_loopback1));
+    XIO_CHECK(!!enable_loopback1);
     sock_v6.set_option(enable_loopback1, ec);
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
 
     ip::multicast::enable_loopback enable_loopback2;
     sock_v6.get_option(enable_loopback2, ec);
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
-    ASIO_CHECK(enable_loopback2.value());
-    ASIO_CHECK(static_cast<bool>(enable_loopback2));
-    ASIO_CHECK(!!enable_loopback2);
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+    XIO_CHECK(enable_loopback2.value());
+    XIO_CHECK(static_cast<bool>(enable_loopback2));
+    XIO_CHECK(!!enable_loopback2);
 
     ip::multicast::enable_loopback enable_loopback3(false);
-    ASIO_CHECK(!enable_loopback3.value());
-    ASIO_CHECK(!static_cast<bool>(enable_loopback3));
-    ASIO_CHECK(!enable_loopback3);
+    XIO_CHECK(!enable_loopback3.value());
+    XIO_CHECK(!static_cast<bool>(enable_loopback3));
+    XIO_CHECK(!enable_loopback3);
     sock_v6.set_option(enable_loopback3, ec);
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
 
     ip::multicast::enable_loopback enable_loopback4;
     sock_v6.get_option(enable_loopback4, ec);
-    ASIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
-    ASIO_CHECK(!enable_loopback4.value());
-    ASIO_CHECK(!static_cast<bool>(enable_loopback4));
-    ASIO_CHECK(!enable_loopback4);
+    XIO_CHECK_MESSAGE(!ec, ec.value() << ", " << ec.message());
+    XIO_CHECK(!enable_loopback4.value());
+    XIO_CHECK(!static_cast<bool>(enable_loopback4));
+    XIO_CHECK(!enable_loopback4);
   }
 }
 
@@ -352,9 +352,9 @@ void test()
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "ip/multicast",
-  ASIO_COMPILE_TEST_CASE(ip_multicast_compile::test)
-  ASIO_TEST_CASE(ip_multicast_runtime::test)
+  XIO_COMPILE_TEST_CASE(ip_multicast_compile::test)
+  XIO_TEST_CASE(ip_multicast_runtime::test)
 )

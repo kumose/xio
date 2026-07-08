@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_LOCAL_DETAIL_IMPL_ENDPOINT_IPP
-#define ASIO_LOCAL_DETAIL_IMPL_ENDPOINT_IPP
+#ifndef XIO_LOCAL_DETAIL_IMPL_ENDPOINT_IPP
+#define XIO_LOCAL_DETAIL_IMPL_ENDPOINT_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,7 +18,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_LOCAL_SOCKETS)
+#if defined(XIO_HAS_LOCAL_SOCKETS)
 
 #include <cstring>
 #include <xio/detail/socket_ops.h>
@@ -108,6 +108,6 @@ void endpoint::init(const char *path_name, std::size_t path_length) {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_LOCAL_SOCKETS)
+#endif // defined(XIO_HAS_LOCAL_SOCKETS)
 
-#endif // ASIO_LOCAL_DETAIL_IMPL_ENDPOINT_IPP
+#endif // XIO_LOCAL_DETAIL_IMPL_ENDPOINT_IPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_ERROR_CODE_HPP
-#define ASIO_ERROR_CODE_HPP
+#ifndef XIO_ERROR_CODE_HPP
+#define XIO_ERROR_CODE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -27,7 +27,7 @@ namespace xio {
     typedef std::error_code error_code;
 
     /// Returns the error category used for the system errors produced by xio.
-    extern ASIO_DECL const error_category &system_category();
+    extern XIO_DECL const error_category &system_category();
 
 
 } // namespace xio
@@ -35,4 +35,4 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // ASIO_ERROR_CODE_HPP
+#endif // XIO_ERROR_CODE_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_WIN_THREAD_IPP
-#define ASIO_DETAIL_IMPL_WIN_THREAD_IPP
+#ifndef XIO_DETAIL_IMPL_WIN_THREAD_IPP
+#define XIO_DETAIL_IMPL_WIN_THREAD_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,8 +17,8 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS) \
-  && !defined(ASIO_WINDOWS_APP) \
+#if defined(XIO_WINDOWS) \
+  && !defined(XIO_WINDOWS_APP) \
   && !defined(UNDER_CE)
 
 #include <process.h>
@@ -135,8 +135,8 @@ void __stdcall apc_function(ULONG_PTR) {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_WINDOWS)
-// && !defined(ASIO_WINDOWS_APP)
+#endif // defined(XIO_WINDOWS)
+// && !defined(XIO_WINDOWS_APP)
 // && !defined(UNDER_CE)
 
-#endif // ASIO_DETAIL_IMPL_WIN_THREAD_IPP
+#endif // XIO_DETAIL_IMPL_WIN_THREAD_IPP

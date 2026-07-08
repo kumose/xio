@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_ICMP_HPP
-#define ASIO_IP_ICMP_HPP
+#ifndef XIO_IP_ICMP_HPP
+#define XIO_IP_ICMP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -47,19 +47,19 @@ namespace xio {
 
             /// Construct to represent the IPv4 ICMP protocol.
             static icmp v4() noexcept {
-                return icmp(ASIO_OS_DEF(IPPROTO_ICMP),
-                            ASIO_OS_DEF(AF_INET));
+                return icmp(XIO_OS_DEF(IPPROTO_ICMP),
+                            XIO_OS_DEF(AF_INET));
             }
 
             /// Construct to represent the IPv6 ICMP protocol.
             static icmp v6() noexcept {
-                return icmp(ASIO_OS_DEF(IPPROTO_ICMPV6),
-                            ASIO_OS_DEF(AF_INET6));
+                return icmp(XIO_OS_DEF(IPPROTO_ICMPV6),
+                            XIO_OS_DEF(AF_INET6));
             }
 
             /// Obtain an identifier for the type of the protocol.
             int type() const noexcept {
-                return ASIO_OS_DEF(SOCK_RAW);
+                return XIO_OS_DEF(SOCK_RAW);
             }
 
             /// Obtain an identifier for the protocol.
@@ -104,4 +104,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_ICMP_HPP
+#endif // XIO_IP_ICMP_HPP

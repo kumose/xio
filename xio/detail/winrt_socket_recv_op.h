@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WINRT_SOCKET_RECV_OP_HPP
-#define ASIO_DETAIL_WINRT_SOCKET_RECV_OP_HPP
+#ifndef XIO_DETAIL_WINRT_SOCKET_RECV_OP_HPP
+#define XIO_DETAIL_WINRT_SOCKET_RECV_OP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 
 #include <xio/detail/bind_handler.h>
 #include <xio/detail/buffer_sequence_adapter.h>
@@ -38,7 +38,7 @@ namespace xio {
         class winrt_socket_recv_op :
                 public winrt_async_op<Windows::Storage::Streams::IBuffer ^> {
         public:
-            ASIO_DEFINE_HANDLER_PTR(winrt_socket_recv_op);
+            XIO_DEFINE_HANDLER_PTR(winrt_socket_recv_op);
 
             winrt_socket_recv_op(const MutableBufferSequence &buffers,
                                  Handler &handler, const IoExecutor &io_ex)
@@ -52,24 +52,24 @@ namespace xio {
             static void do_complete(void *owner, operation *base,
                                     const xio::error_code &, std::size_t) {
                 // Take ownership of the operation object.
-                ASIO_ASSUME(base != 0);
+                XIO_ASSUME(base != 0);
                 winrt_socket_recv_op *o(static_cast<winrt_socket_recv_op *>(base));
                 ptr p = {xio::detail::addressof(o->handler_), o, o};
 
-                ASIO_HANDLER_COMPLETION((*o));
+                XIO_HANDLER_COMPLETION((*o));
 
                 // Take ownership of the operation's outstanding work.
                 handler_work<Handler, IoExecutor> w(
                     static_cast<handler_work<Handler, IoExecutor> &&>(
                         o->work_));
 
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
 // Check whether buffers are still valid.
 if (owner) {
     buffer_sequence_adapter<xio::mutable_buffer,
         MutableBufferSequence>::validate(o->buffers_);
 }
-#endif // defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#endif // defined(XIO_ENABLE_BUFFER_DEBUGGING)
 
 std::size_t bytes_transferred = o->result_ ? o->result_->Length : 0;
     if (bytes_transferred== 0 && !o->ec_ &&
@@ -93,9 +93,9 @@ p.reset();
 // Make the upcall if required.
     if (owner) {
     fenced_block b(fenced_block::half);
-    ASIO_HANDLER_INVOCATION_BEGIN((handler.arg1_, handler.arg2_));
+    XIO_HANDLER_INVOCATION_BEGIN((handler.arg1_, handler.arg2_));
     w.complete(handler, handler.handler_);
-    ASIO_HANDLER_INVOCATION_END;
+    XIO_HANDLER_INVOCATION_END;
 }
   }
 
@@ -110,6 +110,6 @@ handler_work<Handler, IoExecutor> executor_;
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
 
-#endif // ASIO_DETAIL_WINRT_SOCKET_RECV_OP_HPP
+#endif // XIO_DETAIL_WINRT_SOCKET_RECV_OP_HPP

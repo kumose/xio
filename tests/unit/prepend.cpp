@@ -33,23 +33,23 @@ void prepend_test()
           [&count](int a, int b, xio::error_code)
           {
             ++count;
-            ASIO_CHECK(a == 123);
-            ASIO_CHECK(b == 321);
+            XIO_CHECK(a == 123);
+            XIO_CHECK(b == 321);
           }), 123, 321));
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   io1.run();
 
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   io2.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "prepend",
-  ASIO_TEST_CASE(prepend_test)
+  XIO_TEST_CASE(prepend_test)
 )

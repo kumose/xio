@@ -1,14 +1,14 @@
 Enabling SSL/TLS
 ----------------
 
-When you set [`asio_options`](../include/libnuraft/asio_service_options.hxx), there are a few options for enabling SSL/TLS:
+When you set [`xio_options`](../include/libnuraft/xio_service_options.hxx), there are a few options for enabling SSL/TLS:
 ```C++
-asio_service::options asio_opt;
-asio_opt.enable_ssl_        = true;
-asio_opt.verify_sn_         = my_verification_function;
-asio_opt.server_cert_file_  = "./cert.pem";
-asio_opt.root_cert_file_    = "./root_ca.pem";
-asio_opt.server_key_file_   = "./key.pem";
+xio_service::options xio_opt;
+xio_opt.enable_ssl_        = true;
+xio_opt.verify_sn_         = my_verification_function;
+xio_opt.server_cert_file_  = "./cert.pem";
+xio_opt.root_cert_file_    = "./root_ca.pem";
+xio_opt.server_key_file_   = "./key.pem";
 ```
 
 Then Raft server will use SSL/TLS when it establishes connections between them. Note that Raft is a peer-to-peer protocol, thus each node can be both client and server at the same time.

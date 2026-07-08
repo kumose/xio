@@ -37,7 +37,7 @@ void read_some_handler(const xio::error_code&, std::size_t)
 
 void test()
 {
-#if defined(ASIO_HAS_WINDOWS_STREAM_HANDLE)
+#if defined(XIO_HAS_WINDOWS_STREAM_HANDLE)
   using namespace xio;
   namespace win = xio::windows;
 
@@ -54,7 +54,7 @@ void test()
 
     win::stream_handle handle1(ioc);
     HANDLE native_handle1 = INVALID_HANDLE_VALUE;
-#if defined(ASIO_MSVC) && (_MSC_VER < 1910)
+#if defined(XIO_MSVC) && (_MSC_VER < 1910)
     // Skip this on older MSVC due to mysterious ambiguous overload errors.
 #else
     win::stream_handle handle2(ioc, native_handle1);
@@ -138,15 +138,15 @@ void test()
   catch (std::exception&)
   {
   }
-#endif // defined(ASIO_HAS_WINDOWS_STREAM_HANDLE)
+#endif // defined(XIO_HAS_WINDOWS_STREAM_HANDLE)
 }
 
 } // namespace windows_stream_handle_compile
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "windows/stream_handle",
-  ASIO_COMPILE_TEST_CASE(windows_stream_handle_compile::test)
+  XIO_COMPILE_TEST_CASE(windows_stream_handle_compile::test)
 )

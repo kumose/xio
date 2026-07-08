@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_SELECT_REACTOR_HPP
-#define ASIO_DETAIL_IMPL_SELECT_REACTOR_HPP
+#ifndef XIO_DETAIL_IMPL_SELECT_REACTOR_HPP
+#define XIO_DETAIL_IMPL_SELECT_REACTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,17 +17,17 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IOCP) \
-  || (!defined(ASIO_HAS_DEV_POLL) \
-      && !defined(ASIO_HAS_EPOLL) \
-      && !defined(ASIO_HAS_KQUEUE) \
-      && !defined(ASIO_WINDOWS_RUNTIME))
+#if defined(XIO_HAS_IOCP) \
+  || (!defined(XIO_HAS_DEV_POLL) \
+      && !defined(XIO_HAS_EPOLL) \
+      && !defined(XIO_HAS_KQUEUE) \
+      && !defined(XIO_WINDOWS_RUNTIME))
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 #include <xio/detail/win_iocp_io_context.h>
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 #include <xio/detail/scheduler.h>
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
 #include <xio/detail/push_options.h>
 
@@ -114,10 +114,10 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IOCP)
-//   || (!defined(ASIO_HAS_DEV_POLL)
-//       && !defined(ASIO_HAS_EPOLL)
-//       && !defined(ASIO_HAS_KQUEUE)
-//       && !defined(ASIO_WINDOWS_RUNTIME))
+#endif // defined(XIO_HAS_IOCP)
+//   || (!defined(XIO_HAS_DEV_POLL)
+//       && !defined(XIO_HAS_EPOLL)
+//       && !defined(XIO_HAS_KQUEUE)
+//       && !defined(XIO_WINDOWS_RUNTIME))
 
-#endif // ASIO_DETAIL_IMPL_SELECT_REACTOR_HPP
+#endif // XIO_DETAIL_IMPL_SELECT_REACTOR_HPP

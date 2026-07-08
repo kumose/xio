@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_IMPL_ADDRESS_V6_IPP
-#define ASIO_IP_IMPL_ADDRESS_V6_IPP
+#ifndef XIO_IP_IMPL_ADDRESS_V6_IPP
+#define XIO_IP_IMPL_ADDRESS_V6_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -87,7 +87,7 @@ namespace xio {
             char addr_str[xio::detail::max_addr_v6_str_len];
             const char *addr =
                     xio::detail::socket_ops::inet_ntop(
-                        ASIO_OS_DEF(AF_INET6), &addr_, addr_str,
+                        XIO_OS_DEF(AF_INET6), &addr_, addr_str,
                         xio::detail::max_addr_v6_str_len, scope_id_, ec);
             if (addr == 0)
                 xio::detail::throw_error(ec);
@@ -193,7 +193,7 @@ namespace xio {
             address_v6::bytes_type bytes;
             unsigned long scope_id = 0;
             if (xio::detail::socket_ops::inet_pton(
-                    ASIO_OS_DEF(AF_INET6), str, &bytes[0], &scope_id, ec) <= 0)
+                    XIO_OS_DEF(AF_INET6), str, &bytes[0], &scope_id, ec) <= 0)
                 return address_v6();
             return address_v6(bytes, static_cast<scope_id_type>(scope_id));
         }
@@ -252,4 +252,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_IMPL_ADDRESS_V6_IPP
+#endif // XIO_IP_IMPL_ADDRESS_V6_IPP

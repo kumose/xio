@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_READABLE_PIPE_HPP
-#define ASIO_READABLE_PIPE_HPP
+#ifndef XIO_READABLE_PIPE_HPP
+#define XIO_READABLE_PIPE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,9 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_PIPE) \
-  || defined(GENERATING_DOCUMENTATION)
-
+#if defined(XIO_HAS_PIPE)
 #include <xio/basic_readable_pipe.h>
 
 namespace xio {
@@ -31,7 +29,6 @@ namespace xio {
 
 } // namespace xio
 
-#endif // defined(ASIO_HAS_PIPE)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_PIPE)
 
-#endif // ASIO_READABLE_PIPE_HPP
+#endif // XIO_READABLE_PIPE_HPP

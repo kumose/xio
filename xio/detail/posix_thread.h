@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_POSIX_THREAD_HPP
-#define ASIO_DETAIL_POSIX_THREAD_HPP
+#ifndef XIO_DETAIL_POSIX_THREAD_HPP
+#define XIO_DETAIL_POSIX_THREAD_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_PTHREADS)
+#if defined(XIO_HAS_PTHREADS)
 
 #include <cstddef>
 #include <pthread.h>
@@ -30,7 +30,7 @@ namespace xio {
 
     namespace detail {
         extern "C" {
-        ASIO_DECL void *XIO_VERSIONED_NAME(detail_posix_thread_function)(
+        XIO_DECL void *XIO_VERSIONED_NAME(detail_posix_thread_function)(
 
 
         void *arg
@@ -64,7 +64,7 @@ namespace xio {
             }
 
             // Destructor.
-            ASIO_DECL ~posix_thread();
+            XIO_DECL ~posix_thread();
 
             // Move assignment.
             posix_thread &operator=(posix_thread &&other) noexcept {
@@ -79,10 +79,10 @@ namespace xio {
             }
 
             // Wait for the thread to exit.
-  ASIO_DECL void join();
+  XIO_DECL void join();
 
             // Get number of CPUs.
-            ASIO_DECL static std::size_t hardware_concurrency();
+            XIO_DECL static std::size_t hardware_concurrency();
 
         private:
             friend void *XIO_VERSIONED_NAME(detail_posix_thread_function)(
@@ -122,7 +122,7 @@ namespace xio {
                 Allocator allocator_;
             };
 
-  ASIO_DECL func_base *start_thread(func_base *arg);
+  XIO_DECL func_base *start_thread(func_base *arg);
 
             func_base *arg_;
         };
@@ -133,6 +133,6 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // defined(ASIO_HAS_PTHREADS)
+#endif // defined(XIO_HAS_PTHREADS)
 
-#endif // ASIO_DETAIL_POSIX_THREAD_HPP
+#endif // XIO_DETAIL_POSIX_THREAD_HPP

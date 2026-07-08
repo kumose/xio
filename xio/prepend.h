@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_PREPEND_HPP
-#define ASIO_PREPEND_HPP
+#ifndef XIO_PREPEND_HPP
+#define XIO_PREPEND_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -67,4 +67,4 @@ namespace xio {
 
 #include <xio/impl/prepend.h>
 
-#endif // ASIO_PREPEND_HPP
+#endif // XIO_PREPEND_HPP

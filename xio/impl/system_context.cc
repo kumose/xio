@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_SYSTEM_CONTEXT_IPP
-#define ASIO_IMPL_SYSTEM_CONTEXT_IPP
+#ifndef XIO_IMPL_SYSTEM_CONTEXT_IPP
+#define XIO_IMPL_SYSTEM_CONTEXT_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -27,16 +27,16 @@ namespace xio {
         detail::scheduler *scheduler_;
 
         void operator()() {
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             try {
-#endif// !defined(ASIO_NO_EXCEPTIONS)
+#endif// !defined(XIO_NO_EXCEPTIONS)
                 xio::error_code ec;
                 scheduler_->run(ec);
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             } catch (...) {
                 std::terminate();
             }
-#endif// !defined(ASIO_NO_EXCEPTIONS)
+#endif// !defined(XIO_NO_EXCEPTIONS)
         }
     };
 
@@ -81,4 +81,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_SYSTEM_CONTEXT_IPP
+#endif // XIO_IMPL_SYSTEM_CONTEXT_IPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IS_CONTIGUOUS_ITERATOR_HPP
-#define ASIO_IS_CONTIGUOUS_ITERATOR_HPP
+#ifndef XIO_IS_CONTIGUOUS_ITERATOR_HPP
+#define XIO_IS_CONTIGUOUS_ITERATOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -32,14 +32,11 @@ namespace xio {
 
     template<typename T>
     struct is_contiguous_iterator :
-#if defined(ASIO_HAS_STD_CONCEPTS) \
-  || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_STD_CONCEPTS)
             std::integral_constant<bool, std::contiguous_iterator<T> >
-#else // defined(ASIO_HAS_STD_CONCEPTS)
-            //   || defined(GENERATING_DOCUMENTATION)
+#else // defined(XIO_HAS_STD_CONCEPTS)
             std::is_pointer<T>
-#endif // defined(ASIO_HAS_STD_CONCEPTS)
-            //   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_STD_CONCEPTS)
     {
     };
 
@@ -48,4 +45,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IS_CONTIGUOUS_ITERATOR_HPP
+#endif // XIO_IS_CONTIGUOUS_ITERATOR_HPP

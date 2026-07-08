@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_HANDLER_TRACKING_IPP
-#define ASIO_DETAIL_IMPL_HANDLER_TRACKING_IPP
+#ifndef XIO_DETAIL_IMPL_HANDLER_TRACKING_IPP
+#define XIO_DETAIL_IMPL_HANDLER_TRACKING_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,11 +17,11 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_CUSTOM_HANDLER_TRACKING)
+#if defined(XIO_CUSTOM_HANDLER_TRACKING)
 
 // The handler tracking implementation is provided by the user-specified header.
 
-#elif defined(ASIO_ENABLE_HANDLER_TRACKING)
+#elif defined(XIO_ENABLE_HANDLER_TRACKING)
 
 #include <cstdarg>
 #include <cstdio>
@@ -30,11 +30,11 @@
 #include <xio/detail/handler_tracking.h>
 #include <xio/wait_traits.h>
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 #include <xio/detail/socket_types.h>
-#elif !defined(ASIO_WINDOWS)
+#elif !defined(XIO_WINDOWS)
 # include <unistd.h>
-#endif // !defined(ASIO_WINDOWS)
+#endif // !defined(XIO_WINDOWS)
 
 #include <xio/detail/push_options.h>
 
@@ -64,7 +64,7 @@ namespace xio {
         };
 
         handler_tracking::tracking_state *handler_tracking::get_state() {
-            static tracking_state state = {ASIO_STATIC_MUTEX_INIT, 1, 0, 0};
+            static tracking_state state = {XIO_STATIC_MUTEX_INIT, 1, 0, 0};
             return &state;
         }
 
@@ -114,11 +114,11 @@ namespace xio {
             for (location * current_location = *state->current_location_;
                  current_location; current_location = current_location->next_) {
                 write_line(
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 "@xio|%I64u.%06I64u|%I64u^%I64u|%s%s%.80s%s(%.80s:%d)\n",
-#else // defined(ASIO_WINDOWS)
+#else // defined(XIO_WINDOWS)
 "@xio|%llu.%06llu|%llu^%llu|%s%s%.80s%s(%.80s:%d)\n",
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 current_id, h.id_,
 current_location== *state->current_location_? "in " : "called from ",
@@ -129,11 +129,11 @@ current_location->file_, current_location->line_);
   }
 
 write_line (
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 "@xio|%I64u.%06I64u|%I64u*%I64u|%.20s@%p.%.50s\n",
-#else // defined(ASIO_WINDOWS)
+#else // defined(XIO_WINDOWS)
 "@xio|%llu.%06llu|%llu*%llu|%.20s@%p.%.50s\n",
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 current_id, h.id_, object_type, object, op_name);
 }
@@ -151,11 +151,11 @@ handler_tracking::completion::~completion() {
         handler_tracking_timestamp timestamp;
 
         write_line(
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 "@xio|%I64u.%06I64u|%c%I64u|\n",
-#else // defined(ASIO_WINDOWS)
+#else // defined(XIO_WINDOWS)
 "@xio|%llu.%06llu|%c%llu|\n",
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 invoked_? '!' : '~', id_);
   }
@@ -167,11 +167,11 @@ void handler_tracking::completion::invocation_begin() {
     handler_tracking_timestamp timestamp;
 
     write_line(
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 "@xio|%I64u.%06I64u|>%I64u|\n",
-#else // defined(ASIO_WINDOWS)
+#else // defined(XIO_WINDOWS)
 "@xio|%llu.%06llu|>%llu|\n",
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds, id_);
 
 invoked_=true;
@@ -182,11 +182,11 @@ void handler_tracking::completion::invocation_begin(
     handler_tracking_timestamp timestamp;
 
     write_line(
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 "@xio|%I64u.%06I64u|>%I64u|ec=%.20s:%d\n",
-#else // defined(ASIO_WINDOWS)
+#else // defined(XIO_WINDOWS)
 "@xio|%llu.%06llu|>%llu|ec=%.20s:%d\n",
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 id_, ec.category().name(), ec.value());
 
@@ -198,11 +198,11 @@ void handler_tracking::completion::invocation_begin(
     handler_tracking_timestamp timestamp;
 
     write_line(
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 "@xio|%I64u.%06I64u|>%I64u|ec=%.20s:%d,bytes_transferred=%I64u\n",
-#else // defined(ASIO_WINDOWS)
+#else // defined(XIO_WINDOWS)
 "@xio|%llu.%06llu|>%llu|ec=%.20s:%d,bytes_transferred=%llu\n",
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 id_, ec.category().name(), ec.value(),
       static_cast<uint64_t>(bytes_transferred));
@@ -215,11 +215,11 @@ void handler_tracking::completion::invocation_begin(
     handler_tracking_timestamp timestamp;
 
     write_line(
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 "@xio|%I64u.%06I64u|>%I64u|ec=%.20s:%d,signal_number=%d\n",
-#else // defined(ASIO_WINDOWS)
+#else // defined(XIO_WINDOWS)
 "@xio|%llu.%06llu|>%llu|ec=%.20s:%d,signal_number=%d\n",
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 id_, ec.category().name(), ec.value(), signal_number);
 
@@ -231,11 +231,11 @@ void handler_tracking::completion::invocation_begin(
     handler_tracking_timestamp timestamp;
 
     write_line(
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 "@xio|%I64u.%06I64u|>%I64u|ec=%.20s:%d,%.50s\n",
-#else // defined(ASIO_WINDOWS)
+#else // defined(XIO_WINDOWS)
 "@xio|%llu.%06llu|>%llu|ec=%.20s:%d,%.50s\n",
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 id_, ec.category().name(), ec.value(), arg);
 
@@ -247,11 +247,11 @@ void handler_tracking::completion::invocation_end() {
         handler_tracking_timestamp timestamp;
 
         write_line(
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 "@xio|%I64u.%06I64u|<%I64u|\n",
-#else // defined(ASIO_WINDOWS)
+#else // defined(XIO_WINDOWS)
 "@xio|%llu.%06llu|<%llu|\n",
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds, id_);
 
 id_=0;
@@ -270,11 +270,11 @@ void handler_tracking::operation(execution_context &,
         current_id = current_completion->id_;
 
     write_line(
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 "@xio|%I64u.%06I64u|%I64u|%.20s@%p.%.50s\n",
-#else // defined(ASIO_WINDOWS)
+#else // defined(XIO_WINDOWS)
 "@xio|%llu.%06llu|%llu|%.20s@%p.%.50s\n",
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 current_id, object_type, object, op_name);
 }
@@ -297,11 +297,11 @@ void handler_tracking::reactor_operation(
     handler_tracking_timestamp timestamp;
 
     write_line(
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 "@xio|%I64u.%06I64u|.%I64u|%s,ec=%.20s:%d\n",
-#else // defined(ASIO_WINDOWS)
+#else // defined(XIO_WINDOWS)
 "@xio|%llu.%06llu|.%llu|%s,ec=%.20s:%d\n",
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 h.id_, op_name, ec.category().name(), ec.value());
 }
@@ -312,11 +312,11 @@ void handler_tracking::reactor_operation(
     handler_tracking_timestamp timestamp;
 
     write_line(
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 "@xio|%I64u.%06I64u|.%I64u|%s,ec=%.20s:%d,bytes_transferred=%I64u\n",
-#else // defined(ASIO_WINDOWS)
+#else // defined(XIO_WINDOWS)
 "@xio|%llu.%06llu|.%llu|%s,ec=%.20s:%d,bytes_transferred=%llu\n",
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 timestamp.seconds, timestamp.microseconds,
 h.id_, op_name, ec.category().name(), ec.value(),
       static_cast<uint64_t>(bytes_transferred));
@@ -329,27 +329,27 @@ void handler_tracking::write_line(const char *format, ...) {
     va_start(args, format);
 
     char line[256] = "";
-#if defined(ASIO_HAS_SNPRINTF)
+#if defined(XIO_HAS_SNPRINTF)
 int length = vsnprintf(line, sizeof(line), format, args);
-#elif defined(ASIO_HAS_SECURE_RTL)
+#elif defined(XIO_HAS_SECURE_RTL)
 int length = vsprintf_s(line, sizeof(line), format, args);
-#else // defined(ASIO_HAS_SECURE_RTL)
+#else // defined(XIO_HAS_SECURE_RTL)
 int length = vsprintf(line, format, args);
-#endif // defined(ASIO_HAS_SECURE_RTL)
+#endif // defined(XIO_HAS_SECURE_RTL)
 
 va_end (args);
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 wchar_t wline[256] = L"";
 mbstowcs_s (0, wline, sizeof(wline)/ sizeof(wchar_t), line, length);
 ::OutputDebugStringW (wline);
-#elif defined(ASIO_WINDOWS)
+#elif defined(XIO_WINDOWS)
 HANDLE stderr_handle = ::GetStdHandle(STD_ERROR_HANDLE);
 DWORD bytes_written = 0;
 ::WriteFile(stderr_handle, line, length, &bytes_written, 0);
-#else // defined(ASIO_WINDOWS)
+#else // defined(XIO_WINDOWS)
 ::write(STDERR_FILENO, line, length);
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 }
 
 } // namespace detail
@@ -357,6 +357,6 @@ DWORD bytes_written = 0;
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_ENABLE_HANDLER_TRACKING)
+#endif // defined(XIO_ENABLE_HANDLER_TRACKING)
 
-#endif // ASIO_DETAIL_IMPL_HANDLER_TRACKING_IPP
+#endif // XIO_DETAIL_IMPL_HANDLER_TRACKING_IPP

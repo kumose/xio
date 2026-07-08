@@ -33,7 +33,7 @@ namespace connect_pipe_compile {
 
 void test()
 {
-#if defined(ASIO_HAS_PIPE)
+#if defined(XIO_HAS_PIPE)
   using namespace xio;
 
   try
@@ -52,7 +52,7 @@ void test()
   catch (std::exception&)
   {
   }
-#endif // defined(ASIO_HAS_PIPE)
+#endif // defined(XIO_HAS_PIPE)
 }
 
 } // namespace connect_pipe_compile
@@ -72,21 +72,21 @@ void handle_read(const xio::error_code& err,
     size_t bytes_transferred, bool* called)
 {
   *called = true;
-  ASIO_CHECK(!err);
-  ASIO_CHECK(bytes_transferred == sizeof(write_data));
+  XIO_CHECK(!err);
+  XIO_CHECK(bytes_transferred == sizeof(write_data));
 }
 
 void handle_write(const xio::error_code& err,
     size_t bytes_transferred, bool* called)
 {
   *called = true;
-  ASIO_CHECK(!err);
-  ASIO_CHECK(bytes_transferred == sizeof(write_data));
+  XIO_CHECK(!err);
+  XIO_CHECK(bytes_transferred == sizeof(write_data));
 }
 
 void test()
 {
-#if defined(ASIO_HAS_PIPE)
+#if defined(XIO_HAS_PIPE)
   using namespace std; // For memcmp.
   using namespace xio;
 
@@ -109,7 +109,7 @@ void test()
     data2.resize(data1.size());
     xio::read(p1, xio::buffer(data2));
 
-    ASIO_CHECK(data1 == data2);
+    XIO_CHECK(data1 == data2);
 
     char read_buffer[sizeof(write_data)];
     bool read_completed = false;
@@ -126,24 +126,24 @@ void test()
 
     io_context.run();
 
-    ASIO_CHECK(read_completed);
-    ASIO_CHECK(write_completed);
-    ASIO_CHECK(memcmp(read_buffer, write_data, sizeof(write_data)) == 0);
+    XIO_CHECK(read_completed);
+    XIO_CHECK(write_completed);
+    XIO_CHECK(memcmp(read_buffer, write_data, sizeof(write_data)) == 0);
   }
   catch (std::exception&)
   {
-    ASIO_CHECK(false);
+    XIO_CHECK(false);
   }
-#endif // defined(ASIO_HAS_PIPE)
+#endif // defined(XIO_HAS_PIPE)
 }
 
 } // namespace connect_pipe_compile
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "connect_pipe",
-  ASIO_COMPILE_TEST_CASE(connect_pipe_compile::test)
-  ASIO_TEST_CASE(connect_pipe_runtime::test)
+  XIO_COMPILE_TEST_CASE(connect_pipe_compile::test)
+  XIO_TEST_CASE(connect_pipe_runtime::test)
 )

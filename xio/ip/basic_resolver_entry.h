@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_BASIC_RESOLVER_ENTRY_HPP
-#define ASIO_IP_BASIC_RESOLVER_ENTRY_HPP
+#ifndef XIO_IP_BASIC_RESOLVER_ENTRY_HPP
+#define XIO_IP_BASIC_RESOLVER_ENTRY_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -102,4 +102,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_BASIC_RESOLVER_ENTRY_HPP
+#endif // XIO_IP_BASIC_RESOLVER_ENTRY_HPP

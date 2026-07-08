@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_POSIX_BASIC_STREAM_DESCRIPTOR_HPP
-#define ASIO_POSIX_BASIC_STREAM_DESCRIPTOR_HPP
+#ifndef XIO_POSIX_BASIC_STREAM_DESCRIPTOR_HPP
+#define XIO_POSIX_BASIC_STREAM_DESCRIPTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,8 +18,7 @@
 #include <xio/detail/config.h>
 #include <xio/posix/basic_descriptor.h>
 
-#if defined(ASIO_HAS_POSIX_STREAM_DESCRIPTOR) \
-  || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_POSIX_STREAM_DESCRIPTOR)
 
 #include <xio/detail/push_options.h>
 
@@ -30,14 +29,14 @@ namespace xio {
 
 
 
-#if !defined(ASIO_POSIX_BASIC_STREAM_DESCRIPTOR_FWD_DECL)
-#define ASIO_POSIX_BASIC_STREAM_DESCRIPTOR_FWD_DECL
+#if !defined(XIO_POSIX_BASIC_STREAM_DESCRIPTOR_FWD_DECL)
+#define XIO_POSIX_BASIC_STREAM_DESCRIPTOR_FWD_DECL
 
 // Forward declaration with defaulted arguments.
 template<typename Executor = any_io_executor>
 class basic_stream_descriptor;
 
-#endif // !defined(ASIO_POSIX_BASIC_STREAM_DESCRIPTOR_FWD_DECL)
+#endif // !defined(XIO_POSIX_BASIC_STREAM_DESCRIPTOR_FWD_DECL)
 
 /// Provides stream-oriented descriptor functionality.
 /**
@@ -336,7 +335,7 @@ public:
    * @li @c cancellation_type::total
    */
     template<typename ConstBufferSequence,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) WriteToken = default_completion_token_t<executor_type> >
     auto async_write_some(const ConstBufferSequence &buffers,
                           WriteToken &&token = default_completion_token_t<executor_type>())
@@ -463,7 +462,7 @@ public:
    * @li @c cancellation_type::total
    */
     template<typename MutableBufferSequence,
-        ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+        XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
         std::size_t)) ReadToken = default_completion_token_t<executor_type> >
     auto async_read_some(const MutableBufferSequence &buffers,
                          ReadToken &&token = default_completion_token_t<executor_type>())
@@ -494,7 +493,7 @@ private:
                         const ConstBufferSequence &buffers) const {
             // If you get an error on the following line it means that your handler
             // does not meet the documented type requirements for a WriteHandler.
-            ASIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
+            XIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
             type_check;
 
             detail::non_const_lvalue<WriteHandler> handler2(handler);
@@ -524,7 +523,7 @@ private:
                         const MutableBufferSequence &buffers) const {
             // If you get an error on the following line it means that your handler
             // does not meet the documented type requirements for a ReadHandler.
-            ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+            XIO_READ_HANDLER_CHECK(ReadHandler, handler)
             type_check;
 
             detail::non_const_lvalue<ReadHandler> handler2(handler);
@@ -543,7 +542,6 @@ private:
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_POSIX_STREAM_DESCRIPTOR)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_POSIX_STREAM_DESCRIPTOR)
 
-#endif // ASIO_POSIX_BASIC_STREAM_DESCRIPTOR_HPP
+#endif // XIO_POSIX_BASIC_STREAM_DESCRIPTOR_HPP

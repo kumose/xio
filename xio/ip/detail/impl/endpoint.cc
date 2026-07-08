@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_DETAIL_IMPL_ENDPOINT_IPP
-#define ASIO_IP_DETAIL_IMPL_ENDPOINT_IPP
+#ifndef XIO_IP_DETAIL_IMPL_ENDPOINT_IPP
+#define XIO_IP_DETAIL_IMPL_ENDPOINT_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,9 +17,9 @@
 
 #include <xio/detail/config.h>
 #include <cstring>
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 # include <sstream>
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
 #include <xio/detail/socket_ops.h>
 #include <xio/detail/throw_error.h>
 #include <xio/error.h>
@@ -34,21 +34,21 @@ namespace xio {
         namespace detail {
             endpoint::endpoint() noexcept
                 : data_() {
-                data_.v4.sin_family = ASIO_OS_DEF(AF_INET);
+                data_.v4.sin_family = XIO_OS_DEF(AF_INET);
                 data_.v4.sin_port = 0;
-                data_.v4.sin_addr.s_addr = ASIO_OS_DEF(INADDR_ANY);
+                data_.v4.sin_addr.s_addr = XIO_OS_DEF(INADDR_ANY);
             }
 
             endpoint::endpoint(int family, unsigned short port_num) noexcept
                 : data_() {
                 using namespace std; // For memcpy.
-                if (family == ASIO_OS_DEF(AF_INET)) {
-                    data_.v4.sin_family = ASIO_OS_DEF(AF_INET);
+                if (family == XIO_OS_DEF(AF_INET)) {
+                    data_.v4.sin_family = XIO_OS_DEF(AF_INET);
                     data_.v4.sin_port =
                             xio::detail::socket_ops::host_to_network_short(port_num);
-                    data_.v4.sin_addr.s_addr = ASIO_OS_DEF(INADDR_ANY);
+                    data_.v4.sin_addr.s_addr = XIO_OS_DEF(INADDR_ANY);
                 } else {
-                    data_.v6.sin6_family = ASIO_OS_DEF(AF_INET6);
+                    data_.v6.sin6_family = XIO_OS_DEF(AF_INET6);
                     data_.v6.sin6_port =
                             xio::detail::socket_ops::host_to_network_short(port_num);
                     data_.v6.sin6_flowinfo = 0;
@@ -77,14 +77,14 @@ namespace xio {
                 : data_() {
                 using namespace std; // For memcpy.
                 if (addr.is_v4()) {
-                    data_.v4.sin_family = ASIO_OS_DEF(AF_INET);
+                    data_.v4.sin_family = XIO_OS_DEF(AF_INET);
                     data_.v4.sin_port =
                             xio::detail::socket_ops::host_to_network_short(port_num);
                     data_.v4.sin_addr.s_addr =
                             xio::detail::socket_ops::host_to_network_long(
                                 addr.to_v4().to_uint());
                 } else {
-                    data_.v6.sin6_family = ASIO_OS_DEF(AF_INET6);
+                    data_.v6.sin6_family = XIO_OS_DEF(AF_INET6);
                     data_.v6.sin6_port =
                             xio::detail::socket_ops::host_to_network_short(port_num);
                     data_.v6.sin6_flowinfo = 0;
@@ -154,7 +154,7 @@ namespace xio {
                 return e1.port() < e2.port();
             }
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
             std::string endpoint::to_string() const {
                 std::ostringstream tmp_os;
                 tmp_os.imbue(std::locale::classic());
@@ -166,7 +166,7 @@ namespace xio {
 
                 return tmp_os.str();
             }
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
         } // namespace detail
     } // namespace ip
 
@@ -174,4 +174,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_DETAIL_IMPL_ENDPOINT_IPP
+#endif // XIO_IP_DETAIL_IMPL_ENDPOINT_IPP

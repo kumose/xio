@@ -11,9 +11,9 @@ If you are in a hurry, go to [Quick Start Guide](quick_start_guide.md) or [Quick
 
 Modules
 -------
-It basically consists of 5 modules: Raft server, Asio layer, log store, state machine, and state manager. Raft server and Asio are provided by this library, while users should implement their own implementations of log store, state machine, and state manager.
+It basically consists of 5 modules: Raft server, xio layer, log store, state machine, and state manager. Raft server and xio are provided by this library, while users should implement their own implementations of log store, state machine, and state manager.
 * Raft server: coordinating all incoming requests and responses from users and other nodes.
-* Asio layer: dealing with network communication and timer, as well as thread pool management.
+* xio layer: dealing with network communication and timer, as well as thread pool management.
 * Log store: managing read, write, and compact operations of Raft logs.
     * [Interface](../include/libnuraft/log_store.hxx)
     * [Example - in-memory log store](../examples/in_memory_log_store.cxx)
@@ -49,4 +49,4 @@ Contents
 * [Parellel Log Appending](parallel_log_appending.md)
 * [Custom Commit Policy](custom_commit_policy.md)
 * [Streaming Mode](streaming_mode.md)
-* [Customizing Asio (Network Layer, Thread Pool, Timer)](customizing_asio.md)
+* [Customizing xio (Network Layer, Thread Pool, Timer)](customizing_xio.md)

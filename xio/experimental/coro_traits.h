@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXPERIMENTAL_DETAIL_CORO_TRAITS_HPP
-#define ASIO_EXPERIMENTAL_DETAIL_CORO_TRAITS_HPP
+#ifndef XIO_EXPERIMENTAL_DETAIL_CORO_TRAITS_HPP
+#define XIO_EXPERIMENTAL_DETAIL_CORO_TRAITS_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -101,45 +101,6 @@ namespace xio {
             using coro_handler_t = typename coro_handler<Result, IsNoexcept>::type;
         } // namespace detail
 
-#if defined(GENERATING_DOCUMENTATION)
-
-        /// The traits describing the resumable coroutine behaviour.
-        /**
- * Template parameter @c Yield specifies type or signature used by co_yield,
- * @c Return specifies the type used for co_return, and @c Executor specifies
- * the underlying executor type.
- */
-        template<typename Yield, typename Return, typename Executor>
-        struct coro_traits {
-            /// The value that can be passed into a symmetrical cororoutine. @c void if
-  /// asymmetrical.
-            using input_type = argument_dependent;
-
-            /// The type that can be passed out through a co_yield.
-            using yield_type = argument_dependent;
-
-            /// The type that can be passed out through a co_return.
-            using return_type = argument_dependent;
-
-            /// The type received by a co_await or async_resume. It's a combination of
-  /// yield and return.
-            using result_type = argument_dependent;
-
-            /// The signature used by the async_resume.
-            using signature_type = argument_dependent;
-
-            /// Whether or not the coroutine is noexcept.
-            constexpr static bool is_noexcept = argument_dependent;
-
-            /// The error type of the coroutine. @c void for noexcept.
-            using error_type = argument_dependent;
-
-            /// Completion handler type used by async_resume.
-            using completion_handler = argument_dependent;
-        };
-
-#else // defined(GENERATING_DOCUMENTATION)
-
         template<typename Yield, typename Return, typename Executor>
         struct coro_traits {
             using input_type = void;
@@ -212,9 +173,9 @@ namespace xio {
             using completion_handler = detail::coro_handler_t<result_type, is_noexcept>;
         };
 
-#endif // defined(GENERATING_DOCUMENTATION)
+
     } // namespace experimental
 
 } // namespace xio
 
-#endif // ASIO_EXPERIMENTAL_DETAIL_CORO_TRAITS_HPP
+#endif // XIO_EXPERIMENTAL_DETAIL_CORO_TRAITS_HPP

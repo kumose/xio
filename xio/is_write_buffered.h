@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IS_WRITE_BUFFERED_HPP
-#define ASIO_IS_WRITE_BUFFERED_HPP
+#ifndef XIO_IS_WRITE_BUFFERED_HPP
+#define XIO_IS_WRITE_BUFFERED_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -43,14 +43,8 @@ namespace xio {
     template<typename Stream>
     class is_write_buffered {
     public:
-#if defined(GENERATING_DOCUMENTATION)
-        /// The value member is true only if the Stream type supports buffering of
-  /// written data.
-        static const bool value;
-#else
-        ASIO_STATIC_CONSTANT(bool,
+        XIO_STATIC_CONSTANT(bool,
                              value = sizeof(detail::is_write_buffered_helper((Stream *) 0)) == 1);
-#endif
     };
 
 
@@ -58,4 +52,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IS_WRITE_BUFFERED_HPP
+#endif // XIO_IS_WRITE_BUFFERED_HPP

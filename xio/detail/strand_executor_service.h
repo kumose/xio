@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_STRAND_EXECUTOR_SERVICE_HPP
-#define ASIO_DETAIL_STRAND_EXECUTOR_SERVICE_HPP
+#ifndef XIO_DETAIL_STRAND_EXECUTOR_SERVICE_HPP
+#define XIO_DETAIL_STRAND_EXECUTOR_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -40,14 +40,14 @@ namespace xio {
             // The underlying implementation of a strand.
             class strand_impl {
             public:
-                ASIO_DECL ~strand_impl();
+                XIO_DECL ~strand_impl();
 
             private:
                 friend class strand_executor_service;
 
                 // Mutex to protect access to internal data.
-#if defined(ASIO_HAS_STD_ATOMIC_WAIT) \
-  || defined(ASIO_HAS_FUTEX)
+#if defined(XIO_HAS_STD_ATOMIC_WAIT) \
+  || defined(XIO_HAS_FUTEX)
                 slim_mutex mutex_;
 
                 void lock_mutex() {
@@ -57,8 +57,8 @@ namespace xio {
                 void unlock_mutex() {
                     mutex_.unlock();
                 }
-#else // defined(ASIO_HAS_STD_ATOMIC_WAIT)
-                //   || defined(ASIO_HAS_FUTEX)
+#else // defined(XIO_HAS_STD_ATOMIC_WAIT)
+                //   || defined(XIO_HAS_FUTEX)
                 mutex *mutex_;
 
                 void lock_mutex() {
@@ -68,8 +68,8 @@ namespace xio {
                 void unlock_mutex() {
                     mutex_->unlock();
                 }
-#endif // defined(ASIO_HAS_STD_ATOMIC_WAIT)
-                //   || defined(ASIO_HAS_FUTEX)
+#endif // defined(XIO_HAS_STD_ATOMIC_WAIT)
+                //   || defined(XIO_HAS_FUTEX)
 
                 // Indicates whether the strand is currently "locked" by a handler. This
                 // means that there is a handler upcall in progress, or that the strand
@@ -101,13 +101,13 @@ namespace xio {
             typedef shared_ptr<strand_impl> implementation_type;
 
             // Construct a new strand service for the specified context.
-            ASIO_DECL explicit strand_executor_service(execution_context &context);
+            XIO_DECL explicit strand_executor_service(execution_context &context);
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void shutdown();
+  XIO_DECL void shutdown();
 
             // Create a new strand_executor implementation.
-  ASIO_DECL implementation_type create_implementation();
+  XIO_DECL implementation_type create_implementation();
 
             // Request invocation of the given function.
             template<typename Executor, typename Function>
@@ -141,7 +141,7 @@ namespace xio {
                               Function &&function, const Allocator &a);
 
             // Determine whether the strand is running in the current thread.
-  ASIO_DECL static bool running_in_this_thread(
+  XIO_DECL static bool running_in_this_thread(
                 const implementation_type &impl);
 
         private:
@@ -152,15 +152,15 @@ namespace xio {
             class invoker;
 
             // Adds a function to the strand. Returns true if it acquires the lock.
-  ASIO_DECL static bool enqueue(const implementation_type &impl,
+  XIO_DECL static bool enqueue(const implementation_type &impl,
                                 scheduler_operation *op);
 
             // Transfers waiting handlers to the ready queue. Returns true if one or more
             // handlers were transferred.
-  ASIO_DECL static bool push_waiting_to_ready(implementation_type &impl);
+  XIO_DECL static bool push_waiting_to_ready(implementation_type &impl);
 
             // Invokes all ready-to-run handlers.
-  ASIO_DECL void run_ready_handlers(implementation_type &impl);
+  XIO_DECL void run_ready_handlers(implementation_type &impl);
 
             // Helper function to request invocation of the given function.
             template<typename Executor, typename Function, typename Allocator>
@@ -170,8 +170,8 @@ namespace xio {
             // Mutex to protect access to the service-wide state.
             mutex mutex_;
 
-#if !defined(ASIO_HAS_STD_ATOMIC_WAIT) \
-  && !defined(ASIO_HAS_FUTEX)
+#if !defined(XIO_HAS_STD_ATOMIC_WAIT) \
+  && !defined(XIO_HAS_FUTEX)
             // Number of mutexes shared between all strand objects.
             enum { num_mutexes = 193 };
 
@@ -181,8 +181,8 @@ namespace xio {
             // Extra value used when hashing to prevent recycled memory locations from
             // getting the same mutex.
             std::size_t salt_;
-#endif // !defined(ASIO_HAS_STD_ATOMIC_WAIT)
-            //   && !defined(ASIO_HAS_FUTEX)
+#endif // !defined(XIO_HAS_STD_ATOMIC_WAIT)
+            //   && !defined(XIO_HAS_FUTEX)
 
             // The head of a linked list of all implementations.
             strand_impl *impl_list_;
@@ -199,4 +199,4 @@ namespace xio {
 #include <xio/detail/impl/strand_executor_service.h>
 
 
-#endif // ASIO_DETAIL_STRAND_EXECUTOR_SERVICE_HPP
+#endif // XIO_DETAIL_STRAND_EXECUTOR_SERVICE_HPP

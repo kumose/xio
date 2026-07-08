@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_WIN_IOCP_HANDLE_SERVICE_IPP
-#define ASIO_DETAIL_IMPL_WIN_IOCP_HANDLE_SERVICE_IPP
+#ifndef XIO_DETAIL_IMPL_WIN_IOCP_HANDLE_SERVICE_IPP
+#define XIO_DETAIL_IMPL_WIN_IOCP_HANDLE_SERVICE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,7 +18,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 
 #include <xio/detail/win_iocp_handle_service.h>
 
@@ -166,12 +166,12 @@ namespace xio {
             const native_handle_type &handle, xio::error_code &ec) {
             if (is_open(impl)) {
                 ec = xio::error::already_open;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
             if (iocp_service_.register_handle(handle, ec)) {
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -184,7 +184,7 @@ namespace xio {
             win_iocp_handle_service::implementation_type &impl,
             xio::error_code &ec) {
             if (is_open(impl)) {
-                ASIO_HANDLER_OPERATION((iocp_service_.context(), "handle",
+                XIO_HANDLER_OPERATION((iocp_service_.context(), "handle",
                                         &impl, reinterpret_cast<uintmax_t>(impl.handle_), "close"));
 
                 if (!::CloseHandle(impl.handle_)) {
@@ -201,7 +201,7 @@ namespace xio {
                 ec = xio::error_code();
             }
 
-            ASIO_ERROR_LOCATION(ec);
+            XIO_ERROR_LOCATION(ec);
             return ec;
         }
 
@@ -213,14 +213,14 @@ namespace xio {
 
             cancel(impl, ec);
             if (ec) {
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return INVALID_HANDLE_VALUE;
             }
 
             nt_set_info_fn fn = get_nt_set_info();
             if (fn == 0) {
                 ec = xio::error::operation_not_supported;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return INVALID_HANDLE_VALUE;
             }
 
@@ -229,7 +229,7 @@ namespace xio {
             if (fn(impl.handle_, iosb, &info, sizeof(info),
                    61 /* FileReplaceCompletionInformation */)) {
                 ec = xio::error::operation_not_supported;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return INVALID_HANDLE_VALUE;
             }
 
@@ -243,11 +243,11 @@ namespace xio {
             xio::error_code &ec) {
             if (!is_open(impl)) {
                 ec = xio::error::bad_descriptor;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
-            ASIO_HANDLER_OPERATION((iocp_service_.context(), "handle",
+            XIO_HANDLER_OPERATION((iocp_service_.context(), "handle",
                                     &impl, reinterpret_cast<uintmax_t>(impl.handle_), "cancel"));
 
             if (FARPROC cancel_io_ex_ptr = ::GetProcAddress(
@@ -292,7 +292,7 @@ namespace xio {
                 ec = xio::error::operation_not_supported;
             }
 
-            ASIO_ERROR_LOCATION(ec);
+            XIO_ERROR_LOCATION(ec);
             return ec;
         }
 
@@ -301,7 +301,7 @@ namespace xio {
             const xio::const_buffer &buffer, xio::error_code &ec) {
             if (!is_open(impl)) {
                 ec = xio::error::bad_descriptor;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return 0;
             }
 
@@ -313,7 +313,7 @@ namespace xio {
 
             overlapped_wrapper overlapped(ec);
             if (ec) {
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return 0;
             }
 
@@ -327,7 +327,7 @@ namespace xio {
                 if (last_error != ERROR_IO_PENDING) {
                     ec = xio::error_code(last_error,
                                          xio::error::get_system_category());
-                    ASIO_ERROR_LOCATION(ec);
+                    XIO_ERROR_LOCATION(ec);
                     return 0;
                 }
             }
@@ -340,7 +340,7 @@ namespace xio {
                 DWORD last_error = ::GetLastError();
                 ec = xio::error_code(last_error,
                                      xio::error::get_system_category());
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return 0;
             }
 
@@ -381,7 +381,7 @@ namespace xio {
             const xio::mutable_buffer &buffer, xio::error_code &ec) {
             if (!is_open(impl)) {
                 ec = xio::error::bad_descriptor;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return 0;
             }
 
@@ -393,7 +393,7 @@ namespace xio {
 
             overlapped_wrapper overlapped(ec);
             if (ec) {
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return 0;
             }
 
@@ -411,7 +411,7 @@ namespace xio {
                         ec = xio::error_code(last_error,
                                              xio::error::get_system_category());
                     }
-                    ASIO_ERROR_LOCATION(ec);
+                    XIO_ERROR_LOCATION(ec);
                     return 0;
                 }
             }
@@ -428,7 +428,7 @@ namespace xio {
                     ec = xio::error_code(last_error,
                                          xio::error::get_system_category());
                 }
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return (last_error == ERROR_MORE_DATA) ? bytes_transferred : 0;
             }
 
@@ -474,7 +474,7 @@ namespace xio {
 
         void win_iocp_handle_service::close_for_destruction(implementation_type &impl) {
             if (is_open(impl)) {
-                ASIO_HANDLER_OPERATION((iocp_service_.context(), "handle",
+                XIO_HANDLER_OPERATION((iocp_service_.context(), "handle",
                                         &impl, reinterpret_cast<uintmax_t>(impl.handle_), "close"));
 
                 ::CloseHandle(impl.handle_);
@@ -529,6 +529,6 @@ return InterlockedExchangePointer(dest, val);
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
-#endif // ASIO_DETAIL_IMPL_WIN_IOCP_HANDLE_SERVICE_IPP
+#endif // XIO_DETAIL_IMPL_WIN_IOCP_HANDLE_SERVICE_IPP

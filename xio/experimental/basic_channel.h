@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXPERIMENTAL_BASIC_CHANNEL_HPP
-#define ASIO_EXPERIMENTAL_BASIC_CHANNEL_HPP
+#ifndef XIO_EXPERIMENTAL_BASIC_CHANNEL_HPP
+#define XIO_EXPERIMENTAL_BASIC_CHANNEL_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -96,11 +96,10 @@ namespace xio {
  */
         template<typename Executor, typename Traits, typename... Signatures>
         class basic_channel
-#if !defined(GENERATING_DOCUMENTATION)
                 : public detail::channel_send_functions<
                     basic_channel<Executor, Traits, Signatures...>,
                     Executor, Signatures...>
-#endif // !defined(GENERATING_DOCUMENTATION)
+
         {
         private:
             class initiate_async_send;
@@ -110,7 +109,7 @@ namespace xio {
                 Traits, Signatures...>::payload_type payload_type;
 
             template<typename... PayloadSignatures,
-                ASIO_COMPLETION_TOKEN_FOR(PayloadSignatures...) CompletionToken>
+                XIO_COMPLETION_TOKEN_FOR(PayloadSignatures...) CompletionToken>
             auto do_async_receive(
                 xio::detail::completion_payload<PayloadSignatures...> *,
                 CompletionToken &&token)
@@ -309,61 +308,6 @@ namespace xio {
                 return service_->ready(impl_);
             }
 
-#if defined(GENERATING_DOCUMENTATION)
-
-            /// Try to send a message without blocking.
-            /**
-   * Fails if the buffer is full and there are no waiting receive operations.
-   *
-   * @returns @c true on success, @c false on failure.
-   */
-            template<typename... Args>
-            bool try_send(Args &&... args);
-
-            /// Try to send a message without blocking, using dispatch semantics to call
-  /// the receive operation's completion handler.
-            /**
-   * Fails if the buffer is full and there are no waiting receive operations.
-   *
-   * The receive operation's completion handler may be called from inside this
-   * function.
-   *
-   * @returns @c true on success, @c false on failure.
-   */
-            template<typename... Args>
-            bool try_send_via_dispatch(Args &&... args);
-
-            /// Try to send a number of messages without blocking.
-            /**
-   * @returns The number of messages that were sent.
-   */
-            template<typename... Args>
-            std::size_t try_send_n(std::size_t count, Args &&... args);
-
-            /// Try to send a number of messages without blocking, using dispatch
-  /// semantics to call the receive operations' completion handlers.
-            /**
-   * The receive operations' completion handlers may be called from inside this
-   * function.
-   *
-   * @returns The number of messages that were sent.
-   */
-            template<typename... Args>
-            std::size_t try_send_n_via_dispatch(std::size_t count, Args &&... args);
-
-            /// Asynchronously send a message.
-            /**
-   * @par Completion Signature
-   * @code void(xio::error_code) @endcode
-   */
-            template<typename... Args,
-                ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
-                CompletionToken ASIO_DEFAULT_COMPLETION_TOKEN_TYPE(executor_type)>
-            auto async_send(Args &&... args,
-                            CompletionToken &&token);
-
-#endif // defined(GENERATING_DOCUMENTATION)
-
             /// Try to receive a message without blocking.
             /**
    * Fails if the buffer is full and there are no waiting receive operations.
@@ -382,15 +326,13 @@ namespace xio {
    * channel traits.
    */
             template<typename CompletionToken
-                ASIO_DEFAULT_COMPLETION_TOKEN_TYPE(executor_type)>
+                XIO_DEFAULT_COMPLETION_TOKEN_TYPE(executor_type)>
             auto async_receive(
                 CompletionToken &&token
-                ASIO_DEFAULT_COMPLETION_TOKEN (Executor))
-#if !defined(GENERATING_DOCUMENTATION)
+                XIO_DEFAULT_COMPLETION_TOKEN (Executor))
                 -> decltype(
                     this->do_async_receive(static_cast<payload_type *>(0),
                                            static_cast<CompletionToken &&>(token)))
-#endif // !defined(GENERATING_DOCUMENTATION)
             {
                 return this->do_async_receive(static_cast<payload_type *>(0),
                                               static_cast<CompletionToken &&>(token));
@@ -483,4 +425,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXPERIMENTAL_BASIC_CHANNEL_HPP
+#endif // XIO_EXPERIMENTAL_BASIC_CHANNEL_HPP

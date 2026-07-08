@@ -95,16 +95,16 @@ xio::awaitable<void> generator_test()
 
     for (int i = 0; i < 10; i++)
     {
-      ASIO_CHECK(val == i);
+      XIO_CHECK(val == i);
       const auto next = co_await gi.async_resume(xio::use_awaitable);
-      ASIO_CHECK(next);
-      ASIO_CHECK(val == *next);
-      ASIO_CHECK(val == i + 1);
+      XIO_CHECK(next);
+      XIO_CHECK(val == *next);
+      XIO_CHECK(val == i + 1);
     }
 
-    ASIO_CHECK(!destr);
+    XIO_CHECK(!destr);
   }
-  ASIO_CHECK(destr);
+  XIO_CHECK(destr);
 };
 
 void run_generator_test()
@@ -138,13 +138,13 @@ void run_task_test()
       [&](std::exception_ptr pt, int i)
       {
         tt1 = true;
-        ASIO_CHECK(!pt);
-        ASIO_CHECK(i == 42);
+        XIO_CHECK(!pt);
+        XIO_CHECK(i == 42);
         tt.async_resume(
             [&](std::exception_ptr pt, int)
             {
               tt2 = true;
-              ASIO_CHECK(pt);
+              XIO_CHECK(pt);
             });
       });
 
@@ -154,21 +154,21 @@ void run_task_test()
       [&](std::exception_ptr pt, int)
       {
         tt3 = true;
-        ASIO_CHECK(pt);
+        XIO_CHECK(pt);
         tt.async_resume(
             [&](std::exception_ptr pt, int)
             {
               tt4 = true;
-              ASIO_CHECK(pt);
+              XIO_CHECK(pt);
             });
       });
 
   ctx.run();
 
-  ASIO_CHECK(tt1);
-  ASIO_CHECK(tt2);
-  ASIO_CHECK(tt3);
-  ASIO_CHECK(tt4);
+  XIO_CHECK(tt1);
+  XIO_CHECK(tt2);
+  XIO_CHECK(tt3);
+  XIO_CHECK(tt4);
 }
 
 xio::experimental::coro<char> completion_generator_test_impl(
@@ -184,12 +184,12 @@ xio::awaitable<void> completion_generator_test()
   auto g = completion_generator_test_impl(
       co_await xio::this_coro::executor, 10);
 
-  ASIO_CHECK(g.is_open());
+  XIO_CHECK(g.is_open());
   while (auto val = co_await g.async_resume(xio::use_awaitable))
     res.push_back(*val);
 
-  ASIO_CHECK(!g.is_open());
-  ASIO_CHECK((res == std::vector{0,1,2,3,4,5,6,7,8,9}));
+  XIO_CHECK(!g.is_open());
+  XIO_CHECK((res == std::vector{0,1,2,3,4,5,6,7,8,9}));
 }
 
 void run_completion_generator_test()
@@ -211,36 +211,36 @@ xio::awaitable<void> symmetrical_test()
 {
   auto g = symmetrical_test_impl(co_await xio::this_coro::executor);
 
-  ASIO_CHECK(g.is_open());
+  XIO_CHECK(g.is_open());
 
-  ASIO_CHECK(0  == (co_await g.async_resume(0,
+  XIO_CHECK(0  == (co_await g.async_resume(0,
           xio::use_awaitable)).value_or(-1));
 
-  ASIO_CHECK(1  == (co_await g.async_resume(1,
+  XIO_CHECK(1  == (co_await g.async_resume(1,
           xio::use_awaitable)).value_or(-1));
 
-  ASIO_CHECK(3  == (co_await g.async_resume(2,
+  XIO_CHECK(3  == (co_await g.async_resume(2,
           xio::use_awaitable)).value_or(-1));
 
-  ASIO_CHECK(6  == (co_await g.async_resume(3,
+  XIO_CHECK(6  == (co_await g.async_resume(3,
           xio::use_awaitable)).value_or(-1));
 
-  ASIO_CHECK(10  == (co_await g.async_resume(4,
+  XIO_CHECK(10  == (co_await g.async_resume(4,
           xio::use_awaitable)).value_or(-1));
 
-  ASIO_CHECK(15 == (co_await g.async_resume(5,
+  XIO_CHECK(15 == (co_await g.async_resume(5,
           xio::use_awaitable)).value_or(-1));
 
-  ASIO_CHECK(21 == (co_await g.async_resume(6,
+  XIO_CHECK(21 == (co_await g.async_resume(6,
           xio::use_awaitable)).value_or(-1));
 
-  ASIO_CHECK(28 == (co_await g.async_resume(7,
+  XIO_CHECK(28 == (co_await g.async_resume(7,
           xio::use_awaitable)).value_or(-1));
 
-  ASIO_CHECK(36 == (co_await g.async_resume(8,
+  XIO_CHECK(36 == (co_await g.async_resume(8,
           xio::use_awaitable)).value_or(-1));
 
-  ASIO_CHECK(45 == (co_await g.async_resume(9,
+  XIO_CHECK(45 == (co_await g.async_resume(9,
           xio::use_awaitable)).value_or(-1));
 }
 
@@ -253,11 +253,11 @@ void run_symmetrical_test()
 
 } // namespace coro
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "coro/simple_test",
-  ASIO_TEST_CASE(::coro::run_generator_test)
-  ASIO_TEST_CASE(::coro::run_task_test)
-  ASIO_TEST_CASE(::coro::run_symmetrical_test)
-  ASIO_TEST_CASE(::coro::run_completion_generator_test)
+  XIO_TEST_CASE(::coro::run_generator_test)
+  XIO_TEST_CASE(::coro::run_task_test)
+  XIO_TEST_CASE(::coro::run_symmetrical_test)
+  XIO_TEST_CASE(::coro::run_completion_generator_test)
 )

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_MEMORY_HPP
-#define ASIO_DETAIL_MEMORY_HPP
+#ifndef XIO_DETAIL_MEMORY_HPP
+#define XIO_DETAIL_MEMORY_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -33,9 +33,9 @@ namespace xio {
         using std::weak_ptr;
         using std::addressof;
 
-#if defined(ASIO_HAS_STD_TO_ADDRESS)
+#if defined(XIO_HAS_STD_TO_ADDRESS)
         using std::to_address;
-#else // defined(ASIO_HAS_STD_TO_ADDRESS)
+#else // defined(XIO_HAS_STD_TO_ADDRESS)
         template<typename T>
         inline T *to_address(T *p) { return p; }
 
@@ -47,7 +47,7 @@ namespace xio {
 
         template<typename T>
         inline const volatile T *to_address(const volatile T *p) { return p; }
-#endif // defined(ASIO_HAS_STD_TO_ADDRESS)
+#endif // defined(XIO_HAS_STD_TO_ADDRESS)
 
         inline void *align(std::size_t alignment,
                            std::size_t size, void *&ptr, std::size_t &space) {
@@ -58,18 +58,18 @@ namespace xio {
         T *allocate_object(const Allocator &a, Args &&... args) {
             typename std::allocator_traits<Allocator>::template rebind_alloc<T> alloc(a);
             T *raw = std::allocator_traits<decltype(alloc)>::allocate(alloc, 1);
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             try
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
             {
                 return new(raw) T(static_cast<Args &&>(args)...);
             }
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             catch (...) {
                 std::allocator_traits<decltype(alloc)>::deallocate(alloc, raw, 1);
                 throw;
             }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
         }
 
         template<typename Allocator, typename T>
@@ -81,19 +81,19 @@ namespace xio {
     } // namespace detail
 
     using std::allocator_arg_t;
-# define ASIO_USES_ALLOCATOR(t) \
+# define XIO_USES_ALLOCATOR(t) \
   namespace std { \
     template <typename Allocator> \
     struct uses_allocator<t, Allocator> : std::true_type {}; \
   } \
   /**/
-# define ASIO_REBIND_ALLOC(alloc, t) \
+# define XIO_REBIND_ALLOC(alloc, t) \
   typename std::allocator_traits<alloc>::template rebind_alloc<t>
     /**/
 
     inline void *aligned_new(std::size_t align, std::size_t size) {
-#if defined(ASIO_HAS_STD_ALIGNED_ALLOC)
-        align = (align < ASIO_DEFAULT_ALIGN) ? ASIO_DEFAULT_ALIGN : align;
+#if defined(XIO_HAS_STD_ALIGNED_ALLOC)
+        align = (align < XIO_DEFAULT_ALIGN) ? XIO_DEFAULT_ALIGN : align;
         size = (size % align == 0) ? size : size + (align - size % align);
         void *ptr = std::aligned_alloc(align, size);
         if (!ptr) {
@@ -101,8 +101,8 @@ namespace xio {
             xio::detail::throw_exception(ex);
         }
         return ptr;
-#elif defined(ASIO_MSVC)
-        align = (align < ASIO_DEFAULT_ALIGN) ? ASIO_DEFAULT_ALIGN : align;
+#elif defined(XIO_MSVC)
+        align = (align < XIO_DEFAULT_ALIGN) ? XIO_DEFAULT_ALIGN : align;
         size = (size % align == 0) ? size : size + (align - size % align);
         void *ptr = _aligned_malloc(size, align);
         if (!ptr) {
@@ -110,23 +110,23 @@ namespace xio {
             xio::detail::throw_exception(ex);
         }
         return ptr;
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
         (void) align;
         return ::operator new(size);
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
     }
 
     inline void aligned_delete(void *ptr) {
-#if defined(ASIO_HAS_STD_ALIGNED_ALLOC)
+#if defined(XIO_HAS_STD_ALIGNED_ALLOC)
         std::free(ptr);
-#elif defined(ASIO_MSVC)
+#elif defined(XIO_MSVC)
         _aligned_free(ptr);
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
         ::operator delete(ptr);
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
     }
 
 
 } // namespace xio
 
-#endif // ASIO_DETAIL_MEMORY_HPP
+#endif // XIO_DETAIL_MEMORY_HPP

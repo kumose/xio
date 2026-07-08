@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_DEV_POLL_REACTOR_IPP
-#define ASIO_DETAIL_IMPL_DEV_POLL_REACTOR_IPP
+#ifndef XIO_DETAIL_IMPL_DEV_POLL_REACTOR_IPP
+#define XIO_DETAIL_IMPL_DEV_POLL_REACTOR_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_DEV_POLL)
+#if defined(XIO_HAS_DEV_POLL)
 
 #include <xio/detail/dev_poll_reactor.h>
 # include <cassert>
@@ -422,6 +422,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_DEV_POLL)
+#endif // defined(XIO_HAS_DEV_POLL)
 
-#endif // ASIO_DETAIL_IMPL_DEV_POLL_REACTOR_IPP
+#endif // XIO_DETAIL_IMPL_DEV_POLL_REACTOR_IPP

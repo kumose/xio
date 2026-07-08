@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_EPOLL_REACTOR_HPP
-#define ASIO_DETAIL_EPOLL_REACTOR_HPP
+#ifndef XIO_DETAIL_EPOLL_REACTOR_HPP
+#define XIO_DETAIL_EPOLL_REACTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_EPOLL)
+#if defined(XIO_HAS_EPOLL)
 
 #include <xio/detail/atomic_count.h>
 #include <xio/detail/conditionally_enabled_mutex.h>
@@ -34,9 +34,9 @@
 #include <xio/detail/wait_op.h>
 #include <xio/execution_context.h>
 
-#if defined(ASIO_HAS_TIMERFD)
+#if defined(XIO_HAS_TIMERFD)
 # include <sys/timerfd.h>
-#endif // defined(ASIO_HAS_TIMERFD)
+#endif // defined(XIO_HAS_TIMERFD)
 
 #include <xio/detail/push_options.h>
 
@@ -70,14 +70,14 @@ namespace xio {
                 bool try_speculative_[max_ops];
                 bool shutdown_;
 
-                ASIO_DECL descriptor_state(bool locking, int spin_count);
+                XIO_DECL descriptor_state(bool locking, int spin_count);
 
                 void set_ready_events(uint32_t events) { task_result_ = events; }
                 void add_ready_events(uint32_t events) { task_result_ |= events; }
 
-    ASIO_DECL operation *perform_io(uint32_t events);
+    XIO_DECL operation *perform_io(uint32_t events);
 
-    ASIO_DECL static void do_complete(
+    XIO_DECL static void do_complete(
                     void *owner, operation *base,
                     const xio::error_code &ec, std::size_t bytes_transferred);
             };
@@ -86,34 +86,34 @@ namespace xio {
             typedef descriptor_state *per_descriptor_data;
 
             // Constructor.
-            ASIO_DECL epoll_reactor(xio::execution_context &ctx);
+            XIO_DECL epoll_reactor(xio::execution_context &ctx);
 
             // Destructor.
-            ASIO_DECL ~epoll_reactor();
+            XIO_DECL ~epoll_reactor();
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void shutdown();
+  XIO_DECL void shutdown();
 
             // Recreate internal descriptors following a fork.
-  ASIO_DECL void notify_fork(
+  XIO_DECL void notify_fork(
                 xio::execution_context::fork_event fork_ev);
 
             // Initialise the task.
-  ASIO_DECL void init_task();
+  XIO_DECL void init_task();
 
             // Register a socket with the reactor. Returns 0 on success, system error
             // code on failure.
-  ASIO_DECL int register_descriptor(socket_type descriptor,
+  XIO_DECL int register_descriptor(socket_type descriptor,
                                     per_descriptor_data &descriptor_data);
 
             // Register a descriptor with an associated single operation. Returns 0 on
             // success, system error code on failure.
-  ASIO_DECL int register_internal_descriptor(
+  XIO_DECL int register_internal_descriptor(
                 int op_type, socket_type descriptor,
                 per_descriptor_data &descriptor_data, reactor_op *op);
 
             // Move descriptor registration from one descriptor_data object to another.
-  ASIO_DECL void move_descriptor(socket_type descriptor,
+  XIO_DECL void move_descriptor(socket_type descriptor,
                                  per_descriptor_data &target_descriptor_data,
                                  per_descriptor_data &source_descriptor_data);
 
@@ -121,12 +121,12 @@ namespace xio {
             void post_immediate_completion(operation *op, bool is_continuation) const;
 
             // Post a reactor operation for immediate completion.
-  ASIO_DECL static void call_post_immediate_completion(
+  XIO_DECL static void call_post_immediate_completion(
                 operation *op, bool is_continuation, const void *self);
 
             // Start a new operation. The reactor operation will be performed when the
             // given descriptor is flagged as ready, or an error has occurred.
-  ASIO_DECL void start_op(int op_type, socket_type descriptor,
+  XIO_DECL void start_op(int op_type, socket_type descriptor,
                           per_descriptor_data &descriptor_data, reactor_op *op,
                           bool is_continuation, bool allow_speculative,
                           void (*on_immediate)(operation *, bool, const void *),
@@ -145,31 +145,31 @@ namespace xio {
             // Cancel all operations associated with the given descriptor. The
             // handlers associated with the descriptor will be invoked with the
             // operation_aborted error.
-  ASIO_DECL void cancel_ops(socket_type descriptor,
+  XIO_DECL void cancel_ops(socket_type descriptor,
                             per_descriptor_data &descriptor_data);
 
             // Cancel all operations associated with the given descriptor and key. The
             // handlers associated with the descriptor will be invoked with the
             // operation_aborted error.
-  ASIO_DECL void cancel_ops_by_key(socket_type descriptor,
+  XIO_DECL void cancel_ops_by_key(socket_type descriptor,
                                    per_descriptor_data &descriptor_data,
                                    int op_type, void *cancellation_key);
 
             // Cancel any operations that are running against the descriptor and remove
             // its registration from the reactor. The reactor resources associated with
             // the descriptor must be released by calling cleanup_descriptor_data.
-  ASIO_DECL void deregister_descriptor(socket_type descriptor,
+  XIO_DECL void deregister_descriptor(socket_type descriptor,
                                        per_descriptor_data &descriptor_data, bool closing);
 
             // Remove the descriptor's registration from the reactor. The reactor
             // resources associated with the descriptor must be released by calling
             // cleanup_descriptor_data.
-  ASIO_DECL void deregister_internal_descriptor(
+  XIO_DECL void deregister_internal_descriptor(
                 socket_type descriptor, per_descriptor_data &descriptor_data);
 
             // Perform any post-deregistration cleanup tasks associated with the
             // descriptor data.
-  ASIO_DECL void cleanup_descriptor_data(
+  XIO_DECL void cleanup_descriptor_data(
                 per_descriptor_data &descriptor_data);
 
             // Add a new timer queue to the reactor.
@@ -208,10 +208,10 @@ namespace xio {
                             typename timer_queue<TimeTraits, Allocator>::per_timer_data &source);
 
             // Run epoll once until interrupted or events are ready to be dispatched.
-  ASIO_DECL void run(long usec, op_queue<operation> &ops);
+  XIO_DECL void run(long usec, op_queue<operation> &ops);
 
             // Interrupt the select loop.
-  ASIO_DECL void interrupt();
+  XIO_DECL void interrupt();
 
         private:
             // The hint to pass to epoll_create to size its data structures.
@@ -219,36 +219,36 @@ namespace xio {
 
             // Create the epoll file descriptor. Throws an exception if the descriptor
             // cannot be created.
-  ASIO_DECL static int do_epoll_create();
+  XIO_DECL static int do_epoll_create();
 
             // Create the timerfd file descriptor. Does not throw.
-  ASIO_DECL static int do_timerfd_create();
+  XIO_DECL static int do_timerfd_create();
 
             // Allocate a new descriptor state object.
-  ASIO_DECL descriptor_state *allocate_descriptor_state();
+  XIO_DECL descriptor_state *allocate_descriptor_state();
 
             // Free an existing descriptor state object.
-  ASIO_DECL void free_descriptor_state(descriptor_state *s);
+  XIO_DECL void free_descriptor_state(descriptor_state *s);
 
             // Helper function to add a new timer queue.
-  ASIO_DECL void do_add_timer_queue(timer_queue_base &queue);
+  XIO_DECL void do_add_timer_queue(timer_queue_base &queue);
 
             // Helper function to remove a timer queue.
-  ASIO_DECL void do_remove_timer_queue(timer_queue_base &queue);
+  XIO_DECL void do_remove_timer_queue(timer_queue_base &queue);
 
             // Called to recalculate and update the timeout.
-  ASIO_DECL void update_timeout();
+  XIO_DECL void update_timeout();
 
             // Get the timeout value for the epoll_wait call. The timeout value is
             // returned as a number of milliseconds. A return value of -1 indicates
             // that epoll_wait should block indefinitely.
-  ASIO_DECL int get_timeout(int msec);
+  XIO_DECL int get_timeout(int msec);
 
-#if defined(ASIO_HAS_TIMERFD)
+#if defined(XIO_HAS_TIMERFD)
 // Get the timeout value for the timer descriptor. The return value is the
 // flag argument to be used when calling timerfd_settime.
-  ASIO_DECL int get_timeout(itimerspec & ts);
-#endif // defined(ASIO_HAS_TIMERFD)
+  XIO_DECL int get_timeout(itimerspec & ts);
+#endif // defined(XIO_HAS_TIMERFD)
 
 // The scheduler implementation used to post completions.
 scheduler &scheduler_;
@@ -297,6 +297,6 @@ friend struct perform_io_cleanup_on_block_exit;
 #include <xio/detail/impl/epoll_reactor.h>
 
 
-#endif // defined(ASIO_HAS_EPOLL)
+#endif // defined(XIO_HAS_EPOLL)
 
-#endif // ASIO_DETAIL_EPOLL_REACTOR_HPP
+#endif // XIO_DETAIL_EPOLL_REACTOR_HPP

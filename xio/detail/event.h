@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_EVENT_HPP
-#define ASIO_DETAIL_EVENT_HPP
+#ifndef XIO_DETAIL_EVENT_HPP
+#define XIO_DETAIL_EVENT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,11 +17,11 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_HAS_THREADS)
+#if !defined(XIO_HAS_THREADS)
 #include <xio/detail/null_event.h>
-#elif defined(ASIO_WINDOWS)
+#elif defined(XIO_WINDOWS)
 #include <xio/detail/win_event.h>
-#elif defined(ASIO_HAS_PTHREADS)
+#elif defined(XIO_HAS_PTHREADS)
 #include <xio/detail/posix_event.h>
 #else
 #include <xio/detail/std_event.h>
@@ -31,11 +31,11 @@ namespace xio {
 
 
     namespace detail {
-#if !defined(ASIO_HAS_THREADS)
+#if !defined(XIO_HAS_THREADS)
         typedef null_event event;
-#elif defined(ASIO_WINDOWS)
+#elif defined(XIO_WINDOWS)
         typedef win_event event;
-#elif defined(ASIO_HAS_PTHREADS)
+#elif defined(XIO_HAS_PTHREADS)
         typedef posix_event event;
 #else
         typedef std_event event;
@@ -44,4 +44,4 @@ namespace xio {
 
 } // namespace xio
 
-#endif // ASIO_DETAIL_EVENT_HPP
+#endif // XIO_DETAIL_EVENT_HPP

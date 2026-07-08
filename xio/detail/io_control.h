@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IO_CONTROL_HPP
-#define ASIO_DETAIL_IO_CONTROL_HPP
+#ifndef XIO_DETAIL_IO_CONTROL_HPP
+#define XIO_DETAIL_IO_CONTROL_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -41,7 +41,7 @@ namespace xio {
 
                 // Get the name of the IO control command.
                 int name() const {
-                    return static_cast<int>(ASIO_OS_DEF(FIONREAD));
+                    return static_cast<int>(XIO_OS_DEF(FIONREAD));
                 }
 
                 // Set the value of the I/O control command.
@@ -74,4 +74,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_IO_CONTROL_HPP
+#endif // XIO_DETAIL_IO_CONTROL_HPP

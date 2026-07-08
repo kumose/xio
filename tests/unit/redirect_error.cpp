@@ -45,18 +45,18 @@ void redirect_error_test() {
             xio::bind_executor(io2.get_executor(),
                                redirect_error_handler(&count)), ec));
 
-    ASIO_CHECK(ec == xio::error::would_block);
-    ASIO_CHECK(count == 0);
+    XIO_CHECK(ec == xio::error::would_block);
+    XIO_CHECK(count == 0);
 
     io1.run();
 
-    ASIO_CHECK(ec == xio::error::would_block);
-    ASIO_CHECK(count == 0);
+    XIO_CHECK(ec == xio::error::would_block);
+    XIO_CHECK(count == 0);
 
     io2.run();
 
-    ASIO_CHECK(!ec);
-    ASIO_CHECK(count == 1);
+    XIO_CHECK(!ec);
+    XIO_CHECK(count == 1);
 
     ec = xio::error::would_block;
     timer1.async_wait(
@@ -64,20 +64,20 @@ void redirect_error_test() {
             xio::bind_executor(io2.get_executor(),
                                xio::deferred), ec))(redirect_error_handler(&count));
 
-    ASIO_CHECK(ec == xio::error::would_block);
-    ASIO_CHECK(count == 1);
+    XIO_CHECK(ec == xio::error::would_block);
+    XIO_CHECK(count == 1);
 
     io1.restart();
     io1.run();
 
-    ASIO_CHECK(ec == xio::error::would_block);
-    ASIO_CHECK(count == 1);
+    XIO_CHECK(ec == xio::error::would_block);
+    XIO_CHECK(count == 1);
 
     io2.restart();
     io2.run();
 
-    ASIO_CHECK(!ec);
-    ASIO_CHECK(count == 2);
+    XIO_CHECK(!ec);
+    XIO_CHECK(count == 2);
 
     ec = xio::error::would_block;
     std::future<void> f = timer1.async_wait(
@@ -85,22 +85,22 @@ void redirect_error_test() {
             xio::bind_executor(io2.get_executor(),
                                xio::use_future), ec));
 
-    ASIO_CHECK(ec == xio::error::would_block);
-    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+    XIO_CHECK(ec == xio::error::would_block);
+    XIO_CHECK(f.wait_for(std::chrono::seconds(0))
         == std::future_status::timeout);
 
     io1.restart();
     io1.run();
 
-    ASIO_CHECK(ec == xio::error::would_block);
-    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+    XIO_CHECK(ec == xio::error::would_block);
+    XIO_CHECK(f.wait_for(std::chrono::seconds(0))
         == std::future_status::timeout);
 
     io2.restart();
     io2.run();
 
-    ASIO_CHECK(!ec);
-    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+    XIO_CHECK(!ec);
+    XIO_CHECK(f.wait_for(std::chrono::seconds(0))
         == std::future_status::ready);
 }
 
@@ -116,85 +116,85 @@ void partial_redirect_error_test() {
         xio::bind_executor(io2.get_executor(),
                            redirect_error_handler(&count)));
 
-    ASIO_CHECK(ec == xio::error::would_block);
-    ASIO_CHECK(count == 0);
+    XIO_CHECK(ec == xio::error::would_block);
+    XIO_CHECK(count == 0);
 
     io1.run();
 
-    ASIO_CHECK(ec == xio::error::would_block);
-    ASIO_CHECK(count == 0);
+    XIO_CHECK(ec == xio::error::would_block);
+    XIO_CHECK(count == 0);
 
     io2.run();
 
-    ASIO_CHECK(!ec);
-    ASIO_CHECK(count == 1);
+    XIO_CHECK(!ec);
+    XIO_CHECK(count == 1);
 
     ec = xio::error::would_block;
     timer1.async_wait(xio::redirect_error(ec))(
         xio::bind_executor(io2.get_executor(),
                            xio::deferred))(redirect_error_handler(&count));
 
-    ASIO_CHECK(ec == xio::error::would_block);
-    ASIO_CHECK(count == 1);
+    XIO_CHECK(ec == xio::error::would_block);
+    XIO_CHECK(count == 1);
 
     io1.restart();
     io1.run();
 
-    ASIO_CHECK(ec == xio::error::would_block);
-    ASIO_CHECK(count == 1);
+    XIO_CHECK(ec == xio::error::would_block);
+    XIO_CHECK(count == 1);
 
     io2.restart();
     io2.run();
 
-    ASIO_CHECK(!ec);
-    ASIO_CHECK(count == 2);
+    XIO_CHECK(!ec);
+    XIO_CHECK(count == 2);
 
     ec = xio::error::would_block;
     timer1.async_wait()(xio::redirect_error(ec))(
         xio::bind_executor(io2.get_executor(),
                            xio::deferred))(redirect_error_handler(&count));
 
-    ASIO_CHECK(ec == xio::error::would_block);
-    ASIO_CHECK(count == 2);
+    XIO_CHECK(ec == xio::error::would_block);
+    XIO_CHECK(count == 2);
 
     io1.restart();
     io1.run();
 
-    ASIO_CHECK(ec == xio::error::would_block);
-    ASIO_CHECK(count == 2);
+    XIO_CHECK(ec == xio::error::would_block);
+    XIO_CHECK(count == 2);
 
     io2.restart();
     io2.run();
 
-    ASIO_CHECK(!ec);
-    ASIO_CHECK(count == 3);
+    XIO_CHECK(!ec);
+    XIO_CHECK(count == 3);
 
     ec = xio::error::would_block;
     std::future<void> f = timer1.async_wait(xio::redirect_error(ec))(
         xio::bind_executor(io2.get_executor(), xio::use_future));
 
-    ASIO_CHECK(ec == xio::error::would_block);
-    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+    XIO_CHECK(ec == xio::error::would_block);
+    XIO_CHECK(f.wait_for(std::chrono::seconds(0))
         == std::future_status::timeout);
 
     io1.restart();
     io1.run();
 
-    ASIO_CHECK(ec == xio::error::would_block);
-    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+    XIO_CHECK(ec == xio::error::would_block);
+    XIO_CHECK(f.wait_for(std::chrono::seconds(0))
         == std::future_status::timeout);
 
     io2.restart();
     io2.run();
 
-    ASIO_CHECK(!ec);
-    ASIO_CHECK(f.wait_for(std::chrono::seconds(0))
+    XIO_CHECK(!ec);
+    XIO_CHECK(f.wait_for(std::chrono::seconds(0))
         == std::future_status::ready);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
     "redirect_error",
-    ASIO_TEST_CASE(redirect_error_test)
-    ASIO_TEST_CASE(partial_redirect_error_test)
+    XIO_TEST_CASE(redirect_error_test)
+    XIO_TEST_CASE(partial_redirect_error_test)
 )

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_CANCELLATION_SIGNAL_HPP
-#define ASIO_CANCELLATION_SIGNAL_HPP
+#ifndef XIO_CANCELLATION_SIGNAL_HPP
+#define XIO_CANCELLATION_SIGNAL_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -82,7 +82,7 @@ namespace xio {
             : handler_(0) {
         }
 
-        ASIO_DECL ~cancellation_signal();
+        XIO_DECL ~cancellation_signal();
 
         /// Emits the signal and causes invocation of the slot's handler, if any.
         void emit(cancellation_type_t type) {
@@ -170,7 +170,7 @@ namespace xio {
         /**
    * Destroys any existing handler in the slot.
    */
-  ASIO_DECL void clear();
+  XIO_DECL void clear();
 
         /// Returns whether the slot is connected to a signal.
         constexpr bool is_connected() const noexcept {
@@ -202,13 +202,13 @@ namespace xio {
             : handler_(handler) {
         }
 
-        ASIO_DECL std::pair<void *, std::size_t> prepare_memory(
+        XIO_DECL std::pair<void *, std::size_t> prepare_memory(
             std::size_t size, std::size_t align);
 
         struct auto_delete_helper {
             std::pair<void *, std::size_t> mem;
 
-            ASIO_DECL ~auto_delete_helper();
+            XIO_DECL ~auto_delete_helper();
         };
 
         detail::cancellation_handler_base **handler_;
@@ -224,4 +224,4 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // ASIO_CANCELLATION_SIGNAL_HPP
+#endif // XIO_CANCELLATION_SIGNAL_HPP

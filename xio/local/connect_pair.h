@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_LOCAL_CONNECT_PAIR_HPP
-#define ASIO_LOCAL_CONNECT_PAIR_HPP
+#ifndef XIO_LOCAL_CONNECT_PAIR_HPP
+#define XIO_LOCAL_CONNECT_PAIR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,9 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_LOCAL_SOCKETS) \
-  || defined(GENERATING_DOCUMENTATION)
-
+#if defined(XIO_HAS_LOCAL_SOCKETS)
 #include <xio/basic_socket.h>
 #include <xio/detail/socket_ops.h>
 #include <xio/detail/throw_error.h>
@@ -39,7 +37,7 @@ namespace xio {
 
         /// Create a pair of connected sockets.
         template<typename Protocol, typename Executor1, typename Executor2>
-        ASIO_SYNC_OP_VOID connect_pair(basic_socket<Protocol, Executor1> & socket1,
+        XIO_SYNC_OP_VOID connect_pair(basic_socket<Protocol, Executor1> & socket1,
                                        basic_socket<Protocol, Executor2> & socket2, xio::error_code & ec);
 
         template<typename Protocol, typename Executor1, typename Executor2>
@@ -51,7 +49,7 @@ namespace xio {
         }
 
         template<typename Protocol, typename Executor1, typename Executor2>
-        inline ASIO_SYNC_OP_VOID connect_pair(
+        inline XIO_SYNC_OP_VOID connect_pair(
             basic_socket<Protocol, Executor1> &socket1,
             basic_socket<Protocol, Executor2> &socket2, xio::error_code &ec) {
             // Check that this function is only being used with a UNIX domain socket.
@@ -64,7 +62,7 @@ namespace xio {
             if (xio::detail::socket_ops::socketpair(protocol.family(),
                                                     protocol.type(), protocol.protocol(), sv, ec)
                 == xio::detail::socket_error_retval)
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
 
             socket1.assign(protocol, sv[0], ec);
             if (ec) {
@@ -72,7 +70,7 @@ namespace xio {
                 xio::detail::socket_ops::state_type state[2] = {0, 0};
                 xio::detail::socket_ops::close(sv[0], state[0], true, temp_ec);
                 xio::detail::socket_ops::close(sv[1], state[1], true, temp_ec);
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
             }
 
             socket2.assign(protocol, sv[1], ec);
@@ -81,10 +79,10 @@ namespace xio {
                 socket1.close(temp_ec);
                 xio::detail::socket_ops::state_type state = 0;
                 xio::detail::socket_ops::close(sv[1], state, true, temp_ec);
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
             }
 
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
     } // namespace local
 
@@ -92,7 +90,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_LOCAL_SOCKETS)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_LOCAL_SOCKETS)
 
-#endif // ASIO_LOCAL_CONNECT_PAIR_HPP
+#endif // XIO_LOCAL_CONNECT_PAIR_HPP

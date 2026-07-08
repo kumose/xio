@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_HPP
-#define ASIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_HPP
+#ifndef XIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_HPP
+#define XIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,9 +17,8 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE) \
-  || defined(ASIO_HAS_WINDOWS_STREAM_HANDLE) \
-  || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE) \
+  || defined(XIO_HAS_WINDOWS_STREAM_HANDLE)
 
 #include <cstddef>
 #include <utility>
@@ -40,14 +39,14 @@ namespace xio {
 
 
 
-#if !defined(ASIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_FWD_DECL)
-#define ASIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_FWD_DECL
+#if !defined(XIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_FWD_DECL)
+#define XIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_FWD_DECL
 
 // Forward declaration with defaulted arguments.
 template<typename Executor = any_io_executor>
 class basic_overlapped_handle;
 
-#endif // !defined(ASIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_FWD_DECL)
+#endif // !defined(XIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_FWD_DECL)
 
 /// Provides Windows handle functionality for objects that support
 /// overlapped I/O.
@@ -74,12 +73,8 @@ public:
     };
 
 /// The native representation of a handle.
-#if defined(GENERATING_DOCUMENTATION)
-typedef implementation_defined native_handle_type;
-#else
 typedef xio::detail::win_iocp_handle_service::native_handle_type
 native_handle_type;
-#endif
 
 /// An overlapped_handle is always the lowest layer.
 typedef basic_overlapped_handle lowest_layer_type;
@@ -287,10 +282,10 @@ void assign(const native_handle_type &handle) {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID assign(const native_handle_type &handle,
+XIO_SYNC_OP_VOID assign(const native_handle_type &handle,
                          xio::error_code &ec) {
     impl_.get_service().assign(impl_.get_implementation(), handle, ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Determine whether the handle is open.
@@ -320,9 +315,9 @@ void close() {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID close(xio::error_code &ec) {
+XIO_SYNC_OP_VOID close(xio::error_code &ec) {
     impl_.get_service().close(impl_.get_implementation(), ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Release ownership of the underlying native handle.
@@ -338,7 +333,7 @@ ASIO_SYNC_OP_VOID close(xio::error_code &ec) {
    * 8.1, and will fail with xio::error::operation_not_supported on
    * these platforms.
    */
-#if defined(ASIO_MSVC) && (ASIO_MSVC >= 1400) \
+#if defined(XIO_MSVC) && (XIO_MSVC >= 1400) \
   && (!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0603)
 __declspec(deprecated("This function always fails with "
 "operation_not_supported when used on Windows versions "
@@ -365,7 +360,7 @@ native_handle_type release() {
    * 8.1, and will fail with xio::error::operation_not_supported on
    * these platforms.
    */
-#if defined(ASIO_MSVC) && (ASIO_MSVC >= 1400) \
+#if defined(XIO_MSVC) && (XIO_MSVC >= 1400) \
   && (!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0603)
 __declspec(deprecated("This function always fails with "
 "operation_not_supported when used on Windows versions "
@@ -407,9 +402,9 @@ void cancel() {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
+XIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
     impl_.get_service().cancel(impl_.get_implementation(), ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 protected:
@@ -436,8 +431,7 @@ basic_overlapped_handle &operator=(
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE)
-//   || defined(ASIO_HAS_WINDOWS_STREAM_HANDLE)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE)
+//   || defined(XIO_HAS_WINDOWS_STREAM_HANDLE)
 
-#endif // ASIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_HPP
+#endif // XIO_WINDOWS_BASIC_OVERLAPPED_HANDLE_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXECUTION_CONTEXT_HPP
-#define ASIO_EXECUTION_CONTEXT_HPP
+#ifndef XIO_EXECUTION_CONTEXT_HPP
+#define XIO_EXECUTION_CONTEXT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -30,7 +30,6 @@ namespace xio {
     class execution_context;
     class io_context;
 
-#if !defined(GENERATING_DOCUMENTATION)
     template<typename Service>
     Service &use_service(execution_context &);
 
@@ -42,7 +41,6 @@ namespace xio {
 
     template<typename Service>
     bool has_service(execution_context &);
-#endif // !defined(GENERATING_DOCUMENTATION)
 
     namespace detail {
         class service_registry;
@@ -123,7 +121,7 @@ namespace xio {
 
     public:
         /// Constructor.
-        ASIO_DECL execution_context();
+        XIO_DECL execution_context();
 
         /// Constructor.
         /**
@@ -142,7 +140,7 @@ namespace xio {
    * @param initial_services Used to create the initial services. The @c make
    * function will be called once at the end of execution_context construction.
    */
-        ASIO_DECL explicit execution_context(
+        XIO_DECL explicit execution_context(
             const service_maker &initial_services);
 
         /// Constructor.
@@ -162,7 +160,7 @@ namespace xio {
                           const service_maker &initial_services);
 
         /// Destructor.
-        ASIO_DECL ~execution_context();
+        XIO_DECL ~execution_context();
 
     protected:
         /// Shuts down all services in the context.
@@ -173,7 +171,7 @@ namespace xio {
    * reverse order of the beginning of service object lifetime, performs @c
    * svc->shutdown().
    */
-  ASIO_DECL void shutdown();
+  XIO_DECL void shutdown();
 
         /// Destroys all services in the context.
         /**
@@ -183,7 +181,7 @@ namespace xio {
    * reverse order * of the beginning of service object lifetime, performs
    * <tt>delete static_cast<execution_context::service*>(svc)</tt>.
    */
-  ASIO_DECL void destroy();
+  XIO_DECL void destroy();
 
     public:
         /// Fork-related event notifications.
@@ -238,7 +236,7 @@ namespace xio {
    * object lifetime. Otherwise, services are visited in order of the beginning
    * of service object lifetime.
    */
-  ASIO_DECL void notify_fork(fork_event event);
+  XIO_DECL void notify_fork(fork_event event);
 
         /// Obtain the service object corresponding to the given type.
         /**
@@ -327,9 +325,9 @@ namespace xio {
         class allocator_impl;
 
         // Helper constructors to perform non-templated parts of context construction.
-        ASIO_DECL explicit execution_context(allocator_impl_base *alloc);
+        XIO_DECL explicit execution_context(allocator_impl_base *alloc);
 
-        ASIO_DECL execution_context(allocator_impl_base *alloc,
+        XIO_DECL execution_context(allocator_impl_base *alloc,
                                     const service_maker &initial_services);
 
         // The allocator used for all services and other context-wide allocations.
@@ -352,7 +350,7 @@ namespace xio {
         virtual void deallocate(void *ptr, std::size_t size, std::size_t align) = 0;
 
     protected:
-        ASIO_DECL virtual ~allocator_impl_base();
+        XIO_DECL virtual ~allocator_impl_base();
     };
 
     template<typename Allocator>
@@ -483,10 +481,10 @@ namespace xio {
         /**
    * @param owner The execution_context object that owns the service.
    */
-        ASIO_DECL service(execution_context &owner);
+        XIO_DECL service(execution_context &owner);
 
         /// Destructor.
-        ASIO_DECL virtual ~service();
+        XIO_DECL virtual ~service();
 
     private:
         /// Destroy all user-defined handler objects owned by the service.
@@ -498,7 +496,7 @@ namespace xio {
    * This function is not a pure virtual so that services only have to
    * implement it if necessary. The default implementation does nothing.
    */
-  ASIO_DECL virtual void notify_fork(
+  XIO_DECL virtual void notify_fork(
             execution_context::fork_event event);
 
         friend class detail::service_registry;
@@ -530,7 +528,7 @@ namespace xio {
 
     protected:
         /// Destructor.
-        ASIO_DECL virtual ~service_maker();
+        XIO_DECL virtual ~service_maker();
     };
 
     /// Exception thrown when trying to add a duplicate service to an
@@ -538,7 +536,7 @@ namespace xio {
     class service_already_exists
             : public std::logic_error {
     public:
-        ASIO_DECL service_already_exists();
+        XIO_DECL service_already_exists();
     };
 
     /// Exception thrown when trying to add a service object to an
@@ -546,7 +544,7 @@ namespace xio {
     class invalid_service_owner
             : public std::logic_error {
     public:
-        ASIO_DECL invalid_service_owner();
+        XIO_DECL invalid_service_owner();
     };
 
     namespace detail {
@@ -580,4 +578,4 @@ namespace xio {
 #include <xio/impl/execution_context.h>
 
 
-#endif // ASIO_EXECUTION_CONTEXT_HPP
+#endif // XIO_EXECUTION_CONTEXT_HPP

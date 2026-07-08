@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_HANDLER_CONTINUATION_HOOK_HPP
-#define ASIO_HANDLER_CONTINUATION_HOOK_HPP
+#ifndef XIO_HANDLER_CONTINUATION_HOOK_HPP
+#define XIO_HANDLER_CONTINUATION_HOOK_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -52,4 +52,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_HANDLER_CONTINUATION_HOOK_HPP
+#endif // XIO_HANDLER_CONTINUATION_HOOK_HPP

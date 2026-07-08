@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BASIC_STREAMBUF_HPP
-#define ASIO_BASIC_STREAMBUF_HPP
+#ifndef XIO_BASIC_STREAMBUF_HPP
+#define XIO_BASIC_STREAMBUF_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 
 #include <algorithm>
 #include <cstring>
@@ -103,31 +103,14 @@ namespace xio {
  * is >> s;
  * @endcode
  */
-#if defined(GENERATING_DOCUMENTATION)
-    template<typename Allocator = std::allocator<char> >
-
-
-#else
-
-
-
 
     template<typename Allocator>
-#endif
     class basic_streambuf
             : public std::streambuf,
               private noncopyable {
     public:
-#if defined(GENERATING_DOCUMENTATION)
-        /// The type used to represent the input sequence as a list of buffers.
-        typedef implementation_defined const_buffers_type;
-
-        /// The type used to represent the output sequence as a list of buffers.
-        typedef implementation_defined mutable_buffers_type;
-#else
         typedef const_buffer const_buffers_type;
         typedef mutable_buffer mutable_buffers_type;
-#endif
 
         /// Construct a basic_streambuf object.
         /**
@@ -340,13 +323,8 @@ namespace xio {
     };
 
     /// Adapts basic_streambuf to the dynamic buffer sequence type requirements.
-#if defined(GENERATING_DOCUMENTATION)
-    template<typename Allocator = std::allocator<char> >
 
-
-#else
     template<typename Allocator>
-#endif
     class basic_streambuf_ref {
     public:
         /// The type used to represent the input sequence as a list of buffers.
@@ -417,6 +395,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
 
-#endif // ASIO_BASIC_STREAMBUF_HPP
+#endif // XIO_BASIC_STREAMBUF_HPP

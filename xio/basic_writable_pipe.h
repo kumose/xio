@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BASIC_WRITABLE_PIPE_HPP
-#define ASIO_BASIC_WRITABLE_PIPE_HPP
+#ifndef XIO_BASIC_WRITABLE_PIPE_HPP
+#define XIO_BASIC_WRITABLE_PIPE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,8 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_PIPE) \
-  || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_PIPE)
 
 #include <string>
 #include <utility>
@@ -31,9 +30,9 @@
 #include <xio/detail/type_traits.h>
 #include <xio/error.h>
 #include <xio/execution_context.h>
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 #include <xio/detail/win_iocp_handle_service.h>
-#elif defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#elif defined(XIO_HAS_IO_URING_AS_DEFAULT)
 #include <xio/detail/io_uring_descriptor_service.h>
 #else
 #include <xio/detail/reactive_descriptor_service.h>
@@ -44,14 +43,14 @@
 namespace xio {
 
 
-#if !defined(ASIO_BASIC_WRITABLE_PIPE_FWD_DECL)
-#define ASIO_BASIC_WRITABLE_PIPE_FWD_DECL
+#if !defined(XIO_BASIC_WRITABLE_PIPE_FWD_DECL)
+#define XIO_BASIC_WRITABLE_PIPE_FWD_DECL
 
 // Forward declaration with defaulted arguments.
 template<typename Executor = any_io_executor>
 class basic_writable_pipe;
 
-#endif // !defined(ASIO_BASIC_WRITABLE_PIPE_FWD_DECL)
+#endif // !defined(XIO_BASIC_WRITABLE_PIPE_FWD_DECL)
 
 /// Provides pipe functionality.
 /**
@@ -79,12 +78,10 @@ public:
     };
 
 /// The native representation of a pipe.
-#if defined(GENERATING_DOCUMENTATION)
-typedef implementation_defined native_handle_type;
-#elif defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 typedef detail::win_iocp_handle_service::native_handle_type
 native_handle_type;
-#elif defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#elif defined(XIO_HAS_IO_URING_AS_DEFAULT)
 typedef detail::io_uring_descriptor_service::native_handle_type
 native_handle_type;
 #else
@@ -308,10 +305,10 @@ void assign(const native_handle_type &native_pipe) {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID assign(const native_handle_type &native_pipe,
+XIO_SYNC_OP_VOID assign(const native_handle_type &native_pipe,
                          xio::error_code &ec) {
     impl_.get_service().assign(impl_.get_implementation(), native_pipe, ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Determine whether the pipe is open.
@@ -341,9 +338,9 @@ void close() {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID close(xio::error_code &ec) {
+XIO_SYNC_OP_VOID close(xio::error_code &ec) {
     impl_.get_service().close(impl_.get_implementation(), ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Release ownership of the underlying native pipe.
@@ -359,7 +356,7 @@ ASIO_SYNC_OP_VOID close(xio::error_code &ec) {
    * 8.1, and will fail with xio::error::operation_not_supported on
    * these platforms.
    */
-#if defined(ASIO_MSVC) && (ASIO_MSVC >= 1400) \
+#if defined(XIO_MSVC) && (XIO_MSVC >= 1400) \
   && (!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0603)
 __declspec(deprecated("This function always fails with "
 "operation_not_supported when used on Windows versions "
@@ -386,7 +383,7 @@ native_handle_type release() {
    * 8.1, and will fail with xio::error::operation_not_supported on
    * these platforms.
    */
-#if defined(ASIO_MSVC) && (ASIO_MSVC >= 1400) \
+#if defined(XIO_MSVC) && (XIO_MSVC >= 1400) \
   && (!defined(_WIN32_WINNT) || _WIN32_WINNT < 0x0603)
 __declspec(deprecated("This function always fails with "
 "operation_not_supported when used on Windows versions "
@@ -428,9 +425,9 @@ void cancel() {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
+XIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
     impl_.get_service().cancel(impl_.get_implementation(), ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Write some data to the pipe.
@@ -534,7 +531,7 @@ std::size_t write_some(const ConstBufferSequence &buffers,
    * std::vector.
    */
 template<typename ConstBufferSequence,
-    ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+    XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
     std::size_t)) WriteToken = default_completion_token_t<executor_type> >
 auto async_write_some(const ConstBufferSequence &buffers,
                       WriteToken &&token = default_completion_token_t<executor_type>())
@@ -569,7 +566,7 @@ public:
                     const ConstBufferSequence &buffers) const {
         // If you get an error on the following line it means that your handler
         // does not meet the documented type requirements for a WriteHandler.
-        ASIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
+        XIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
         type_check;
 
         detail::non_const_lvalue<WriteHandler> handler2(handler);
@@ -582,9 +579,9 @@ private:
     basic_writable_pipe *self_;
 };
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 detail::io_object_impl<detail::win_iocp_handle_service, Executor> impl_;
-#elif defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#elif defined(XIO_HAS_IO_URING_AS_DEFAULT)
 detail::io_object_impl<detail::io_uring_descriptor_service, Executor> impl_;
 #else
 detail::io_object_impl<detail::reactive_descriptor_service, Executor> impl_;
@@ -595,7 +592,6 @@ detail::io_object_impl<detail::reactive_descriptor_service, Executor> impl_;
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_PIPE)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_PIPE)
 
-#endif // ASIO_BASIC_WRITABLE_PIPE_HPP
+#endif // XIO_BASIC_WRITABLE_PIPE_HPP

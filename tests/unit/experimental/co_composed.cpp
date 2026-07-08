@@ -15,8 +15,8 @@
 
 #include "../unit_test.hpp"
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "experimental/co_composed",
-  ASIO_TEST_CASE(null_test)
+  XIO_TEST_CASE(null_test)
 )

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_POSIX_BASIC_DESCRIPTOR_HPP
-#define ASIO_POSIX_BASIC_DESCRIPTOR_HPP
+#ifndef XIO_POSIX_BASIC_DESCRIPTOR_HPP
+#define XIO_POSIX_BASIC_DESCRIPTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,8 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_POSIX_STREAM_DESCRIPTOR) \
-  || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_POSIX_STREAM_DESCRIPTOR)
 
 #include <utility>
 #include <xio/any_io_executor.h>
@@ -31,11 +30,11 @@
 #include <xio/execution_context.h>
 #include <xio/posix/descriptor_base.h>
 
-#if defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#if defined(XIO_HAS_IO_URING_AS_DEFAULT)
 #include <xio/detail/io_uring_descriptor_service.h>
-#else // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#else // defined(XIO_HAS_IO_URING_AS_DEFAULT)
 #include <xio/detail/reactive_descriptor_service.h>
-#endif // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#endif // defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
 #include <xio/detail/push_options.h>
 
@@ -46,14 +45,14 @@ namespace xio {
 
 
 
-#if !defined(ASIO_POSIX_BASIC_DESCRIPTOR_FWD_DECL)
-#define ASIO_POSIX_BASIC_DESCRIPTOR_FWD_DECL
+#if !defined(XIO_POSIX_BASIC_DESCRIPTOR_FWD_DECL)
+#define XIO_POSIX_BASIC_DESCRIPTOR_FWD_DECL
 
 // Forward declaration with defaulted arguments.
 template<typename Executor = any_io_executor>
 class basic_descriptor;
 
-#endif // !defined(ASIO_POSIX_BASIC_DESCRIPTOR_FWD_DECL)
+#endif // !defined(XIO_POSIX_BASIC_DESCRIPTOR_FWD_DECL)
 
 /// Provides POSIX descriptor functionality.
 /**
@@ -82,15 +81,13 @@ public:
     };
 
 /// The native representation of a descriptor.
-#if defined(GENERATING_DOCUMENTATION)
-typedef implementation_defined native_handle_type;
-#elif defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#if defined(XIO_HAS_IO_URING_AS_DEFAULT)
 typedef detail::io_uring_descriptor_service::native_handle_type
 native_handle_type;
-#else // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#else // defined(XIO_HAS_IO_URING_AS_DEFAULT)
 typedef detail::reactive_descriptor_service::native_handle_type
 native_handle_type;
-#endif // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#endif // defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
 /// A descriptor is always the lowest layer.
 typedef basic_descriptor lowest_layer_type;
@@ -302,11 +299,11 @@ void assign(const native_handle_type &native_descriptor) {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID assign(const native_handle_type &native_descriptor,
+XIO_SYNC_OP_VOID assign(const native_handle_type &native_descriptor,
                          xio::error_code &ec) {
     impl_.get_service().assign(
         impl_.get_implementation(), native_descriptor, ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Determine whether the descriptor is open.
@@ -338,9 +335,9 @@ void close() {
    * @param ec Set to indicate what error occurred, if any. Note that, even if
    * the function indicates an error, the underlying descriptor is closed.
    */
-ASIO_SYNC_OP_VOID close(xio::error_code &ec) {
+XIO_SYNC_OP_VOID close(xio::error_code &ec) {
     impl_.get_service().close(impl_.get_implementation(), ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Get the native descriptor representation.
@@ -389,9 +386,9 @@ void cancel() {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-ASIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
+XIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
     impl_.get_service().cancel(impl_.get_implementation(), ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Perform an IO control command on the descriptor.
@@ -451,10 +448,10 @@ void io_control(IoControlCommand &command) {
    * @endcode
    */
 template<typename IoControlCommand>
-ASIO_SYNC_OP_VOID io_control(IoControlCommand &command,
+XIO_SYNC_OP_VOID io_control(IoControlCommand &command,
                              xio::error_code &ec) {
     impl_.get_service().io_control(impl_.get_implementation(), command, ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Gets the non-blocking mode of the descriptor.
@@ -504,10 +501,10 @@ void non_blocking(bool mode) {
    * operations. Asynchronous operations will never fail with the error
    * xio::error::would_block.
    */
-ASIO_SYNC_OP_VOID non_blocking(
+XIO_SYNC_OP_VOID non_blocking(
     bool mode, xio::error_code &ec) {
     impl_.get_service().non_blocking(impl_.get_implementation(), mode, ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Gets the non-blocking mode of the native descriptor implementation.
@@ -566,11 +563,11 @@ void native_non_blocking(bool mode) {
    * function fails with xio::error::invalid_argument, as the
    * combination does not make sense.
    */
-ASIO_SYNC_OP_VOID native_non_blocking(
+XIO_SYNC_OP_VOID native_non_blocking(
     bool mode, xio::error_code &ec) {
     impl_.get_service().native_non_blocking(
         impl_.get_implementation(), mode, ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Wait for the descriptor to become ready to read, ready to write, or to
@@ -614,9 +611,9 @@ void wait(wait_type w) {
    * descriptor.wait(xio::posix::stream_descriptor::wait_read, ec);
    * @endcode
    */
-ASIO_SYNC_OP_VOID wait(wait_type w, xio::error_code &ec) {
+XIO_SYNC_OP_VOID wait(wait_type w, xio::error_code &ec) {
     impl_.get_service().wait(impl_.get_implementation(), w, ec);
-    ASIO_SYNC_OP_VOID_RETURN(ec);
+    XIO_SYNC_OP_VOID_RETURN(ec);
 }
 
 /// Asynchronously wait for the descriptor to become ready to read, ready to
@@ -675,7 +672,7 @@ ASIO_SYNC_OP_VOID wait(wait_type w, xio::error_code &ec) {
    * @li @c cancellation_type::total
    */
 template<
-    ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
+    XIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
     WaitToken = default_completion_token_t<executor_type> >
 auto async_wait(wait_type w,
                 WaitToken &&token = default_completion_token_t<executor_type>())
@@ -696,11 +693,11 @@ protected:
 ~basic_descriptor() {
 }
 
-#if defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#if defined(XIO_HAS_IO_URING_AS_DEFAULT)
 detail::io_object_impl<detail::io_uring_descriptor_service, Executor> impl_;
-#else // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#else // defined(XIO_HAS_IO_URING_AS_DEFAULT)
 detail::io_object_impl<detail::reactive_descriptor_service, Executor> impl_;
-#endif // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#endif // defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
 private:
 // Disallow copying and assignment.
@@ -723,7 +720,7 @@ public:
     void operator()(WaitHandler &&handler, wait_type w) const {
         // If you get an error on the following line it means that your handler
         // does not meet the documented type requirements for a WaitHandler.
-        ASIO_WAIT_HANDLER_CHECK(WaitHandler, handler)
+        XIO_WAIT_HANDLER_CHECK(WaitHandler, handler)
         type_check;
 
         detail::non_const_lvalue<WaitHandler> handler2(handler);
@@ -742,7 +739,6 @@ private:
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_POSIX_STREAM_DESCRIPTOR)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_POSIX_STREAM_DESCRIPTOR)
 
-#endif // ASIO_POSIX_BASIC_DESCRIPTOR_HPP
+#endif // XIO_POSIX_BASIC_DESCRIPTOR_HPP

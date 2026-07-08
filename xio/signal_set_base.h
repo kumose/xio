@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SIGNAL_SET_BASE_HPP
-#define ASIO_SIGNAL_SET_BASE_HPP
+#ifndef XIO_SIGNAL_SET_BASE_HPP
+#define XIO_SIGNAL_SET_BASE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -27,48 +27,17 @@ namespace xio {
 /// templates so that we have a common place to define the flags enum.
     class signal_set_base {
     public:
-# if defined(GENERATING_DOCUMENTATION)
-        /// Enumeration representing the different types of flags that may specified
-  /// when adding a signal to a set.
-        enum flags {
-            /// Bitmask representing no flags.
-            none = 0,
-
-            /// Affects the behaviour of interruptible functions such that, if the
-    /// function would have failed with error::interrupted when interrupted by
-    /// the specified signal, the function shall instead be restarted and not
-    /// fail with error::interrupted.
-            restart = implementation_defined,
-
-            /// Do not generate SIGCHLD when child processes stop or stopped child
-    /// processes continue.
-            no_child_stop = implementation_defined,
-
-            /// Do not transform child processes into zombies when they terminate.
-            no_child_wait = implementation_defined,
-
-            /// Special value to indicate that the signal registration does not care
-    /// which flags are set, and so will not conflict with any prior
-    /// registrations of the same signal.
-            dont_care = -1
-        };
-
-        /// Portability typedef.
-        typedef flags flags_t;
-
-#else // defined(GENERATING_DOCUMENTATION)
 
         enum class flags : int {
             none = 0,
-            restart = ASIO_OS_DEF(SA_RESTART),
-            no_child_stop = ASIO_OS_DEF(SA_NOCLDSTOP),
-            no_child_wait = ASIO_OS_DEF(SA_NOCLDWAIT),
+            restart = XIO_OS_DEF(SA_RESTART),
+            no_child_stop = XIO_OS_DEF(SA_NOCLDSTOP),
+            no_child_wait = XIO_OS_DEF(SA_NOCLDWAIT),
             dont_care = -1
         };
 
         typedef flags flags_t;
 
-#endif // defined(GENERATING_DOCUMENTATION)
 
     protected:
         /// Protected destructor to prevent deletion through this type.
@@ -158,4 +127,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_SIGNAL_SET_BASE_HPP
+#endif // XIO_SIGNAL_SET_BASE_HPP

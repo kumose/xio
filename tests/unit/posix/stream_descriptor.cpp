@@ -41,7 +41,7 @@ void read_some_handler(const xio::error_code&, std::size_t)
 
 void test()
 {
-#if defined(ASIO_HAS_POSIX_STREAM_DESCRIPTOR)
+#if defined(XIO_HAS_POSIX_STREAM_DESCRIPTOR)
   using namespace xio;
   namespace posix = xio::posix;
 
@@ -173,15 +173,15 @@ void test()
   catch (std::exception&)
   {
   }
-#endif // defined(ASIO_HAS_POSIX_STREAM_DESCRIPTOR)
+#endif // defined(XIO_HAS_POSIX_STREAM_DESCRIPTOR)
 }
 
 } // namespace posix_stream_descriptor_compile
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "posix/stream_descriptor",
-  ASIO_COMPILE_TEST_CASE(posix_stream_descriptor_compile::test)
+  XIO_COMPILE_TEST_CASE(posix_stream_descriptor_compile::test)
 )

@@ -21,7 +21,7 @@ kmcmake_cc_library(
         SOURCES
         ${SRC}
         DEFINES
-        -DASIO_DYN_LINK
+        -DXIO_DYN_LINK
         CXXOPTS
         ${KMCMAKE_CXX_OPTIONS}
         PLINKS

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_BASIC_RESOLVER_HPP
-#define ASIO_IP_BASIC_RESOLVER_HPP
+#ifndef XIO_IP_BASIC_RESOLVER_HPP
+#define XIO_IP_BASIC_RESOLVER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -31,7 +31,7 @@
 #include <xio/ip/basic_resolver_query.h>
 #include <xio/ip/basic_resolver_results.h>
 #include <xio/ip/resolver_base.h>
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 #include <xio/detail/winrt_resolver_service.h>
 #else
 #include <xio/detail/resolver_service.h>
@@ -43,14 +43,14 @@ namespace xio {
 
 
     namespace ip {
-#if !defined(ASIO_IP_BASIC_RESOLVER_FWD_DECL)
-#define ASIO_IP_BASIC_RESOLVER_FWD_DECL
+#if !defined(XIO_IP_BASIC_RESOLVER_FWD_DECL)
+#define XIO_IP_BASIC_RESOLVER_FWD_DECL
 
         // Forward declaration with defaulted arguments.
         template<typename InternetProtocol, typename Executor = any_io_executor>
         class basic_resolver;
 
-#endif // !defined(ASIO_IP_BASIC_RESOLVER_FWD_DECL)
+#endif // !defined(XIO_IP_BASIC_RESOLVER_FWD_DECL)
 
         /// Provides endpoint resolution functionality.
         /**
@@ -619,7 +619,7 @@ namespace xio {
    * may use additional locations when resolving service names.
    */
             template<
-                ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+                XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
                 results_type)) ResolveToken = default_completion_token_t<executor_type> >
             auto async_resolve(std::string_view host,
                                std::string_view service,
@@ -687,7 +687,7 @@ namespace xio {
    * may use additional locations when resolving service names.
    */
             template<
-                ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+                XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
                 results_type)) ResolveToken = default_completion_token_t<executor_type> >
             auto async_resolve(std::string_view host,
                                std::string_view service, resolver_base::flags resolve_flags,
@@ -757,7 +757,7 @@ namespace xio {
    * may use additional locations when resolving service names.
    */
             template<
-                ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+                XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
                 results_type)) ResolveToken = default_completion_token_t<executor_type> >
             auto async_resolve(const protocol_type &protocol,
                                std::string_view host, std::string_view service,
@@ -828,7 +828,7 @@ namespace xio {
    * may use additional locations when resolving service names.
    */
             template<
-                ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+                XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
                 results_type)) ResolveToken = default_completion_token_t<executor_type> >
             auto async_resolve(const protocol_type &protocol,
                                std::string_view host, std::string_view service,
@@ -919,7 +919,7 @@ namespace xio {
    * @code void(xio::error_code, results_type) @endcode
    */
             template<
-                ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+                XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
                 results_type)) ResolveToken = default_completion_token_t<executor_type> >
             auto async_resolve(const endpoint_type &e,
                                ResolveToken &&token = default_completion_token_t<executor_type>())
@@ -955,7 +955,7 @@ namespace xio {
                                 const Query &q) const {
                     // If you get an error on the following line it means that your handler
                     // does not meet the documented type requirements for a ResolveHandler.
-                    ASIO_RESOLVE_HANDLER_CHECK(
+                    XIO_RESOLVE_HANDLER_CHECK(
                         ResolveHandler, handler, results_type)
                     type_check;
 
@@ -969,7 +969,7 @@ namespace xio {
                 basic_resolver *self_;
             };
 
-# if defined(ASIO_WINDOWS_RUNTIME)
+# if defined(XIO_WINDOWS_RUNTIME)
             xio::detail::io_object_impl<
                 xio::detail::winrt_resolver_service<InternetProtocol>,
                 Executor> impl_;
@@ -985,4 +985,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_BASIC_RESOLVER_HPP
+#endif // XIO_IP_BASIC_RESOLVER_HPP

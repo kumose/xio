@@ -41,7 +41,7 @@ struct overlapped_handler_2
 
 void test()
 {
-#if defined(ASIO_HAS_WINDOWS_OVERLAPPED_PTR)
+#if defined(XIO_HAS_WINDOWS_OVERLAPPED_PTR)
   using namespace xio;
   namespace win = xio::windows;
 
@@ -49,9 +49,9 @@ void test()
   {
     io_context ioc;
     xio::any_io_executor ex1(ioc.get_executor());
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
     xio::executor ex2(ioc.get_executor());
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
     // basic_overlapped_ptr constructors.
 
@@ -64,10 +64,10 @@ void test()
     win::overlapped_ptr ptr5(ioc.get_executor(), overlapped_handler_2());
     win::overlapped_ptr ptr6(ex1, &overlapped_handler_1);
     win::overlapped_ptr ptr7(ex1, overlapped_handler_2());
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
     win::overlapped_ptr ptr8(ex2, &overlapped_handler_1);
     win::overlapped_ptr ptr9(ex2, overlapped_handler_2());
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
     // overlapped_ptr functions.
 
@@ -80,10 +80,10 @@ void test()
     ptr3.reset(ioc.get_executor(), overlapped_handler_2());
     ptr2.reset(ex1, &overlapped_handler_1);
     ptr3.reset(ex1, overlapped_handler_2());
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
     ptr3.reset(ex2, &overlapped_handler_1);
     ptr3.reset(ex2, overlapped_handler_2());
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
     OVERLAPPED* ov1 = ptr1.get();
     (void)ov1;
@@ -102,15 +102,15 @@ void test()
   catch (std::exception&)
   {
   }
-#endif // defined(ASIO_HAS_WINDOWS_OVERLAPPED_PTR)
+#endif // defined(XIO_HAS_WINDOWS_OVERLAPPED_PTR)
 }
 
 } // namespace windows_overlapped_ptr_compile
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "windows/overlapped_ptr",
-  ASIO_COMPILE_TEST_CASE(windows_overlapped_ptr_compile::test)
+  XIO_COMPILE_TEST_CASE(windows_overlapped_ptr_compile::test)
 )

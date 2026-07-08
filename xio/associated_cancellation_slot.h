@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_ASSOCIATED_CANCELLATION_SLOT_HPP
-#define ASIO_ASSOCIATED_CANCELLATION_SLOT_HPP
+#ifndef XIO_ASSOCIATED_CANCELLATION_SLOT_HPP
+#define XIO_ASSOCIATED_CANCELLATION_SLOT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -106,25 +106,8 @@ namespace xio {
  */
     template<typename T, typename CancellationSlot = cancellation_slot>
     struct associated_cancellation_slot
-#if !defined(GENERATING_DOCUMENTATION)
             : detail::associated_cancellation_slot_impl<T, CancellationSlot>
-#endif // !defined(GENERATING_DOCUMENTATION)
     {
-#if defined(GENERATING_DOCUMENTATION)
-        /// If @c T has a nested type @c cancellation_slot_type,
-  /// <tt>T::cancellation_slot_type</tt>. Otherwise
-  /// @c CancellationSlot.
-        typedef see_below type;
-
-        /// If @c T has a nested type @c cancellation_slot_type, returns
-  /// <tt>t.get_cancellation_slot()</tt>. Otherwise returns @c type().
-        static decltype(auto) get(const T &t) noexcept;
-
-        /// If @c T has a nested type @c cancellation_slot_type, returns
-  /// <tt>t.get_cancellation_slot()</tt>. Otherwise returns @c s.
-        static decltype(auto) get(const T &t,
-                                  const CancellationSlot &s) noexcept;
-#endif // defined(GENERATING_DOCUMENTATION)
     };
 
     /// Helper function to obtain an object's associated cancellation_slot.
@@ -177,9 +160,7 @@ namespace xio {
 /// std::reference_wrapper.
     template<typename T, typename CancellationSlot>
     struct associated_cancellation_slot<std::reference_wrapper<T>, CancellationSlot>
-#if !defined(GENERATING_DOCUMENTATION)
             : detail::associated_cancellation_slot_forwarding_base<T, CancellationSlot>
-#endif // !defined(GENERATING_DOCUMENTATION)
     {
         /// Forwards @c type to the associator specialisation for the unwrapped type
   /// @c T.
@@ -203,4 +184,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_ASSOCIATED_CANCELLATION_SLOT_HPP
+#endif // XIO_ASSOCIATED_CANCELLATION_SLOT_HPP

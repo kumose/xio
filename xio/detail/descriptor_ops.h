@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_DESCRIPTOR_OPS_HPP
-#define ASIO_DETAIL_DESCRIPTOR_OPS_HPP
+#ifndef XIO_DETAIL_DESCRIPTOR_OPS_HPP
+#define XIO_DETAIL_DESCRIPTOR_OPS_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,9 +17,9 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_WINDOWS_RUNTIME) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_WINDOWS_RUNTIME) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS)
 
 #include <cstddef>
 #include <xio/error.h>
@@ -61,101 +61,101 @@ namespace xio {
                 }
             }
 
-            ASIO_DECL int open(const char *path, int flags,
+            XIO_DECL int open(const char *path, int flags,
                                xio::error_code &ec);
 
-            ASIO_DECL int open(const char *path, int flags, unsigned mode,
+            XIO_DECL int open(const char *path, int flags, unsigned mode,
                                xio::error_code &ec);
 
-            ASIO_DECL int close(int d, state_type &state,
+            XIO_DECL int close(int d, state_type &state,
                                 xio::error_code &ec);
 
-            ASIO_DECL bool set_user_non_blocking(int d,
+            XIO_DECL bool set_user_non_blocking(int d,
                                                  state_type &state, bool value, xio::error_code &ec);
 
-            ASIO_DECL bool set_internal_non_blocking(int d,
+            XIO_DECL bool set_internal_non_blocking(int d,
                                                      state_type &state, bool value, xio::error_code &ec);
 
             typedef iovec buf;
 
-            ASIO_DECL std::size_t sync_read(int d, state_type state, buf *bufs,
+            XIO_DECL std::size_t sync_read(int d, state_type state, buf *bufs,
                                             std::size_t count, bool all_empty, xio::error_code &ec);
 
-            ASIO_DECL std::size_t sync_read1(int d, state_type state, void *data,
+            XIO_DECL std::size_t sync_read1(int d, state_type state, void *data,
                                              std::size_t size, xio::error_code &ec);
 
-            ASIO_DECL bool non_blocking_read(int d, buf *bufs, std::size_t count,
+            XIO_DECL bool non_blocking_read(int d, buf *bufs, std::size_t count,
                                              xio::error_code &ec, std::size_t &bytes_transferred);
 
-            ASIO_DECL bool non_blocking_read1(int d, void *data, std::size_t size,
+            XIO_DECL bool non_blocking_read1(int d, void *data, std::size_t size,
                                               xio::error_code &ec, std::size_t &bytes_transferred);
 
-            ASIO_DECL std::size_t sync_write(int d, state_type state,
+            XIO_DECL std::size_t sync_write(int d, state_type state,
                                              const buf *bufs, std::size_t count, bool all_empty,
                                              xio::error_code &ec);
 
-            ASIO_DECL std::size_t sync_write1(int d, state_type state,
+            XIO_DECL std::size_t sync_write1(int d, state_type state,
                                               const void *data, std::size_t size, xio::error_code &ec);
 
-            ASIO_DECL bool non_blocking_write(int d,
+            XIO_DECL bool non_blocking_write(int d,
                                               const buf *bufs, std::size_t count,
                                               xio::error_code &ec, std::size_t &bytes_transferred);
 
-            ASIO_DECL bool non_blocking_write1(int d,
+            XIO_DECL bool non_blocking_write1(int d,
                                                const void *data, std::size_t size,
                                                xio::error_code &ec, std::size_t &bytes_transferred);
 
-#if defined(ASIO_HAS_FILE)
+#if defined(XIO_HAS_FILE)
 
-            ASIO_DECL std::size_t sync_read_at(int d, state_type state,
+            XIO_DECL std::size_t sync_read_at(int d, state_type state,
                                                uint64_t offset, buf *bufs, std::size_t count, bool all_empty,
                                                xio::error_code &ec);
 
-            ASIO_DECL std::size_t sync_read_at1(int d, state_type state,
+            XIO_DECL std::size_t sync_read_at1(int d, state_type state,
                                                 uint64_t offset, void *data, std::size_t size,
                                                 xio::error_code &ec);
 
-            ASIO_DECL bool non_blocking_read_at(int d, uint64_t offset,
+            XIO_DECL bool non_blocking_read_at(int d, uint64_t offset,
                                                 buf *bufs, std::size_t count, xio::error_code &ec,
                                                 std::size_t &bytes_transferred);
 
-            ASIO_DECL bool non_blocking_read_at1(int d, uint64_t offset,
+            XIO_DECL bool non_blocking_read_at1(int d, uint64_t offset,
                                                  void *data, std::size_t size, xio::error_code &ec,
                                                  std::size_t &bytes_transferred);
 
-            ASIO_DECL std::size_t sync_write_at(int d, state_type state,
+            XIO_DECL std::size_t sync_write_at(int d, state_type state,
                                                 uint64_t offset, const buf *bufs, std::size_t count, bool all_empty,
                                                 xio::error_code &ec);
 
-            ASIO_DECL std::size_t sync_write_at1(int d, state_type state,
+            XIO_DECL std::size_t sync_write_at1(int d, state_type state,
                                                  uint64_t offset, const void *data, std::size_t size,
                                                  xio::error_code &ec);
 
-            ASIO_DECL bool non_blocking_write_at(int d,
+            XIO_DECL bool non_blocking_write_at(int d,
                                                  uint64_t offset, const buf *bufs, std::size_t count,
                                                  xio::error_code &ec, std::size_t &bytes_transferred);
 
-            ASIO_DECL bool non_blocking_write_at1(int d,
+            XIO_DECL bool non_blocking_write_at1(int d,
                                                   uint64_t offset, const void *data, std::size_t size,
                                                   xio::error_code &ec, std::size_t &bytes_transferred);
 
-#endif // defined(ASIO_HAS_FILE)
+#endif // defined(XIO_HAS_FILE)
 
-            ASIO_DECL int ioctl(int d, state_type &state, long cmd,
+            XIO_DECL int ioctl(int d, state_type &state, long cmd,
                                 ioctl_arg_type *arg, xio::error_code &ec);
 
-            ASIO_DECL int fcntl(int d, int cmd, xio::error_code &ec);
+            XIO_DECL int fcntl(int d, int cmd, xio::error_code &ec);
 
-            ASIO_DECL int fcntl(int d, int cmd,
+            XIO_DECL int fcntl(int d, int cmd,
                                 long arg, xio::error_code &ec);
 
-            ASIO_DECL int poll_read(int d,
+            XIO_DECL int poll_read(int d,
                                     state_type state, xio::error_code &ec);
 
-            ASIO_DECL int poll_write(int d,
+            XIO_DECL int poll_write(int d,
                                      state_type state, xio::error_code &ec);
 
-            ASIO_DECL int poll_error(int d,
+            XIO_DECL int poll_error(int d,
                                      state_type state, xio::error_code &ec);
         } // namespace descriptor_ops
     } // namespace detail
@@ -165,8 +165,8 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // !defined(ASIO_WINDOWS)
-//   && !defined(ASIO_WINDOWS_RUNTIME)
-//   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // !defined(XIO_WINDOWS)
+//   && !defined(XIO_WINDOWS_RUNTIME)
+//   && !defined(XIO_CYGWIN_W32_SOCKETS)
 
-#endif // ASIO_DETAIL_DESCRIPTOR_OPS_HPP
+#endif // XIO_DETAIL_DESCRIPTOR_OPS_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_TIMER_SCHEDULER_FWD_HPP
-#define ASIO_DETAIL_TIMER_SCHEDULER_FWD_HPP
+#ifndef XIO_DETAIL_TIMER_SCHEDULER_FWD_HPP
+#define XIO_DETAIL_TIMER_SCHEDULER_FWD_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -21,17 +21,17 @@ namespace xio {
 
 
     namespace detail {
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
         typedef class winrt_timer_scheduler timer_scheduler;
-#elif defined(ASIO_HAS_IOCP)
+#elif defined(XIO_HAS_IOCP)
         typedef class win_iocp_io_context timer_scheduler;
-#elif defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#elif defined(XIO_HAS_IO_URING_AS_DEFAULT)
         typedef class io_uring_service timer_scheduler;
-#elif defined(ASIO_HAS_EPOLL)
+#elif defined(XIO_HAS_EPOLL)
         typedef class epoll_reactor timer_scheduler;
-#elif defined(ASIO_HAS_KQUEUE)
+#elif defined(XIO_HAS_KQUEUE)
         typedef class kqueue_reactor timer_scheduler;
-#elif defined(ASIO_HAS_DEV_POLL)
+#elif defined(XIO_HAS_DEV_POLL)
         typedef class dev_poll_reactor timer_scheduler;
 #else
         typedef class select_reactor timer_scheduler;
@@ -40,4 +40,4 @@ namespace xio {
 
 } // namespace xio
 
-#endif // ASIO_DETAIL_TIMER_SCHEDULER_FWD_HPP
+#endif // XIO_DETAIL_TIMER_SCHEDULER_FWD_HPP

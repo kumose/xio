@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_THIS_CORO_HPP
-#define ASIO_THIS_CORO_HPP
+#ifndef XIO_THIS_CORO_HPP
+#define XIO_THIS_CORO_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -56,114 +56,6 @@ inline constexpr executor_t executor;
  */
 inline constexpr cancellation_state_t cancellation_state;
 
-#if defined(GENERATING_DOCUMENTATION)
-
-        /// Returns an awaitable object that may be used to reset the cancellation state
-/// of the current coroutine.
-        /**
- * Let <tt>P</tt> be the cancellation slot associated with the current
- * coroutine's @ref co_spawn completion handler. Assigns a new
- * xio::cancellation_state object <tt>S</tt>, constructed as
- * <tt>S(P)</tt>, into the current coroutine's cancellation state object.
- *
- * @par Example
- * @code xio::awaitable<void> my_coroutine()
- * {
- *   co_await xio::this_coro::reset_cancellation_state();
- *
- *   // ...
- * } @endcode
- *
- * @note The cancellation state is shared by all coroutines in the same "thread
- * of execution" that was created using xio::co_spawn.
- */
-        [[nodiscard]] constexpr unspecified
-        reset_cancellation_state();
-
-        /// Returns an awaitable object that may be used to reset the cancellation state
-/// of the current coroutine.
-        /**
- * Let <tt>P</tt> be the cancellation slot associated with the current
- * coroutine's @ref co_spawn completion handler. Assigns a new
- * xio::cancellation_state object <tt>S</tt>, constructed as <tt>S(P,
- * std::forward<Filter>(filter))</tt>, into the current coroutine's
- * cancellation state object.
- *
- * @par Example
- * @code xio::awaitable<void> my_coroutine()
- * {
- *   co_await xio::this_coro::reset_cancellation_state(
- *       xio::enable_partial_cancellation());
- *
- *   // ...
- * } @endcode
- *
- * @note The cancellation state is shared by all coroutines in the same "thread
- * of execution" that was created using xio::co_spawn.
- */
-        template<typename Filter>
-        [[nodiscard]] constexpr unspecified
-        reset_cancellation_state(Filter && filter);
-
-        /// Returns an awaitable object that may be used to reset the cancellation state
-/// of the current coroutine.
-        /**
- * Let <tt>P</tt> be the cancellation slot associated with the current
- * coroutine's @ref co_spawn completion handler. Assigns a new
- * xio::cancellation_state object <tt>S</tt>, constructed as <tt>S(P,
- * std::forward<InFilter>(in_filter),
- * std::forward<OutFilter>(out_filter))</tt>, into the current coroutine's
- * cancellation state object.
- *
- * @par Example
- * @code xio::awaitable<void> my_coroutine()
- * {
- *   co_await xio::this_coro::reset_cancellation_state(
- *       xio::enable_partial_cancellation(),
- *       xio::disable_cancellation());
- *
- *   // ...
- * } @endcode
- *
- * @note The cancellation state is shared by all coroutines in the same "thread
- * of execution" that was created using xio::co_spawn.
- */
-        template<typename InFilter, typename OutFilter>
-        [[nodiscard]] constexpr unspecified
-        reset_cancellation_state(
-            InFilter && in_filter,
-            OutFilter && out_filter);
-
-        /// Returns an awaitable object that may be used to determine whether the
-/// coroutine throws if trying to suspend when it has been cancelled.
-        /**
- * @par Example
- * @code xio::awaitable<void> my_coroutine()
- * {
- *   if (co_await xio::this_coro::throw_if_cancelled)
- *     // ...
- *
- *   // ...
- * } @endcode
- */
-        [[nodiscard]] constexpr unspecified
-        throw_if_cancelled();
-
-        /// Returns an awaitable object that may be used to specify whether the
-/// coroutine throws if trying to suspend when it has been cancelled.
-        /**
- * @par Example
- * @code xio::awaitable<void> my_coroutine()
- * {
- *   co_await xio::this_coro::throw_if_cancelled(false);
- *
- *   // ...
- * } @endcode
- */
-        [[nodiscard]] constexpr unspecified
-        throw_if_cancelled(bool value);
-
-#else // defined(GENERATING_DOCUMENTATION)
 
         struct reset_cancellation_state_0_t {
             constexpr reset_cancellation_state_0_t() {
@@ -244,11 +136,10 @@ inline constexpr cancellation_state_t cancellation_state;
             return throw_if_cancelled_1_t(value);
         }
 
-#endif // defined(GENERATING_DOCUMENTATION)
     } // namespace this_coro
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_THIS_CORO_HPP
+#endif // XIO_THIS_CORO_HPP

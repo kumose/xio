@@ -31,18 +31,18 @@ void unbuffered_channel_test()
 
   channel<void(xio::error_code, std::string)> ch1(ctx);
 
-  ASIO_CHECK(ch1.is_open());
-  ASIO_CHECK(!ch1.ready());
+  XIO_CHECK(ch1.is_open());
+  XIO_CHECK(!ch1.ready());
 
   bool b1 = ch1.try_send(xio::error::eof, "hello");
 
-  ASIO_CHECK(!b1);
+  XIO_CHECK(!b1);
 
   std::string s1 = "abcdefghijklmnopqrstuvwxyz";
   bool b2 = ch1.try_send(xio::error::eof, std::move(s1));
 
-  ASIO_CHECK(!b2);
-  ASIO_CHECK(!s1.empty());
+  XIO_CHECK(!b2);
+  XIO_CHECK(!s1.empty());
 
   xio::error_code ec1;
   std::string s2;
@@ -55,17 +55,17 @@ void unbuffered_channel_test()
 
   bool b3 = ch1.try_send(xio::error::eof, std::move(s1));
 
-  ASIO_CHECK(b3);
-  ASIO_CHECK(s1.empty());
+  XIO_CHECK(b3);
+  XIO_CHECK(s1.empty());
 
   ctx.run();
 
-  ASIO_CHECK(ec1 == xio::error::eof);
-  ASIO_CHECK(s2 == "abcdefghijklmnopqrstuvwxyz");
+  XIO_CHECK(ec1 == xio::error::eof);
+  XIO_CHECK(s2 == "abcdefghijklmnopqrstuvwxyz");
 
   bool b4 = ch1.try_receive([](xio::error_code, std::string){});
 
-  ASIO_CHECK(!b4);
+  XIO_CHECK(!b4);
 
   xio::error_code ec2 = xio::error::would_block;
   std::string s3 = "zyxwvutsrqponmlkjihgfedcba";
@@ -84,14 +84,14 @@ void unbuffered_channel_test()
         s4 = s;
       });
 
-  ASIO_CHECK(b5);
-  ASIO_CHECK(ec3 == xio::error::eof);
-  ASIO_CHECK(s4 == "zyxwvutsrqponmlkjihgfedcba");
+  XIO_CHECK(b5);
+  XIO_CHECK(ec3 == xio::error::eof);
+  XIO_CHECK(s4 == "zyxwvutsrqponmlkjihgfedcba");
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(!ec2);
+  XIO_CHECK(!ec2);
 }
 
 void buffered_channel_test()
@@ -100,18 +100,18 @@ void buffered_channel_test()
 
   channel<void(xio::error_code, std::string)> ch1(ctx, 1);
 
-  ASIO_CHECK(ch1.is_open());
-  ASIO_CHECK(!ch1.ready());
+  XIO_CHECK(ch1.is_open());
+  XIO_CHECK(!ch1.ready());
 
   bool b1 = ch1.try_send(xio::error::eof, "hello");
 
-  ASIO_CHECK(b1);
+  XIO_CHECK(b1);
 
   std::string s1 = "abcdefghijklmnopqrstuvwxyz";
   bool b2 = ch1.try_send(xio::error::eof, std::move(s1));
 
-  ASIO_CHECK(!b2);
-  ASIO_CHECK(!s1.empty());
+  XIO_CHECK(!b2);
+  XIO_CHECK(!s1.empty());
 
   xio::error_code ec1;
   std::string s2;
@@ -124,12 +124,12 @@ void buffered_channel_test()
 
   ctx.run();
 
-  ASIO_CHECK(ec1 == xio::error::eof);
-  ASIO_CHECK(s2 == "hello");
+  XIO_CHECK(ec1 == xio::error::eof);
+  XIO_CHECK(s2 == "hello");
 
   bool b4 = ch1.try_receive([](xio::error_code, std::string){});
 
-  ASIO_CHECK(!b4);
+  XIO_CHECK(!b4);
 
   xio::error_code ec2 = xio::error::would_block;
   std::string s3 = "zyxwvutsrqponmlkjihgfedcba";
@@ -148,18 +148,18 @@ void buffered_channel_test()
         s4 = s;
       });
 
-  ASIO_CHECK(b5);
-  ASIO_CHECK(ec3 == xio::error::eof);
-  ASIO_CHECK(s4 == "zyxwvutsrqponmlkjihgfedcba");
+  XIO_CHECK(b5);
+  XIO_CHECK(ec3 == xio::error::eof);
+  XIO_CHECK(s4 == "zyxwvutsrqponmlkjihgfedcba");
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(!ec2);
+  XIO_CHECK(!ec2);
 
   bool b6 = ch1.try_send(xio::error_code(), "goodbye");
 
-  ASIO_CHECK(b6);
+  XIO_CHECK(b6);
 
   ch1.close();
 
@@ -175,8 +175,8 @@ void buffered_channel_test()
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(!ec4);
-  ASIO_CHECK(s5 == "goodbye");
+  XIO_CHECK(!ec4);
+  XIO_CHECK(s5 == "goodbye");
 
   xio::error_code ec5;
   std::string s6;
@@ -190,8 +190,8 @@ void buffered_channel_test()
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(ec5 == xio::experimental::channel_errc::channel_closed);
-  ASIO_CHECK(s6.empty());
+  XIO_CHECK(ec5 == xio::experimental::channel_errc::channel_closed);
+  XIO_CHECK(s6.empty());
 }
 
 void buffered_error_channel_test()
@@ -200,16 +200,16 @@ void buffered_error_channel_test()
 
   channel<void(xio::error_code)> ch1(ctx, 1);
 
-  ASIO_CHECK(ch1.is_open());
-  ASIO_CHECK(!ch1.ready());
+  XIO_CHECK(ch1.is_open());
+  XIO_CHECK(!ch1.ready());
 
   bool b1 = ch1.try_send(xio::error::eof);
 
-  ASIO_CHECK(b1);
+  XIO_CHECK(b1);
 
   bool b2 = ch1.try_send(xio::error::eof);
 
-  ASIO_CHECK(!b2);
+  XIO_CHECK(!b2);
 
   xio::error_code ec1;
   ch1.async_receive(
@@ -220,11 +220,11 @@ void buffered_error_channel_test()
 
   ctx.run();
 
-  ASIO_CHECK(ec1 == xio::error::eof);
+  XIO_CHECK(ec1 == xio::error::eof);
 
   bool b4 = ch1.try_receive([](xio::error_code){});
 
-  ASIO_CHECK(!b4);
+  XIO_CHECK(!b4);
 
   xio::error_code ec2 = xio::error::would_block;
   ch1.async_send(xio::error::eof,
@@ -240,13 +240,13 @@ void buffered_error_channel_test()
         ec3 = ec;
       });
 
-  ASIO_CHECK(b5);
-  ASIO_CHECK(ec3 == xio::error::eof);
+  XIO_CHECK(b5);
+  XIO_CHECK(ec3 == xio::error::eof);
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(!ec2);
+  XIO_CHECK(!ec2);
 }
 
 void unbuffered_non_immediate_receive()
@@ -263,7 +263,7 @@ void unbuffered_non_immediate_receive()
         ec1 = ec;
       });
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   xio::error_code ec2 = xio::error::would_block;
   std::string s2;
@@ -274,13 +274,13 @@ void unbuffered_non_immediate_receive()
         s2 = std::move(s);
       });
 
-  ASIO_CHECK(ec2 == xio::error::would_block);
+  XIO_CHECK(ec2 == xio::error::would_block);
 
   ctx.run();
 
-  ASIO_CHECK(!ec1);
-  ASIO_CHECK(ec2 == xio::error::eof);
-  ASIO_CHECK(s2 == "0123456789");
+  XIO_CHECK(!ec1);
+  XIO_CHECK(ec2 == xio::error::eof);
+  XIO_CHECK(s2 == "0123456789");
 }
 
 void unbuffered_immediate_receive()
@@ -297,7 +297,7 @@ void unbuffered_immediate_receive()
         ec1 = ec;
       });
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   xio::error_code ec2 = xio::error::would_block;
   std::string s2;
@@ -309,13 +309,13 @@ void unbuffered_immediate_receive()
           s2 = std::move(s);
         }));
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
-  ASIO_CHECK(ec2 == xio::error::eof);
-  ASIO_CHECK(s2 == "0123456789");
+  XIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec2 == xio::error::eof);
+  XIO_CHECK(s2 == "0123456789");
 
   ctx.run();
 
-  ASIO_CHECK(!ec1);
+  XIO_CHECK(!ec1);
 }
 
 void unbuffered_executor_receive()
@@ -333,7 +333,7 @@ void unbuffered_executor_receive()
         ec1 = ec;
       });
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   xio::error_code ec2 = xio::error::would_block;
   std::string s2;
@@ -345,18 +345,18 @@ void unbuffered_executor_receive()
           s2 = std::move(s);
         }));
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
-  ASIO_CHECK(ec2 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec2 == xio::error::would_block);
 
   ctx.run();
 
-  ASIO_CHECK(!ec1);
-  ASIO_CHECK(ec2 == xio::error::would_block);
+  XIO_CHECK(!ec1);
+  XIO_CHECK(ec2 == xio::error::would_block);
 
   ctx2.run();
 
-  ASIO_CHECK(ec2 == xio::error::eof);
-  ASIO_CHECK(s2 == "0123456789");
+  XIO_CHECK(ec2 == xio::error::eof);
+  XIO_CHECK(s2 == "0123456789");
 }
 
 void unbuffered_non_immediate_send()
@@ -374,7 +374,7 @@ void unbuffered_non_immediate_send()
         s1 = std::move(s);
       });
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   xio::error_code ec2 = xio::error::would_block;
   std::string s2 = "0123456789";
@@ -384,13 +384,13 @@ void unbuffered_non_immediate_send()
         ec2 = ec;
       });
 
-  ASIO_CHECK(ec2 == xio::error::would_block);
+  XIO_CHECK(ec2 == xio::error::would_block);
 
   ctx.run();
 
-  ASIO_CHECK(ec1 == xio::error::eof);
-  ASIO_CHECK(s1 == "0123456789");
-  ASIO_CHECK(!ec2);
+  XIO_CHECK(ec1 == xio::error::eof);
+  XIO_CHECK(s1 == "0123456789");
+  XIO_CHECK(!ec2);
 }
 
 void unbuffered_immediate_send()
@@ -408,7 +408,7 @@ void unbuffered_immediate_send()
         s1 = std::move(s);
       });
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   xio::error_code ec2 = xio::error::would_block;
   std::string s2 = "0123456789";
@@ -419,13 +419,13 @@ void unbuffered_immediate_send()
           ec2 = ec;
         }));
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
-  ASIO_CHECK(!ec2);
+  XIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(!ec2);
 
   ctx.run();
 
-  ASIO_CHECK(ec1 == xio::error::eof);
-  ASIO_CHECK(s1 == "0123456789");
+  XIO_CHECK(ec1 == xio::error::eof);
+  XIO_CHECK(s1 == "0123456789");
 }
 
 void unbuffered_executor_send()
@@ -444,7 +444,7 @@ void unbuffered_executor_send()
         s1 = std::move(s);
       });
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   xio::error_code ec2 = xio::error::would_block;
   std::string s2 = "0123456789";
@@ -455,18 +455,18 @@ void unbuffered_executor_send()
           ec2 = ec;
         }));
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
-  ASIO_CHECK(ec2 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec2 == xio::error::would_block);
 
   ctx.run();
 
-  ASIO_CHECK(ec1 == xio::error::eof);
-  ASIO_CHECK(s1 == "0123456789");
-  ASIO_CHECK(ec2 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::eof);
+  XIO_CHECK(s1 == "0123456789");
+  XIO_CHECK(ec2 == xio::error::would_block);
 
   ctx2.run();
 
-  ASIO_CHECK(!ec2);
+  XIO_CHECK(!ec2);
 }
 
 void buffered_non_immediate_receive()
@@ -483,11 +483,11 @@ void buffered_non_immediate_receive()
         ec1 = ec;
       });
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   ctx.run();
 
-  ASIO_CHECK(!ec1);
+  XIO_CHECK(!ec1);
 
   xio::error_code ec2 = xio::error::would_block;
   std::string s2;
@@ -498,13 +498,13 @@ void buffered_non_immediate_receive()
         s2 = std::move(s);
       });
 
-  ASIO_CHECK(ec2 == xio::error::would_block);
+  XIO_CHECK(ec2 == xio::error::would_block);
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(ec2 == xio::error::eof);
-  ASIO_CHECK(s2 == "0123456789");
+  XIO_CHECK(ec2 == xio::error::eof);
+  XIO_CHECK(s2 == "0123456789");
 }
 
 void buffered_immediate_receive()
@@ -521,11 +521,11 @@ void buffered_immediate_receive()
         ec1 = ec;
       });
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   ctx.run();
 
-  ASIO_CHECK(!ec1);
+  XIO_CHECK(!ec1);
 
   xio::error_code ec2 = xio::error::would_block;
   std::string s2;
@@ -537,8 +537,8 @@ void buffered_immediate_receive()
           s2 = std::move(s);
         }));
 
-  ASIO_CHECK(ec2 == xio::error::eof);
-  ASIO_CHECK(s2 == "0123456789");
+  XIO_CHECK(ec2 == xio::error::eof);
+  XIO_CHECK(s2 == "0123456789");
 
   ctx.restart();
   ctx.run();
@@ -559,11 +559,11 @@ void buffered_executor_receive()
         ec1 = ec;
       });
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   ctx.run();
 
-  ASIO_CHECK(!ec1);
+  XIO_CHECK(!ec1);
 
   xio::error_code ec2 = xio::error::would_block;
   std::string s2;
@@ -575,17 +575,17 @@ void buffered_executor_receive()
           s2 = std::move(s);
         }));
 
-  ASIO_CHECK(ec2 == xio::error::would_block);
+  XIO_CHECK(ec2 == xio::error::would_block);
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(ec2 == xio::error::would_block);
+  XIO_CHECK(ec2 == xio::error::would_block);
 
   ctx2.run();
 
-  ASIO_CHECK(ec2 == xio::error::eof);
-  ASIO_CHECK(s2 == "0123456789");
+  XIO_CHECK(ec2 == xio::error::eof);
+  XIO_CHECK(s2 == "0123456789");
 }
 
 void buffered_non_immediate_send()
@@ -602,11 +602,11 @@ void buffered_non_immediate_send()
         ec1 = ec;
       });
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   ctx.run();
 
-  ASIO_CHECK(!ec1);
+  XIO_CHECK(!ec1);
 }
 
 void buffered_immediate_send()
@@ -624,7 +624,7 @@ void buffered_immediate_send()
           ec1 = ec;
         }));
 
-  ASIO_CHECK(!ec1);
+  XIO_CHECK(!ec1);
 
   ctx.run();
 }
@@ -645,15 +645,15 @@ void buffered_executor_send()
           ec1 = ec;
         }));
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   ctx.run();
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   ctx2.run();
 
-  ASIO_CHECK(!ec1);
+  XIO_CHECK(!ec1);
 }
 
 void try_send_via_dispatch()
@@ -672,18 +672,18 @@ void try_send_via_dispatch()
           s1 = std::move(s);
         }));
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   ctx.poll();
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   std::string s2 = "0123456789";
   ch1.try_send_via_dispatch(xio::error::eof, std::move(s2));
 
-  ASIO_CHECK(ec1 == xio::error::eof);
-  ASIO_CHECK(s1 == "0123456789");
-  ASIO_CHECK(s2.empty());
+  XIO_CHECK(ec1 == xio::error::eof);
+  XIO_CHECK(s1 == "0123456789");
+  XIO_CHECK(s2.empty());
 }
 
 void try_send_n_via_dispatch()
@@ -702,7 +702,7 @@ void try_send_n_via_dispatch()
           s1 = std::move(s);
         }));
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   xio::error_code ec2 = xio::error::would_block;
   std::string s2;
@@ -714,21 +714,21 @@ void try_send_n_via_dispatch()
           s2 = std::move(s);
         }));
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   ctx.poll();
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
-  ASIO_CHECK(ec2 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec2 == xio::error::would_block);
 
   std::string s3 = "0123456789";
   ch1.try_send_n_via_dispatch(2, xio::error::eof, std::move(s3));
 
-  ASIO_CHECK(ec1 == xio::error::eof);
-  ASIO_CHECK(s1 == "0123456789");
-  ASIO_CHECK(ec2 == xio::error::eof);
-  ASIO_CHECK(s2 == "0123456789");
-  ASIO_CHECK(s3.empty());
+  XIO_CHECK(ec1 == xio::error::eof);
+  XIO_CHECK(s1 == "0123456789");
+  XIO_CHECK(ec2 == xio::error::eof);
+  XIO_CHECK(s2 == "0123456789");
+  XIO_CHECK(s3.empty());
 }
 
 struct multi_signature_handler
@@ -753,18 +753,18 @@ void implicit_error_signature_channel_test()
 
   channel<void(std::string)> ch1(ctx);
 
-  ASIO_CHECK(ch1.is_open());
-  ASIO_CHECK(!ch1.ready());
+  XIO_CHECK(ch1.is_open());
+  XIO_CHECK(!ch1.ready());
 
   bool b1 = ch1.try_send("hello");
 
-  ASIO_CHECK(!b1);
+  XIO_CHECK(!b1);
 
   std::string s1 = "abcdefghijklmnopqrstuvwxyz";
   bool b2 = ch1.try_send(std::move(s1));
 
-  ASIO_CHECK(!b2);
-  ASIO_CHECK(!s1.empty());
+  XIO_CHECK(!b2);
+  XIO_CHECK(!s1.empty());
 
   std::string s2;
   xio::error_code ec1 = xio::error::would_block;
@@ -773,20 +773,20 @@ void implicit_error_signature_channel_test()
 
   bool b3 = ch1.try_send(std::move(s1));
 
-  ASIO_CHECK(b3);
-  ASIO_CHECK(s1.empty());
+  XIO_CHECK(b3);
+  XIO_CHECK(s1.empty());
 
   ctx.run();
 
-  ASIO_CHECK(s2 == "abcdefghijklmnopqrstuvwxyz");
-  ASIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(s2 == "abcdefghijklmnopqrstuvwxyz");
+  XIO_CHECK(ec1 == xio::error::would_block);
 
   std::string s3;
   xio::error_code ec2;
   multi_signature_handler h2 = {&s3, &ec2};
   bool b4 = ch1.try_receive(h2);
 
-  ASIO_CHECK(!b4);
+  XIO_CHECK(!b4);
 
   std::string s4 = "zyxwvutsrqponmlkjihgfedcba";
   xio::error_code ec3;
@@ -801,14 +801,14 @@ void implicit_error_signature_channel_test()
   multi_signature_handler h3 = {&s5, &ec4};
   bool b5 = ch1.try_receive(h3);
 
-  ASIO_CHECK(b5);
-  ASIO_CHECK(ec4 == xio::error::would_block);
-  ASIO_CHECK(s5 == "zyxwvutsrqponmlkjihgfedcba");
+  XIO_CHECK(b5);
+  XIO_CHECK(ec4 == xio::error::would_block);
+  XIO_CHECK(s5 == "zyxwvutsrqponmlkjihgfedcba");
 
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(!ec3);
+  XIO_CHECK(!ec3);
 
   std::string s6;
   xio::error_code ec5 = xio::error::would_block;
@@ -820,8 +820,8 @@ void implicit_error_signature_channel_test()
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(s6.empty());
-  ASIO_CHECK(ec5 == xio::experimental::channel_errc::channel_closed);
+  XIO_CHECK(s6.empty());
+  XIO_CHECK(ec5 == xio::experimental::channel_errc::channel_closed);
 }
 
 void channel_with_any_completion_handler_test()
@@ -850,14 +850,14 @@ void channel_with_any_completion_handler_test()
           ec2 = ec;
         }));
 
-  ASIO_CHECK(ec1 == xio::error::would_block);
-  ASIO_CHECK(ec2 == xio::error::would_block);
+  XIO_CHECK(ec1 == xio::error::would_block);
+  XIO_CHECK(ec2 == xio::error::would_block);
 
   ctx.run();
 
-  ASIO_CHECK(ec1 == xio::error::eof);
-  ASIO_CHECK(s1 == "zyxwvutsrqponmlkjihgfedcba");
-  ASIO_CHECK(!ec2);
+  XIO_CHECK(ec1 == xio::error::eof);
+  XIO_CHECK(s1 == "zyxwvutsrqponmlkjihgfedcba");
+  XIO_CHECK(!ec2);
 }
 
 void channel_move_test()
@@ -873,27 +873,27 @@ void channel_move_test()
   (void)ch4;
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "experimental/channel",
-  ASIO_TEST_CASE(unbuffered_channel_test)
-  ASIO_TEST_CASE(buffered_channel_test)
-  ASIO_TEST_CASE(buffered_error_channel_test)
-  ASIO_TEST_CASE(unbuffered_non_immediate_receive)
-  ASIO_TEST_CASE(unbuffered_immediate_receive)
-  ASIO_TEST_CASE(unbuffered_executor_receive)
-  ASIO_TEST_CASE(unbuffered_non_immediate_send)
-  ASIO_TEST_CASE(unbuffered_immediate_send)
-  ASIO_TEST_CASE(unbuffered_executor_send)
-  ASIO_TEST_CASE(buffered_non_immediate_receive)
-  ASIO_TEST_CASE(buffered_immediate_receive)
-  ASIO_TEST_CASE(buffered_executor_receive)
-  ASIO_TEST_CASE(buffered_non_immediate_send)
-  ASIO_TEST_CASE(buffered_immediate_send)
-  ASIO_TEST_CASE(buffered_executor_send)
-  ASIO_TEST_CASE(try_send_via_dispatch)
-  ASIO_TEST_CASE(try_send_n_via_dispatch)
-  ASIO_TEST_CASE(implicit_error_signature_channel_test)
-  ASIO_TEST_CASE(channel_with_any_completion_handler_test)
-  ASIO_COMPILE_TEST_CASE(channel_move_test)
+  XIO_TEST_CASE(unbuffered_channel_test)
+  XIO_TEST_CASE(buffered_channel_test)
+  XIO_TEST_CASE(buffered_error_channel_test)
+  XIO_TEST_CASE(unbuffered_non_immediate_receive)
+  XIO_TEST_CASE(unbuffered_immediate_receive)
+  XIO_TEST_CASE(unbuffered_executor_receive)
+  XIO_TEST_CASE(unbuffered_non_immediate_send)
+  XIO_TEST_CASE(unbuffered_immediate_send)
+  XIO_TEST_CASE(unbuffered_executor_send)
+  XIO_TEST_CASE(buffered_non_immediate_receive)
+  XIO_TEST_CASE(buffered_immediate_receive)
+  XIO_TEST_CASE(buffered_executor_receive)
+  XIO_TEST_CASE(buffered_non_immediate_send)
+  XIO_TEST_CASE(buffered_immediate_send)
+  XIO_TEST_CASE(buffered_executor_send)
+  XIO_TEST_CASE(try_send_via_dispatch)
+  XIO_TEST_CASE(try_send_n_via_dispatch)
+  XIO_TEST_CASE(implicit_error_signature_channel_test)
+  XIO_TEST_CASE(channel_with_any_completion_handler_test)
+  XIO_COMPILE_TEST_CASE(channel_move_test)
 )

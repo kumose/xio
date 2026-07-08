@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_HIGH_RESOLUTION_TIMER_HPP
-#define ASIO_HIGH_RESOLUTION_TIMER_HPP
+#ifndef XIO_HIGH_RESOLUTION_TIMER_HPP
+#define XIO_HIGH_RESOLUTION_TIMER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -38,4 +38,4 @@ namespace xio {
 
 } // namespace xio
 
-#endif // ASIO_HIGH_RESOLUTION_TIMER_HPP
+#endif // XIO_HIGH_RESOLUTION_TIMER_HPP

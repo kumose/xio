@@ -49,7 +49,7 @@ void read_some_handler(const xio::error_code&, std::size_t)
 
 void test()
 {
-#if defined(ASIO_HAS_LOCAL_SOCKETS)
+#if defined(XIO_HAS_LOCAL_SOCKETS)
   using namespace xio;
   namespace local = xio::local;
   typedef local::stream_protocol sp;
@@ -202,15 +202,15 @@ void test()
   catch (std::exception&)
   {
   }
-#endif // defined(ASIO_HAS_LOCAL_SOCKETS)
+#endif // defined(XIO_HAS_LOCAL_SOCKETS)
 }
 
 } // namespace local_stream_protocol_socket_compile
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "local/stream_protocol",
-  ASIO_COMPILE_TEST_CASE(local_stream_protocol_socket_compile::test)
+  XIO_COMPILE_TEST_CASE(local_stream_protocol_socket_compile::test)
 )

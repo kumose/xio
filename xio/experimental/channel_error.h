@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXPERIMENTAL_CHANNEL_ERROR_HPP
-#define ASIO_EXPERIMENTAL_CHANNEL_ERROR_HPP
+#ifndef XIO_EXPERIMENTAL_CHANNEL_ERROR_HPP
+#define XIO_EXPERIMENTAL_CHANNEL_ERROR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -35,11 +35,11 @@ namespace xio {
 
             extern
 
-            ASIO_DECL
+            XIO_DECL
             const xio::error_category &get_channel_category();
 
             inline const xio::error_category &
-  channel_category ASIO_UNUSED_VARIABLE
+  channel_category XIO_UNUSED_VARIABLE
                     = xio::experimental::error::get_channel_category();
         } // namespace error
         namespace channel_errc {
@@ -76,4 +76,4 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // ASIO_EXPERIMENTAL_CHANNEL_ERROR_HPP
+#endif // XIO_EXPERIMENTAL_CHANNEL_ERROR_HPP

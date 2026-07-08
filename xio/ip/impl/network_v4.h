@@ -9,14 +9,14 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_IMPL_NETWORK_V4_HPP
-#define ASIO_IP_IMPL_NETWORK_V4_HPP
+#ifndef XIO_IP_IMPL_NETWORK_V4_HPP
+#define XIO_IP_IMPL_NETWORK_V4_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 
 #include <xio/detail/throw_error.h>
 
@@ -47,6 +47,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
 
-#endif // ASIO_IP_IMPL_NETWORK_V4_HPP
+#endif // XIO_IP_IMPL_NETWORK_V4_HPP

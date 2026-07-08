@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXECUTION_ANY_EXECUTOR_HPP
-#define ASIO_EXECUTION_ANY_EXECUTOR_HPP
+#ifndef XIO_EXECUTION_ANY_EXECUTOR_HPP
+#define XIO_EXECUTION_ANY_EXECUTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -39,200 +39,16 @@
 namespace xio {
 
 
-#if defined(GENERATING_DOCUMENTATION)
-
-    namespace execution {
-        /// Polymorphic executor wrapper.
-        template<typename... SupportableProperties>
-        class any_executor {
-        public:
-            /// Default constructor.
-            any_executor() noexcept;
-
-            /// Construct in an empty state. Equivalent effects to default constructor.
-            any_executor(nullptr_t) noexcept;
-
-            /// Copy constructor.
-            any_executor(const any_executor &e) noexcept;
-
-            /// Move constructor.
-            any_executor(any_executor &&e) noexcept;
-
-            /// Construct to point to the same target as another any_executor.
-            template<class... OtherSupportableProperties>
-            any_executor(any_executor<OtherSupportableProperties...> e);
-
-            /// Construct to point to the same target as another any_executor.
-            template<class... OtherSupportableProperties>
-            any_executor(std::nothrow_t,
-                         any_executor<OtherSupportableProperties...> e) noexcept;
-
-            /// Construct to point to the same target as another any_executor.
-            any_executor(std::nothrow_t, const any_executor &e) noexcept;
-
-            /// Construct to point to the same target as another any_executor.
-            any_executor(std::nothrow_t, any_executor &&e) noexcept;
-
-            /// Construct a polymorphic wrapper for the specified executor.
-            template<typename Executor>
-            any_executor(Executor e);
-
-            /// Construct a polymorphic wrapper for the specified executor.
-            template<typename Executor>
-            any_executor(std::nothrow_t, Executor e) noexcept;
-
-            /// Assignment operator.
-            any_executor &operator=(const any_executor &e) noexcept;
-
-            /// Move assignment operator.
-            any_executor &operator=(any_executor &&e) noexcept;
-
-            /// Assignment operator that sets the polymorphic wrapper to the empty state.
-            any_executor &operator=(nullptr_t);
-
-            /// Assignment operator to create a polymorphic wrapper for the specified
-  /// executor.
-            template<typename Executor>
-            any_executor &operator=(Executor e);
-
-            /// Destructor.
-            ~any_executor();
-
-            /// Swap targets with another polymorphic wrapper.
-            void swap(any_executor &other) noexcept;
-
-            /// Obtain a polymorphic wrapper with the specified property.
-            /**
-   * Do not call this function directly. It is intended for use with the
-   * xio::require and xio::prefer customisation points.
-   *
-   * For example:
-   * @code execution::any_executor<execution::blocking_t::possibly_t> ex = ...;
-   * auto ex2 = xio::require(ex, execution::blocking.possibly); @endcode
-   */
-            template<typename Property>
-            any_executor require(Property) const;
-
-            /// Obtain a polymorphic wrapper with the specified property.
-            /**
-   * Do not call this function directly. It is intended for use with the
-   * xio::prefer customisation point.
-   *
-   * For example:
-   * @code execution::any_executor<execution::blocking_t::possibly_t> ex = ...;
-   * auto ex2 = xio::prefer(ex, execution::blocking.possibly); @endcode
-   */
-            template<typename Property>
-            any_executor prefer(Property) const;
-
-            /// Obtain the value associated with the specified property.
-            /**
-   * Do not call this function directly. It is intended for use with the
-   * xio::query customisation point.
-   *
-   * For example:
-   * @code execution::any_executor<execution::occupancy_t> ex = ...;
-   * size_t n = xio::query(ex, execution::occupancy); @endcode
-   */
-            template<typename Property>
-            typename Property::polymorphic_query_result_type query(Property) const;
-
-            /// Execute the function on the target executor.
-            /**
-   * Throws xio::bad_executor if the polymorphic wrapper has no target.
-   */
-            template<typename Function>
-            void execute(Function &&f) const;
-
-            /// Obtain the underlying execution context.
-            /**
-   * This function is provided for backward compatibility. It is automatically
-   * defined when the @c SupportableProperties... list includes a property of
-   * type <tt>execution::context_as<U></tt>, for some type <tt>U</tt>.
-   */
-            automatically_determined context() const;
-
-            /// Determine whether the wrapper has a target executor.
-            /**
-   * @returns @c true if the polymorphic wrapper has a target executor,
-   * otherwise false.
-   */
-            explicit operator bool() const noexcept;
-
-            /// Get the type of the target executor.
-            const type_info &target_type() const noexcept;
-
-            /// Get a pointer to the target executor.
-            template<typename Executor>
-            Executor *target() noexcept;
-
-            /// Get a pointer to the target executor.
-            template<typename Executor>
-            const Executor *target() const noexcept;
-        };
-
-        /// Equality operator.
-        /**
- * @relates any_executor
- */
-        template<typename... SupportableProperties>
-        bool operator==(const any_executor<SupportableProperties...> &a,
-                        const any_executor<SupportableProperties...> &b) noexcept;
-
-        /// Equality operator.
-        /**
- * @relates any_executor
- */
-        template<typename... SupportableProperties>
-        bool operator==(const any_executor<SupportableProperties...> &a,
-                        nullptr_t) noexcept;
-
-        /// Equality operator.
-        /**
- * @relates any_executor
- */
-        template<typename... SupportableProperties>
-        bool operator==(nullptr_t,
-                        const any_executor<SupportableProperties...> &b) noexcept;
-
-        /// Inequality operator.
-        /**
- * @relates any_executor
- */
-        template<typename... SupportableProperties>
-        bool operator!=(const any_executor<SupportableProperties...> &a,
-                        const any_executor<SupportableProperties...> &b) noexcept;
-
-        /// Inequality operator.
-        /**
- * @relates any_executor
- */
-        template<typename... SupportableProperties>
-        bool operator!=(const any_executor<SupportableProperties...> &a,
-                        nullptr_t) noexcept;
-
-        /// Inequality operator.
-        /**
- * @relates any_executor
- */
-        template<typename... SupportableProperties>
-        bool operator!=(nullptr_t,
-                        const any_executor<SupportableProperties...> &b) noexcept;
-    } // namespace execution
-
-#else // defined(GENERATING_DOCUMENTATION)
-
-
 
 
     namespace execution {
-#if !defined(ASIO_EXECUTION_ANY_EXECUTOR_FWD_DECL)
-#define ASIO_EXECUTION_ANY_EXECUTOR_FWD_DECL
+#if !defined(XIO_EXECUTION_ANY_EXECUTOR_FWD_DECL)
+#define XIO_EXECUTION_ANY_EXECUTOR_FWD_DECL
 
         template<typename... SupportableProperties>
         class any_executor;
 
-#endif // !defined(ASIO_EXECUTION_ANY_EXECUTOR_FWD_DECL)
+#endif // !defined(XIO_EXECUTION_ANY_EXECUTOR_FWD_DECL)
 
         template<typename U>
         struct context_as_t;
@@ -495,7 +311,7 @@ namespace xio {
                       target_fns_(0) {
                 }
 
-                template<ASIO_EXECUTION_EXECUTOR Executor>
+                template<XIO_EXECUTION_EXECUTOR Executor>
                 any_executor_base(Executor ex, std::false_type)
                     : target_fns_(target_fns_table<Executor>(
                         any_executor_base::query_blocking(ex,
@@ -509,7 +325,7 @@ namespace xio {
                                                         > ());
                 }
 
-                template<ASIO_EXECUTION_EXECUTOR Executor>
+                template<XIO_EXECUTION_EXECUTOR Executor>
                 any_executor_base(std::nothrow_t, Executor ex, std::false_type) noexcept
                     : target_fns_(target_fns_table<Executor>(
                         any_executor_base::query_blocking(ex,
@@ -527,7 +343,7 @@ namespace xio {
                     }
                 }
 
-                template<ASIO_EXECUTION_EXECUTOR Executor>
+                template<XIO_EXECUTION_EXECUTOR Executor>
                 any_executor_base(Executor other, std::true_type)
                     : object_fns_(object_fns_table<shared_target_executor>()),
                       target_fns_(other.target_fns_) {
@@ -537,7 +353,7 @@ namespace xio {
                     target_ = p->template target<void>();
                 }
 
-                template<ASIO_EXECUTION_EXECUTOR Executor>
+                template<XIO_EXECUTION_EXECUTOR Executor>
                 any_executor_base(std::nothrow_t,
                                   Executor other, std::true_type) noexcept
                     : object_fns_(object_fns_table<shared_target_executor>()),
@@ -674,15 +490,15 @@ namespace xio {
                                : 0;
                 }
 
-#if !defined(ASIO_NO_TYPEID)
+#if !defined(XIO_NO_TYPEID)
                 const std::type_info &target_type() const {
                     return target_ ? target_fns_->target_type() : typeid(void);
                 }
-#else // !defined(ASIO_NO_TYPEID)
+#else // !defined(XIO_NO_TYPEID)
                 const void *target_type() const {
                     return target_ ? target_fns_->target_type() : 0;
                 }
-#endif // !defined(ASIO_NO_TYPEID)
+#endif // !defined(XIO_NO_TYPEID)
 
                 struct unspecified_bool_type_t {
                 };
@@ -814,11 +630,11 @@ namespace xio {
                 typedef xio::detail::executor_function_view function_view;
 
                 struct target_fns {
-#if !defined(ASIO_NO_TYPEID)
+#if !defined(XIO_NO_TYPEID)
                     const std::type_info & (*target_type)();
-#else // !defined(ASIO_NO_TYPEID)
+#else // !defined(XIO_NO_TYPEID)
                     const void * (*target_type)();
-#endif // !defined(ASIO_NO_TYPEID)
+#endif // !defined(XIO_NO_TYPEID)
                     bool (*equal)(const any_executor_base &, const any_executor_base &);
 
                     void (*execute)(const any_executor_base &, function &&);
@@ -826,39 +642,39 @@ namespace xio {
                     void (*blocking_execute)(const any_executor_base &, function_view);
                 };
 
-#if !defined(ASIO_NO_TYPEID)
+#if !defined(XIO_NO_TYPEID)
                 template<typename Ex>
                 static const std::type_info &target_type_ex() {
                     return typeid(Ex);
                 }
-#else // !defined(ASIO_NO_TYPEID)
+#else // !defined(XIO_NO_TYPEID)
                 template<typename Ex>
                 static const void *target_type_ex() {
                     static int unique_id;
                     return &unique_id;
                 }
-#endif // !defined(ASIO_NO_TYPEID)
+#endif // !defined(XIO_NO_TYPEID)
 
                 template<typename Ex>
                 static bool equal_ex(const any_executor_base &ex1,
                                      const any_executor_base &ex2) {
                     const Ex *p1 = ex1.target<Ex>();
                     const Ex *p2 = ex2.target<Ex>();
-                    ASIO_ASSUME(p1 != 0 && p2 != 0);
+                    XIO_ASSUME(p1 != 0 && p2 != 0);
                     return *p1 == *p2;
                 }
 
                 template<typename Ex>
                 static void execute_ex(const any_executor_base &ex, function &&f) {
                     const Ex *p = ex.target<Ex>();
-                    ASIO_ASSUME(p != 0);
+                    XIO_ASSUME(p != 0);
                     p->execute(static_cast<function &&>(f));
                 }
 
                 template<typename Ex>
                 static void blocking_execute_ex(const any_executor_base &ex, function_view f) {
                     const Ex *p = ex.target<Ex>();
-                    ASIO_ASSUME(p != 0);
+                    XIO_ASSUME(p != 0);
                     p->execute(f);
                 }
 
@@ -886,10 +702,10 @@ namespace xio {
                     return is_always_blocking ? &fns_with_blocking_execute : &fns_with_execute;
                 }
 
-#if defined(ASIO_MSVC)
+#if defined(XIO_MSVC)
 # pragma warning (push)
 # pragma warning (disable:4702)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 
                 static void query_fn_void(void *, const void *, const void *) {
                     bad_executor ex;
@@ -1077,9 +893,9 @@ namespace xio {
                     Poly (*prefer)(const void *, const void *);
                 };
 
-#if defined(ASIO_MSVC)
+#if defined(XIO_MSVC)
 # pragma warning (pop)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 
             private:
                 template<typename Executor>
@@ -1143,7 +959,7 @@ namespace xio {
             struct any_executor_context {
             };
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
 
             template<typename Derived, typename Property>
             struct any_executor_context<Derived, Property, std::enable_if_t<Property::value> > {
@@ -1152,7 +968,7 @@ namespace xio {
                 }
             };
 
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
         } // namespace detail
 
         template<>
@@ -1697,11 +1513,9 @@ namespace xio {
         }
     } // namespace execution
 
-#endif // defined(GENERATING_DOCUMENTATION)
-
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXECUTION_ANY_EXECUTOR_HPP
+#endif // XIO_EXECUTION_ANY_EXECUTOR_HPP

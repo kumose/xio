@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_RESOLVER_SERVICE_HPP
-#define ASIO_DETAIL_RESOLVER_SERVICE_HPP
+#ifndef XIO_DETAIL_RESOLVER_SERVICE_HPP
+#define XIO_DETAIL_RESOLVER_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
 
 #include <xio/ip/basic_resolver_query.h>
 #include <xio/ip/basic_resolver_results.h>
@@ -69,7 +69,7 @@ namespace xio {
                                         qry.service_name().c_str(), qry.hints(), &address_info, ec);
                 auto_addrinfo auto_address_info(address_info);
 
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec
                            ? results_type()
                            : results_type::create(
@@ -88,7 +88,7 @@ namespace xio {
                 };
                 p.p = new(p.v) op(impl, qry, thread_pool_.scheduler(), handler, io_ex);
 
-                ASIO_HANDLER_CREATION((thread_pool_.context(),
+                XIO_HANDLER_CREATION((thread_pool_.context(),
                                        *p.p, "resolver", &impl, 0, "async_resolve"));
 
                 thread_pool_.start_resolve_op(p.p);
@@ -104,7 +104,7 @@ namespace xio {
                                              host_name, NI_MAXHOST, service_name, NI_MAXSERV,
                                              endpoint.protocol().type(), ec);
 
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec
                            ? results_type()
                            : results_type::create(
@@ -124,7 +124,7 @@ namespace xio {
                 p.p = new(p.v) op(impl, endpoint,
                                   thread_pool_.scheduler(), handler, io_ex);
 
-                ASIO_HANDLER_CREATION((thread_pool_.context(),
+                XIO_HANDLER_CREATION((thread_pool_.context(),
                                        *p.p, "resolver", &impl, 0, "async_resolve"));
 
                 thread_pool_.start_resolve_op(p.p);
@@ -137,6 +137,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
-#endif // ASIO_DETAIL_RESOLVER_SERVICE_HPP
+#endif // XIO_DETAIL_RESOLVER_SERVICE_HPP

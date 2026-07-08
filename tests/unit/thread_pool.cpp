@@ -36,7 +36,7 @@ void decrement_to_zero(thread_pool* pool, int* count)
     xio::post(*pool, bindns::bind(decrement_to_zero, pool, count));
 
     // Handler execution cannot nest, so count value should remain unchanged.
-    ASIO_CHECK(*count == before_value);
+    XIO_CHECK(*count == before_value);
   }
 }
 
@@ -50,7 +50,7 @@ void nested_decrement_to_zero(thread_pool* pool, int* count)
         bindns::bind(nested_decrement_to_zero, pool, count));
 
     // Handler execution is nested, so count value should now be zero.
-    ASIO_CHECK(*count == 0);
+    XIO_CHECK(*count == 0);
   }
 }
 
@@ -69,17 +69,17 @@ void thread_pool_test()
 
   pool.wait();
 
-  ASIO_CHECK(count1 == 1);
-  ASIO_CHECK(count2 == 0);
-  ASIO_CHECK(count3 == 0);
+  XIO_CHECK(count1 == 1);
+  XIO_CHECK(count2 == 0);
+  XIO_CHECK(count3 == 0);
 }
 
 class test_service : public xio::execution_context::service
 {
 public:
-#if defined(ASIO_NO_TYPEID)
+#if defined(XIO_NO_TYPEID)
   static xio::execution_context::id id;
-#endif // defined(ASIO_NO_TYPEID)
+#endif // defined(XIO_NO_TYPEID)
 
   typedef test_service key_type;
 
@@ -92,9 +92,9 @@ private:
   virtual void shutdown() {}
 };
 
-#if defined(ASIO_NO_TYPEID)
+#if defined(XIO_NO_TYPEID)
 xio::execution_context::id test_service::id;
-#endif // defined(ASIO_NO_TYPEID)
+#endif // defined(XIO_NO_TYPEID)
 
 class test_context_service : public xio::execution_context::service
 {
@@ -140,13 +140,13 @@ void thread_pool_service_test()
 
   xio::use_service<test_service>(pool1);
 
-  ASIO_CHECK(xio::has_service<test_service>(pool1));
+  XIO_CHECK(xio::has_service<test_service>(pool1));
 
   test_service* svc1 = new test_service(pool1);
   try
   {
     xio::add_service(pool1, svc1);
-    ASIO_ERROR("add_service did not throw");
+    XIO_ERROR("add_service did not throw");
   }
   catch (xio::service_already_exists&)
   {
@@ -157,14 +157,14 @@ void thread_pool_service_test()
 
   test_service& svc2 = xio::make_service<test_service>(pool2);
 
-  ASIO_CHECK(xio::has_service<test_service>(pool2));
-  ASIO_CHECK(&xio::use_service<test_service>(pool2) == &svc2);
+  XIO_CHECK(xio::has_service<test_service>(pool2));
+  XIO_CHECK(&xio::use_service<test_service>(pool2) == &svc2);
 
   test_service* svc3 = new test_service(pool2);
   try
   {
     xio::add_service(pool2, svc3);
-    ASIO_ERROR("add_service did not throw");
+    XIO_ERROR("add_service did not throw");
   }
   catch (xio::service_already_exists&)
   {
@@ -177,21 +177,21 @@ void thread_pool_service_test()
   try
   {
     xio::add_service(pool3, svc4);
-    ASIO_ERROR("add_service did not throw");
+    XIO_ERROR("add_service did not throw");
   }
   catch (xio::invalid_service_owner&)
   {
   }
   delete svc4;
 
-  ASIO_CHECK(!xio::has_service<test_service>(pool3));
+  XIO_CHECK(!xio::has_service<test_service>(pool3));
 
   // Initial service registration.
 
   xio::thread_pool pool4{1, test_context_service_maker{}};
 
-  ASIO_CHECK(xio::has_service<test_context_service>(pool4));
-  ASIO_CHECK(xio::use_service<test_context_service>(pool4).get_value()
+  XIO_CHECK(xio::has_service<test_context_service>(pool4));
+  XIO_CHECK(xio::use_service<test_context_service>(pool4).get_value()
       == 42);
 }
 
@@ -199,57 +199,57 @@ void thread_pool_executor_query_test()
 {
   thread_pool pool(1);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(pool.executor(),
         xio::execution::context)
       == &pool);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(pool.executor(),
         xio::execution::blocking)
       == xio::execution::blocking.possibly);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(pool.executor(),
         xio::execution::blocking.possibly)
       == xio::execution::blocking.possibly);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(pool.executor(),
         xio::execution::outstanding_work)
       == xio::execution::outstanding_work.untracked);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(pool.executor(),
         xio::execution::outstanding_work.untracked)
       == xio::execution::outstanding_work.untracked);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(pool.executor(),
         xio::execution::relationship)
       == xio::execution::relationship.fork);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(pool.executor(),
         xio::execution::relationship.fork)
       == xio::execution::relationship.fork);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(pool.executor(),
         xio::execution::mapping)
       == xio::execution::mapping.thread);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(pool.executor(),
         xio::execution::inline_exception_handling)
       == xio::execution::inline_exception_handling.terminate);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(pool.executor(),
         xio::execution::allocator)
       == std::allocator<void>());
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(pool.executor(),
         xio::execution::occupancy)
       == 1);
@@ -314,7 +314,7 @@ void thread_pool_executor_execute_test()
 
   pool.wait();
 
-  ASIO_CHECK(count == 10);
+  XIO_CHECK(count == 10);
 }
 
 template <typename T>
@@ -373,7 +373,7 @@ void thread_pool_allocator_test()
   int live_count;
   int total_count;
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
   {
     live_count = 0;
     total_count = 0;
@@ -381,13 +381,13 @@ void thread_pool_allocator_test()
         custom_allocator<int>(&live_count, &total_count));
     (void)pool1;
 
-    ASIO_CHECK(live_count > 0);
-    ASIO_CHECK(total_count > 0);
+    XIO_CHECK(live_count > 0);
+    XIO_CHECK(total_count > 0);
   }
 
-  ASIO_CHECK(live_count == 0);
-  ASIO_CHECK(total_count > 0);
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+  XIO_CHECK(live_count == 0);
+  XIO_CHECK(total_count > 0);
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
   {
     live_count = 0;
@@ -396,12 +396,12 @@ void thread_pool_allocator_test()
         custom_allocator<int>(&live_count, &total_count), 1);
     (void)pool2;
 
-    ASIO_CHECK(live_count > 0);
-    ASIO_CHECK(total_count > 0);
+    XIO_CHECK(live_count > 0);
+    XIO_CHECK(total_count > 0);
   }
 
-  ASIO_CHECK(live_count == 0);
-  ASIO_CHECK(total_count > 0);
+  XIO_CHECK(live_count == 0);
+  XIO_CHECK(total_count > 0);
 
   {
     live_count = 0;
@@ -411,20 +411,20 @@ void thread_pool_allocator_test()
         xio::config_from_string(""));
     (void)pool3;
 
-    ASIO_CHECK(live_count > 0);
-    ASIO_CHECK(total_count > 0);
+    XIO_CHECK(live_count > 0);
+    XIO_CHECK(total_count > 0);
   }
 
-  ASIO_CHECK(live_count == 0);
-  ASIO_CHECK(total_count > 0);
+  XIO_CHECK(live_count == 0);
+  XIO_CHECK(total_count > 0);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "thread_pool",
-  ASIO_TEST_CASE(thread_pool_test)
-  ASIO_TEST_CASE(thread_pool_service_test)
-  ASIO_TEST_CASE(thread_pool_executor_query_test)
-  ASIO_TEST_CASE(thread_pool_executor_execute_test)
-  ASIO_TEST_CASE(thread_pool_allocator_test)
+  XIO_TEST_CASE(thread_pool_test)
+  XIO_TEST_CASE(thread_pool_service_test)
+  XIO_TEST_CASE(thread_pool_executor_query_test)
+  XIO_TEST_CASE(thread_pool_executor_execute_test)
+  XIO_TEST_CASE(thread_pool_allocator_test)
 )

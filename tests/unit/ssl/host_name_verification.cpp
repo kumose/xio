@@ -15,8 +15,8 @@
 
 #include "../unit_test.hpp"
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "ssl/host_name_verification",
-  ASIO_TEST_CASE(null_test)
+  XIO_TEST_CASE(null_test)
 )

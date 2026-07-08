@@ -45,7 +45,7 @@ void decrement_to_zero(xio::system_timer* t, int* count)
     t->async_wait(bindns::bind(decrement_to_zero, t, count));
 
     // Completion cannot nest, so count value should remain unchanged.
-    ASIO_CHECK(*count == before_value);
+    XIO_CHECK(*count == before_value);
   }
 }
 
@@ -59,13 +59,13 @@ void increment_if_not_cancelled(int* count,
 void cancel_timer(xio::system_timer* t)
 {
   std::size_t num_cancelled = t->cancel();
-  ASIO_CHECK(num_cancelled == 1);
+  XIO_CHECK(num_cancelled == 1);
 }
 
 void cancel_one_timer(xio::system_timer* t)
 {
   std::size_t num_cancelled = t->cancel_one();
-  ASIO_CHECK(num_cancelled == 1);
+  XIO_CHECK(num_cancelled == 1);
 }
 
 xio::system_timer::time_point now()
@@ -92,7 +92,7 @@ void system_timer_test()
   // The timer must block until after its expiry time.
   xio::system_timer::time_point end = now();
   xio::system_timer::time_point expected_end = start + seconds(1);
-  ASIO_CHECK(expected_end < end || expected_end == end);
+  XIO_CHECK(expected_end < end || expected_end == end);
 
   start = now();
 
@@ -102,7 +102,7 @@ void system_timer_test()
   // The timer must block until after its expiry time.
   end = now();
   expected_end = start + seconds(1) + microseconds(500000);
-  ASIO_CHECK(expected_end < end || expected_end == end);
+  XIO_CHECK(expected_end < end || expected_end == end);
 
   t2.expires_at(t2.expiry() + seconds(1));
   t2.wait();
@@ -110,7 +110,7 @@ void system_timer_test()
   // The timer must block until after its expiry time.
   end = now();
   expected_end += seconds(1);
-  ASIO_CHECK(expected_end < end || expected_end == end);
+  XIO_CHECK(expected_end < end || expected_end == end);
 
   start = now();
 
@@ -120,7 +120,7 @@ void system_timer_test()
   // The timer must block until after its expiry time.
   end = now();
   expected_end = start + seconds(1) + microseconds(200000);
-  ASIO_CHECK(expected_end < end || expected_end == end);
+  XIO_CHECK(expected_end < end || expected_end == end);
 
   start = now();
 
@@ -128,16 +128,16 @@ void system_timer_test()
   t3.async_wait(bindns::bind(increment, &count));
 
   // No completions can be delivered until run() is called.
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all operations have finished, and
   // this should not be until after the timer's expiry time.
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
   end = now();
   expected_end = start + seconds(1);
-  ASIO_CHECK(expected_end < end || expected_end == end);
+  XIO_CHECK(expected_end < end || expected_end == end);
 
   count = 3;
   start = now();
@@ -146,17 +146,17 @@ void system_timer_test()
   t4.async_wait(bindns::bind(decrement_to_zero, &t4, &count));
 
   // No completions can be delivered until run() is called.
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 
   ioc.restart();
   ioc.run();
 
   // The run() call will not return until all operations have finished, and
   // this should not be until after the timer's final expiry time.
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
   end = now();
   expected_end = start + seconds(3);
-  ASIO_CHECK(expected_end < end || expected_end == end);
+  XIO_CHECK(expected_end < end || expected_end == end);
 
   count = 0;
   start = now();
@@ -167,7 +167,7 @@ void system_timer_test()
   t6.async_wait(bindns::bind(cancel_timer, &t5));
 
   // No completions can be delivered until run() is called.
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   ioc.restart();
   ioc.run();
@@ -175,10 +175,10 @@ void system_timer_test()
   // The timer should have been cancelled, so count should not have changed.
   // The total run time should not have been much more than 1 second (and
   // certainly far less than 10 seconds).
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
   end = now();
   expected_end = start + seconds(2);
-  ASIO_CHECK(end < expected_end);
+  XIO_CHECK(end < expected_end);
 
   // Wait on the timer again without cancelling it. This time the asynchronous
   // wait should run to completion and increment the counter.
@@ -189,10 +189,10 @@ void system_timer_test()
 
   // The timer should not have been cancelled, so count should have changed.
   // The total time since the timer was created should be more than 10 seconds.
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
   end = now();
   expected_end = start + seconds(10);
-  ASIO_CHECK(expected_end < end || expected_end == end);
+  XIO_CHECK(expected_end < end || expected_end == end);
 
   count = 0;
   start = now();
@@ -212,10 +212,10 @@ void system_timer_test()
   // One of the waits should not have been cancelled, so count should have
   // changed. The total time since the timer was created should be more than 3
   // seconds.
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
   end = now();
   expected_end = start + seconds(3);
-  ASIO_CHECK(expected_end < end || expected_end == end);
+  XIO_CHECK(expected_end < end || expected_end == end);
 }
 
 struct timer_handler
@@ -244,10 +244,10 @@ void system_timer_cancel_test()
   for (int i = 10; i < 20; ++i)
     timers[i].t.async_wait(timer_handler());
 
-  ASIO_CHECK(timers[2].t.cancel() == 1);
-  ASIO_CHECK(timers[41].t.cancel() == 1);
+  XIO_CHECK(timers[2].t.cancel() == 1);
+  XIO_CHECK(timers[41].t.cancel() == 1);
   for (int i = 10; i < 20; ++i)
-    ASIO_CHECK(timers[i].t.cancel() == 1);
+    XIO_CHECK(timers[i].t.cancel() == 1);
 }
 
 struct custom_allocation_timer_handler
@@ -355,7 +355,7 @@ void system_timer_custom_allocation_test()
 
   io_context.run();
 
-  ASIO_CHECK(allocation_count == 0);
+  XIO_CHECK(allocation_count == 0);
 }
 
 void io_context_run(xio::io_context* ioc)
@@ -386,7 +386,7 @@ void system_timer_thread_test()
   ioc.stop();
   th.join();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 }
 
 xio::system_timer make_timer(xio::io_context& ioc, int* count)
@@ -424,11 +424,11 @@ void system_timer_move_test()
 
   io_context2.run();
 
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   io_context1.run();
 
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 
   xio::system_timer t4 = make_convertible_timer(io_context1, &count);
   xio::system_timer t5 = make_convertible_timer(io_context2, &count);
@@ -439,12 +439,12 @@ void system_timer_move_test()
   io_context2.restart();
   io_context2.run();
 
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 
   io_context1.restart();
   io_context1.run();
 
-  ASIO_CHECK(count == 4);
+  XIO_CHECK(count == 4);
 }
 
 void system_timer_op_cancel_test()
@@ -466,32 +466,32 @@ void system_timer_op_cancel_test()
 
   ioc.poll();
 
-  ASIO_CHECK(count == 0);
-  ASIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
 
   cancel_signal.emit(xio::cancellation_type::all);
 
   ioc.run_one();
   ioc.poll();
 
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 1);
+  XIO_CHECK(!ioc.stopped());
 
   timer.cancel();
 
   ioc.run();
 
-  ASIO_CHECK(count == 3);
-  ASIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 3);
+  XIO_CHECK(ioc.stopped());
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "system_timer",
-  ASIO_TEST_CASE(system_timer_test)
-  ASIO_TEST_CASE(system_timer_cancel_test)
-  ASIO_TEST_CASE(system_timer_custom_allocation_test)
-  ASIO_TEST_CASE(system_timer_thread_test)
-  ASIO_TEST_CASE(system_timer_move_test)
-  ASIO_TEST_CASE(system_timer_op_cancel_test)
+  XIO_TEST_CASE(system_timer_test)
+  XIO_TEST_CASE(system_timer_cancel_test)
+  XIO_TEST_CASE(system_timer_custom_allocation_test)
+  XIO_TEST_CASE(system_timer_thread_test)
+  XIO_TEST_CASE(system_timer_move_test)
+  XIO_TEST_CASE(system_timer_op_cancel_test)
 )

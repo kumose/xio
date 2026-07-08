@@ -14,7 +14,7 @@
 #include <boost/config.hpp>
 #include <boost/cstdint.hpp>
 
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 
 inline boost::uint64_t high_res_clock()
 {

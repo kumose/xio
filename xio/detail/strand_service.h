@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_STRAND_SERVICE_HPP
-#define ASIO_DETAIL_STRAND_SERVICE_HPP
+#ifndef XIO_DETAIL_STRAND_SERVICE_HPP
+#define XIO_DETAIL_STRAND_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -72,13 +72,13 @@ namespace xio {
             typedef strand_impl *implementation_type;
 
             // Construct a new strand service for the specified io_context.
-            ASIO_DECL explicit strand_service(xio::io_context &io_context);
+            XIO_DECL explicit strand_service(xio::io_context &io_context);
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void shutdown();
+  XIO_DECL void shutdown();
 
             // Construct a new strand implementation.
-  ASIO_DECL void construct(implementation_type &impl);
+  XIO_DECL void construct(implementation_type &impl);
 
             // Request the io_context to invoke the given handler.
             template<typename Handler>
@@ -89,18 +89,18 @@ namespace xio {
             void post(implementation_type &impl, Handler &handler);
 
             // Determine whether the strand is running in the current thread.
-  ASIO_DECL bool running_in_this_thread(
+  XIO_DECL bool running_in_this_thread(
                 const implementation_type &impl) const;
 
         private:
             // Helper function to dispatch a handler.
-  ASIO_DECL void do_dispatch(implementation_type &impl, operation *op);
+  XIO_DECL void do_dispatch(implementation_type &impl, operation *op);
 
             // Helper function to post a handler.
-  ASIO_DECL void do_post(implementation_type &impl,
+  XIO_DECL void do_post(implementation_type &impl,
                          operation *op, bool is_continuation);
 
-  ASIO_DECL static void do_complete(void *owner,
+  XIO_DECL static void do_complete(void *owner,
                                     operation *base, const xio::error_code &ec,
                                     std::size_t bytes_transferred);
 
@@ -114,11 +114,11 @@ namespace xio {
             xio::detail::mutex mutex_;
 
             // Number of implementations shared between all strand objects.
-#if defined(ASIO_STRAND_IMPLEMENTATIONS)
-            enum { num_implementations = ASIO_STRAND_IMPLEMENTATIONS };
-#else // defined(ASIO_STRAND_IMPLEMENTATIONS)
+#if defined(XIO_STRAND_IMPLEMENTATIONS)
+            enum { num_implementations = XIO_STRAND_IMPLEMENTATIONS };
+#else // defined(XIO_STRAND_IMPLEMENTATIONS)
             enum { num_implementations = 193 };
-#endif // defined(ASIO_STRAND_IMPLEMENTATIONS)
+#endif // defined(XIO_STRAND_IMPLEMENTATIONS)
 
             // Pool of implementations.
             shared_ptr<strand_impl> implementations_[num_implementations];
@@ -135,4 +135,4 @@ namespace xio {
 
 #include <xio/detail/impl/strand_service.h>
 
-#endif // ASIO_DETAIL_STRAND_SERVICE_HPP
+#endif // XIO_DETAIL_STRAND_SERVICE_HPP

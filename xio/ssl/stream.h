@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SSL_STREAM_HPP
-#define ASIO_SSL_STREAM_HPP
+#ifndef XIO_SSL_STREAM_HPP
+#define XIO_SSL_STREAM_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -298,10 +298,10 @@ namespace xio {
    *
    * @note Calls @c SSL_set_verify.
    */
-            ASIO_SYNC_OP_VOID set_verify_mode(
+            XIO_SYNC_OP_VOID set_verify_mode(
                 verify_mode v, xio::error_code &ec) {
                 core_.engine_.set_verify_mode(v, ec);
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
             }
 
             /// Set the peer verification depth.
@@ -334,10 +334,10 @@ namespace xio {
    *
    * @note Calls @c SSL_set_verify_depth.
    */
-            ASIO_SYNC_OP_VOID set_verify_depth(
+            XIO_SYNC_OP_VOID set_verify_depth(
                 int depth, xio::error_code &ec) {
                 core_.engine_.set_verify_depth(depth, ec);
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
             }
 
             /// Set the callback used to verify peer certificates.
@@ -384,11 +384,11 @@ namespace xio {
    * @note Calls @c SSL_set_verify.
    */
             template<typename VerifyCallback>
-            ASIO_SYNC_OP_VOID set_verify_callback(VerifyCallback callback,
+            XIO_SYNC_OP_VOID set_verify_callback(VerifyCallback callback,
                                                   xio::error_code &ec) {
                 core_.engine_.set_verify_callback(
                     new detail::verify_callback<VerifyCallback>(callback), ec);
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
             }
 
             /// Perform SSL handshaking.
@@ -417,10 +417,10 @@ namespace xio {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-            ASIO_SYNC_OP_VOID handshake(handshake_type type,
+            XIO_SYNC_OP_VOID handshake(handshake_type type,
                                         xio::error_code &ec) {
                 detail::io(next_layer_, core_, detail::handshake_op(type), ec);
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
             }
 
             /// Perform SSL handshaking.
@@ -455,11 +455,11 @@ namespace xio {
    * @param ec Set to indicate what error occurred, if any.
    */
             template<typename ConstBufferSequence>
-            ASIO_SYNC_OP_VOID handshake(handshake_type type,
+            XIO_SYNC_OP_VOID handshake(handshake_type type,
                                         const ConstBufferSequence &buffers, xio::error_code &ec) {
                 detail::io(next_layer_, core_,
                            detail::buffered_handshake_op<ConstBufferSequence>(type, buffers), ec);
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
             }
 
             /// Start an asynchronous SSL handshake.
@@ -499,7 +499,7 @@ namespace xio {
    * @c async_write_some operations.
    */
             template<
-                ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
+                XIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
                 HandshakeToken = default_completion_token_t<executor_type> >
             auto async_handshake(handshake_type type,
                                  HandshakeToken &&token = default_completion_token_t<executor_type>())
@@ -555,7 +555,7 @@ namespace xio {
    * @c async_write_some operations.
    */
             template<typename ConstBufferSequence,
-                ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+                XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
                 std::size_t)) BufferedHandshakeToken = default_completion_token_t<executor_type> >
             auto async_handshake(handshake_type type, const ConstBufferSequence &buffers,
                                  BufferedHandshakeToken &&token
@@ -592,9 +592,9 @@ namespace xio {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-            ASIO_SYNC_OP_VOID shutdown(xio::error_code &ec) {
+            XIO_SYNC_OP_VOID shutdown(xio::error_code &ec) {
                 detail::io(next_layer_, core_, detail::shutdown_op(), ec);
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
             }
 
             /// Asynchronously shut down SSL on the stream.
@@ -631,7 +631,7 @@ namespace xio {
    * @c async_write_some operations.
    */
             template<
-                ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
+                XIO_COMPLETION_TOKEN_FOR(void (xio::error_code))
                 ShutdownToken = default_completion_token_t<executor_type> >
             auto async_shutdown(
                 ShutdownToken &&token = default_completion_token_t<executor_type>())
@@ -736,7 +736,7 @@ namespace xio {
    * @c async_write_some operations.
    */
             template<typename ConstBufferSequence,
-                ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+                XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
                 std::size_t)) WriteToken = default_completion_token_t<executor_type> >
             auto async_write_some(const ConstBufferSequence &buffers,
                                   WriteToken &&token = default_completion_token_t<executor_type>())
@@ -841,7 +841,7 @@ namespace xio {
    * @c async_write_some operations.
    */
             template<typename MutableBufferSequence,
-                ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+                XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
                 std::size_t)) ReadToken = default_completion_token_t<executor_type> >
             auto async_read_some(const MutableBufferSequence &buffers,
                                  ReadToken &&token = default_completion_token_t<executor_type>())
@@ -872,7 +872,7 @@ namespace xio {
                                 handshake_type type) const {
                     // If you get an error on the following line it means that your handler
                     // does not meet the documented type requirements for a HandshakeHandler.
-                    ASIO_HANDSHAKE_HANDLER_CHECK(HandshakeHandler, handler)
+                    XIO_HANDSHAKE_HANDLER_CHECK(HandshakeHandler, handler)
                     type_check;
 
                     xio::detail::non_const_lvalue<HandshakeHandler> handler2(handler);
@@ -902,7 +902,7 @@ namespace xio {
                     // If you get an error on the following line it means that your
                     // handler does not meet the documented type requirements for a
                     // BufferedHandshakeHandler.
-                    ASIO_BUFFERED_HANDSHAKE_HANDLER_CHECK(
+                    XIO_BUFFERED_HANDSHAKE_HANDLER_CHECK(
                         BufferedHandshakeHandler, handler)
                     type_check;
 
@@ -933,7 +933,7 @@ namespace xio {
                 void operator()(ShutdownHandler &&handler) const {
                     // If you get an error on the following line it means that your handler
                     // does not meet the documented type requirements for a ShutdownHandler.
-                    ASIO_HANDSHAKE_HANDLER_CHECK(ShutdownHandler, handler)
+                    XIO_HANDSHAKE_HANDLER_CHECK(ShutdownHandler, handler)
                     type_check;
 
                     xio::detail::non_const_lvalue<ShutdownHandler> handler2(handler);
@@ -962,7 +962,7 @@ namespace xio {
                                 const ConstBufferSequence &buffers) const {
                     // If you get an error on the following line it means that your handler
                     // does not meet the documented type requirements for a WriteHandler.
-                    ASIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
+                    XIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
                     type_check;
 
                     xio::detail::non_const_lvalue<WriteHandler> handler2(handler);
@@ -991,7 +991,7 @@ namespace xio {
                                 const MutableBufferSequence &buffers) const {
                     // If you get an error on the following line it means that your handler
                     // does not meet the documented type requirements for a ReadHandler.
-                    ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+                    XIO_READ_HANDLER_CHECK(ReadHandler, handler)
                     type_check;
 
                     xio::detail::non_const_lvalue<ReadHandler> handler2(handler);
@@ -1012,4 +1012,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_SSL_STREAM_HPP
+#endif // XIO_SSL_STREAM_HPP

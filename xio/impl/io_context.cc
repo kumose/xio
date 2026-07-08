@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_IO_CONTEXT_IPP
-#define ASIO_IMPL_IO_CONTEXT_IPP
+#ifndef XIO_IMPL_IO_CONTEXT_IPP
+#define XIO_IMPL_IO_CONTEXT_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -23,7 +23,7 @@
 #include <xio/detail/service_registry.h>
 #include <xio/detail/throw_error.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 #include <xio/detail/win_iocp_io_context.h>
 #else
 #include <xio/detail/scheduler.h>
@@ -111,4 +111,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_IO_CONTEXT_IPP
+#endif // XIO_IMPL_IO_CONTEXT_IPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_BASIC_RESOLVER_RESULTS_HPP
-#define ASIO_IP_BASIC_RESOLVER_RESULTS_HPP
+#ifndef XIO_IP_BASIC_RESOLVER_RESULTS_HPP
+#define XIO_IP_BASIC_RESOLVER_RESULTS_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -22,9 +22,9 @@
 #include <xio/detail/socket_types.h>
 #include <xio/ip/basic_resolver_iterator.h>
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 #include <xio/detail/winrt_utils.h>
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
 
 #include <xio/detail/push_options.h>
 
@@ -106,7 +106,6 @@ namespace xio {
                 return *this;
             }
 
-#if !defined(GENERATING_DOCUMENTATION)
             // Create results from an addrinfo list returned by getaddrinfo.
             static basic_resolver_results create(
                 xio::detail::addrinfo_type *address_info,
@@ -122,10 +121,10 @@ namespace xio {
                 results.values_.reset(new values_type);
 
                 while (address_info) {
-                    if (address_info->ai_family == ASIO_OS_DEF(AF_INET)
-                        || address_info->ai_family == ASIO_OS_DEF(AF_INET6)) {
+                    if (address_info->ai_family == XIO_OS_DEF(AF_INET)
+                        || address_info->ai_family == XIO_OS_DEF(AF_INET6)) {
                         const std::size_t expected_size =
-                                address_info->ai_family == ASIO_OS_DEF(AF_INET)
+                                address_info->ai_family == XIO_OS_DEF(AF_INET)
                                     ? sizeof(xio::detail::sockaddr_in4_type)
                                     : sizeof(xio::detail::sockaddr_in6_type);
                         if (static_cast<std::size_t>(address_info->ai_addrlen) >= expected_size) {
@@ -172,7 +171,7 @@ namespace xio {
                 return results;
             }
 
-# if defined(ASIO_WINDOWS_RUNTIME)
+# if defined(XIO_WINDOWS_RUNTIME)
             // Create results from a Windows Runtime list of EndpointPair objects.
             static basic_resolver_results create(
                 Windows::Foundation::Collections::IVectorView<
@@ -185,12 +184,12 @@ namespace xio {
                     for (unsigned int i = 0; i < endpoints->Size; ++i) {
                         auto pair = endpoints->GetAt(i);
 
-                        if (hints.ai_family == ASIO_OS_DEF(AF_INET)
+                        if (hints.ai_family == XIO_OS_DEF(AF_INET)
                             && pair->RemoteHostName->Type
                             != Windows::Networking::HostNameType::Ipv4)
                             continue;
 
-                        if (hints.ai_family == ASIO_OS_DEF(AF_INET6)
+                        if (hints.ai_family == XIO_OS_DEF(AF_INET6)
                             && pair->RemoteHostName->Type
                             != Windows::Networking::HostNameType::Ipv6)
                             continue;
@@ -208,8 +207,8 @@ namespace xio {
                 }
                 return results;
             }
-# endif // defined(ASIO_WINDOWS_RUNTIME)
-#endif // !defined(GENERATING_DOCUMENTATION)
+# endif // defined(XIO_WINDOWS_RUNTIME)
+
 
             /// Get the number of entries in the results range.
             size_type size() const noexcept {
@@ -279,4 +278,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_BASIC_RESOLVER_RESULTS_HPP
+#endif // XIO_IP_BASIC_RESOLVER_RESULTS_HPP

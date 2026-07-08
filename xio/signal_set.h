@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SIGNAL_SET_HPP
-#define ASIO_SIGNAL_SET_HPP
+#ifndef XIO_SIGNAL_SET_HPP
+#define XIO_SIGNAL_SET_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -27,4 +27,4 @@ namespace xio {
 
 } // namespace xio
 
-#endif // ASIO_SIGNAL_SET_HPP
+#endif // XIO_SIGNAL_SET_HPP

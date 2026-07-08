@@ -33,7 +33,7 @@ void wait_handler(const xio::error_code&)
 
 void test()
 {
-#if defined(ASIO_HAS_WINDOWS_OBJECT_HANDLE)
+#if defined(XIO_HAS_WINDOWS_OBJECT_HANDLE)
   using namespace xio;
   namespace win = xio::windows;
 
@@ -48,7 +48,7 @@ void test()
 
     win::object_handle handle1(ioc);
     HANDLE native_handle1 = INVALID_HANDLE_VALUE;
-#if defined(ASIO_MSVC) && (_MSC_VER < 1910)
+#if defined(XIO_MSVC) && (_MSC_VER < 1910)
     // Skip this on older MSVC due to mysterious ambiguous overload errors.
 #else
     win::object_handle handle2(ioc, native_handle1);
@@ -113,15 +113,15 @@ void test()
   catch (std::exception&)
   {
   }
-#endif // defined(ASIO_HAS_WINDOWS_OBJECT_HANDLE)
+#endif // defined(XIO_HAS_WINDOWS_OBJECT_HANDLE)
 }
 
 } // namespace windows_object_handle_compile
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "windows/object_handle",
-  ASIO_COMPILE_TEST_CASE(windows_object_handle_compile::test)
+  XIO_COMPILE_TEST_CASE(windows_object_handle_compile::test)
 )

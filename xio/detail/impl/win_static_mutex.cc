@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_WIN_STATIC_MUTEX_IPP
-#define ASIO_DETAIL_IMPL_WIN_STATIC_MUTEX_IPP
+#ifndef XIO_DETAIL_IMPL_WIN_STATIC_MUTEX_IPP
+#define XIO_DETAIL_IMPL_WIN_STATIC_MUTEX_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 
 #include <cstdio>
 #include <xio/detail/throw_error.h>
@@ -40,30 +40,30 @@ namespace xio {
         int win_static_mutex::do_init() {
             using namespace std; // For sprintf.
             wchar_t mutex_name[128];
-#if defined(ASIO_HAS_SECURE_RTL)
+#if defined(XIO_HAS_SECURE_RTL)
 swprintf_s (
-#else // defined(ASIO_HAS_SECURE_RTL)
+#else // defined(XIO_HAS_SECURE_RTL)
 _snwprintf (
-#endif // defined(ASIO_HAS_SECURE_RTL)
+#endif // defined(XIO_HAS_SECURE_RTL)
 mutex_name, 128, L"xio-58CCDC44-6264-4842-90C2-F3C545CB8AA7-%u-%p",
       static_cast<unsigned int>(::GetCurrentProcessId()), this);
 
-#if defined(ASIO_WINDOWS_APP)
+#if defined(XIO_WINDOWS_APP)
 HANDLE mutex = ::CreateMutexExW(0, mutex_name, CREATE_MUTEX_INITIAL_OWNER, 0);
-#else // defined(ASIO_WINDOWS_APP)
+#else // defined(XIO_WINDOWS_APP)
 HANDLE mutex = ::CreateMutexW(0, TRUE, mutex_name);
-#endif // defined(ASIO_WINDOWS_APP)
+#endif // defined(XIO_WINDOWS_APP)
 DWORD last_error = ::GetLastError();
   if (mutex== 0)
     return ::GetLastError();
 
   if (last_error== ERROR_ALREADY_EXISTS)
   {
-#if defined(ASIO_WINDOWS_APP)
+#if defined(XIO_WINDOWS_APP)
 ::WaitForSingleObjectEx(mutex, INFINITE, false);
-#else // defined(ASIO_WINDOWS_APP)
+#else // defined(XIO_WINDOWS_APP)
 ::WaitForSingleObject(mutex, INFINITE);
-#endif // defined(ASIO_WINDOWS_APP)
+#endif // defined(XIO_WINDOWS_APP)
 }
 
   if (initialised_) {
@@ -91,7 +91,7 @@ __try
   {
 # if defined(UNDER_CE)
 ::InitializeCriticalSection (&crit_section_);
-# elif defined(ASIO_WINDOWS_APP)
+# elif defined(XIO_WINDOWS_APP)
 if (!::InitializeCriticalSectionEx (&crit_section_, 0, 0))
     {
       last_error = ::GetLastError();
@@ -128,6 +128,6 @@ initialised_=true;
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 
-#endif // ASIO_DETAIL_IMPL_WIN_STATIC_MUTEX_IPP
+#endif // XIO_DETAIL_IMPL_WIN_STATIC_MUTEX_IPP

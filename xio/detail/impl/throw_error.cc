@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_THROW_ERROR_IPP
-#define ASIO_DETAIL_IMPL_THROW_ERROR_IPP
+#ifndef XIO_DETAIL_IMPL_THROW_ERROR_IPP
+#define XIO_DETAIL_IMPL_THROW_ERROR_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -43,4 +43,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_IMPL_THROW_ERROR_IPP
+#endif // XIO_DETAIL_IMPL_THROW_ERROR_IPP

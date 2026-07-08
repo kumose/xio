@@ -55,7 +55,7 @@ private:
 };
 
 template <typename CompletionToken>
-ASIO_INITFN_RESULT_TYPE(CompletionToken, void())
+XIO_INITFN_RESULT_TYPE(CompletionToken, void())
 async_0_completion_args(xio::io_context& ioc,
     CompletionToken&& token)
 {
@@ -88,14 +88,14 @@ void compose_0_completion_args_test()
   async_0_completion_args(ioc, bindns::bind(&compose_0_args_handler, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   ioc.restart();
   count = 0;
@@ -104,14 +104,14 @@ void compose_0_completion_args_test()
   async_0_completion_args(ioc, lvalue_handler);
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 }
 
 //------------------------------------------------------------------------------
@@ -148,7 +148,7 @@ private:
 };
 
 template <typename CompletionToken>
-ASIO_INITFN_RESULT_TYPE(CompletionToken, void(int))
+XIO_INITFN_RESULT_TYPE(CompletionToken, void(int))
 async_1_completion_arg(xio::io_context& ioc,
     CompletionToken&& token)
 {
@@ -187,16 +187,16 @@ void compose_1_completion_arg_test()
       bindns::bind(&compose_1_arg_handler, &count, &result, _1));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
-  ASIO_CHECK(result == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
+  XIO_CHECK(result == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(result == 42);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
+  XIO_CHECK(result == 42);
 
   ioc.restart();
   count = 0;
@@ -206,16 +206,16 @@ void compose_1_completion_arg_test()
   async_1_completion_arg(ioc, lvalue_handler);
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
-  ASIO_CHECK(result == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
+  XIO_CHECK(result == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(result == 42);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
+  XIO_CHECK(result == 42);
 }
 
 //------------------------------------------------------------------------------
@@ -262,7 +262,7 @@ private:
 };
 
 template <typename CancellationFilter, typename CompletionToken>
-ASIO_INITFN_RESULT_TYPE(CompletionToken, void(bool))
+XIO_INITFN_RESULT_TYPE(CompletionToken, void(bool))
 async_cancellable(CancellationFilter cancellation_filter,
     xio::system_timer& timer,
     CompletionToken&& token)
@@ -297,9 +297,9 @@ void compose_default_cancellation_test()
 
   // No cancellation, operation completes successfully.
 
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(result == true);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
+  XIO_CHECK(result == true);
 
   ioc.restart();
   count = 0;
@@ -315,9 +315,9 @@ void compose_default_cancellation_test()
 
   ioc.run();
 
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(result == true);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
+  XIO_CHECK(result == true);
 
   ioc.restart();
   count = 0;
@@ -333,9 +333,9 @@ void compose_default_cancellation_test()
 
   ioc.run();
 
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(result == true);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
+  XIO_CHECK(result == true);
 
   ioc.restart();
   count = 0;
@@ -351,9 +351,9 @@ void compose_default_cancellation_test()
 
   ioc.run();
 
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(result == false);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
+  XIO_CHECK(result == false);
 }
 
 void compose_partial_cancellation_test()
@@ -375,9 +375,9 @@ void compose_partial_cancellation_test()
 
   // No cancellation, operation completes successfully.
 
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(result == true);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
+  XIO_CHECK(result == true);
 
   ioc.restart();
   count = 0;
@@ -393,9 +393,9 @@ void compose_partial_cancellation_test()
 
   ioc.run();
 
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(result == true);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
+  XIO_CHECK(result == true);
 
   ioc.restart();
   count = 0;
@@ -411,9 +411,9 @@ void compose_partial_cancellation_test()
 
   ioc.run();
 
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(result == false);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
+  XIO_CHECK(result == false);
 
   ioc.restart();
   count = 0;
@@ -429,9 +429,9 @@ void compose_partial_cancellation_test()
 
   ioc.run();
 
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(result == false);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
+  XIO_CHECK(result == false);
 }
 
 void compose_total_cancellation_test()
@@ -453,9 +453,9 @@ void compose_total_cancellation_test()
 
   // No cancellation, operation completes successfully.
 
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(result == true);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
+  XIO_CHECK(result == true);
 
   ioc.restart();
   count = 0;
@@ -471,9 +471,9 @@ void compose_total_cancellation_test()
 
   ioc.run();
 
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(result == false);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
+  XIO_CHECK(result == false);
 
   ioc.restart();
   count = 0;
@@ -489,9 +489,9 @@ void compose_total_cancellation_test()
 
   ioc.run();
 
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(result == false);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
+  XIO_CHECK(result == false);
 
   ioc.restart();
   count = 0;
@@ -507,19 +507,19 @@ void compose_total_cancellation_test()
 
   ioc.run();
 
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
-  ASIO_CHECK(result == false);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
+  XIO_CHECK(result == false);
 }
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "compose",
-  ASIO_TEST_CASE(compose_0_completion_args_test)
-  ASIO_TEST_CASE(compose_1_completion_arg_test)
-  ASIO_TEST_CASE(compose_default_cancellation_test)
-  ASIO_TEST_CASE(compose_partial_cancellation_test)
-  ASIO_TEST_CASE(compose_total_cancellation_test)
+  XIO_TEST_CASE(compose_0_completion_args_test)
+  XIO_TEST_CASE(compose_1_completion_arg_test)
+  XIO_TEST_CASE(compose_default_cancellation_test)
+  XIO_TEST_CASE(compose_partial_cancellation_test)
+  XIO_TEST_CASE(compose_total_cancellation_test)
 )

@@ -28,19 +28,19 @@ namespace coro {
 auto coro_simple_cancel_impl(xio::io_context& ) noexcept
   -> xio::experimental::coro<void() noexcept, xio::error_code>
 {
-    ASIO_CHECK(
+    XIO_CHECK(
         !(co_await this_coro::cancellation_state).cancelled());
 
     xio::steady_timer timer{
         co_await this_coro::executor,
         std::chrono::seconds(1)};
 
-    ASIO_CHECK(
+    XIO_CHECK(
         !(co_await this_coro::cancellation_state).cancelled());
 
     auto ec = co_await timer;
 
-    ASIO_CHECK(
+    XIO_CHECK(
         (co_await this_coro::cancellation_state).cancelled());
 
     co_return ec;
@@ -59,11 +59,11 @@ void coro_simple_cancel()
         [&](xio::error_code ec) {res_ec = ec;}));
   xio::post(ctx, [&]{sig.emit(xio::cancellation_type::all);});
 
-  ASIO_CHECK(!res_ec);
+  XIO_CHECK(!res_ec);
 
   ctx.run();
 
-  ASIO_CHECK(res_ec == xio::error::operation_aborted);
+  XIO_CHECK(res_ec == xio::error::operation_aborted);
 }
 
 auto coro_throw_cancel_impl(xio::io_context& )
@@ -88,11 +88,11 @@ void coro_throw_cancel()
         [&](std::exception_ptr ex) {res_ex = ex;}));
   xio::post(ctx, [&]{sig.emit(xio::cancellation_type::all);});
 
-  ASIO_CHECK(!res_ex);
+  XIO_CHECK(!res_ex);
 
   ctx.run();
 
-  ASIO_CHECK(res_ex);
+  XIO_CHECK(res_ex);
   try
   {
     if (res_ex)
@@ -100,7 +100,7 @@ void coro_throw_cancel()
   }
   catch (std::system_error& se)
   {
-    ASIO_CHECK(se.code() == xio::error::operation_aborted);
+    XIO_CHECK(se.code() == xio::error::operation_aborted);
   }
 }
 
@@ -113,10 +113,10 @@ auto coro_simple_cancel_nested_k(xio::io_context&, int& cnt) noexcept
           co_await this_coro::executor,
           std::chrono::milliseconds(100)};
 
-  ASIO_CHECK(!(co_await this_coro::cancellation_state).cancelled());
+  XIO_CHECK(!(co_await this_coro::cancellation_state).cancelled());
   auto ec = co_await timer;
   cnt++;
-  ASIO_CHECK((co_await this_coro::cancellation_state).cancelled());
+  XIO_CHECK((co_await this_coro::cancellation_state).cancelled());
 
   co_return ec;
 }
@@ -127,11 +127,11 @@ auto coro_simple_cancel_nested_kouter(
       xio::error_code() noexcept,
       xio::error_code>
 {
-    ASIO_CHECK(cnt == 0);
+    XIO_CHECK(cnt == 0);
     co_yield co_await coro_simple_cancel_nested_k(ctx, cnt);
-    ASIO_CHECK(cnt == 1);
+    XIO_CHECK(cnt == 1);
     auto ec = co_await coro_simple_cancel_nested_k(ctx, cnt);
-    ASIO_CHECK(cnt == 2);
+    XIO_CHECK(cnt == 2);
     co_return ec;
 }
 
@@ -148,9 +148,9 @@ void coro_simple_cancel_nested()
       xio::bind_cancellation_slot(sig.slot(),
         [&](xio::error_code ec) {res_ec = ec;}));
   xio::post(ctx, [&]{sig.emit(xio::cancellation_type::all);});
-  ASIO_CHECK(!res_ec);
+  XIO_CHECK(!res_ec);
   ctx.run();
-  ASIO_CHECK(res_ec == xio::error::operation_aborted);
+  XIO_CHECK(res_ec == xio::error::operation_aborted);
 
   ctx.restart();
   res_ec = {};
@@ -158,18 +158,18 @@ void coro_simple_cancel_nested()
       xio::bind_cancellation_slot(sig.slot(),
         [&](xio::error_code ec) {res_ec = ec;}));
   xio::post(ctx, [&]{sig.emit(xio::cancellation_type::all);});
-  ASIO_CHECK(!res_ec);
+  XIO_CHECK(!res_ec);
   ctx.run();
-  ASIO_CHECK(res_ec == xio::error::operation_aborted);
-  ASIO_CHECK(cnt == 2);
+  XIO_CHECK(res_ec == xio::error::operation_aborted);
+  XIO_CHECK(cnt == 2);
 }
 
 } // namespace coro
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "coro/cancel",
-  ASIO_TEST_CASE(::coro::coro_simple_cancel)
-  ASIO_TEST_CASE(::coro::coro_throw_cancel)
-  ASIO_TEST_CASE(::coro::coro_simple_cancel_nested)
+  XIO_TEST_CASE(::coro::coro_simple_cancel)
+  XIO_TEST_CASE(::coro::coro_throw_cancel)
+  XIO_TEST_CASE(::coro::coro_simple_cancel_nested)
 )

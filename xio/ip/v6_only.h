@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_V6_ONLY_HPP
-#define ASIO_IP_V6_ONLY_HPP
+#ifndef XIO_IP_V6_ONLY_HPP
+#define XIO_IP_V6_ONLY_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -51,9 +51,7 @@ namespace xio {
  * @par Concepts:
  * GettableSocketOption, SettableSocketOption.
  */
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined v6_only;
-#elif defined(IPV6_V6ONLY)
+#if defined(IPV6_V6ONLY)
         typedef xio::detail::socket_option::boolean<
             IPPROTO_IPV6, IPV6_V6ONLY> v6_only;
 #else
@@ -67,4 +65,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_V6_ONLY_HPP
+#endif // XIO_IP_V6_ONLY_HPP

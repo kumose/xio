@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXECUTION_CONTEXT2_HPP
-#define ASIO_EXECUTION_CONTEXT2_HPP
+#ifndef XIO_EXECUTION_CONTEXT2_HPP
+#define XIO_EXECUTION_CONTEXT2_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -26,37 +26,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
-#if defined(GENERATING_DOCUMENTATION)
-
-    namespace execution {
-        /// A property that is used to obtain the execution context that is associated
-/// with an executor.
-        struct context_t {
-            /// The context_t property applies to executors.
-            template<typename T>
-            static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-            /// The context_t property cannot be required.
-            static constexpr bool is_requirable = false;
-
-            /// The context_t property cannot be preferred.
-            static constexpr bool is_preferable = false;
-
-            /// The type returned by queries against an @c any_executor.
-            typedef std::any polymorphic_query_result_type;
-        };
-
-        /// A special value used for accessing the context_t property.
-        constexpr context_t context;
-    } // namespace execution
-
-#else // defined(GENERATING_DOCUMENTATION)
-
-
-
-
     namespace execution {
         namespace detail {
             template<int I = 0>
@@ -79,11 +48,11 @@ namespace xio {
                         static constexpr auto query(P &&p)
                             noexcept(
                                 noexcept(
-                                    std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                    std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
                                 )
                             )
                             -> decltype(
-                                std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
                             ) {
                             return T::query(static_cast<P &&>(p));
                         }
@@ -105,27 +74,20 @@ namespace xio {
 
                 template<typename E, typename T = decltype(context_t::static_query<E>())>
                 static constexpr const T static_query_v = context_t::static_query<E>();
-
             };
 
 
             template<int I>
             template<typename E, typename T>
             const T context_t<I>::static_query_v;
-
         } // namespace detail
 
         typedef detail::context_t<> context_t;
 
-inline constexpr context_t context;
+        inline constexpr context_t context;
     } // namespace execution
-
-
-#endif // defined(GENERATING_DOCUMENTATION)
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXECUTION_CONTEXT2_HPP
+#endif // XIO_EXECUTION_CONTEXT2_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SPAWN_HPP
-#define ASIO_SPAWN_HPP
+#ifndef XIO_SPAWN_HPP
+#define XIO_SPAWN_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -286,7 +286,6 @@ namespace xio {
             return tmp;
         }
 
-#if !defined(GENERATING_DOCUMENTATION)
         //private:
         basic_yield_context(detail::spawned_thread_base *spawned_thread,
                             const Executor &ex)
@@ -298,7 +297,6 @@ namespace xio {
         detail::spawned_thread_base *spawned_thread_;
         Executor executor_;
         xio::error_code *ec_;
-#endif // !defined(GENERATING_DOCUMENTATION)
     };
 
     /// A @ref completion_token object that represents the currently executing
@@ -370,7 +368,7 @@ namespace xio {
  * @c reset_cancellation_state.
  */
     template<typename Executor, typename F,
-        ASIO_COMPLETION_TOKEN_FOR(typename detail::spawn_signature<
+        XIO_COMPLETION_TOKEN_FOR(typename detail::spawn_signature<
             result_of_t<F(basic_yield_context<Executor>)> >::type)
         CompletionToken = default_completion_token_t<Executor> >
     auto spawn(const Executor &ex, F &&function,
@@ -415,7 +413,7 @@ namespace xio {
  * @c reset_cancellation_state.
  */
     template<typename ExecutionContext, typename F,
-        ASIO_COMPLETION_TOKEN_FOR(typename detail::spawn_signature<
+        XIO_COMPLETION_TOKEN_FOR(typename detail::spawn_signature<
             result_of_t<F(basic_yield_context<
                 typename ExecutionContext::executor_type>)> >::type)
         CompletionToken = default_completion_token_t<
@@ -468,7 +466,7 @@ namespace xio {
  * @c reset_cancellation_state.
  */
     template<typename Executor, typename F,
-        ASIO_COMPLETION_TOKEN_FOR(typename detail::spawn_signature<
+        XIO_COMPLETION_TOKEN_FOR(typename detail::spawn_signature<
             result_of_t<F(basic_yield_context<Executor>)> >::type)
         CompletionToken = default_completion_token_t<Executor> >
     auto spawn(const basic_yield_context<Executor> &ctx, F &&function,
@@ -492,4 +490,4 @@ namespace xio {
 
 #include <xio/impl/spawn.h>
 
-#endif // ASIO_SPAWN_HPP
+#endif // XIO_SPAWN_HPP

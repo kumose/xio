@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SSL_DETAIL_IMPL_OPENSSL_INIT_IPP
-#define ASIO_SSL_DETAIL_IMPL_OPENSSL_INIT_IPP
+#ifndef XIO_SSL_DETAIL_IMPL_OPENSSL_INIT_IPP
+#define XIO_SSL_DETAIL_IMPL_OPENSSL_INIT_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -84,11 +84,11 @@ namespace xio {
                     // && (OPENSSL_VERSION_NUMBER < 0x10100000L)
                     // && !defined(SSL_OP_NO_COMPRESSION)
 #if !defined(OPENSSL_IS_BORINGSSL) \
-    && !defined(ASIO_USE_WOLFSSL) \
+    && !defined(XIO_USE_WOLFSSL) \
     && (OPENSSL_VERSION_NUMBER < 0x30000000L)
                     ::CONF_modules_unload(1);
 #endif // !defined(OPENSSL_IS_BORINGSSL)
-                    //   && !defined(ASIO_USE_WOLFSSL)
+                    //   && !defined(XIO_USE_WOLFSSL)
                     //   && (OPENSSL_VERSION_NUMBER < 0x30000000L)
 #if !defined(OPENSSL_NO_ENGINE) \
   && (OPENSSL_VERSION_NUMBER < 0x10100000L)
@@ -108,13 +108,13 @@ namespace xio {
             private:
 #if (OPENSSL_VERSION_NUMBER < 0x10000000L)
                 static unsigned long openssl_id_func() {
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                     return ::GetCurrentThreadId();
-#else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                     void *id = &errno;
                     assert(sizeof(unsigned long) >= sizeof(void *));
                     return reinterpret_cast<unsigned long>(id);
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                 }
 #endif // (OPENSSL_VERSION_NUMBER < 0x10000000L)
 
@@ -159,4 +159,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_SSL_DETAIL_IMPL_OPENSSL_INIT_IPP
+#endif // XIO_SSL_DETAIL_IMPL_OPENSSL_INIT_IPP

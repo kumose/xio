@@ -51,9 +51,9 @@ void test()
   namespace generic = xio::generic;
   typedef generic::datagram_protocol dp;
 
-  const int af_inet = ASIO_OS_DEF(AF_INET);
-  const int ipproto_udp = ASIO_OS_DEF(IPPROTO_UDP);
-  const int sock_dgram = ASIO_OS_DEF(SOCK_DGRAM);
+  const int af_inet = XIO_OS_DEF(AF_INET);
+  const int ipproto_udp = XIO_OS_DEF(IPPROTO_UDP);
+  const int sock_dgram = XIO_OS_DEF(SOCK_DGRAM);
 
   try
   {
@@ -71,11 +71,11 @@ void test()
     dp::socket socket1(ioc);
     dp::socket socket2(ioc, dp(af_inet, ipproto_udp));
     dp::socket socket3(ioc, dp::endpoint());
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     dp::socket::native_handle_type native_socket1
       = ::socket(af_inet, sock_dgram, 0);
     dp::socket socket4(ioc, dp(af_inet, ipproto_udp), native_socket1);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     dp::socket socket5(std::move(socket4));
     xio::ip::udp::socket udp_socket(ioc);
@@ -100,14 +100,14 @@ void test()
     socket1.open(dp(af_inet, ipproto_udp));
     socket1.open(dp(af_inet, ipproto_udp), ec);
 
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     dp::socket::native_handle_type native_socket2
       = ::socket(af_inet, sock_dgram, 0);
     socket1.assign(dp(af_inet, ipproto_udp), native_socket2);
     dp::socket::native_handle_type native_socket3
       = ::socket(af_inet, sock_dgram, 0);
     socket1.assign(dp(af_inet, ipproto_udp), native_socket3, ec);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     bool is_open = socket1.is_open();
     (void)is_open;
@@ -282,8 +282,8 @@ void test()
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "generic/datagram_protocol",
-  ASIO_COMPILE_TEST_CASE(generic_datagram_protocol_socket_compile::test)
+  XIO_COMPILE_TEST_CASE(generic_datagram_protocol_socket_compile::test)
 )

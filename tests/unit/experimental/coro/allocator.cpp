@@ -45,7 +45,7 @@ struct tracked_allocator
   {
     deallocs.emplace_back(p, n);
     delete[] static_cast<char*>(p);
-//    ASIO_CHECK(allocs.back() == deallocs.back());
+//    XIO_CHECK(allocs.back() == deallocs.back());
   }
 
   bool operator==(const tracked_allocator& rhs) const
@@ -70,40 +70,40 @@ void alloc_test()
   {
     auto pp = alloc_test_impl(ctx, 42, std::allocator_arg, {allocs, deallocs}, 42.);
 
-    ASIO_CHECK(allocs.size()  == 1u);
-    ASIO_CHECK(deallocs.empty());
+    XIO_CHECK(allocs.size()  == 1u);
+    XIO_CHECK(deallocs.empty());
 
-    pp.async_resume([&](auto e){ran = true; ASIO_CHECK(!e);});
+    pp.async_resume([&](auto e){ran = true; XIO_CHECK(!e);});
     ctx.run();
-    ASIO_CHECK(deallocs.size() == 0u);
+    XIO_CHECK(deallocs.size() == 0u);
   }
   ctx.restart();
   ctx.run();
-  ASIO_CHECK(deallocs.size() == 1u);
-  ASIO_CHECK(allocs == deallocs);
+  XIO_CHECK(deallocs.size() == 1u);
+  XIO_CHECK(allocs == deallocs);
 
-  ASIO_CHECK(ran);
+  XIO_CHECK(ran);
 
   ran = false;
 
   auto p = xio::experimental::detail::post_coroutine(
           ctx,
           xio::bind_allocator(tracked_allocator{allocs, deallocs}, [&]{ran = true;})).handle;
-  ASIO_CHECK(allocs.size()  == 2u);
-  ASIO_CHECK(deallocs.size() == 1u);
+  XIO_CHECK(allocs.size()  == 2u);
+  XIO_CHECK(deallocs.size() == 1u);
   p.resume();
-  ASIO_CHECK(allocs.size()  == 3u);
-  ASIO_CHECK(deallocs.size() == 2u);
+  XIO_CHECK(allocs.size()  == 3u);
+  XIO_CHECK(deallocs.size() == 2u);
   ctx.restart();
   ctx.run();
 
-  ASIO_CHECK(allocs == deallocs);
+  XIO_CHECK(allocs == deallocs);
 }
 
 } // namespace coro
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "coro/allocate",
-  ASIO_TEST_CASE(::coro::alloc_test)
+  XIO_TEST_CASE(::coro::alloc_test)
 )

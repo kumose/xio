@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_USE_FUTURE_HPP
-#define ASIO_USE_FUTURE_HPP
+#ifndef XIO_USE_FUTURE_HPP
+#define XIO_USE_FUTURE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -24,8 +24,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace detail {
         template<typename Function, typename Allocator>
         class packaged_token;
@@ -98,41 +96,37 @@ namespace xio {
         template<typename Function>
 
 
-#if defined(GENERATING_DOCUMENTATION)
-unspecified
-#else // defined(GENERATING_DOCUMENTATION)
-detail::packaged_token<std::decay_t<Function>, Allocator>
-#endif // defined(GENERATING_DOCUMENTATION)
-operator()(Function &&f) const;
+        detail::packaged_token<std::decay_t<Function>, Allocator>
 
-private:
-// Helper type to ensure that use_future can be constexpr default-constructed
-// even when std::allocator<void> can't be.
-struct std_allocator_void {
-    constexpr std_allocator_void() {
-    }
+        operator()(Function &&f) const;
 
-    operator std::allocator<void>() const {
-        return std::allocator<void>();
-    }
-};
+    private:
+        // Helper type to ensure that use_future can be constexpr default-constructed
+        // even when std::allocator<void> can't be.
+        struct std_allocator_void {
+            constexpr std_allocator_void() {
+            }
 
-std::conditional_t<
-    std::is_same<std::allocator<void>, Allocator>::value,
-    std_allocator_void, Allocator> allocator_;
-};
+            operator std::allocator<void>() const {
+                return std::allocator<void>();
+            }
+        };
 
-/// A @ref completion_token object that causes an asynchronous operation to
-/// return a future.
-/**
- * See the documentation for xio::use_future_t for a usage example.
- */
-inline constexpr use_future_t<> use_future;
+        std::conditional_t<
+            std::is_same<std::allocator<void>, Allocator>::value,
+            std_allocator_void, Allocator> allocator_;
+    };
 
+    /// A @ref completion_token object that causes an asynchronous operation to
+    /// return a future.
+    /**
+     * See the documentation for xio::use_future_t for a usage example.
+     */
+    inline constexpr use_future_t<> use_future;
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
 #include <xio/impl/use_future.h>
 
-#endif // ASIO_USE_FUTURE_HPP
+#endif // XIO_USE_FUTURE_HPP

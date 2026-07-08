@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_TS_SOCKET_HPP
-#define ASIO_TS_SOCKET_HPP
+#ifndef XIO_TS_SOCKET_HPP
+#define XIO_TS_SOCKET_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -24,4 +24,4 @@
 #include <xio/basic_socket_iostream.h>
 #include <xio/connect.h>
 
-#endif // ASIO_TS_SOCKET_HPP
+#endif // XIO_TS_SOCKET_HPP

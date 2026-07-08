@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
     ptr<state_mgr>      my_state_manager =
         cs_new<inmem_state_mgr>(1, "localhost:12345");
 
-    asio_service::options   asio_opt;   // your Asio options
+    xio_service::options   xio_opt;   // your Xio options
     raft_params             params;     // your Raft parameters
 
     // Initialize Raft server listening on port 12345.
@@ -33,7 +33,7 @@ int main(int argc, char** argv) {
                                                my_state_manager,
                                                my_logger,
                                                port_number,
-                                               asio_opt,
+                                               xio_opt,
                                                params);
     // Need to wait for initialization.
     while (!server->is_initialized()) {

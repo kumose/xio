@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_AWAITABLE_HPP
-#define ASIO_AWAITABLE_HPP
+#ifndef XIO_AWAITABLE_HPP
+#define XIO_AWAITABLE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,13 +17,13 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_CO_AWAIT) || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_CO_AWAIT)
 
-#if defined(ASIO_HAS_STD_COROUTINE)
+#if defined(XIO_HAS_STD_COROUTINE)
 # include <coroutine>
-#else // defined(ASIO_HAS_STD_COROUTINE)
+#else // defined(XIO_HAS_STD_COROUTINE)
 # include <experimental/coroutine>
-#endif // defined(ASIO_HAS_STD_COROUTINE)
+#endif // defined(XIO_HAS_STD_COROUTINE)
 
 #include <utility>
 #include <xio/any_io_executor.h>
@@ -37,13 +37,13 @@ namespace xio {
 
 
 
-#if defined(ASIO_HAS_STD_COROUTINE)
+#if defined(XIO_HAS_STD_COROUTINE)
 using std::coroutine_handle;
 using std::suspend_always;
-#else // defined(ASIO_HAS_STD_COROUTINE)
+#else // defined(XIO_HAS_STD_COROUTINE)
 using std::experimental::coroutine_handle;
 using std::experimental::suspend_always;
-#endif // defined(ASIO_HAS_STD_COROUTINE)
+#endif // defined(XIO_HAS_STD_COROUTINE)
 
 template<typename>
 class awaitable_thread;
@@ -93,7 +93,6 @@ public:
         return !!frame_;
     }
 
-#if !defined(GENERATING_DOCUMENTATION)
 
 // Support for co_await keyword.
 bool await_ready() const noexcept {
@@ -112,7 +111,6 @@ T await_resume() {
     return awaitable(static_cast<awaitable &&>(*this)).frame_->get();
 }
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
 private:
 template<typename>
@@ -138,6 +136,6 @@ detail::awaitable_frame<T, Executor> *frame_;
 
 #include <xio/impl/awaitable.h>
 
-#endif // defined(ASIO_HAS_CO_AWAIT) || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_CO_AWAIT)
 
-#endif // ASIO_AWAITABLE_HPP
+#endif // XIO_AWAITABLE_HPP

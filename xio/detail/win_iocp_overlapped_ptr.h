@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WIN_IOCP_OVERLAPPED_PTR_HPP
-#define ASIO_DETAIL_WIN_IOCP_OVERLAPPED_PTR_HPP
+#ifndef XIO_DETAIL_WIN_IOCP_OVERLAPPED_PTR_HPP
+#define XIO_DETAIL_WIN_IOCP_OVERLAPPED_PTR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 
 #include <xio/io_context.h>
 #include <xio/query.h>
@@ -80,7 +80,7 @@ namespace xio {
                 };
                 p.p = new(p.v) op(handler, ex);
 
-                ASIO_HANDLER_CREATION((ex.context(), *p.p,
+                XIO_HANDLER_CREATION((ex.context(), *p.p,
                                        "iocp_service", iocp_service, 0, "overlapped"));
 
                 iocp_service->work_started();
@@ -154,6 +154,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
-#endif // ASIO_DETAIL_WIN_IOCP_OVERLAPPED_PTR_HPP
+#endif // XIO_DETAIL_WIN_IOCP_OVERLAPPED_PTR_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_COROUTINE_HPP
-#define ASIO_COROUTINE_HPP
+#ifndef XIO_COROUTINE_HPP
+#define XIO_COROUTINE_HPP
 
 #include <xio/detail/config.h>
 
@@ -236,9 +236,9 @@ namespace xio {
  * If preferred, an application can use macro names that follow a more typical
  * naming convention, rather than the pseudo-keywords. These are:
  *
- * @li @c ASIO_CORO_REENTER instead of @c reenter
- * @li @c ASIO_CORO_YIELD instead of @c yield
- * @li @c ASIO_CORO_FORK instead of @c fork
+ * @li @c XIO_CORO_REENTER instead of @c reenter
+ * @li @c XIO_CORO_YIELD instead of @c yield
+ * @li @c XIO_CORO_FORK instead of @c fork
  */
     class coroutine {
     public:
@@ -301,17 +301,17 @@ namespace xio {
 
 } // namespace xio
 
-#if !defined(ASIO_CORO_VALUE_INIT)
+#if !defined(XIO_CORO_VALUE_INIT)
 # if defined(_MSC_VER)
-#  define ASIO_CORO_VALUE_INIT __COUNTER__
+#  define XIO_CORO_VALUE_INIT __COUNTER__
 # else // defined(_MSC_VER)
-#  define ASIO_CORO_VALUE_INIT __LINE__
+#  define XIO_CORO_VALUE_INIT __LINE__
 # endif // defined(_MSC_VER)
-#endif // !defined(ASIO_CORO_VALUE_INIT)
+#endif // !defined(XIO_CORO_VALUE_INIT)
 
-#define ASIO_CORO_REENTER(c) \
+#define XIO_CORO_REENTER(c) \
   if (constexpr ::xio::detail::coroutine_base_value \
-      _coro_base_value = ASIO_CORO_VALUE_INIT) \
+      _coro_base_value = XIO_CORO_VALUE_INIT) \
   { \
   } \
   else switch (::xio::detail::coroutine_ref _coro_value = c) \
@@ -326,7 +326,7 @@ namespace xio {
     } \
     else /* fall-through */ case 0:
 
-#define ASIO_CORO_YIELD_IMPL(n) \
+#define XIO_CORO_YIELD_IMPL(n) \
   for (_coro_value = (n);;) \
     if (_coro_value == 0) \
     { \
@@ -343,7 +343,7 @@ namespace xio {
               goto bail_out_of_coroutine; \
             else /* fall-through */ case 0:
 
-#define ASIO_CORO_FORK_IMPL(n) \
+#define XIO_CORO_FORK_IMPL(n) \
   for (_coro_value = -(n);; _coro_value = (n)) \
     if (_coro_value == (n)) \
     { \
@@ -352,12 +352,12 @@ namespace xio {
     } \
     else
 
-# define ASIO_CORO_YIELD \
-  ASIO_CORO_YIELD_IMPL( \
-    ASIO_CORO_VALUE_INIT + 1 - _coro_base_value.get())
+# define XIO_CORO_YIELD \
+  XIO_CORO_YIELD_IMPL( \
+    XIO_CORO_VALUE_INIT + 1 - _coro_base_value.get())
 
-# define ASIO_CORO_FORK \
-  ASIO_CORO_FORK_IMPL( \
-    ASIO_CORO_VALUE_INIT + 1 - _coro_base_value.get())
+# define XIO_CORO_FORK \
+  XIO_CORO_FORK_IMPL( \
+    XIO_CORO_VALUE_INIT + 1 - _coro_base_value.get())
 
-#endif // ASIO_COROUTINE_HPP
+#endif // XIO_COROUTINE_HPP

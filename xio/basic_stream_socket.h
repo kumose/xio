@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BASIC_STREAM_SOCKET_HPP
-#define ASIO_BASIC_STREAM_SOCKET_HPP
+#ifndef XIO_BASIC_STREAM_SOCKET_HPP
+#define XIO_BASIC_STREAM_SOCKET_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -29,8 +29,8 @@
 namespace xio {
 
 
-#if !defined(ASIO_BASIC_STREAM_SOCKET_FWD_DECL)
-#define ASIO_BASIC_STREAM_SOCKET_FWD_DECL
+#if !defined(XIO_BASIC_STREAM_SOCKET_FWD_DECL)
+#define XIO_BASIC_STREAM_SOCKET_FWD_DECL
 
     // Forward declaration with defaulted arguments.
 
@@ -38,7 +38,7 @@ namespace xio {
     template<typename Protocol, typename Executor = any_io_executor>
     class basic_stream_socket;
 
-#endif // !defined(ASIO_BASIC_STREAM_SOCKET_FWD_DECL)
+#endif // !defined(XIO_BASIC_STREAM_SOCKET_FWD_DECL)
 
     /// Provides stream-oriented socket functionality.
     /**
@@ -78,12 +78,9 @@ namespace xio {
         };
 
         /// The native representation of a socket.
-#if defined(GENERATING_DOCUMENTATION)
-        typedef implementation_defined native_handle_type;
-#else
+
         typedef typename basic_socket<Protocol,
             Executor>::native_handle_type native_handle_type;
-#endif
 
         /// The protocol type.
         typedef Protocol protocol_type;
@@ -474,7 +471,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<typename ConstBufferSequence,
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) WriteToken = default_completion_token_t<executor_type> >
         auto async_send(const ConstBufferSequence &buffers,
                         WriteToken &&token = default_completion_token_t<executor_type>())
@@ -543,7 +540,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<typename ConstBufferSequence,
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) WriteToken = default_completion_token_t<executor_type> >
         auto async_send(const ConstBufferSequence &buffers,
                         socket_base::message_flags flags,
@@ -713,7 +710,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<typename MutableBufferSequence,
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) ReadToken = default_completion_token_t<executor_type> >
         auto async_receive(const MutableBufferSequence &buffers,
                            ReadToken &&token = default_completion_token_t<executor_type>())
@@ -784,7 +781,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<typename MutableBufferSequence,
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) ReadToken = default_completion_token_t<executor_type> >
         auto async_receive(const MutableBufferSequence &buffers,
                            socket_base::message_flags flags,
@@ -909,7 +906,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<typename ConstBufferSequence,
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) WriteToken = default_completion_token_t<executor_type> >
         auto async_write_some(const ConstBufferSequence &buffers,
                               WriteToken &&token = default_completion_token_t<executor_type>())
@@ -1038,7 +1035,7 @@ namespace xio {
    * @li @c cancellation_type::total
    */
         template<typename MutableBufferSequence,
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
             std::size_t)) ReadToken = default_completion_token_t<executor_type> >
         auto async_read_some(const MutableBufferSequence &buffers,
                              ReadToken &&token = default_completion_token_t<executor_type>())
@@ -1077,7 +1074,7 @@ namespace xio {
                             socket_base::message_flags flags) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a WriteHandler.
-                ASIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
+                XIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
                 type_check;
 
                 detail::non_const_lvalue<WriteHandler> handler2(handler);
@@ -1108,7 +1105,7 @@ namespace xio {
                             socket_base::message_flags flags) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a ReadHandler.
-                ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+                XIO_READ_HANDLER_CHECK(ReadHandler, handler)
                 type_check;
 
                 detail::non_const_lvalue<ReadHandler> handler2(handler);
@@ -1127,4 +1124,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_BASIC_STREAM_SOCKET_HPP
+#endif // XIO_BASIC_STREAM_SOCKET_HPP

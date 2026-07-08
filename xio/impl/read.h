@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_READ_HPP
-#define ASIO_IMPL_READ_HPP
+#ifndef XIO_IMPL_READ_HPP
+#define XIO_IMPL_READ_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -108,7 +108,7 @@ namespace xio {
         return bytes_transferred;
     }
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     template<typename SyncReadStream, typename DynamicBuffer_v1,
         typename CompletionCondition>
@@ -199,8 +199,8 @@ namespace xio {
         return bytes_transferred;
     }
 
-#if !defined(ASIO_NO_EXTENSIONS)
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_EXTENSIONS)
+#if !defined(XIO_NO_IOSTREAM)
 
     template<typename SyncReadStream, typename Allocator,
         typename CompletionCondition>
@@ -239,9 +239,9 @@ namespace xio {
                     static_cast<CompletionCondition &&>(completion_condition));
     }
 
-#endif // !defined(ASIO_NO_IOSTREAM)
-#endif // !defined(ASIO_NO_EXTENSIONS)
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_EXTENSIONS)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     template<typename SyncReadStream, typename DynamicBuffer_v2,
         typename CompletionCondition>
@@ -365,7 +365,7 @@ namespace xio {
                         max_size = this->check_for_completion(ec, buffers_.total_consumed());
                         for (;;) {
                             {
-                                ASIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_read"));
+                                XIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_read"));
                                 stream_.async_read_some(buffers_.prepare(max_size),
                                                         static_cast<read_op &&>(*this));
                             }
@@ -444,7 +444,7 @@ namespace xio {
                             CompletionCondition &&completion_cond) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a ReadHandler.
-                ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+                XIO_READ_HANDLER_CHECK(ReadHandler, handler)
                 type_check;
 
                 non_const_lvalue<ReadHandler> handler2(handler);
@@ -459,7 +459,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename AsyncReadStream, typename MutableBufferSequence,
@@ -485,9 +484,8 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
-#if !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#if !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     namespace detail {
         template<typename AsyncReadStream, typename DynamicBuffer_v1,
@@ -545,7 +543,7 @@ namespace xio {
                                                   buffers_.max_size() - buffers_.size()));
                         for (;;) {
                             {
-                                ASIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_read"));
+                                XIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_read"));
                                 stream_.async_read_some(buffers_.prepare(bytes_available),
                                                         static_cast<read_dynbuf_v1_op &&>(*this));
                             }
@@ -613,7 +611,7 @@ namespace xio {
                             CompletionCondition &&completion_cond) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a ReadHandler.
-                ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+                XIO_READ_HANDLER_CHECK(ReadHandler, handler)
                 type_check;
 
                 non_const_lvalue<ReadHandler> handler2(handler);
@@ -630,7 +628,6 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename AsyncReadStream, typename DynamicBuffer_v1,
@@ -656,9 +653,7 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
-
-#endif // !defined(ASIO_NO_DYNAMIC_BUFFER_V1)
+#endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
     namespace detail {
         template<typename AsyncReadStream, typename DynamicBuffer_v2,
@@ -721,7 +716,7 @@ namespace xio {
                             pos = buffers_.size();
                             buffers_.grow(bytes_available_);
                             {
-                                ASIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_read"));
+                                XIO_HANDLER_LOCATION((__FILE__, __LINE__, "async_read"));
                                 stream_.async_read_some(buffers_.data(pos, bytes_available_),
                                                         static_cast<read_dynbuf_v2_op &&>(*this));
                             }
@@ -790,7 +785,7 @@ namespace xio {
                             CompletionCondition &&completion_cond) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a ReadHandler.
-                ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+                XIO_READ_HANDLER_CHECK(ReadHandler, handler)
                 type_check;
 
                 non_const_lvalue<ReadHandler> handler2(handler);
@@ -806,8 +801,6 @@ namespace xio {
             AsyncReadStream &stream_;
         };
     } // namespace detail
-
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<template <typename, typename> class Associator,
         typename AsyncReadStream, typename DynamicBuffer_v2,
@@ -833,11 +826,9 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
-
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_READ_HPP
+#endif // XIO_IMPL_READ_HPP

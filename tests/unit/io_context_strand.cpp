@@ -36,7 +36,7 @@ void increment(int* count)
 
 void increment_without_lock(io_context::strand* s, int* count)
 {
-  ASIO_CHECK(!s->running_in_this_thread());
+  XIO_CHECK(!s->running_in_this_thread());
 
   int original_count = *count;
 
@@ -44,12 +44,12 @@ void increment_without_lock(io_context::strand* s, int* count)
 
   // No other functions are currently executing through the locking dispatcher,
   // so the previous call to dispatch should have successfully nested.
-  ASIO_CHECK(*count == original_count + 1);
+  XIO_CHECK(*count == original_count + 1);
 }
 
 void increment_with_lock(io_context::strand* s, int* count)
 {
-  ASIO_CHECK(s->running_in_this_thread());
+  XIO_CHECK(s->running_in_this_thread());
 
   int original_count = *count;
 
@@ -57,7 +57,7 @@ void increment_with_lock(io_context::strand* s, int* count)
 
   // The current function already holds the strand's lock, so the
   // previous call to dispatch should have successfully nested.
-  ASIO_CHECK(*count == original_count + 1);
+  XIO_CHECK(*count == original_count + 1);
 }
 
 void sleep_increment(io_context* ioc, int* count)
@@ -119,24 +119,24 @@ void strand_test()
   post(ioc, bindns::bind(increment_without_lock, &s, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
   post(s, bindns::bind(increment_with_lock, &s, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -147,19 +147,19 @@ void strand_test()
   // Check all events run one after another even though there are two threads.
   timer timer1(ioc, chronons::seconds(3));
   timer1.wait();
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
   timer1.expires_at(timer1.expiry() + chronons::seconds(2));
   timer1.wait();
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
   timer1.expires_at(timer1.expiry() + chronons::seconds(2));
   timer1.wait();
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 
   thread1.join();
   thread2.join();
 
   // The run() calls will not return until all work has finished.
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 
   count = 0;
   int exception_count = 0;
@@ -171,8 +171,8 @@ void strand_test()
   post(s, bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(count == 0);
-  ASIO_CHECK(exception_count == 0);
+  XIO_CHECK(count == 0);
+  XIO_CHECK(exception_count == 0);
 
   for (;;)
   {
@@ -188,8 +188,8 @@ void strand_test()
   }
 
   // The run() calls will not return until all work has finished.
-  ASIO_CHECK(count == 3);
-  ASIO_CHECK(exception_count == 2);
+  XIO_CHECK(count == 3);
+  XIO_CHECK(exception_count == 2);
 
   count = 0;
   ioc.restart();
@@ -204,12 +204,12 @@ void strand_test()
   }
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 }
 
 void strand_wrap_test()
 {
-#if !defined(ASIO_NO_DEPRECATED)
+#if !defined(XIO_NO_DEPRECATED)
   io_context ioc;
   io_context::strand s(ioc);
   int count = 0;
@@ -217,79 +217,79 @@ void strand_wrap_test()
   s.wrap(bindns::bind(increment, &count))();
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   ioc.restart();
   ioc.run();
 
   // The run() calls will not return until all work has finished.
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   count = 0;
   s.wrap(increment)(&count);
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   ioc.restart();
   ioc.run();
 
   // The run() calls will not return until all work has finished.
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   count = 0;
   s.wrap(increment_by_a)(&count, 1);
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   ioc.restart();
   ioc.run();
 
   // The run() calls will not return until all work has finished.
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   count = 0;
   s.wrap(increment_by_a_b)(&count, 1, 2);
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   ioc.restart();
   ioc.run();
 
   // The run() calls will not return until all work has finished.
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 
   count = 0;
   s.wrap(increment_by_a_b_c)(&count, 1, 2, 3);
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   ioc.restart();
   ioc.run();
 
   // The run() calls will not return until all work has finished.
-  ASIO_CHECK(count == 6);
+  XIO_CHECK(count == 6);
 
   count = 0;
   s.wrap(increment_by_a_b_c_d)(&count, 1, 2, 3, 4);
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   ioc.restart();
   ioc.run();
 
   // The run() calls will not return until all work has finished.
-  ASIO_CHECK(count == 10);
-#endif // !defined(ASIO_NO_DEPRECATED)
+  XIO_CHECK(count == 10);
+#endif // !defined(XIO_NO_DEPRECATED)
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "strand",
-  ASIO_TEST_CASE(strand_test)
-  ASIO_TEST_CASE(strand_wrap_test)
+  XIO_TEST_CASE(strand_test)
+  XIO_TEST_CASE(strand_wrap_test)
 )

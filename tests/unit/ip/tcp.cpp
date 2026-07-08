@@ -11,7 +11,7 @@
 
 
 // Enable cancel() support on Windows.
-#define ASIO_ENABLE_CANCELIO 1
+#define XIO_ENABLE_CANCELIO 1
 
 // Test that header file is self-contained.
 #include <xio/ip/tcp.h>
@@ -90,32 +90,32 @@ void test()
   // no_delay class.
 
   ip::tcp::no_delay no_delay1(true);
-  ASIO_CHECK(no_delay1.value());
-  ASIO_CHECK(static_cast<bool>(no_delay1));
-  ASIO_CHECK(!!no_delay1);
+  XIO_CHECK(no_delay1.value());
+  XIO_CHECK(static_cast<bool>(no_delay1));
+  XIO_CHECK(!!no_delay1);
   sock.set_option(no_delay1, ec);
-  ASIO_CHECK(!ec);
+  XIO_CHECK(!ec);
 
   ip::tcp::no_delay no_delay2;
   sock.get_option(no_delay2, ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(no_delay2.value());
-  ASIO_CHECK(static_cast<bool>(no_delay2));
-  ASIO_CHECK(!!no_delay2);
+  XIO_CHECK(!ec);
+  XIO_CHECK(no_delay2.value());
+  XIO_CHECK(static_cast<bool>(no_delay2));
+  XIO_CHECK(!!no_delay2);
 
   ip::tcp::no_delay no_delay3(false);
-  ASIO_CHECK(!no_delay3.value());
-  ASIO_CHECK(!static_cast<bool>(no_delay3));
-  ASIO_CHECK(!no_delay3);
+  XIO_CHECK(!no_delay3.value());
+  XIO_CHECK(!static_cast<bool>(no_delay3));
+  XIO_CHECK(!no_delay3);
   sock.set_option(no_delay3, ec);
-  ASIO_CHECK(!ec);
+  XIO_CHECK(!ec);
 
   ip::tcp::no_delay no_delay4;
   sock.get_option(no_delay4, ec);
-  ASIO_CHECK(!ec);
-  ASIO_CHECK(!no_delay4.value());
-  ASIO_CHECK(!static_cast<bool>(no_delay4));
-  ASIO_CHECK(!no_delay4);
+  XIO_CHECK(!ec);
+  XIO_CHECK(!no_delay4.value());
+  XIO_CHECK(!static_cast<bool>(no_delay4));
+  XIO_CHECK(!no_delay4);
 }
 
 } // namespace ip_tcp_runtime
@@ -222,22 +222,22 @@ void test()
     ip::tcp::socket socket3(ioc, ip::tcp::v6());
     ip::tcp::socket socket4(ioc, ip::tcp::endpoint(ip::tcp::v4(), 0));
     ip::tcp::socket socket5(ioc, ip::tcp::endpoint(ip::tcp::v6(), 0));
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     ip::tcp::socket::native_handle_type native_socket1
       = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     ip::tcp::socket socket6(ioc, ip::tcp::v4(), native_socket1);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     ip::tcp::socket socket7(ioc_ex);
     ip::tcp::socket socket8(ioc_ex, ip::tcp::v4());
     ip::tcp::socket socket9(ioc_ex, ip::tcp::v6());
     ip::tcp::socket socket10(ioc_ex, ip::tcp::endpoint(ip::tcp::v4(), 0));
     ip::tcp::socket socket11(ioc_ex, ip::tcp::endpoint(ip::tcp::v6(), 0));
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     ip::tcp::socket::native_handle_type native_socket2
       = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     ip::tcp::socket socket12(ioc_ex, ip::tcp::v4(), native_socket2);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     ip::tcp::socket socket13(std::move(socket5));
 
@@ -266,14 +266,14 @@ void test()
     socket1.open(ip::tcp::v4(), ec);
     socket1.open(ip::tcp::v6(), ec);
 
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     ip::tcp::socket::native_handle_type native_socket3
       = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     socket1.assign(ip::tcp::v4(), native_socket3);
     ip::tcp::socket::native_handle_type native_socket4
       = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     socket1.assign(ip::tcp::v4(), native_socket4, ec);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     bool is_open = socket1.is_open();
     (void)is_open;
@@ -540,48 +540,48 @@ void handle_read_noop(const xio::error_code& err,
     size_t bytes_transferred, bool* called)
 {
   *called = true;
-  ASIO_CHECK(!err);
-  ASIO_CHECK(bytes_transferred == 0);
+  XIO_CHECK(!err);
+  XIO_CHECK(bytes_transferred == 0);
 }
 
 void handle_write_noop(const xio::error_code& err,
     size_t bytes_transferred, bool* called)
 {
   *called = true;
-  ASIO_CHECK(!err);
-  ASIO_CHECK(bytes_transferred == 0);
+  XIO_CHECK(!err);
+  XIO_CHECK(bytes_transferred == 0);
 }
 
 void handle_read(const xio::error_code& err,
     size_t bytes_transferred, bool* called)
 {
   *called = true;
-  ASIO_CHECK(!err);
-  ASIO_CHECK(bytes_transferred == sizeof(write_data));
+  XIO_CHECK(!err);
+  XIO_CHECK(bytes_transferred == sizeof(write_data));
 }
 
 void handle_write(const xio::error_code& err,
     size_t bytes_transferred, bool* called)
 {
   *called = true;
-  ASIO_CHECK(!err);
-  ASIO_CHECK(bytes_transferred == sizeof(write_data));
+  XIO_CHECK(!err);
+  XIO_CHECK(bytes_transferred == sizeof(write_data));
 }
 
 void handle_read_cancel(const xio::error_code& err,
     size_t bytes_transferred, bool* called)
 {
   *called = true;
-  ASIO_CHECK(err == xio::error::operation_aborted);
-  ASIO_CHECK(bytes_transferred == 0);
+  XIO_CHECK(err == xio::error::operation_aborted);
+  XIO_CHECK(bytes_transferred == 0);
 }
 
 void handle_read_eof(const xio::error_code& err,
     size_t bytes_transferred, bool* called)
 {
   *called = true;
-  ASIO_CHECK(err == xio::error::eof);
-  ASIO_CHECK(bytes_transferred == 0);
+  XIO_CHECK(err == xio::error::eof);
+  XIO_CHECK(bytes_transferred == 0);
 }
 
 void test()
@@ -615,7 +615,7 @@ void test()
         _1, _2, &read_noop_completed));
 
   ioc.run();
-  ASIO_CHECK(read_noop_completed);
+  XIO_CHECK(read_noop_completed);
 
   // No-op write.
 
@@ -627,7 +627,7 @@ void test()
 
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(write_noop_completed);
+  XIO_CHECK(write_noop_completed);
 
   // Read and write to transfer data.
 
@@ -646,9 +646,9 @@ void test()
 
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(read_completed);
-  ASIO_CHECK(write_completed);
-  ASIO_CHECK(memcmp(read_buffer, write_data, sizeof(write_data)) == 0);
+  XIO_CHECK(read_completed);
+  XIO_CHECK(write_completed);
+  XIO_CHECK(memcmp(read_buffer, write_data, sizeof(write_data)) == 0);
 
   // Cancelled read.
 
@@ -660,13 +660,13 @@ void test()
 
   ioc.restart();
   ioc.poll();
-  ASIO_CHECK(!read_cancel_completed);
+  XIO_CHECK(!read_cancel_completed);
 
   server_side_socket.cancel();
 
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(read_cancel_completed);
+  XIO_CHECK(read_cancel_completed);
 
   // A read when the peer closes socket should fail with eof.
 
@@ -680,7 +680,7 @@ void test()
 
   ioc.restart();
   ioc.run();
-  ASIO_CHECK(read_eof_completed);
+  XIO_CHECK(read_eof_completed);
 }
 
 } // namespace ip_tcp_socket_runtime
@@ -764,22 +764,22 @@ void test()
     ip::tcp::acceptor acceptor3(ioc, ip::tcp::v6());
     ip::tcp::acceptor acceptor4(ioc, ip::tcp::endpoint(ip::tcp::v4(), 0));
     ip::tcp::acceptor acceptor5(ioc, ip::tcp::endpoint(ip::tcp::v6(), 0));
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     ip::tcp::acceptor::native_handle_type native_acceptor1
       = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     ip::tcp::acceptor acceptor6(ioc, ip::tcp::v4(), native_acceptor1);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     ip::tcp::acceptor acceptor7(ioc_ex);
     ip::tcp::acceptor acceptor8(ioc_ex, ip::tcp::v4());
     ip::tcp::acceptor acceptor9(ioc_ex, ip::tcp::v6());
     ip::tcp::acceptor acceptor10(ioc_ex, ip::tcp::endpoint(ip::tcp::v4(), 0));
     ip::tcp::acceptor acceptor11(ioc_ex, ip::tcp::endpoint(ip::tcp::v6(), 0));
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     ip::tcp::acceptor::native_handle_type native_acceptor2
       = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     ip::tcp::acceptor acceptor12(ioc_ex, ip::tcp::v4(), native_acceptor2);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     ip::tcp::acceptor acceptor13(std::move(acceptor5));
 
@@ -800,14 +800,14 @@ void test()
     acceptor1.open(ip::tcp::v4(), ec);
     acceptor1.open(ip::tcp::v6(), ec);
 
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     ip::tcp::acceptor::native_handle_type native_acceptor3
       = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     acceptor1.assign(ip::tcp::v4(), native_acceptor3);
     ip::tcp::acceptor::native_handle_type native_acceptor4
       = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     acceptor1.assign(ip::tcp::v4(), native_acceptor4, ec);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     bool is_open = acceptor1.is_open();
     (void)is_open;
@@ -945,12 +945,12 @@ namespace ip_tcp_acceptor_runtime {
 
 void handle_accept(const xio::error_code& err)
 {
-  ASIO_CHECK(!err);
+  XIO_CHECK(!err);
 }
 
 void handle_connect(const xio::error_code& err)
 {
-  ASIO_CHECK(!err);
+  XIO_CHECK(!err);
 }
 
 void test()
@@ -979,11 +979,11 @@ void test()
 
   ip::tcp::endpoint client_side_local_endpoint
     = client_side_socket.local_endpoint();
-  ASIO_CHECK(client_side_local_endpoint.port() == client_endpoint.port());
+  XIO_CHECK(client_side_local_endpoint.port() == client_endpoint.port());
 
   ip::tcp::endpoint server_side_remote_endpoint
     = server_side_socket.remote_endpoint();
-  ASIO_CHECK(server_side_remote_endpoint.port()
+  XIO_CHECK(server_side_remote_endpoint.port()
       == client_endpoint.port());
 
   client_side_socket.close();
@@ -1004,10 +1004,10 @@ void test()
   ioc.run();
 
   client_side_local_endpoint = client_side_socket.local_endpoint();
-  ASIO_CHECK(client_side_local_endpoint.port() == client_endpoint.port());
+  XIO_CHECK(client_side_local_endpoint.port() == client_endpoint.port());
 
   server_side_remote_endpoint = server_side_socket.remote_endpoint();
-  ASIO_CHECK(server_side_remote_endpoint.port()
+  XIO_CHECK(server_side_remote_endpoint.port()
       == client_endpoint.port());
 }
 
@@ -1200,7 +1200,7 @@ namespace ip_tcp_iostream_compile {
 
 void test()
 {
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
   using namespace xio;
   namespace ip = xio::ip;
 
@@ -1257,24 +1257,24 @@ void test()
   int i = 0;
   ios1 >> i;
   ios1 << i;
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
 }
 
 } // namespace ip_tcp_iostream_compile
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "ip/tcp",
-  ASIO_COMPILE_TEST_CASE(ip_tcp_compile::test)
-  ASIO_TEST_CASE(ip_tcp_runtime::test)
-  ASIO_COMPILE_TEST_CASE(ip_tcp_socket_compile::test)
-  ASIO_TEST_CASE(ip_tcp_socket_runtime::test)
-  ASIO_COMPILE_TEST_CASE(ip_tcp_acceptor_compile::test)
-  ASIO_TEST_CASE(ip_tcp_acceptor_runtime::test)
-  ASIO_COMPILE_TEST_CASE(ip_tcp_resolver_compile::test)
-  ASIO_COMPILE_TEST_CASE(ip_tcp_resolver_entry_compile::test)
-  ASIO_COMPILE_TEST_CASE(ip_tcp_resolver_entry_compile::test)
-  ASIO_COMPILE_TEST_CASE(ip_tcp_iostream_compile::test)
+  XIO_COMPILE_TEST_CASE(ip_tcp_compile::test)
+  XIO_TEST_CASE(ip_tcp_runtime::test)
+  XIO_COMPILE_TEST_CASE(ip_tcp_socket_compile::test)
+  XIO_TEST_CASE(ip_tcp_socket_runtime::test)
+  XIO_COMPILE_TEST_CASE(ip_tcp_acceptor_compile::test)
+  XIO_TEST_CASE(ip_tcp_acceptor_runtime::test)
+  XIO_COMPILE_TEST_CASE(ip_tcp_resolver_compile::test)
+  XIO_COMPILE_TEST_CASE(ip_tcp_resolver_entry_compile::test)
+  XIO_COMPILE_TEST_CASE(ip_tcp_resolver_entry_compile::test)
+  XIO_COMPILE_TEST_CASE(ip_tcp_iostream_compile::test)
 )

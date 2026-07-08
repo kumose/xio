@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_PACKAGED_TASK_HPP
-#define ASIO_PACKAGED_TASK_HPP
+#ifndef XIO_PACKAGED_TASK_HPP
+#define XIO_PACKAGED_TASK_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -64,4 +64,4 @@ private:
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_PACKAGED_TASK_HPP
+#endif // XIO_PACKAGED_TASK_HPP

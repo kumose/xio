@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_RESOLVER_SERVICE_BASE_IPP
-#define ASIO_DETAIL_IMPL_RESOLVER_SERVICE_BASE_IPP
+#ifndef XIO_DETAIL_IMPL_RESOLVER_SERVICE_BASE_IPP
+#define XIO_DETAIL_IMPL_RESOLVER_SERVICE_BASE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -40,7 +40,7 @@ namespace xio {
 
         void resolver_service_base::destroy(
             resolver_service_base::implementation_type &impl) {
-            ASIO_HANDLER_OPERATION((thread_pool_.context(),
+            XIO_HANDLER_OPERATION((thread_pool_.context(),
                                     "resolver", &impl, 0, "cancel"));
 
             impl.reset();
@@ -59,7 +59,7 @@ namespace xio {
 
         void resolver_service_base::cancel(
             resolver_service_base::implementation_type &impl) {
-            ASIO_HANDLER_OPERATION((thread_pool_.context(),
+            XIO_HANDLER_OPERATION((thread_pool_.context(),
                                     "resolver", &impl, 0, "cancel"));
 
             impl.reset(static_cast<void *>(0), socket_ops::noop_deleter());
@@ -70,4 +70,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_IMPL_RESOLVER_SERVICE_BASE_IPP
+#endif // XIO_DETAIL_IMPL_RESOLVER_SERVICE_BASE_IPP

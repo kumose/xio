@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_STRAND_SERVICE_IPP
-#define ASIO_DETAIL_IMPL_STRAND_SERVICE_IPP
+#ifndef XIO_DETAIL_IMPL_STRAND_SERVICE_IPP
+#define XIO_DETAIL_IMPL_STRAND_SERVICE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -65,13 +65,13 @@ namespace xio {
             xio::detail::mutex::scoped_lock lock(mutex_);
 
             std::size_t salt = salt_++;
-#if defined(ASIO_ENABLE_SEQUENTIAL_STRAND_ALLOCATION)
+#if defined(XIO_ENABLE_SEQUENTIAL_STRAND_ALLOCATION)
             std::size_t index = salt;
-#else // defined(ASIO_ENABLE_SEQUENTIAL_STRAND_ALLOCATION)
+#else // defined(XIO_ENABLE_SEQUENTIAL_STRAND_ALLOCATION)
             std::size_t index = reinterpret_cast<std::size_t>(&impl);
             index += (reinterpret_cast<std::size_t>(&impl) >> 3);
             index ^= salt + 0x9e3779b9 + (index << 6) + (index >> 2);
-#endif // defined(ASIO_ENABLE_SEQUENTIAL_STRAND_ALLOCATION)
+#endif // defined(XIO_ENABLE_SEQUENTIAL_STRAND_ALLOCATION)
             index = index % num_implementations;
 
             if (!implementations_[index]) {
@@ -180,4 +180,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_IMPL_STRAND_SERVICE_IPP
+#endif // XIO_DETAIL_IMPL_STRAND_SERVICE_IPP

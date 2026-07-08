@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_PIPE_SELECT_INTERRUPTER_HPP
-#define ASIO_DETAIL_PIPE_SELECT_INTERRUPTER_HPP
+#ifndef XIO_DETAIL_PIPE_SELECT_INTERRUPTER_HPP
+#define XIO_DETAIL_PIPE_SELECT_INTERRUPTER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,11 +17,11 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_WINDOWS)
-#if !defined(ASIO_WINDOWS_RUNTIME)
-#if !defined(ASIO_CYGWIN_W32_SOCKETS)
+#if !defined(XIO_WINDOWS)
+#if !defined(XIO_WINDOWS_RUNTIME)
+#if !defined(XIO_CYGWIN_W32_SOCKETS)
 #if !defined(__SYMBIAN32__)
-#if !defined(ASIO_HAS_EVENTFD)
+#if !defined(XIO_HAS_EVENTFD)
 
 #include <xio/detail/push_options.h>
 
@@ -32,19 +32,19 @@ namespace xio {
         class pipe_select_interrupter {
         public:
             // Constructor.
-            ASIO_DECL explicit pipe_select_interrupter(bool = true);
+            XIO_DECL explicit pipe_select_interrupter(bool = true);
 
             // Destructor.
-            ASIO_DECL ~pipe_select_interrupter();
+            XIO_DECL ~pipe_select_interrupter();
 
             // Recreate the interrupter's descriptors. Used after a fork.
-  ASIO_DECL void recreate();
+  XIO_DECL void recreate();
 
             // Interrupt the select call.
-  ASIO_DECL void interrupt();
+  XIO_DECL void interrupt();
 
             // Reset the select interrupter. Returns true if the reset was successful.
-  ASIO_DECL bool reset();
+  XIO_DECL bool reset();
 
             // Get the read descriptor to be passed to select.
             int read_descriptor() const {
@@ -53,10 +53,10 @@ namespace xio {
 
         private:
             // Open the descriptors. Throws on error.
-  ASIO_DECL void open_descriptors();
+  XIO_DECL void open_descriptors();
 
             // Close the descriptors.
-  ASIO_DECL void close_descriptors();
+  XIO_DECL void close_descriptors();
 
             // The read end of a connection used to interrupt the select call. This file
             // descriptor is passed to select such that when it is time to stop, a single
@@ -75,10 +75,10 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(ASIO_HAS_EVENTFD)
+#endif // !defined(XIO_HAS_EVENTFD)
 #endif // !defined(__SYMBIAN32__)
-#endif // !defined(ASIO_CYGWIN_W32_SOCKETS)
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
-#endif // !defined(ASIO_WINDOWS)
+#endif // !defined(XIO_CYGWIN_W32_SOCKETS)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS)
 
-#endif // ASIO_DETAIL_PIPE_SELECT_INTERRUPTER_HPP
+#endif // XIO_DETAIL_PIPE_SELECT_INTERRUPTER_HPP

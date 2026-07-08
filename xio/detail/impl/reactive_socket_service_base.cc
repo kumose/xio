@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_REACTIVE_SOCKET_SERVICE_BASE_IPP
-#define ASIO_DETAIL_IMPL_REACTIVE_SOCKET_SERVICE_BASE_IPP
+#ifndef XIO_DETAIL_IMPL_REACTIVE_SOCKET_SERVICE_BASE_IPP
+#define XIO_DETAIL_IMPL_REACTIVE_SOCKET_SERVICE_BASE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,9 +17,9 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_HAS_IOCP) \
-  && !defined(ASIO_WINDOWS_RUNTIME) \
-  && !defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#if !defined(XIO_HAS_IOCP) \
+  && !defined(XIO_WINDOWS_RUNTIME) \
+  && !defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
 #include <xio/config.h>
 #include <xio/detail/reactive_socket_service_base.h>
@@ -84,7 +84,7 @@ namespace xio {
         void reactive_socket_service_base::destroy(
             reactive_socket_service_base::base_implementation_type &impl) {
             if (impl.socket_ != invalid_socket) {
-                ASIO_HANDLER_OPERATION((reactor_.context(),
+                XIO_HANDLER_OPERATION((reactor_.context(),
                                         "socket", &impl, impl.socket_, "close"));
 
                 reactor_.deregister_descriptor(impl.socket_, impl.reactor_data_,
@@ -101,7 +101,7 @@ namespace xio {
             reactive_socket_service_base::base_implementation_type &impl,
             xio::error_code &ec) {
             if (is_open(impl)) {
-                ASIO_HANDLER_OPERATION((reactor_.context(),
+                XIO_HANDLER_OPERATION((reactor_.context(),
                                         "socket", &impl, impl.socket_, "close"));
 
                 reactor_.deregister_descriptor(impl.socket_, impl.reactor_data_,
@@ -135,7 +135,7 @@ namespace xio {
                 return invalid_socket;
             }
 
-            ASIO_HANDLER_OPERATION((reactor_.context(),
+            XIO_HANDLER_OPERATION((reactor_.context(),
                                     "socket", &impl, impl.socket_, "release"));
 
             reactor_.deregister_descriptor(impl.socket_, impl.reactor_data_, false);
@@ -154,7 +154,7 @@ namespace xio {
                 return ec;
             }
 
-            ASIO_HANDLER_OPERATION((reactor_.context(),
+            XIO_HANDLER_OPERATION((reactor_.context(),
                                     "socket", &impl, impl.socket_, "cancel"));
 
             reactor_.cancel_ops(impl.socket_, impl.reactor_data_);
@@ -290,8 +290,8 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(ASIO_HAS_IOCP)
-//   && !defined(ASIO_WINDOWS_RUNTIME)
-//   && !defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#endif // !defined(XIO_HAS_IOCP)
+//   && !defined(XIO_WINDOWS_RUNTIME)
+//   && !defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
-#endif // ASIO_DETAIL_IMPL_REACTIVE_SOCKET_SERVICE_BASE_IPP
+#endif // XIO_DETAIL_IMPL_REACTIVE_SOCKET_SERVICE_BASE_IPP

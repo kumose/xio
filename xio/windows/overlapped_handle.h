@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_WINDOWS_OVERLAPPED_HANDLE_HPP
-#define ASIO_WINDOWS_OVERLAPPED_HANDLE_HPP
+#ifndef XIO_WINDOWS_OVERLAPPED_HANDLE_HPP
+#define XIO_WINDOWS_OVERLAPPED_HANDLE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,9 +17,8 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE) \
-  || defined(ASIO_HAS_WINDOWS_STREAM_HANDLE) \
-  || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE) \
+  || defined(XIO_HAS_WINDOWS_STREAM_HANDLE)
 
 #include <xio/windows/basic_overlapped_handle.h>
 
@@ -33,8 +32,7 @@ namespace xio {
 
 } // namespace xio
 
-#endif // defined(ASIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE)
-//   || defined(ASIO_HAS_WINDOWS_STREAM_HANDLE)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_WINDOWS_RANDOM_ACCESS_HANDLE)
+//   || defined(XIO_HAS_WINDOWS_STREAM_HANDLE)
 
-#endif // ASIO_WINDOWS_OVERLAPPED_HANDLE_HPP
+#endif // XIO_WINDOWS_OVERLAPPED_HANDLE_HPP

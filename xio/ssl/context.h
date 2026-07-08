@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SSL_CONTEXT_HPP
-#define ASIO_SSL_CONTEXT_HPP
+#ifndef XIO_SSL_CONTEXT_HPP
+#define XIO_SSL_CONTEXT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -41,10 +41,10 @@ namespace xio {
             typedef SSL_CTX *native_handle_type;
 
             /// Constructor.
-            ASIO_DECL explicit context(method m);
+            XIO_DECL explicit context(method m);
 
             /// Construct to take ownership of a native handle.
-            ASIO_DECL explicit context(native_handle_type native_handle);
+            XIO_DECL explicit context(native_handle_type native_handle);
 
             /// Move-construct a context from another.
             /**
@@ -57,7 +57,7 @@ namespace xio {
    * @li Destruction.
    * @li As a target for move-assignment.
    */
-            ASIO_DECL context(context &&other);
+            XIO_DECL context(context &&other);
 
             /// Move-assign a context from another.
             /**
@@ -70,10 +70,10 @@ namespace xio {
    * @li Destruction.
    * @li As a target for move-assignment.
    */
-            ASIO_DECL context &operator=(context &&other);
+            XIO_DECL context &operator=(context &&other);
 
             /// Destructor.
-            ASIO_DECL ~context();
+            XIO_DECL ~context();
 
             /// Get the underlying implementation in the native type.
             /**
@@ -81,7 +81,7 @@ namespace xio {
    * context. This is intended to allow access to context functionality that is
    * not otherwise provided.
    */
-            ASIO_DECL native_handle_type native_handle();
+            XIO_DECL native_handle_type native_handle();
 
             /// Clear options on the context.
             /**
@@ -95,7 +95,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_clear_options.
    */
-            ASIO_DECL void clear_options(options o);
+            XIO_DECL void clear_options(options o);
 
             /// Clear options on the context.
             /**
@@ -109,7 +109,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_clear_options.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID clear_options(options o,
+            XIO_DECL XIO_SYNC_OP_VOID clear_options(options o,
                                                       xio::error_code &ec);
 
             /// Set options on the context.
@@ -124,7 +124,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_set_options.
    */
-            ASIO_DECL void set_options(options o);
+            XIO_DECL void set_options(options o);
 
             /// Set options on the context.
             /**
@@ -138,7 +138,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_set_options.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID set_options(options o,
+            XIO_DECL XIO_SYNC_OP_VOID set_options(options o,
                                                     xio::error_code &ec);
 
             /// Set the peer verification mode.
@@ -153,7 +153,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_set_verify.
    */
-            ASIO_DECL void set_verify_mode(verify_mode v);
+            XIO_DECL void set_verify_mode(verify_mode v);
 
             /// Set the peer verification mode.
             /**
@@ -167,7 +167,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_set_verify.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID set_verify_mode(
+            XIO_DECL XIO_SYNC_OP_VOID set_verify_mode(
                 verify_mode v, xio::error_code &ec);
 
             /// Set the peer verification depth.
@@ -182,7 +182,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_set_verify_depth.
    */
-            ASIO_DECL void set_verify_depth(int depth);
+            XIO_DECL void set_verify_depth(int depth);
 
             /// Set the peer verification depth.
             /**
@@ -196,7 +196,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_set_verify_depth.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID set_verify_depth(
+            XIO_DECL XIO_SYNC_OP_VOID set_verify_depth(
                 int depth, xio::error_code &ec);
 
             /// Set the callback used to verify peer certificates.
@@ -239,7 +239,7 @@ namespace xio {
    * @note Calls @c SSL_CTX_set_verify.
    */
             template<typename VerifyCallback>
-            ASIO_SYNC_OP_VOID set_verify_callback(VerifyCallback callback,
+            XIO_SYNC_OP_VOID set_verify_callback(VerifyCallback callback,
                                                   xio::error_code &ec);
 
             /// Load a certification authority file for performing verification.
@@ -254,7 +254,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_load_verify_locations.
    */
-            ASIO_DECL void load_verify_file(const std::string &filename);
+            XIO_DECL void load_verify_file(const std::string &filename);
 
             /// Load a certification authority file for performing verification.
             /**
@@ -268,7 +268,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_load_verify_locations.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID load_verify_file(
+            XIO_DECL XIO_SYNC_OP_VOID load_verify_file(
                 const std::string &filename, xio::error_code &ec);
 
             /// Add certification authority for performing verification.
@@ -283,7 +283,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_get_cert_store and @c X509_STORE_add_cert.
    */
-            ASIO_DECL void add_certificate_authority(const const_buffer &ca);
+            XIO_DECL void add_certificate_authority(const const_buffer &ca);
 
             /// Add certification authority for performing verification.
             /**
@@ -297,7 +297,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_get_cert_store and @c X509_STORE_add_cert.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID add_certificate_authority(
+            XIO_DECL XIO_SYNC_OP_VOID add_certificate_authority(
                 const const_buffer &ca, xio::error_code &ec);
 
             /// Configures the context to use the default directories for finding
@@ -311,7 +311,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_set_default_verify_paths.
    */
-            ASIO_DECL void set_default_verify_paths();
+            XIO_DECL void set_default_verify_paths();
 
             /// Configures the context to use the default directories for finding
   /// certification authority certificates.
@@ -324,7 +324,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_set_default_verify_paths.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID set_default_verify_paths(
+            XIO_DECL XIO_SYNC_OP_VOID set_default_verify_paths(
                 xio::error_code &ec);
 
             /// Add a directory containing certificate authority files to be used for
@@ -341,7 +341,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_load_verify_locations.
    */
-            ASIO_DECL void add_verify_path(const std::string &path);
+            XIO_DECL void add_verify_path(const std::string &path);
 
             /// Add a directory containing certificate authority files to be used for
   /// performing verification.
@@ -357,7 +357,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_load_verify_locations.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID add_verify_path(
+            XIO_DECL XIO_SYNC_OP_VOID add_verify_path(
                 const std::string &path, xio::error_code &ec);
 
             /// Use a certificate from a memory buffer.
@@ -372,7 +372,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_use_certificate or SSL_CTX_use_certificate_ASN1.
    */
-            ASIO_DECL void use_certificate(
+            XIO_DECL void use_certificate(
                 const const_buffer &certificate, file_format format);
 
             /// Use a certificate from a memory buffer.
@@ -387,7 +387,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_use_certificate or SSL_CTX_use_certificate_ASN1.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID use_certificate(
+            XIO_DECL XIO_SYNC_OP_VOID use_certificate(
                 const const_buffer &certificate, file_format format,
                 xio::error_code &ec);
 
@@ -403,7 +403,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_use_certificate_file.
    */
-            ASIO_DECL void use_certificate_file(
+            XIO_DECL void use_certificate_file(
                 const std::string &filename, file_format format);
 
             /// Use a certificate from a file.
@@ -418,7 +418,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_use_certificate_file.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID use_certificate_file(
+            XIO_DECL XIO_SYNC_OP_VOID use_certificate_file(
                 const std::string &filename, file_format format,
                 xio::error_code &ec);
 
@@ -434,7 +434,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_use_certificate and SSL_CTX_add_extra_chain_cert.
    */
-            ASIO_DECL void use_certificate_chain(const const_buffer &chain);
+            XIO_DECL void use_certificate_chain(const const_buffer &chain);
 
             /// Use a certificate chain from a memory buffer.
             /**
@@ -448,7 +448,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_use_certificate and SSL_CTX_add_extra_chain_cert.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID use_certificate_chain(
+            XIO_DECL XIO_SYNC_OP_VOID use_certificate_chain(
                 const const_buffer &chain, xio::error_code &ec);
 
             /// Use a certificate chain from a file.
@@ -463,7 +463,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_use_certificate_chain_file.
    */
-            ASIO_DECL void use_certificate_chain_file(const std::string &filename);
+            XIO_DECL void use_certificate_chain_file(const std::string &filename);
 
             /// Use a certificate chain from a file.
             /**
@@ -477,7 +477,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_use_certificate_chain_file.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID use_certificate_chain_file(
+            XIO_DECL XIO_SYNC_OP_VOID use_certificate_chain_file(
                 const std::string &filename, xio::error_code &ec);
 
             /// Use a private key from a memory buffer.
@@ -492,7 +492,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_use_PrivateKey or SSL_CTX_use_PrivateKey_ASN1.
    */
-            ASIO_DECL void use_private_key(
+            XIO_DECL void use_private_key(
                 const const_buffer &private_key, file_format format);
 
             /// Use a private key from a memory buffer.
@@ -507,7 +507,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_use_PrivateKey or SSL_CTX_use_PrivateKey_ASN1.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID use_private_key(
+            XIO_DECL XIO_SYNC_OP_VOID use_private_key(
                 const const_buffer &private_key, file_format format,
                 xio::error_code &ec);
 
@@ -523,7 +523,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_use_PrivateKey_file.
    */
-            ASIO_DECL void use_private_key_file(
+            XIO_DECL void use_private_key_file(
                 const std::string &filename, file_format format);
 
             /// Use a private key from a file.
@@ -538,7 +538,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_use_PrivateKey_file.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID use_private_key_file(
+            XIO_DECL XIO_SYNC_OP_VOID use_private_key_file(
                 const std::string &filename, file_format format,
                 xio::error_code &ec);
 
@@ -555,7 +555,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_use_RSAPrivateKey or SSL_CTX_use_RSAPrivateKey_ASN1.
    */
-            ASIO_DECL void use_rsa_private_key(
+            XIO_DECL void use_rsa_private_key(
                 const const_buffer &private_key, file_format format);
 
             /// Use an RSA private key from a memory buffer.
@@ -571,7 +571,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_use_RSAPrivateKey or SSL_CTX_use_RSAPrivateKey_ASN1.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID use_rsa_private_key(
+            XIO_DECL XIO_SYNC_OP_VOID use_rsa_private_key(
                 const const_buffer &private_key, file_format format,
                 xio::error_code &ec);
 
@@ -588,7 +588,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_use_RSAPrivateKey_file.
    */
-            ASIO_DECL void use_rsa_private_key_file(
+            XIO_DECL void use_rsa_private_key_file(
                 const std::string &filename, file_format format);
 
             /// Use an RSA private key from a file.
@@ -604,7 +604,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_use_RSAPrivateKey_file.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID use_rsa_private_key_file(
+            XIO_DECL XIO_SYNC_OP_VOID use_rsa_private_key_file(
                 const std::string &filename, file_format format,
                 xio::error_code &ec);
 
@@ -621,7 +621,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_set_tmp_dh.
    */
-            ASIO_DECL void use_tmp_dh(const const_buffer &dh);
+            XIO_DECL void use_tmp_dh(const const_buffer &dh);
 
             /// Use the specified memory buffer to obtain the temporary Diffie-Hellman
   /// parameters.
@@ -636,7 +636,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_set_tmp_dh.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID use_tmp_dh(
+            XIO_DECL XIO_SYNC_OP_VOID use_tmp_dh(
                 const const_buffer &dh, xio::error_code &ec);
 
             /// Use the specified file to obtain the temporary Diffie-Hellman parameters.
@@ -651,7 +651,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_set_tmp_dh.
    */
-            ASIO_DECL void use_tmp_dh_file(const std::string &filename);
+            XIO_DECL void use_tmp_dh_file(const std::string &filename);
 
             /// Use the specified file to obtain the temporary Diffie-Hellman parameters.
             /**
@@ -665,7 +665,7 @@ namespace xio {
    *
    * @note Calls @c SSL_CTX_set_tmp_dh.
    */
-            ASIO_DECL ASIO_SYNC_OP_VOID use_tmp_dh_file(
+            XIO_DECL XIO_SYNC_OP_VOID use_tmp_dh_file(
                 const std::string &filename, xio::error_code &ec);
 
             /// Set the password callback.
@@ -706,7 +706,7 @@ namespace xio {
    * @note Calls @c SSL_CTX_set_default_passwd_cb.
    */
             template<typename PasswordCallback>
-            ASIO_SYNC_OP_VOID set_password_callback(PasswordCallback callback,
+            XIO_SYNC_OP_VOID set_password_callback(PasswordCallback callback,
                                                     xio::error_code &ec);
 
         private:
@@ -717,30 +717,30 @@ namespace xio {
             struct dh_cleanup;
 
             // Helper function used to set a peer certificate verification callback.
-            ASIO_DECL ASIO_SYNC_OP_VOID do_set_verify_callback(
+            XIO_DECL XIO_SYNC_OP_VOID do_set_verify_callback(
                 detail::verify_callback_base *callback, xio::error_code &ec);
 
             // Callback used when the SSL implementation wants to verify a certificate.
-            ASIO_DECL static int verify_callback_function(
+            XIO_DECL static int verify_callback_function(
                 int preverified, X509_STORE_CTX *ctx);
 
             // Helper function used to set a password callback.
-            ASIO_DECL ASIO_SYNC_OP_VOID do_set_password_callback(
+            XIO_DECL XIO_SYNC_OP_VOID do_set_password_callback(
                 detail::password_callback_base *callback, xio::error_code &ec);
 
             // Callback used when the SSL implementation wants a password.
-            ASIO_DECL static int password_callback_function(
+            XIO_DECL static int password_callback_function(
                 char *buf, int size, int purpose, void *data);
 
             // Helper function to set the temporary Diffie-Hellman parameters from a BIO.
-            ASIO_DECL ASIO_SYNC_OP_VOID do_use_tmp_dh(
+            XIO_DECL XIO_SYNC_OP_VOID do_use_tmp_dh(
                 BIO *bio, xio::error_code &ec);
 
             // Helper function to make a BIO from a memory buffer.
-            ASIO_DECL BIO *make_buffer_bio(const const_buffer &b);
+            XIO_DECL BIO *make_buffer_bio(const const_buffer &b);
 
             // Translate an SSL error into an error code.
-            ASIO_DECL static xio::error_code translate_error(long error);
+            XIO_DECL static xio::error_code translate_error(long error);
 
             // The underlying native implementation.
             native_handle_type handle_;
@@ -756,4 +756,4 @@ namespace xio {
 
 #include <xio/ssl/impl/context.h>
 
-#endif // ASIO_SSL_CONTEXT_HPP
+#endif // XIO_SSL_CONTEXT_HPP

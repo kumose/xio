@@ -93,34 +93,34 @@ private:
 
 void is_read_buffered_test()
 {
-  ASIO_CHECK(!xio::is_read_buffered<
+  XIO_CHECK(!xio::is_read_buffered<
       xio::ip::tcp::socket>::value);
 
-  ASIO_CHECK(!!xio::is_read_buffered<
+  XIO_CHECK(!!xio::is_read_buffered<
       xio::buffered_read_stream<
         xio::ip::tcp::socket> >::value);
 
-  ASIO_CHECK(!xio::is_read_buffered<
+  XIO_CHECK(!xio::is_read_buffered<
       xio::buffered_write_stream<
         xio::ip::tcp::socket> >::value);
 
-  ASIO_CHECK(!!xio::is_read_buffered<
+  XIO_CHECK(!!xio::is_read_buffered<
       xio::buffered_stream<xio::ip::tcp::socket> >::value);
 
-  ASIO_CHECK(!xio::is_read_buffered<test_stream>::value);
+  XIO_CHECK(!xio::is_read_buffered<test_stream>::value);
 
-  ASIO_CHECK(!!xio::is_read_buffered<
+  XIO_CHECK(!!xio::is_read_buffered<
       xio::buffered_read_stream<test_stream> >::value);
 
-  ASIO_CHECK(!xio::is_read_buffered<
+  XIO_CHECK(!xio::is_read_buffered<
       xio::buffered_write_stream<test_stream> >::value);
 
-  ASIO_CHECK(!!xio::is_read_buffered<
+  XIO_CHECK(!!xio::is_read_buffered<
       xio::buffered_stream<test_stream> >::value);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "is_read_buffered",
-  ASIO_TEST_CASE(is_read_buffered_test)
+  XIO_TEST_CASE(is_read_buffered_test)
 )

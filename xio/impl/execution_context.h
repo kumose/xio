@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_EXECUTION_CONTEXT_HPP
-#define ASIO_IMPL_EXECUTION_CONTEXT_HPP
+#ifndef XIO_IMPL_EXECUTION_CONTEXT_HPP
+#define XIO_IMPL_EXECUTION_CONTEXT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -85,7 +85,6 @@ namespace xio {
         }
     }
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<typename Service>
     inline Service &use_service(execution_context &e) {
@@ -105,7 +104,7 @@ namespace xio {
     }
 
     template<typename Service>
-    ASIO_DEPRECATED_MSG (
+    XIO_DEPRECATED_MSG (
 
     "Use make_service()"
     )
@@ -124,7 +123,6 @@ namespace xio {
         return e.service_registry_->template has_service<Service>();
     }
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
     inline execution_context &execution_context::service::context() {
         return owner_;
@@ -135,4 +133,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_EXECUTION_CONTEXT_HPP
+#endif // XIO_IMPL_EXECUTION_CONTEXT_HPP

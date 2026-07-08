@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BASIC_SOCKET_IOSTREAM_HPP
-#define ASIO_BASIC_SOCKET_IOSTREAM_HPP
+#ifndef XIO_BASIC_SOCKET_IOSTREAM_HPP
+#define XIO_BASIC_SOCKET_IOSTREAM_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 
 #include <istream>
 #include <ostream>
@@ -54,8 +54,8 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(ASIO_BASIC_SOCKET_IOSTREAM_FWD_DECL)
-#define ASIO_BASIC_SOCKET_IOSTREAM_FWD_DECL
+#if !defined(XIO_BASIC_SOCKET_IOSTREAM_FWD_DECL)
+#define XIO_BASIC_SOCKET_IOSTREAM_FWD_DECL
 
     // Forward declaration with defaulted arguments.
     template<typename Protocol,
@@ -63,18 +63,10 @@ namespace xio {
         typename WaitTraits = wait_traits<Clock> >
     class basic_socket_iostream;
 
-#endif // !defined(ASIO_BASIC_SOCKET_IOSTREAM_FWD_DECL)
+#endif // !defined(XIO_BASIC_SOCKET_IOSTREAM_FWD_DECL)
 
     /// Iostream interface for a socket.
-#if defined(GENERATING_DOCUMENTATION)
-    template<typename Protocol,
-        typename Clock = chrono::steady_clock,
-        typename WaitTraits = wait_traits<Clock> >
-
-
-#else // defined(GENERATING_DOCUMENTATION)
     template<typename Protocol, typename Clock, typename WaitTraits>
-#endif // defined(GENERATING_DOCUMENTATION)
     class basic_socket_iostream
             : private detail::socket_iostream_base<Protocol, Clock, WaitTraits>,
               public std::basic_iostream<char> {
@@ -91,16 +83,8 @@ namespace xio {
         /// The clock type.
         typedef Clock clock_type;
 
-#if defined(GENERATING_DOCUMENTATION)
-        /// The time type.
-        typedef typename WaitTraits::time_point time_point;
-
-        /// The duration type.
-        typedef typename WaitTraits::duration duration;
-#else
         typedef typename traits_helper::time_type time_point;
         typedef typename traits_helper::duration_type duration;
-#endif
 
         /// Construct a basic_socket_iostream without establishing a connection.
         basic_socket_iostream()
@@ -246,6 +230,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
 
-#endif // ASIO_BASIC_SOCKET_IOSTREAM_HPP
+#endif // XIO_BASIC_SOCKET_IOSTREAM_HPP

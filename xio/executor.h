@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXECUTOR_HPP
-#define ASIO_EXECUTOR_HPP
+#ifndef XIO_EXECUTOR_HPP
+#define XIO_EXECUTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
 
 #include <new>
 #include <typeinfo>
@@ -217,15 +217,15 @@ namespace xio {
    * @returns If @c *this has a target type of type @c T, <tt>typeid(T)</tt>;
    * otherwise, <tt>typeid(void)</tt>.
    */
-#if !defined(ASIO_NO_TYPEID) || defined(GENERATING_DOCUMENTATION)
+#if !defined(XIO_NO_TYPEID)
         const std::type_info &target_type() const noexcept {
             return impl_ ? impl_->target_type() : typeid(void);
         }
-#else // !defined(ASIO_NO_TYPEID) || defined(GENERATING_DOCUMENTATION)
+#else // !defined(XIO_NO_TYPEID)
         const void *target_type() const noexcept {
             return impl_ ? impl_->target_type() : 0;
         }
-#endif // !defined(ASIO_NO_TYPEID) || defined(GENERATING_DOCUMENTATION)
+#endif // !defined(XIO_NO_TYPEID)
 
         /// Obtain a pointer to the target executor object.
         /**
@@ -260,25 +260,24 @@ namespace xio {
         }
 
     private:
-#if !defined(GENERATING_DOCUMENTATION)
         typedef detail::executor_function function;
         template<typename, typename>
         class impl;
 
-#if !defined(ASIO_NO_TYPEID)
+#if !defined(XIO_NO_TYPEID)
         typedef const std::type_info &type_id_result_type;
-#else // !defined(ASIO_NO_TYPEID)
+#else // !defined(XIO_NO_TYPEID)
         typedef const void *type_id_result_type;
-#endif // !defined(ASIO_NO_TYPEID)
+#endif // !defined(XIO_NO_TYPEID)
 
         template<typename T>
         static type_id_result_type type_id() {
-#if !defined(ASIO_NO_TYPEID)
+#if !defined(XIO_NO_TYPEID)
             return typeid(T);
-#else // !defined(ASIO_NO_TYPEID)
+#else // !defined(XIO_NO_TYPEID)
             static int unique_id;
             return &unique_id;
-#endif // !defined(ASIO_NO_TYPEID)
+#endif // !defined(XIO_NO_TYPEID)
         }
 
         // Base class for all polymorphic executor implementations.
@@ -341,16 +340,15 @@ namespace xio {
         }
 
         impl_base *impl_;
-#endif // !defined(GENERATING_DOCUMENTATION)
     };
 } // namespace xio
 
-ASIO_USES_ALLOCATOR(xio::executor)
+XIO_USES_ALLOCATOR(xio::executor)
 
 #include <xio/detail/pop_options.h>
 
 #include <xio/impl/executor.h>
 
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
-#endif // ASIO_EXECUTOR_HPP
+#endif // XIO_EXECUTOR_HPP

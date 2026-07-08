@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_UDP_HPP
-#define ASIO_IP_UDP_HPP
+#ifndef XIO_IP_UDP_HPP
+#define XIO_IP_UDP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -47,22 +47,22 @@ namespace xio {
 
             /// Construct to represent the IPv4 UDP protocol.
             static udp v4() noexcept {
-                return udp(ASIO_OS_DEF(AF_INET));
+                return udp(XIO_OS_DEF(AF_INET));
             }
 
             /// Construct to represent the IPv6 UDP protocol.
             static udp v6() noexcept {
-                return udp(ASIO_OS_DEF(AF_INET6));
+                return udp(XIO_OS_DEF(AF_INET6));
             }
 
             /// Obtain an identifier for the type of the protocol.
             int type() const noexcept {
-                return ASIO_OS_DEF(SOCK_DGRAM);
+                return XIO_OS_DEF(SOCK_DGRAM);
             }
 
             /// Obtain an identifier for the protocol.
             int protocol() const noexcept {
-                return ASIO_OS_DEF(IPPROTO_UDP);
+                return XIO_OS_DEF(IPPROTO_UDP);
             }
 
             /// Obtain an identifier for the protocol family.
@@ -100,4 +100,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_UDP_HPP
+#endif // XIO_IP_UDP_HPP

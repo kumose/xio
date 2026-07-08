@@ -67,11 +67,11 @@ void test()
     spp::socket socket1(ioc);
     spp::socket socket2(ioc, spp());
     spp::socket socket3(ioc, spp::endpoint());
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     spp::socket::native_handle_type native_socket1
       = ::socket(AF_UNIX, SOCK_SEQPACKET, 0);
     spp::socket socket4(ioc, spp(), native_socket1);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     spp::socket socket5(std::move(socket4));
 
@@ -93,14 +93,14 @@ void test()
     socket1.open(spp());
     socket1.open(spp(), ec);
 
-#if !defined(ASIO_WINDOWS_RUNTIME)
+#if !defined(XIO_WINDOWS_RUNTIME)
     spp::socket::native_handle_type native_socket2
       = ::socket(AF_UNIX, SOCK_SEQPACKET, 0);
     socket1.assign(spp(), native_socket2);
     spp::socket::native_handle_type native_socket3
       = ::socket(AF_UNIX, SOCK_SEQPACKET, 0);
     socket1.assign(spp(), native_socket3, ec);
-#endif // !defined(ASIO_WINDOWS_RUNTIME)
+#endif // !defined(XIO_WINDOWS_RUNTIME)
 
     bool is_open = socket1.is_open();
     (void)is_open;
@@ -199,8 +199,8 @@ void test()
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "local/seq_packet_protocol",
-  ASIO_COMPILE_TEST_CASE(local_seq_packet_protocol_socket_compile::test)
+  XIO_COMPILE_TEST_CASE(local_seq_packet_protocol_socket_compile::test)
 )

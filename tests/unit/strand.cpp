@@ -36,7 +36,7 @@ void increment(int* count)
 
 void increment_without_lock(strand<io_context::executor_type>* s, int* count)
 {
-  ASIO_CHECK(!s->running_in_this_thread());
+  XIO_CHECK(!s->running_in_this_thread());
 
   int original_count = *count;
 
@@ -44,12 +44,12 @@ void increment_without_lock(strand<io_context::executor_type>* s, int* count)
 
   // No other functions are currently executing through the locking dispatcher,
   // so the previous call to dispatch should have successfully nested.
-  ASIO_CHECK(*count == original_count + 1);
+  XIO_CHECK(*count == original_count + 1);
 }
 
 void increment_with_lock(strand<io_context::executor_type>* s, int* count)
 {
-  ASIO_CHECK(s->running_in_this_thread());
+  XIO_CHECK(s->running_in_this_thread());
 
   int original_count = *count;
 
@@ -57,7 +57,7 @@ void increment_with_lock(strand<io_context::executor_type>* s, int* count)
 
   // The current function already holds the strand's lock, so the
   // previous call to dispatch should have successfully nested.
-  ASIO_CHECK(*count == original_count + 1);
+  XIO_CHECK(*count == original_count + 1);
 }
 
 void sleep_increment(io_context* ioc, int* count)
@@ -120,24 +120,24 @@ void strand_test()
   post(ioc, bindns::bind(increment_without_lock, &s, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
   post(s, bindns::bind(increment_with_lock, &s, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -148,19 +148,19 @@ void strand_test()
   // Check all events run one after another even though there are two threads.
   timer timer1(ioc, chronons::seconds(3));
   timer1.wait();
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
   timer1.expires_at(timer1.expiry() + chronons::seconds(2));
   timer1.wait();
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(count == 1);
   timer1.expires_at(timer1.expiry() + chronons::seconds(2));
   timer1.wait();
-  ASIO_CHECK(count == 2);
+  XIO_CHECK(count == 2);
 
   thread1.join();
   thread2.join();
 
   // The run() calls will not return until all work has finished.
-  ASIO_CHECK(count == 3);
+  XIO_CHECK(count == 3);
 
   count = 0;
   int exception_count = 0;
@@ -172,8 +172,8 @@ void strand_test()
   post(s, bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(count == 0);
-  ASIO_CHECK(exception_count == 0);
+  XIO_CHECK(count == 0);
+  XIO_CHECK(exception_count == 0);
 
   for (;;)
   {
@@ -189,8 +189,8 @@ void strand_test()
   }
 
   // The run() calls will not return until all work has finished.
-  ASIO_CHECK(count == 3);
-  ASIO_CHECK(exception_count == 2);
+  XIO_CHECK(count == 3);
+  XIO_CHECK(exception_count == 2);
 
   count = 0;
   ioc.restart();
@@ -205,7 +205,7 @@ void strand_test()
   }
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 }
 
 void strand_conversion_test()
@@ -229,39 +229,39 @@ void strand_query_test()
   io_context ioc;
   strand<io_context::executor_type> s1 = make_strand(ioc);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(s1, xio::execution::context)
         == &ioc);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(s1, xio::execution::blocking)
         == xio::execution::blocking.possibly);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(s1, xio::execution::blocking.possibly)
         == xio::execution::blocking.possibly);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(s1, xio::execution::outstanding_work)
         == xio::execution::outstanding_work.untracked);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(s1, xio::execution::outstanding_work.untracked)
         == xio::execution::outstanding_work.untracked);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(s1, xio::execution::relationship)
         == xio::execution::relationship.fork);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(s1, xio::execution::relationship.fork)
         == xio::execution::relationship.fork);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(s1, xio::execution::mapping)
         == xio::execution::mapping.thread);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(s1, xio::execution::allocator)
         == std::allocator<void>());
 }
@@ -275,14 +275,14 @@ void strand_execute_test()
   s1.execute(bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -290,14 +290,14 @@ void strand_execute_test()
       bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -305,18 +305,18 @@ void strand_execute_test()
       bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
-  ASIO_CHECK(!ioc.stopped());
+  XIO_CHECK(!ioc.stopped());
 
   xio::require(s1,
       xio::execution::blocking.never,
@@ -324,14 +324,14 @@ void strand_execute_test()
     ).execute(bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -341,14 +341,14 @@ void strand_execute_test()
     ).execute(bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -359,14 +359,14 @@ void strand_execute_test()
     ).execute(bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -377,14 +377,14 @@ void strand_execute_test()
     ).execute(bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -397,14 +397,14 @@ void strand_execute_test()
     ).execute(bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -417,21 +417,21 @@ void strand_execute_test()
     ).execute(bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "strand",
-  ASIO_TEST_CASE(strand_test)
-  ASIO_COMPILE_TEST_CASE(strand_conversion_test)
-  ASIO_TEST_CASE(strand_query_test)
-  ASIO_TEST_CASE(strand_execute_test)
+  XIO_TEST_CASE(strand_test)
+  XIO_COMPILE_TEST_CASE(strand_conversion_test)
+  XIO_TEST_CASE(strand_query_test)
+  XIO_TEST_CASE(strand_execute_test)
 )

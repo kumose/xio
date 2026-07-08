@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WIN_IOCP_SOCKET_RECV_OP_HPP
-#define ASIO_DETAIL_WIN_IOCP_SOCKET_RECV_OP_HPP
+#ifndef XIO_DETAIL_WIN_IOCP_SOCKET_RECV_OP_HPP
+#define XIO_DETAIL_WIN_IOCP_SOCKET_RECV_OP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 
 #include <xio/detail/bind_handler.h>
 #include <xio/detail/buffer_sequence_adapter.h>
@@ -38,7 +38,7 @@ namespace xio {
         template<typename MutableBufferSequence, typename Handler, typename IoExecutor>
         class win_iocp_socket_recv_op : public operation {
         public:
-            ASIO_DEFINE_HANDLER_PTR(win_iocp_socket_recv_op);
+            XIO_DEFINE_HANDLER_PTR(win_iocp_socket_recv_op);
 
             win_iocp_socket_recv_op(socket_ops::state_type state,
                                     socket_ops::weak_cancel_token_type cancel_token,
@@ -58,31 +58,31 @@ namespace xio {
                 xio::error_code ec(result_ec);
 
                 // Take ownership of the operation object.
-                ASIO_ASSUME(base != 0);
+                XIO_ASSUME(base != 0);
                 win_iocp_socket_recv_op *o(static_cast<win_iocp_socket_recv_op *>(base));
                 ptr p = {xio::detail::addressof(o->handler_), o, o};
 
-                ASIO_HANDLER_COMPLETION((*o));
+                XIO_HANDLER_COMPLETION((*o));
 
                 // Take ownership of the operation's outstanding work.
                 handler_work<Handler, IoExecutor> w(
                     static_cast<handler_work<Handler, IoExecutor> &&>(
                         o->work_));
 
-#if defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#if defined(XIO_ENABLE_BUFFER_DEBUGGING)
 // Check whether buffers are still valid.
 if (owner) {
     buffer_sequence_adapter<xio::mutable_buffer,
         MutableBufferSequence>::validate(o->buffers_);
 }
-#endif // defined(ASIO_ENABLE_BUFFER_DEBUGGING)
+#endif // defined(XIO_ENABLE_BUFFER_DEBUGGING)
 
 socket_ops::complete_iocp_recv (o->state_, o->cancel_token_,
 buffer_sequence_adapter<xio::mutable_buffer,
     MutableBufferSequence>::all_empty (o->buffers_),
 ec, bytes_transferred);
 
-ASIO_ERROR_LOCATION (ec);
+XIO_ERROR_LOCATION (ec);
 
 // Make a copy of the handler so that the memory can be deallocated before
 // the upcall is made. Even if we're not about to make an upcall, a
@@ -98,9 +98,9 @@ p.reset();
 // Make the upcall if required.
     if (owner) {
     fenced_block b(fenced_block::half);
-    ASIO_HANDLER_INVOCATION_BEGIN((handler.arg1_, handler.arg2_));
+    XIO_HANDLER_INVOCATION_BEGIN((handler.arg1_, handler.arg2_));
     w.complete(handler, handler.handler_);
-    ASIO_HANDLER_INVOCATION_END;
+    XIO_HANDLER_INVOCATION_END;
 }
   }
 
@@ -117,6 +117,6 @@ handler_work<Handler, IoExecutor> work_;
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
-#endif // ASIO_DETAIL_WIN_IOCP_SOCKET_RECV_OP_HPP
+#endif // XIO_DETAIL_WIN_IOCP_SOCKET_RECV_OP_HPP

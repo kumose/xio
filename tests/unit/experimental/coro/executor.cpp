@@ -22,8 +22,8 @@ using namespace xio::experimental;
 
 namespace coro {
 
-#define ASIO_CHECKPOINT() \
-  ASIO_TEST_IOSTREAM << __FILE__ << "(" << __LINE__ << "): " \
+#define XIO_CHECKPOINT() \
+  XIO_TEST_IOSTREAM << __FILE__ << "(" << __LINE__ << "): " \
   << xio::detail::test_name() << ": " \
   << "Checkpoint" << std::endl;
 
@@ -44,9 +44,9 @@ void different_execs()
     auto operator()(xio::any_io_executor e) -> xio::experimental::coro<T>
     {
       auto p = e.target<xio::thread_pool::executor_type>();
-      ASIO_CHECKPOINT();
-      ASIO_CHECK(p);
-      ASIO_CHECK(p->running_in_this_thread());
+      XIO_CHECKPOINT();
+      XIO_CHECK(p);
+      XIO_CHECK(p->running_in_this_thread());
       ran_inner = true;
       co_return;
     };
@@ -64,14 +64,14 @@ void different_execs()
     {
       auto p = e.target<xio::io_context::executor_type>();
 
-      ASIO_CHECK(p);
-      ASIO_CHECK(p->running_in_this_thread());
-      ASIO_CHECKPOINT();
+      XIO_CHECK(p);
+      XIO_CHECK(p->running_in_this_thread());
+      XIO_CHECKPOINT();
 
       co_await tp;
 
-      ASIO_CHECKPOINT();
-      ASIO_CHECK(p->running_in_this_thread());
+      XIO_CHECKPOINT();
+      XIO_CHECK(p->running_in_this_thread());
 
       ran_outer = true;
     };
@@ -86,18 +86,18 @@ void different_execs()
   c.async_resume(
       [&](std::exception_ptr e)
       {
-        ASIO_CHECK(!e);
-        ASIO_CHECKPOINT();
+        XIO_CHECK(!e);
+        XIO_CHECKPOINT();
         ran = true;
       });
 
-  ASIO_CHECK(!ran);
+  XIO_CHECK(!ran);
   ctx.run();
   o.reset();
-  ASIO_CHECK(ran);
-  ASIO_CHECK(ran_inner);
-  ASIO_CHECK(ran_outer);
-  ASIO_CHECK(!ex);
+  XIO_CHECK(ran);
+  XIO_CHECK(ran_inner);
+  XIO_CHECK(ran_outer);
+  XIO_CHECK(!ex);
 
   th_ctx.stop();
   th_ctx.join();
@@ -105,9 +105,9 @@ void different_execs()
 
 } // namespace coro
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "coro/partial",
-  ASIO_TEST_CASE(::coro::different_execs<void>)
-  ASIO_TEST_CASE(::coro::different_execs<int()>)
+  XIO_TEST_CASE(::coro::different_execs<void>)
+  XIO_TEST_CASE(::coro::different_execs<int()>)
 )

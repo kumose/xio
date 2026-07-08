@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WINRT_SSOCKET_SERVICE_BASE_HPP
-#define ASIO_DETAIL_WINRT_SSOCKET_SERVICE_BASE_HPP
+#ifndef XIO_DETAIL_WINRT_SSOCKET_SERVICE_BASE_HPP
+#define XIO_DETAIL_WINRT_SSOCKET_SERVICE_BASE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 
 #include <xio/buffer.h>
 #include <xio/error.h>
@@ -30,11 +30,11 @@
 #include <xio/detail/winrt_socket_recv_op.h>
 #include <xio/detail/winrt_socket_send_op.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 #include <xio/detail/win_iocp_io_context.h>
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 #include <xio/detail/scheduler.h>
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
 #include <xio/detail/push_options.h>
 
@@ -67,25 +67,25 @@ namespace xio {
             };
 
             // Constructor.
-            ASIO_DECL winrt_ssocket_service_base(execution_context &context);
+            XIO_DECL winrt_ssocket_service_base(execution_context &context);
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void base_shutdown();
+  XIO_DECL void base_shutdown();
 
             // Construct a new socket implementation.
-  ASIO_DECL void construct(base_implementation_type &);
+  XIO_DECL void construct(base_implementation_type &);
 
             // Move-construct a new socket implementation.
-  ASIO_DECL void base_move_construct(base_implementation_type &impl,
+  XIO_DECL void base_move_construct(base_implementation_type &impl,
                                      base_implementation_type &other_impl) noexcept;
 
             // Move-assign from another socket implementation.
-  ASIO_DECL void base_move_assign(base_implementation_type &impl,
+  XIO_DECL void base_move_assign(base_implementation_type &impl,
                                   winrt_ssocket_service_base &other_service,
                                   base_implementation_type &other_impl);
 
             // Destroy a socket implementation.
-  ASIO_DECL void destroy(base_implementation_type &impl);
+  XIO_DECL void destroy(base_implementation_type &impl);
 
             // Determine whether the socket is open.
             bool is_open(const base_implementation_type &impl) const {
@@ -93,11 +93,11 @@ namespace xio {
             }
 
             // Destroy a socket implementation.
-            ASIO_DECL xio::error_code close(
+            XIO_DECL xio::error_code close(
                 base_implementation_type &impl, xio::error_code &ec);
 
             // Release ownership of the socket.
-  ASIO_DECL native_handle_type release(
+  XIO_DECL native_handle_type release(
                 base_implementation_type &impl, xio::error_code &ec);
 
             // Get the native socket representation.
@@ -192,7 +192,7 @@ namespace xio {
                 };
                 p.p = new(p.v) op(buffers, handler, io_ex);
 
-                ASIO_HANDLER_CREATION((scheduler_.context(),
+                XIO_HANDLER_CREATION((scheduler_.context(),
                                        *p.p, "socket", &impl, 0, "async_send"));
 
                 start_send_op(impl,
@@ -247,7 +247,7 @@ namespace xio {
                 };
                 p.p = new(p.v) op(buffers, handler, io_ex);
 
-                ASIO_HANDLER_CREATION((scheduler_.context(),
+                XIO_HANDLER_CREATION((scheduler_.context(),
                                        *p.p, "socket", &impl, 0, "async_receive"));
 
                 start_receive_op(impl,
@@ -269,55 +269,55 @@ namespace xio {
 
         protected:
             // Helper function to obtain endpoints associated with the connection.
-            ASIO_DECL std::size_t do_get_endpoint(
+            XIO_DECL std::size_t do_get_endpoint(
                 const base_implementation_type &impl, bool local,
                 void *addr, std::size_t addr_len, xio::error_code &ec) const;
 
             // Helper function to set a socket option.
-            ASIO_DECL xio::error_code do_set_option(
+            XIO_DECL xio::error_code do_set_option(
                 base_implementation_type &impl,
                 int level, int optname, const void *optval,
                 std::size_t optlen, xio::error_code &ec);
 
             // Helper function to get a socket option.
-  ASIO_DECL void do_get_option(
+  XIO_DECL void do_get_option(
                 const base_implementation_type &impl,
                 int level, int optname, void *optval,
                 std::size_t *optlen, xio::error_code &ec) const;
 
             // Helper function to perform a synchronous connect.
-            ASIO_DECL xio::error_code do_connect(
+            XIO_DECL xio::error_code do_connect(
                 base_implementation_type &impl,
                 const void *addr, xio::error_code &ec);
 
             // Helper function to start an asynchronous connect.
-  ASIO_DECL void start_connect_op(
+  XIO_DECL void start_connect_op(
                 base_implementation_type &impl, const void *addr,
                 winrt_async_op<void> *op, bool is_continuation);
 
             // Helper function to perform a synchronous send.
-            ASIO_DECL std::size_t do_send(
+            XIO_DECL std::size_t do_send(
                 base_implementation_type &impl, const xio::const_buffer &data,
                 socket_base::message_flags flags, xio::error_code &ec);
 
             // Helper function to start an asynchronous send.
-  ASIO_DECL void start_send_op(base_implementation_type &impl,
+  XIO_DECL void start_send_op(base_implementation_type &impl,
                                const xio::const_buffer &data, socket_base::message_flags flags,
                                winrt_async_op<unsigned int> *op, bool is_continuation);
 
             // Helper function to perform a synchronous receive.
-            ASIO_DECL std::size_t do_receive(
+            XIO_DECL std::size_t do_receive(
                 base_implementation_type &impl, const xio::mutable_buffer &data,
                 socket_base::message_flags flags, xio::error_code &ec);
 
             // Helper function to start an asynchronous receive.
-  ASIO_DECL void start_receive_op(base_implementation_type &impl,
+  XIO_DECL void start_receive_op(base_implementation_type &impl,
                                   const xio::mutable_buffer &data, socket_base::message_flags flags,
                                   winrt_async_op<Windows::Storage::Streams::IBuffer ^> *op,
                                   bool is_continuation);
 
 // The scheduler implementation used for delivering completions.
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 typedef class win_iocp_io_context scheduler_impl;
 #else
 typedef class scheduler scheduler_impl;
@@ -339,6 +339,6 @@ base_implementation_type *impl_list_;
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
 
-#endif // ASIO_DETAIL_WINRT_SSOCKET_SERVICE_BASE_HPP
+#endif // XIO_DETAIL_WINRT_SSOCKET_SERVICE_BASE_HPP

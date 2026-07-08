@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BASIC_STREAM_FILE_HPP
-#define ASIO_BASIC_STREAM_FILE_HPP
+#ifndef XIO_BASIC_STREAM_FILE_HPP
+#define XIO_BASIC_STREAM_FILE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,8 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_FILE) \
-  || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_FILE)
 
 #include <cstddef>
 #include <xio/async_result.h>
@@ -33,14 +32,14 @@
 namespace xio {
 
 
-#if !defined(ASIO_BASIC_STREAM_FILE_FWD_DECL)
-#define ASIO_BASIC_STREAM_FILE_FWD_DECL
+#if !defined(XIO_BASIC_STREAM_FILE_FWD_DECL)
+#define XIO_BASIC_STREAM_FILE_FWD_DECL
 
 // Forward declaration with defaulted arguments.
 template<typename Executor = any_io_executor>
 class basic_stream_file;
 
-#endif // !defined(ASIO_BASIC_STREAM_FILE_FWD_DECL)
+#endif // !defined(XIO_BASIC_STREAM_FILE_FWD_DECL)
 
 /// Provides stream-oriented file functionality.
 /**
@@ -73,11 +72,8 @@ public:
     };
 
 /// The native representation of a file.
-#if defined(GENERATING_DOCUMENTATION)
-typedef implementation_defined native_handle_type;
-#else
+
 typedef typename basic_file<Executor>::native_handle_type native_handle_type;
-#endif
 
 /// Construct a basic_stream_file without opening it.
 /**
@@ -500,7 +496,7 @@ std::size_t write_some(const ConstBufferSequence &buffers,
    * @li @c cancellation_type::total
    */
 template<typename ConstBufferSequence,
-    ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+    XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
     std::size_t)) WriteToken = default_completion_token_t<executor_type> >
 auto async_write_some(const ConstBufferSequence &buffers,
                       WriteToken &&token = default_completion_token_t<executor_type>())
@@ -626,7 +622,7 @@ std::size_t read_some(const MutableBufferSequence &buffers,
    * @li @c cancellation_type::total
    */
 template<typename MutableBufferSequence,
-    ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
+    XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
     std::size_t)) ReadToken = default_completion_token_t<executor_type> >
 auto async_read_some(const MutableBufferSequence &buffers,
                      ReadToken &&token = default_completion_token_t<executor_type>())
@@ -661,7 +657,7 @@ public:
                     const ConstBufferSequence &buffers) const {
         // If you get an error on the following line it means that your handler
         // does not meet the documented type requirements for a WriteHandler.
-        ASIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
+        XIO_WRITE_HANDLER_CHECK(WriteHandler, handler)
         type_check;
 
         detail::non_const_lvalue<WriteHandler> handler2(handler);
@@ -691,7 +687,7 @@ public:
                     const MutableBufferSequence &buffers) const {
         // If you get an error on the following line it means that your handler
         // does not meet the documented type requirements for a ReadHandler.
-        ASIO_READ_HANDLER_CHECK(ReadHandler, handler)
+        XIO_READ_HANDLER_CHECK(ReadHandler, handler)
         type_check;
 
         detail::non_const_lvalue<ReadHandler> handler2(handler);
@@ -709,7 +705,6 @@ private:
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_FILE)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_FILE)
 
-#endif // ASIO_BASIC_STREAM_FILE_HPP
+#endif // XIO_BASIC_STREAM_FILE_HPP

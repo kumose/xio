@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_NETWORK_V6_HPP
-#define ASIO_IP_NETWORK_V6_HPP
+#ifndef XIO_IP_NETWORK_V6_HPP
+#define XIO_IP_NETWORK_V6_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -46,7 +46,7 @@ namespace xio {
             }
 
             /// Construct a network based on the specified address and prefix length.
-            ASIO_DECL network_v6(const address_v6 &addr,
+            XIO_DECL network_v6(const address_v6 &addr,
                                  unsigned short prefix_len);
 
             /// Copy constructor.
@@ -87,10 +87,10 @@ namespace xio {
             }
 
             /// Obtain an address object that represents the network address.
-  ASIO_DECL address_v6 network() const noexcept;
+  XIO_DECL address_v6 network() const noexcept;
 
             /// Obtain an address range corresponding to the hosts in the network.
-  ASIO_DECL address_v6_range hosts() const noexcept;
+  XIO_DECL address_v6_range hosts() const noexcept;
 
             /// Obtain the true network address, omitting any host bits.
             network_v6 canonical() const noexcept {
@@ -103,13 +103,13 @@ namespace xio {
             }
 
             /// Test if a network is a real subnet of another network.
-  ASIO_DECL bool is_subnet_of(const network_v6 &other) const;
+  XIO_DECL bool is_subnet_of(const network_v6 &other) const;
 
             /// Get the network as an address in dotted decimal format.
-            ASIO_DECL std::string to_string() const;
+            XIO_DECL std::string to_string() const;
 
             /// Get the network as an address in dotted decimal format.
-            ASIO_DECL std::string to_string(xio::error_code &ec) const;
+            XIO_DECL std::string to_string(xio::error_code &ec) const;
 
             /// Compare two networks for equality.
             friend bool operator==(const network_v6 &a, const network_v6 &b) {
@@ -140,14 +140,14 @@ namespace xio {
         /**
  * @relates network_v6
  */
-ASIO_DECL network_v6 make_network_v6(const char *str);
+XIO_DECL network_v6 make_network_v6(const char *str);
 
         /// Create an IPv6 network from a string containing IP address and prefix
 /// length.
         /**
  * @relates network_v6
  */
-ASIO_DECL network_v6 make_network_v6(
+XIO_DECL network_v6 make_network_v6(
             const char *str, xio::error_code &ec);
 
         /// Create an IPv6 network from a string containing IP address and prefix
@@ -155,14 +155,14 @@ ASIO_DECL network_v6 make_network_v6(
         /**
  * @relates network_v6
  */
-ASIO_DECL network_v6 make_network_v6(const std::string &str);
+XIO_DECL network_v6 make_network_v6(const std::string &str);
 
         /// Create an IPv6 network from a string containing IP address and prefix
 /// length.
         /**
  * @relates network_v6
  */
-ASIO_DECL network_v6 make_network_v6(
+XIO_DECL network_v6 make_network_v6(
             const std::string &str, xio::error_code &ec);
 
 
@@ -171,17 +171,17 @@ ASIO_DECL network_v6 make_network_v6(
         /**
  * @relates network_v6
  */
-ASIO_DECL network_v6 make_network_v6(std::string_view str);
+XIO_DECL network_v6 make_network_v6(std::string_view str);
 
         /// Create an IPv6 network from a string containing IP address and prefix
 /// length.
         /**
  * @relates network_v6
  */
-ASIO_DECL network_v6 make_network_v6(
+XIO_DECL network_v6 make_network_v6(
             std::string_view str, xio::error_code &ec);
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 
         /// Output a network as a string.
         /**
@@ -199,7 +199,7 @@ ASIO_DECL network_v6 make_network_v6(
         std::basic_ostream<Elem, Traits> &operator<<(
             std::basic_ostream<Elem, Traits> &os, const network_v6 &net);
 
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
     } // namespace ip
 
 } // namespace xio
@@ -209,4 +209,4 @@ ASIO_DECL network_v6 make_network_v6(
 #include <xio/ip/impl/network_v6.h>
 
 
-#endif // ASIO_IP_NETWORK_V6_HPP
+#endif // XIO_IP_NETWORK_V6_HPP

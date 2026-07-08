@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_WIN_TSS_PTR_IPP
-#define ASIO_DETAIL_IMPL_WIN_TSS_PTR_IPP
+#ifndef XIO_DETAIL_IMPL_WIN_TSS_PTR_IPP
+#define XIO_DETAIL_IMPL_WIN_TSS_PTR_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 
 #include <xio/detail/throw_error.h>
 #include <xio/detail/win_tss_ptr.h>
@@ -54,6 +54,6 @@ DWORD tss_key = ::TlsAlloc();
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 
-#endif // ASIO_DETAIL_IMPL_WIN_TSS_PTR_IPP
+#endif // XIO_DETAIL_IMPL_WIN_TSS_PTR_IPP

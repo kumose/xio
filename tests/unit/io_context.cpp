@@ -43,7 +43,7 @@ void decrement_to_zero(io_context* ioc, int* count)
     xio::post(*ioc, bindns::bind(decrement_to_zero, ioc, count));
 
     // Handler execution cannot nest, so count value should remain unchanged.
-    ASIO_CHECK(*count == before_value);
+    XIO_CHECK(*count == before_value);
   }
 }
 
@@ -57,7 +57,7 @@ void nested_decrement_to_zero(io_context* ioc, int* count)
         bindns::bind(nested_decrement_to_zero, ioc, count));
 
     // Handler execution is nested, so count value should now be zero.
-    ASIO_CHECK(*count == 0);
+    XIO_CHECK(*count == 0);
   }
 }
 
@@ -98,14 +98,14 @@ void io_context_test()
   xio::post(ioc, bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -116,67 +116,67 @@ void io_context_test()
   xio::post(ioc, bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 5);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 5);
 
   count = 0;
   ioc.restart();
   executor_work_guard<io_context::executor_type> w = make_work_guard(ioc);
   xio::post(ioc, bindns::bind(&io_context::stop, &ioc));
-  ASIO_CHECK(!ioc.stopped());
+  XIO_CHECK(!ioc.stopped());
   ioc.run();
 
   // The only operation executed should have been to stop run().
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.restart();
   xio::post(ioc, bindns::bind(increment, &count));
   w.reset();
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 10;
   ioc.restart();
   xio::post(ioc, bindns::bind(decrement_to_zero, &ioc, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 10);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 10);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 0);
 
   count = 10;
   ioc.restart();
   xio::post(ioc, bindns::bind(nested_decrement_to_zero, &ioc, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 10);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 10);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 0);
 
   count = 10;
   ioc.restart();
@@ -185,19 +185,19 @@ void io_context_test()
 
   // No handlers can be called until run() is called, even though nested
   // delivery was specifically allowed in the previous call.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 10);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 10);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 0);
 
   count = 0;
   int count2 = 0;
   ioc.restart();
-  ASIO_CHECK(!ioc.stopped());
+  XIO_CHECK(!ioc.stopped());
   xio::post(ioc, bindns::bind(start_sleep_increments, &ioc, &count));
   xio::post(ioc, bindns::bind(start_sleep_increments, &ioc, &count2));
   thread thread1(bindns::bind(io_context_run, &ioc));
@@ -206,27 +206,27 @@ void io_context_test()
   thread2.join();
 
   // The run() calls will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 3);
-  ASIO_CHECK(count2 == 3);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 3);
+  XIO_CHECK(count2 == 3);
 
   count = 10;
   io_context ioc2;
   xio::dispatch(ioc, xio::bind_executor(ioc2,
         bindns::bind(decrement_to_zero, &ioc2, &count)));
   ioc.restart();
-  ASIO_CHECK(!ioc.stopped());
+  XIO_CHECK(!ioc.stopped());
   ioc.run();
 
   // No decrement_to_zero handlers can be called until run() is called on the
   // second io_context object.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 10);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 10);
 
   ioc2.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(count == 0);
 
   count = 0;
   int exception_count = 0;
@@ -238,9 +238,9 @@ void io_context_test()
   xio::post(ioc, bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
-  ASIO_CHECK(exception_count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
+  XIO_CHECK(exception_count == 0);
 
   for (;;)
   {
@@ -256,9 +256,9 @@ void io_context_test()
   }
 
   // The run() calls will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 3);
-  ASIO_CHECK(exception_count == 2);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 3);
+  XIO_CHECK(exception_count == 2);
 }
 
 class test_service : public xio::io_context::service
@@ -325,13 +325,13 @@ void io_context_service_test()
 
   xio::use_service<test_service>(ioc1);
 
-  ASIO_CHECK(xio::has_service<test_service>(ioc1));
+  XIO_CHECK(xio::has_service<test_service>(ioc1));
 
   test_service* svc1 = new test_service(ioc1);
   try
   {
     xio::add_service(ioc1, svc1);
-    ASIO_ERROR("add_service did not throw");
+    XIO_ERROR("add_service did not throw");
   }
   catch (xio::service_already_exists&)
   {
@@ -343,14 +343,14 @@ void io_context_service_test()
   test_service* svc2 = new test_service(ioc2);
   xio::add_service(ioc2, svc2);
 
-  ASIO_CHECK(xio::has_service<test_service>(ioc2));
-  ASIO_CHECK(&xio::use_service<test_service>(ioc2) == svc2);
+  XIO_CHECK(xio::has_service<test_service>(ioc2));
+  XIO_CHECK(&xio::use_service<test_service>(ioc2) == svc2);
 
   test_service* svc3 = new test_service(ioc2);
   try
   {
     xio::add_service(ioc2, svc3);
-    ASIO_ERROR("add_service did not throw");
+    XIO_ERROR("add_service did not throw");
   }
   catch (xio::service_already_exists&)
   {
@@ -363,21 +363,21 @@ void io_context_service_test()
   try
   {
     xio::add_service(ioc3, svc4);
-    ASIO_ERROR("add_service did not throw");
+    XIO_ERROR("add_service did not throw");
   }
   catch (xio::invalid_service_owner&)
   {
   }
   delete svc4;
 
-  ASIO_CHECK(!xio::has_service<test_service>(ioc3));
+  XIO_CHECK(!xio::has_service<test_service>(ioc3));
 
   // Initial service registration.
 
   xio::io_context ioc4{test_context_service_maker{}};
 
-  ASIO_CHECK(xio::has_service<test_context_service>(ioc4));
-  ASIO_CHECK(xio::use_service<test_context_service>(ioc4).get_value()
+  XIO_CHECK(xio::has_service<test_context_service>(ioc4));
+  XIO_CHECK(xio::use_service<test_context_service>(ioc4).get_value()
       == 42);
 }
 
@@ -385,52 +385,52 @@ void io_context_executor_query_test()
 {
   io_context ioc;
 
-  ASIO_CHECK(
+  XIO_CHECK(
       &xio::query(ioc.get_executor(),
         xio::execution::context)
       == &ioc);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(ioc.get_executor(),
         xio::execution::blocking)
       == xio::execution::blocking.possibly);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(ioc.get_executor(),
         xio::execution::blocking.possibly)
       == xio::execution::blocking.possibly);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(ioc.get_executor(),
         xio::execution::outstanding_work)
       == xio::execution::outstanding_work.untracked);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(ioc.get_executor(),
         xio::execution::outstanding_work.untracked)
       == xio::execution::outstanding_work.untracked);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(ioc.get_executor(),
         xio::execution::relationship)
       == xio::execution::relationship.fork);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(ioc.get_executor(),
         xio::execution::relationship.fork)
       == xio::execution::relationship.fork);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(ioc.get_executor(),
         xio::execution::mapping)
       == xio::execution::mapping.thread);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(ioc.get_executor(),
         xio::execution::inline_exception_handling)
       == xio::execution::inline_exception_handling.capture);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(ioc.get_executor(),
         xio::execution::allocator)
       == std::allocator<void>());
@@ -444,14 +444,14 @@ void io_context_executor_execute_test()
   ioc.get_executor().execute(bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -460,14 +460,14 @@ void io_context_executor_execute_test()
     ).execute(bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -476,18 +476,18 @@ void io_context_executor_execute_test()
     ).execute(bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
-  ASIO_CHECK(!ioc.stopped());
+  XIO_CHECK(!ioc.stopped());
 
   xio::require(ioc.get_executor(),
       xio::execution::blocking.never,
@@ -495,14 +495,14 @@ void io_context_executor_execute_test()
     ).execute(bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -512,14 +512,14 @@ void io_context_executor_execute_test()
     ).execute(bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -530,14 +530,14 @@ void io_context_executor_execute_test()
     ).execute(bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -548,14 +548,14 @@ void io_context_executor_execute_test()
     ).execute(bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -568,14 +568,14 @@ void io_context_executor_execute_test()
     ).execute(bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 
   count = 0;
   ioc.restart();
@@ -588,14 +588,14 @@ void io_context_executor_execute_test()
     ).execute(bindns::bind(increment, &count));
 
   // No handlers can be called until run() is called.
-  ASIO_CHECK(!ioc.stopped());
-  ASIO_CHECK(count == 0);
+  XIO_CHECK(!ioc.stopped());
+  XIO_CHECK(count == 0);
 
   ioc.run();
 
   // The run() call will not return until all work has finished.
-  ASIO_CHECK(ioc.stopped());
-  ASIO_CHECK(count == 1);
+  XIO_CHECK(ioc.stopped());
+  XIO_CHECK(count == 1);
 }
 
 template <typename T>
@@ -661,12 +661,12 @@ void io_context_allocator_test()
         custom_allocator<int>(&live_count, &total_count));
     (void)ioc1;
 
-    ASIO_CHECK(live_count > 0);
-    ASIO_CHECK(total_count > 0);
+    XIO_CHECK(live_count > 0);
+    XIO_CHECK(total_count > 0);
   }
 
-  ASIO_CHECK(live_count == 0);
-  ASIO_CHECK(total_count > 0);
+  XIO_CHECK(live_count == 0);
+  XIO_CHECK(total_count > 0);
 
   {
     live_count = 0;
@@ -675,12 +675,12 @@ void io_context_allocator_test()
         custom_allocator<int>(&live_count, &total_count), 1);
     (void)ioc2;
 
-    ASIO_CHECK(live_count > 0);
-    ASIO_CHECK(total_count > 0);
+    XIO_CHECK(live_count > 0);
+    XIO_CHECK(total_count > 0);
   }
 
-  ASIO_CHECK(live_count == 0);
-  ASIO_CHECK(total_count > 0);
+  XIO_CHECK(live_count == 0);
+  XIO_CHECK(total_count > 0);
 
   {
     live_count = 0;
@@ -690,20 +690,20 @@ void io_context_allocator_test()
         xio::config_from_string(""));
     (void)ioc3;
 
-    ASIO_CHECK(live_count > 0);
-    ASIO_CHECK(total_count > 0);
+    XIO_CHECK(live_count > 0);
+    XIO_CHECK(total_count > 0);
   }
 
-  ASIO_CHECK(live_count == 0);
-  ASIO_CHECK(total_count > 0);
+  XIO_CHECK(live_count == 0);
+  XIO_CHECK(total_count > 0);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "io_context",
-  ASIO_TEST_CASE(io_context_test)
-  ASIO_TEST_CASE(io_context_service_test)
-  ASIO_TEST_CASE(io_context_executor_query_test)
-  ASIO_TEST_CASE(io_context_executor_execute_test)
-  ASIO_TEST_CASE(io_context_allocator_test)
+  XIO_TEST_CASE(io_context_test)
+  XIO_TEST_CASE(io_context_service_test)
+  XIO_TEST_CASE(io_context_executor_query_test)
+  XIO_TEST_CASE(io_context_executor_execute_test)
+  XIO_TEST_CASE(io_context_allocator_test)
 )

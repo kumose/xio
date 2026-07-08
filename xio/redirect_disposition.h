@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_REDIRECT_DISPOSITION_HPP
-#define ASIO_REDIRECT_DISPOSITION_HPP
+#ifndef XIO_REDIRECT_DISPOSITION_HPP
+#define XIO_REDIRECT_DISPOSITION_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -34,7 +34,7 @@ namespace xio {
 
 
 
-    template<typename CompletionToken, ASIO_DISPOSITION Disposition>
+    template<typename CompletionToken, XIO_DISPOSITION Disposition>
     class redirect_disposition_t {
     public:
         /// Constructor.
@@ -56,7 +56,7 @@ namespace xio {
  * asynchronous operation's default completion token (or xio::deferred
  * if no default is available).
  */
-    template<ASIO_DISPOSITION Disposition>
+    template<XIO_DISPOSITION Disposition>
     class partial_redirect_disposition {
     public:
         /// Constructor that specifies the variable used to capture disposition
@@ -86,7 +86,7 @@ namespace xio {
  * @note When redirecting to a variable of type @c std::exception_ptr, other
  * disposition types will be automatically converted to @c std::exception_ptr.
  */
-    template<ASIO_DISPOSITION Disposition>
+    template<XIO_DISPOSITION Disposition>
     [[nodiscard]] inline partial_redirect_disposition<Disposition>
 
     redirect_disposition(Disposition &d) {
@@ -98,7 +98,7 @@ namespace xio {
  * @note When redirecting to a variable of type @c std::exception_ptr, other
  * disposition types will be automatically converted to @c std::exception_ptr.
  */
-    template<typename CompletionToken, ASIO_DISPOSITION Disposition>
+    template<typename CompletionToken, XIO_DISPOSITION Disposition>
     [[nodiscard]] inline
     redirect_disposition_t<std::decay_t<CompletionToken>, Disposition>
 
@@ -114,4 +114,4 @@ namespace xio {
 
 #include <xio/impl/redirect_disposition.h>
 
-#endif // ASIO_REDIRECT_DISPOSITION_HPP
+#endif // XIO_REDIRECT_DISPOSITION_HPP

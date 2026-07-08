@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_THREAD_POOL_HPP
-#define ASIO_THREAD_POOL_HPP
+#ifndef XIO_THREAD_POOL_HPP
+#define XIO_THREAD_POOL_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -95,9 +95,9 @@ namespace xio {
         /// Executor used to submit functions to a thread pool.
         typedef basic_executor_type<std::allocator<void>, 0> executor_type;
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
         /// Constructs a pool with an automatically determined number of threads.
-        ASIO_DECL thread_pool();
+        XIO_DECL thread_pool();
 
         /// Constructs a pool with an automatically determined number of threads.
         /**
@@ -107,13 +107,13 @@ namespace xio {
    */
         template<typename Allocator>
         thread_pool(allocator_arg_t, const Allocator &a);
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
         /// Constructs a pool with a specified number of threads.
         /**
    * @param num_threads The number of threads required.
    */
-        ASIO_DECL explicit thread_pool(std::size_t num_threads);
+        XIO_DECL explicit thread_pool(std::size_t num_threads);
 
         /// Constructs a pool with a specified number of threads.
         /**
@@ -136,7 +136,7 @@ namespace xio {
    * @param initial_services Used to create the initial services. The @c make
    * function will be called once at the end of execution_context construction.
    */
-        ASIO_DECL thread_pool(std::size_t num_threads,
+        XIO_DECL thread_pool(std::size_t num_threads,
                               const execution_context::service_maker &initial_services);
 
         /// Constructs a pool with a specified number of threads.
@@ -161,7 +161,7 @@ namespace xio {
         /**
    * Automatically stops and joins the pool, if not explicitly done beforehand.
    */
-        ASIO_DECL ~thread_pool();
+        XIO_DECL ~thread_pool();
 
         /// Obtains the executor associated with the pool.
         executor_type get_executor() noexcept;
@@ -174,7 +174,7 @@ namespace xio {
    * This function stops the threads as soon as possible. As a result of calling
    * @c stop(), pending function objects may be never be invoked.
    */
-  ASIO_DECL void stop();
+  XIO_DECL void stop();
 
         /// Attaches the current thread to the pool.
         /**
@@ -182,7 +182,7 @@ namespace xio {
    * used for executing submitted function objects. Blocks the calling thread
    * until the pool is stopped or joined and has no outstanding work.
    */
-  ASIO_DECL void attach();
+  XIO_DECL void attach();
 
         /// Joins the threads.
         /**
@@ -190,7 +190,7 @@ namespace xio {
    * stop() is not called prior to @c join(), the @c join() call will wait
    * until the pool has no more outstanding work.
    */
-  ASIO_DECL void join();
+  XIO_DECL void join();
 
         /// Waits for threads to complete.
         /**
@@ -200,7 +200,7 @@ namespace xio {
    *
    * @note @c wait() is synonymous with @c join().
    */
-  ASIO_DECL void wait();
+  XIO_DECL void wait();
 
     private:
         thread_pool(const thread_pool &) = delete;
@@ -209,16 +209,16 @@ namespace xio {
 
         struct thread_function;
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
         // Helper function to calculate the default number of threads in the pool.
-  ASIO_DECL static long default_thread_pool_size();
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+  XIO_DECL static long default_thread_pool_size();
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
         // Helper function to ensure the thread pool size is not out of range.
-  ASIO_DECL static long clamp_thread_pool_size(std::size_t n);
+  XIO_DECL static long clamp_thread_pool_size(std::size_t n);
 
         // Helper function to start all threads in the pool.
-  ASIO_DECL void start();
+  XIO_DECL void start();
 
         // The underlying scheduler.
         detail::scheduler &scheduler_;
@@ -269,12 +269,10 @@ namespace xio {
         /// Move assignment operator.
         basic_executor_type &operator=(basic_executor_type &&other) noexcept;
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     private:
         friend struct XIO_VERSIONED_NAME (require_fn)::impl;
         friend struct XIO_VERSIONED_NAME (prefer_fn)::impl;
-#endif // !defined(GENERATING_DOCUMENTATION)
 
         /// Obtain an executor with the @c blocking.possibly property.
         /**
@@ -287,7 +285,7 @@ namespace xio {
    *     xio::execution::blocking.possibly); @endcode
    */
         constexpr basic_executor_type<Allocator,
-            ASIO_UNSPECIFIED(Bits & ~blocking_mask)>
+            XIO_UNSPECIFIED(Bits & ~blocking_mask)>
         require(execution::blocking_t::possibly_t) const {
             return basic_executor_type<Allocator, Bits & ~blocking_mask>(
                 pool_, allocator_, bits_ & ~blocking_mask);
@@ -304,10 +302,10 @@ namespace xio {
    *     xio::execution::blocking.always); @endcode
    */
         constexpr basic_executor_type<Allocator,
-            ASIO_UNSPECIFIED((Bits & ~blocking_mask) | blocking_always)>
+            XIO_UNSPECIFIED((Bits & ~blocking_mask) | blocking_always)>
         require(execution::blocking_t::always_t) const {
             return basic_executor_type<Allocator,
-                ASIO_UNSPECIFIED((Bits & ~blocking_mask) | blocking_always)>(
+                XIO_UNSPECIFIED((Bits & ~blocking_mask) | blocking_always)>(
                 pool_, allocator_, bits_ & ~blocking_mask);
         }
 
@@ -322,7 +320,7 @@ namespace xio {
    *     xio::execution::blocking.never); @endcode
    */
         constexpr basic_executor_type<Allocator,
-            ASIO_UNSPECIFIED(Bits & ~blocking_mask)>
+            XIO_UNSPECIFIED(Bits & ~blocking_mask)>
         require(execution::blocking_t::never_t) const {
             return basic_executor_type<Allocator, Bits & ~blocking_mask>(
                 pool_, allocator_, (bits_ & ~blocking_mask) | blocking_never);
@@ -370,7 +368,7 @@ namespace xio {
    *     xio::execution::outstanding_work.tracked); @endcode
    */
         constexpr basic_executor_type<Allocator,
-            ASIO_UNSPECIFIED(Bits | outstanding_work_tracked)>
+            XIO_UNSPECIFIED(Bits | outstanding_work_tracked)>
         require(execution::outstanding_work_t::tracked_t) const {
             return basic_executor_type<Allocator, Bits | outstanding_work_tracked>(
                 pool_, allocator_, bits_);
@@ -387,7 +385,7 @@ namespace xio {
    *     xio::execution::outstanding_work.untracked); @endcode
    */
         constexpr basic_executor_type<Allocator,
-            ASIO_UNSPECIFIED(Bits & ~outstanding_work_tracked)>
+            XIO_UNSPECIFIED(Bits & ~outstanding_work_tracked)>
         require(execution::outstanding_work_t::untracked_t) const {
             return basic_executor_type<Allocator, Bits & ~outstanding_work_tracked>(
                 pool_, allocator_, bits_);
@@ -426,14 +424,12 @@ namespace xio {
                 pool_, std::allocator<void>(), bits_);
         }
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     private:
         friend struct XIO_VERSIONED_NAME (query_fn)::impl;
         friend struct xio::execution::detail::mapping_t<0>;
         friend struct xio::execution::detail::inline_exception_handling_t<0>;
         friend struct xio::execution::detail::outstanding_work_t<0>;
-#endif // !defined(GENERATING_DOCUMENTATION)
 
         /// Query the current value of the @c mapping property.
         /**
@@ -618,7 +614,7 @@ namespace xio {
         }
 
     public:
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
         /// Obtain the underlying execution context.
         thread_pool &context() const noexcept;
 
@@ -690,7 +686,7 @@ namespace xio {
    */
         template<typename Function, typename OtherAllocator>
         void defer(Function &&f, const OtherAllocator &a) const;
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
     private:
         friend class thread_pool;
@@ -735,7 +731,6 @@ namespace xio {
         unsigned int bits_;
     };
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     namespace execution {
         template<>
@@ -743,7 +738,6 @@ namespace xio {
         };
     } // namespace execution
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
 
 } // namespace xio
@@ -752,4 +746,4 @@ namespace xio {
 
 #include <xio/impl/thread_pool.h>
 
-#endif // ASIO_THREAD_POOL_HPP
+#endif // XIO_THREAD_POOL_HPP

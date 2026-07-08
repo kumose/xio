@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WAIT_HANDLER_HPP
-#define ASIO_DETAIL_WAIT_HANDLER_HPP
+#ifndef XIO_DETAIL_WAIT_HANDLER_HPP
+#define XIO_DETAIL_WAIT_HANDLER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -32,7 +32,7 @@ namespace xio {
         template<typename Handler, typename IoExecutor>
         class wait_handler : public wait_op {
         public:
-            ASIO_DEFINE_HANDLER_PTR(wait_handler);
+            XIO_DEFINE_HANDLER_PTR(wait_handler);
 
             wait_handler(Handler &h, const IoExecutor &io_ex)
                 : wait_op(&wait_handler::do_complete),
@@ -47,7 +47,7 @@ namespace xio {
                 wait_handler *h(static_cast<wait_handler *>(base));
                 ptr p = {xio::detail::addressof(h->handler_), h, h};
 
-                ASIO_HANDLER_COMPLETION((*h));
+                XIO_HANDLER_COMPLETION((*h));
 
                 // Take ownership of the operation's outstanding work.
                 handler_work<Handler, IoExecutor> w(
@@ -68,9 +68,9 @@ namespace xio {
                 // Make the upcall if required.
                 if (owner) {
                     fenced_block b(fenced_block::half);
-                    ASIO_HANDLER_INVOCATION_BEGIN((handler.arg1_));
+                    XIO_HANDLER_INVOCATION_BEGIN((handler.arg1_));
                     w.complete(handler, handler.handler_);
-                    ASIO_HANDLER_INVOCATION_END;
+                    XIO_HANDLER_INVOCATION_END;
                 }
             }
 
@@ -84,4 +84,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_WAIT_HANDLER_HPP
+#endif // XIO_DETAIL_WAIT_HANDLER_HPP

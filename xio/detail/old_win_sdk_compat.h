@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_OLD_WIN_SDK_COMPAT_HPP
-#define ASIO_DETAIL_OLD_WIN_SDK_COMPAT_HPP
+#ifndef XIO_DETAIL_OLD_WIN_SDK_COMPAT_HPP
+#define XIO_DETAIL_OLD_WIN_SDK_COMPAT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,14 +17,14 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 
 // Guess whether we are building against on old Platform SDK.
 #if !defined(IN6ADDR_ANY_INIT)
-#define ASIO_HAS_OLD_WIN_SDK 1
+#define XIO_HAS_OLD_WIN_SDK 1
 #endif // !defined(IN6ADDR_ANY_INIT)
 
-#if defined(ASIO_HAS_OLD_WIN_SDK)
+#if defined(XIO_HAS_OLD_WIN_SDK)
 
 // Emulation of types that are missing from old Platform SDKs.
 //
@@ -191,7 +191,7 @@ struct addrinfo_emulation {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_OLD_WIN_SDK)
+#endif // defined(XIO_HAS_OLD_WIN_SDK)
 
 // Even newer Platform SDKs that support IPv6 may not define IPV6_V6ONLY.
 #if !defined(IPV6_V6ONLY)
@@ -203,6 +203,6 @@ struct addrinfo_emulation {
 # define IPPROTO_ICMPV6 58
 #endif
 
-#endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 
-#endif // ASIO_DETAIL_OLD_WIN_SDK_COMPAT_HPP
+#endif // XIO_DETAIL_OLD_WIN_SDK_COMPAT_HPP

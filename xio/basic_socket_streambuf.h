@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BASIC_SOCKET_STREAMBUF_HPP
-#define ASIO_BASIC_SOCKET_STREAMBUF_HPP
+#ifndef XIO_BASIC_SOCKET_STREAMBUF_HPP
+#define XIO_BASIC_SOCKET_STREAMBUF_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 
 #include <streambuf>
 #include <vector>
@@ -65,8 +65,8 @@ namespace xio {
         };
     } // namespace detail
 
-#if !defined(ASIO_BASIC_SOCKET_STREAMBUF_FWD_DECL)
-#define ASIO_BASIC_SOCKET_STREAMBUF_FWD_DECL
+#if !defined(XIO_BASIC_SOCKET_STREAMBUF_FWD_DECL)
+#define XIO_BASIC_SOCKET_STREAMBUF_FWD_DECL
 
     // Forward declaration with defaulted arguments.
     template<typename Protocol,
@@ -74,18 +74,11 @@ namespace xio {
         typename WaitTraits = wait_traits<Clock> >
     class basic_socket_streambuf;
 
-#endif // !defined(ASIO_BASIC_SOCKET_STREAMBUF_FWD_DECL)
+#endif // !defined(XIO_BASIC_SOCKET_STREAMBUF_FWD_DECL)
 
     /// Iostream streambuf for a socket.
-#if defined(GENERATING_DOCUMENTATION)
-    template<typename Protocol,
-        typename Clock = chrono::steady_clock,
-        typename WaitTraits = wait_traits<Clock> >
 
-
-#else // defined(GENERATING_DOCUMENTATION)
     template<typename Protocol, typename Clock, typename WaitTraits>
-#endif // defined(GENERATING_DOCUMENTATION)
     class basic_socket_streambuf
             : public std::streambuf,
               private detail::socket_streambuf_io_context,
@@ -104,16 +97,8 @@ namespace xio {
         /// The clock type.
         typedef Clock clock_type;
 
-#if defined(GENERATING_DOCUMENTATION)
-        /// The time type.
-        typedef typename WaitTraits::time_point time_point;
-
-        /// The duration type.
-        typedef typename WaitTraits::duration duration;
-#else
         typedef typename traits_helper::time_type time_point;
         typedef typename traits_helper::duration_type duration;
-#endif
 
         /// Construct a basic_socket_streambuf without establishing a connection.
         basic_socket_streambuf()
@@ -266,10 +251,10 @@ namespace xio {
 
     protected:
         int_type underflow() {
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
             ec_ = xio::error::operation_not_supported;
             return traits_type::eof();
-#else // defined(ASIO_WINDOWS_RUNTIME)
+#else // defined(XIO_WINDOWS_RUNTIME)
             if (gptr() != egptr())
                 return traits_type::eof();
 
@@ -311,14 +296,14 @@ namespace xio {
                         socket().native_handle(), 0, timeout(), ec_) < 0)
                     return traits_type::eof();
             }
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
         }
 
         int_type overflow(int_type c) {
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
             ec_ = xio::error::operation_not_supported;
             return traits_type::eof();
-#else // defined(ASIO_WINDOWS_RUNTIME)
+#else // defined(XIO_WINDOWS_RUNTIME)
             char_type ch = traits_type::to_char_type(c);
 
             // Determine what needs to be sent.
@@ -377,7 +362,7 @@ namespace xio {
             }
 
             return c;
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
         }
 
         int sync() {
@@ -431,9 +416,9 @@ namespace xio {
 
         template<typename EndpointIterator>
         void connect_to_endpoints(EndpointIterator begin, EndpointIterator end) {
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
             ec_ = xio::error::operation_not_supported;
-#else // defined(ASIO_WINDOWS_RUNTIME)
+#else // defined(XIO_WINDOWS_RUNTIME)
             if (ec_)
                 return;
 
@@ -486,7 +471,7 @@ namespace xio {
                 if (!ec_)
                     return;
             }
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
         }
 
         // Helper function to get the maximum expiry time.
@@ -505,6 +490,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
 
-#endif // ASIO_BASIC_SOCKET_STREAMBUF_HPP
+#endif // XIO_BASIC_SOCKET_STREAMBUF_HPP

@@ -13,9 +13,9 @@ ptr<state_mgr> my_state_manager;
 ```
 Log store will not be passed at the initialization time but will be loaded by `load_log_store()` API in the state manager later. So you need properly implement that function.
 
-After that, set your [Asio](../include/libnuraft/asio_service_options.hxx) and [Raft](../include/libnuraft/raft_params.hxx) options:
+After that, set your [Xio](../include/libnuraft/xio_service_options.hxx) and [Raft](../include/libnuraft/raft_params.hxx) options:
 ```C++
-asio_service::options asio_opt;
+xio_service::options xio_opt;
 raft_params params;
 ```
 
@@ -25,7 +25,7 @@ ptr<raft_server> server = launcher.init(my_state_machine,
                                         my_state_manager,
                                         my_logger,
                                         12345,
-                                        asio_opt,
+                                        xio_opt,
                                         params);
 ```
 Note that the initialization of Raft server will be done asynchronously, and you can check it by using `is_initialized()` API:

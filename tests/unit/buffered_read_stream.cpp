@@ -162,9 +162,9 @@ void test_sync_operations()
         xio::buffer(read_buf + bytes_read));
   }
 
-  ASIO_CHECK(bytes_written == sizeof(write_data));
-  ASIO_CHECK(bytes_read == sizeof(read_data));
-  ASIO_CHECK(memcmp(write_data, read_data, sizeof(write_data)) == 0);
+  XIO_CHECK(bytes_written == sizeof(write_data));
+  XIO_CHECK(bytes_read == sizeof(read_data));
+  XIO_CHECK(memcmp(write_data, read_data, sizeof(write_data)) == 0);
 
   bytes_written = 0;
   while (bytes_written < sizeof(write_data))
@@ -180,31 +180,31 @@ void test_sync_operations()
         xio::buffer(read_buf + bytes_read));
   }
 
-  ASIO_CHECK(bytes_written == sizeof(write_data));
-  ASIO_CHECK(bytes_read == sizeof(read_data));
-  ASIO_CHECK(memcmp(write_data, read_data, sizeof(write_data)) == 0);
+  XIO_CHECK(bytes_written == sizeof(write_data));
+  XIO_CHECK(bytes_read == sizeof(read_data));
+  XIO_CHECK(memcmp(write_data, read_data, sizeof(write_data)) == 0);
 
   server_socket.close();
   xio::error_code error;
   bytes_read = client_socket.read_some(
       xio::buffer(read_buf), error);
 
-  ASIO_CHECK(bytes_read == 0);
-  ASIO_CHECK(error == xio::error::eof);
+  XIO_CHECK(bytes_read == 0);
+  XIO_CHECK(error == xio::error::eof);
 
   client_socket.close(error);
 }
 
 void handle_accept(const xio::error_code& e)
 {
-  ASIO_CHECK(!e);
+  XIO_CHECK(!e);
 }
 
 void handle_write(const xio::error_code& e,
     std::size_t bytes_transferred,
     std::size_t* total_bytes_written)
 {
-  ASIO_CHECK(!e);
+  XIO_CHECK(!e);
   if (e)
     throw std::system_error(e); // Terminate test.
   *total_bytes_written += bytes_transferred;
@@ -214,7 +214,7 @@ void handle_read(const xio::error_code& e,
     std::size_t bytes_transferred,
     std::size_t* total_bytes_read)
 {
-  ASIO_CHECK(!e);
+  XIO_CHECK(!e);
   if (e)
     throw std::system_error(e); // Terminate test.
   *total_bytes_read += bytes_transferred;
@@ -223,8 +223,8 @@ void handle_read(const xio::error_code& e,
 void handle_read_eof(const xio::error_code& e,
     std::size_t bytes_transferred)
 {
-  ASIO_CHECK(e == xio::error::eof);
-  ASIO_CHECK(bytes_transferred == 0);
+  XIO_CHECK(e == xio::error::eof);
+  XIO_CHECK(bytes_transferred == 0);
 }
 
 void test_async_operations()
@@ -277,9 +277,9 @@ void test_async_operations()
     io_context.restart();
   }
 
-  ASIO_CHECK(bytes_written == sizeof(write_data));
-  ASIO_CHECK(bytes_read == sizeof(read_data));
-  ASIO_CHECK(memcmp(write_data, read_data, sizeof(write_data)) == 0);
+  XIO_CHECK(bytes_written == sizeof(write_data));
+  XIO_CHECK(bytes_read == sizeof(read_data));
+  XIO_CHECK(memcmp(write_data, read_data, sizeof(write_data)) == 0);
 
   bytes_written = 0;
   while (bytes_written < sizeof(write_data))
@@ -301,18 +301,18 @@ void test_async_operations()
     io_context.restart();
   }
 
-  ASIO_CHECK(bytes_written == sizeof(write_data));
-  ASIO_CHECK(bytes_read == sizeof(read_data));
-  ASIO_CHECK(memcmp(write_data, read_data, sizeof(write_data)) == 0);
+  XIO_CHECK(bytes_written == sizeof(write_data));
+  XIO_CHECK(bytes_read == sizeof(read_data));
+  XIO_CHECK(memcmp(write_data, read_data, sizeof(write_data)) == 0);
 
   server_socket.close();
   client_socket.async_read_some(xio::buffer(read_buf), handle_read_eof);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "buffered_read_stream",
-  ASIO_COMPILE_TEST_CASE(test_compile)
-  ASIO_TEST_CASE(test_sync_operations)
-  ASIO_TEST_CASE(test_async_operations)
+  XIO_COMPILE_TEST_CASE(test_compile)
+  XIO_TEST_CASE(test_sync_operations)
+  XIO_TEST_CASE(test_async_operations)
 )

@@ -29,7 +29,7 @@ namespace local_connect_pair_compile {
 
 void test()
 {
-#if defined(ASIO_HAS_LOCAL_SOCKETS)
+#if defined(XIO_HAS_LOCAL_SOCKETS)
   using namespace xio;
   namespace local = xio::local;
   typedef local::datagram_protocol dp;
@@ -59,15 +59,15 @@ void test()
   catch (std::exception&)
   {
   }
-#endif // defined(ASIO_HAS_LOCAL_SOCKETS)
+#endif // defined(XIO_HAS_LOCAL_SOCKETS)
 }
 
 } // namespace local_connect_pair_compile
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "local/connect_pair",
-  ASIO_COMPILE_TEST_CASE(local_connect_pair_compile::test)
+  XIO_COMPILE_TEST_CASE(local_connect_pair_compile::test)
 )

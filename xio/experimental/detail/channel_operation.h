@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXPERIMENTAL_DETAIL_CHANNEL_OPERATION_HPP
-#define ASIO_EXPERIMENTAL_DETAIL_CHANNEL_OPERATION_HPP
+#ifndef XIO_EXPERIMENTAL_DETAIL_CHANNEL_OPERATION_HPP
+#define XIO_EXPERIMENTAL_DETAIL_CHANNEL_OPERATION_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -37,7 +37,7 @@ namespace xio {
         namespace detail {
             // Base class for all channel operations. A function pointer is used instead of
             // virtual functions to avoid the associated overhead.
-            class channel_operation ASIO_INHERIT_TRACKED_HANDLER {
+            class channel_operation XIO_INHERIT_TRACKED_HANDLER {
             public:
                 template<typename Executor, typename = void, typename = void>
                 class handler_work_base;
@@ -167,7 +167,7 @@ namespace xio {
                 executor_type executor_;
             };
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
 
             template<typename Executor>
             class channel_operation::handler_work_base<Executor,
@@ -213,7 +213,7 @@ private:
   executor_work_guard<Executor> work_;
 };
 
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
             template<typename Handler, typename IoExecutor, typename>
             class channel_operation::handler_work :
@@ -337,4 +337,4 @@ private:
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXPERIMENTAL_DETAIL_CHANNEL_OPERATION_HPP
+#endif // XIO_EXPERIMENTAL_DETAIL_CHANNEL_OPERATION_HPP

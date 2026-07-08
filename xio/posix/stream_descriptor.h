@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_POSIX_STREAM_DESCRIPTOR_HPP
-#define ASIO_POSIX_STREAM_DESCRIPTOR_HPP
+#ifndef XIO_POSIX_STREAM_DESCRIPTOR_HPP
+#define XIO_POSIX_STREAM_DESCRIPTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,8 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_POSIX_STREAM_DESCRIPTOR) \
-  || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_POSIX_STREAM_DESCRIPTOR)
 
 #include <xio/posix/basic_stream_descriptor.h>
 
@@ -32,7 +31,6 @@ namespace xio {
 
 } // namespace xio
 
-#endif // defined(ASIO_HAS_POSIX_STREAM_DESCRIPTOR)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_POSIX_STREAM_DESCRIPTOR)
 
-#endif // ASIO_POSIX_STREAM_DESCRIPTOR_HPP
+#endif // XIO_POSIX_STREAM_DESCRIPTOR_HPP

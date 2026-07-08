@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_POSIX_EVENT_HPP
-#define ASIO_DETAIL_POSIX_EVENT_HPP
+#ifndef XIO_DETAIL_POSIX_EVENT_HPP
+#define XIO_DETAIL_POSIX_EVENT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_PTHREADS)
+#if defined(XIO_HAS_PTHREADS)
 
 #include <cstddef>
 #include <pthread.h>
@@ -34,7 +34,7 @@ namespace xio {
                 : private noncopyable {
         public:
             // Constructor.
-            ASIO_DECL posix_event();
+            XIO_DECL posix_event();
 
             // Destructor.
             ~posix_event() {
@@ -153,6 +153,6 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // defined(ASIO_HAS_PTHREADS)
+#endif // defined(XIO_HAS_PTHREADS)
 
-#endif // ASIO_DETAIL_POSIX_EVENT_HPP
+#endif // XIO_DETAIL_POSIX_EVENT_HPP

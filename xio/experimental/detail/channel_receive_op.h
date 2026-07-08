@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXPERIMENTAL_DETAIL_CHANNEL_RECEIVE_OP_HPP
-#define ASIO_EXPERIMENTAL_DETAIL_CHANNEL_RECEIVE_OP_HPP
+#ifndef XIO_EXPERIMENTAL_DETAIL_CHANNEL_RECEIVE_OP_HPP
+#define XIO_EXPERIMENTAL_DETAIL_CHANNEL_RECEIVE_OP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -53,7 +53,7 @@ namespace xio {
             template<typename Payload, typename Handler, typename IoExecutor>
             class channel_receive_op : public channel_receive<Payload> {
             public:
-                ASIO_DEFINE_HANDLER_PTR(channel_receive_op);
+                XIO_DEFINE_HANDLER_PTR(channel_receive_op);
 
                 template<typename... Args>
                 channel_receive_op(Handler &handler, const IoExecutor &io_ex)
@@ -68,7 +68,7 @@ namespace xio {
                     channel_receive_op *o(static_cast<channel_receive_op *>(base));
                     ptr p = {xio::detail::addressof(o->handler_), o, o};
 
-                    ASIO_HANDLER_COMPLETION((*o));
+                    XIO_HANDLER_COMPLETION((*o));
 
                     // Take ownership of the operation's outstanding work.
                     channel_operation::handler_work<Handler, IoExecutor> w(
@@ -87,14 +87,14 @@ namespace xio {
                             static_cast<Payload &&>(*payload), o->handler_);
                         p.h = xio::detail::addressof(handler.handler_);
                         p.reset();
-                        ASIO_HANDLER_INVOCATION_BEGIN(());
+                        XIO_HANDLER_INVOCATION_BEGIN(());
                         if (a == channel_operation::immediate_op)
                             w.immediate(handler, handler.handler_, 0);
                         else if (a == channel_operation::dispatch_op)
                             w.dispatch(handler, handler.handler_);
                         else
                             w.post(handler, handler.handler_);
-                        ASIO_HANDLER_INVOCATION_END;
+                        XIO_HANDLER_INVOCATION_END;
                     } else {
                         xio::detail::binder0<Handler> handler(o->handler_);
                         p.h = xio::detail::addressof(handler.handler_);
@@ -113,4 +113,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXPERIMENTAL_DETAIL_CHANNEL_RECEIVE_OP_HPP
+#endif // XIO_EXPERIMENTAL_DETAIL_CHANNEL_RECEIVE_OP_HPP

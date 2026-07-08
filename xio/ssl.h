@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SSL_HPP
-#define ASIO_SSL_HPP
+#ifndef XIO_SSL_HPP
+#define XIO_SSL_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -24,4 +24,4 @@
 #include <xio/ssl/verify_context.h>
 #include <xio/ssl/verify_mode.h>
 
-#endif // ASIO_SSL_HPP
+#endif // XIO_SSL_HPP

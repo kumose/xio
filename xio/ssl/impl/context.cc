@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SSL_IMPL_CONTEXT_IPP
-#define ASIO_SSL_IMPL_CONTEXT_IPP
+#ifndef XIO_SSL_IMPL_CONTEXT_IPP
+#define XIO_SSL_IMPL_CONTEXT_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -255,7 +255,7 @@ namespace xio {
 #if ((OPENSSL_VERSION_NUMBER >= 0x10101000L) \
       && (!defined(LIBRESSL_VERSION_NUMBER) || \
         LIBRESSL_VERSION_NUMBER >= 0x3020000fL)) \
-    || defined(ASIO_USE_WOLFSSL)
+    || defined(XIO_USE_WOLFSSL)
                 case context::tlsv13:
                     handle_ = ::SSL_CTX_new(::TLS_method());
                     if (handle_) {
@@ -279,7 +279,7 @@ namespace xio {
                     break;
 #else // ((OPENSSL_VERSION_NUMBER >= 0x10101000L)
                     //     && !defined(LIBRESSL_VERSION_NUMBER))
-                    //   || defined(ASIO_USE_WOLFSSL)
+                    //   || defined(XIO_USE_WOLFSSL)
                 case context::tlsv13:
                 case context::tlsv13_client:
                 case context::tlsv13_server:
@@ -288,7 +288,7 @@ namespace xio {
                     break;
 #endif // ((OPENSSL_VERSION_NUMBER >= 0x10101000L)
                 //     && !defined(LIBRESSL_VERSION_NUMBER))
-                //   || defined(ASIO_USE_WOLFSSL)
+                //   || defined(XIO_USE_WOLFSSL)
 
                 // Any supported SSL/TLS version.
                 case context::sslv23:
@@ -374,7 +374,7 @@ namespace xio {
 #if ((OPENSSL_VERSION_NUMBER >= 0x10100000L) \
       && (!defined(LIBRESSL_VERSION_NUMBER) \
         || LIBRESSL_VERSION_NUMBER >= 0x2070000fL)) \
-    || defined(ASIO_USE_WOLFSSL)
+    || defined(XIO_USE_WOLFSSL)
                 void *cb_userdata = ::SSL_CTX_get_default_passwd_cb_userdata(handle_);
 #else // (OPENSSL_VERSION_NUMBER >= 0x10100000L)
                 void *cb_userdata = handle_->default_passwd_callback_userdata;
@@ -387,7 +387,7 @@ namespace xio {
 #if ((OPENSSL_VERSION_NUMBER >= 0x10100000L) \
       && (!defined(LIBRESSL_VERSION_NUMBER) \
         || LIBRESSL_VERSION_NUMBER >= 0x2070000fL)) \
-    || defined(ASIO_USE_WOLFSSL)
+    || defined(XIO_USE_WOLFSSL)
                     ::SSL_CTX_set_default_passwd_cb_userdata(handle_, 0);
 #else // (OPENSSL_VERSION_NUMBER >= 0x10100000L)
                     handle_->default_passwd_callback_userdata = 0;
@@ -416,7 +416,7 @@ namespace xio {
             xio::detail::throw_error(ec, "clear_options");
         }
 
-        ASIO_SYNC_OP_VOID context::clear_options(
+        XIO_SYNC_OP_VOID context::clear_options(
             context::options o, xio::error_code &ec) {
 #if (OPENSSL_VERSION_NUMBER >= 0x009080DFL) \
   && (OPENSSL_VERSION_NUMBER != 0x00909000L)
@@ -438,7 +438,7 @@ namespace xio {
             ec = xio::error::operation_not_supported;
 #endif // (OPENSSL_VERSION_NUMBER >= 0x009080DFL)
             //   && (OPENSSL_VERSION_NUMBER != 0x00909000L)
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         void context::set_options(context::options o) {
@@ -447,7 +447,7 @@ namespace xio {
             xio::detail::throw_error(ec, "set_options");
         }
 
-        ASIO_SYNC_OP_VOID context::set_options(
+        XIO_SYNC_OP_VOID context::set_options(
             context::options o, xio::error_code &ec) {
 #if !defined(SSL_OP_NO_COMPRESSION)
             if ((o & context::no_compression) != 0) {
@@ -462,7 +462,7 @@ namespace xio {
             ::SSL_CTX_set_options(handle_, o);
 
             ec = xio::error_code();
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         void context::set_verify_mode(verify_mode v) {
@@ -471,12 +471,12 @@ namespace xio {
             xio::detail::throw_error(ec, "set_verify_mode");
         }
 
-        ASIO_SYNC_OP_VOID context::set_verify_mode(
+        XIO_SYNC_OP_VOID context::set_verify_mode(
             verify_mode v, xio::error_code &ec) {
             ::SSL_CTX_set_verify(handle_, v, ::SSL_CTX_get_verify_callback(handle_));
 
             ec = xio::error_code();
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         void context::set_verify_depth(int depth) {
@@ -485,12 +485,12 @@ namespace xio {
             xio::detail::throw_error(ec, "set_verify_depth");
         }
 
-        ASIO_SYNC_OP_VOID context::set_verify_depth(
+        XIO_SYNC_OP_VOID context::set_verify_depth(
             int depth, xio::error_code &ec) {
             ::SSL_CTX_set_verify_depth(handle_, depth);
 
             ec = xio::error_code();
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         void context::load_verify_file(const std::string &filename) {
@@ -499,17 +499,17 @@ namespace xio {
             xio::detail::throw_error(ec, "load_verify_file");
         }
 
-        ASIO_SYNC_OP_VOID context::load_verify_file(
+        XIO_SYNC_OP_VOID context::load_verify_file(
             const std::string &filename, xio::error_code &ec) {
             ::ERR_clear_error();
 
             if (::SSL_CTX_load_verify_locations(handle_, filename.c_str(), 0) != 1) {
                 ec = translate_error(::ERR_get_error());
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
             }
 
             ec = xio::error_code();
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         void context::add_certificate_authority(const const_buffer &ca) {
@@ -518,7 +518,7 @@ namespace xio {
             xio::detail::throw_error(ec, "add_certificate_authority");
         }
 
-        ASIO_SYNC_OP_VOID context::add_certificate_authority(
+        XIO_SYNC_OP_VOID context::add_certificate_authority(
             const const_buffer &ca, xio::error_code &ec) {
             ::ERR_clear_error();
 
@@ -534,19 +534,19 @@ namespace xio {
                                 break;
 
                             ec = translate_error(err);
-                            ASIO_SYNC_OP_VOID_RETURN(ec);
+                            XIO_SYNC_OP_VOID_RETURN(ec);
                         }
 
                         if (::X509_STORE_add_cert(store, cert.p) != 1) {
                             ec = translate_error(::ERR_get_error());
-                            ASIO_SYNC_OP_VOID_RETURN(ec);
+                            XIO_SYNC_OP_VOID_RETURN(ec);
                         }
                     }
                 }
             }
 
             ec = xio::error_code();
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         void context::set_default_verify_paths() {
@@ -555,17 +555,17 @@ namespace xio {
             xio::detail::throw_error(ec, "set_default_verify_paths");
         }
 
-        ASIO_SYNC_OP_VOID context::set_default_verify_paths(
+        XIO_SYNC_OP_VOID context::set_default_verify_paths(
             xio::error_code &ec) {
             ::ERR_clear_error();
 
             if (::SSL_CTX_set_default_verify_paths(handle_) != 1) {
                 ec = translate_error(::ERR_get_error());
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
             }
 
             ec = xio::error_code();
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         void context::add_verify_path(const std::string &path) {
@@ -574,17 +574,17 @@ namespace xio {
             xio::detail::throw_error(ec, "add_verify_path");
         }
 
-        ASIO_SYNC_OP_VOID context::add_verify_path(
+        XIO_SYNC_OP_VOID context::add_verify_path(
             const std::string &path, xio::error_code &ec) {
             ::ERR_clear_error();
 
             if (::SSL_CTX_load_verify_locations(handle_, 0, path.c_str()) != 1) {
                 ec = translate_error(::ERR_get_error());
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
             }
 
             ec = xio::error_code();
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         void context::use_certificate(
@@ -594,7 +594,7 @@ namespace xio {
             xio::detail::throw_error(ec, "use_certificate");
         }
 
-        ASIO_SYNC_OP_VOID context::use_certificate(
+        XIO_SYNC_OP_VOID context::use_certificate(
             const const_buffer &certificate, file_format format,
             xio::error_code &ec) {
             ::ERR_clear_error();
@@ -604,7 +604,7 @@ namespace xio {
                                                    static_cast<int>(certificate.size()),
                                                    static_cast<const unsigned char *>(certificate.data())) == 1) {
                     ec = xio::error_code();
-                    ASIO_SYNC_OP_VOID_RETURN(ec);
+                    XIO_SYNC_OP_VOID_RETURN(ec);
                 }
             } else if (format == context_base::pem) {
                 bio_cleanup bio = {make_buffer_bio(certificate)};
@@ -613,17 +613,17 @@ namespace xio {
                     if (cert.p) {
                         if (::SSL_CTX_use_certificate(handle_, cert.p) == 1) {
                             ec = xio::error_code();
-                            ASIO_SYNC_OP_VOID_RETURN(ec);
+                            XIO_SYNC_OP_VOID_RETURN(ec);
                         }
                     }
                 }
             } else {
                 ec = xio::error::invalid_argument;
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
             }
 
             ec = translate_error(::ERR_get_error());
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         void context::use_certificate_file(
@@ -633,7 +633,7 @@ namespace xio {
             xio::detail::throw_error(ec, "use_certificate_file");
         }
 
-        ASIO_SYNC_OP_VOID context::use_certificate_file(
+        XIO_SYNC_OP_VOID context::use_certificate_file(
             const std::string &filename, file_format format,
             xio::error_code &ec) {
             int file_type;
@@ -646,7 +646,7 @@ namespace xio {
                     break;
                 default: {
                     ec = xio::error::invalid_argument;
-                    ASIO_SYNC_OP_VOID_RETURN(ec);
+                    XIO_SYNC_OP_VOID_RETURN(ec);
                 }
             }
 
@@ -654,11 +654,11 @@ namespace xio {
 
             if (::SSL_CTX_use_certificate_file(handle_, filename.c_str(), file_type) != 1) {
                 ec = translate_error(::ERR_get_error());
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
             }
 
             ec = xio::error_code();
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         void context::use_certificate_chain(const const_buffer &chain) {
@@ -667,7 +667,7 @@ namespace xio {
             xio::detail::throw_error(ec, "use_certificate_chain");
         }
 
-        ASIO_SYNC_OP_VOID context::use_certificate_chain(
+        XIO_SYNC_OP_VOID context::use_certificate_chain(
             const const_buffer &chain, xio::error_code &ec) {
             ::ERR_clear_error();
 
@@ -676,7 +676,7 @@ namespace xio {
 #if ((OPENSSL_VERSION_NUMBER >= 0x10100000L) \
       && (!defined(LIBRESSL_VERSION_NUMBER) \
         || LIBRESSL_VERSION_NUMBER >= 0x2070000fL)) \
-    || defined(ASIO_USE_WOLFSSL)
+    || defined(XIO_USE_WOLFSSL)
                 pem_password_cb *callback = ::SSL_CTX_get_default_passwd_cb(handle_);
                 void *cb_userdata = ::SSL_CTX_get_default_passwd_cb_userdata(handle_);
 #else // (OPENSSL_VERSION_NUMBER >= 0x10100000L)
@@ -690,19 +690,19 @@ namespace xio {
                 };
                 if (!cert.p) {
                     ec = translate_error(ERR_R_PEM_LIB);
-                    ASIO_SYNC_OP_VOID_RETURN(ec);
+                    XIO_SYNC_OP_VOID_RETURN(ec);
                 }
 
                 int result = ::SSL_CTX_use_certificate(handle_, cert.p);
                 if (result == 0 || ::ERR_peek_error() != 0) {
                     ec = translate_error(::ERR_get_error());
-                    ASIO_SYNC_OP_VOID_RETURN(ec);
+                    XIO_SYNC_OP_VOID_RETURN(ec);
                 }
 
 #if ((OPENSSL_VERSION_NUMBER >= 0x10002000L) \
       && (!defined(LIBRESSL_VERSION_NUMBER) \
         || LIBRESSL_VERSION_NUMBER >= 0x2090100fL)) \
-    || defined(ASIO_USE_WOLFSSL)
+    || defined(XIO_USE_WOLFSSL)
                 ::SSL_CTX_clear_chain_certs(handle_);
 #else
                 if (handle_->extra_certs) {
@@ -716,7 +716,7 @@ namespace xio {
                                                           cb_userdata)) {
                     if (!::SSL_CTX_add_extra_chain_cert(handle_, cacert)) {
                         ec = translate_error(::ERR_get_error());
-                        ASIO_SYNC_OP_VOID_RETURN(ec);
+                        XIO_SYNC_OP_VOID_RETURN(ec);
                     }
                 }
 
@@ -725,12 +725,12 @@ namespace xio {
                     && (ERR_GET_REASON(result) == PEM_R_NO_START_LINE)) {
                     ::ERR_clear_error();
                     ec = xio::error_code();
-                    ASIO_SYNC_OP_VOID_RETURN(ec);
+                    XIO_SYNC_OP_VOID_RETURN(ec);
                 }
             }
 
             ec = translate_error(::ERR_get_error());
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         void context::use_certificate_chain_file(const std::string &filename) {
@@ -739,17 +739,17 @@ namespace xio {
             xio::detail::throw_error(ec, "use_certificate_chain_file");
         }
 
-        ASIO_SYNC_OP_VOID context::use_certificate_chain_file(
+        XIO_SYNC_OP_VOID context::use_certificate_chain_file(
             const std::string &filename, xio::error_code &ec) {
             ::ERR_clear_error();
 
             if (::SSL_CTX_use_certificate_chain_file(handle_, filename.c_str()) != 1) {
                 ec = translate_error(::ERR_get_error());
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
             }
 
             ec = xio::error_code();
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         void context::use_private_key(
@@ -759,7 +759,7 @@ namespace xio {
             xio::detail::throw_error(ec, "use_private_key");
         }
 
-        ASIO_SYNC_OP_VOID context::use_private_key(
+        XIO_SYNC_OP_VOID context::use_private_key(
             const const_buffer &private_key, context::file_format format,
             xio::error_code &ec) {
             ::ERR_clear_error();
@@ -767,7 +767,7 @@ namespace xio {
 #if ((OPENSSL_VERSION_NUMBER >= 0x10100000L) \
       && (!defined(LIBRESSL_VERSION_NUMBER) \
         || LIBRESSL_VERSION_NUMBER >= 0x2070000fL)) \
-    || defined(ASIO_USE_WOLFSSL)
+    || defined(XIO_USE_WOLFSSL)
             pem_password_cb *callback = ::SSL_CTX_get_default_passwd_cb(handle_);
             void *cb_userdata = ::SSL_CTX_get_default_passwd_cb_userdata(handle_);
 #else // (OPENSSL_VERSION_NUMBER >= 0x10100000L)
@@ -789,20 +789,20 @@ namespace xio {
                         break;
                     default: {
                         ec = xio::error::invalid_argument;
-                        ASIO_SYNC_OP_VOID_RETURN(ec);
+                        XIO_SYNC_OP_VOID_RETURN(ec);
                     }
                 }
 
                 if (evp_private_key.p) {
                     if (::SSL_CTX_use_PrivateKey(handle_, evp_private_key.p) == 1) {
                         ec = xio::error_code();
-                        ASIO_SYNC_OP_VOID_RETURN(ec);
+                        XIO_SYNC_OP_VOID_RETURN(ec);
                     }
                 }
             }
 
             ec = translate_error(::ERR_get_error());
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         void context::use_private_key_file(
@@ -819,7 +819,7 @@ namespace xio {
             xio::detail::throw_error(ec, "use_rsa_private_key");
         }
 
-        ASIO_SYNC_OP_VOID context::use_rsa_private_key(
+        XIO_SYNC_OP_VOID context::use_rsa_private_key(
             const const_buffer &private_key, context::file_format format,
             xio::error_code &ec) {
             ::ERR_clear_error();
@@ -827,7 +827,7 @@ namespace xio {
 #if ((OPENSSL_VERSION_NUMBER >= 0x10100000L) \
       && (!defined(LIBRESSL_VERSION_NUMBER) \
         || LIBRESSL_VERSION_NUMBER >= 0x2070000fL)) \
-    || defined(ASIO_USE_WOLFSSL)
+    || defined(XIO_USE_WOLFSSL)
             pem_password_cb *callback = ::SSL_CTX_get_default_passwd_cb(handle_);
             void *cb_userdata = ::SSL_CTX_get_default_passwd_cb_userdata(handle_);
 #else // (OPENSSL_VERSION_NUMBER >= 0x10100000L)
@@ -850,7 +850,7 @@ namespace xio {
                         break;
                     default: {
                         ec = xio::error::invalid_argument;
-                        ASIO_SYNC_OP_VOID_RETURN(ec);
+                        XIO_SYNC_OP_VOID_RETURN(ec);
                     }
                 }
 
@@ -858,12 +858,12 @@ namespace xio {
                     if (::EVP_PKEY_is_a(evp_private_key.p, "RSA") == 0) {
                         ec = translate_error(
                             ERR_PACK(ERR_LIB_EVP, 0, EVP_R_EXPECTING_AN_RSA_KEY));
-                        ASIO_SYNC_OP_VOID_RETURN(ec);
+                        XIO_SYNC_OP_VOID_RETURN(ec);
                     }
 
                     if (::SSL_CTX_use_PrivateKey(handle_, evp_private_key.p) == 1) {
                         ec = xio::error_code();
-                        ASIO_SYNC_OP_VOID_RETURN(ec);
+                        XIO_SYNC_OP_VOID_RETURN(ec);
                     }
                 }
 #else // (OPENSSL_VERSION_NUMBER >= 0x30000000L)
@@ -879,24 +879,24 @@ namespace xio {
                         break;
                     default: {
                         ec = xio::error::invalid_argument;
-                        ASIO_SYNC_OP_VOID_RETURN(ec);
+                        XIO_SYNC_OP_VOID_RETURN(ec);
                     }
                 }
 
                 if (rsa_private_key.p) {
                     if (::SSL_CTX_use_RSAPrivateKey(handle_, rsa_private_key.p) == 1) {
                         ec = xio::error_code();
-                        ASIO_SYNC_OP_VOID_RETURN(ec);
+                        XIO_SYNC_OP_VOID_RETURN(ec);
                     }
                 }
 #endif // (OPENSSL_VERSION_NUMBER >= 0x30000000L)
             }
 
             ec = translate_error(::ERR_get_error());
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
-        ASIO_SYNC_OP_VOID context::use_private_key_file(
+        XIO_SYNC_OP_VOID context::use_private_key_file(
             const std::string &filename, context::file_format format,
             xio::error_code &ec) {
             int file_type;
@@ -909,7 +909,7 @@ namespace xio {
                     break;
                 default: {
                     ec = xio::error::invalid_argument;
-                    ASIO_SYNC_OP_VOID_RETURN(ec);
+                    XIO_SYNC_OP_VOID_RETURN(ec);
                 }
             }
 
@@ -917,11 +917,11 @@ namespace xio {
 
             if (::SSL_CTX_use_PrivateKey_file(handle_, filename.c_str(), file_type) != 1) {
                 ec = translate_error(::ERR_get_error());
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
             }
 
             ec = xio::error_code();
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         void context::use_rsa_private_key_file(
@@ -931,7 +931,7 @@ namespace xio {
             xio::detail::throw_error(ec, "use_rsa_private_key_file");
         }
 
-        ASIO_SYNC_OP_VOID context::use_rsa_private_key_file(
+        XIO_SYNC_OP_VOID context::use_rsa_private_key_file(
             const std::string &filename, context::file_format format,
             xio::error_code &ec) {
 #if (OPENSSL_VERSION_NUMBER >= 0x30000000L)
@@ -954,7 +954,7 @@ namespace xio {
                         break;
                     default: {
                         ec = xio::error::invalid_argument;
-                        ASIO_SYNC_OP_VOID_RETURN(ec);
+                        XIO_SYNC_OP_VOID_RETURN(ec);
                     }
                 }
 
@@ -962,18 +962,18 @@ namespace xio {
                     if (::EVP_PKEY_is_a(evp_private_key.p, "RSA") == 0) {
                         ec = translate_error(
                             ERR_PACK(ERR_LIB_EVP, 0, EVP_R_EXPECTING_AN_RSA_KEY));
-                        ASIO_SYNC_OP_VOID_RETURN(ec);
+                        XIO_SYNC_OP_VOID_RETURN(ec);
                     }
 
                     if (::SSL_CTX_use_PrivateKey(handle_, evp_private_key.p) == 1) {
                         ec = xio::error_code();
-                        ASIO_SYNC_OP_VOID_RETURN(ec);
+                        XIO_SYNC_OP_VOID_RETURN(ec);
                     }
                 }
             }
 
             ec = translate_error(::ERR_get_error());
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
 #else // (OPENSSL_VERSION_NUMBER >= 0x30000000L)
             int file_type;
             switch (format) {
@@ -985,7 +985,7 @@ namespace xio {
                     break;
                 default: {
                     ec = xio::error::invalid_argument;
-                    ASIO_SYNC_OP_VOID_RETURN(ec);
+                    XIO_SYNC_OP_VOID_RETURN(ec);
                 }
             }
 
@@ -994,11 +994,11 @@ namespace xio {
             if (::SSL_CTX_use_RSAPrivateKey_file(
                     handle_, filename.c_str(), file_type) != 1) {
                 ec = translate_error(::ERR_get_error());
-                ASIO_SYNC_OP_VOID_RETURN(ec);
+                XIO_SYNC_OP_VOID_RETURN(ec);
             }
 
             ec = xio::error_code();
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
 #endif // (OPENSSL_VERSION_NUMBER >= 0x30000000L)
         }
 
@@ -1008,7 +1008,7 @@ namespace xio {
             xio::detail::throw_error(ec, "use_tmp_dh");
         }
 
-        ASIO_SYNC_OP_VOID context::use_tmp_dh(
+        XIO_SYNC_OP_VOID context::use_tmp_dh(
             const const_buffer &dh, xio::error_code &ec) {
             ::ERR_clear_error();
 
@@ -1018,7 +1018,7 @@ namespace xio {
             }
 
             ec = translate_error(::ERR_get_error());
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         void context::use_tmp_dh_file(const std::string &filename) {
@@ -1027,7 +1027,7 @@ namespace xio {
             xio::detail::throw_error(ec, "use_tmp_dh_file");
         }
 
-        ASIO_SYNC_OP_VOID context::use_tmp_dh_file(
+        XIO_SYNC_OP_VOID context::use_tmp_dh_file(
             const std::string &filename, xio::error_code &ec) {
             ::ERR_clear_error();
 
@@ -1037,10 +1037,10 @@ namespace xio {
             }
 
             ec = translate_error(::ERR_get_error());
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
-        ASIO_SYNC_OP_VOID context::do_use_tmp_dh(
+        XIO_SYNC_OP_VOID context::do_use_tmp_dh(
             BIO *bio, xio::error_code &ec) {
             ::ERR_clear_error();
 
@@ -1049,7 +1049,7 @@ namespace xio {
             if (p) {
                 if (::SSL_CTX_set0_tmp_dh_pkey(handle_, p) == 1) {
                     ec = xio::error_code();
-                    ASIO_SYNC_OP_VOID_RETURN(ec);
+                    XIO_SYNC_OP_VOID_RETURN(ec);
                 } else
                     ::EVP_PKEY_free(p);
             }
@@ -1058,16 +1058,16 @@ namespace xio {
             if (dh.p) {
                 if (::SSL_CTX_set_tmp_dh(handle_, dh.p) == 1) {
                     ec = xio::error_code();
-                    ASIO_SYNC_OP_VOID_RETURN(ec);
+                    XIO_SYNC_OP_VOID_RETURN(ec);
                 }
             }
 #endif // (OPENSSL_VERSION_NUMBER >= 0x30000000L)
 
             ec = translate_error(::ERR_get_error());
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
-        ASIO_SYNC_OP_VOID context::do_set_verify_callback(
+        XIO_SYNC_OP_VOID context::do_set_verify_callback(
             detail::verify_callback_base *callback, xio::error_code &ec) {
             if (SSL_CTX_get_app_data(handle_)) {
                 delete static_cast<detail::verify_callback_base *>(
@@ -1081,7 +1081,7 @@ namespace xio {
                                  &context::verify_callback_function);
 
             ec = xio::error_code();
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         int context::verify_callback_function(int preverified, X509_STORE_CTX *ctx) {
@@ -1105,12 +1105,12 @@ namespace xio {
             return 0;
         }
 
-        ASIO_SYNC_OP_VOID context::do_set_password_callback(
+        XIO_SYNC_OP_VOID context::do_set_password_callback(
             detail::password_callback_base *callback, xio::error_code &ec) {
 #if ((OPENSSL_VERSION_NUMBER >= 0x10100000L) \
       && (!defined(LIBRESSL_VERSION_NUMBER) \
         || LIBRESSL_VERSION_NUMBER >= 0x2070000fL)) \
-    || defined(ASIO_USE_WOLFSSL)
+    || defined(XIO_USE_WOLFSSL)
             void *old_callback = ::SSL_CTX_get_default_passwd_cb_userdata(handle_);
             ::SSL_CTX_set_default_passwd_cb_userdata(handle_, callback);
 #else // (OPENSSL_VERSION_NUMBER >= 0x10100000L)
@@ -1125,7 +1125,7 @@ namespace xio {
             SSL_CTX_set_default_passwd_cb(handle_, &context::password_callback_function);
 
             ec = xio::error_code();
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         int context::password_callback_function(
@@ -1139,13 +1139,13 @@ namespace xio {
                 std::string passwd = callback->call(static_cast<std::size_t>(size),
                                                     purpose ? context_base::for_writing : context_base::for_reading);
 
-#if defined(ASIO_HAS_SECURE_RTL)
+#if defined(XIO_HAS_SECURE_RTL)
                 strcpy_s(buf, size, passwd.c_str());
-#else // defined(ASIO_HAS_SECURE_RTL)
+#else // defined(XIO_HAS_SECURE_RTL)
                 *buf = '\0';
                 if (size > 0)
                     strncat(buf, passwd.c_str(), size - 1);
-#endif // defined(ASIO_HAS_SECURE_RTL)
+#endif // defined(XIO_HAS_SECURE_RTL)
 
                 return static_cast<int>(strlen(buf));
             }
@@ -1177,4 +1177,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_SSL_IMPL_CONTEXT_IPP
+#endif // XIO_SSL_IMPL_CONTEXT_IPP

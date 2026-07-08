@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_IO_URING_DESCRIPTOR_SERVICE_IPP
-#define ASIO_DETAIL_IMPL_IO_URING_DESCRIPTOR_SERVICE_IPP
+#ifndef XIO_DETAIL_IMPL_IO_URING_DESCRIPTOR_SERVICE_IPP
+#define XIO_DETAIL_IMPL_IO_URING_DESCRIPTOR_SERVICE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
 
 #include <xio/error.h>
 #include <xio/detail/io_uring_descriptor_service.h>
@@ -78,7 +78,7 @@ namespace xio {
         void io_uring_descriptor_service::destroy(
             io_uring_descriptor_service::implementation_type &impl) {
             if (is_open(impl)) {
-                ASIO_HANDLER_OPERATION((io_uring_service_.context(),
+                XIO_HANDLER_OPERATION((io_uring_service_.context(),
                                         "descriptor", &impl, impl.descriptor_, "close"));
 
                 io_uring_service_.deregister_io_object(impl.io_object_data_);
@@ -93,7 +93,7 @@ namespace xio {
             const native_handle_type &native_descriptor, xio::error_code &ec) {
             if (is_open(impl)) {
                 ec = xio::error::already_open;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -109,7 +109,7 @@ namespace xio {
             io_uring_descriptor_service::implementation_type &impl,
             xio::error_code &ec) {
             if (is_open(impl)) {
-                ASIO_HANDLER_OPERATION((io_uring_service_.context(),
+                XIO_HANDLER_OPERATION((io_uring_service_.context(),
                                         "descriptor", &impl, impl.descriptor_, "close"));
 
                 io_uring_service_.deregister_io_object(impl.io_object_data_);
@@ -126,7 +126,7 @@ namespace xio {
             //   http://lkml.org/lkml/2005/9/10/129
             construct(impl);
 
-            ASIO_ERROR_LOCATION(ec);
+            XIO_ERROR_LOCATION(ec);
             return ec;
         }
 
@@ -136,7 +136,7 @@ namespace xio {
             native_handle_type descriptor = impl.descriptor_;
 
             if (is_open(impl)) {
-                ASIO_HANDLER_OPERATION((io_uring_service_.context(),
+                XIO_HANDLER_OPERATION((io_uring_service_.context(),
                                         "descriptor", &impl, impl.descriptor_, "release"));
 
                 io_uring_service_.deregister_io_object(impl.io_object_data_);
@@ -152,11 +152,11 @@ namespace xio {
             xio::error_code &ec) {
             if (!is_open(impl)) {
                 ec = xio::error::bad_descriptor;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
-            ASIO_HANDLER_OPERATION((io_uring_service_.context(),
+            XIO_HANDLER_OPERATION((io_uring_service_.context(),
                                     "descriptor", &impl, impl.descriptor_, "cancel"));
 
             io_uring_service_.cancel_ops(impl.io_object_data_);
@@ -180,6 +180,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
 
-#endif // ASIO_DETAIL_IMPL_IO_URING_DESCRIPTOR_SERVICE_IPP
+#endif // XIO_DETAIL_IMPL_IO_URING_DESCRIPTOR_SERVICE_IPP

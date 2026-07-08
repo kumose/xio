@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_EXPERIMENTAL_PARALLEL_GROUP_HPP
-#define ASIO_IMPL_EXPERIMENTAL_PARALLEL_GROUP_HPP
+#ifndef XIO_IMPL_EXPERIMENTAL_PARALLEL_GROUP_HPP
+#define XIO_IMPL_EXPERIMENTAL_PARALLEL_GROUP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -390,8 +390,8 @@ namespace xio {
                               execution::outstanding_work.tracked)),
                       allocator_(allocator),
                       completion_order_(size, 0,
-                                        ASIO_REBIND_ALLOC(Allocator, std::size_t)(allocator)),
-                      args_(ASIO_REBIND_ALLOC(Allocator, op_result_type)(allocator)) {
+                                        XIO_REBIND_ALLOC(Allocator, std::size_t)(allocator)),
+                      args_(XIO_REBIND_ALLOC(Allocator, op_result_type)(allocator)) {
                     for (std::size_t i = 0; i < size; ++i)
                         args_.emplace_back();
                 }
@@ -418,7 +418,7 @@ namespace xio {
                     // Construct all result vectors using the supplied allocator.
                     vectors_type vectors{
                         typename std::tuple_element < I, vectors_type > ::type(
-                                                             ASIO_REBIND_ALLOC(Allocator, int)(allocator_))...
+                                                             XIO_REBIND_ALLOC(Allocator, int)(allocator_))...
                     };
 
                     // Reserve sufficient space in each of the result vectors.
@@ -448,9 +448,9 @@ namespace xio {
                 executor_type executor_;
                 Allocator allocator_;
                 std::vector<std::size_t,
-                    ASIO_REBIND_ALLOC(Allocator, std::size_t)> completion_order_;
+                    XIO_REBIND_ALLOC(Allocator, std::size_t)> completion_order_;
                 std::deque<op_result_type,
-                    ASIO_REBIND_ALLOC(Allocator, op_result_type)> args_;
+                    XIO_REBIND_ALLOC(Allocator, op_result_type)> args_;
             };
 
             // Shared state for the parallel group.
@@ -461,7 +461,7 @@ namespace xio {
                     : cancellations_requested_(size),
                       outstanding_(size),
                       cancellation_signals_(
-                          ASIO_REBIND_ALLOC(Allocator,
+                          XIO_REBIND_ALLOC(Allocator,
                                             xio::cancellation_signal)(allocator)),
                       cancellation_condition_(std::move(c)),
                       handler_(std::move(h), size, allocator) {
@@ -490,7 +490,7 @@ namespace xio {
 
                 // The cancellation signals for each operation in the group.
                 std::deque<xio::cancellation_signal,
-                    ASIO_REBIND_ALLOC(Allocator, xio::cancellation_signal)>
+                    XIO_REBIND_ALLOC(Allocator, xio::cancellation_signal)>
                 cancellation_signals_;
 
                 // The cancellation condition is used to determine whether the results from an
@@ -728,4 +728,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_EXPERIMENTAL_PARALLEL_GROUP_HPP
+#endif // XIO_IMPL_EXPERIMENTAL_PARALLEL_GROUP_HPP

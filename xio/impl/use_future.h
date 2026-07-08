@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IMPL_USE_FUTURE_HPP
-#define ASIO_IMPL_USE_FUTURE_HPP
+#ifndef XIO_IMPL_USE_FUTURE_HPP
+#define XIO_IMPL_USE_FUTURE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -36,34 +36,34 @@ namespace xio {
         template<typename T, typename F, typename... Args>
         inline void promise_invoke_and_set(std::promise<T> &p,
                                            F &f, Args &&... args) {
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             try
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
             {
                 p.set_value(f(static_cast<Args &&>(args)...));
             }
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             catch (...) {
                 p.set_exception(std::current_exception());
             }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
         }
 
         template<typename F, typename... Args>
         inline void promise_invoke_and_set(std::promise<void> &p,
                                            F &f, Args &&... args) {
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             try
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
             {
                 f(static_cast<Args &&>(args)...);
                 p.set_value();
             }
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             catch (...) {
                 p.set_exception(std::current_exception());
             }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
         }
 
         // A function object adapter to invoke a nullary function object and capture
@@ -77,17 +77,17 @@ namespace xio {
             }
 
             void operator()() {
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
                 try
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
                 {
                     f_();
                 }
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
                 catch (...) {
                     p_->set_exception(std::current_exception());
                 }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
             }
 
         private:
@@ -128,7 +128,7 @@ namespace xio {
                     promise_invoker<T, F>(p_, static_cast<F &&>(f)));
             }
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
             execution_context &context() const noexcept {
                 return system_executor().context();
             }
@@ -155,7 +155,7 @@ namespace xio {
                 system_executor().defer(
                     promise_invoker<T, F>(p_, static_cast<F &&>(f)), a);
             }
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
             friend bool operator==(const promise_executor &a,
                                    const promise_executor &b) noexcept {
@@ -190,7 +190,7 @@ namespace xio {
         protected:
             template<typename Allocator>
             void create_promise(const Allocator &a) {
-                ASIO_REBIND_ALLOC(Allocator, char)
+                XIO_REBIND_ALLOC(Allocator, char)
                 b(a);
                 p_ = std::allocate_shared<std::promise<T> >(b, std::allocator_arg, b);
             }
@@ -455,7 +455,6 @@ namespace xio {
             static_cast<Function &&>(f), allocator_);
     }
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     template<typename Allocator, typename Result, typename... Args>
     class async_result<use_future_t<Allocator>, Result(Args...)>
@@ -484,11 +483,10 @@ namespace xio {
         }
     };
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IMPL_USE_FUTURE_HPP
+#endif // XIO_IMPL_USE_FUTURE_HPP

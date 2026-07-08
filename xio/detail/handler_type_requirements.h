@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_HANDLER_TYPE_REQUIREMENTS_HPP
-#define ASIO_DETAIL_HANDLER_TYPE_REQUIREMENTS_HPP
+#ifndef XIO_DETAIL_HANDLER_TYPE_REQUIREMENTS_HPP
+#define XIO_DETAIL_HANDLER_TYPE_REQUIREMENTS_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -20,46 +20,46 @@
 // Older versions of gcc have difficulty compiling the sizeof expressions where
 // we test the handler type requirements. We'll disable checking of handler type
 // requirements for those compilers, but otherwise enable it by default.
-#if !defined(ASIO_DISABLE_HANDLER_TYPE_REQUIREMENTS)
+#if !defined(XIO_DISABLE_HANDLER_TYPE_REQUIREMENTS)
 # if !defined(__GNUC__) || (__GNUC__ >= 4)
-#  define ASIO_ENABLE_HANDLER_TYPE_REQUIREMENTS 1
+#  define XIO_ENABLE_HANDLER_TYPE_REQUIREMENTS 1
 # endif // !defined(__GNUC__) || (__GNUC__ >= 4)
-#endif // !defined(ASIO_DISABLE_HANDLER_TYPE_REQUIREMENTS)
+#endif // !defined(XIO_DISABLE_HANDLER_TYPE_REQUIREMENTS)
 
 // With C++0x we can use a combination of enhanced SFINAE and static_assert to
 // generate better template error messages. As this technique is not yet widely
 // portable, we'll only enable it for tested compilers.
-#if !defined(ASIO_DISABLE_HANDLER_TYPE_REQUIREMENTS_ASSERT)
+#if !defined(XIO_DISABLE_HANDLER_TYPE_REQUIREMENTS_ASSERT)
 # if defined(__GNUC__)
 #  if ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 5)) || (__GNUC__ > 4)
 #   if defined(__GXX_EXPERIMENTAL_CXX0X__)
-#    define ASIO_ENABLE_HANDLER_TYPE_REQUIREMENTS_ASSERT 1
+#    define XIO_ENABLE_HANDLER_TYPE_REQUIREMENTS_ASSERT 1
 #   endif // defined(__GXX_EXPERIMENTAL_CXX0X__)
 #  endif // ((__GNUC__ == 4) && (__GNUC_MINOR__ >= 5)) || (__GNUC__ > 4)
 # endif // defined(__GNUC__)
-# if defined(ASIO_MSVC)
+# if defined(XIO_MSVC)
 #  if (_MSC_VER >= 1600)
-#   define ASIO_ENABLE_HANDLER_TYPE_REQUIREMENTS_ASSERT 1
+#   define XIO_ENABLE_HANDLER_TYPE_REQUIREMENTS_ASSERT 1
 #  endif // (_MSC_VER >= 1600)
-# endif // defined(ASIO_MSVC)
+# endif // defined(XIO_MSVC)
 # if defined(__clang__)
 #  if __has_feature(__cxx_static_assert__)
-#   define ASIO_ENABLE_HANDLER_TYPE_REQUIREMENTS_ASSERT 1
+#   define XIO_ENABLE_HANDLER_TYPE_REQUIREMENTS_ASSERT 1
 #  endif // __has_feature(cxx_static_assert)
 # endif // defined(__clang__)
-#endif // !defined(ASIO_DISABLE_HANDLER_TYPE_REQUIREMENTS)
+#endif // !defined(XIO_DISABLE_HANDLER_TYPE_REQUIREMENTS)
 
-#if defined(ASIO_ENABLE_HANDLER_TYPE_REQUIREMENTS)
+#if defined(XIO_ENABLE_HANDLER_TYPE_REQUIREMENTS)
 #include <xio/async_result.h>
-#endif // defined(ASIO_ENABLE_HANDLER_TYPE_REQUIREMENTS)
+#endif // defined(XIO_ENABLE_HANDLER_TYPE_REQUIREMENTS)
 
 namespace xio {
 
 
     namespace detail {
-#if defined(ASIO_ENABLE_HANDLER_TYPE_REQUIREMENTS)
+#if defined(XIO_ENABLE_HANDLER_TYPE_REQUIREMENTS)
 
-# if defined(ASIO_ENABLE_HANDLER_TYPE_REQUIREMENTS_ASSERT)
+# if defined(XIO_ENABLE_HANDLER_TYPE_REQUIREMENTS_ASSERT)
 
         template<typename Handler>
         auto zero_arg_copyable_handler_test(Handler h, void *)
@@ -102,14 +102,14 @@ namespace xio {
         template<typename Handler>
         char (&two_arg_move_handler_test(Handler, ...))[2];
 
-#  define ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT(expr, msg) \
+#  define XIO_HANDLER_TYPE_REQUIREMENTS_ASSERT(expr, msg) \
      static_assert(expr, msg);
 
-# else // defined(ASIO_ENABLE_HANDLER_TYPE_REQUIREMENTS_ASSERT)
+# else // defined(XIO_ENABLE_HANDLER_TYPE_REQUIREMENTS_ASSERT)
 
-#  define ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT(expr, msg)
+#  define XIO_HANDLER_TYPE_REQUIREMENTS_ASSERT(expr, msg)
 
-# endif // defined(ASIO_ENABLE_HANDLER_TYPE_REQUIREMENTS_ASSERT)
+# endif // defined(XIO_ENABLE_HANDLER_TYPE_REQUIREMENTS_ASSERT)
 
         template<typename T>
         T &lvref();
@@ -139,14 +139,14 @@ namespace xio {
         struct handler_type_requirements {
         };
 
-#define ASIO_READ_HANDLER_CHECK( \
+#define XIO_READ_HANDLER_CHECK( \
     handler_type, handler) \
   \
-  typedef ASIO_HANDLER_TYPE(handler_type, \
+  typedef XIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code, std::size_t)) \
     xio_true_handler_type; \
   \
-  ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
+  XIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::two_arg_handler_test( \
           xio::detail::rvref< \
             xio_true_handler_type>(), \
@@ -164,16 +164,16 @@ namespace xio {
           xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>(), \
             xio::detail::lvref<const std::size_t>()), \
-        char(0))> ASIO_UNUSED_TYPEDEF
+        char(0))> XIO_UNUSED_TYPEDEF
 
-#define ASIO_WRITE_HANDLER_CHECK( \
+#define XIO_WRITE_HANDLER_CHECK( \
     handler_type, handler) \
   \
-  typedef ASIO_HANDLER_TYPE(handler_type, \
+  typedef XIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code, std::size_t)) \
     xio_true_handler_type; \
   \
-  ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
+  XIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::two_arg_handler_test( \
           xio::detail::rvref< \
             xio_true_handler_type>(), \
@@ -191,16 +191,16 @@ namespace xio {
           xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>(), \
             xio::detail::lvref<const std::size_t>()), \
-        char(0))> ASIO_UNUSED_TYPEDEF
+        char(0))> XIO_UNUSED_TYPEDEF
 
-#define ASIO_ACCEPT_HANDLER_CHECK( \
+#define XIO_ACCEPT_HANDLER_CHECK( \
     handler_type, handler) \
   \
-  typedef ASIO_HANDLER_TYPE(handler_type, \
+  typedef XIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code)) \
     xio_true_handler_type; \
   \
-  ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
+  XIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::one_arg_handler_test( \
           xio::detail::rvref< \
             xio_true_handler_type>(), \
@@ -216,16 +216,16 @@ namespace xio {
         xio::detail::rorlvref< \
           xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>()), \
-        char(0))> ASIO_UNUSED_TYPEDEF
+        char(0))> XIO_UNUSED_TYPEDEF
 
-#define ASIO_MOVE_ACCEPT_HANDLER_CHECK( \
+#define XIO_MOVE_ACCEPT_HANDLER_CHECK( \
     handler_type, handler, socket_type) \
   \
-  typedef ASIO_HANDLER_TYPE(handler_type, \
+  typedef XIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code, socket_type)) \
     xio_true_handler_type; \
   \
-  ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
+  XIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::two_arg_move_handler_test( \
           xio::detail::rvref< \
             xio_true_handler_type>(), \
@@ -243,16 +243,16 @@ namespace xio {
           xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>(), \
             xio::detail::rvref<socket_type>()), \
-        char(0))> ASIO_UNUSED_TYPEDEF
+        char(0))> XIO_UNUSED_TYPEDEF
 
-#define ASIO_CONNECT_HANDLER_CHECK( \
+#define XIO_CONNECT_HANDLER_CHECK( \
     handler_type, handler) \
   \
-  typedef ASIO_HANDLER_TYPE(handler_type, \
+  typedef XIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code)) \
     xio_true_handler_type; \
   \
-  ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
+  XIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::one_arg_handler_test( \
           xio::detail::rvref< \
             xio_true_handler_type>(), \
@@ -268,16 +268,16 @@ namespace xio {
         xio::detail::rorlvref< \
           xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>()), \
-        char(0))> ASIO_UNUSED_TYPEDEF
+        char(0))> XIO_UNUSED_TYPEDEF
 
-#define ASIO_RANGE_CONNECT_HANDLER_CHECK( \
+#define XIO_RANGE_CONNECT_HANDLER_CHECK( \
     handler_type, handler, endpoint_type) \
   \
-  typedef ASIO_HANDLER_TYPE(handler_type, \
+  typedef XIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code, endpoint_type)) \
     xio_true_handler_type; \
   \
-  ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
+  XIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::two_arg_handler_test( \
           xio::detail::rvref< \
             xio_true_handler_type>(), \
@@ -295,16 +295,16 @@ namespace xio {
           xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>(), \
             xio::detail::lvref<const endpoint_type>()), \
-        char(0))> ASIO_UNUSED_TYPEDEF
+        char(0))> XIO_UNUSED_TYPEDEF
 
-#define ASIO_ITERATOR_CONNECT_HANDLER_CHECK( \
+#define XIO_ITERATOR_CONNECT_HANDLER_CHECK( \
     handler_type, handler, iter_type) \
   \
-  typedef ASIO_HANDLER_TYPE(handler_type, \
+  typedef XIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code, iter_type)) \
     xio_true_handler_type; \
   \
-  ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
+  XIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::two_arg_handler_test( \
           xio::detail::rvref< \
             xio_true_handler_type>(), \
@@ -322,16 +322,16 @@ namespace xio {
           xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>(), \
             xio::detail::lvref<const iter_type>()), \
-        char(0))> ASIO_UNUSED_TYPEDEF
+        char(0))> XIO_UNUSED_TYPEDEF
 
-#define ASIO_RESOLVE_HANDLER_CHECK( \
+#define XIO_RESOLVE_HANDLER_CHECK( \
     handler_type, handler, range_type) \
   \
-  typedef ASIO_HANDLER_TYPE(handler_type, \
+  typedef XIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code, range_type)) \
     xio_true_handler_type; \
   \
-  ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
+  XIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::two_arg_handler_test( \
           xio::detail::rvref< \
             xio_true_handler_type>(), \
@@ -349,16 +349,16 @@ namespace xio {
           xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>(), \
             xio::detail::lvref<const range_type>()), \
-        char(0))> ASIO_UNUSED_TYPEDEF
+        char(0))> XIO_UNUSED_TYPEDEF
 
-#define ASIO_WAIT_HANDLER_CHECK( \
+#define XIO_WAIT_HANDLER_CHECK( \
     handler_type, handler) \
   \
-  typedef ASIO_HANDLER_TYPE(handler_type, \
+  typedef XIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code)) \
     xio_true_handler_type; \
   \
-  ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
+  XIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::one_arg_handler_test( \
           xio::detail::rvref< \
             xio_true_handler_type>(), \
@@ -374,16 +374,16 @@ namespace xio {
         xio::detail::rorlvref< \
           xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>()), \
-        char(0))> ASIO_UNUSED_TYPEDEF
+        char(0))> XIO_UNUSED_TYPEDEF
 
-#define ASIO_SIGNAL_HANDLER_CHECK( \
+#define XIO_SIGNAL_HANDLER_CHECK( \
     handler_type, handler) \
   \
-  typedef ASIO_HANDLER_TYPE(handler_type, \
+  typedef XIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code, int)) \
     xio_true_handler_type; \
   \
-  ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
+  XIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::two_arg_handler_test( \
           xio::detail::rvref< \
             xio_true_handler_type>(), \
@@ -401,16 +401,16 @@ namespace xio {
           xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>(), \
             xio::detail::lvref<const int>()), \
-        char(0))> ASIO_UNUSED_TYPEDEF
+        char(0))> XIO_UNUSED_TYPEDEF
 
-#define ASIO_HANDSHAKE_HANDLER_CHECK( \
+#define XIO_HANDSHAKE_HANDLER_CHECK( \
     handler_type, handler) \
   \
-  typedef ASIO_HANDLER_TYPE(handler_type, \
+  typedef XIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code)) \
     xio_true_handler_type; \
   \
-  ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
+  XIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::one_arg_handler_test( \
           xio::detail::rvref< \
             xio_true_handler_type>(), \
@@ -426,16 +426,16 @@ namespace xio {
         xio::detail::rorlvref< \
           xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>()), \
-        char(0))> ASIO_UNUSED_TYPEDEF
+        char(0))> XIO_UNUSED_TYPEDEF
 
-#define ASIO_BUFFERED_HANDSHAKE_HANDLER_CHECK( \
+#define XIO_BUFFERED_HANDSHAKE_HANDLER_CHECK( \
     handler_type, handler) \
   \
-  typedef ASIO_HANDLER_TYPE(handler_type, \
+  typedef XIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code, std::size_t)) \
     xio_true_handler_type; \
   \
-  ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
+  XIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::two_arg_handler_test( \
           xio::detail::rvref< \
             xio_true_handler_type>(), \
@@ -453,16 +453,16 @@ namespace xio {
           xio_true_handler_type>()( \
           xio::detail::lvref<const xio::error_code>(), \
           xio::detail::lvref<const std::size_t>()), \
-        char(0))> ASIO_UNUSED_TYPEDEF
+        char(0))> XIO_UNUSED_TYPEDEF
 
-#define ASIO_SHUTDOWN_HANDLER_CHECK( \
+#define XIO_SHUTDOWN_HANDLER_CHECK( \
     handler_type, handler) \
   \
-  typedef ASIO_HANDLER_TYPE(handler_type, \
+  typedef XIO_HANDLER_TYPE(handler_type, \
       void(xio::error_code)) \
     xio_true_handler_type; \
   \
-  ASIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
+  XIO_HANDLER_TYPE_REQUIREMENTS_ASSERT( \
       sizeof(xio::detail::one_arg_handler_test( \
           xio::detail::rvref< \
             xio_true_handler_type>(), \
@@ -478,69 +478,69 @@ namespace xio {
         xio::detail::rorlvref< \
           xio_true_handler_type>()( \
             xio::detail::lvref<const xio::error_code>()), \
-        char(0))> ASIO_UNUSED_TYPEDEF
+        char(0))> XIO_UNUSED_TYPEDEF
 
-#else // !defined(ASIO_ENABLE_HANDLER_TYPE_REQUIREMENTS)
+#else // !defined(XIO_ENABLE_HANDLER_TYPE_REQUIREMENTS)
 
-#define ASIO_LEGACY_COMPLETION_HANDLER_CHECK( \
+#define XIO_LEGACY_COMPLETION_HANDLER_CHECK( \
     handler_type, handler) \
-  typedef int ASIO_UNUSED_TYPEDEF
+  typedef int XIO_UNUSED_TYPEDEF
 
-#define ASIO_READ_HANDLER_CHECK( \
+#define XIO_READ_HANDLER_CHECK( \
     handler_type, handler) \
-  typedef int ASIO_UNUSED_TYPEDEF
+  typedef int XIO_UNUSED_TYPEDEF
 
-#define ASIO_WRITE_HANDLER_CHECK( \
+#define XIO_WRITE_HANDLER_CHECK( \
     handler_type, handler) \
-  typedef int ASIO_UNUSED_TYPEDEF
+  typedef int XIO_UNUSED_TYPEDEF
 
-#define ASIO_ACCEPT_HANDLER_CHECK( \
+#define XIO_ACCEPT_HANDLER_CHECK( \
     handler_type, handler) \
-  typedef int ASIO_UNUSED_TYPEDEF
+  typedef int XIO_UNUSED_TYPEDEF
 
-#define ASIO_MOVE_ACCEPT_HANDLER_CHECK( \
+#define XIO_MOVE_ACCEPT_HANDLER_CHECK( \
     handler_type, handler, socket_type) \
-  typedef int ASIO_UNUSED_TYPEDEF
+  typedef int XIO_UNUSED_TYPEDEF
 
-#define ASIO_CONNECT_HANDLER_CHECK( \
+#define XIO_CONNECT_HANDLER_CHECK( \
     handler_type, handler) \
-  typedef int ASIO_UNUSED_TYPEDEF
+  typedef int XIO_UNUSED_TYPEDEF
 
-#define ASIO_RANGE_CONNECT_HANDLER_CHECK( \
+#define XIO_RANGE_CONNECT_HANDLER_CHECK( \
     handler_type, handler, iter_type) \
-  typedef int ASIO_UNUSED_TYPEDEF
+  typedef int XIO_UNUSED_TYPEDEF
 
-#define ASIO_ITERATOR_CONNECT_HANDLER_CHECK( \
+#define XIO_ITERATOR_CONNECT_HANDLER_CHECK( \
     handler_type, handler, iter_type) \
-  typedef int ASIO_UNUSED_TYPEDEF
+  typedef int XIO_UNUSED_TYPEDEF
 
-#define ASIO_RESOLVE_HANDLER_CHECK( \
+#define XIO_RESOLVE_HANDLER_CHECK( \
     handler_type, handler, iter_type) \
-  typedef int ASIO_UNUSED_TYPEDEF
+  typedef int XIO_UNUSED_TYPEDEF
 
-#define ASIO_WAIT_HANDLER_CHECK( \
+#define XIO_WAIT_HANDLER_CHECK( \
     handler_type, handler) \
-  typedef int ASIO_UNUSED_TYPEDEF
+  typedef int XIO_UNUSED_TYPEDEF
 
-#define ASIO_SIGNAL_HANDLER_CHECK( \
+#define XIO_SIGNAL_HANDLER_CHECK( \
     handler_type, handler) \
-  typedef int ASIO_UNUSED_TYPEDEF
+  typedef int XIO_UNUSED_TYPEDEF
 
-#define ASIO_HANDSHAKE_HANDLER_CHECK( \
+#define XIO_HANDSHAKE_HANDLER_CHECK( \
     handler_type, handler) \
-  typedef int ASIO_UNUSED_TYPEDEF
+  typedef int XIO_UNUSED_TYPEDEF
 
-#define ASIO_BUFFERED_HANDSHAKE_HANDLER_CHECK( \
+#define XIO_BUFFERED_HANDSHAKE_HANDLER_CHECK( \
     handler_type, handler) \
-  typedef int ASIO_UNUSED_TYPEDEF
+  typedef int XIO_UNUSED_TYPEDEF
 
-#define ASIO_SHUTDOWN_HANDLER_CHECK( \
+#define XIO_SHUTDOWN_HANDLER_CHECK( \
     handler_type, handler) \
-  typedef int ASIO_UNUSED_TYPEDEF
+  typedef int XIO_UNUSED_TYPEDEF
 
-#endif // !defined(ASIO_ENABLE_HANDLER_TYPE_REQUIREMENTS)
+#endif // !defined(XIO_ENABLE_HANDLER_TYPE_REQUIREMENTS)
     } // namespace detail
 
 } // namespace xio
 
-#endif // ASIO_DETAIL_HANDLER_TYPE_REQUIREMENTS_HPP
+#endif // XIO_DETAIL_HANDLER_TYPE_REQUIREMENTS_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IO_URING_SOCKET_SERVICE_HPP
-#define ASIO_DETAIL_IO_URING_SOCKET_SERVICE_HPP
+#ifndef XIO_DETAIL_IO_URING_SOCKET_SERVICE_HPP
+#define XIO_DETAIL_IO_URING_SOCKET_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
 
 #include <xio/buffer.h>
 #include <xio/error.h>
@@ -118,7 +118,7 @@ namespace xio {
                 if (!do_open(impl, protocol.family(),
                              protocol.type(), protocol.protocol(), ec))
                     impl.protocol_ = protocol;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -128,7 +128,7 @@ namespace xio {
                                    xio::error_code &ec) {
                 if (!do_assign(impl, protocol.type(), native_socket, ec))
                     impl.protocol_ = protocol;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -141,7 +141,7 @@ namespace xio {
             xio::error_code bind(implementation_type &impl,
                                  const endpoint_type &endpoint, xio::error_code &ec) {
                 socket_ops::bind(impl.socket_, endpoint.data(), endpoint.size(), ec);
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -152,7 +152,7 @@ namespace xio {
                 socket_ops::setsockopt(impl.socket_, impl.state_,
                                        option.level(impl.protocol_), option.name(impl.protocol_),
                                        option.data(impl.protocol_), option.size(impl.protocol_), ec);
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -166,7 +166,7 @@ namespace xio {
                                        option.data(impl.protocol_), &size, ec);
                 if (!ec)
                     option.resize(impl.protocol_, size);
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -176,7 +176,7 @@ namespace xio {
                 endpoint_type endpoint;
                 std::size_t addr_len = endpoint.capacity();
                 if (socket_ops::getsockname(impl.socket_, endpoint.data(), &addr_len, ec)) {
-                    ASIO_ERROR_LOCATION(ec);
+                    XIO_ERROR_LOCATION(ec);
                     return endpoint_type();
                 }
                 endpoint.resize(addr_len);
@@ -190,7 +190,7 @@ namespace xio {
                 std::size_t addr_len = endpoint.capacity();
                 if (socket_ops::getpeername(impl.socket_,
                                             endpoint.data(), &addr_len, false, ec)) {
-                    ASIO_ERROR_LOCATION(ec);
+                    XIO_ERROR_LOCATION(ec);
                     return endpoint_type();
                 }
                 endpoint.resize(addr_len);
@@ -201,7 +201,7 @@ namespace xio {
             xio::error_code shutdown(base_implementation_type &impl,
                                      socket_base::shutdown_type what, xio::error_code &ec) {
                 socket_ops::shutdown(impl.socket_, what, ec);
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -227,7 +227,7 @@ namespace xio {
                                                 destination.data(), destination.size(), ec);
                 }
 
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return n;
             }
 
@@ -237,7 +237,7 @@ namespace xio {
                            xio::error_code &ec) {
                 // Wait for socket to become ready.
                 socket_ops::poll_write(impl.socket_, impl.state_, -1, ec);
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return 0;
             }
 
@@ -272,7 +272,7 @@ namespace xio {
                                                                              io_uring_service::write_op);
                 }
 
-                ASIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
+                XIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
                                        "socket", &impl, impl.socket_, "async_send_to"));
 
                 start_op(impl, io_uring_service::write_op, p.p, is_continuation, false);
@@ -306,7 +306,7 @@ namespace xio {
                                                                              io_uring_service::write_op);
                 }
 
-                ASIO_HANDLER_CREATION((io_uring_service_.context(), *p.p, "socket",
+                XIO_HANDLER_CREATION((io_uring_service_.context(), *p.p, "socket",
                                        &impl, impl.socket_, "async_send_to(null_buffers)"));
 
                 start_op(impl, io_uring_service::write_op, p.p, is_continuation, false);
@@ -338,7 +338,7 @@ namespace xio {
                 if (!ec)
                     sender_endpoint.resize(addr_len);
 
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return n;
             }
 
@@ -352,7 +352,7 @@ namespace xio {
                 // Reset endpoint since it can be given no sensible value at this time.
                 sender_endpoint = endpoint_type();
 
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return 0;
             }
 
@@ -392,7 +392,7 @@ namespace xio {
                                 &io_uring_service_, &impl.io_object_data_, op_type);
                 }
 
-                ASIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
+                XIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
                                        "socket", &impl, impl.socket_, "async_receive_from"));
 
                 start_op(impl, op_type, p.p, is_continuation, false);
@@ -435,7 +435,7 @@ namespace xio {
                                 &io_uring_service_, &impl.io_object_data_, op_type);
                 }
 
-                ASIO_HANDLER_CREATION((io_uring_service_.context(), *p.p, "socket",
+                XIO_HANDLER_CREATION((io_uring_service_.context(), *p.p, "socket",
                                        &impl, impl.socket_, "async_receive_from(null_buffers)"));
 
                 // Reset endpoint since it can be given no sensible value at this time.
@@ -452,7 +452,7 @@ namespace xio {
                 // We cannot accept a socket that is already open.
                 if (peer.is_open()) {
                     ec = xio::error::already_open;
-                    ASIO_ERROR_LOCATION(ec);
+                    XIO_ERROR_LOCATION(ec);
                     return ec;
                 }
 
@@ -470,7 +470,7 @@ namespace xio {
                         new_socket.release();
                 }
 
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -502,7 +502,7 @@ namespace xio {
                                                                              io_uring_service::read_op);
                 }
 
-                ASIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
+                XIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
                                        "socket", &impl, impl.socket_, "async_accept"));
 
                 start_accept_op(impl, p.p, is_continuation, peer.is_open());
@@ -539,7 +539,7 @@ namespace xio {
                                                                              io_uring_service::read_op);
                 }
 
-                ASIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
+                XIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
                                        "socket", &impl, impl.socket_, "async_accept"));
 
                 start_accept_op(impl, p.p, is_continuation, false);
@@ -582,7 +582,7 @@ namespace xio {
                                                                              io_uring_service::write_op);
                 }
 
-                ASIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
+                XIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
                                        "socket", &impl, impl.socket_, "async_connect"));
 
                 start_op(impl, io_uring_service::write_op, p.p, is_continuation, false);
@@ -595,6 +595,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
 
-#endif // ASIO_DETAIL_IO_URING_SOCKET_SERVICE_HPP
+#endif // XIO_DETAIL_IO_URING_SOCKET_SERVICE_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_SSL_DETAIL_OPENSSL_INIT_HPP
-#define ASIO_SSL_DETAIL_OPENSSL_INIT_HPP
+#ifndef XIO_SSL_DETAIL_OPENSSL_INIT_HPP
+#define XIO_SSL_DETAIL_OPENSSL_INIT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -39,13 +39,13 @@ namespace xio {
                 // main, and therefore before any other threads can get started. The do_init
                 // instance must be static in this function to ensure that it gets
                 // initialised before any other global objects try to use it.
-                ASIO_DECL static xio::detail::shared_ptr<do_init> instance();
+                XIO_DECL static xio::detail::shared_ptr<do_init> instance();
 
 #if !defined(SSL_OP_NO_COMPRESSION) \
   && (OPENSSL_VERSION_NUMBER >= 0x00908000L)
                 // Get an empty stack of compression methods, to be used when disabling
                 // compression.
-                ASIO_DECL static STACK_OF(SSL_COMP)*get_null_compression_methods();
+                XIO_DECL static STACK_OF(SSL_COMP)*get_null_compression_methods();
 #endif // !defined(SSL_OP_NO_COMPRESSION)
                 // && (OPENSSL_VERSION_NUMBER >= 0x00908000L)
             };
@@ -92,4 +92,4 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // ASIO_SSL_DETAIL_OPENSSL_INIT_HPP
+#endif // XIO_SSL_DETAIL_OPENSSL_INIT_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_HANDLER_WORK_HPP
-#define ASIO_DETAIL_HANDLER_WORK_HPP
+#ifndef XIO_DETAIL_HANDLER_WORK_HPP
+#define XIO_DETAIL_HANDLER_WORK_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -37,12 +37,12 @@ namespace xio {
     class executor;
     class io_context;
 
-#if !defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#if !defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
     class any_completion_executor;
     class any_io_executor;
 
-#endif // !defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#endif // !defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
     namespace execution {
         template<typename...>
@@ -196,14 +196,14 @@ private:
         class handler_work_base<Executor, void, IoContext, Executor> {
         public:
             explicit handler_work_base(int, int, const Executor &ex) noexcept
-#if !defined(ASIO_NO_TYPEID)
+#if !defined(XIO_NO_TYPEID)
                 : executor_(
                     ex.target_type() == typeid(typename IoContext::executor_type)
                         ? Executor()
                         : ex)
-#else // !defined(ASIO_NO_TYPEID)
+#else // !defined(XIO_NO_TYPEID)
     : executor_(ex)
-#endif // !defined(ASIO_NO_TYPEID)
+#endif // !defined(XIO_NO_TYPEID)
             {
                 if (executor_)
                     executor_.on_work_started();
@@ -260,14 +260,14 @@ private:
             typedef execution::any_executor<SupportableProperties...> executor_type;
 
             explicit handler_work_base(int, int, const executor_type &ex) noexcept
-#if !defined(ASIO_NO_TYPEID)
+#if !defined(XIO_NO_TYPEID)
                 : executor_(
                     ex.target_type() == typeid(typename IoContext::executor_type)
                         ? executor_type()
                         : xio::prefer(ex, execution::outstanding_work.tracked))
-#else // !defined(ASIO_NO_TYPEID)
+#else // !defined(XIO_NO_TYPEID)
     : executor_(xio::prefer(ex, execution::outstanding_work.tracked))
-#endif // !defined(ASIO_NO_TYPEID)
+#endif // !defined(XIO_NO_TYPEID)
             {
             }
 
@@ -306,7 +306,7 @@ private:
             executor_type executor_;
         };
 
-#if !defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#if !defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
         template<typename Executor, typename CandidateExecutor,
             typename IoContext, typename PolymorphicExecutor>
@@ -324,14 +324,14 @@ public:
 
   explicit handler_work_base(int, int,
       const executor_type& ex) noexcept
-#if !defined(ASIO_NO_TYPEID)
+#if !defined(XIO_NO_TYPEID)
     : executor_(
         ex.target_type() == typeid(typename IoContext::executor_type)
           ? executor_type()
           : xio::prefer(ex, execution::outstanding_work.tracked))
-#else // !defined(ASIO_NO_TYPEID)
+#else // !defined(XIO_NO_TYPEID)
     : executor_ (xio::prefer(ex, execution::outstanding_work.tracked))
-#endif // !defined(ASIO_NO_TYPEID)
+#endif // !defined(XIO_NO_TYPEID)
   {
   }
 
@@ -376,7 +376,7 @@ private:
   executor_type executor_;
 };
 
-#endif // !defined(ASIO_USE_TS_EXECUTOR_AS_DEFAULT)
+#endif // !defined(XIO_USE_TS_EXECUTOR_AS_DEFAULT)
 
         template<typename Handler, typename IoExecutor, typename = void>
         class handler_work :
@@ -466,4 +466,4 @@ private:
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_HANDLER_WORK_HPP
+#endif // XIO_DETAIL_HANDLER_WORK_HPP

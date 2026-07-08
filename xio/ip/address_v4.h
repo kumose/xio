@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_ADDRESS_V4_HPP
-#define ASIO_IP_ADDRESS_V4_HPP
+#ifndef XIO_IP_ADDRESS_V4_HPP
+#define XIO_IP_ADDRESS_V4_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -25,9 +25,9 @@
 #include <xio/detail/winsock_init.h>
 #include <xio/error_code.h>
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 # include <iosfwd>
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
 
 #include <xio/detail/push_options.h>
 
@@ -54,11 +54,8 @@ namespace xio {
    * @note This type is defined in terms of the C++0x template @c std::array
    * when it is available. Otherwise, it uses @c boost:array.
    */
-#if defined(GENERATING_DOCUMENTATION)
-            typedef array<unsigned char, 4> bytes_type;
-#else
+
             typedef std::array<unsigned char, 4> bytes_type;
-#endif
 
             /// Default constructor.
             /**
@@ -79,13 +76,13 @@ namespace xio {
    * <tt>0 - 0xFF</tt>. Note that no range checking is required for platforms
    * where <tt>std::numeric_limits<unsigned char>::max()</tt> is <tt>0xFF</tt>.
    */
-            ASIO_DECL explicit address_v4(const bytes_type &bytes);
+            XIO_DECL explicit address_v4(const bytes_type &bytes);
 
             /// Construct an address from an unsigned integer in host byte order.
             /**
    * Initialises the @c address_v4 object such that <tt>to_uint() == addr</tt>.
    */
-            ASIO_DECL explicit address_v4(uint_type addr);
+            XIO_DECL explicit address_v4(uint_type addr);
 
             /// Copy constructor.
             address_v4(const address_v4 &other) noexcept
@@ -110,13 +107,13 @@ namespace xio {
             }
 
             /// Get the address in bytes, in network byte order.
-  ASIO_DECL bytes_type to_bytes() const noexcept;
+  XIO_DECL bytes_type to_bytes() const noexcept;
 
             /// Get the address as an unsigned integer in host byte order.
-  ASIO_DECL uint_type to_uint() const noexcept;
+  XIO_DECL uint_type to_uint() const noexcept;
 
             /// Get the address as a string in dotted decimal format.
-            ASIO_DECL std::string to_string() const;
+            XIO_DECL std::string to_string() const;
 
             /// Determine whether the address is a loopback address.
             /**
@@ -126,7 +123,7 @@ namespace xio {
    *
    * @returns <tt>(to_uint() & 0xFF000000) == 0x7F000000</tt>.
    */
-  ASIO_DECL bool is_loopback() const noexcept;
+  XIO_DECL bool is_loopback() const noexcept;
 
             /// Determine whether the address is unspecified.
             /**
@@ -135,7 +132,7 @@ namespace xio {
    *
    * @returns <tt>to_uint() == 0</tt>.
    */
-  ASIO_DECL bool is_unspecified() const noexcept;
+  XIO_DECL bool is_unspecified() const noexcept;
 
             /// Determine whether the address is a multicast address.
             /**
@@ -145,7 +142,7 @@ namespace xio {
    *
    * @returns <tt>(to_uint() & 0xF0000000) == 0xE0000000</tt>.
    */
-  ASIO_DECL bool is_multicast() const noexcept;
+  XIO_DECL bool is_multicast() const noexcept;
 
             /// Compare two addresses for equality.
             friend bool operator==(const address_v4 &a1,
@@ -261,26 +258,26 @@ namespace xio {
         /**
  * @relates address_v4
  */
-ASIO_DECL address_v4 make_address_v4(const char *str);
+XIO_DECL address_v4 make_address_v4(const char *str);
 
         /// Create an IPv4 address from an IP address string in dotted decimal form.
         /**
  * @relates address_v4
  */
-ASIO_DECL address_v4 make_address_v4(const char *str,
+XIO_DECL address_v4 make_address_v4(const char *str,
                                      xio::error_code &ec) noexcept;
 
         /// Create an IPv4 address from an IP address string in dotted decimal form.
         /**
  * @relates address_v4
  */
-ASIO_DECL address_v4 make_address_v4(const std::string &str);
+XIO_DECL address_v4 make_address_v4(const std::string &str);
 
         /// Create an IPv4 address from an IP address string in dotted decimal form.
         /**
  * @relates address_v4
  */
-ASIO_DECL address_v4 make_address_v4(const std::string &str,
+XIO_DECL address_v4 make_address_v4(const std::string &str,
                                      xio::error_code &ec) noexcept;
 
 
@@ -288,17 +285,17 @@ ASIO_DECL address_v4 make_address_v4(const std::string &str,
         /**
  * @relates address_v4
  */
-ASIO_DECL address_v4 make_address_v4(std::string_view str);
+XIO_DECL address_v4 make_address_v4(std::string_view str);
 
         /// Create an IPv4 address from an IP address string in dotted decimal form.
         /**
  * @relates address_v4
  */
-ASIO_DECL address_v4 make_address_v4(std::string_view str,
+XIO_DECL address_v4 make_address_v4(std::string_view str,
                                      xio::error_code &ec) noexcept;
 
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
 
         /// Output an address as a string.
         /**
@@ -316,7 +313,7 @@ ASIO_DECL address_v4 make_address_v4(std::string_view str,
         std::basic_ostream<Elem, Traits> &operator<<(
             std::basic_ostream<Elem, Traits> &os, const address_v4 &addr);
 
-#endif // !defined(ASIO_NO_IOSTREAM)
+#endif // !defined(XIO_NO_IOSTREAM)
     } // namespace ip
 
 } // namespace xio
@@ -336,4 +333,4 @@ namespace std {
 #include <xio/ip/impl/address_v4.h>
 
 
-#endif // ASIO_IP_ADDRESS_V4_HPP
+#endif // XIO_IP_ADDRESS_V4_HPP

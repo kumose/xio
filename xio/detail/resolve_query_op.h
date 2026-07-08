@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_RESOLVE_QUERY_OP_HPP
-#define ASIO_DETAIL_RESOLVE_QUERY_OP_HPP
+#ifndef XIO_DETAIL_RESOLVE_QUERY_OP_HPP
+#define XIO_DETAIL_RESOLVE_QUERY_OP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -27,11 +27,11 @@
 #include <xio/ip/basic_resolver_query.h>
 #include <xio/ip/basic_resolver_results.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 #include <xio/detail/win_iocp_io_context.h>
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 #include <xio/detail/scheduler.h>
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
 #include <xio/detail/push_options.h>
 
@@ -42,12 +42,12 @@ namespace xio {
         template<typename Protocol, typename Handler, typename IoExecutor>
         class resolve_query_op : public resolve_op {
         public:
-            ASIO_DEFINE_HANDLER_PTR(resolve_query_op);
+            XIO_DEFINE_HANDLER_PTR(resolve_query_op);
 
             typedef xio::ip::basic_resolver_query<Protocol> query_type;
             typedef xio::ip::basic_resolver_results<Protocol> results_type;
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
             typedef class win_iocp_io_context scheduler_impl;
 #else
             typedef class scheduler scheduler_impl;
@@ -74,7 +74,7 @@ namespace xio {
                                     const xio::error_code & /*ec*/,
                                     std::size_t /*bytes_transferred*/) {
                 // Take ownership of the operation object.
-                ASIO_ASSUME(base != 0);
+                XIO_ASSUME(base != 0);
                 resolve_query_op *o(static_cast<resolve_query_op *>(base));
                 ptr p = {xio::detail::addressof(o->handler_), o, o};
 
@@ -94,7 +94,7 @@ namespace xio {
                     // The operation has been returned to the main io_context. The completion
                     // handler is ready to be delivered.
 
-                    ASIO_HANDLER_COMPLETION((*o));
+                    XIO_HANDLER_COMPLETION((*o));
 
                     // Take ownership of the operation's outstanding work.
                     handler_work<Handler, IoExecutor> w(
@@ -118,9 +118,9 @@ namespace xio {
 
                     if (owner) {
                         fenced_block b(fenced_block::half);
-                        ASIO_HANDLER_INVOCATION_BEGIN((handler.arg1_, "..."));
+                        XIO_HANDLER_INVOCATION_BEGIN((handler.arg1_, "..."));
                         w.complete(handler, handler.handler_);
-                        ASIO_HANDLER_INVOCATION_END;
+                        XIO_HANDLER_INVOCATION_END;
                     }
                 }
             }
@@ -139,4 +139,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_RESOLVE_QUERY_OP_HPP
+#endif // XIO_DETAIL_RESOLVE_QUERY_OP_HPP

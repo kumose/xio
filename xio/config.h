@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_CONFIG_HPP
-#define ASIO_CONFIG_HPP
+#ifndef XIO_CONFIG_HPP
+#define XIO_CONFIG_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -29,25 +29,18 @@ namespace xio {
 
     /// Base class for configuration implementations.
     class config_service :
-#if defined(GENERATING_DOCUMENTATION)
-            public execution_context::service
-#else // defined(GENERATING_DOCUMENTATION)
             public detail::execution_context_service_base<config_service>
-#endif // defined(GENERATING_DOCUMENTATION)
     {
     public:
-#if defined(GENERATING_DOCUMENTATION)
-        typedef config_service key_type;
-#endif // defined(GENERATING_DOCUMENTATION)
 
         /// Constructor.
-        ASIO_DECL explicit config_service(execution_context &ctx);
+        XIO_DECL explicit config_service(execution_context &ctx);
 
         /// Shutdown the service.
-        ASIO_DECL void shutdown() override;
+        XIO_DECL void shutdown() override;
 
         /// Retrieve a configuration value.
-        ASIO_DECL virtual const char *get_value(const char *section,
+        XIO_DECL virtual const char *get_value(const char *section,
                                                 const char *key_name, char *value, std::size_t value_len) const;
     };
 
@@ -90,7 +83,7 @@ namespace xio {
     class config_from_concurrency_hint : public execution_context::service_maker {
     public:
         /// Construct with a default concurrency hint.
-        ASIO_DECL config_from_concurrency_hint();
+        XIO_DECL config_from_concurrency_hint();
 
         /// Construct with a specified concurrency hint.
         explicit config_from_concurrency_hint(int concurrency_hint)
@@ -98,7 +91,7 @@ namespace xio {
         }
 
         /// Add a concrete service to the specified execution context.
-        ASIO_DECL void make(execution_context &ctx) const override;
+        XIO_DECL void make(execution_context &ctx) const override;
 
     private:
         int concurrency_hint_;
@@ -138,7 +131,7 @@ namespace xio {
         }
 
         /// Add a concrete service to the specified execution context.
-        ASIO_DECL void make(execution_context &ctx) const override;
+        XIO_DECL void make(execution_context &ctx) const override;
 
     private:
         std::string string_;
@@ -158,7 +151,7 @@ namespace xio {
     class config_from_env : public execution_context::service_maker {
     public:
         /// Construct with the default prefix "xio".
-        ASIO_DECL config_from_env();
+        XIO_DECL config_from_env();
 
         /// Construct with a specified prefix.
         explicit config_from_env(std::string prefix)
@@ -166,7 +159,7 @@ namespace xio {
         }
 
         /// Add a concrete service to the specified execution context.
-        ASIO_DECL void make(execution_context &ctx) const override;
+        XIO_DECL void make(execution_context &ctx) const override;
 
     private:
         std::string prefix_;
@@ -179,4 +172,4 @@ namespace xio {
 
 #include <xio/impl/config.h>
 
-#endif // ASIO_CONFIG_HPP
+#endif // XIO_CONFIG_HPP

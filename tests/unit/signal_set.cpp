@@ -88,8 +88,8 @@ void test()
 
 //------------------------------------------------------------------------------
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "signal_set",
-  ASIO_COMPILE_TEST_CASE(signal_set_compile::test)
+  XIO_COMPILE_TEST_CASE(signal_set_compile::test)
 )

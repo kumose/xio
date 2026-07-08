@@ -18,7 +18,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 **************************************************************************/
 
-#define ASIO_HAS_STD_CHRONO 1
+#define XIO_HAS_STD_CHRONO 1
 #if defined(__EDG_VERSION__)
 #undef __EDG_VERSION__
 #endif
@@ -2073,7 +2073,7 @@ void _timer_handler_(ptr<delayed_task> &task, ERROR_CODE err) {
 }
 
 // `ssl_context` constructor with `SSL_CTX*` is supported by ASIO later than 1.16.1.
-#if (ASIO_VERSION >= 101601) && \
+#if (XIO_VERSION >= 101601) && \
     (OPENSSL_VERSION_NUMBER >= 0x10100000L) && \
     !defined(LIBRESSL_VERSION_NUMBER)
 
@@ -2100,7 +2100,7 @@ namespace {
 
 xio_service_impl::xio_service_impl(const xio_service::options &opt)
     : io_svc_(opt.custom_io_context_ ? nullptr : (new xio::io_context()))
-#if (ASIO_VERSION >= 101601) && \
+#if (XIO_VERSION >= 101601) && \
     (OPENSSL_VERSION_NUMBER >= 0x10100000L) && \
     !defined(LIBRESSL_VERSION_NUMBER)
     , ssl_server_ctx_(get_or_create_ssl_context(opt.ssl_context_provider_server_,

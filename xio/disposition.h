@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DISPOSITION_HPP
-#define ASIO_DISPOSITION_HPP
+#ifndef XIO_DISPOSITION_HPP
+#define XIO_DISPOSITION_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -34,24 +34,9 @@ namespace xio {
  *
  * The primary trait is not defined.
  */
-#if defined(GENERATING_DOCUMENTATION)
-    template<typename T>
-    struct disposition_traits {
-        /// Determine whether a disposition represents no error.
-        static bool not_an_error(const T &d) noexcept;
-
-        /// Throw an exception if the disposition represents an error.
-        static void throw_exception(T d);
-
-        /// Convert a disposition into an @c exception_ptr.
-        static std::exception_ptr to_exception_ptr(T d) noexcept;
-    };
-#else // defined(GENERATING_DOCUMENTATION)
-
 
     template<typename T>
     struct disposition_traits;
-#endif // defined(GENERATING_DOCUMENTATION)
 
     namespace detail {
         template<typename T, typename = void, typename = void,
@@ -104,11 +89,7 @@ namespace xio {
  */
     template<typename T>
     struct is_disposition :
-#if defined(GENERATING_DOCUMENTATION)
-            std::integral_constant<bool, automatically_determined>
-#else // defined(GENERATING_DOCUMENTATION)
             detail::is_disposition_impl<T>
-#endif // defined(GENERATING_DOCUMENTATION)
     {
     };
 
@@ -117,18 +98,18 @@ namespace xio {
     constexpr const bool is_disposition_v = is_disposition<T>::value;
 
 
-#if defined(ASIO_HAS_CONCEPTS)
+#if defined(XIO_HAS_CONCEPTS)
 
     template<typename T>
-    ASIO_CONCEPT disposition = is_disposition<T>::value;
+    XIO_CONCEPT disposition = is_disposition<T>::value;
 
-#define ASIO_DISPOSITION ::xio::disposition
+#define XIO_DISPOSITION ::xio::disposition
 
-#else // defined(ASIO_HAS_CONCEPTS)
+#else // defined(XIO_HAS_CONCEPTS)
 
-#define ASIO_DISPOSITION typename
+#define XIO_DISPOSITION typename
 
-#endif // defined(ASIO_HAS_CONCEPTS)
+#endif // defined(XIO_HAS_CONCEPTS)
 
     /// Specialisation of @c disposition_traits for @c error_code.
     template<>
@@ -185,7 +166,7 @@ namespace xio {
 
         /// Equality operator, returns true if the disposition does not contain an
   /// error.
-        template<ASIO_DISPOSITION Disposition>
+        template<XIO_DISPOSITION Disposition>
         friend constexpr constraint_t<is_disposition<Disposition>::value, bool>
         operator==(const no_error_t &, const Disposition &d) noexcept {
             return disposition_traits<Disposition>::not_an_error(d);
@@ -193,21 +174,21 @@ namespace xio {
 
         /// Equality operator, returns true if the disposition does not contain an
   /// error.
-        template<ASIO_DISPOSITION Disposition>
+        template<XIO_DISPOSITION Disposition>
         friend constexpr constraint_t<is_disposition<Disposition>::value, bool>
         operator==(const Disposition &d, const no_error_t &) noexcept {
             return disposition_traits<Disposition>::not_an_error(d);
         }
 
         /// Inequality operator, returns true if the disposition contains an error.
-        template<ASIO_DISPOSITION Disposition>
+        template<XIO_DISPOSITION Disposition>
         friend constexpr constraint_t<is_disposition<Disposition>::value, bool>
         operator!=(const no_error_t &, const Disposition &d) noexcept {
             return !disposition_traits<Disposition>::not_an_error(d);
         }
 
         /// Inequality operator, returns true if the disposition contains an error.
-        template<ASIO_DISPOSITION Disposition>
+        template<XIO_DISPOSITION Disposition>
         friend constexpr constraint_t<is_disposition<Disposition>::value, bool>
         operator!=(const Disposition &d, const no_error_t &) noexcept {
             return !disposition_traits<Disposition>::not_an_error(d);
@@ -255,4 +236,4 @@ inline constexpr no_error_t no_error;
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DISPOSITION_HPP
+#endif // XIO_DISPOSITION_HPP

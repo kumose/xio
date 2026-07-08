@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_INLINE_OR_EXECUTOR_HPP
-#define ASIO_INLINE_OR_EXECUTOR_HPP
+#ifndef XIO_INLINE_OR_EXECUTOR_HPP
+#define XIO_INLINE_OR_EXECUTOR_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -152,7 +152,7 @@ namespace xio {
             return executor_;
         }
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
         /// Obtain the underlying execution context.
         execution_context &context() const noexcept {
             return executor_.context();
@@ -173,14 +173,12 @@ namespace xio {
         void on_work_finished() const noexcept {
             executor_.on_work_finished();
         }
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     private:
         friend struct XIO_VERSIONED_NAME (require_fn)::impl;
         friend struct XIO_VERSIONED_NAME (prefer_fn)::impl;
-#endif // !defined(GENERATING_DOCUMENTATION)
 
         /// Obtain an executor with the @c blocking.possibly property.
         /**
@@ -329,13 +327,11 @@ namespace xio {
                 Blocking, InlineExceptionHandling>(xio::prefer(executor_, p));
         }
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     private:
         friend struct XIO_VERSIONED_NAME (query_fn)::impl;
         friend struct xio::execution::detail::blocking_t<0>;
         friend struct xio::execution::detail::inline_exception_handling_t<0>;
-#endif // !defined(GENERATING_DOCUMENTATION)
 
         /// Query the current value of the @c blocking property.
         /**
@@ -414,7 +410,7 @@ namespace xio {
             this->execute_helper(static_cast<Function &&>(f), Blocking{});
         }
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
         /// Request the inline_or_executor to invoke the given function object.
         /**
    * This function is used to ask the inline_or_executor to execute the given
@@ -469,7 +465,7 @@ namespace xio {
         void defer(Function &&f, const Allocator &a) const {
             executor_.defer(static_cast<Function &&>(f), a);
         }
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
         /// Compare two inline_or_executors for equality.
         /**
@@ -489,19 +485,16 @@ namespace xio {
             return a.executor_ != b.executor_;
         }
 
-#if defined(GENERATING_DOCUMENTATION)
-    private:
-#endif // defined(GENERATING_DOCUMENTATION)
         template<typename Function>
         void execute_helper(Function &&f, execution::blocking_t::possibly_t) const {
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             try
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
             {
                 detail::non_const_lvalue<Function> f2(f);
                 static_cast<std::decay_t<Function> &&>(f2.value)();
             }
-#if !defined(ASIO_NO_EXCEPTIONS)
+#if !defined(XIO_NO_EXCEPTIONS)
             catch (...) {
                 if (std::is_same<InlineExceptionHandling,
                     execution::inline_exception_handling_t::terminate_t>::value) {
@@ -510,7 +503,7 @@ namespace xio {
                     throw;
                 }
             }
-#endif // !defined(ASIO_NO_EXCEPTIONS)
+#endif // !defined(XIO_NO_EXCEPTIONS)
         }
 
         template<typename Function>
@@ -574,4 +567,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_INLINE_OR_EXECUTOR_HPP
+#endif // XIO_INLINE_OR_EXECUTOR_HPP

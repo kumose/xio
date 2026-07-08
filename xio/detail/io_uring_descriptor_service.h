@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IO_URING_DESCRIPTOR_SERVICE_HPP
-#define ASIO_DETAIL_IO_URING_DESCRIPTOR_SERVICE_HPP
+#ifndef XIO_DETAIL_IO_URING_DESCRIPTOR_SERVICE_HPP
+#define XIO_DETAIL_IO_URING_DESCRIPTOR_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
 
 #include <xio/associated_cancellation_slot.h>
 #include <xio/buffer.h>
@@ -73,28 +73,28 @@ namespace xio {
             };
 
             // Constructor.
-            ASIO_DECL io_uring_descriptor_service(execution_context &context);
+            XIO_DECL io_uring_descriptor_service(execution_context &context);
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void shutdown();
+  XIO_DECL void shutdown();
 
             // Construct a new descriptor implementation.
-  ASIO_DECL void construct(implementation_type &impl);
+  XIO_DECL void construct(implementation_type &impl);
 
             // Move-construct a new descriptor implementation.
-  ASIO_DECL void move_construct(implementation_type &impl,
+  XIO_DECL void move_construct(implementation_type &impl,
                                 implementation_type &other_impl) noexcept;
 
             // Move-assign from another descriptor implementation.
-  ASIO_DECL void move_assign(implementation_type &impl,
+  XIO_DECL void move_assign(implementation_type &impl,
                              io_uring_descriptor_service &other_service,
                              implementation_type &other_impl);
 
             // Destroy a descriptor implementation.
-  ASIO_DECL void destroy(implementation_type &impl);
+  XIO_DECL void destroy(implementation_type &impl);
 
             // Assign a native descriptor to a descriptor implementation.
-            ASIO_DECL xio::error_code assign(implementation_type &impl,
+            XIO_DECL xio::error_code assign(implementation_type &impl,
                                              const native_handle_type &native_descriptor,
                                              xio::error_code &ec);
 
@@ -104,7 +104,7 @@ namespace xio {
             }
 
             // Destroy a descriptor implementation.
-            ASIO_DECL xio::error_code close(implementation_type &impl,
+            XIO_DECL xio::error_code close(implementation_type &impl,
                                             xio::error_code &ec);
 
             // Get the native descriptor representation.
@@ -113,7 +113,7 @@ namespace xio {
             }
 
             // Release ownership of the native descriptor representation.
-  ASIO_DECL native_handle_type release(implementation_type &impl);
+  XIO_DECL native_handle_type release(implementation_type &impl);
 
             // Release ownership of the native descriptor representation.
             native_handle_type release(implementation_type &impl,
@@ -123,7 +123,7 @@ namespace xio {
             }
 
             // Cancel all operations associated with the descriptor.
-            ASIO_DECL xio::error_code cancel(implementation_type &impl,
+            XIO_DECL xio::error_code cancel(implementation_type &impl,
                                              xio::error_code &ec);
 
             // Perform an IO control command on the descriptor.
@@ -132,7 +132,7 @@ namespace xio {
                                        IO_Control_Command &command, xio::error_code &ec) {
                 descriptor_ops::ioctl(impl.descriptor_, impl.state_,
                                       command.name(), static_cast<ioctl_arg_type *>(command.data()), ec);
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -146,7 +146,7 @@ namespace xio {
                                          bool mode, xio::error_code &ec) {
                 descriptor_ops::set_user_non_blocking(
                     impl.descriptor_, impl.state_, mode, ec);
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -160,7 +160,7 @@ namespace xio {
                                                 bool mode, xio::error_code &ec) {
                 descriptor_ops::set_internal_non_blocking(
                     impl.descriptor_, impl.state_, mode, ec);
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -183,7 +183,7 @@ namespace xio {
                         break;
                 }
 
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -236,7 +236,7 @@ namespace xio {
                                 &io_uring_service_, &impl.io_object_data_, op_type);
                 }
 
-                ASIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
+                XIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
                                        "descriptor", &impl, impl.descriptor_, "async_wait"));
 
                 start_op(impl, op_type, p.p, is_continuation, op_type == -1);
@@ -262,7 +262,7 @@ namespace xio {
                                                    bufs.buffers(), bufs.count(), bufs.all_empty(), ec);
                 }
 
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return n;
             }
 
@@ -272,7 +272,7 @@ namespace xio {
                 // Wait for descriptor to become ready.
                 descriptor_ops::poll_write(impl.descriptor_, impl.state_, ec);
 
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return 0;
             }
 
@@ -306,7 +306,7 @@ namespace xio {
                                                                              io_uring_service::write_op);
                 }
 
-                ASIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
+                XIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
                                        "descriptor", &impl, impl.descriptor_, "async_write_some"));
 
                 start_op(impl, io_uring_service::write_op, p.p, is_continuation,
@@ -341,7 +341,7 @@ namespace xio {
                                                                              io_uring_service::write_op);
                 }
 
-                ASIO_HANDLER_CREATION((io_uring_service_.context(),
+                XIO_HANDLER_CREATION((io_uring_service_.context(),
                                        *p.p, "descriptor", &impl, impl.descriptor_,
                                        "async_write_some(null_buffers)"));
 
@@ -368,7 +368,7 @@ namespace xio {
                                                       offset, bufs.buffers(), bufs.count(), bufs.all_empty(), ec);
                 }
 
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return n;
             }
 
@@ -408,7 +408,7 @@ namespace xio {
                                                                              io_uring_service::write_op);
                 }
 
-                ASIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
+                XIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
                                        "descriptor", &impl, impl.descriptor_, "async_write_some"));
 
                 start_op(impl, io_uring_service::write_op, p.p, is_continuation,
@@ -443,7 +443,7 @@ namespace xio {
                                                   bufs.buffers(), bufs.count(), bufs.all_empty(), ec);
                 }
 
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return n;
             }
 
@@ -453,7 +453,7 @@ namespace xio {
                 // Wait for descriptor to become ready.
                 descriptor_ops::poll_read(impl.descriptor_, impl.state_, ec);
 
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return 0;
             }
 
@@ -488,7 +488,7 @@ namespace xio {
                                                                              io_uring_service::read_op);
                 }
 
-                ASIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
+                XIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
                                        "descriptor", &impl, impl.descriptor_, "async_read_some"));
 
                 start_op(impl, io_uring_service::read_op, p.p, is_continuation,
@@ -523,7 +523,7 @@ namespace xio {
                                                                              io_uring_service::read_op);
                 }
 
-                ASIO_HANDLER_CREATION((io_uring_service_.context(),
+                XIO_HANDLER_CREATION((io_uring_service_.context(),
                                        *p.p, "descriptor", &impl, impl.descriptor_,
                                        "async_read_some(null_buffers)"));
 
@@ -587,7 +587,7 @@ namespace xio {
                                                                              io_uring_service::read_op);
                 }
 
-                ASIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
+                XIO_HANDLER_CREATION((io_uring_service_.context(), *p.p,
                                        "descriptor", &impl, impl.descriptor_, "async_read_some"));
 
                 start_op(impl, io_uring_service::read_op, p.p, is_continuation,
@@ -605,7 +605,7 @@ namespace xio {
 
         private:
             // Start the asynchronous operation.
-  ASIO_DECL void start_op(implementation_type &impl, int op_type,
+  XIO_DECL void start_op(implementation_type &impl, int op_type,
                           io_uring_operation *op, bool is_continuation, bool noop);
 
             // Helper class used to implement per-operation cancellation
@@ -646,6 +646,6 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
 
-#endif // ASIO_DETAIL_IO_URING_DESCRIPTOR_SERVICE_HPP
+#endif // XIO_DETAIL_IO_URING_DESCRIPTOR_SERVICE_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_WIN_EVENT_IPP
-#define ASIO_DETAIL_IMPL_WIN_EVENT_IPP
+#ifndef XIO_DETAIL_IMPL_WIN_EVENT_IPP
+#define XIO_DETAIL_IMPL_WIN_EVENT_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 
 #include <xio/detail/throw_error.h>
 #include <xio/detail/win_event.h>
@@ -33,12 +33,12 @@ namespace xio {
             : state_(0) {
 
 
-#if defined(ASIO_WINDOWS_APP)
+#if defined(XIO_WINDOWS_APP)
 events_ [0] = ::CreateEventExW (0, 0,
 CREATE_EVENT_MANUAL_RESET, EVENT_ALL_ACCESS);
-#else // defined(ASIO_WINDOWS_APP)
+#else // defined(XIO_WINDOWS_APP)
 events_ [0] = ::CreateEventW (0, true, false, 0);
-#endif // defined(ASIO_WINDOWS_APP)
+#endif // defined(XIO_WINDOWS_APP)
 if (!events_ [0])
   {
     DWORD last_error = ::GetLastError();
@@ -47,11 +47,11 @@ if (!events_ [0])
     xio::detail::throw_error(ec, "event");
   }
 
-#if defined(ASIO_WINDOWS_APP)
+#if defined(XIO_WINDOWS_APP)
 events_ [1] = ::CreateEventExW (0, 0, 0, EVENT_ALL_ACCESS);
-#else // defined(ASIO_WINDOWS_APP)
+#else // defined(XIO_WINDOWS_APP)
 events_ [1] = ::CreateEventW (0, false, false, 0);
-#endif // defined(ASIO_WINDOWS_APP)
+#endif // defined(XIO_WINDOWS_APP)
 if (!events_ [1])
   {
     DWORD last_error = ::GetLastError();
@@ -72,6 +72,6 @@ win_event::~win_event() {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 
-#endif // ASIO_DETAIL_IMPL_WIN_EVENT_IPP
+#endif // XIO_DETAIL_IMPL_WIN_EVENT_IPP

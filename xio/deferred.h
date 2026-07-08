@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DEFERRED_HPP
-#define ASIO_DEFERRED_HPP
+#ifndef XIO_DEFERRED_HPP
+#define XIO_DEFERRED_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -100,7 +100,7 @@ namespace xio {
                   tail_(static_cast<T &&>(tail)) {
             }
 
-            template<ASIO_COMPLETION_TOKEN_FOR(Signatures...) CompletionToken>
+            template<XIO_COMPLETION_TOKEN_FOR(Signatures...) CompletionToken>
             auto operator()(CompletionToken &&token) && -> decltype(
                 async_initiate<CompletionToken, Signatures...>(
                     initiate(), token, static_cast<Head &&>(this->head_),
@@ -110,7 +110,7 @@ namespace xio {
                                                                       static_cast<Tail &&>(tail_));
             }
 
-            template<ASIO_COMPLETION_TOKEN_FOR(Signatures...) CompletionToken>
+            template<XIO_COMPLETION_TOKEN_FOR(Signatures...) CompletionToken>
             auto operator()(CompletionToken &&token) const & -> decltype(
                 async_initiate<CompletionToken, Signatures...>(
                     initiate(), token, this->head_, this->tail_)) {
@@ -152,11 +152,9 @@ namespace xio {
         }
     };
 
-#if !defined(GENERATING_DOCUMENTATION)
     template<>
     struct is_deferred<deferred_noop> : std::true_type {
     };
-#endif // !defined(GENERATING_DOCUMENTATION)
 
     /// Tag type to disambiguate deferred constructors.
     struct deferred_init_tag {
@@ -189,11 +187,9 @@ namespace xio {
         }
     };
 
-#if !defined(GENERATING_DOCUMENTATION)
     template<typename Function>
     struct is_deferred<deferred_function<Function> > : std::true_type {
     };
-#endif // !defined(GENERATING_DOCUMENTATION)
 
     /// Encapsulates deferred values.
     template<typename... Values>
@@ -239,7 +235,7 @@ namespace xio {
         }
 
         /// Initiate the deferred operation using the supplied completion token.
-        template<ASIO_COMPLETION_TOKEN_FOR(void (Values...)) CompletionToken>
+        template<XIO_COMPLETION_TOKEN_FOR(void (Values...)) CompletionToken>
         auto operator()(CompletionToken &&token) && -> decltype(
             this->invoke_helper(
                 static_cast<CompletionToken &&>(token),
@@ -249,7 +245,7 @@ namespace xio {
                 std::index_sequence_for<Values...>());
         }
 
-        template<ASIO_COMPLETION_TOKEN_FOR(void (Values...)) CompletionToken>
+        template<XIO_COMPLETION_TOKEN_FOR(void (Values...)) CompletionToken>
         auto operator()(CompletionToken &&token) const & -> decltype(
             this->const_invoke_helper(
                 static_cast<CompletionToken &&>(token),
@@ -260,11 +256,9 @@ namespace xio {
         }
     };
 
-#if !defined(GENERATING_DOCUMENTATION)
     template<typename... Values>
     struct is_deferred<deferred_values<Values...> > : std::true_type {
     };
-#endif // !defined(GENERATING_DOCUMENTATION)
 
     /// Encapsulates a deferred asynchronous operation.
     template<typename Signature, typename Initiation, typename... InitArgs>
@@ -307,7 +301,7 @@ namespace xio {
         }
 
         /// Initiate the asynchronous operation using the supplied completion token.
-        template<ASIO_COMPLETION_TOKEN_FOR(Signature) CompletionToken>
+        template<XIO_COMPLETION_TOKEN_FOR(Signature) CompletionToken>
         auto operator()(CompletionToken &&token) && -> decltype(
             this->invoke_helper(
                 static_cast<CompletionToken &&>(token),
@@ -317,7 +311,7 @@ namespace xio {
                 std::index_sequence_for<InitArgs...>());
         }
 
-        template<ASIO_COMPLETION_TOKEN_FOR(Signature) CompletionToken>
+        template<XIO_COMPLETION_TOKEN_FOR(Signature) CompletionToken>
         auto operator()(CompletionToken &&token) const & -> decltype(
             this->const_invoke_helper(
                 static_cast<CompletionToken &&>(token),
@@ -401,7 +395,7 @@ namespace xio {
         /// Initiate the asynchronous operation using the supplied completion token.
         template
         <
-        ASIO_COMPLETION_TOKEN_FOR(Signatures...)
+        XIO_COMPLETION_TOKEN_FOR(Signatures...)
         CompletionToken >
 
 
@@ -423,7 +417,7 @@ namespace xio {
 
         template
         <
-        ASIO_COMPLETION_TOKEN_FOR(Signatures...)
+        XIO_COMPLETION_TOKEN_FOR(Signatures...)
         CompletionToken >
 
 
@@ -438,12 +432,10 @@ namespace xio {
         }
     };
 
-#if !defined(GENERATING_DOCUMENTATION)
     template<typename Signature, typename Initiation, typename... InitArgs>
     struct is_deferred<
                 deferred_async_operation<Signature, Initiation, InitArgs...> > : std::true_type {
     };
-#endif // !defined(GENERATING_DOCUMENTATION)
 
     /// Defines a link between two consecutive operations in a sequence.
     template<typename Head, typename Tail>
@@ -456,20 +448,11 @@ namespace xio {
                 static_cast<H &&>(head), static_cast<T &&>(tail)) {
         }
 
-#if defined(GENERATING_DOCUMENTATION)
-        template<typename CompletionToken>
-        auto operator()(CompletionToken &&token) &&;
-
-        template<typename CompletionToken>
-        auto operator()(CompletionToken &&token) const &;
-#endif // defined(GENERATING_DOCUMENTATION)
     };
 
-#if !defined(GENERATING_DOCUMENTATION)
     template<typename Head, typename Tail>
     struct is_deferred<deferred_sequence<Head, Tail> > : std::true_type {
     };
-#endif // !defined(GENERATING_DOCUMENTATION)
 
     /// Used to represent a deferred std::conditional branch.
     template<typename OnTrue = deferred_noop, typename OnFalse = deferred_noop>
@@ -560,11 +543,9 @@ namespace xio {
         }
     };
 
-#if !defined(GENERATING_DOCUMENTATION)
     template<typename OnTrue, typename OnFalse>
     struct is_deferred<deferred_conditional<OnTrue, OnFalse> > : std::true_type {
     };
-#endif // !defined(GENERATING_DOCUMENTATION)
 
     /// Class used to specify that an asynchronous operation should return a
 /// function object to lazily launch the operation.
@@ -686,4 +667,4 @@ inline constexpr deferred_t deferred;
 
 #include <xio/impl/deferred.h>
 
-#endif // ASIO_DEFERRED_HPP
+#endif // XIO_DEFERRED_HPP

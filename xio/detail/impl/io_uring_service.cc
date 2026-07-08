@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_IO_URING_SERVICE_IPP
-#define ASIO_DETAIL_IMPL_IO_URING_SERVICE_IPP
+#ifndef XIO_DETAIL_IMPL_IO_URING_SERVICE_IPP
+#define XIO_DETAIL_IMPL_IO_URING_SERVICE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_IO_URING)
 
 #include <cstddef>
 #include <sys/eventfd.h>
@@ -28,9 +28,9 @@
 #include <xio/detail/throw_error.h>
 #include <xio/error.h>
 
-#if defined(ASIO_HAS_THREAD_SANITIZER)
+#if defined(XIO_HAS_THREAD_SANITIZER)
 # include <sanitizer/tsan_interface.h>
-#endif // defined(ASIO_HAS_THREAD_SANITIZER)
+#endif // defined(XIO_HAS_THREAD_SANITIZER)
 
 #include <xio/detail/push_options.h>
 
@@ -214,9 +214,9 @@ namespace xio {
                                 break;
                         }
                         if (void *ptr = ::io_uring_cqe_get_data(cqe)) {
-#if defined(ASIO_HAS_THREAD_SANITIZER)
+#if defined(XIO_HAS_THREAD_SANITIZER)
 __tsan_acquire (ptr);
-#endif // defined(ASIO_HAS_THREAD_SANITIZER)
+#endif // defined(XIO_HAS_THREAD_SANITIZER)
 if (ptr!= this && ptr!= &timer_queues_ &&ptr!= &timeout_)
           {
             io_queue* io_q = static_cast<io_queue*>(ptr);
@@ -292,9 +292,9 @@ void io_uring_service::register_internal_io_object(
     if (::io_uring_sqe *sqe = get_sqe(0)) {
         op->prepare(sqe);
         ::io_uring_sqe_set_data(sqe, &io_obj->queues_[op_type]);
-#if defined(ASIO_HAS_THREAD_SANITIZER)
+#if defined(XIO_HAS_THREAD_SANITIZER)
 __tsan_release (&io_obj->queues_ [op_type]);
-#endif // defined(ASIO_HAS_THREAD_SANITIZER)
+#endif // defined(XIO_HAS_THREAD_SANITIZER)
 post_submit_sqes_op(lock, 0);
   }
   else
@@ -351,9 +351,9 @@ void io_uring_service::start_op(int op_type,
             if (::io_uring_sqe *sqe = get_sqe(ring_index)) {
                 op->prepare(sqe);
                 ::io_uring_sqe_set_data(sqe, &io_obj->queues_[op_type]);
-#if defined(ASIO_HAS_THREAD_SANITIZER)
+#if defined(XIO_HAS_THREAD_SANITIZER)
 __tsan_release (&io_obj->queues_ [op_type]);
-#endif // defined(ASIO_HAS_THREAD_SANITIZER)
+#endif // defined(XIO_HAS_THREAD_SANITIZER)
 scheduler_.work_started();
 post_submit_sqes_op(lock, ring_index);
       }
@@ -481,9 +481,9 @@ void io_uring_service::run_single_ring(long usec, op_queue<operation> &ops) {
             ++local_ops;
             ::io_uring_prep_timeout(sqe, &ts, 0, 0);
             ::io_uring_sqe_set_data(sqe, &ts);
-#if defined(ASIO_HAS_THREAD_SANITIZER)
+#if defined(XIO_HAS_THREAD_SANITIZER)
 __tsan_release (&ts);
-#endif // defined(ASIO_HAS_THREAD_SANITIZER)
+#endif // defined(XIO_HAS_THREAD_SANITIZER)
 submit_sqes (0);
     }
   }
@@ -503,9 +503,9 @@ int result = (usec == 0)
         ++local_ops;
         ::io_uring_prep_timeout_remove(sqe, reinterpret_cast<__u64>(&ts), 0);
         ::io_uring_sqe_set_data(sqe, &ts);
-#if defined(ASIO_HAS_THREAD_SANITIZER)
+#if defined(XIO_HAS_THREAD_SANITIZER)
 __tsan_release (&ts);
-#endif // defined(ASIO_HAS_THREAD_SANITIZER)
+#endif // defined(XIO_HAS_THREAD_SANITIZER)
 submit_sqes (0);
       }
     }
@@ -519,9 +519,9 @@ int count = 0;
     {
       if (void* ptr = ::io_uring_cqe_get_data(cqe))
       {
-#if defined(ASIO_HAS_THREAD_SANITIZER)
+#if defined(XIO_HAS_THREAD_SANITIZER)
 __tsan_acquire (ptr);
-#endif // defined(ASIO_HAS_THREAD_SANITIZER)
+#endif // defined(XIO_HAS_THREAD_SANITIZER)
 if (ptr== this)
         {
           // The io_uring service was interrupted.
@@ -564,9 +564,9 @@ decrement(outstanding_work_, count);
         if (::io_uring_sqe *sqe = get_sqe(0)) {
             ::io_uring_prep_timeout(sqe, &timeout_, 0, 0);
             ::io_uring_sqe_set_data(sqe, &timeout_);
-#if defined(ASIO_HAS_THREAD_SANITIZER)
+#if defined(XIO_HAS_THREAD_SANITIZER)
 __tsan_release (&timeout_);
-#endif // defined(ASIO_HAS_THREAD_SANITIZER)
+#endif // defined(XIO_HAS_THREAD_SANITIZER)
 push_submit_sqes_op(ops, 0);
       }
     }
@@ -585,9 +585,9 @@ void io_uring_service::run_multi_ring(long usec, op_queue<operation> &ops) {
             ++local_ops;
             ::io_uring_prep_timeout(sqe, &ts, 0, 0);
             ::io_uring_sqe_set_data(sqe, &ts);
-#if defined(ASIO_HAS_THREAD_SANITIZER)
+#if defined(XIO_HAS_THREAD_SANITIZER)
 __tsan_release (&ts);
-#endif // defined(ASIO_HAS_THREAD_SANITIZER)
+#endif // defined(XIO_HAS_THREAD_SANITIZER)
 submit_sqes (0);
     }
   }
@@ -639,9 +639,9 @@ int count = 0;
           ::io_uring_prep_timeout_remove(
               sqe, reinterpret_cast<__u64>(&ts), 0);
           ::io_uring_sqe_set_data(sqe, &ts);
-#if defined(ASIO_HAS_THREAD_SANITIZER)
+#if defined(XIO_HAS_THREAD_SANITIZER)
 __tsan_release (&ts);
-#endif // defined(ASIO_HAS_THREAD_SANITIZER)
+#endif // defined(XIO_HAS_THREAD_SANITIZER)
 submit_sqes (0);
         }
       }
@@ -654,9 +654,9 @@ int ring_count = 0;
       {
         if (void* ptr = ::io_uring_cqe_get_data(cqe))
         {
-#if defined(ASIO_HAS_THREAD_SANITIZER)
+#if defined(XIO_HAS_THREAD_SANITIZER)
 __tsan_acquire (ptr);
-#endif // defined(ASIO_HAS_THREAD_SANITIZER)
+#endif // defined(XIO_HAS_THREAD_SANITIZER)
 if (ptr== this)
           {
             // The io_uring service was interrupted.
@@ -701,9 +701,9 @@ decrement(outstanding_work_, count);
         if (::io_uring_sqe *sqe = get_sqe(0)) {
             ::io_uring_prep_timeout(sqe, &timeout_, 0, 0);
             ::io_uring_sqe_set_data(sqe, &timeout_);
-#if defined(ASIO_HAS_THREAD_SANITIZER)
+#if defined(XIO_HAS_THREAD_SANITIZER)
 __tsan_release (&timeout_);
-#endif // defined(ASIO_HAS_THREAD_SANITIZER)
+#endif // defined(XIO_HAS_THREAD_SANITIZER)
 push_submit_sqes_op(ops, 0);
       }
     }
@@ -715,9 +715,9 @@ void io_uring_service::interrupt() {
     if (::io_uring_sqe *sqe = get_sqe(0)) {
         ::io_uring_prep_nop(sqe);
         ::io_uring_sqe_set_data(sqe, this);
-#if defined(ASIO_HAS_THREAD_SANITIZER)
+#if defined(XIO_HAS_THREAD_SANITIZER)
 __tsan_release (this);
-#endif // defined(ASIO_HAS_THREAD_SANITIZER)
+#endif // defined(XIO_HAS_THREAD_SANITIZER)
 }
 submit_sqes (0);
 }
@@ -751,7 +751,7 @@ if (!iowait_)
 #endif // defined(IORING_FEAT_NO_IOWAIT)
 }
 
-#if !defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#if !defined(XIO_HAS_IO_URING_AS_DEFAULT)
 event_fd_= ::eventfd (0, EFD_CLOEXEC| EFD_NONBLOCK);
   if (event_fd_<0) {
     xio::error_code ec(errno,
@@ -770,10 +770,10 @@ int result = ::io_uring_register_eventfd(&rings_[0].ring_, event_fd_);
                        xio::error::get_system_category());
     xio::detail::throw_error(ec, "io_uring_queue_init");
 }
-#endif // !defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#endif // !defined(XIO_HAS_IO_URING_AS_DEFAULT)
 }
 
-#if !defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#if !defined(XIO_HAS_IO_URING_AS_DEFAULT)
 class io_uring_service::event_fd_read_op :
         public reactor_op {
 public:
@@ -814,15 +814,15 @@ public:
 private:
     io_uring_service *service_;
 };
-#endif // !defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#endif // !defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
 void io_uring_service::register_with_reactor() {
 
 
-#if !defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#if !defined(XIO_HAS_IO_URING_AS_DEFAULT)
 reactor_.register_internal_descriptor(reactor::read_op,
                                       event_fd_, reactor_data_, new event_fd_read_op(this));
-#endif // !defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#endif // !defined(XIO_HAS_IO_URING_AS_DEFAULT)
 }
 
 io_uring_service::io_object *io_uring_service::allocate_io_object() {
@@ -884,9 +884,9 @@ void io_uring_service::update_timeout() {
     if (::io_uring_sqe *sqe = get_sqe(0)) {
         ::io_uring_prep_timeout_remove(sqe, reinterpret_cast<__u64>(&timeout_), 0);
         ::io_uring_sqe_set_data(sqe, &timer_queues_);
-#if defined(ASIO_HAS_THREAD_SANITIZER)
+#if defined(XIO_HAS_THREAD_SANITIZER)
 __tsan_release (&timer_queues_);
-#endif // defined(ASIO_HAS_THREAD_SANITIZER)
+#endif // defined(XIO_HAS_THREAD_SANITIZER)
 }
 }
 
@@ -1061,9 +1061,9 @@ operation *io_uring_service::io_queue::perform_io(int result) {
         if (::io_uring_sqe *sqe = service->get_sqe(ring_index)) {
             op_queue_.front()->prepare(sqe);
             ::io_uring_sqe_set_data(sqe, this);
-#if defined(ASIO_HAS_THREAD_SANITIZER)
+#if defined(XIO_HAS_THREAD_SANITIZER)
 __tsan_release (this);
-#endif // defined(ASIO_HAS_THREAD_SANITIZER)
+#endif // defined(XIO_HAS_THREAD_SANITIZER)
 service->post_submit_sqes_op(lock, ring_index);
     }
     else
@@ -1114,6 +1114,6 @@ io_uring_service::io_object::io_object(bool locking, int spin_count)
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_IO_URING)
 
-#endif // ASIO_DETAIL_IMPL_IO_URING_SERVICE_IPP
+#endif // XIO_DETAIL_IMPL_IO_URING_SERVICE_IPP

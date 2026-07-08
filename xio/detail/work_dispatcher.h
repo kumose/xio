@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WORK_DISPATCHER_HPP
-#define ASIO_DETAIL_WORK_DISPATCHER_HPP
+#ifndef XIO_DETAIL_WORK_DISPATCHER_HPP
+#define XIO_DETAIL_WORK_DISPATCHER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -222,7 +222,7 @@ namespace xio {
             work_executor_type executor_;
         };
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
 
         template<typename Function, typename Handler, typename Executor>
         class work_dispatcher<Function, Handler, Executor,
@@ -271,10 +271,10 @@ namespace xio {
             Handler handler_;
         };
 
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
     } // namespace detail
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_WORK_DISPATCHER_HPP
+#endif // XIO_DETAIL_WORK_DISPATCHER_HPP

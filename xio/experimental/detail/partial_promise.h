@@ -9,26 +9,26 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXPERIMENTAL_DETAIL_PARTIAL_PROMISE_HPP
-#define ASIO_EXPERIMENTAL_DETAIL_PARTIAL_PROMISE_HPP
+#ifndef XIO_EXPERIMENTAL_DETAIL_PARTIAL_PROMISE_HPP
+#define XIO_EXPERIMENTAL_DETAIL_PARTIAL_PROMISE_HPP
 
 #include <xio/detail/config.h>
 #include <xio/append.h>
 #include <xio/awaitable.h>
 #include <xio/experimental/coro_traits.h>
 
-#if defined(ASIO_HAS_STD_COROUTINE)
+#if defined(XIO_HAS_STD_COROUTINE)
 # include <coroutine>
-#else // defined(ASIO_HAS_STD_COROUTINE)
+#else // defined(XIO_HAS_STD_COROUTINE)
 # include <experimental/coroutine>
-#endif // defined(ASIO_HAS_STD_COROUTINE)
+#endif // defined(XIO_HAS_STD_COROUTINE)
 
 namespace xio {
 
 
     namespace experimental {
         namespace detail {
-#if defined(ASIO_HAS_STD_COROUTINE)
+#if defined(XIO_HAS_STD_COROUTINE)
 
             using std::coroutine_handle;
             using std::coroutine_traits;
@@ -36,7 +36,7 @@ namespace xio {
             using std::suspend_always;
             using std::noop_coroutine;
 
-#else // defined(ASIO_HAS_STD_COROUTINE)
+#else // defined(XIO_HAS_STD_COROUTINE)
 
             using std::experimental::coroutine_handle;
             using std::experimental::coroutine_traits;
@@ -44,7 +44,7 @@ namespace xio {
             using std::experimental::suspend_always;
             using std::experimental::noop_coroutine;
 
-#endif // defined(ASIO_HAS_STD_COROUTINE)
+#endif // defined(XIO_HAS_STD_COROUTINE)
 
             struct partial_coro {
                 coroutine_handle<void> handle{nullptr};
@@ -105,7 +105,7 @@ namespace xio {
 
 } // namespace xio
 
-#if defined(ASIO_HAS_STD_COROUTINE)
+#if defined(XIO_HAS_STD_COROUTINE)
 
 namespace std {
     template<typename Executor, typename Completion, typename... Args>
@@ -118,7 +118,7 @@ namespace std {
     };
 } // namespace std
 
-#else // defined(ASIO_HAS_STD_COROUTINE)
+#else // defined(XIO_HAS_STD_COROUTINE)
 
 namespace std {
     namespace experimental {
@@ -133,7 +133,7 @@ namespace std {
     }
 } // namespace std::experimental
 
-#endif // defined(ASIO_HAS_STD_COROUTINE)
+#endif // defined(XIO_HAS_STD_COROUTINE)
 
 namespace xio {
 
@@ -176,4 +176,4 @@ namespace xio {
 
 } // namespace xio
 
-#endif // ASIO_EXPERIMENTAL_DETAIL_PARTIAL_PROMISE_HPP
+#endif // XIO_EXPERIMENTAL_DETAIL_PARTIAL_PROMISE_HPP

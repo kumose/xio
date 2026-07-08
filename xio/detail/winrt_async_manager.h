@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WINRT_ASYNC_MANAGER_HPP
-#define ASIO_DETAIL_WINRT_ASYNC_MANAGER_HPP
+#ifndef XIO_DETAIL_WINRT_ASYNC_MANAGER_HPP
+#define XIO_DETAIL_WINRT_ASYNC_MANAGER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_WINDOWS_RUNTIME)
+#if defined(XIO_WINDOWS_RUNTIME)
 
 #include <future>
 #include <xio/detail/atomic_count.h>
@@ -25,11 +25,11 @@
 #include <xio/error.h>
 #include <xio/execution_context.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 #include <xio/detail/win_iocp_io_context.h>
-#else // defined(ASIO_HAS_IOCP)
+#else // defined(XIO_HAS_IOCP)
 #include <xio/detail/scheduler.h>
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
 #include <xio/detail/push_options.h>
 
@@ -265,7 +265,7 @@ namespace xio {
 
         private:
 // The scheduler implementation used to post completed handlers.
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 typedef class win_iocp_io_context scheduler_impl;
 #else
 typedef class scheduler scheduler_impl;
@@ -284,6 +284,6 @@ std::promise<void> promise_;
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_WINDOWS_RUNTIME)
+#endif // defined(XIO_WINDOWS_RUNTIME)
 
-#endif // ASIO_DETAIL_WINRT_ASYNC_MANAGER_HPP
+#endif // XIO_DETAIL_WINRT_ASYNC_MANAGER_HPP

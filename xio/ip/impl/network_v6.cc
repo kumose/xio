@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_IMPL_NETWORK_V6_IPP
-#define ASIO_IP_IMPL_NETWORK_V6_IPP
+#ifndef XIO_IP_IMPL_NETWORK_V6_IPP
+#define XIO_IP_IMPL_NETWORK_V6_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -39,7 +39,7 @@ namespace xio {
             }
         }
 
-        ASIO_DECL address_v6 network_v6::network() const noexcept {
+        XIO_DECL address_v6 network_v6::network() const noexcept {
             address_v6::bytes_type bytes(address_.to_bytes());
             for (std::size_t i = 0; i < 16; ++i) {
                 if (prefix_length_ <= i * 8)
@@ -85,13 +85,13 @@ namespace xio {
             using namespace std; // For sprintf.
             ec = xio::error_code();
             char prefix_len[16];
-#if defined(ASIO_HAS_SNPRINTF)
+#if defined(XIO_HAS_SNPRINTF)
             snprintf(prefix_len, sizeof(prefix_len), "/%u", prefix_length_);
-#elif defined(ASIO_HAS_SECURE_RTL)
+#elif defined(XIO_HAS_SECURE_RTL)
             sprintf_s(prefix_len, sizeof(prefix_len), "/%u", prefix_length_);
-#else // defined(ASIO_HAS_SECURE_RTL)
+#else // defined(XIO_HAS_SECURE_RTL)
             sprintf(prefix_len, "/%u", prefix_length_);
-#endif // defined(ASIO_HAS_SECURE_RTL)
+#endif // defined(XIO_HAS_SECURE_RTL)
             return address_.to_string() + prefix_len;
         }
 
@@ -157,4 +157,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_IP_IMPL_NETWORK_V6_IPP
+#endif // XIO_IP_IMPL_NETWORK_V6_IPP

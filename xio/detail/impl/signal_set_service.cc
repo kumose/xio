@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IMPL_SIGNAL_SET_SERVICE_IPP
-#define ASIO_DETAIL_IMPL_SIGNAL_SET_SERVICE_IPP
+#ifndef XIO_DETAIL_IMPL_SIGNAL_SET_SERVICE_IPP
+#define XIO_DETAIL_IMPL_SIGNAL_SET_SERVICE_IPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -25,11 +25,11 @@
 #include <xio/detail/throw_exception.h>
 #include <xio/detail/throw_error.h>
 
-#if defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#if defined(XIO_HAS_IO_URING_AS_DEFAULT)
 #include <xio/detail/io_uring_service.h>
-#else // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#else // defined(XIO_HAS_IO_URING_AS_DEFAULT)
 #include <xio/detail/reactor.h>
-#endif // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#endif // defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
 #include <xio/detail/push_options.h>
 
@@ -62,7 +62,7 @@ namespace xio {
 
         signal_state *get_signal_state() {
             static signal_state state = {
-                ASIO_STATIC_MUTEX_INIT, -1, -1, false, 0,
+                XIO_STATIC_MUTEX_INIT, -1, -1, false, 0,
                 {0}, {signal_set_base::flags_t()}
             };
             return &state;
@@ -71,40 +71,40 @@ namespace xio {
         void XIO_VERSIONED_NAME(signal_handler)(
             int signal_number
         ) {
-#if defined(ASIO_WINDOWS) \
-  || defined(ASIO_WINDOWS_RUNTIME) \
-  || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) \
+  || defined(XIO_WINDOWS_RUNTIME) \
+  || defined(XIO_CYGWIN_W32_SOCKETS)
             signal_set_service::deliver_signal(signal_number);
-#else // defined(ASIO_WINDOWS)
-            //   || defined(ASIO_WINDOWS_RUNTIME)
-            //   || defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // defined(XIO_WINDOWS)
+            //   || defined(XIO_WINDOWS_RUNTIME)
+            //   || defined(XIO_CYGWIN_W32_SOCKETS)
             int saved_errno = errno;
             signal_state *state = get_signal_state();
             signed_size_type result = ::write(state->write_descriptor_,
                                               &signal_number, sizeof(signal_number));
             (void) result;
             errno = saved_errno;
-#endif // defined(ASIO_WINDOWS)
-            //   || defined(ASIO_WINDOWS_RUNTIME)
-            //   || defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // defined(XIO_WINDOWS)
+            //   || defined(XIO_WINDOWS_RUNTIME)
+            //   || defined(XIO_CYGWIN_W32_SOCKETS)
 
-#if defined(ASIO_HAS_SIGNAL) && !defined(ASIO_HAS_SIGACTION)
+#if defined(XIO_HAS_SIGNAL) && !defined(XIO_HAS_SIGACTION)
             ::signal(signal_number, XIO_VERSIONED_NAME(signal_handler));
-#endif // defined(ASIO_HAS_SIGNAL) && !defined(ASIO_HAS_SIGACTION)
+#endif // defined(XIO_HAS_SIGNAL) && !defined(XIO_HAS_SIGACTION)
         }
 
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_WINDOWS_RUNTIME) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_WINDOWS_RUNTIME) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS)
         class signal_set_service::pipe_read_op :
-# if defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# if defined(XIO_HAS_IO_URING_AS_DEFAULT)
                 public io_uring_operation
-# else // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# else // defined(XIO_HAS_IO_URING_AS_DEFAULT)
                 public reactor_op
-# endif // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# endif // defined(XIO_HAS_IO_URING_AS_DEFAULT)
         {
         public:
-# if defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# if defined(XIO_HAS_IO_URING_AS_DEFAULT)
             pipe_read_op()
                 : io_uring_operation(xio::error_code(), &pipe_read_op::do_prepare,
                                      &pipe_read_op::do_perform, pipe_read_op::do_complete) {
@@ -128,7 +128,7 @@ namespace xio {
 
                 return false;
             }
-# else // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# else // defined(XIO_HAS_IO_URING_AS_DEFAULT)
             pipe_read_op()
                 : reactor_op(xio::error_code(),
                              &pipe_read_op::do_perform, pipe_read_op::do_complete) {
@@ -145,7 +145,7 @@ namespace xio {
 
                 return not_done;
             }
-# endif // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# endif // defined(XIO_HAS_IO_URING_AS_DEFAULT)
 
             static void do_complete(void * /*owner*/, operation *base,
                                     const xio::error_code & /*ec*/,
@@ -154,39 +154,39 @@ namespace xio {
                 delete o;
             }
         };
-#endif // !defined(ASIO_WINDOWS)
-        //   && !defined(ASIO_WINDOWS_RUNTIME)
-        //   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // !defined(XIO_WINDOWS)
+        //   && !defined(XIO_WINDOWS_RUNTIME)
+        //   && !defined(XIO_CYGWIN_W32_SOCKETS)
 
         signal_set_service::signal_set_service(execution_context &context)
             : execution_context_service_base<signal_set_service>(context),
               scheduler_(xio::use_service<scheduler_impl>(context)),
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_WINDOWS_RUNTIME) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS)
-# if defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_WINDOWS_RUNTIME) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS)
+# if defined(XIO_HAS_IO_URING_AS_DEFAULT)
               io_uring_service_(xio::use_service<io_uring_service>(context)),
-# else // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# else // defined(XIO_HAS_IO_URING_AS_DEFAULT)
               reactor_(xio::use_service<reactor>(context)),
-# endif // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
-#endif // !defined(ASIO_WINDOWS)
-              //   && !defined(ASIO_WINDOWS_RUNTIME)
-              //   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+# endif // defined(XIO_HAS_IO_URING_AS_DEFAULT)
+#endif // !defined(XIO_WINDOWS)
+              //   && !defined(XIO_WINDOWS_RUNTIME)
+              //   && !defined(XIO_CYGWIN_W32_SOCKETS)
               next_(0),
               prev_(0) {
             get_signal_state()->mutex_.init();
 
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_WINDOWS_RUNTIME) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS)
-# if defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_WINDOWS_RUNTIME) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS)
+# if defined(XIO_HAS_IO_URING_AS_DEFAULT)
             io_uring_service_.init_task();
-# else // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# else // defined(XIO_HAS_IO_URING_AS_DEFAULT)
             reactor_.init_task();
-# endif // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
-#endif // !defined(ASIO_WINDOWS)
-            //   && !defined(ASIO_WINDOWS_RUNTIME)
-            //   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+# endif // defined(XIO_HAS_IO_URING_AS_DEFAULT)
+#endif // !defined(XIO_WINDOWS)
+            //   && !defined(XIO_WINDOWS_RUNTIME)
+            //   && !defined(XIO_CYGWIN_W32_SOCKETS)
 
             for (int i = 0; i < max_signal_number; ++i)
                 registrations_[i] = 0;
@@ -215,9 +215,9 @@ namespace xio {
         }
 
         void signal_set_service::notify_fork(execution_context::fork_event fork_ev) {
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_WINDOWS_RUNTIME) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_WINDOWS_RUNTIME) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS)
             signal_state *state = get_signal_state();
             static_mutex::scoped_lock lock(state->mutex_);
 
@@ -226,14 +226,14 @@ namespace xio {
                     int read_descriptor = state->read_descriptor_;
                     state->fork_prepared_ = true;
                     lock.unlock();
-# if defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# if defined(XIO_HAS_IO_URING_AS_DEFAULT)
                     (void) read_descriptor;
                     io_uring_service_.deregister_io_object(io_object_data_);
                     io_uring_service_.cleanup_io_object(io_object_data_);
-# else // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# else // defined(XIO_HAS_IO_URING_AS_DEFAULT)
                     reactor_.deregister_internal_descriptor(read_descriptor, reactor_data_);
                     reactor_.cleanup_descriptor_data(reactor_data_);
-# endif // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# endif // defined(XIO_HAS_IO_URING_AS_DEFAULT)
                 }
                 break;
                 case execution_context::fork_parent:
@@ -241,14 +241,14 @@ namespace xio {
                         int read_descriptor = state->read_descriptor_;
                         state->fork_prepared_ = false;
                         lock.unlock();
-# if defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# if defined(XIO_HAS_IO_URING_AS_DEFAULT)
                         (void) read_descriptor;
                         io_uring_service_.register_internal_io_object(io_object_data_,
                                                                       io_uring_service::read_op, new pipe_read_op);
-# else // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# else // defined(XIO_HAS_IO_URING_AS_DEFAULT)
                         reactor_.register_internal_descriptor(reactor::read_op,
                                                               read_descriptor, reactor_data_, new pipe_read_op);
-# endif // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# endif // defined(XIO_HAS_IO_URING_AS_DEFAULT)
                     }
                     break;
                 case execution_context::fork_child:
@@ -259,26 +259,26 @@ namespace xio {
                         int read_descriptor = state->read_descriptor_;
                         state->fork_prepared_ = false;
                         lock.unlock();
-# if defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# if defined(XIO_HAS_IO_URING_AS_DEFAULT)
                         (void) read_descriptor;
                         io_uring_service_.register_internal_io_object(io_object_data_,
                                                                       io_uring_service::read_op, new pipe_read_op);
-# else // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# else // defined(XIO_HAS_IO_URING_AS_DEFAULT)
                         reactor_.register_internal_descriptor(reactor::read_op,
                                                               read_descriptor, reactor_data_, new pipe_read_op);
-# endif // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# endif // defined(XIO_HAS_IO_URING_AS_DEFAULT)
                     }
                     break;
                 default:
                     break;
             }
-#else // !defined(ASIO_WINDOWS)
-            //   && !defined(ASIO_WINDOWS_RUNTIME)
-            //   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#else // !defined(XIO_WINDOWS)
+            //   && !defined(XIO_WINDOWS_RUNTIME)
+            //   && !defined(XIO_CYGWIN_W32_SOCKETS)
             (void) fork_ev;
-#endif // !defined(ASIO_WINDOWS)
-            //   && !defined(ASIO_WINDOWS_RUNTIME)
-            //   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // !defined(XIO_WINDOWS)
+            //   && !defined(XIO_WINDOWS_RUNTIME)
+            //   && !defined(XIO_CYGWIN_W32_SOCKETS)
         }
 
         void signal_set_service::construct(
@@ -303,12 +303,12 @@ namespace xio {
             }
 
             // Check that the specified flags are supported.
-#if !defined(ASIO_HAS_SIGACTION)
+#if !defined(XIO_HAS_SIGACTION)
             if (f != signal_set_base::flags::dont_care) {
                 ec = xio::error::operation_not_supported;
                 return ec;
             }
-#endif // !defined(ASIO_HAS_SIGACTION)
+#endif // !defined(XIO_HAS_SIGACTION)
 
             signal_state *state = get_signal_state();
             static_mutex::scoped_lock lock(state->mutex_);
@@ -325,10 +325,10 @@ namespace xio {
             if (next == 0 || next->signal_number_ != signal_number) {
                 registration *new_registration = new registration;
 
-#if defined(ASIO_HAS_SIGNAL) || defined(ASIO_HAS_SIGACTION)
+#if defined(XIO_HAS_SIGNAL) || defined(XIO_HAS_SIGACTION)
                 // Register for the signal if we're the first.
                 if (state->registration_count_[signal_number] == 0) {
-# if defined(ASIO_HAS_SIGACTION)
+# if defined(XIO_HAS_SIGACTION)
                     using namespace std; // For memset.
                     struct sigaction sa;
                     memset(&sa, 0, sizeof(sa));
@@ -337,25 +337,25 @@ namespace xio {
                     if (f != signal_set_base::flags::dont_care)
                         sa.sa_flags = static_cast<int>(f);
                     if (::sigaction(signal_number, &sa, 0) == -1)
-# else // defined(ASIO_HAS_SIGACTION)
+# else // defined(XIO_HAS_SIGACTION)
                     if (::signal(signal_number, XIO_VERSIONED_NAME(signal_handler))
                         == SIG_ERR)
-# endif // defined(ASIO_HAS_SIGACTION)
+# endif // defined(XIO_HAS_SIGACTION)
                     {
-# if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+# if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                         ec = xio::error::invalid_argument;
-# else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+# else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                         ec = xio::error_code(errno,
                                              xio::error::get_system_category());
-# endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+# endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                         delete new_registration;
                         return ec;
                     }
-# if defined(ASIO_HAS_SIGACTION)
+# if defined(XIO_HAS_SIGACTION)
                     state->flags_[signal_number] = f;
-# endif // defined(ASIO_HAS_SIGACTION)
+# endif // defined(XIO_HAS_SIGACTION)
                 }
-# if defined(ASIO_HAS_SIGACTION)
+# if defined(XIO_HAS_SIGACTION)
                 // Otherwise check to see if the flags have changed.
                 else if (f != signal_set_base::flags::dont_care) {
                     if (f != state->flags_[signal_number]) {
@@ -379,8 +379,8 @@ namespace xio {
                         state->flags_[signal_number] = f;
                     }
                 }
-# endif // defined(ASIO_HAS_SIGACTION)
-#endif // defined(ASIO_HAS_SIGNAL) || defined(ASIO_HAS_SIGACTION)
+# endif // defined(XIO_HAS_SIGACTION)
+#endif // defined(XIO_HAS_SIGNAL) || defined(XIO_HAS_SIGACTION)
 
                 // Record the new registration in the set.
                 new_registration->signal_number_ = signal_number;
@@ -422,32 +422,32 @@ namespace xio {
             }
 
             if (reg != 0 && reg->signal_number_ == signal_number) {
-#if defined(ASIO_HAS_SIGNAL) || defined(ASIO_HAS_SIGACTION)
+#if defined(XIO_HAS_SIGNAL) || defined(XIO_HAS_SIGACTION)
                 // Set signal handler back to the default if we're the last.
                 if (state->registration_count_[signal_number] == 1) {
-# if defined(ASIO_HAS_SIGACTION)
+# if defined(XIO_HAS_SIGACTION)
                     using namespace std; // For memset.
                     struct sigaction sa;
                     memset(&sa, 0, sizeof(sa));
                     sa.sa_handler = SIG_DFL;
                     if (::sigaction(signal_number, &sa, 0) == -1)
-# else // defined(ASIO_HAS_SIGACTION)
+# else // defined(XIO_HAS_SIGACTION)
                     if (::signal(signal_number, SIG_DFL) == SIG_ERR)
-# endif // defined(ASIO_HAS_SIGACTION)
+# endif // defined(XIO_HAS_SIGACTION)
                     {
-# if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+# if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                         ec = xio::error::invalid_argument;
-# else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+# else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                         ec = xio::error_code(errno,
                                              xio::error::get_system_category());
-# endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+# endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                         return ec;
                     }
-# if defined(ASIO_HAS_SIGACTION)
+# if defined(XIO_HAS_SIGACTION)
                     state->flags_[signal_number] = signal_set_base::flags_t();
-# endif // defined(ASIO_HAS_SIGACTION)
+# endif // defined(XIO_HAS_SIGACTION)
                 }
-#endif // defined(ASIO_HAS_SIGNAL) || defined(ASIO_HAS_SIGACTION)
+#endif // defined(XIO_HAS_SIGNAL) || defined(XIO_HAS_SIGACTION)
 
                 // Remove the registration from the set.
                 *deletion_point = reg->next_in_set_;
@@ -476,32 +476,32 @@ namespace xio {
             static_mutex::scoped_lock lock(state->mutex_);
 
             while (registration *reg = impl.signals_) {
-#if defined(ASIO_HAS_SIGNAL) || defined(ASIO_HAS_SIGACTION)
+#if defined(XIO_HAS_SIGNAL) || defined(XIO_HAS_SIGACTION)
                 // Set signal handler back to the default if we're the last.
                 if (state->registration_count_[reg->signal_number_] == 1) {
-# if defined(ASIO_HAS_SIGACTION)
+# if defined(XIO_HAS_SIGACTION)
                     using namespace std; // For memset.
                     struct sigaction sa;
                     memset(&sa, 0, sizeof(sa));
                     sa.sa_handler = SIG_DFL;
                     if (::sigaction(reg->signal_number_, &sa, 0) == -1)
-# else // defined(ASIO_HAS_SIGACTION)
+# else // defined(XIO_HAS_SIGACTION)
                     if (::signal(reg->signal_number_, SIG_DFL) == SIG_ERR)
-# endif // defined(ASIO_HAS_SIGACTION)
+# endif // defined(XIO_HAS_SIGACTION)
                     {
-# if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+# if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                         ec = xio::error::invalid_argument;
-# else // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+# else // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                         ec = xio::error_code(errno,
                                              xio::error::get_system_category());
-# endif // defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+# endif // defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
                         return ec;
                     }
-# if defined(ASIO_HAS_SIGACTION)
+# if defined(XIO_HAS_SIGACTION)
                     state->flags_[reg->signal_number_] = signal_set_base::flags_t();
-# endif // defined(ASIO_HAS_SIGACTION)
+# endif // defined(XIO_HAS_SIGACTION)
                 }
-#endif // defined(ASIO_HAS_SIGNAL) || defined(ASIO_HAS_SIGACTION)
+#endif // defined(XIO_HAS_SIGNAL) || defined(XIO_HAS_SIGACTION)
 
                 // Remove the registration from the registration table.
                 if (registrations_[reg->signal_number_] == reg)
@@ -524,7 +524,7 @@ namespace xio {
         xio::error_code signal_set_service::cancel(
             signal_set_service::implementation_type &impl,
             xio::error_code &ec) {
-            ASIO_HANDLER_OPERATION((scheduler_.context(),
+            XIO_HANDLER_OPERATION((scheduler_.context(),
                 "signal_set", &impl, 0, "cancel"));
 
             op_queue<operation> ops;
@@ -601,13 +601,13 @@ namespace xio {
             signal_state *state = get_signal_state();
             static_mutex::scoped_lock lock(state->mutex_);
 
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS)
             // If this is the first service to be created, open a new pipe.
             if (state->service_list_ == 0)
                 open_descriptors();
-#endif // !defined(ASIO_WINDOWS)
-            //   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // !defined(XIO_WINDOWS)
+            //   && !defined(XIO_CYGWIN_W32_SOCKETS)
 
             // If a scheduler_ object is thread-unsafe then it must be the only
             // scheduler used to create signal_set objects.
@@ -629,23 +629,23 @@ namespace xio {
                 state->service_list_->prev_ = service;
             state->service_list_ = service;
 
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_WINDOWS_RUNTIME) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_WINDOWS_RUNTIME) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS)
             // Register for pipe readiness notifications.
             int read_descriptor = state->read_descriptor_;
             lock.unlock();
-# if defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# if defined(XIO_HAS_IO_URING_AS_DEFAULT)
             (void) read_descriptor;
             service->io_uring_service_.register_internal_io_object(
                 service->io_object_data_, io_uring_service::read_op, new pipe_read_op);
-# else // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# else // defined(XIO_HAS_IO_URING_AS_DEFAULT)
             service->reactor_.register_internal_descriptor(reactor::read_op,
                                                            read_descriptor, service->reactor_data_, new pipe_read_op);
-# endif // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
-#endif // !defined(ASIO_WINDOWS)
-            //   && !defined(ASIO_WINDOWS_RUNTIME)
-            //   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+# endif // defined(XIO_HAS_IO_URING_AS_DEFAULT)
+#endif // !defined(XIO_WINDOWS)
+            //   && !defined(XIO_WINDOWS_RUNTIME)
+            //   && !defined(XIO_CYGWIN_W32_SOCKETS)
         }
 
         void signal_set_service::remove_service(signal_set_service *service) {
@@ -653,26 +653,26 @@ namespace xio {
             static_mutex::scoped_lock lock(state->mutex_);
 
             if (service->next_ || service->prev_ || state->service_list_ == service) {
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_WINDOWS_RUNTIME) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_WINDOWS_RUNTIME) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS)
                 // Disable the pipe readiness notifications.
                 int read_descriptor = state->read_descriptor_;
                 lock.unlock();
-# if defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# if defined(XIO_HAS_IO_URING_AS_DEFAULT)
                 (void) read_descriptor;
                 service->io_uring_service_.deregister_io_object(service->io_object_data_);
                 service->io_uring_service_.cleanup_io_object(service->io_object_data_);
                 lock.lock();
-# else // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
+# else // defined(XIO_HAS_IO_URING_AS_DEFAULT)
                 service->reactor_.deregister_internal_descriptor(
                     read_descriptor, service->reactor_data_);
                 service->reactor_.cleanup_descriptor_data(service->reactor_data_);
                 lock.lock();
-# endif // defined(ASIO_HAS_IO_URING_AS_DEFAULT)
-#endif // !defined(ASIO_WINDOWS)
-                //   && !defined(ASIO_WINDOWS_RUNTIME)
-                //   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+# endif // defined(XIO_HAS_IO_URING_AS_DEFAULT)
+#endif // !defined(XIO_WINDOWS)
+                //   && !defined(XIO_WINDOWS_RUNTIME)
+                //   && !defined(XIO_CYGWIN_W32_SOCKETS)
 
                 // Remove service from linked list of all services.
                 if (state->service_list_ == service)
@@ -684,20 +684,20 @@ namespace xio {
                 service->next_ = 0;
                 service->prev_ = 0;
 
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS)
                 // If this is the last service to be removed, close the pipe.
                 if (state->service_list_ == 0)
                     close_descriptors();
-#endif // !defined(ASIO_WINDOWS)
-                //   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // !defined(XIO_WINDOWS)
+                //   && !defined(XIO_CYGWIN_W32_SOCKETS)
             }
         }
 
         void signal_set_service::open_descriptors() {
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_WINDOWS_RUNTIME) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_WINDOWS_RUNTIME) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS)
             signal_state *state = get_signal_state();
 
             int pipe_fds[2];
@@ -717,15 +717,15 @@ namespace xio {
                                    xio::error::get_system_category());
                 xio::detail::throw_error(ec, "signal_set_service pipe");
             }
-#endif // !defined(ASIO_WINDOWS)
-            //   && !defined(ASIO_WINDOWS_RUNTIME)
-            //   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // !defined(XIO_WINDOWS)
+            //   && !defined(XIO_WINDOWS_RUNTIME)
+            //   && !defined(XIO_CYGWIN_W32_SOCKETS)
         }
 
         void signal_set_service::close_descriptors() {
-#if !defined(ASIO_WINDOWS) \
-  && !defined(ASIO_WINDOWS_RUNTIME) \
-  && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#if !defined(XIO_WINDOWS) \
+  && !defined(XIO_WINDOWS_RUNTIME) \
+  && !defined(XIO_CYGWIN_W32_SOCKETS)
             signal_state *state = get_signal_state();
 
             if (state->read_descriptor_ != -1)
@@ -735,9 +735,9 @@ namespace xio {
             if (state->write_descriptor_ != -1)
                 ::close(state->write_descriptor_);
             state->write_descriptor_ = -1;
-#endif // !defined(ASIO_WINDOWS)
-            //   && !defined(ASIO_WINDOWS_RUNTIME)
-            //   && !defined(ASIO_CYGWIN_W32_SOCKETS)
+#endif // !defined(XIO_WINDOWS)
+            //   && !defined(XIO_WINDOWS_RUNTIME)
+            //   && !defined(XIO_CYGWIN_W32_SOCKETS)
         }
 
         void signal_set_service::start_wait_op(
@@ -767,4 +767,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_DETAIL_IMPL_SIGNAL_SET_SERVICE_IPP
+#endif // XIO_DETAIL_IMPL_SIGNAL_SET_SERVICE_IPP

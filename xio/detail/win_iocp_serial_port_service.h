@@ -9,8 +9,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WIN_IOCP_SERIAL_PORT_SERVICE_HPP
-#define ASIO_DETAIL_WIN_IOCP_SERIAL_PORT_SERVICE_HPP
+#ifndef XIO_DETAIL_WIN_IOCP_SERIAL_PORT_SERVICE_HPP
+#define XIO_DETAIL_WIN_IOCP_SERIAL_PORT_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -18,7 +18,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IOCP) && defined(ASIO_HAS_SERIAL_PORT)
+#if defined(XIO_HAS_IOCP) && defined(XIO_HAS_SERIAL_PORT)
 
 #include <string>
 #include <xio/error.h>
@@ -42,10 +42,10 @@ namespace xio {
             typedef win_iocp_handle_service::implementation_type implementation_type;
 
             // Constructor.
-            ASIO_DECL win_iocp_serial_port_service(execution_context &context);
+            XIO_DECL win_iocp_serial_port_service(execution_context &context);
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void shutdown();
+  XIO_DECL void shutdown();
 
             // Construct a new serial port implementation.
             void construct(implementation_type &impl) {
@@ -72,7 +72,7 @@ namespace xio {
             }
 
             // Open the serial port using the specified device name.
-            ASIO_DECL xio::error_code open(implementation_type &impl,
+            XIO_DECL xio::error_code open(implementation_type &impl,
                                            const std::string &device, xio::error_code &ec);
 
             // Assign a native handle to a serial port implementation.
@@ -125,7 +125,7 @@ namespace xio {
             xio::error_code send_break(implementation_type &,
                                        xio::error_code &ec) {
                 ec = xio::error::operation_not_supported;
-                ASIO_ERROR_LOCATION(ec);
+                XIO_ERROR_LOCATION(ec);
                 return ec;
             }
 
@@ -176,7 +176,7 @@ namespace xio {
             }
 
             // Helper function to set a serial port option.
-            ASIO_DECL xio::error_code do_set_option(
+            XIO_DECL xio::error_code do_set_option(
                 implementation_type &impl, store_function_type store,
                 const void *option, xio::error_code &ec);
 
@@ -193,7 +193,7 @@ namespace xio {
             }
 
             // Helper function to get a serial port option.
-            ASIO_DECL xio::error_code do_get_option(
+            XIO_DECL xio::error_code do_get_option(
                 const implementation_type &impl, load_function_type load,
                 void *option, xio::error_code &ec) const;
 
@@ -207,6 +207,6 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // defined(ASIO_HAS_IOCP) && defined(ASIO_HAS_SERIAL_PORT)
+#endif // defined(XIO_HAS_IOCP) && defined(XIO_HAS_SERIAL_PORT)
 
-#endif // ASIO_DETAIL_WIN_IOCP_SERIAL_PORT_SERVICE_HPP
+#endif // XIO_DETAIL_WIN_IOCP_SERIAL_PORT_SERVICE_HPP

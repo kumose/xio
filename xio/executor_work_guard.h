@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXECUTOR_WORK_GUARD_HPP
-#define ASIO_EXECUTOR_WORK_GUARD_HPP
+#ifndef XIO_EXECUTOR_WORK_GUARD_HPP
+#define XIO_EXECUTOR_WORK_GUARD_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -27,64 +27,18 @@
 namespace xio {
 
 
-#if !defined(ASIO_EXECUTOR_WORK_GUARD_DECL)
-#define ASIO_EXECUTOR_WORK_GUARD_DECL
+#if !defined(XIO_EXECUTOR_WORK_GUARD_DECL)
+#define XIO_EXECUTOR_WORK_GUARD_DECL
 
 
 
     template<typename Executor, typename = void, typename = void>
     class executor_work_guard;
 
-#endif // !defined(ASIO_EXECUTOR_WORK_GUARD_DECL)
+#endif // !defined(XIO_EXECUTOR_WORK_GUARD_DECL)
 
-#if defined(GENERATING_DOCUMENTATION)
 
-    /// An object of type @c executor_work_guard controls ownership of outstanding
-/// executor work within a scope.
-    template<typename Executor>
-    class executor_work_guard {
-    public:
-        /// The underlying executor type.
-        typedef Executor executor_type;
-
-        /// Constructs a @c executor_work_guard object for the specified executor.
-        /**
-   * Stores a copy of @c e and calls <tt>on_work_started()</tt> on it.
-   */
-        explicit executor_work_guard(const executor_type &e) noexcept;
-
-        /// Copy constructor.
-        executor_work_guard(const executor_work_guard &other) noexcept;
-
-        /// Move constructor.
-        executor_work_guard(executor_work_guard &&other) noexcept;
-
-        /// Destructor.
-        /**
-   * Unless the object has already been reset, or is in a moved-from state,
-   * calls <tt>on_work_finished()</tt> on the stored executor.
-   */
-        ~executor_work_guard();
-
-        /// Obtain the associated executor.
-        executor_type get_executor() const noexcept;
-
-        /// Whether the executor_work_guard object owns some outstanding work.
-        bool owns_work() const noexcept;
-
-        /// Indicate that the work is no longer outstanding.
-        /**
-   * Unless the object has already been reset, or is in a moved-from state,
-   * calls <tt>on_work_finished()</tt> on the stored executor.
-   */
-        void reset() noexcept;
-    };
-
-#endif // defined(GENERATING_DOCUMENTATION)
-
-#if !defined(GENERATING_DOCUMENTATION)
-
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
 
     template<typename Executor>
     class executor_work_guard<Executor,
@@ -141,7 +95,7 @@ namespace xio {
         bool owns_;
     };
 
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
     template<typename Executor>
     class executor_work_guard<Executor,
@@ -230,8 +184,6 @@ private:
   aligned_storage_t<sizeof(work_type), std::alignment_of<work_type>::value> work_;
   bool owns_;
 };
-
-#endif // !defined(GENERATING_DOCUMENTATION)
 
     /// Create an @ref executor_work_guard object.
     /**
@@ -355,4 +307,4 @@ private:
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXECUTOR_WORK_GUARD_HPP
+#endif // XIO_EXECUTOR_WORK_GUARD_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_ANY_COMPLETION_HANDLER_HPP
-#define ASIO_ANY_COMPLETION_HANDLER_HPP
+#ifndef XIO_ANY_COMPLETION_HANDLER_HPP
+#define XIO_ANY_COMPLETION_HANDLER_HPP
 
 #include <xio/detail/config.h>
 #include <cstring>
@@ -551,7 +551,6 @@ namespace xio {
      */
     template<typename... Signatures>
     class any_completion_handler {
-#if !defined(GENERATING_DOCUMENTATION)
 
     private:
         template<typename, typename...>
@@ -565,7 +564,6 @@ namespace xio {
 
         const detail::any_completion_handler_fn_table<Signatures...> *fn_table_;
         detail::any_completion_handler_impl_base *impl_;
-#endif // !defined(GENERATING_DOCUMENTATION)
 
     public:
         /// The associated allocator type.
@@ -738,4 +736,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_ANY_COMPLETION_HANDLER_HPP
+#endif // XIO_ANY_COMPLETION_HANDLER_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXECUTION_RELATIONSHIP_HPP
-#define ASIO_EXECUTION_RELATIONSHIP_HPP
+#ifndef XIO_EXECUTION_RELATIONSHIP_HPP
+#define XIO_EXECUTION_RELATIONSHIP_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -29,113 +29,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
-#if defined(GENERATING_DOCUMENTATION)
-
-    namespace execution {
-        /// A property to describe whether submitted tasks represent continuations of
-/// the calling context.
-        struct relationship_t {
-            /// The relationship_t property applies to executors.
-            template<typename T>
-            static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-            /// The top-level relationship_t property cannot be required.
-            static constexpr bool is_requirable = false;
-
-            /// The top-level relationship_t property cannot be preferred.
-            static constexpr bool is_preferable = false;
-
-            /// The type returned by queries against an @c any_executor.
-            typedef relationship_t polymorphic_query_result_type;
-
-            /// A sub-property that indicates that the executor does not represent a
-  /// continuation of the calling context.
-            struct fork_t {
-                /// The relationship_t::fork_t property applies to executors.
-                template<typename T>
-                static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-                /// The relationship_t::fork_t property can be required.
-                static constexpr bool is_requirable = true;
-
-                /// The relationship_t::fork_t property can be preferred.
-                static constexpr bool is_preferable = true;
-
-                /// The type returned by queries against an @c any_executor.
-                typedef relationship_t polymorphic_query_result_type;
-
-                /// Default constructor.
-                constexpr fork_t();
-
-                /// Get the value associated with a property object.
-                /**
-     * @returns fork_t();
-     */
-                static constexpr relationship_t value();
-            };
-
-            /// A sub-property that indicates that the executor represents a continuation
-  /// of the calling context.
-            struct continuation_t {
-                /// The relationship_t::continuation_t property applies to executors.
-                template<typename T>
-                static constexpr bool is_applicable_property_v = is_executor_v<T>;
-
-                /// The relationship_t::continuation_t property can be required.
-                static constexpr bool is_requirable = true;
-
-                /// The relationship_t::continuation_t property can be preferred.
-                static constexpr bool is_preferable = true;
-
-                /// The type returned by queries against an @c any_executor.
-                typedef relationship_t polymorphic_query_result_type;
-
-                /// Default constructor.
-                constexpr continuation_t();
-
-                /// Get the value associated with a property object.
-                /**
-     * @returns continuation_t();
-     */
-                static constexpr relationship_t value();
-            };
-
-            /// A special value used for accessing the relationship_t::fork_t property.
-            static constexpr fork_t fork;
-
-            /// A special value used for accessing the relationship_t::continuation_t
-  /// property.
-            static constexpr continuation_t continuation;
-
-            /// Default constructor.
-            constexpr relationship_t();
-
-            /// Construct from a sub-property value.
-            constexpr relationship_t(fork_t);
-
-            /// Construct from a sub-property value.
-            constexpr relationship_t(continuation_t);
-
-            /// Compare property values for equality.
-            friend constexpr bool operator==(
-                const relationship_t &a, const relationship_t &b) noexcept;
-
-            /// Compare property values for inequality.
-            friend constexpr bool operator!=(
-                const relationship_t &a, const relationship_t &b) noexcept;
-        };
-
-        /// A special value used for accessing the relationship_t property.
-        constexpr relationship_t relationship;
-    } // namespace execution
-
-#else // defined(GENERATING_DOCUMENTATION)
-
-
-
-
     namespace execution {
         namespace detail {
             namespace relationship {
@@ -183,7 +76,6 @@ namespace xio {
                                 std::declval<std::conditional_t<true, T, P> >().query(static_cast<P &&>(p))
                             );
                     };
-
                 };
 
                 template<typename T>
@@ -193,16 +85,15 @@ namespace xio {
                         static constexpr auto query(P &&p)
                             noexcept(
                                 noexcept(
-                                    std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                    std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
                                 )
                             )
                             -> decltype(
-                                std::conditional_t < true, T, P > ::query(static_cast<P &&>(p))
+                                std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
                             ) {
                             return T::query(static_cast<P &&>(p));
                         }
                     };
-
                 };
 
                 template<typename T>
@@ -287,11 +178,11 @@ namespace xio {
                         can_query<const Executor &, fork_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
-#if defined(ASIO_MSVC) // Visual C++ wants the type to be qualified.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
                 noexcept(is_nothrow_query<const Executor &, relationship_t<>::fork_t>::value)
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                     noexcept(is_nothrow_query<const Executor &, fork_t>::value)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 #endif // !defined(__clang__)
                 {
                     return xio::query(ex, fork_t());
@@ -307,20 +198,20 @@ namespace xio {
                         can_query<const Executor &, continuation_t>::value
                     > * = 0)
 #if !defined(__clang__) // Clang crashes if noexcept is used here.
-#if defined(ASIO_MSVC) // Visual C++ wants the type to be qualified.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
                 noexcept(is_nothrow_query<const Executor &,
                     relationship_t<>::continuation_t>::value)
-#else // defined(ASIO_MSVC)
+#else // defined(XIO_MSVC)
                     noexcept(is_nothrow_query<const Executor &, continuation_t>::value)
-#endif // defined(ASIO_MSVC)
+#endif // defined(XIO_MSVC)
 #endif // !defined(__clang__)
                 {
                     return xio::query(ex, continuation_t());
                 }
 
-                ASIO_STATIC_CONSTEXPR_DEFAULT_INIT(fork_t, fork);
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(fork_t, fork);
 
-                ASIO_STATIC_CONSTEXPR_DEFAULT_INIT(continuation_t, continuation);
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(continuation_t, continuation);
 
             private:
                 int value_;
@@ -481,21 +372,15 @@ namespace xio {
                 template<int I>
                 template<typename E, typename T>
                 const T continuation_t<I>::static_query_v;
-
             } // namespace relationship
         } // namespace detail
 
         typedef detail::relationship_t<> relationship_t;
 
-inline constexpr relationship_t relationship;
+        inline constexpr relationship_t relationship;
     } // namespace execution
-
-
-#endif // defined(GENERATING_DOCUMENTATION)
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXECUTION_RELATIONSHIP_HPP
+#endif // XIO_EXECUTION_RELATIONSHIP_HPP

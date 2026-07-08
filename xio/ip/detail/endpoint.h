@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IP_DETAIL_ENDPOINT_HPP
-#define ASIO_IP_DETAIL_ENDPOINT_HPP
+#ifndef XIO_IP_DETAIL_ENDPOINT_HPP
+#define XIO_IP_DETAIL_ENDPOINT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -33,14 +33,14 @@ namespace xio {
             class endpoint {
             public:
                 // Default constructor.
-                ASIO_DECL endpoint() noexcept;
+                XIO_DECL endpoint() noexcept;
 
                 // Construct an endpoint using a family and port number.
-                ASIO_DECL endpoint(int family,
+                XIO_DECL endpoint(int family,
                                    unsigned short port_num) noexcept;
 
                 // Construct an endpoint using an address and port number.
-                ASIO_DECL endpoint(const xio::ip::address &addr,
+                XIO_DECL endpoint(const xio::ip::address &addr,
                                    unsigned short port_num) noexcept;
 
                 // Copy constructor.
@@ -73,7 +73,7 @@ namespace xio {
                 }
 
                 // Set the underlying size of the endpoint in the native type.
-  ASIO_DECL void resize(std::size_t new_size);
+  XIO_DECL void resize(std::size_t new_size);
 
                 // Get the capacity of the endpoint in the native type.
                 std::size_t capacity() const noexcept {
@@ -81,35 +81,35 @@ namespace xio {
                 }
 
                 // Get the port associated with the endpoint.
-  ASIO_DECL unsigned short port() const noexcept;
+  XIO_DECL unsigned short port() const noexcept;
 
                 // Set the port associated with the endpoint.
-  ASIO_DECL void port(unsigned short port_num) noexcept;
+  XIO_DECL void port(unsigned short port_num) noexcept;
 
                 // Get the IP address associated with the endpoint.
-                ASIO_DECL xio::ip::address address() const noexcept;
+                XIO_DECL xio::ip::address address() const noexcept;
 
                 // Set the IP address associated with the endpoint.
-  ASIO_DECL void address(
+  XIO_DECL void address(
                     const xio::ip::address &addr) noexcept;
 
                 // Compare two endpoints for equality.
-  ASIO_DECL friend bool operator==(const endpoint &e1,
+  XIO_DECL friend bool operator==(const endpoint &e1,
                                    const endpoint &e2) noexcept;
 
                 // Compare endpoints for ordering.
-  ASIO_DECL friend bool operator<(const endpoint &e1,
+  XIO_DECL friend bool operator<(const endpoint &e1,
                                   const endpoint &e2) noexcept;
 
                 // Determine whether the endpoint is IPv4.
                 bool is_v4() const noexcept {
-                    return data_.base.sa_family == ASIO_OS_DEF(AF_INET);
+                    return data_.base.sa_family == XIO_OS_DEF(AF_INET);
                 }
 
-#if !defined(ASIO_NO_IOSTREAM)
+#if !defined(XIO_NO_IOSTREAM)
                 // Convert to a string.
-                ASIO_DECL std::string to_string() const;
-#endif // !defined(ASIO_NO_IOSTREAM)
+                XIO_DECL std::string to_string() const;
+#endif // !defined(XIO_NO_IOSTREAM)
 
             private:
                 // The underlying IP socket address.
@@ -127,4 +127,4 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // ASIO_IP_DETAIL_ENDPOINT_HPP
+#endif // XIO_IP_DETAIL_ENDPOINT_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IS_APPLICABLE_PROPERTY_HPP
-#define ASIO_IS_APPLICABLE_PROPERTY_HPP
+#ifndef XIO_IS_APPLICABLE_PROPERTY_HPP
+#define XIO_IS_APPLICABLE_PROPERTY_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -51,4 +51,4 @@ namespace xio {
 
 } // namespace xio
 
-#endif // ASIO_IS_APPLICABLE_PROPERTY_HPP
+#endif // XIO_IS_APPLICABLE_PROPERTY_HPP

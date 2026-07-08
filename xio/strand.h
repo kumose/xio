@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_STRAND_HPP
-#define ASIO_STRAND_HPP
+#ifndef XIO_STRAND_HPP
+#define XIO_STRAND_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -212,7 +212,7 @@ namespace xio {
                 xio::prefer(executor_, p), impl_);
         }
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
         /// Obtain the underlying execution context.
         execution_context &context() const noexcept {
             return executor_.context();
@@ -233,7 +233,7 @@ namespace xio {
         void on_work_finished() const noexcept {
             executor_.on_work_finished();
         }
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
         /// Request the strand to invoke the given function object.
         /**
@@ -253,7 +253,7 @@ namespace xio {
                                                      executor_, static_cast<Function &&>(f));
         }
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
         /// Request the strand to invoke the given function object.
         /**
    * This function is used to ask the strand to execute the given function
@@ -312,7 +312,7 @@ namespace xio {
             detail::strand_executor_service::defer(impl_,
                                                    executor_, static_cast<Function &&>(f), a);
         }
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
         /// Determine whether the strand is running in the current thread.
         /**
@@ -342,9 +342,6 @@ namespace xio {
             return a.impl_ != b.impl_;
         }
 
-#if defined(GENERATING_DOCUMENTATION)
-    private:
-#endif // defined(GENERATING_DOCUMENTATION)
         typedef detail::strand_executor_service::implementation_type
         implementation_type;
 
@@ -435,10 +432,10 @@ namespace xio {
 
 // If both io_context.hpp and strand.hpp have been included, automatically
 // include the header file needed for the io_context::strand class.
-#if !defined(ASIO_NO_EXTENSIONS)
-# if defined(ASIO_IO_CONTEXT_HPP)
+#if !defined(XIO_NO_EXTENSIONS)
+# if defined(XIO_IO_CONTEXT_HPP)
 #  include "xio/io_context_strand.h"
-# endif // defined(ASIO_IO_CONTEXT_HPP)
-#endif // !defined(ASIO_NO_EXTENSIONS)
+# endif // defined(XIO_IO_CONTEXT_HPP)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
-#endif // ASIO_STRAND_HPP
+#endif // XIO_STRAND_HPP

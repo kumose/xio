@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_WIN_IOCP_OPERATION_HPP
-#define ASIO_DETAIL_WIN_IOCP_OPERATION_HPP
+#ifndef XIO_DETAIL_WIN_IOCP_OPERATION_HPP
+#define XIO_DETAIL_WIN_IOCP_OPERATION_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,7 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 
 #include <xio/detail/handler_tracking.h>
 #include <xio/detail/op_queue.h>
@@ -36,7 +36,7 @@ namespace xio {
         // functions to avoid the associated overhead.
         class win_iocp_operation
                 : public OVERLAPPED
-                  ASIO_ALSO_INHERIT_TRACKED_HANDLER {
+                  XIO_ALSO_INHERIT_TRACKED_HANDLER {
         public:
             typedef win_iocp_operation operation_type;
 
@@ -86,6 +86,6 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_IOCP)
+#endif // defined(XIO_HAS_IOCP)
 
-#endif // ASIO_DETAIL_WIN_IOCP_OPERATION_HPP
+#endif // XIO_DETAIL_WIN_IOCP_OPERATION_HPP

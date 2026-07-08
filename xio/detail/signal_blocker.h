@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_SIGNAL_BLOCKER_HPP
-#define ASIO_DETAIL_SIGNAL_BLOCKER_HPP
+#ifndef XIO_DETAIL_SIGNAL_BLOCKER_HPP
+#define XIO_DETAIL_SIGNAL_BLOCKER_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,11 +17,11 @@
 
 #include <xio/detail/config.h>
 
-#if !defined(ASIO_HAS_THREADS) || defined(ASIO_WINDOWS) \
-  || defined(ASIO_WINDOWS_RUNTIME) \
-  || defined(ASIO_CYGWIN_W32_SOCKETS) || defined(__SYMBIAN32__)
+#if !defined(XIO_HAS_THREADS) || defined(XIO_WINDOWS) \
+  || defined(XIO_WINDOWS_RUNTIME) \
+  || defined(XIO_CYGWIN_W32_SOCKETS) || defined(__SYMBIAN32__)
 #include <xio/detail/null_signal_blocker.h>
-#elif defined(ASIO_HAS_PTHREADS)
+#elif defined(XIO_HAS_PTHREADS)
 #include <xio/detail/posix_signal_blocker.h>
 #else
 # error Only Windows and POSIX are supported!
@@ -31,15 +31,15 @@ namespace xio {
 
 
     namespace detail {
-#if !defined(ASIO_HAS_THREADS) || defined(ASIO_WINDOWS) \
-  || defined(ASIO_WINDOWS_RUNTIME) \
-  || defined(ASIO_CYGWIN_W32_SOCKETS) || defined(__SYMBIAN32__)
+#if !defined(XIO_HAS_THREADS) || defined(XIO_WINDOWS) \
+  || defined(XIO_WINDOWS_RUNTIME) \
+  || defined(XIO_CYGWIN_W32_SOCKETS) || defined(__SYMBIAN32__)
         typedef null_signal_blocker signal_blocker;
-#elif defined(ASIO_HAS_PTHREADS)
+#elif defined(XIO_HAS_PTHREADS)
         typedef posix_signal_blocker signal_blocker;
 #endif
     } // namespace detail
 
 } // namespace xio
 
-#endif // ASIO_DETAIL_SIGNAL_BLOCKER_HPP
+#endif // XIO_DETAIL_SIGNAL_BLOCKER_HPP

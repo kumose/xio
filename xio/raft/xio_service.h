@@ -18,8 +18,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 **************************************************************************/
 
-#ifndef _ASIO_SERVICE_HXX_
-#define _ASIO_SERVICE_HXX_
+#ifndef _XIO_SERVICE_HXX_
+#define _XIO_SERVICE_HXX_
 
 #include <xio/raft/xio_service_options.h>
 #include <xio/raft/delayed_task_scheduler.h>
@@ -67,4 +67,4 @@ namespace xio::raft {
     };
 };
 
-#endif //_ASIO_SERVICE_HXX_
+#endif //_XIO_SERVICE_HXX_

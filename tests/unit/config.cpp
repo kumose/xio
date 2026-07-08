@@ -29,10 +29,10 @@ void config_from_string_test()
         "reactor.io_locking=1"));
 
   xio::config cfg1(ctx1);
-  ASIO_CHECK(cfg1.get("scheduler", "concurrency_hint", 0) == 123);
-  ASIO_CHECK(cfg1.get("scheduler", "locking", false) == true);
-  ASIO_CHECK(cfg1.get("reactor", "registration_locking", true) == false);
-  ASIO_CHECK(cfg1.get("reactor", "io_locking", false) == true);
+  XIO_CHECK(cfg1.get("scheduler", "concurrency_hint", 0) == 123);
+  XIO_CHECK(cfg1.get("scheduler", "locking", false) == true);
+  XIO_CHECK(cfg1.get("reactor", "registration_locking", true) == false);
+  XIO_CHECK(cfg1.get("reactor", "io_locking", false) == true);
 
   xio::io_context ctx2(
       xio::config_from_string(
@@ -45,10 +45,10 @@ void config_from_string_test()
         "prefix"));
 
   xio::config cfg2(ctx2);
-  ASIO_CHECK(cfg2.get("scheduler", "concurrency_hint", 0) == 456);
-  ASIO_CHECK(cfg2.get("scheduler", "locking", false) == true);
-  ASIO_CHECK(cfg2.get("reactor", "registration_locking", true) == false);
-  ASIO_CHECK(cfg2.get("reactor", "io_locking", false) == true);
+  XIO_CHECK(cfg2.get("scheduler", "concurrency_hint", 0) == 456);
+  XIO_CHECK(cfg2.get("scheduler", "locking", false) == true);
+  XIO_CHECK(cfg2.get("reactor", "registration_locking", true) == false);
+  XIO_CHECK(cfg2.get("reactor", "io_locking", false) == true);
 }
 
 void config_from_concurrency_hint_test()
@@ -56,63 +56,63 @@ void config_from_concurrency_hint_test()
   xio::io_context ctx0;
 
   xio::config cfg0(ctx0);
-  ASIO_CHECK(cfg0.get("scheduler", "concurrency_hint", 0) == -1);
-  ASIO_CHECK(cfg0.get("scheduler", "locking", false) == true);
-  ASIO_CHECK(cfg0.get("reactor", "registration_locking", true) == true);
-  ASIO_CHECK(cfg0.get("reactor", "io_locking", false) == true);
+  XIO_CHECK(cfg0.get("scheduler", "concurrency_hint", 0) == -1);
+  XIO_CHECK(cfg0.get("scheduler", "locking", false) == true);
+  XIO_CHECK(cfg0.get("reactor", "registration_locking", true) == true);
+  XIO_CHECK(cfg0.get("reactor", "io_locking", false) == true);
 
   xio::io_context ctx1(0);
 
   xio::config cfg1(ctx1);
-  ASIO_CHECK(cfg1.get("scheduler", "concurrency_hint", 0) == 0);
-  ASIO_CHECK(cfg1.get("scheduler", "locking", false) == true);
-  ASIO_CHECK(cfg1.get("reactor", "registration_locking", true) == true);
-  ASIO_CHECK(cfg1.get("reactor", "io_locking", false) == true);
+  XIO_CHECK(cfg1.get("scheduler", "concurrency_hint", 0) == 0);
+  XIO_CHECK(cfg1.get("scheduler", "locking", false) == true);
+  XIO_CHECK(cfg1.get("reactor", "registration_locking", true) == true);
+  XIO_CHECK(cfg1.get("reactor", "io_locking", false) == true);
 
   xio::io_context ctx2(1);
 
   xio::config cfg2(ctx2);
-  ASIO_CHECK(cfg2.get("scheduler", "concurrency_hint", 0) == 1);
-  ASIO_CHECK(cfg2.get("scheduler", "locking", false) == true);
-  ASIO_CHECK(cfg2.get("reactor", "registration_locking", true) == true);
-  ASIO_CHECK(cfg2.get("reactor", "io_locking", false) == true);
+  XIO_CHECK(cfg2.get("scheduler", "concurrency_hint", 0) == 1);
+  XIO_CHECK(cfg2.get("scheduler", "locking", false) == true);
+  XIO_CHECK(cfg2.get("reactor", "registration_locking", true) == true);
+  XIO_CHECK(cfg2.get("reactor", "io_locking", false) == true);
 
   xio::io_context ctx3(42);
 
   xio::config cfg3(ctx3);
-  ASIO_CHECK(cfg3.get("scheduler", "concurrency_hint", 0) == 42);
-  ASIO_CHECK(cfg3.get("scheduler", "locking", false) == true);
-  ASIO_CHECK(cfg3.get("reactor", "registration_locking", true) == true);
-  ASIO_CHECK(cfg3.get("reactor", "io_locking", false) == true);
+  XIO_CHECK(cfg3.get("scheduler", "concurrency_hint", 0) == 42);
+  XIO_CHECK(cfg3.get("scheduler", "locking", false) == true);
+  XIO_CHECK(cfg3.get("reactor", "registration_locking", true) == true);
+  XIO_CHECK(cfg3.get("reactor", "io_locking", false) == true);
 
-  xio::io_context ctx4(ASIO_CONCURRENCY_HINT_UNSAFE);
+  xio::io_context ctx4(XIO_CONCURRENCY_HINT_UNSAFE);
 
   xio::config cfg4(ctx4);
-  ASIO_CHECK(cfg4.get("scheduler", "concurrency_hint", 0) == 1);
-  ASIO_CHECK(cfg4.get("scheduler", "locking", false) == false);
-  ASIO_CHECK(cfg4.get("reactor", "registration_locking", true) == false);
-  ASIO_CHECK(cfg4.get("reactor", "io_locking", false) == false);
+  XIO_CHECK(cfg4.get("scheduler", "concurrency_hint", 0) == 1);
+  XIO_CHECK(cfg4.get("scheduler", "locking", false) == false);
+  XIO_CHECK(cfg4.get("reactor", "registration_locking", true) == false);
+  XIO_CHECK(cfg4.get("reactor", "io_locking", false) == false);
 
-  xio::io_context ctx5(ASIO_CONCURRENCY_HINT_UNSAFE_IO);
+  xio::io_context ctx5(XIO_CONCURRENCY_HINT_UNSAFE_IO);
 
   xio::config cfg5(ctx5);
-  ASIO_CHECK(cfg5.get("scheduler", "concurrency_hint", 0) == 1);
-  ASIO_CHECK(cfg5.get("scheduler", "locking", false) == true);
-  ASIO_CHECK(cfg5.get("reactor", "registration_locking", true) == true);
-  ASIO_CHECK(cfg5.get("reactor", "io_locking", false) == false);
+  XIO_CHECK(cfg5.get("scheduler", "concurrency_hint", 0) == 1);
+  XIO_CHECK(cfg5.get("scheduler", "locking", false) == true);
+  XIO_CHECK(cfg5.get("reactor", "registration_locking", true) == true);
+  XIO_CHECK(cfg5.get("reactor", "io_locking", false) == false);
 
-  xio::io_context ctx6(ASIO_CONCURRENCY_HINT_SAFE);
+  xio::io_context ctx6(XIO_CONCURRENCY_HINT_SAFE);
 
   xio::config cfg6(ctx6);
-  ASIO_CHECK(cfg6.get("scheduler", "concurrency_hint", 0) == -1);
-  ASIO_CHECK(cfg6.get("scheduler", "locking", false) == true);
-  ASIO_CHECK(cfg6.get("reactor", "registration_locking", true) == true);
-  ASIO_CHECK(cfg6.get("reactor", "io_locking", false) == true);
+  XIO_CHECK(cfg6.get("scheduler", "concurrency_hint", 0) == -1);
+  XIO_CHECK(cfg6.get("scheduler", "locking", false) == true);
+  XIO_CHECK(cfg6.get("reactor", "registration_locking", true) == true);
+  XIO_CHECK(cfg6.get("reactor", "io_locking", false) == true);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "config",
-  ASIO_TEST_CASE(config_from_string_test)
-  ASIO_TEST_CASE(config_from_concurrency_hint_test)
+  XIO_TEST_CASE(config_from_string_test)
+  XIO_TEST_CASE(config_from_concurrency_hint_test)
 )

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_BASIC_SIGNAL_SET_HPP
-#define ASIO_BASIC_SIGNAL_SET_HPP
+#ifndef XIO_BASIC_SIGNAL_SET_HPP
+#define XIO_BASIC_SIGNAL_SET_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -32,8 +32,8 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-#if !defined(ASIO_BASIC_SIGNAL_SET_FWD_DECL)
-#define ASIO_BASIC_SIGNAL_SET_FWD_DECL
+#if !defined(XIO_BASIC_SIGNAL_SET_FWD_DECL)
+#define XIO_BASIC_SIGNAL_SET_FWD_DECL
 
     // Forward declaration with defaulted arguments.
 
@@ -41,7 +41,7 @@ namespace xio {
     template<typename Executor = any_io_executor>
     class basic_signal_set;
 
-#endif // !defined(ASIO_BASIC_SIGNAL_SET_FWD_DECL)
+#endif // !defined(XIO_BASIC_SIGNAL_SET_FWD_DECL)
 
     /// Provides signal functionality.
     /**
@@ -361,10 +361,10 @@ namespace xio {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-        ASIO_SYNC_OP_VOID add(int signal_number,
+        XIO_SYNC_OP_VOID add(int signal_number,
                               xio::error_code &ec) {
             impl_.get_service().add(impl_.get_implementation(), signal_number, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Add a signal to a signal_set with the specified flags.
@@ -411,10 +411,10 @@ namespace xio {
    *
    * @param ec Set to indicate what error occurred, if any.
    */
-        ASIO_SYNC_OP_VOID add(int signal_number, flags_t f,
+        XIO_SYNC_OP_VOID add(int signal_number, flags_t f,
                               xio::error_code &ec) {
             impl_.get_service().add(impl_.get_implementation(), signal_number, f, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Remove a signal from a signal_set.
@@ -447,10 +447,10 @@ namespace xio {
    * @note Removes any notifications that have been queued for the specified
    * signal number.
    */
-        ASIO_SYNC_OP_VOID remove(int signal_number,
+        XIO_SYNC_OP_VOID remove(int signal_number,
                                  xio::error_code &ec) {
             impl_.get_service().remove(impl_.get_implementation(), signal_number, ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Remove all signals from a signal_set.
@@ -477,9 +477,9 @@ namespace xio {
    *
    * @note Removes all queued notifications.
    */
-        ASIO_SYNC_OP_VOID clear(xio::error_code &ec) {
+        XIO_SYNC_OP_VOID clear(xio::error_code &ec) {
             impl_.get_service().clear(impl_.get_implementation(), ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Cancel all operations associated with the signal set.
@@ -530,9 +530,9 @@ namespace xio {
    * These handlers can no longer be cancelled, and therefore are passed an
    * error code that indicates the successful completion of the wait operation.
    */
-        ASIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
+        XIO_SYNC_OP_VOID cancel(xio::error_code &ec) {
             impl_.get_service().cancel(impl_.get_implementation(), ec);
-            ASIO_SYNC_OP_VOID_RETURN(ec);
+            XIO_SYNC_OP_VOID_RETURN(ec);
         }
 
         /// Start an asynchronous operation to wait for a signal to be delivered.
@@ -582,7 +582,7 @@ namespace xio {
    * performed in a completion handler.
    */
         template<
-            ASIO_COMPLETION_TOKEN_FOR(void (xio::error_code, int))
+            XIO_COMPLETION_TOKEN_FOR(void (xio::error_code, int))
             SignalToken = default_completion_token_t<executor_type> >
         auto async_wait(
             SignalToken &&token = default_completion_token_t<executor_type>())
@@ -615,7 +615,7 @@ namespace xio {
             void operator()(SignalHandler &&handler) const {
                 // If you get an error on the following line it means that your handler
                 // does not meet the documented type requirements for a SignalHandler.
-                ASIO_SIGNAL_HANDLER_CHECK(SignalHandler, handler)
+                XIO_SIGNAL_HANDLER_CHECK(SignalHandler, handler)
                 type_check;
 
                 detail::non_const_lvalue<SignalHandler> handler2(handler);
@@ -634,4 +634,4 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_BASIC_SIGNAL_SET_HPP
+#endif // XIO_BASIC_SIGNAL_SET_HPP

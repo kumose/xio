@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_STREAM_FILE_HPP
-#define ASIO_STREAM_FILE_HPP
+#ifndef XIO_STREAM_FILE_HPP
+#define XIO_STREAM_FILE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,8 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_FILE) \
-  || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_FILE)
 
 #include <xio/basic_stream_file.h>
 
@@ -31,7 +30,7 @@ namespace xio {
 
 } // namespace xio
 
-#endif // defined(ASIO_HAS_FILE)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_FILE)
 
-#endif // ASIO_STREAM_FILE_HPP
+
+#endif // XIO_STREAM_FILE_HPP

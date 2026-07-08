@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_FILE_BASE_HPP
-#define ASIO_FILE_BASE_HPP
+#ifndef XIO_FILE_BASE_HPP
+#define XIO_FILE_BASE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,12 +17,11 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_FILE) \
-  || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_FILE)
 
-#if !defined(ASIO_WINDOWS)
+#if !defined(XIO_WINDOWS)
 # include <fcntl.h>
-#endif // !defined(ASIO_WINDOWS)
+#endif // !defined(XIO_WINDOWS)
 
 #include <xio/detail/push_options.h>
 
@@ -34,37 +33,9 @@ namespace xio {
 /// define flags.
     class file_base {
     public:
-#if defined(GENERATING_DOCUMENTATION)
-/// A bitmask type (C++ Std [lib.bitmask.types]).
-typedef unspecified flags;
 
-/// Open the file for reading.
-static const flags read_only = implementation_defined;
-
-/// Open the file for writing.
-static const flags write_only = implementation_defined;
-
-/// Open the file for reading and writing.
-static const flags read_write = implementation_defined;
-
-/// Open the file in append mode.
-static const flags append = implementation_defined;
-
-/// Create the file if it does not exist.
-static const flags create = implementation_defined;
-
-/// Ensure a new file is created. Must be combined with @c create.
-static const flags exclusive = implementation_defined;
-
-/// Open the file with any existing contents truncated.
-static const flags truncate = implementation_defined;
-
-/// Open the file so that write operations automatically synchronise the file
-  /// data and metadata to disk.
-static const flags sync_all_on_write = implementation_defined;
-#else
 enum flags {
-#if defined(ASIO_WINDOWS)
+#if defined(XIO_WINDOWS)
 read_only=1,
 write_only=2,
 read_write=4,
@@ -73,7 +44,7 @@ create=16,
 exclusive=32,
 truncate=64,
 sync_all_on_write=128
-#else // defined(ASIO_WINDOWS)
+#else // defined(XIO_WINDOWS)
 read_only= O_RDONLY,
 write_only= O_WRONLY,
 read_write= O_RDWR,
@@ -82,7 +53,7 @@ create= O_CREAT,
 exclusive= O_EXCL,
 truncate= O_TRUNC,
 sync_all_on_write= O_SYNC
-#endif // defined(ASIO_WINDOWS)
+#endif // defined(XIO_WINDOWS)
 };
 
 // Implement bitmask operations as shown in C++ Std [lib.bitmask.types].
@@ -120,24 +91,14 @@ friend flags &operator^=(flags &x, flags y) {
     x = x ^ y;
     return x;
 }
-#endif
 
 /// Basis for seeking in a file.
 enum seek_basis {
-#if defined(GENERATING_DOCUMENTATION)
-/// Seek to an absolute position.
-seek_set= implementation_defined,
 
-/// Seek to an offset relative to the current file position.
-seek_cur= implementation_defined,
-
-/// Seek to an offset relative to the end of the file.
-seek_end= implementation_defined
-#else
 seek_set= SEEK_SET,
 seek_cur= SEEK_CUR,
 seek_end= SEEK_END
-#endif
+
 };
 
 protected:
@@ -150,7 +111,6 @@ protected:
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_FILE)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_FILE)
 
-#endif // ASIO_FILE_BASE_HPP
+#endif // XIO_FILE_BASE_HPP

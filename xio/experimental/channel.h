@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_EXPERIMENTAL_CHANNEL_HPP
-#define ASIO_EXPERIMENTAL_CHANNEL_HPP
+#ifndef XIO_EXPERIMENTAL_CHANNEL_HPP
+#define XIO_EXPERIMENTAL_CHANNEL_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -57,19 +57,14 @@ namespace xio {
         } // namespace detail
 
         /// Template type alias for common use of channel.
-#if defined(GENERATING_DOCUMENTATION)
-        template<typename ExecutorOrSignature, typename... Signatures>
-        using channel = basic_channel<
-            specified_executor_or_any_io_executor, channel_traits<>, signatures...>;
-#else // defined(GENERATING_DOCUMENTATION)
+
         template<typename ExecutorOrSignature, typename... Signatures>
         using channel = typename detail::channel_type<
             ExecutorOrSignature>::template inner<Signatures...>::type;
-#endif // defined(GENERATING_DOCUMENTATION)
     } // namespace experimental
 
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_EXPERIMENTAL_CHANNEL_HPP
+#endif // XIO_EXPERIMENTAL_CHANNEL_HPP

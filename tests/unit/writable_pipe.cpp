@@ -44,7 +44,7 @@ private:
 
 void test()
 {
-#if defined(ASIO_HAS_PIPE)
+#if defined(XIO_HAS_PIPE)
   using namespace xio;
 
   try
@@ -121,13 +121,13 @@ void test()
   catch (std::exception&)
   {
   }
-#endif // defined(ASIO_HAS_PIPE)
+#endif // defined(XIO_HAS_PIPE)
 }
 
 } // namespace writable_pipe_compile
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "writable_pipe",
-  ASIO_COMPILE_TEST_CASE(writable_pipe_compile::test)
+  XIO_COMPILE_TEST_CASE(writable_pipe_compile::test)
 )

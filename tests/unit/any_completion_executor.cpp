@@ -67,7 +67,7 @@ struct fat_executor
 namespace xio {
 namespace traits {
 
-#if !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
 
 template <typename F>
 struct execute_member<fat_executor, F>
@@ -77,9 +77,9 @@ struct execute_member<fat_executor, F>
   typedef void result_type;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_EXECUTE_MEMBER_TRAIT)
 
-#if !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
+#if !defined(XIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
 template <>
 struct equality_comparable<fat_executor>
@@ -88,7 +88,7 @@ struct equality_comparable<fat_executor>
   static constexpr bool is_noexcept = true;
 };
 
-#endif // !defined(ASIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
+#endif // !defined(XIO_HAS_DEDUCED_EQUALITY_COMPARABLE_TRAIT)
 
 } // namespace traits
 } // namespace xio
@@ -105,86 +105,86 @@ void any_completion_executor_construction_test()
 
   xio::any_completion_executor ex1;
 
-  ASIO_CHECK(ex1.target<void>() == 0);
-  ASIO_CHECK(ex1 == null_ptr);
+  XIO_CHECK(ex1.target<void>() == 0);
+  XIO_CHECK(ex1 == null_ptr);
 
   xio::any_completion_executor ex2(null_ptr);
 
-  ASIO_CHECK(ex2.target<void>() == 0);
-  ASIO_CHECK(ex2 == null_ptr);
-  ASIO_CHECK(ex2 == ex1);
+  XIO_CHECK(ex2.target<void>() == 0);
+  XIO_CHECK(ex2 == null_ptr);
+  XIO_CHECK(ex2 == ex1);
 
   xio::any_completion_executor ex3(pool.executor());
 
-  ASIO_CHECK(ex3.target<void>() != 0);
-  ASIO_CHECK(ex3 != null_ptr);
-  ASIO_CHECK(ex3 != ex1);
+  XIO_CHECK(ex3.target<void>() != 0);
+  XIO_CHECK(ex3 != null_ptr);
+  XIO_CHECK(ex3 != ex1);
 
   xio::any_completion_executor ex4(ex1);
 
-  ASIO_CHECK(ex4.target<void>() == 0);
-  ASIO_CHECK(ex4 == null_ptr);
-  ASIO_CHECK(ex4 == ex1);
+  XIO_CHECK(ex4.target<void>() == 0);
+  XIO_CHECK(ex4 == null_ptr);
+  XIO_CHECK(ex4 == ex1);
 
   xio::any_completion_executor ex5(ex3);
 
-  ASIO_CHECK(ex5.target<void>() != 0);
-  ASIO_CHECK(ex5 != null_ptr);
-  ASIO_CHECK(ex5 == ex3);
+  XIO_CHECK(ex5.target<void>() != 0);
+  XIO_CHECK(ex5 != null_ptr);
+  XIO_CHECK(ex5 == ex3);
 
   xio::any_completion_executor ex6 = fat_executor(1);
 
-  ASIO_CHECK(ex6.target<void>() != 0);
-  ASIO_CHECK(ex6 != null_ptr);
-  ASIO_CHECK(ex6 != ex1);
+  XIO_CHECK(ex6.target<void>() != 0);
+  XIO_CHECK(ex6 != null_ptr);
+  XIO_CHECK(ex6 != ex1);
 
   xio::any_completion_executor ex7 = fat_executor(1);
 
-  ASIO_CHECK(ex7.target<void>() != 0);
-  ASIO_CHECK(ex7 != null_ptr);
-  ASIO_CHECK(ex7 != ex1);
-  ASIO_CHECK(ex7 == ex6);
+  XIO_CHECK(ex7.target<void>() != 0);
+  XIO_CHECK(ex7 != null_ptr);
+  XIO_CHECK(ex7 != ex1);
+  XIO_CHECK(ex7 == ex6);
 
   xio::any_completion_executor ex8 = fat_executor(2);
 
-  ASIO_CHECK(ex8.target<void>() != 0);
-  ASIO_CHECK(ex8 != null_ptr);
-  ASIO_CHECK(ex8 != ex1);
-  ASIO_CHECK(ex8 != ex6);
-  ASIO_CHECK(ex8 != ex7);
+  XIO_CHECK(ex8.target<void>() != 0);
+  XIO_CHECK(ex8 != null_ptr);
+  XIO_CHECK(ex8 != ex1);
+  XIO_CHECK(ex8 != ex6);
+  XIO_CHECK(ex8 != ex7);
 
   xio::any_completion_executor ex9(ex6);
 
-  ASIO_CHECK(ex9.target<void>() != 0);
-  ASIO_CHECK(ex9 != null_ptr);
-  ASIO_CHECK(ex9 != ex1);
-  ASIO_CHECK(ex9 == ex6);
-  ASIO_CHECK(ex9 == ex7);
-  ASIO_CHECK(ex9 != ex8);
+  XIO_CHECK(ex9.target<void>() != 0);
+  XIO_CHECK(ex9 != null_ptr);
+  XIO_CHECK(ex9 != ex1);
+  XIO_CHECK(ex9 == ex6);
+  XIO_CHECK(ex9 == ex7);
+  XIO_CHECK(ex9 != ex8);
 
   xio::any_completion_executor ex10(std::move(ex1));
 
-  ASIO_CHECK(ex10.target<void>() == 0);
-  ASIO_CHECK(ex10 == null_ptr);
-  ASIO_CHECK(ex1.target<void>() == 0);
-  ASIO_CHECK(ex1 == null_ptr);
+  XIO_CHECK(ex10.target<void>() == 0);
+  XIO_CHECK(ex10 == null_ptr);
+  XIO_CHECK(ex1.target<void>() == 0);
+  XIO_CHECK(ex1 == null_ptr);
 
   xio::any_completion_executor ex11(std::move(ex3));
 
-  ASIO_CHECK(ex11.target<void>() != 0);
-  ASIO_CHECK(ex11 != null_ptr);
-  ASIO_CHECK(ex3.target<void>() == 0);
-  ASIO_CHECK(ex3 == null_ptr);
-  ASIO_CHECK(ex11 == ex5);
+  XIO_CHECK(ex11.target<void>() != 0);
+  XIO_CHECK(ex11 != null_ptr);
+  XIO_CHECK(ex3.target<void>() == 0);
+  XIO_CHECK(ex3 == null_ptr);
+  XIO_CHECK(ex11 == ex5);
 
   xio::any_completion_executor ex12(std::move(ex7));
 
-  ASIO_CHECK(ex12.target<void>() != 0);
-  ASIO_CHECK(ex12 != null_ptr);
-  ASIO_CHECK(ex7.target<void>() == 0);
-  ASIO_CHECK(ex7 == null_ptr);
-  ASIO_CHECK(ex12 == ex6);
-  ASIO_CHECK(ex12 != ex8);
+  XIO_CHECK(ex12.target<void>() != 0);
+  XIO_CHECK(ex12 != null_ptr);
+  XIO_CHECK(ex7.target<void>() == 0);
+  XIO_CHECK(ex7 == null_ptr);
+  XIO_CHECK(ex12 == ex6);
+  XIO_CHECK(ex12 != ex8);
 }
 
 void any_completion_executor_nothrow_construction_test()
@@ -194,93 +194,93 @@ void any_completion_executor_nothrow_construction_test()
 
   xio::any_completion_executor ex1;
 
-  ASIO_CHECK(ex1.target<void>() == 0);
-  ASIO_CHECK(ex1 == null_ptr);
+  XIO_CHECK(ex1.target<void>() == 0);
+  XIO_CHECK(ex1 == null_ptr);
 
   xio::any_completion_executor ex2(null_ptr);
 
-  ASIO_CHECK(ex2.target<void>() == 0);
-  ASIO_CHECK(ex2 == null_ptr);
-  ASIO_CHECK(ex2 == ex1);
+  XIO_CHECK(ex2.target<void>() == 0);
+  XIO_CHECK(ex2 == null_ptr);
+  XIO_CHECK(ex2 == ex1);
 
   xio::any_completion_executor ex3(std::nothrow, pool.executor());
 
-  ASIO_CHECK(ex3.target<void>() != 0);
-  ASIO_CHECK(ex3 != null_ptr);
-  ASIO_CHECK(ex3 != ex1);
+  XIO_CHECK(ex3.target<void>() != 0);
+  XIO_CHECK(ex3 != null_ptr);
+  XIO_CHECK(ex3 != ex1);
 
   xio::any_completion_executor ex4(std::nothrow, ex1);
 
-  ASIO_CHECK(ex4.target<void>() == 0);
-  ASIO_CHECK(ex4 == null_ptr);
-  ASIO_CHECK(ex4 == ex1);
+  XIO_CHECK(ex4.target<void>() == 0);
+  XIO_CHECK(ex4 == null_ptr);
+  XIO_CHECK(ex4 == ex1);
 
   xio::any_completion_executor ex5(std::nothrow, ex3);
 
-  ASIO_CHECK(ex5.target<void>() != 0);
-  ASIO_CHECK(ex5 != null_ptr);
-  ASIO_CHECK(ex5 == ex3);
+  XIO_CHECK(ex5.target<void>() != 0);
+  XIO_CHECK(ex5 != null_ptr);
+  XIO_CHECK(ex5 == ex3);
 
   xio::any_completion_executor ex6(std::nothrow, fat_executor(1));
 
-  ASIO_CHECK(ex6.target<void>() != 0);
-  ASIO_CHECK(ex6 != null_ptr);
-  ASIO_CHECK(ex6 != ex1);
+  XIO_CHECK(ex6.target<void>() != 0);
+  XIO_CHECK(ex6 != null_ptr);
+  XIO_CHECK(ex6 != ex1);
 
   xio::any_completion_executor ex7(std::nothrow, fat_executor(1));
 
-  ASIO_CHECK(ex7.target<void>() != 0);
-  ASIO_CHECK(ex7 != null_ptr);
-  ASIO_CHECK(ex7 != ex1);
-  ASIO_CHECK(ex7 == ex6);
+  XIO_CHECK(ex7.target<void>() != 0);
+  XIO_CHECK(ex7 != null_ptr);
+  XIO_CHECK(ex7 != ex1);
+  XIO_CHECK(ex7 == ex6);
 
   xio::any_completion_executor ex8(std::nothrow, fat_executor(2));
 
-  ASIO_CHECK(ex8.target<void>() != 0);
-  ASIO_CHECK(ex8 != null_ptr);
-  ASIO_CHECK(ex8 != ex1);
-  ASIO_CHECK(ex8 != ex6);
-  ASIO_CHECK(ex8 != ex7);
+  XIO_CHECK(ex8.target<void>() != 0);
+  XIO_CHECK(ex8 != null_ptr);
+  XIO_CHECK(ex8 != ex1);
+  XIO_CHECK(ex8 != ex6);
+  XIO_CHECK(ex8 != ex7);
 
   xio::any_completion_executor ex9(std::nothrow, ex6);
 
-  ASIO_CHECK(ex9.target<void>() != 0);
-  ASIO_CHECK(ex9 != null_ptr);
-  ASIO_CHECK(ex9 != ex1);
-  ASIO_CHECK(ex9 == ex6);
-  ASIO_CHECK(ex9 == ex7);
-  ASIO_CHECK(ex9 != ex8);
+  XIO_CHECK(ex9.target<void>() != 0);
+  XIO_CHECK(ex9 != null_ptr);
+  XIO_CHECK(ex9 != ex1);
+  XIO_CHECK(ex9 == ex6);
+  XIO_CHECK(ex9 == ex7);
+  XIO_CHECK(ex9 != ex8);
 
   xio::any_completion_executor ex10(std::nothrow, std::move(ex1));
 
-  ASIO_CHECK(ex10.target<void>() == 0);
-  ASIO_CHECK(ex10 == null_ptr);
-  ASIO_CHECK(ex1.target<void>() == 0);
-  ASIO_CHECK(ex1 == null_ptr);
+  XIO_CHECK(ex10.target<void>() == 0);
+  XIO_CHECK(ex10 == null_ptr);
+  XIO_CHECK(ex1.target<void>() == 0);
+  XIO_CHECK(ex1 == null_ptr);
 
   xio::any_completion_executor ex11(std::nothrow, std::move(ex3));
 
-  ASIO_CHECK(ex11.target<void>() != 0);
-  ASIO_CHECK(ex11 != null_ptr);
-  ASIO_CHECK(ex3.target<void>() == 0);
-  ASIO_CHECK(ex3 == null_ptr);
-  ASIO_CHECK(ex11 == ex5);
+  XIO_CHECK(ex11.target<void>() != 0);
+  XIO_CHECK(ex11 != null_ptr);
+  XIO_CHECK(ex3.target<void>() == 0);
+  XIO_CHECK(ex3 == null_ptr);
+  XIO_CHECK(ex11 == ex5);
 
   xio::any_completion_executor ex12(std::nothrow, std::move(ex7));
 
-  ASIO_CHECK(ex12.target<void>() != 0);
-  ASIO_CHECK(ex12 != null_ptr);
-  ASIO_CHECK(ex7.target<void>() == 0);
-  ASIO_CHECK(ex7 == null_ptr);
-  ASIO_CHECK(ex12 == ex6);
-  ASIO_CHECK(ex12 != ex8);
+  XIO_CHECK(ex12.target<void>() != 0);
+  XIO_CHECK(ex12 != null_ptr);
+  XIO_CHECK(ex7.target<void>() == 0);
+  XIO_CHECK(ex7 == null_ptr);
+  XIO_CHECK(ex12 == ex6);
+  XIO_CHECK(ex12 != ex8);
 
   next_nothrow_new_fails = true;
   xio::any_completion_executor ex13(std::nothrow, fat_executor(3));
 
-  ASIO_CHECK(ex13.target<void>() == 0);
-  ASIO_CHECK(ex13 == null_ptr);
-  ASIO_CHECK(ex13 == ex1);
+  XIO_CHECK(ex13.target<void>() == 0);
+  XIO_CHECK(ex13 == null_ptr);
+  XIO_CHECK(ex13 == ex1);
 }
 
 void any_completion_executor_assignment_test()
@@ -293,72 +293,72 @@ void any_completion_executor_assignment_test()
   xio::any_completion_executor ex2;
   ex2 = null_ptr;
 
-  ASIO_CHECK(ex2.target<void>() == 0);
+  XIO_CHECK(ex2.target<void>() == 0);
 
   xio::any_completion_executor ex3;
   ex3 = pool.executor();
 
-  ASIO_CHECK(ex3.target<void>() != 0);
+  XIO_CHECK(ex3.target<void>() != 0);
 
   xio::any_completion_executor ex4;
   ex4 = ex1;
 
-  ASIO_CHECK(ex4.target<void>() == 0);
-  ASIO_CHECK(ex4 == ex1);
+  XIO_CHECK(ex4.target<void>() == 0);
+  XIO_CHECK(ex4 == ex1);
 
   ex4 = ex3;
 
-  ASIO_CHECK(ex4.target<void>() != 0);
-  ASIO_CHECK(ex4 == ex3);
+  XIO_CHECK(ex4.target<void>() != 0);
+  XIO_CHECK(ex4 == ex3);
 
   xio::any_completion_executor ex5;
   ex5 = fat_executor(1);
 
-  ASIO_CHECK(ex5.target<void>() != 0);
-  ASIO_CHECK(ex5 != null_ptr);
-  ASIO_CHECK(ex5 != ex1);
+  XIO_CHECK(ex5.target<void>() != 0);
+  XIO_CHECK(ex5 != null_ptr);
+  XIO_CHECK(ex5 != ex1);
 
   xio::any_completion_executor ex6;
   ex6 = fat_executor(1);
 
-  ASIO_CHECK(ex6.target<void>() != 0);
-  ASIO_CHECK(ex6 != null_ptr);
-  ASIO_CHECK(ex6 != ex1);
-  ASIO_CHECK(ex6 == ex5);
+  XIO_CHECK(ex6.target<void>() != 0);
+  XIO_CHECK(ex6 != null_ptr);
+  XIO_CHECK(ex6 != ex1);
+  XIO_CHECK(ex6 == ex5);
 
   ex6 = fat_executor(2);
 
-  ASIO_CHECK(ex6.target<void>() != 0);
-  ASIO_CHECK(ex6 != null_ptr);
-  ASIO_CHECK(ex6 != ex1);
-  ASIO_CHECK(ex6 != ex5);
+  XIO_CHECK(ex6.target<void>() != 0);
+  XIO_CHECK(ex6 != null_ptr);
+  XIO_CHECK(ex6 != ex1);
+  XIO_CHECK(ex6 != ex5);
 
   xio::any_completion_executor ex7;
   ex7 = ex5;
 
-  ASIO_CHECK(ex7.target<void>() != 0);
-  ASIO_CHECK(ex7 != null_ptr);
-  ASIO_CHECK(ex7 != ex1);
-  ASIO_CHECK(ex7 == ex5);
-  ASIO_CHECK(ex7 != ex6);
+  XIO_CHECK(ex7.target<void>() != 0);
+  XIO_CHECK(ex7 != null_ptr);
+  XIO_CHECK(ex7 != ex1);
+  XIO_CHECK(ex7 == ex5);
+  XIO_CHECK(ex7 != ex6);
 
   xio::any_completion_executor ex8;
   ex8 = std::move(ex1);
 
-  ASIO_CHECK(ex8.target<void>() == 0);
-  ASIO_CHECK(ex1.target<void>() == 0);
+  XIO_CHECK(ex8.target<void>() == 0);
+  XIO_CHECK(ex1.target<void>() == 0);
 
   ex8 = std::move(ex3);
 
-  ASIO_CHECK(ex8.target<void>() != 0);
-  ASIO_CHECK(ex3.target<void>() == 0);
-  ASIO_CHECK(ex8 == ex4);
+  XIO_CHECK(ex8.target<void>() != 0);
+  XIO_CHECK(ex3.target<void>() == 0);
+  XIO_CHECK(ex8 == ex4);
 
   ex8 = std::move(ex5);
 
-  ASIO_CHECK(ex8.target<void>() != 0);
-  ASIO_CHECK(ex5.target<void>() == 0);
-  ASIO_CHECK(ex8 == ex7);
+  XIO_CHECK(ex8.target<void>() != 0);
+  XIO_CHECK(ex5.target<void>() == 0);
+  XIO_CHECK(ex8 == ex7);
 }
 
 void any_completion_executor_swap_test()
@@ -372,18 +372,18 @@ void any_completion_executor_swap_test()
   xio::any_completion_executor ex3(ex1);
   xio::any_completion_executor ex4(ex2);
 
-  ASIO_CHECK(ex3 == ex1);
-  ASIO_CHECK(ex4 == ex2);
+  XIO_CHECK(ex3 == ex1);
+  XIO_CHECK(ex4 == ex2);
 
   ex3.swap(ex4);
 
-  ASIO_CHECK(ex3 == ex2);
-  ASIO_CHECK(ex4 == ex1);
+  XIO_CHECK(ex3 == ex2);
+  XIO_CHECK(ex4 == ex1);
 
   execution::swap(ex3, ex4);
 
-  ASIO_CHECK(ex3 == ex1);
-  ASIO_CHECK(ex4 == ex2);
+  XIO_CHECK(ex3 == ex1);
+  XIO_CHECK(ex4 == ex2);
 }
 
 void any_completion_executor_query_test()
@@ -391,27 +391,27 @@ void any_completion_executor_query_test()
   thread_pool pool(1);
   xio::any_completion_executor ex(pool.executor());
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(ex, xio::execution::blocking)
         == xio::execution::blocking.possibly);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(ex, xio::execution::blocking.possibly)
         == xio::execution::blocking.possibly);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(ex, xio::execution::outstanding_work)
         == xio::execution::outstanding_work.untracked);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(ex, xio::execution::outstanding_work.untracked)
         == xio::execution::outstanding_work.untracked);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(ex, xio::execution::relationship)
         == xio::execution::relationship.fork);
 
-  ASIO_CHECK(
+  XIO_CHECK(
       xio::query(ex, xio::execution::relationship.fork)
         == xio::execution::relationship.fork);
 }
@@ -445,16 +445,16 @@ void any_completion_executor_execute_test()
 
   pool.wait();
 
-  ASIO_CHECK(count == 5);
+  XIO_CHECK(count == 5);
 }
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "any_completion_executor",
-  ASIO_TEST_CASE(any_completion_executor_construction_test)
-  ASIO_TEST_CASE(any_completion_executor_nothrow_construction_test)
-  ASIO_TEST_CASE(any_completion_executor_assignment_test)
-  ASIO_TEST_CASE(any_completion_executor_swap_test)
-  ASIO_TEST_CASE(any_completion_executor_query_test)
-  ASIO_TEST_CASE(any_completion_executor_execute_test)
+  XIO_TEST_CASE(any_completion_executor_construction_test)
+  XIO_TEST_CASE(any_completion_executor_nothrow_construction_test)
+  XIO_TEST_CASE(any_completion_executor_assignment_test)
+  XIO_TEST_CASE(any_completion_executor_swap_test)
+  XIO_TEST_CASE(any_completion_executor_query_test)
+  XIO_TEST_CASE(any_completion_executor_execute_test)
 )

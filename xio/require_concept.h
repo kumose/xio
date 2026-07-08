@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_REQUIRE_CONCEPT_HPP
-#define ASIO_REQUIRE_CONCEPT_HPP
+#ifndef XIO_REQUIRE_CONCEPT_HPP
+#define XIO_REQUIRE_CONCEPT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -24,85 +24,6 @@
 
 #include <xio/detail/push_options.h>
 
-#if defined(GENERATING_DOCUMENTATION)
-
-namespace xio {
-
-
-    /// A customisation point that applies a concept-enforcing property to an
-/// object.
-    /**
- * The name <tt>require_concept</tt> denotes a customization point object. The
- * expression <tt>xio::require_concept(E, P)</tt> for some
- * subexpressions <tt>E</tt> and <tt>P</tt> (with types <tt>T =
- * std::decay_t<decltype(E)></tt> and <tt>Prop = std::decay_t<decltype(P)></tt>) is
- * expression-equivalent to:
- *
- * @li If <tt>is_applicable_property_v<T, Prop> &&
- *   Prop::is_requirable_concept</tt> is not a well-formed constant expression
- *   with value <tt>true</tt>, <tt>xio::require_concept(E, P)</tt> is
- *   ill-formed.
- *
- * @li Otherwise, <tt>E</tt> if the expression <tt>Prop::template
- *   static_query_v<T> == Prop::value()</tt> is a well-formed constant
- *   expression with value <tt>true</tt>.
- *
- * @li Otherwise, <tt>(E).require_concept(P)</tt> if the expression
- *   <tt>(E).require_concept(P)</tt> is well-formed.
- *
- * @li Otherwise, <tt>require_concept(E, P)</tt> if the expression
- *   <tt>require_concept(E, P)</tt> is a valid expression with overload
- *   resolution performed in a context that does not include the declaration
- *   of the <tt>require_concept</tt> customization point object.
- *
- * @li Otherwise, <tt>xio::require_concept(E, P)</tt> is ill-formed.
- */
-    inline constexpr unspecified require_concept = unspecified;
-
-    /// A type trait that determines whether a @c require_concept expression is
-/// well-formed.
-    /**
- * Class template @c can_require_concept is a trait that is derived from
- * @c std::true_type if the expression
- * <tt>xio::require_concept(std::declval<T>(),
- * std::declval<Property>())</tt> is well formed; otherwise @c std::false_type.
- */
-    template<typename T, typename Property>
-    struct can_require_concept :
-            std::integral_constant<bool, automatically_determined> {
-    };
-
-    /// A type trait that determines whether a @c require_concept expression will
-/// not throw.
-    /**
- * Class template @c is_nothrow_require_concept is a trait that is derived from
- * @c std::true_type if the expression
- * <tt>xio::require_concept(std::declval<T>(),
- * std::declval<Property>())</tt> is @c noexcept; otherwise @c std::false_type.
- */
-    template<typename T, typename Property>
-    struct is_nothrow_require_concept :
-            std::integral_constant<bool, automatically_determined> {
-    };
-
-    /// A type trait that determines the result type of a @c require_concept
-/// expression.
-    /**
- * Class template @c require_concept_result is a trait that determines the
- * result type of the expression
- * <tt>xio::require_concept(std::declval<T>(),
- * std::declval<Property>())</tt>.
- */
-    template<typename T, typename Property>
-    struct require_concept_result {
-        /// The result of the @c require_concept expression.
-        typedef automatically_determined type;
-    };
-
-
-} // namespace xio
-
-#else // defined(GENERATING_DOCUMENTATION)
 
 namespace XIO_VERSIONED_NAME(require_concept_fn) {
     using std::conditional_t;
@@ -337,8 +258,7 @@ namespace xio {
 
 } // namespace xio
 
-#endif // defined(GENERATING_DOCUMENTATION)
 
 #include <xio/detail/pop_options.h>
 
-#endif // ASIO_REQUIRE_CONCEPT_HPP
+#endif // XIO_REQUIRE_CONCEPT_HPP

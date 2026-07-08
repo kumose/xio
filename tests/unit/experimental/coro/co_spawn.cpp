@@ -50,15 +50,15 @@ void coro_co_spawn()
 
   ctx.run();
 
-  ASIO_CHECK(done1);
-  ASIO_CHECK(done2);
-  ASIO_CHECK(res == 42);
+  XIO_CHECK(done1);
+  XIO_CHECK(done2);
+  XIO_CHECK(res == 42);
 }
 
 } // namespace coro
 
-ASIO_TEST_SUITE
+XIO_TEST_SUITE
 (
   "coro/co_spawn",
-  ASIO_TEST_CASE(::coro::coro_co_spawn)
+  XIO_TEST_CASE(::coro::coro_co_spawn)
 )

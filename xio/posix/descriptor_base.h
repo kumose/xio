@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_POSIX_DESCRIPTOR_BASE_HPP
-#define ASIO_POSIX_DESCRIPTOR_BASE_HPP
+#ifndef XIO_POSIX_DESCRIPTOR_BASE_HPP
+#define XIO_POSIX_DESCRIPTOR_BASE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,8 +17,7 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_POSIX_STREAM_DESCRIPTOR) \
-  || defined(GENERATING_DOCUMENTATION)
+#if defined(XIO_HAS_POSIX_STREAM_DESCRIPTOR)
 
 #include <xio/detail/io_control.h>
 #include <xio/detail/socket_option.h>
@@ -65,11 +64,8 @@ namespace xio {
    * @par Concepts:
    * IoControlCommand.
    */
-#if defined(GENERATING_DOCUMENTATION)
-typedef implementation_defined bytes_readable;
-#else
+
 typedef xio::detail::io_control::bytes_readable bytes_readable;
-#endif
 
 protected:
 /// Protected destructor to prevent deletion through this type.
@@ -82,7 +78,6 @@ protected:
 
 #include <xio/detail/pop_options.h>
 
-#endif // defined(ASIO_HAS_POSIX_STREAM_DESCRIPTOR)
-//   || defined(GENERATING_DOCUMENTATION)
+#endif // defined(XIO_HAS_POSIX_STREAM_DESCRIPTOR)
 
-#endif // ASIO_POSIX_DESCRIPTOR_BASE_HPP
+#endif // XIO_POSIX_DESCRIPTOR_BASE_HPP

@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_DETAIL_IO_URING_FILE_SERVICE_HPP
-#define ASIO_DETAIL_IO_URING_FILE_SERVICE_HPP
+#ifndef XIO_DETAIL_IO_URING_FILE_SERVICE_HPP
+#define XIO_DETAIL_IO_URING_FILE_SERVICE_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -17,8 +17,8 @@
 
 #include <xio/detail/config.h>
 
-#if defined(ASIO_HAS_FILE) \
-  && defined(ASIO_HAS_IO_URING)
+#if defined(XIO_HAS_FILE) \
+  && defined(XIO_HAS_IO_URING)
 
 #include <string>
 #include <cstdint>
@@ -52,10 +52,10 @@ namespace xio {
                 bool is_stream_;
             };
 
-            ASIO_DECL io_uring_file_service(execution_context &context);
+            XIO_DECL io_uring_file_service(execution_context &context);
 
             // Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL void shutdown();
+  XIO_DECL void shutdown();
 
             // Construct a new file implementation.
             void construct(implementation_type &impl) {
@@ -85,7 +85,7 @@ namespace xio {
             }
 
             // Open the file using the specified path name.
-            ASIO_DECL xio::error_code open(implementation_type &impl,
+            XIO_DECL xio::error_code open(implementation_type &impl,
                                            const char *path, file_base::flags open_flags,
                                            xio::error_code &ec);
 
@@ -130,23 +130,23 @@ namespace xio {
             }
 
             // Get the size of the file.
-  ASIO_DECL uint64_t size(const implementation_type &impl,
+  XIO_DECL uint64_t size(const implementation_type &impl,
                           xio::error_code &ec) const;
 
             // Alter the size of the file.
-            ASIO_DECL xio::error_code resize(implementation_type &impl,
+            XIO_DECL xio::error_code resize(implementation_type &impl,
                                              uint64_t n, xio::error_code &ec);
 
             // Synchronise the file to disk.
-            ASIO_DECL xio::error_code sync_all(implementation_type &impl,
+            XIO_DECL xio::error_code sync_all(implementation_type &impl,
                                                xio::error_code &ec);
 
             // Synchronise the file data to disk.
-            ASIO_DECL xio::error_code sync_data(implementation_type &impl,
+            XIO_DECL xio::error_code sync_data(implementation_type &impl,
                                                 xio::error_code &ec);
 
             // Seek to a position in the file.
-  ASIO_DECL uint64_t seek(implementation_type &impl, int64_t offset,
+  XIO_DECL uint64_t seek(implementation_type &impl, int64_t offset,
                           file_base::seek_basis whence, xio::error_code &ec);
 
             // Write the given data. Returns the number of bytes written.
@@ -232,7 +232,7 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 
-#endif // defined(ASIO_HAS_FILE)
-//   && defined(ASIO_HAS_IO_URING)
+#endif // defined(XIO_HAS_FILE)
+//   && defined(XIO_HAS_IO_URING)
 
-#endif // ASIO_DETAIL_IO_URING_FILE_SERVICE_HPP
+#endif // XIO_DETAIL_IO_URING_FILE_SERVICE_HPP

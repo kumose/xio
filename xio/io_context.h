@@ -8,8 +8,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-#ifndef ASIO_IO_CONTEXT_HPP
-#define ASIO_IO_CONTEXT_HPP
+#ifndef XIO_IO_CONTEXT_HPP
+#define XIO_IO_CONTEXT_HPP
 
 #if defined(_MSC_VER) && (_MSC_VER >= 1200)
 # pragma once
@@ -28,14 +28,14 @@
 #include <xio/execution.h>
 #include <xio/execution_context.h>
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
 #include <xio/detail/winsock_init.h>
 #elif defined(__sun) || defined(__QNX__) || defined(__hpux) || defined(_AIX) \
   || defined(__osf__)
 #include <xio/detail/signal_init.h>
 #endif
 
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
 #include <xio/detail/win_iocp_io_context.h>
 #else
 #include <xio/detail/scheduler.h>
@@ -47,7 +47,7 @@ namespace xio {
 
 
     namespace detail {
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
         typedef win_iocp_io_context io_context_impl;
         class win_iocp_overlapped_ptr;
 #else
@@ -192,7 +192,7 @@ namespace xio {
             : public execution_context {
     private:
         typedef detail::io_context_impl impl_type;
-#if defined(ASIO_HAS_IOCP)
+#if defined(XIO_HAS_IOCP)
         friend class detail::win_iocp_overlapped_ptr;
 #endif
 
@@ -208,17 +208,17 @@ namespace xio {
 
         class service;
 
-#if !defined(ASIO_NO_EXTENSIONS) \
-  && !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_EXTENSIONS) \
+  && !defined(XIO_NO_TS_EXECUTORS)
         class strand;
-#endif // !defined(ASIO_NO_EXTENSIONS)
-        //   && !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_EXTENSIONS)
+        //   && !defined(XIO_NO_TS_EXECUTORS)
 
         /// The type used to count the number of handlers executed by the context.
         typedef std::size_t count_type;
 
         /// Constructor.
-        ASIO_DECL io_context();
+        XIO_DECL io_context();
 
         /// Constructor.
         /**
@@ -236,7 +236,7 @@ namespace xio {
    * @param concurrency_hint A suggestion to the implementation on how many
    * threads it should allow to run simultaneously.
    */
-        ASIO_DECL explicit io_context(int concurrency_hint);
+        XIO_DECL explicit io_context(int concurrency_hint);
 
         /// Constructor.
         /**
@@ -260,7 +260,7 @@ namespace xio {
    * @param initial_services Used to create the initial services. The @c make
    * function will be called once at the end of execution_context construction.
    */
-        ASIO_DECL explicit io_context(
+        XIO_DECL explicit io_context(
             const execution_context::service_maker &initial_services);
 
         /// Constructor.
@@ -311,7 +311,7 @@ namespace xio {
    * destructor defined above destroys all handlers, causing all @c shared_ptr
    * references to all connection objects to be destroyed.
    */
-        ASIO_DECL ~io_context();
+        XIO_DECL ~io_context();
 
         /// Obtains the executor associated with the io_context.
         executor_type get_executor() noexcept;
@@ -341,7 +341,7 @@ namespace xio {
    * The poll() function may also be used to dispatch ready handlers, but
    * without blocking.
    */
-  ASIO_DECL count_type run();
+  XIO_DECL count_type run();
 
         /// Run the io_context object's event processing loop for a specified
   /// duration.
@@ -387,7 +387,7 @@ namespace xio {
    * poll_one() on the same io_context object may introduce the potential for
    * deadlock. It is the caller's responsibility to avoid this.
    */
-  ASIO_DECL count_type run_one();
+  XIO_DECL count_type run_one();
 
         /// Run the io_context object's event processing loop for a specified duration
   /// to execute at most one handler.
@@ -426,7 +426,7 @@ namespace xio {
    *
    * @return The number of handlers that were executed.
    */
-  ASIO_DECL count_type poll();
+  XIO_DECL count_type poll();
 
         /// Run the io_context object's event processing loop to execute one ready
   /// handler.
@@ -436,7 +436,7 @@ namespace xio {
    *
    * @return The number of handlers that were executed.
    */
-  ASIO_DECL count_type poll_one();
+  XIO_DECL count_type poll_one();
 
         /// Stop the io_context object's event processing loop.
         /**
@@ -445,7 +445,7 @@ namespace xio {
    * return as soon as possible. Subsequent calls to run(), run_one(), poll()
    * or poll_one() will return immediately until restart() is called.
    */
-  ASIO_DECL void stop();
+  XIO_DECL void stop();
 
         /// Determine whether the io_context object has been stopped.
         /**
@@ -457,7 +457,7 @@ namespace xio {
    *
    * @return @c true if the io_context object is stopped, otherwise @c false.
    */
-  ASIO_DECL bool stopped() const;
+  XIO_DECL bool stopped() const;
 
         /// Restart the io_context in preparation for a subsequent run() invocation.
         /**
@@ -470,9 +470,9 @@ namespace xio {
    * This function must not be called while there are any unfinished calls to
    * the run(), run_one(), poll() or poll_one() functions.
    */
-  ASIO_DECL void restart();
+  XIO_DECL void restart();
 
-#if !defined(ASIO_NO_DEPRECATED)
+#if !defined(XIO_NO_DEPRECATED)
         /// (Deprecated: Use xio::bind_executor().) Create a new handler that
   /// automatically dispatches the wrapped handler on the io_context.
         /**
@@ -497,17 +497,13 @@ namespace xio {
    *     boost::bind(f, a1, ... an)); @endcode
    */
         template<typename Handler>
-        ASIO_DEPRECATED_MSG (
+        XIO_DEPRECATED_MSG (
 
         "Use xio::bind_executor()"
         )
-#if defined(GENERATING_DOCUMENTATION)
-        unspecified
-#else
         detail::wrapped_handler<io_context &, Handler>
-#endif
         wrap(Handler handler);
-#endif // !defined(ASIO_NO_DEPRECATED)
+#endif // !defined(XIO_NO_DEPRECATED)
 
     private:
         io_context(const io_context &) = delete;
@@ -519,7 +515,7 @@ namespace xio {
         template<typename Service>
         friend Service &use_service(io_context &ioc);
 
-#if defined(ASIO_WINDOWS) || defined(ASIO_CYGWIN_W32_SOCKETS)
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
         detail::winsock_init<> init_;
 #elif defined(__sun) || defined(__QNX__) || defined(__hpux) || defined(_AIX) \
   || defined(__osf__)
@@ -565,12 +561,10 @@ namespace xio {
         /// Move assignment operator.
         basic_executor_type &operator=(basic_executor_type &&other) noexcept;
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     private:
         friend struct XIO_VERSIONED_NAME (require_fn)::impl;
         friend struct XIO_VERSIONED_NAME (prefer_fn)::impl;
-#endif // !defined(GENERATING_DOCUMENTATION)
 
         /// Obtain an executor with the @c blocking.possibly property.
         /**
@@ -644,7 +638,7 @@ namespace xio {
    *     xio::execution::outstanding_work.tracked); @endcode
    */
         constexpr basic_executor_type<Allocator,
-            ASIO_UNSPECIFIED(Bits | outstanding_work_tracked)>
+            XIO_UNSPECIFIED(Bits | outstanding_work_tracked)>
         require(execution::outstanding_work_t::tracked_t) const {
             return basic_executor_type<Allocator, Bits | outstanding_work_tracked>(
                 context_ptr(), *this, bits());
@@ -661,7 +655,7 @@ namespace xio {
    *     xio::execution::outstanding_work.untracked); @endcode
    */
         constexpr basic_executor_type<Allocator,
-            ASIO_UNSPECIFIED(Bits & ~outstanding_work_tracked)>
+            XIO_UNSPECIFIED(Bits & ~outstanding_work_tracked)>
         require(execution::outstanding_work_t::untracked_t) const {
             return basic_executor_type<Allocator, Bits & ~outstanding_work_tracked>(
                 context_ptr(), *this, bits());
@@ -700,14 +694,12 @@ namespace xio {
                 context_ptr(), std::allocator<void>(), bits());
         }
 
-#if !defined(GENERATING_DOCUMENTATION)
 
     private:
         friend struct XIO_VERSIONED_NAME (query_fn)::impl;
         friend struct xio::execution::detail::mapping_t<0>;
         friend struct xio::execution::detail::inline_exception_handling_t<0>;
         friend struct xio::execution::detail::outstanding_work_t<0>;
-#endif // !defined(GENERATING_DOCUMENTATION)
 
         /// Query the current value of the @c mapping property.
         /**
@@ -870,7 +862,7 @@ namespace xio {
         template<typename Function>
         void execute(Function &&f) const;
 
-#if !defined(ASIO_NO_TS_EXECUTORS)
+#if !defined(XIO_NO_TS_EXECUTORS)
 
     public:
         /// Obtain the underlying execution context.
@@ -944,7 +936,7 @@ namespace xio {
    */
         template<typename Function, typename OtherAllocator>
         void defer(Function &&f, const OtherAllocator &a) const;
-#endif // !defined(ASIO_NO_TS_EXECUTORS)
+#endif // !defined(XIO_NO_TS_EXECUTORS)
 
     private:
         friend class io_context;
@@ -990,7 +982,7 @@ namespace xio {
 
     private:
         /// Destroy all user-defined handler objects owned by the service.
-  ASIO_DECL virtual void shutdown();
+  XIO_DECL virtual void shutdown();
 
         /// Handle notification of a fork-related event to perform any necessary
   /// housekeeping.
@@ -998,7 +990,7 @@ namespace xio {
    * This function is not a pure virtual so that services only have to
    * implement it if necessary. The default implementation does nothing.
    */
-  ASIO_DECL virtual void notify_fork(
+  XIO_DECL virtual void notify_fork(
             execution_context::fork_event event);
 
     protected:
@@ -1006,10 +998,10 @@ namespace xio {
         /**
    * @param owner The io_context object that owns the service.
    */
-        ASIO_DECL service(xio::io_context &owner);
+        XIO_DECL service(xio::io_context &owner);
 
         /// Destructor.
-        ASIO_DECL virtual ~service();
+        XIO_DECL virtual ~service();
     };
 
     namespace detail {
@@ -1030,7 +1022,6 @@ namespace xio {
         xio::detail::service_id<Type> service_base<Type>::id;
     } // namespace detail
 
-#if !defined(GENERATING_DOCUMENTATION)
 
 
     namespace execution {
@@ -1039,7 +1030,6 @@ namespace xio {
         };
     } // namespace execution
 
-#endif // !defined(GENERATING_DOCUMENTATION)
 
 
 } // namespace xio
@@ -1051,10 +1041,10 @@ namespace xio {
 
 // If both io_context.hpp and strand.hpp have been included, automatically
 // include the header file needed for the io_context::strand class.
-#if !defined(ASIO_NO_EXTENSIONS)
-# if defined(ASIO_STRAND_HPP)
+#if !defined(XIO_NO_EXTENSIONS)
+# if defined(XIO_STRAND_HPP)
 #  include "xio/io_context_strand.h"
-# endif // defined(ASIO_STRAND_HPP)
-#endif // !defined(ASIO_NO_EXTENSIONS)
+# endif // defined(XIO_STRAND_HPP)
+#endif // !defined(XIO_NO_EXTENSIONS)
 
-#endif // ASIO_IO_CONTEXT_HPP
+#endif // XIO_IO_CONTEXT_HPP
