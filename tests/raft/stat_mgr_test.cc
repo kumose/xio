@@ -18,7 +18,7 @@ limitations under the License.
 
 #include <xio/raft/stat_mgr.h>
 
-#include "test_common.h"
+#include <tests/raft/test_common.h>
 
 #include <cstring>
 #include <random>

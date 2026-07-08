@@ -21,7 +21,7 @@ limitations under the License.
 #include <xio/raft/in_memory_log_store.h>
 #include <xio/raft/logger_wrapper.h>
 
-#include "test_common.h"
+#include <tests/raft/test_common.h>
 
 #include <cassert>
 #include <limits>

@@ -16,11 +16,11 @@ limitations under the License.
 **************************************************************************/
 
 #include <xio/raft/debugging_options.h>
-#include <xio/raft/fake_network.h>
-#include <xio/raft/raft_package_fake.h>
+#include <tests/raft/fake_network.h>
+#include <tests/raft/raft_package_fake.h>
 
 #include <xio/raft/event_awaiter.h>
-#include "test_common.h"
+#include <tests/raft/test_common.h>
 
 #include <stdio.h>
 

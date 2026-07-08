@@ -21,7 +21,7 @@ limitations under the License.
 
 #include <xio/raft/nuraft.h>
 
-#include "test_common.h"
+#include <tests/raft/test_common.h>
 
 #include <iostream>
 #include <sstream>

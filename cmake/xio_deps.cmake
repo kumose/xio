@@ -56,10 +56,7 @@ find_package(Threads REQUIRED)
 kmcmake_private_find_package(Threads REQUIRED)
 list(APPEND KMCMAKE_SYSTEM_DYLINK Threads::Threads)
 
-find_package(turbo REQUIRED)
-find_package(fermat REQUIRED)
-find_package(tally REQUIRED)
-
+find_package(xlog REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(lz4 CONFIG REQUIRED)
 find_package(Snappy CONFIG REQUIRED)
@@ -88,9 +85,7 @@ endif ()
 ##########################################################
 set(KMCMAKE_DEPS_LINK
         ${URING_LIBRARY}
-        fermat::fermat_static
-        tally::tally_static
-        turbo::turbo_static
+        xlog::xlog_static
         ZLIB::ZLIB
         lz4::lz4
         Snappy::snappy

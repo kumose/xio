@@ -15,12 +15,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 **************************************************************************/
 
-#include <xio/raft/raft_functional_common.h>
+#include <tests/raft/raft_functional_common.h>
 
 #include <xio/raft/nuraft.h>
 
 #include "latency_collector.h"
-#include "test_common.h"
+#include <tests/raft/test_common.h>
 
 using namespace nuraft;
 using namespace raft_functional_common;

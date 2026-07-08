@@ -1,6 +1,7 @@
 {
   "dependencies": [
-    "fermat",
+    "benchmark",
+    "gtest",
     {
       "name": "liburing",
       "platform": "linux"
@@ -12,11 +13,8 @@
         "rtti"
       ]
     },
-    "tally",
-    "turbo",
     "zlib",
     "zstd",
-    "gtest",
-    "benchmark"
+    "xlog"
   ]
 }

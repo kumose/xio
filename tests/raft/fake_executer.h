@@ -1,7 +1,7 @@
 #pragma once
 
-#include "test_common.h"
-#include <xio/raft/raft_package_fake.h>
+#include <tests/raft/test_common.h>
+#include <tests/raft/raft_package_fake.h>
 
 struct ExecArgs : TestSuite::ThreadArgs {
     ExecArgs(RaftPkg* _leader)

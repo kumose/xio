@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 **************************************************************************/
 
-#include <xio/raft/fake_network.h>
+#include <tests/raft/fake_network.h>
 #include <xio/raft/strfmt.h>
 
 #include "logger.h"

@@ -17,8 +17,8 @@ limitations under the License.
 
 #pragma once
 
-#include <xio/raft/fake_network.h>
-#include <xio/raft/raft_functional_common.h>
+#include <tests/raft/fake_network.h>
+#include <tests/raft/raft_functional_common.h>
 
 #include <xio/raft/event_awaiter.h>
 

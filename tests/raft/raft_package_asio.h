@@ -18,7 +18,7 @@ limitations under the License.
 #pragma once
 
 #include <xio/raft/asio_service_options.h>
-#include <xio/raft/raft_functional_common.h>
+#include <tests/raft/raft_functional_common.h>
 #include <xio/raft/internal_timer.h>
 
 #include <xio/raft/nuraft.h>

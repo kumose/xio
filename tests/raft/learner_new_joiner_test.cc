@@ -16,11 +16,11 @@ limitations under the License.
 **************************************************************************/
 
 #include <xio/raft/debugging_options.h>
-#include <xio/raft/fake_network.h>
-#include <xio/raft/raft_package_fake.h>
+#include <tests/raft/fake_network.h>
+#include <tests/raft/raft_package_fake.h>
 
 #include <xio/raft/raft_params.h>
-#include "test_common.h"
+#include <tests/raft/test_common.h>
 
 #include <stdio.h>
 
@@ -29,7 +29,7 @@ using namespace raft_functional_common;
 
 using raft_result = cmd_result< ptr<buffer> >;
 
-namespace new_joiner_test {
+namespace learner_new_joiner_test {
 
 int append_logs(size_t num_appends,
                 RaftPkg& leader,
@@ -340,8 +340,88 @@ int new_joiner_take_over_test() {
     return 0;
 }
 
-}  // namespace new_joiner_test;
-using namespace new_joiner_test;
+int learner_to_normal_test() {
+    reset_log_files();
+    ptr<FakeNetworkBase> f_base = cs_new<FakeNetworkBase>();
+
+    std::string s1_addr = "S1";
+    std::string s2_addr = "S2";
+    std::string s3_addr = "S3";
+
+    RaftPkg s1(f_base, 1, s1_addr);
+    RaftPkg s2(f_base, 2, s2_addr);
+    RaftPkg s3(f_base, 3, s3_addr);
+
+    std::vector<RaftPkg*> pkgs = {&s1, &s2, &s3};
+
+    // Initialization callback: make S3 as a learner.
+    auto init_cb = [&](RaftPkg* pp) {
+        if (pp->myId == 3) {
+            pp->getTestMgr()->get_srv_config()->set_learner(true);
+        }
+    };
+    CHK_Z( launch_servers( pkgs, nullptr, false, cb_default, init_cb ) );
+
+    CHK_Z( make_group( pkgs ) );
+
+    for (auto& entry: pkgs) {
+        RaftPkg* pp = entry;
+        raft_params param = pp->raftServer->get_current_params();
+        param.return_method_ = raft_params::async_handler;
+        pp->raftServer->update_params(param);
+    }
+
+    const size_t NUM = 10;
+    CHK_Z( append_logs(NUM, s1, pkgs) );
+
+    // Trigger election timer of S3.
+    s3.dbgLog(" --- invoke election timer of S3 ---");
+    s3.fTimer->invoke( timer_task_type::election_timer );
+
+    // Since it is a learner, it should not send vote request.
+    CHK_Z(s3.fNet->getNumPendingReqs(s1_addr));
+    CHK_Z(s3.fNet->getNumPendingReqs(s2_addr));
+
+    // Update config and make S3 a normal member.
+    s3.dbgLog(" --- update config to make S3 a normal member ---");
+    auto enc_config = s3.getTestMgr()->get_srv_config()->serialize();
+    ptr<srv_config> new_config = srv_config::deserialize(*enc_config);
+    new_config->set_learner(false);
+    CHK_TRUE(s1.raftServer->update_srv_config(*new_config));
+
+    // Packet for pre-commit.
+    s1.fNet->execReqResp();
+    // Packet for commit.
+    s1.fNet->execReqResp();
+    // Wait for bg commit.
+    CHK_Z( wait_for_sm_exec(pkgs, COMMIT_TIMEOUT_SEC) );
+
+    // One more time for member that was not in quorum.
+    s1.fNet->execReqResp();
+    s1.fNet->execReqResp();
+    CHK_Z( wait_for_sm_exec(pkgs, COMMIT_TIMEOUT_SEC) );
+
+    // Trigger election timer of S3.
+    s3.dbgLog(" --- invoke election timer of S3 ---");
+    s3.fTimer->invoke( timer_task_type::election_timer );
+
+    // This time it should make progress.
+    CHK_GT(s3.fNet->getNumPendingReqs(s1_addr), 0);
+    CHK_GT(s3.fNet->getNumPendingReqs(s2_addr), 0);
+
+    print_stats(pkgs);
+
+    s1.raftServer->shutdown();
+    s2.raftServer->shutdown();
+    s3.raftServer->shutdown();
+
+    f_base->destroy();
+
+    return 0;
+}
+
+}  // namespace learner_new_joiner_test;
+using namespace learner_new_joiner_test;
 
 int main(int argc, char** argv) {
     TestSuite ts(argc, argv);
@@ -359,6 +439,9 @@ int main(int argc, char** argv) {
 
     ts.doTest( "new joiner take over test",
                new_joiner_take_over_test );
+
+    ts.doTest( "learner to normal test",
+               learner_to_normal_test );
 
 #ifdef ENABLE_RAFT_STATS
     _msg("raft stats: ENABLED\n");

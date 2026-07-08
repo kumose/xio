@@ -23,7 +23,7 @@ limitations under the License.
 #include <xio/raft/strfmt.h>
 #include <xio/raft/crc32.h>
 
-#include "test_common.h"
+#include <tests/raft/test_common.h>
 
 #include <random>
 

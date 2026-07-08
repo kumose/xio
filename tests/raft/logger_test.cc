@@ -21,7 +21,7 @@ limitations under the License.
 #include <xio/raft/libnuraft/logger.h>
 #include <xio/raft/tracer.h>
 
-#include "test_common.h"
+#include <tests/raft/test_common.h>
 #include <cstddef>
 #include <iostream>
 #include <sstream>
