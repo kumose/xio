@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 **************************************************************************/
 
-#include <xio/raft/nuraft.h>
+#include <xio/raft/raft.h>
 
 #include <xio/raft/stat_mgr.h>
 

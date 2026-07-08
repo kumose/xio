@@ -17,7 +17,7 @@ limitations under the License.
 
 #include <tests/raft/raft_functional_common.h>
 
-#include <xio/raft/nuraft.h>
+#include <xio/raft/raft.h>
 
 #include "latency_collector.h"
 #include <tests/raft/test_common.h>

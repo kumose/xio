@@ -18,7 +18,7 @@ limitations under the License.
 #include <xio/raft/echo_state_machine.h>
 #include <xio/raft/in_memory_state_mgr.h>
 
-#include <xio/raft/nuraft.h>
+#include <xio/raft/raft.h>
 
 #include <tests/raft/test_common.h>
 

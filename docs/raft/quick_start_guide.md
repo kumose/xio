@@ -7,7 +7,7 @@ Quick Start Guide
 #include <xio/raft/echo_state_machine.h>
 #include <xio/raft/in_memory_state_mgr.h>
 
-#include <xio/raft/libnuraft/nuraft.h>
+#include <xio/raft/libnuraft/raft.h>
 
 #include <chrono>
 #include <string>

@@ -23,7 +23,7 @@ limitations under the License.
 #include <tests/raft/raft_functional_common.h>
 #include <xio/raft/internal_timer.h>
 
-#include <xio/raft/nuraft.h>
+#include <xio/raft/raft.h>
 
 #if defined(__linux__) || defined(__APPLE__)
     #include <unistd.h>

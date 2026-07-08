@@ -19,7 +19,7 @@ limitations under the License.
 
 #include <xio/raft/in_memory_log_store.h>
 
-#include <xio/raft/nuraft.h>
+#include <xio/raft/raft.h>
 
 namespace nuraft {
 

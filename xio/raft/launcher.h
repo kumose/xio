@@ -17,7 +17,7 @@ limitations under the License.
 
 #pragma once
 
-#include <xio/raft/nuraft.h>
+#include <xio/raft/raft.h>
 
 namespace nuraft {
     /**

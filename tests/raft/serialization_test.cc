@@ -19,7 +19,7 @@ limitations under the License.
 **************************************************************************/
 
 #include <xio/raft/handle_custom_notification.h>
-#include <xio/raft/nuraft.h>
+#include <xio/raft/raft.h>
 #include <xio/raft/strfmt.h>
 #include <xio/raft/crc32.h>
 
