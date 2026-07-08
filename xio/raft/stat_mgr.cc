@@ -21,7 +21,7 @@ limitations under the License.
 #include <iostream>
 #include <string>
 
-namespace nuraft {
+namespace xio::raft {
     // === stat_elem ==============================================================
 
     stat_elem::stat_elem(Type _type, const std::string &_name)
@@ -163,5 +163,5 @@ namespace nuraft {
     void raft_server::reset_all_stats() {
         stat_mgr::get_instance()->reset_all_stats();
     }
-} // namespace nuraft
+} // namespace xio::raft
 

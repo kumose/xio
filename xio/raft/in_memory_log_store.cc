@@ -21,7 +21,7 @@ limitations under the License.
 
 #include <cassert>
 
-namespace nuraft {
+namespace xio::raft {
 
 inmem_log_store::inmem_log_store()
     : start_idx_(1)

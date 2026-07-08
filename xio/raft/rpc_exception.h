@@ -27,7 +27,7 @@ limitations under the License.
 #include <exception>
 #include <string>
 
-namespace nuraft {
+namespace xio::raft {
     class req_msg;
 
     class rpc_exception : public std::exception {

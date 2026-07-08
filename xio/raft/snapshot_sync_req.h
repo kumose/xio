@@ -27,7 +27,7 @@ limitations under the License.
 #include <xio/raft/ptr.h>
 #include <xio/raft/snapshot.h>
 
-namespace nuraft {
+namespace xio::raft {
     class snapshot;
 
     class snapshot_sync_req {

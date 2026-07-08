@@ -24,7 +24,7 @@ limitations under the License.
 #include <xio/raft/delayed_task.h>
 #include <xio/raft/ptr.h>
 
-namespace nuraft {
+namespace xio::raft {
     class delayed_task_scheduler {
         __interface_body__(delayed_task_scheduler);
 

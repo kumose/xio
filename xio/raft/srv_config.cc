@@ -20,7 +20,7 @@ limitations under the License.
 
 #include <xio/raft/srv_config.h>
 
-namespace nuraft {
+namespace xio::raft {
     static const uint8_t LEARNER_FLAG = 0x1;
     static const uint8_t NEW_JOINER_FLAG = 0x2;
 
@@ -72,4 +72,4 @@ namespace nuraft {
         buf->pos(0);
         return buf;
     }
-} // namespace nuraft;
+} // namespace xio::raft;

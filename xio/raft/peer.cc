@@ -26,7 +26,7 @@ limitations under the License.
 
 #include <unordered_set>
 
-namespace nuraft {
+namespace xio::raft {
     void peer::send_req(ptr<peer> myself,
                         ptr<req_msg> &req,
                         rpc_handler &handler,
@@ -322,5 +322,5 @@ namespace nuraft {
         }
         hb_task_.reset();
     }
-} // namespace nuraft;
+} // namespace xio::raft;
 

@@ -23,7 +23,7 @@ limitations under the License.
 
 #include <memory>
 
-namespace nuraft {
+namespace xio::raft {
     template<typename T>
     using ptr = std::shared_ptr<T>;
 

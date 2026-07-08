@@ -71,7 +71,7 @@ limitations under the License.
     ? (byte*)( (byte*)( ((uint*)(p))   + 2 ) )  \
     : (byte*)( (byte*)( ((ushort*)(p)) + 2 ) )
 
-namespace nuraft {
+namespace xio::raft {
     static void free_buffer(buffer *buf) {
         static stat_elem &num_active = *stat_mgr::get_instance()->create_stat
                 (stat_elem::COUNTER, "num_active_buffers");
@@ -96,7 +96,7 @@ namespace nuraft {
 
         if (size >= 0x80000000) {
             throw std::out_of_range("size exceed the max size that "
-                "nuraft::buffer could support");
+                "xio::raft::buffer could support");
         }
         num_allocs++;
         num_active++;
@@ -146,7 +146,7 @@ namespace nuraft {
     ptr<buffer> buffer::expand(const buffer &buf, uint32_t new_size) {
         if (new_size >= 0x80000000) {
             throw std::out_of_range("size exceed the max size that "
-                "nuraft::buffer could support");
+                "xio::raft::buffer could support");
         }
 
         if (new_size < buf.size()) {
@@ -395,10 +395,10 @@ namespace nuraft {
         ::memcpy(data(), ba, len);
         __mv_fw_block(this, len);
     }
-} // namespace nuraft;
-using namespace nuraft;
+} // namespace xio::raft;
+using namespace xio::raft;
 
-std::ostream &nuraft::operator <<(std::ostream &out, buffer &buf) {
+std::ostream &xio::raft::operator <<(std::ostream &out, buffer &buf) {
     if (!out) {
         throw std::ios::failure("bad output stream.");
     }
@@ -412,7 +412,7 @@ std::ostream &nuraft::operator <<(std::ostream &out, buffer &buf) {
     return out;
 }
 
-std::istream &nuraft::operator >>(std::istream &in, buffer &buf) {
+std::istream &xio::raft::operator >>(std::istream &in, buffer &buf) {
     if (!in) {
         throw std::ios::failure("bad input stream");
     }

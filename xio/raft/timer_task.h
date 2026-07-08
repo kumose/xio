@@ -23,7 +23,7 @@ limitations under the License.
 
 #include <xio/raft/delayed_task.h>
 
-namespace nuraft {
+namespace xio::raft {
     enum timer_task_type {
         election_timer = 0x1,
         heartbeat_timer = 0x2,

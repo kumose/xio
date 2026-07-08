@@ -37,7 +37,7 @@ limitations under the License.
 #include <sstream>
 #include <random>
 
-namespace nuraft {
+namespace xio::raft {
     void raft_server::commit(ulong target_idx) {
         bool track_peers_sm_commit_idx = ctx_->get_params()->track_peers_sm_commit_idx_;
         if (target_idx > quick_commit_index_) {
@@ -102,7 +102,7 @@ namespace nuraft {
     }
 
     void raft_server::commit_in_bg() {
-        std::string thread_name = "nuraft_commit";
+        std::string thread_name = "xraft_commit";
 #ifdef __linux__
         pthread_setname_np(pthread_self(), thread_name.c_str());
 #elif __APPLE__
@@ -1221,5 +1221,5 @@ namespace nuraft {
         }
         return false;
     }
-} // namespace nuraft;
+} // namespace xio::raft;
 

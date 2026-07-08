@@ -26,7 +26,7 @@ limitations under the License.
 #include <random>
 #include <string>
 
-using namespace nuraft;
+using namespace xio::raft;
 
 namespace buffer_test {
 

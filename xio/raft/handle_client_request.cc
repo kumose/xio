@@ -33,7 +33,7 @@ limitations under the License.
 #include <chrono>
 #include <sstream>
 
-namespace nuraft {
+namespace xio::raft {
     ptr<resp_msg> raft_server::handle_cli_req_prelock(req_msg &req,
                                                       const req_ext_params &ext_params) {
         ptr<resp_msg> resp = nullptr;
@@ -371,5 +371,5 @@ namespace nuraft {
 
         return ret;
     }
-} // namespace nuraft;
+} // namespace xio::raft;
 

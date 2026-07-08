@@ -25,7 +25,7 @@ limitations under the License.
 #include <functional>
 #include <string>
 
-namespace nuraft {
+namespace xio::raft {
     class cb_func {
     public:
         enum Type {

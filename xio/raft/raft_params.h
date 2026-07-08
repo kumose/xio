@@ -26,7 +26,7 @@ limitations under the License.
 
 #include <algorithm>
 
-namespace nuraft {
+namespace xio::raft {
     struct raft_params {
         enum return_method_type {
             /**

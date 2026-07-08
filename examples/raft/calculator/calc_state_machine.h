@@ -26,7 +26,7 @@ limitations under the License.
 
 #include <string.h>
 
-using namespace nuraft;
+using namespace xio::raft;
 
 namespace calc_server {
 

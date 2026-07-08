@@ -23,7 +23,7 @@ limitations under the License.
 
 #include <string>
 
-namespace nuraft {
+namespace xio::raft {
 #include <xio/raft/attr_unused.h>
 
     enum srv_role {

@@ -22,7 +22,7 @@ limitations under the License.
 
 #include <xio/raft/cluster_config.h>
 
-namespace nuraft {
+namespace xio::raft {
     ptr<snapshot> snapshot::deserialize(buffer &buf) {
         buffer_serializer bs(buf);
         return deserialize(bs);
@@ -48,5 +48,5 @@ namespace nuraft {
         buf->pos(0);
         return buf;
     }
-} // namespace nuraft;
+} // namespace xio::raft;
 

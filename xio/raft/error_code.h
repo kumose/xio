@@ -21,7 +21,7 @@ limitations under the License.
 #ifndef _ERROR_CODE_HXX_
 #define _ERROR_CODE_HXX_
 
-namespace nuraft {
+namespace xio::raft {
     enum raft_err {
         ok = 0,
         error = -1,

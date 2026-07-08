@@ -35,7 +35,7 @@ limitations under the License.
 #include <cassert>
 #include <sstream>
 
-namespace nuraft {
+namespace xio::raft {
     int32 raft_server::get_snapshot_sync_block_size() const {
         int32 block_size = ctx_->get_params()->snapshot_block_size_;
         return block_size == 0 ? default_snapshot_sync_block_size : block_size;
@@ -630,5 +630,5 @@ namespace nuraft {
 
         return true;
     }
-} // namespace nuraft;
+} // namespace xio::raft;
 

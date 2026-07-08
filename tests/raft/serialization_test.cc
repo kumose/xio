@@ -27,7 +27,7 @@ limitations under the License.
 
 #include <random>
 
-using namespace nuraft;
+using namespace xio::raft;
 
 namespace serialization_test {
 

@@ -24,7 +24,7 @@ limitations under the License.
 
 #include <atomic>
 
-using namespace nuraft;
+using namespace xio::raft;
 
 namespace timer_test {
 

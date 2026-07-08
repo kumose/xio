@@ -19,7 +19,7 @@ limitations under the License.
 
 #include <xio/raft/raft.h>
 
-namespace nuraft {
+namespace xio::raft {
     /**
      * Helper class to skip the details of ASIO settings.
      */

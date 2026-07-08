@@ -24,7 +24,7 @@ limitations under the License.
 #include <iostream>
 #include <mutex>
 
-using namespace nuraft;
+using namespace xio::raft;
 
 class echo_state_machine : public state_machine {
 public:

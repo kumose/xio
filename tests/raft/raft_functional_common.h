@@ -34,7 +34,7 @@ limitations under the License.
 #define STR_UNUSED      std::string ATTR_UNUSED
 #define _msg(...)       TestSuite::_msg(__VA_ARGS__);
 
-using namespace nuraft;
+using namespace xio::raft;
 
 namespace raft_functional_common {
 

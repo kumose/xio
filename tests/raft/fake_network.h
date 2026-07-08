@@ -24,7 +24,7 @@ limitations under the License.
 #include <map>
 #include <unordered_map>
 
-namespace nuraft {
+namespace xio::raft {
 
 class FakeClient;
 class FakeNetworkBase;
@@ -181,5 +181,5 @@ private:
     std::list< ptr<delayed_task> > tasks;
 };
 
-}  // namespace nuraft;
+}  // namespace xio::raft;
 

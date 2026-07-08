@@ -24,7 +24,7 @@ limitations under the License.
 
 #include <xio/raft/event_awaiter.h>
 
-using namespace nuraft;
+using namespace xio::raft;
 using namespace raft_functional_common;
 
 static size_t ATTR_UNUSED COMMIT_TIME_MS = 50;

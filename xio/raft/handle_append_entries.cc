@@ -38,7 +38,7 @@ limitations under the License.
 #include <cassert>
 #include <sstream>
 
-namespace nuraft {
+namespace xio::raft {
     /**
  * Additional information in addition to `append_entries_response`.
  */
@@ -128,7 +128,7 @@ namespace nuraft {
     };
 
     void raft_server::append_entries_in_bg() {
-        std::string thread_name = "nuraft_append";
+        std::string thread_name = "xraft_append";
 #ifdef __linux__
         pthread_setname_np(pthread_self(), thread_name.c_str());
 #elif __APPLE__
@@ -1844,5 +1844,5 @@ default:
             ea_follower_log_append_->invoke();
         }
     }
-} // namespace nuraft;
+} // namespace xio::raft;
 

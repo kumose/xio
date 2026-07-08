@@ -27,7 +27,7 @@ limitations under the License.
 #include <xio/raft/ptr.h>
 #include <xio/raft/raft_server.h>
 
-namespace nuraft {
+namespace xio::raft {
     struct raft_server::commit_ret_elem {
         commit_ret_elem()
             : ret_value_(nullptr)
@@ -60,5 +60,5 @@ namespace nuraft {
      */
         std::list<ptr<cmd_result<bool> > > watchers_;
     };
-} // namespace nuraft;
+} // namespace xio::raft;
 

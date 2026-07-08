@@ -29,7 +29,7 @@ limitations under the License.
 
 #include <unordered_map>
 
-namespace nuraft {
+namespace xio::raft {
     class cluster_config;
     class snapshot;
 

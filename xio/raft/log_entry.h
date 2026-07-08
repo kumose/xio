@@ -32,7 +32,7 @@ limitations under the License.
 #endif
 #include <stdexcept>
 
-namespace nuraft {
+namespace xio::raft {
     class log_entry {
     public:
         log_entry(ulong term,

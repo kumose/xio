@@ -23,7 +23,7 @@ limitations under the License.
 
 #include <cstdint>
 
-namespace nuraft {
+namespace xio::raft {
     typedef uint64_t ulong;
     typedef int64_t int64;
     typedef void *any_ptr;

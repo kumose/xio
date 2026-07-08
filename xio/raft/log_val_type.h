@@ -23,7 +23,7 @@ limitations under the License.
 
 #include <xio/raft/basic_types.h>
 
-namespace nuraft {
+namespace xio::raft {
     enum log_val_type : byte {
         app_log = 1,
         conf = 2,

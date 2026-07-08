@@ -26,7 +26,7 @@ limitations under the License.
 #include <xio/raft/delayed_task.h>
 #include <xio/raft/rpc_cli_factory.h>
 
-namespace nuraft {
+namespace xio::raft {
     /**
      * Declaring this to hide the dependency of xio.hpp
      * from root header file, which can boost the compilation time.

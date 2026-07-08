@@ -7,9 +7,9 @@ Displaying replicated messages on terminal.
 
 Files
 -----
-* [echo_server.cxx](echo_server.cxx)
+* [echo_server.cc](echo_server.cc)
     * Main server file. Initiate Raft server and handle CLI commands.
-* [echo_state_machine.hxx](echo_state_machine.hxx):
+* [echo_state_machine.h](echo_state_machine.h):
     * State machine implementation.
 
 How to Run

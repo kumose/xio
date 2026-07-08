@@ -21,7 +21,7 @@ limitations under the License.
 
 #include <xio/raft/raft.h>
 
-namespace nuraft {
+namespace xio::raft {
 
 class inmem_state_mgr: public state_mgr {
 public:

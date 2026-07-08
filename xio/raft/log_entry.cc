@@ -1,7 +1,7 @@
 #include <xio/raft/crc32.h>
 #include <xio/raft/log_entry.h>
 
-namespace nuraft {
+namespace xio::raft {
     log_entry::log_entry(ulong term,
                          const ptr<buffer> &buff,
                          log_val_type value_type,

@@ -6,9 +6,5 @@ Raft Examples
 
 Common Files
 -----
-* [in_memory_state_mgr.hxx](in_memory_state_mgr.hxx):
-    * In-memory state manager implementation.
-* [in_memory_log_store.cxx](in_memory_log_store.cxx):
-    * In-memory Raft log store implementation.
-* [example_common.hxx](example_common.hxx)
+* [example_common.h](example_common.h)
     * Common helper functions.

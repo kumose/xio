@@ -31,7 +31,7 @@ limitations under the License.
 #include <cassert>
 #include <cstring>
 
-namespace nuraft {
+namespace xio::raft {
     // --- custom_notification_msg ---
 
     ptr<custom_notification_msg> custom_notification_msg::deserialize(buffer &buf) {
@@ -278,5 +278,5 @@ default:
 
         p->set_next_log_idx(resp.get_next_idx());
     }
-} // namespace nuraft;
+} // namespace xio::raft;
 

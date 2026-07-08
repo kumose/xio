@@ -31,7 +31,7 @@ limitations under the License.
 #include <unordered_set>
 #include <vector>
 
-namespace nuraft {
+namespace xio::raft {
     class xio_service;
     class raft_server;
 
@@ -70,10 +70,10 @@ namespace nuraft {
 
 
     /**
-     * Configurations for the initialization of `nuraft_global_mgr`.
+     * Configurations for the initialization of `xraft_global_mgr`.
      */
-    struct nuraft_global_config {
-        nuraft_global_config()
+    struct xraft_global_config {
+        xraft_global_config()
             : num_commit_threads_(1)
               , num_append_threads_(1)
               , max_scheduling_unit_ms_(200) {
@@ -98,15 +98,15 @@ namespace nuraft {
         size_t max_scheduling_unit_ms_;
     };
 
-    static nuraft_global_config __DEFAULT_NURAFT_GLOBAL_CONFIG;
+    static xraft_global_config __DEFAULT_NURAFT_GLOBAL_CONFIG;
 
-    class nuraft_global_mgr : public global_mgr {
+    class xraft_global_mgr : public global_mgr {
     public:
-        nuraft_global_mgr();
+        xraft_global_mgr();
 
-        virtual ~nuraft_global_mgr();
+        virtual ~xraft_global_mgr();
 
-        __nocopy__(nuraft_global_mgr);
+        __nocopy__(xraft_global_mgr);
 
     public:
         /**
@@ -115,7 +115,7 @@ namespace nuraft {
          * @return If succeeds, the initialized instance.
          *         If already initialized, the existing instance.
          */
-        static nuraft_global_mgr *init(const nuraft_global_config &config =
+        static xraft_global_mgr *init(const xraft_global_config &config =
                 __DEFAULT_NURAFT_GLOBAL_CONFIG);
 
         /**
@@ -130,7 +130,7 @@ namespace nuraft {
          * @return The current global instance if initialized.
          *         `nullptr` if not initialized.
          */
-        static nuraft_global_mgr *get_instance();
+        static xraft_global_mgr *get_instance();
 
         /**
          * Initialize a global Asio service.
@@ -209,7 +209,7 @@ namespace nuraft {
         /**
          * Global config.
          */
-        nuraft_global_config config_;
+        xraft_global_config config_;
 
         /**
          * Counter for assigning thread ID.
@@ -260,5 +260,5 @@ namespace nuraft {
          */
         std::mutex append_queue_lock_;
     };
-} // namespace nuraft;
+} // namespace xio::raft;
 

@@ -25,7 +25,7 @@ limitations under the License.
 #include <xio/raft/msg_type.h>
 #include <xio/raft/pp_util.h>
 
-namespace nuraft {
+namespace xio::raft {
     class msg_base {
     public:
         msg_base(ulong term, msg_type type, int src, int dst)

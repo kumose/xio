@@ -23,7 +23,7 @@ limitations under the License.
 #include <xio/raft/state_machine.h>
 #include <xio/logging.h>
 
-namespace nuraft {
+namespace xio::raft {
     class raft_server;
 
     snapshot_sync_ctx::snapshot_sync_ctx(const ptr<snapshot> &s,
@@ -141,7 +141,7 @@ namespace nuraft {
     }
 
     void snapshot_io_mgr::async_io_loop() {
-        std::string thread_name = "nuraft_snp_io";
+        std::string thread_name = "xraft_snp_io";
 #ifdef __linux__
         pthread_setname_np(pthread_self(), thread_name.c_str());
 #elif __APPLE__

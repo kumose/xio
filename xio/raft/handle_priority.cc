@@ -30,7 +30,7 @@ limitations under the License.
 #include <list>
 #include <sstream>
 
-namespace nuraft {
+namespace xio::raft {
     raft_server::PrioritySetResult
     raft_server::set_priority(const int srv_id,
                               const int new_priority,
@@ -245,5 +245,5 @@ namespace nuraft {
         pre_vote_.reset(state_->get_term());
         TLOG(TRACE, "(update) new target priority: {}", target_priority_);
     }
-} // namespace nuraft;
+} // namespace xio::raft;
 

@@ -32,7 +32,7 @@ limitations under the License.
 #include <atomic>
 #include <cassert>
 
-namespace nuraft {
+namespace xio::raft {
     class snapshot;
 
     class peer {

@@ -22,7 +22,7 @@ limitations under the License.
 #include "latency_collector.h"
 #include <tests/raft/test_common.h>
 
-using namespace nuraft;
+using namespace xio::raft;
 using namespace raft_functional_common;
 
 namespace raft_bench {

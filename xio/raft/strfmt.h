@@ -25,7 +25,7 @@ limitations under the License.
 
 #include <cstdio>
 
-namespace nuraft {
+namespace xio::raft {
     template<int N>
     class strfmt {
     public:

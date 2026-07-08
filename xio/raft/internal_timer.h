@@ -21,7 +21,7 @@ limitations under the License.
 #include <mutex>
 #include <thread>
 
-namespace nuraft {
+namespace xio::raft {
     struct timer_helper {
         timer_helper(size_t duration_us = 0, bool fire_first_event = false)
             : duration_us_(duration_us)

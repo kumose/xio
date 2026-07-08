@@ -25,7 +25,7 @@ limitations under the License.
 #include <map>
 #include <mutex>
 
-namespace nuraft {
+namespace xio::raft {
 
 class raft_server;
 

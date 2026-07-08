@@ -30,7 +30,7 @@ namespace xio {
     class io_context;
 }
 
-namespace nuraft {
+namespace xio::raft {
     class buffer;
     class req_msg;
     class resp_msg;

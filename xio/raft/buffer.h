@@ -27,7 +27,7 @@ limitations under the License.
 
 #include <string>
 
-namespace nuraft {
+namespace xio::raft {
     class buffer {
         buffer() = delete;
 

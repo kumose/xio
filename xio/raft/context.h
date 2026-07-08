@@ -29,7 +29,7 @@ limitations under the License.
 #include <memory>
 #include <mutex>
 
-namespace nuraft {
+namespace xio::raft {
     class delayed_task_scheduler;
     class rpc_client_factory;
     class rpc_listener;
@@ -126,7 +126,7 @@ namespace nuraft {
 
         /**
      *  User-provided global_mgr pointer.
-     *  Used in preference to nuraft_global_mgr::get_instance().
+     *  Used in preference to xraft_global_mgr::get_instance().
      *  The lifecycle of this object must be managed by the user externally.
      */
         global_mgr *custom_global_mgr_;
@@ -136,6 +136,6 @@ namespace nuraft {
      */
         mutable std::mutex ctx_lock_;
     };
-} // namespace nuraft
+} // namespace xio::raft
 
 #endif //_CONTEXT_HXX_

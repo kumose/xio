@@ -24,7 +24,7 @@ limitations under the License.
 #include <xio/raft/pp_util.h>
 #include <xio/raft/ptr.h>
 
-namespace nuraft {
+namespace xio::raft {
     // for backward compatibility
     class raft_server;
     typedef raft_server msg_handler;

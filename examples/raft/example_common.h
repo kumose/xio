@@ -17,7 +17,7 @@ limitations under the License.
 
 #pragma once
 
-using namespace nuraft;
+using namespace xio::raft;
 
 using raft_result = cmd_result< ptr<buffer> >;
 

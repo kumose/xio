@@ -29,7 +29,7 @@ limitations under the License.
     #include <unistd.h>
 #endif
 
-using namespace nuraft;
+using namespace xio::raft;
 using namespace raft_functional_common;
 
 class RaftAsioPkg {
@@ -154,7 +154,7 @@ public:
             asio_opt.custom_io_context_ = customIoContext;
         }
         asioSvc = use_global_asio
-                  ? nuraft_global_mgr::init_xio_service(asio_opt)
+                  ? xraft_global_mgr::init_xio_service(asio_opt)
                   : cs_new<xio_service>(asio_opt);
 
         int raft_port = 20000 + myId * 10;
@@ -199,7 +199,7 @@ public:
         }
 
         asioSvc = use_global_asio
-                  ? nuraft_global_mgr::init_xio_service(asio_opt)
+                  ? xraft_global_mgr::init_xio_service(asio_opt)
                   : cs_new<xio_service>(asio_opt);
 
         int raft_port = 20000 + myId * 10;

@@ -31,7 +31,7 @@ limitations under the License.
 #include <cassert>
 #include <sstream>
 
-namespace nuraft {
+namespace xio::raft {
     bool raft_server::check_cond_for_zp_election() {
         ptr<raft_params> params = ctx_->get_params();
         if (params->allow_temporary_zero_priority_leader_ &&
@@ -553,5 +553,5 @@ namespace nuraft {
             steps_to_down_ = 2;
         }
     }
-} // namespace nuraft;
+} // namespace xio::raft;
 

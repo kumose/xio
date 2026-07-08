@@ -27,7 +27,7 @@ limitations under the License.
 #include <atomic>
 #include <functional>
 
-namespace nuraft {
+namespace xio::raft {
     class delayed_task {
     public:
         delayed_task(int32 type = 0)

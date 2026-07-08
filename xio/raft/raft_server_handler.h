@@ -18,7 +18,7 @@ limitations under the License.
 
 #include <xio/raft/raft_server.h>
 
-namespace nuraft {
+namespace xio::raft {
     /**
  * Class to handle the internal feature of `raft_server`.
  * Any internal class that wants to call `process_req` API should inherit this class.

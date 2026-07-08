@@ -39,7 +39,7 @@ limitations under the License.
 #include <unordered_map>
 #include <unordered_set>
 
-namespace nuraft {
+namespace xio::raft {
     using CbReturnCode = cb_func::ReturnCode;
 
     class cluster_config;
@@ -60,7 +60,7 @@ namespace nuraft {
     struct raft_params;
 
     class raft_server : public std::enable_shared_from_this<raft_server> {
-        friend class nuraft_global_mgr;
+        friend class xraft_global_mgr;
         friend class raft_server_handler;
         friend class snapshot_io_mgr;
 
@@ -1836,6 +1836,6 @@ namespace nuraft {
      */
         std::atomic<uint64_t> sm_commit_notifier_notified_idx_;
     };
-} // namespace nuraft;
+} // namespace xio::raft;
 
 #endif //_RAFT_SERVER_HXX_

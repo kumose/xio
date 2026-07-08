@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <cstddef>
 
-namespace nuraft {
+namespace xio::raft {
     struct debugging_options {
         debugging_options()
             : disable_reconn_backoff_(false)

@@ -22,7 +22,7 @@ limitations under the License.
 #include <xio/raft/buffer.h>
 #include <xio/raft/ptr.h>
 
-namespace nuraft {
+namespace xio::raft {
     class custom_notification_msg {
     public:
         enum type {
@@ -67,5 +67,5 @@ namespace nuraft {
 
         ptr<buffer> serialize() const;
     };
-} // namespace nuraft;
+} // namespace xio::raft;
 

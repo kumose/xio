@@ -19,7 +19,7 @@ limitations under the License.
 
 // LCOV_EXCL_START
 
-namespace nuraft {
+namespace xio::raft {
     raft_launcher::raft_launcher()
         : xio_svc_(nullptr)
           , xio_listener_(nullptr)

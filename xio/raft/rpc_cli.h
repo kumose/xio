@@ -28,7 +28,7 @@ limitations under the License.
 
 #include <cstdint>
 
-namespace nuraft {
+namespace xio::raft {
     class resp_msg;
 
     using rpc_result = async_result<ptr<resp_msg>, ptr<rpc_exception> >;

@@ -29,7 +29,7 @@ limitations under the License.
 #include <cassert>
 #include <sstream>
 
-namespace nuraft {
+namespace xio::raft {
     struct raft_server::auto_fwd_pkg {
         /**
      * Available RPC clients.
@@ -423,5 +423,5 @@ namespace nuraft {
         }
         auto_fwd_pkgs_.clear();
     }
-} // namespace nuraft;
+} // namespace xio::raft;
 

@@ -20,7 +20,7 @@ limitations under the License.
 
 #include <xio/raft/cluster_config.h>
 
-namespace nuraft {
+namespace xio::raft {
     ptr<buffer> cluster_config::serialize() const {
         size_t sz = 2 * sz_ulong + sz_int + sz_byte;
         std::vector<ptr<buffer> > srv_buffs;
@@ -73,5 +73,5 @@ namespace nuraft {
 
         return conf;
     }
-} // namespace nuraft;
+} // namespace xio::raft;
 

@@ -27,7 +27,7 @@ limitations under the License.
 #include <list>
 #include <vector>
 
-namespace nuraft {
+namespace xio::raft {
     // WARNING:
     //   Whenever adding a new field to this class,
     //   below places should manually copy that new field.
@@ -115,6 +115,6 @@ namespace nuraft {
         // List of servers.
         std::list<ptr<srv_config> > servers_;
     };
-} // namespace nuraft
+} // namespace xio::raft
 
 #endif //_CLUSTER_CONFIG_HXX_

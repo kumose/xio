@@ -18,7 +18,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 **************************************************************************/
 
-namespace nuraft {
+namespace xio::raft {
     const char *raft_err_msg[] = {
         "OK",
         "N1: Error",
@@ -45,5 +45,5 @@ namespace nuraft {
         "N22: This node does not get messages from leader, while the others do.",
         "N23: Commit is invoked before pre-commit, order inversion happened."
     };
-} // namespace nuraft;
+} // namespace xio::raft;
 

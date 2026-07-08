@@ -42,7 +42,7 @@ limitations under the License.
 #include <sstream>
 #include <thread>
 
-namespace nuraft {
+namespace xio::raft {
     const int raft_server::default_snapshot_sync_block_size = 4 * 1024;
 
     raft_server::limits raft_server::raft_limits_;
@@ -2101,7 +2101,7 @@ default:
         if (ctx_->custom_global_mgr_ != nullptr) {
             return ctx_->custom_global_mgr_;
         }
-        return nuraft_global_mgr::get_instance();
+        return xraft_global_mgr::get_instance();
     }
 
     bool raft_server::set_self_mark_down(bool to) {
@@ -2169,4 +2169,4 @@ default:
         }
         return excluded_from_the_quorum_;
     }
-} // namespace nuraft;
+} // namespace xio::raft;

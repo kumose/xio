@@ -13,7 +13,7 @@ Quick Start Guide
 #include <string>
 #include <thread>
 
-using namespace nuraft;
+using namespace xio::raft;
 
 int main(int argc, char** argv) {
     // Replace with your logger, state machine, and state manager.

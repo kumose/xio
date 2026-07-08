@@ -26,7 +26,7 @@ limitations under the License.
 #include <unordered_map>
 #include <vector>
 
-namespace nuraft {
+namespace xio::raft {
     // NOTE: Accessing a stat_elem instance using multiple threads is safe.
     class stat_elem {
     public:
@@ -183,5 +183,5 @@ namespace nuraft {
         std::mutex stat_map_lock_;
         std::map<std::string, stat_elem *> stat_map_;
     };
-} // namespace nuraft
+} // namespace xio::raft
 

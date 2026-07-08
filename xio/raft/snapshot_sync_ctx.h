@@ -35,7 +35,7 @@ limitations under the License.
 
 class EventAwaiter;
 
-namespace nuraft {
+namespace xio::raft {
     class peer;
     class raft_server;
     class resp_msg;

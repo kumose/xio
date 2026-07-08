@@ -25,7 +25,7 @@ limitations under the License.
 
 #include <memory>
 
-namespace nuraft {
+namespace xio::raft {
     class ngm_singleton {
     public:
         static ngm_singleton &get_instance() {
@@ -33,7 +33,7 @@ namespace nuraft {
             return instance;
         }
 
-        nuraft_global_mgr *get() {
+        xraft_global_mgr *get() {
             return internal_.get();
         }
 
@@ -44,7 +44,7 @@ namespace nuraft {
             }
             // C++11 doesn't have `make_unique`.
             internal_ =
-                    std::move(std::unique_ptr<nuraft_global_mgr>(new nuraft_global_mgr()));
+                    std::move(std::unique_ptr<xraft_global_mgr>(new xraft_global_mgr()));
             return true;
         }
 
@@ -56,10 +56,10 @@ namespace nuraft {
         ngm_singleton() : internal_(nullptr) {
         }
 
-        std::unique_ptr<nuraft_global_mgr> internal_;
+        std::unique_ptr<xraft_global_mgr> internal_;
     };
 
-    struct nuraft_global_mgr::worker_handle {
+    struct xraft_global_mgr::worker_handle {
         worker_handle(size_t id = 0)
             : id_(id)
               , thread_(nullptr)
@@ -94,12 +94,12 @@ namespace nuraft {
         std::atomic<status> status_;
     };
 
-    nuraft_global_mgr::nuraft_global_mgr()
+    xraft_global_mgr::xraft_global_mgr()
         : xio_service_(nullptr)
           , thread_id_counter_(0) {
     }
 
-    nuraft_global_mgr::~nuraft_global_mgr() {
+    xraft_global_mgr::~xraft_global_mgr() {
         for (auto &entry: append_workers_) {
             ptr<worker_handle> &wh = entry;
             wh->shutdown();
@@ -113,8 +113,8 @@ namespace nuraft {
         commit_workers_.clear();
     }
 
-    nuraft_global_mgr *nuraft_global_mgr::init(const nuraft_global_config &config) {
-        nuraft_global_mgr *mgr = ngm_singleton::get_instance().get();
+    xraft_global_mgr *xraft_global_mgr::init(const xraft_global_config &config) {
+        xraft_global_mgr *mgr = ngm_singleton::get_instance().get();
         if (!mgr) {
             bool created = ngm_singleton::get_instance().create();
             mgr = ngm_singleton::get_instance().get();
@@ -126,19 +126,19 @@ namespace nuraft {
         return mgr;
     }
 
-    void nuraft_global_mgr::shutdown() {
+    void xraft_global_mgr::shutdown() {
         ngm_singleton::get_instance().clear();
     }
 
-    nuraft_global_mgr *nuraft_global_mgr::get_instance() {
+    xraft_global_mgr *xraft_global_mgr::get_instance() {
         return ngm_singleton::get_instance().get();
     }
 
-    void nuraft_global_mgr::init_thread_pool() {
+    void xraft_global_mgr::init_thread_pool() {
         for (size_t ii = 0; ii < config_.num_commit_threads_; ++ii) {
             ptr<worker_handle> w_hdl =
                     cs_new<worker_handle>(thread_id_counter_.fetch_add(1));
-            w_hdl->thread_ = cs_new<std::thread>(&nuraft_global_mgr::commit_worker_loop,
+            w_hdl->thread_ = cs_new<std::thread>(&xraft_global_mgr::commit_worker_loop,
                                                  this,
                                                  w_hdl);
             commit_workers_.push_back(w_hdl);
@@ -147,21 +147,21 @@ namespace nuraft {
         for (size_t ii = 0; ii < config_.num_append_threads_; ++ii) {
             ptr<worker_handle> w_hdl =
                     cs_new<worker_handle>(thread_id_counter_.fetch_add(1));
-            w_hdl->thread_ = cs_new<std::thread>(&nuraft_global_mgr::append_worker_loop,
+            w_hdl->thread_ = cs_new<std::thread>(&xraft_global_mgr::append_worker_loop,
                                                  this,
                                                  w_hdl);
             append_workers_.push_back(w_hdl);
         }
     }
 
-    void nuraft_global_mgr::init_raft_server(raft_server *server) {
+    void xraft_global_mgr::init_raft_server(raft_server *server) {
         (void)server;
         TLOG(INFO, "global manager detected, {} commit workers, {} append workers",
              config_.num_commit_threads_,
              config_.num_append_threads_);
     }
 
-    void nuraft_global_mgr::close_raft_server(raft_server *server) {
+    void xraft_global_mgr::close_raft_server(raft_server *server) {
         // Cancel all requests for this raft server.
         size_t num_aborted_append = 0;
         {
@@ -200,7 +200,7 @@ namespace nuraft {
              num_aborted_commit);
     }
 
-    void nuraft_global_mgr::request_append(ptr<raft_server> server) {
+    void xraft_global_mgr::request_append(ptr<raft_server> server) {
         {
             std::lock_guard<std::mutex> l(append_queue_lock_);
             // First search the set if the server is duplicate.
@@ -231,7 +231,7 @@ namespace nuraft {
         // If all workers are working, nothing to do for now.
     }
 
-    void nuraft_global_mgr::request_commit(ptr<raft_server> server) {
+    void xraft_global_mgr::request_commit(ptr<raft_server> server) {
         {
             std::lock_guard<std::mutex> l(commit_queue_lock_);
             // First search the set if the server is duplicate.
@@ -262,8 +262,8 @@ namespace nuraft {
         // If all workers are working, nothing to do for now.
     }
 
-    void nuraft_global_mgr::commit_worker_loop(ptr<worker_handle> handle) {
-        std::string thread_name = "nuraft_g_c" + std::to_string(handle->id_);
+    void xraft_global_mgr::commit_worker_loop(ptr<worker_handle> handle) {
+        std::string thread_name = "xraft_g_c" + std::to_string(handle->id_);
 #ifdef __linux__
         pthread_setname_np(pthread_self(), thread_name.c_str());
 #elif __APPLE__
@@ -342,8 +342,8 @@ namespace nuraft {
         }
     }
 
-    void nuraft_global_mgr::append_worker_loop(ptr<worker_handle> handle) {
-        std::string thread_name = "nuraft_g_a" + std::to_string(handle->id_);
+    void xraft_global_mgr::append_worker_loop(ptr<worker_handle> handle) {
+        std::string thread_name = "xraft_g_a" + std::to_string(handle->id_);
 #ifdef __linux__
         pthread_setname_np(pthread_self(), thread_name.c_str());
 #elif __APPLE__
@@ -390,5 +390,5 @@ namespace nuraft {
             target->append_entries_in_bg_exec();
         }
     }
-} // namespace nuraft;
+} // namespace xio::raft;
 

@@ -34,7 +34,7 @@ limitations under the License.
 #include <string>
 #include <unordered_map>
 
-namespace nuraft {
+namespace xio::raft {
     enum cmd_result_code : int32_t {
         OK = 0,
         CANCELLED = -1,

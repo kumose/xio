@@ -23,7 +23,7 @@ limitations under the License.
 
 #include <xio/raft/rpc_cli.h>
 
-namespace nuraft {
+namespace xio::raft {
     class rpc_client_factory {
         __interface_body__(rpc_client_factory);
 

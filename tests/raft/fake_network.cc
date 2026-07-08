@@ -22,7 +22,7 @@ limitations under the License.
 
 #include <cassert>
 
-namespace nuraft {
+namespace xio::raft {
 
 // === FakeNetworkBase
 
@@ -431,5 +431,5 @@ void FakeTimer::cancel_impl(ptr<delayed_task>& task) {
     }
 }
 
-}  // namespace nuraft;
+}  // namespace xio::raft;
 

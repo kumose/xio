@@ -29,7 +29,7 @@ limitations under the License.
 #include <cassert>
 #include <functional>
 
-namespace nuraft {
+namespace xio::raft {
     class srv_state {
     public:
         srv_state()

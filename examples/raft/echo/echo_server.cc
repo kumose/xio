@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 **************************************************************************/
 
-#include <xio/raft/calc_state_machine.h>
+#include "echo_state_machine.h"
 #include <xio/raft/in_memory_state_mgr.h>
 
 #include <xio/raft/raft.h>
@@ -27,21 +27,15 @@ limitations under the License.
 
 #include <stdio.h>
 
-using namespace nuraft;
+using namespace xio::raft;
 
-namespace calc_server {
+namespace echo_server {
 
-static raft_params::return_method_type CALL_TYPE
+static const raft_params::return_method_type CALL_TYPE
     = raft_params::blocking;
 //  = raft_params::async_handler;
 
-static bool ASYNC_SNAPSHOT_CREATION = false;
-
 #include <xio/raft/example_common.h>
-
-calc_state_machine* get_sm() {
-    return static_cast<calc_state_machine*>( stuff.sm_.get() );
-}
 
 void handle_result(ptr<TestSuite::Timer> timer,
                    raft_result& result,
@@ -56,39 +50,29 @@ void handle_result(ptr<TestSuite::Timer> timer,
                   << std::endl;
         return;
     }
-    ptr<buffer> buf = result.get();
-    uint64_t ret_value = buf->get_ulong();
     std::cout << "succeeded, "
               << TestSuite::usToString( timer->getTimeUs() )
-              << ", return value: "
-              << ret_value
-              << ", state machine value: "
-              << get_sm()->get_current_value()
               << std::endl;
 }
 
 void append_log(const std::string& cmd,
                 const std::vector<std::string>& tokens)
 {
-    char cmd_char = cmd[0];
-    int operand = atoi( tokens[0].substr(1).c_str() );
-    calc_state_machine::op_type op = calc_state_machine::ADD;
-    switch (cmd_char) {
-    case '+':   op = calc_state_machine::ADD;   break;
-    case '-':   op = calc_state_machine::SUB;   break;
-    case '*':   op = calc_state_machine::MUL;   break;
-    case '/':
-        op = calc_state_machine::DIV;
-        if (!operand) {
-            std::cout << "cannot divide by zero" << std::endl;
-            return;
-        }
-        break;
-    default:    op = calc_state_machine::SET;   break;
-    };
+    if (tokens.size() < 2) {
+        std::cout << "too few arguments" << std::endl;
+        return;
+    }
 
-    // Serialize and generate Raft log to append.
-    ptr<buffer> new_log = calc_state_machine::enc_log( {op, operand} );
+    std::string cascaded_str;
+    for (size_t ii=1; ii<tokens.size(); ++ii) {
+        cascaded_str += tokens[ii] + " ";
+    }
+
+    // Create a new log which will contain
+    // 4-byte length and string data.
+    ptr<buffer> new_log = buffer::alloc(sizeof(int) + cascaded_str.size());
+    buffer_serializer bs(new_log);
+    bs.put_str(cascaded_str);
 
     // To measure the elapsed time.
     ptr<TestSuite::Timer> timer = cs_new<TestSuite::Timer>();
@@ -133,43 +117,22 @@ void print_status(const std::string& cmd,
                   const std::vector<std::string>& tokens)
 {
     ptr<log_store> ls = stuff.smgr_->load_log_store();
-
     std::cout
         << "my server id: " << stuff.server_id_ << std::endl
         << "leader id: " << stuff.raft_instance_->get_leader() << std::endl
-        << "Raft log range: ";
-    if (ls->start_index() >= ls->next_slot()) {
-        // Start index can be the same as next slot when the log store is empty.
-        std::cout << "(empty)" << std::endl;
-    } else {
-        std::cout << ls->start_index()
-                  << " - " << (ls->next_slot() - 1) << std::endl;
-    }
-    std::cout
+        << "Raft log range: "
+            << ls->start_index()
+            << " - " << (ls->next_slot() - 1) << std::endl
         << "last committed index: "
-            << stuff.raft_instance_->get_committed_log_idx() << std::endl
-        << "current term: "
-            << stuff.raft_instance_->get_term() << std::endl
-        << "last snapshot log index: "
-            << (stuff.sm_->last_snapshot()
-                ? stuff.sm_->last_snapshot()->get_last_log_idx() : 0) << std::endl
-        << "last snapshot log term: "
-            << (stuff.sm_->last_snapshot()
-                ? stuff.sm_->last_snapshot()->get_last_log_term() : 0) << std::endl
-        << "state machine value: "
-            << get_sm()->get_current_value() << std::endl;
+            << stuff.raft_instance_->get_committed_log_idx() << std::endl;
 }
 
 void help(const std::string& cmd,
           const std::vector<std::string>& tokens)
 {
     std::cout
-    << "modify value: <+|-|*|/><operand>\n"
-    << "    +: add <operand> to state machine's value.\n"
-    << "    -: subtract <operand> from state machine's value.\n"
-    << "    *: multiple state machine'value by <operand>.\n"
-    << "    /: divide state machine's value by <operand>.\n"
-    << "    e.g.) +123\n"
+    << "echo message: msg <operand>\n"
+    << "    e.g.) msg hello world!\n"
     << "\n"
     << "add server: add <server id> <address>:<port>\n"
     << "    e.g.) add 2 127.0.0.1:20000\n"
@@ -187,14 +150,10 @@ bool do_cmd(const std::vector<std::string>& tokens) {
 
     if (cmd == "q" || cmd == "exit") {
         stuff.launcher_.shutdown(5);
-        stuff.reset();
         return false;
 
-    } else if ( cmd[0] == '+' ||
-                cmd[0] == '-' ||
-                cmd[0] == '*' ||
-                cmd[0] == '/' ) {
-        // e.g.) +1
+    } else if ( cmd == "msg" ) {
+        // e.g.) msg hello world
         append_log(cmd, tokens);
 
     } else if ( cmd == "add" ) {
@@ -213,50 +172,19 @@ bool do_cmd(const std::vector<std::string>& tokens) {
     return true;
 }
 
-void check_additional_flags(int argc, char** argv) {
-    for (int ii = 1; ii < argc; ++ii) {
-        if (strcmp(argv[ii], "--async-handler") == 0) {
-            CALL_TYPE = raft_params::async_handler;
-        } else if (strcmp(argv[ii], "--async-snapshot-creation") == 0) {
-            ASYNC_SNAPSHOT_CREATION = true;
-        }
-    }
-}
-
-void calc_usage(int argc, char** argv) {
-    std::stringstream ss;
-    ss << "Usage: \n";
-    ss << "    " << argv[0] << " <server id> <IP address and port> [<options>]";
-    ss << std::endl << std::endl;
-    ss << "    options:" << std::endl;
-    ss << "      --async-handler: use async type handler." << std::endl;
-    ss << "      --async-snapshot-creation: create snapshots asynchronously."
-       << std::endl << std::endl;
-
-    std::cout << ss.str();
-    exit(0);
-}
-
-}; // namespace calc_server;
-using namespace calc_server;
+}; // namespace echo_server;
+using namespace echo_server;
 
 int main(int argc, char** argv) {
-    if (argc < 3) calc_usage(argc, argv);
+    if (argc < 3) usage(argc, argv);
 
     set_server_info(argc, argv);
-    check_additional_flags(argc, argv);
 
-    std::cout << "    -- Replicated Calculator with Raft --" << std::endl;
-    std::cout << "                         Version 0.1.0" << std::endl;
+    std::cout << "    -- Echo Server with Raft --" << std::endl;
+    std::cout << "               Version 0.1.0" << std::endl;
     std::cout << "    Server ID:    " << stuff.server_id_ << std::endl;
     std::cout << "    Endpoint:     " << stuff.endpoint_ << std::endl;
-    if (CALL_TYPE == raft_params::async_handler) {
-        std::cout << "    async handler is enabled" << std::endl;
-    }
-    if (ASYNC_SNAPSHOT_CREATION) {
-        std::cout << "    snapshots are created asynchronously" << std::endl;
-    }
-    init_raft( cs_new<calc_state_machine>(ASYNC_SNAPSHOT_CREATION) );
+    init_raft( cs_new<echo_state_machine>() );
     loop();
 
     return 0;

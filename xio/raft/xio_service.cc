@@ -163,7 +163,7 @@ namespace {
 
 // =======================
 
-namespace nuraft {
+namespace xio::raft {
     static const size_t SSL_GRACE_PERIOD_MS = 500;
     static const size_t SEND_RETRY_MS = 500;
     static const size_t SEND_RETRY_MAX = 6;
@@ -2057,9 +2057,9 @@ namespace nuraft {
          */
         std::mutex pending_write_reqs_lock_;
     };
-} // namespace nuraft
+} // namespace xio::raft
 
-using namespace nuraft;
+using namespace xio::raft;
 
 void _free_timer_(void *ptr) {
     xio::steady_timer *timer = static_cast<xio::steady_timer *>(ptr);
@@ -2212,7 +2212,7 @@ std::string xio_service_impl::get_password
 
 void xio_service_impl::worker_entry() {
     uint32_t worker_id = worker_id_.fetch_add(1);
-    std::string thread_name = "nuraft_w_" + std::to_string(worker_id);
+    std::string thread_name = "xraft_w_" + std::to_string(worker_id);
 #ifdef __linux__
     pthread_setname_np(pthread_self(), thread_name.c_str());
 #elif __APPLE__
@@ -2436,9 +2436,9 @@ ptr<rpc_listener> xio_service::create_rpc_listener(ushort listening_port) {
 //   We put Asio-related global manager functions to here,
 //   to avoid unnecessary dependency requirements (e.g., SSL)
 //   for those who don't want to use Asio.
-ptr<xio_service> nuraft_global_mgr::init_xio_service
+ptr<xio_service> xraft_global_mgr::init_xio_service
 (const xio_service_options &xio_opt) {
-    nuraft_global_mgr *mgr = get_instance();
+    xraft_global_mgr *mgr = get_instance();
     if (!mgr) return nullptr;
 
     std::lock_guard<std::mutex> l(mgr->xio_service_lock_);
@@ -2448,12 +2448,12 @@ ptr<xio_service> nuraft_global_mgr::init_xio_service
     return mgr->xio_service_;
 }
 
-ptr<xio_service> nuraft_global_mgr::get_xio_service() {
+ptr<xio_service> xraft_global_mgr::get_xio_service() {
     // NOTE:
     //   Basic assumption is that this function is not called frequently,
     //   only once at the initialization time. Hence it is ok to acquire
     //   lock for a such read-only operation.
-    nuraft_global_mgr *mgr = get_instance();
+    xraft_global_mgr *mgr = get_instance();
     if (!mgr) return nullptr;
 
     std::lock_guard<std::mutex> l(mgr->xio_service_lock_);

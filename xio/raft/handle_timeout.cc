@@ -29,7 +29,7 @@ limitations under the License.
 #include <cassert>
 #include <sstream>
 
-namespace nuraft {
+namespace xio::raft {
     void raft_server::enable_hb_for_peer(peer &p) {
         p.enable_hb(true);
         p.resume_hb_speed();
@@ -377,5 +377,5 @@ namespace nuraft {
         if (!scheduler_) return;
         scheduler_->cancel(task);
     }
-} // namespace nuraft;
+} // namespace xio::raft;
 

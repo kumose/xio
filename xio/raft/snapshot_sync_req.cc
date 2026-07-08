@@ -22,7 +22,7 @@ limitations under the License.
 
 #include <cstring>
 
-namespace nuraft {
+namespace xio::raft {
     ptr<snapshot_sync_req> snapshot_sync_req::deserialize(buffer &buf) {
         buffer_serializer bs(buf);
         return deserialize(bs);
@@ -55,4 +55,4 @@ namespace nuraft {
         buf->pos(0);
         return buf;
     }
-} // namespace nuraft;
+} // namespace xio::raft;

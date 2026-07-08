@@ -29,7 +29,7 @@ limitations under the License.
 
 #include <string>
 
-namespace nuraft {
+namespace xio::raft {
     class srv_config {
     public:
         // WARNING: Please see the comment at raft_server::raft_server(...).
@@ -130,6 +130,6 @@ namespace nuraft {
      */
         int32 priority_;
     };
-} // namespace nuraft
+} // namespace xio::raft
 
 #endif

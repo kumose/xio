@@ -27,7 +27,7 @@ limitations under the License.
 #include <xio/raft/pp_util.h>
 #include <xio/raft/ptr.h>
 
-namespace nuraft {
+namespace xio::raft {
     class cluster_config;
 
     class snapshot {

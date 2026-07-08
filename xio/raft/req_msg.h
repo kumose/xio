@@ -26,7 +26,7 @@ limitations under the License.
 
 #include <vector>
 
-namespace nuraft {
+namespace xio::raft {
     class req_msg : public msg_base {
     public:
         // If set, the receiver of this request is not in the quorum.

@@ -33,7 +33,7 @@ limitations under the License.
 #include <set>
 #include <sstream>
 
-namespace nuraft {
+namespace xio::raft {
     ptr<resp_msg> raft_server::handle_add_srv_req(req_msg &req) {
         std::vector<ptr<log_entry> > &entries = req.log_entries();
         ptr<resp_msg> resp = cs_new<resp_msg>
@@ -706,5 +706,5 @@ namespace nuraft {
         srv_to_leave_target_idx_ = 0;
         TLOG(INFO, "clearing srv_to_leave_");
     }
-} // namespace nuraft;
+} // namespace xio::raft;
 

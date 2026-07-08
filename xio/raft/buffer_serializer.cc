@@ -112,7 +112,7 @@ limitations under the License.
 #define chk_length(val) \
     if ( !is_valid( sizeof(val) ) ) throw std::overflow_error("not enough space")
 
-namespace nuraft {
+namespace xio::raft {
     buffer_serializer::buffer_serializer(buffer &src_buf,
                                          buffer_serializer::endianness endian)
         : endian_(endian)

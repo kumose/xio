@@ -30,7 +30,7 @@ limitations under the License.
 
 #include <vector>
 
-namespace nuraft {
+namespace xio::raft {
     class log_store {
         __interface_body__(log_store);
 

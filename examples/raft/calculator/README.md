@@ -8,9 +8,9 @@ Simple CLI-based calculator with Raft replication.
 
 Files
 -----
-* [calc_server.cxx](calc_server.cxx)
+* [calc_server.cc](calc_server.cc)
     * Main server file. Initiate Raft server and handle CLI commands.
-* [calc_state_machine.hxx](calc_state_machine.hxx):
+* [calc_state_machine.h](calc_state_machine.h):
     * State machine implementation (volatile).
 
 Consistency and Durability

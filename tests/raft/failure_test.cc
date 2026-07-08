@@ -24,7 +24,7 @@ limitations under the License.
 
 #include <stdio.h>
 
-using namespace nuraft;
+using namespace xio::raft;
 using namespace raft_functional_common;
 
 namespace failure_test {

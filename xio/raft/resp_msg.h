@@ -25,7 +25,7 @@ limitations under the License.
 #include <xio/raft/buffer.h>
 #include <xio/raft/msg_base.h>
 
-namespace nuraft {
+namespace xio::raft {
     class resp_msg;
     class peer;
     using resp_cb =

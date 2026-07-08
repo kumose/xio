@@ -23,7 +23,7 @@ limitations under the License.
 #include <cstdint>
 #include <string>
 
-namespace nuraft {
+namespace xio::raft {
     class buffer;
 
     class buffer_serializer {

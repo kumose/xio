@@ -23,7 +23,7 @@ limitations under the License.
 
 #include <tests/raft/test_common.h>
 
-using namespace nuraft;
+using namespace xio::raft;
 
 namespace strfmt_test {
 
