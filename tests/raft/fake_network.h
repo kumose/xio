@@ -24,8 +24,6 @@ limitations under the License.
 #include <map>
 #include <unordered_map>
 
-class SimpleLogger;
-
 namespace nuraft {
 
 class FakeClient;
@@ -130,13 +128,9 @@ public:
 
     FakeNetwork* findNetwork(const std::string& endpoint);
 
-    SimpleLogger* getLogger() const { return myLog; }
-
 private:
     // <endpoint, network instance>
     std::map<std::string, ptr<FakeNetwork>> nets;
-
-    SimpleLogger* myLog;
 };
 
 class FakeClient : public rpc_client {
@@ -167,8 +161,7 @@ private:
 
 class FakeTimer : public delayed_task_scheduler {
 public:
-    FakeTimer(const std::string& endpoint,
-              SimpleLogger* logger = nullptr);
+    FakeTimer(const std::string& endpoint);
 
     void schedule(ptr<delayed_task>& task, int32 milliseconds);
 
@@ -186,8 +179,6 @@ private:
     std::mutex tasksLock;
 
     std::list< ptr<delayed_task> > tasks;
-
-    SimpleLogger* myLog;
 };
 
 }  // namespace nuraft;

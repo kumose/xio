@@ -20,9 +20,8 @@ limitations under the License.
 #include <xio/raft/global_mgr.h>
 
 #include <xio/raft/event_awaiter.h>
-#include <xio/raft/logger.h>
 #include <xio/raft/raft_server.h>
-#include <xio/raft/tracer.h>
+#include <xio/logging.h>
 
 #include <memory>
 
@@ -156,8 +155,8 @@ namespace nuraft {
     }
 
     void nuraft_global_mgr::init_raft_server(raft_server *server) {
-        ptr<logger> &l_ = server->l_;
-        p_in("global manager detected, %zu commit workers, %zu append workers",
+        (void)server;
+        TLOG(INFO, "global manager detected, {} commit workers, {} append workers",
              config_.num_commit_threads_,
              config_.num_append_threads_);
     }
@@ -196,8 +195,7 @@ namespace nuraft {
             }
         }
 
-        ptr<logger> &l_ = server->l_;
-        p_in("global manager detected, %zu appends %zu commits are aborted",
+        TLOG(INFO, "global manager detected, {} appends {} commits are aborted",
              num_aborted_append,
              num_aborted_commit);
     }
@@ -216,10 +214,9 @@ namespace nuraft {
             append_queue_.push_back(server);
             append_server_set_.insert(server);
 
-            ptr<logger> &l_ = server->l_;
-            p_tr("added append request to global queue, "
-                 "server %p, queue length %zu",
-                 server.get(),
+            TLOG(TRACE, "added append request to global queue, "
+                 "server {:p}, queue length {}",
+                 static_cast<const void*>(server.get()),
                  append_queue_.size());
         }
 
@@ -248,10 +245,9 @@ namespace nuraft {
             commit_queue_.push_back(server);
             commit_server_set_.insert(server);
 
-            ptr<logger> &l_ = server->l_;
-            p_tr("added commit request to global queue, "
-                 "server %p, queue length %zu",
-                 server.get(),
+            TLOG(TRACE, "added commit request to global queue, "
+                 "server {:p}, queue length {}",
+                 static_cast<const void*>(server.get()),
                  commit_queue_.size());
         }
 
@@ -305,13 +301,12 @@ namespace nuraft {
             }
             if (!target) continue;
 
-            ptr<logger> &l_ = target->l_;
-
             // Whenever we find a task to execute, skip next sleeping for any tasks
             // that can be queued in the meantime.
             skip_sleeping = true;
 
-            p_tr("execute commit for %p", target.get());
+            TLOG(TRACE, "execute commit for {:p}",
+                 static_cast<const void*>(target.get()));
 
             if (target->sm_commit_notifier_target_idx_ >
                 target->sm_commit_notifier_notified_idx_) {
@@ -319,7 +314,7 @@ namespace nuraft {
             }
 
             if (target->sm_commit_paused_) {
-                p_tr("commit of this server has been paused");
+                TLOG(TRACE, "commit of this server has been paused");
                 // Since there can be other Raft server waiting for being served,
                 // need to skip nest sleep.
                 continue;
@@ -332,17 +327,17 @@ namespace nuraft {
                 continue;
             }
 
-            p_tr("execute commit by global worker, queue length %zu", queue_length);
+            TLOG(TRACE, "execute commit by global worker, queue length {}", queue_length);
             bool finished_in_time =
                     target->commit_in_bg_exec(config_.max_scheduling_unit_ms_);
             if (!finished_in_time) {
                 // Commit took too long time and aborted in the middle.
                 // Put this server to queue again.
-                p_tr("couldn't finish in time (%zu ms), re-push to queue",
+                TLOG(TRACE, "couldn't finish in time ({} ms), re-push to queue",
                      config_.max_scheduling_unit_ms_);
                 request_commit(target);
             } else {
-                p_tr("executed in time");
+                TLOG(TRACE, "executed in time");
             }
         }
     }
@@ -386,13 +381,11 @@ namespace nuraft {
             }
             if (!target) continue;
 
-            ptr<logger> &l_ = target->l_;
-
             // Whenever we find a task to execute, skip next sleeping for any tasks
             // that can be queued in the meantime.
             skip_sleeping = true;
 
-            p_tr("executed append_entries by global worker, queue length %zu",
+            TLOG(TRACE, "executed append_entries by global worker, queue length {}",
                  queue_length);
             target->append_entries_in_bg_exec();
         }

@@ -36,7 +36,7 @@ limitations under the License.
 #include <xio/raft/raft_server.h>
 #include <xio/raft/raft_server_handler.h>
 #include <xio/raft/strfmt.h>
-#include <xio/raft/tracer.h>
+#include <xio/logging.h>
 
 #include <xio/xio.h>
 
@@ -63,6 +63,39 @@ using ssl_context = mock_ssl_context;
 
 using ssl_socket = xio::ssl::stream<xio::ip::tcp::socket &>;
 using ssl_context = xio::ssl::context;
+
+namespace {
+    std::string ssl_context_method_to_string(ssl_context::method method) {
+        switch (method) {
+            case ssl_context::sslv2: return "sslv2";
+            case ssl_context::sslv2_client: return "sslv2_client";
+            case ssl_context::sslv2_server: return "sslv2_server";
+            case ssl_context::sslv3: return "sslv3";
+            case ssl_context::sslv3_client: return "sslv3_client";
+            case ssl_context::sslv3_server: return "sslv3_server";
+            case ssl_context::tlsv1: return "tlsv1";
+            case ssl_context::tlsv1_client: return "tlsv1_client";
+            case ssl_context::tlsv1_server: return "tlsv1_server";
+            case ssl_context::sslv23: return "sslv23";
+            case ssl_context::sslv23_client: return "sslv23_client";
+            case ssl_context::sslv23_server: return "sslv23_server";
+            case ssl_context::tlsv11: return "tlsv11";
+            case ssl_context::tlsv11_client: return "tlsv11_client";
+            case ssl_context::tlsv11_server: return "tlsv11_server";
+            case ssl_context::tlsv12: return "tlsv12";
+            case ssl_context::tlsv12_client: return "tlsv12_client";
+            case ssl_context::tlsv12_server: return "tlsv12_server";
+            case ssl_context::tlsv13: return "tlsv13";
+            case ssl_context::tlsv13_client: return "tlsv13_client";
+            case ssl_context::tlsv13_server: return "tlsv13_server";
+            case ssl_context::tls: return "tls";
+            case ssl_context::tls_client: return "tls_client";
+            case ssl_context::tls_server: return "tls_server";
+            default:
+                return "unknown (" + std::to_string(static_cast<int>(method)) + ")";
+        }
+    }
+}
 #endif
 
 // Note: both req & resp header structures have been modified by Jung-Sang Ahn.
@@ -220,8 +253,7 @@ namespace nuraft {
     // xio service implementation
     class xio_service_impl {
     public:
-        xio_service_impl(const xio_service::options &_opt = xio_service::options(),
-                         ptr<logger> l = nullptr);
+        xio_service_impl(const xio_service::options &_opt = xio_service::options());
 
         ~xio_service_impl();
 
@@ -261,7 +293,6 @@ namespace nuraft {
         xio_service::options my_opt_;
         xio::steady_timer xio_timer_;
         std::atomic<uint64_t> client_id_counter_;
-        ptr<logger> l_;
         friend xio_service;
     };
 
@@ -279,7 +310,6 @@ namespace nuraft {
                     ssl_context &ssl_ctx,
                     bool _enable_ssl,
                     ptr<msg_handler> &handler,
-                    ptr<logger> &logger,
                     session_closed_callback &callback)
             : session_id_(id)
               , impl_(_impl)
@@ -292,16 +322,15 @@ namespace nuraft {
               , flags_(0x0)
               , log_data_()
               , header_(buffer::alloc(RPC_REQ_HEADER_SIZE))
-              , l_(logger)
               , callback_(callback)
               , src_id_(-1)
               , is_leader_(false)
               , cached_port_(0)
               , crc_header_(0)
               , crc_from_msg_(0) {
-            p_tr("xio rpc session created: %p. %s",
-                 this,
-                 ssl_enabled_ ? "SSL ENABLED" : "UNSECURED");
+            TLOG(TRACE, "xio rpc session created: {}. {}",
+                 (const void*)this,
+                 (ssl_enabled_ ? "SSL ENABLED" : "UNSECURED"));
         }
 
         __nocopy__(rpc_session);
@@ -309,7 +338,7 @@ namespace nuraft {
     public:
         ~rpc_session() {
             close_socket();
-            p_tr("xio rpc session destroyed: %p", this);
+            TLOG(TRACE, "xio rpc session destroyed: {}", (void*)this);
         }
 
     public:
@@ -319,7 +348,7 @@ namespace nuraft {
 
             cached_address_ = socket_.remote_endpoint().address().to_string();
             cached_port_ = socket_.remote_endpoint().port();
-            p_in("session %" PRIu64 " got connection from %s:%u (as a server)",
+            TLOG(INFO, "session {}" " got connection from {}:{} (as a server)",
                  session_id_,
                  cached_address_.c_str(),
                  cached_port_);
@@ -343,13 +372,13 @@ namespace nuraft {
         void handle_handshake(ptr<rpc_session> self,
                               const ERROR_CODE &err) {
             if (!err) {
-                p_in("session %" PRIu64 " handshake with %s:%u succeeded (as a server)",
+                TLOG(INFO, "session {}" " handshake with {}:{} succeeded (as a server)",
                      session_id_,
                      cached_address_.c_str(),
                      cached_port_);
                 this->start(self);
             } else {
-                p_er("session %" PRIu64 " handshake with %s:%u failed: error %d, %s",
+                TLOG(ERROR, "session {}" " handshake with {}:{} failed: error {}, {}",
                      session_id_,
                      cached_address_.c_str(),
                      cached_port_,
@@ -365,8 +394,8 @@ namespace nuraft {
                 timer->async_wait([self, this, timer]
             (const ERROR_CODE &err) -> void {
                         if (err) {
-                            p_er("session %" PRIu64 " error happend during "
-                                 "async wait: %d, %s",
+                            TLOG(ERROR, "session {}" " error happend during "
+                                 "async wait: {}, {}",
                                  session_id_,
                                  err.value(),
                                  err.message().c_str());
@@ -383,8 +412,8 @@ namespace nuraft {
                      [this, self]
              (const ERROR_CODE &err, size_t) -> void {
                          if (err) {
-                             p_er("session %" PRIu64 " failed to read rpc header from socket %s:%u "
-                                  "due to error %d, %s, ref count %" PRIu64 "",
+                             TLOG(ERROR, "session {}" " failed to read rpc header from socket {}:{} "
+                                  "due to error {}, {}, ref count {}" "",
                                   session_id_,
                                   cached_address_.c_str(),
                                   cached_port_,
@@ -418,7 +447,7 @@ namespace nuraft {
                          // Verify CRC (if entire message validation is disbaled).
                          if (!(flags_ & CRC_ON_ENTIRE_MESSAGE) &&
                              crc_header_ != crc_from_msg_) {
-                             p_er("header CRC mismatch: local calculation %x, from message %x",
+                             TLOG(ERROR, "header CRC mismatch: local calculation {}, from message {}",
                                   crc_header_, crc_from_msg_);
 
                              if (impl_->get_options().corrupted_msg_handler_) {
@@ -435,7 +464,7 @@ namespace nuraft {
                          byte marker = h_bs.get_u8();
                          if (marker != 0x0) {
                              // Means that this is not RPC_REQ, shouldn't happen.
-                             p_er("Wrong packet: expected REQ, got %u", marker);
+                             TLOG(ERROR, "Wrong packet: expected REQ, got {}", marker);
 
                              if (impl_->get_options().corrupted_msg_handler_) {
                                  impl_->get_options().corrupted_msg_handler_(header_, nullptr);
@@ -447,7 +476,7 @@ namespace nuraft {
 
                          msg_type m_type = (msg_type) h_bs.get_u8();
                          if (!is_valid_msg(m_type)) {
-                             p_er("Wrong message type: got %u", (uint8_t)m_type);
+                             TLOG(ERROR, "Wrong message type: got {}", (uint8_t)m_type);
 
                              if (impl_->get_options().corrupted_msg_handler_) {
                                  impl_->get_options().corrupted_msg_handler_(header_, nullptr);
@@ -463,7 +492,7 @@ namespace nuraft {
                          int32 data_size = h_bs.get_i32();
                          // Up to 1GB.
                          if (data_size < 0 || data_size > 0x40000000) {
-                             p_er("bad log data size in the header %d, stop "
+                             TLOG(ERROR, "bad log data size in the header {}, stop "
                                   "this session to protect further corruption",
                                   data_size);
 
@@ -550,8 +579,8 @@ namespace nuraft {
             if (!err) {
                 this->read_complete(header_, log_ctx);
             } else {
-                p_er("session %" PRIu64 " failed to read rpc log data from socket due "
-                     "to error %d, %s",
+                TLOG(ERROR, "session {}" " failed to read rpc log data from socket due "
+                     "to error {}, {}",
                      session_id_,
                      err.value(),
                      err.message().c_str());
@@ -593,7 +622,7 @@ namespace nuraft {
                                           crc_header_)
                                 : crc_header_;
                     if (crc_payload != crc_from_msg_) {
-                        p_er("request CRC mismatch: local calculation %x, from message %x",
+                        TLOG(ERROR, "request CRC mismatch: local calculation {}, from message {}",
                              crc_payload, crc_from_msg_);
 
                         if (impl_->get_options().corrupted_msg_handler_) {
@@ -674,7 +703,7 @@ namespace nuraft {
                     while (log_ctx_size > ss.pos()) {
                         if (log_ctx_size - ss.pos() < LOG_ENTRY_SIZE) {
                             // Possibly corrupted packet. Stop here.
-                            p_wn("wrong log ctx size %zu pos %zu, stop this session",
+                            TLOG(WARNING, "wrong log ctx size {} pos {}, stop this session",
                                  log_ctx_size, ss.pos());
 
                             if (impl_->get_options().corrupted_msg_handler_) {
@@ -693,7 +722,7 @@ namespace nuraft {
                         size_t val_size = ss.get_i32();
                         if (log_ctx_size - ss.pos() < val_size) {
                             // Out-of-bound size.
-                            p_wn("wrong value size %zu log ctx %zu %zu, "
+                            TLOG(WARNING, "wrong value size {} log ctx {} {}, "
                                  "stop this session",
                                  val_size, log_ctx_size, ss.pos());
 
@@ -716,8 +745,8 @@ namespace nuraft {
                                                            buf->size(),
                                                            0);
                             if (crc_payload != crc32) {
-                                p_er("log entry CRC mismatch: local calculation %x, "
-                                     "from message %x", crc_payload, crc32);
+                                TLOG(ERROR, "log entry CRC mismatch: local calculation {}, "
+                                     "from message {}", crc_payload, crc32);
 
                                 if (impl_->get_options().corrupted_msg_handler_) {
                                     impl_->get_options().corrupted_msg_handler_(header_, log_ctx);
@@ -747,7 +776,7 @@ namespace nuraft {
                 // === RAFT server processes the request here. ===
                 ptr<resp_msg> resp = raft_server_handler::process_req(handler_.get(), *req);
                 if (!resp) {
-                    p_wn("no response is returned from raft message handler");
+                    TLOG(WARNING, "no response is returned from raft message handler");
                     this->stop();
                     return;
                 }
@@ -778,8 +807,8 @@ namespace nuraft {
                     on_resp_ready(req, resp);
                 }
             } catch (std::exception &ex) {
-                p_er("session %" PRIu64 " failed to process request message "
-                     "due to error: %s",
+                TLOG(ERROR, "session {}" " failed to process request message "
+                     "due to error: {}",
                      this->session_id_,
                      ex.what());
                 this->stop();
@@ -882,8 +911,8 @@ namespace nuraft {
                               if (!err_code) {
                                   this->start(self);
                               } else {
-                                  p_er("session %" PRIu64 " failed to send response to peer due "
-                                       "to error %d, reason: %s",
+                                  TLOG(ERROR, "session {}" " failed to send response to peer due "
+                                       "to error {}, reason: {}",
                                        session_id_,
                                        err_code.value(),
                                        err_code.message().c_str());
@@ -892,8 +921,8 @@ namespace nuraft {
                           },
                           use_strand_ ? &ssl_strand_ : nullptr);
             } catch (std::exception &ex) {
-                p_er("session %" PRIu64 " failed to process request message "
-                     "due to error: %s",
+                TLOG(ERROR, "session {}" " failed to process request message "
+                     "due to error: {}",
                      this->session_id_,
                      ex.what());
                 this->stop();
@@ -912,7 +941,6 @@ namespace nuraft {
         uint32_t flags_;
         ptr<buffer> log_data_;
         ptr<buffer> header_;
-        ptr<logger> l_;
         session_closed_callback callback_;
 
         /**
@@ -952,8 +980,7 @@ namespace nuraft {
                          xio::io_service &io,
                          ssl_context &ssl_ctx,
                          ushort port,
-                         bool _enable_ssl,
-                         ptr<logger> &l)
+                         bool _enable_ssl)
             : impl_(_impl)
               , io_svc_(io)
               , ssl_ctx_(ssl_ctx)
@@ -961,9 +988,8 @@ namespace nuraft {
               , stopped_(false)
               , acceptor_(io, xio::ip::tcp::endpoint(xio::ip::tcp::v4(), port))
               , session_id_cnt_(1)
-              , ssl_enabled_(_enable_ssl)
-              , l_(l) {
-            p_in("Raft ASIO listener initiated, %s",
+              , ssl_enabled_(_enable_ssl) {
+            TLOG(INFO, "Raft ASIO listener initiated, {}",
                  ssl_enabled_ ? "SSL ENABLED" : "UNSECURED");
         }
 
@@ -1014,7 +1040,7 @@ namespace nuraft {
                     cs_new<rpc_session>
                     (session_id_cnt_.fetch_add(1),
                      impl_, io_svc_, ssl_ctx_, ssl_enabled_,
-                     handler_, l_, cb);
+                     handler_, cb);
 
             acceptor_.async_accept(session->socket(),
                                    std::bind(&xio_rpc_listener::handle_accept,
@@ -1030,10 +1056,10 @@ namespace nuraft {
             if (!err) {
                 xio::ip::tcp::no_delay option(true);
                 session->socket().set_option(option);
-                p_in("receive a incoming rpc connection");
+                TLOG(INFO, "receive a incoming rpc connection");
                 session->prepare_handshake();
             } else {
-                p_er("failed to accept a rpc connection due to error %d, %s",
+                TLOG(ERROR, "failed to accept a rpc connection due to error {}, {}",
                      err.value(), err.message().c_str());
             }
 
@@ -1072,7 +1098,6 @@ namespace nuraft {
         std::atomic<uint64_t> session_id_cnt_;
         std::mutex session_lock_;
         bool ssl_enabled_;
-        ptr<logger> l_;
     };
 
     class xio_rpc_client
@@ -1084,8 +1109,7 @@ namespace nuraft {
                        ssl_context &ssl_ctx,
                        std::string &host,
                        std::string &port,
-                       bool ssl_enabled,
-                       ptr<logger> l)
+                       bool ssl_enabled)
             : impl_(_impl)
               , resolver_(io_svc)
               , socket_(io_svc)
@@ -1101,8 +1125,7 @@ namespace nuraft {
               , abandoned_(false)
               , socket_busy_(false)
               , operation_timer_(io_svc)
-              , l_(l) {
-            client_id_ = impl_->assign_client_id();
+              , client_id_(impl_->assign_client_id()) {
             if (ssl_enabled_) {
 #ifdef SSL_LIBRARY_NOT_FOUND
                 assert(0); // Should not reach here.
@@ -1120,13 +1143,13 @@ namespace nuraft {
                            std::placeholders::_2));
 #endif
             }
-            p_tr("xio client created: %p. %s",
-                 this,
+            TLOG(TRACE, "xio client created: {}. {}",
+                 (void*)this,
                  ssl_enabled_ ? "SSL ENABLED" : "UNSECURED");
         }
 
         virtual ~xio_rpc_client() {
-            p_tr("xio client destroyed: %p", this);
+            TLOG(TRACE, "xio client destroyed: {}", (void*)this);
             close_socket();
         }
 
@@ -1146,7 +1169,7 @@ namespace nuraft {
                 char subject_name[256];
                 X509 *cert = X509_STORE_CTX_get_current_cert(ctx.native_handle());
                 X509_NAME_oneline(X509_get_subject_name(cert), subject_name, 256);
-                p_db("given subject: %s", subject_name);
+                TLOG(DEBUG, "given subject: {}", subject_name);
                 if (!impl_->get_options().verify_sn_(subject_name)) {
                     return false;
                 }
@@ -1167,15 +1190,15 @@ namespace nuraft {
                         const ERROR_CODE &err) {
             if (err || num_send_fails_ >= SEND_RETRY_MAX) {
                 if (err) {
-                    p_er("error happened during async wait: %d", err.value());
+                    TLOG(ERROR, "error happened during async wait: {}", err.value());
                 } else {
-                    p_er("connection to %s:%s timeout (SSL %s)",
+                    TLOG(ERROR, "connection to {}:{} timeout (SSL {})",
                          host_.c_str(), port_.c_str(),
                          ( ssl_enabled_ ? "enabled" : "disabled" ));
                 }
                 abandoned_ = true;
                 std::string err_msg =
-                        lstrfmt("timeout while connecting to %s").fmt(host_.c_str());
+                        lstrfmt("timeout while connecting to {}").fmt(host_.c_str());
                 handle_error(req, err_msg, when_done);
                 return;
             }
@@ -1216,8 +1239,8 @@ namespace nuraft {
                 pending_write_reqs_.push_back(
                     cs_new<pending_req_pkg>(req, when_done, send_timeout_ms));
                 immediate_action_needed = (pending_write_reqs_.size() == 1);
-                p_db("start to send msg to peer %d, start_log_idx: %" PRIu64 ", "
-                     "size: %" PRIu64 ", pending write reqs: %" PRIu64 "",
+                TLOG(DEBUG, "start to send msg to peer {}, start_log_idx: {}" ", "
+                     "size: {}" ", pending write reqs: {}" "",
                      req->get_dst(), req->get_last_log_idx(),
                      req->log_entries().size(), pending_write_reqs_.size());
             }
@@ -1231,10 +1254,10 @@ namespace nuraft {
                                rpc_handler &when_done,
                                uint64_t send_timeout_ms) {
             if (abandoned_) {
-                p_er("client %p to %s:%s is already stale (SSL %s)",
-                     this, host_.c_str(), port_.c_str(),
+                TLOG(ERROR, "client {} to {}:{} is already stale (SSL {})",
+                     (void*)this, host_.c_str(), port_.c_str(),
                      ( ssl_enabled_ ? "enabled" : "disabled" ));
-                std::string err_msg = lstrfmt("abandoned client to %s").fmt(host_.c_str());
+                std::string err_msg = lstrfmt("abandoned client to {}").fmt(host_.c_str());
                 handle_error(req, err_msg, when_done);
                 return;
             }
@@ -1242,8 +1265,8 @@ namespace nuraft {
             ptr<xio_rpc_client> self = this->shared_from_this();
             while (!socket().is_open()) {
                 // Dummy one-time loop
-                p_db("socket %p to %s:%s is not opened yet",
-                     this, host_.c_str(), port_.c_str());
+                TLOG(DEBUG, "socket {} to {}:{} is not opened yet",
+                     (void*)this, host_.c_str(), port_.c_str());
 
                 // WARNING:
                 //   Only one thread can establish connection at a time.
@@ -1253,8 +1276,8 @@ namespace nuraft {
                 bool desired = true;
                 if (!attempting_conn_.compare_exchange_strong(exp, desired)) {
                     // Other thread is attempting connection, just wait.
-                    p_wn("cannot send req as other thread is racing on opening "
-                         "connection to (%s:%s), count %zu",
+                    TLOG(WARNING, "cannot send req as other thread is racing on opening "
+                         "connection to ({}:{}), count {}",
                          host_.c_str(), port_.c_str(), num_send_fails_.load());
                     num_send_fails_.fetch_add(1);
 
@@ -1276,7 +1299,7 @@ namespace nuraft {
 
                 if (socket().is_open()) {
                     // Already opened, skip async_connect.
-                    p_wn("race: socket to %s:%s is already opened, escape",
+                    TLOG(WARNING, "race: socket to {}:{} is already opened, escape",
                          host_.c_str(), port_.c_str());
                     break;
                 }
@@ -1290,16 +1313,16 @@ namespace nuraft {
                  const std::string &resolved_port,
                  std::error_code err) {
                             if (!err) {
-                                p_in("custom resolver: %s:%s to %s:%s",
+                                TLOG(INFO, "custom resolver: {}:{} to {}:{}",
                                      host_.c_str(), port_.c_str(),
                                      resolved_host.c_str(), resolved_port.c_str());
                                 execute_resolver(self, req, resolved_host, resolved_port,
                                                  when_done, send_timeout_ms);
                             } else {
                                 std::string err_msg = lstrfmt("failed to resolve "
-                                            "host %s by given "
+                                            "host {} by given "
                                             "custom resolver "
-                                            "due to error %d, %s")
+                                            "due to error {}, {}")
                                         .fmt(host_.c_str(),
                                              err.value(),
                                              err.message().c_str());
@@ -1315,7 +1338,7 @@ namespace nuraft {
             if (ssl_enabled_ && !ssl_ready_) {
                 // TCP socket is opened, but SSL handshake is not done yet.
                 // Since other thread is doing it, this thread should just wait.
-                p_wn("cannot send req as SSL is not ready yet (%s:%s), count %zu",
+                TLOG(WARNING, "cannot send req as SSL is not ready yet ({}:{}), count {}",
                      host_.c_str(), port_.c_str(), num_send_fails_.load());
                 num_send_fails_.fetch_add(1);
 
@@ -1531,8 +1554,8 @@ namespace nuraft {
                                    std::placeholders::_1,
                                    std::placeholders::_2));
                     } else {
-                        std::string err_msg = lstrfmt("failed to resolve host %s "
-                                    "due to error %d, %s")
+                        std::string err_msg = lstrfmt("failed to resolve host {} "
+                                    "due to error {}, {}")
                                 .fmt(host.c_str(),
                                      err.value(),
                                      err.message().c_str());
@@ -1549,15 +1572,15 @@ namespace nuraft {
             if (to == true) {
                 bool exp = false;
                 if (!socket_busy_.compare_exchange_strong(exp, true)) {
-                    p_ft("socket %p is already in use, race happened on connection to %s:%s",
-                         this, host_.c_str(), port_.c_str());
+                    TLOG(FATAL, "socket {} is already in use, race happened on connection to {}:{}",
+                         (void*)this, host_.c_str(), port_.c_str());
                     assert(0);
                 }
             } else {
                 bool exp = true;
                 if (!socket_busy_.compare_exchange_strong(exp, false)) {
-                    p_ft("socket %p is already idle, race happened on connection to %s:%s",
-                         this, host_.c_str(), port_.c_str());
+                    TLOG(FATAL, "socket {} is already idle, race happened on connection to {}:{}",
+                         (void*)this, host_.c_str(), port_.c_str());
                     assert(0);
                 }
             }
@@ -1572,9 +1595,9 @@ namespace nuraft {
                 std::unique_lock<std::mutex> l(socket_lock_, std::try_to_lock);
                 if (l.owns_lock() && socket().is_open()) {
                     socket().close();
-                    p_db("socket to %s:%s closed", host_.c_str(), port_.c_str());
+                    TLOG(DEBUG, "socket to {}:{} closed", host_.c_str(), port_.c_str());
                 } else {
-                    p_wn("race: socket to %s:%s is already closed",
+                    TLOG(WARNING, "race: socket to {}:{} is already closed",
                          host_.c_str(), port_.c_str());
                 }
             }
@@ -1604,7 +1627,7 @@ namespace nuraft {
             for (auto &pkg: reqs_to_cancel) {
                 ptr<resp_msg> rsp;
                 if (err_msg.empty()) {
-                    err_msg = lstrfmt("socket to host %s is closed").fmt(host_.c_str());
+                    err_msg = lstrfmt("socket to host {} is closed").fmt(host_.c_str());
                 }
                 ptr<rpc_exception> except(cs_new<rpc_exception>(err_msg, pkg->req_));
                 pkg->when_done_(rsp, except);
@@ -1619,7 +1642,7 @@ namespace nuraft {
             }
 
             if (socket().is_open()) {
-                p_wn("cancelling operations due to socket (%s:%s) timeout",
+                TLOG(WARNING, "cancelling operations due to socket ({}:{}) timeout",
                      host_.c_str(), port_.c_str());
                 abandoned_ = true;
                 socket_.cancel();
@@ -1635,8 +1658,8 @@ namespace nuraft {
             if (!err) {
                 xio::ip::tcp::no_delay option(true);
                 socket().set_option(option);
-                p_in("%p connected to %s:%s (as a client)",
-                     this, host_.c_str(), port_.c_str());
+                TLOG(INFO, "{} connected to {}:{} (as a client)",
+                     (void*)this, host_.c_str(), port_.c_str());
                 if (ssl_enabled_) {
 #ifdef SSL_LIBRARY_NOT_FOUND
                     assert(0); // Should not reach here.
@@ -1656,7 +1679,7 @@ namespace nuraft {
             } else {
                 abandoned_ = true;
                 std::string err_msg = sstrfmt("failed to connect to "
-                            "peer %d, %s:%s, error %d, %s")
+                            "peer {}, {}:{}, error {}, {}")
                         .fmt(req->get_dst(), host_.c_str(),
                              port_.c_str(), err.value(),
                              err.message().c_str());
@@ -1671,19 +1694,19 @@ namespace nuraft {
             ptr<xio_rpc_client> self = this->shared_from_this();
 
             if (!err) {
-                p_in("handshake with %s:%s succeeded (as a client)",
+                TLOG(INFO, "handshake with {}:{} succeeded (as a client)",
                      host_.c_str(), port_.c_str());
                 ssl_ready_ = true;
                 this->register_req_send(req, when_done, send_timeout_ms);
             } else {
                 abandoned_ = true;
-                p_er("failed SSL handshake with peer %d, %s:%s, error %d, %s",
+                TLOG(ERROR, "failed SSL handshake with peer {}, {}:{}, error {}, {}",
                      req->get_dst(), host_.c_str(), port_.c_str(), err.value(),
                      err.message().c_str());
 
                 // Immediately stop.
-                std::string err_msg = sstrfmt("failed SSL handshake with peer %d, %s:%s, "
-                            "error %d, %s")
+                std::string err_msg = sstrfmt("failed SSL handshake with peer {}, {}:{}, "
+                            "error {}, {}")
                         .fmt(req->get_dst(), host_.c_str(),
                              port_.c_str(), err.value(),
                              err.message().c_str());
@@ -1707,8 +1730,8 @@ namespace nuraft {
             } else {
                 operation_timer_.cancel();
                 abandoned_ = true;
-                std::string err_msg = sstrfmt("failed to send request to peer %d, %s:%s, "
-                            "error %d, %s")
+                std::string err_msg = sstrfmt("failed to send request to peer {}, {}:{}, "
+                            "error {}, {}")
                         .fmt(req->get_dst(), host_.c_str(),
                              port_.c_str(), err.value(),
                              err.message().c_str());
@@ -1724,8 +1747,8 @@ namespace nuraft {
             ptr<xio_rpc_client> self(this->shared_from_this());
             if (err) {
                 abandoned_ = true;
-                std::string err_msg = sstrfmt("failed to read response to peer %d, %s:%s, "
-                            "error %d, %s")
+                std::string err_msg = sstrfmt("failed to read response to peer {}, {}:{}, "
+                            "error {}, {}")
                         .fmt(req->get_dst(), host_.c_str(),
                              port_.c_str(), err.value(),
                              err.message().c_str());
@@ -1744,8 +1767,8 @@ namespace nuraft {
 
             if (crc_local != crc_buf) {
                 std::string err_msg = sstrfmt("CRC mismatch in response from "
-                            "peer %d, %s:%s, "
-                            "local calculation %x, from buffer %x")
+                            "peer {}, {}:{}, "
+                            "local calculation {}, from buffer {}")
                         .fmt(req->get_dst(), host_.c_str(),
                              port_.c_str(), crc_local, crc_buf);
                 handle_error(req, err_msg, when_done);
@@ -1897,7 +1920,7 @@ namespace nuraft {
             if (!meta_ok) {
                 // Callback function returns false, should return failure.
                 std::string err_msg = sstrfmt("response meta verification failed: "
-                            "from peer %d, %s:%s")
+                            "from peer {}, {}:{}")
                         .fmt(req->get_dst(), host_.c_str(),
                              port_.c_str());
                 handle_error(req, err_msg, when_done);
@@ -1929,8 +1952,8 @@ namespace nuraft {
                 auto_lock(pending_read_reqs_lock_);
                 pending_read_reqs_.push_back(cs_new<pending_req_pkg>(req, when_done));
                 immediate_action_needed = (pending_read_reqs_.size() == 1);
-                p_db("msg to peer %d has been write down, start_log_idx: %" PRIu64 ", "
-                     "size: %" PRIu64 ", pending read reqs: %" PRIu64 "", req->get_dst(),
+                TLOG(DEBUG, "msg to peer {} has been write down, start_log_idx: {}" ", "
+                     "size: {}" ", pending read reqs: {}" "", req->get_dst(),
                      req->get_last_log_idx(),
                      req->log_entries().size(), pending_read_reqs_.size());
             }
@@ -1951,8 +1974,8 @@ namespace nuraft {
                 }
                 if (pending_write_reqs_.size() > 0) {
                     next_req_pkg = *pending_write_reqs_.begin();
-                    p_db("trigger next write, start_log_idx: %" PRIu64 ", "
-                         "pending write reqs: %" PRIu64 "",
+                    TLOG(DEBUG, "trigger next write, start_log_idx: {}" ", "
+                         "pending write reqs: {}" "",
                          next_req_pkg->req_->get_last_log_idx(),
                          pending_write_reqs_.size());
                 }
@@ -1982,8 +2005,8 @@ namespace nuraft {
                 }
                 if (pending_read_reqs_.size() > 0) {
                     next_req_pkg = *pending_read_reqs_.begin();
-                    p_db("trigger next read, start_log_idx: %" PRIu64 ", "
-                         "pending read reqs: %" PRIu64 "",
+                    TLOG(DEBUG, "trigger next read, start_log_idx: {}" ", "
+                         "pending read reqs: {}" "",
                          next_req_pkg->req_->get_last_log_idx(),
                          pending_read_reqs_.size());
                 }
@@ -2013,7 +2036,6 @@ namespace nuraft {
         std::atomic<bool> socket_busy_;
         uint64_t client_id_;
         xio::steady_timer operation_timer_;
-        ptr<logger> l_;
 
         /**
          * Queue of request which is pending for reading.
@@ -2076,8 +2098,7 @@ namespace {
 
 #endif
 
-xio_service_impl::xio_service_impl(const xio_service::options &opt,
-                                   ptr<logger> l)
+xio_service_impl::xio_service_impl(const xio_service::options &opt)
     : io_svc_(opt.custom_io_context_ ? nullptr : (new xio::io_context()))
 #if (ASIO_VERSION >= 101601) && \
     (OPENSSL_VERSION_NUMBER >= 0x10100000L) && \
@@ -2098,8 +2119,7 @@ xio_service_impl::xio_service_impl(const xio_service::options &opt,
       , worker_id_(0)
       , my_opt_(opt)
       , xio_timer_(get_io_svc())
-      , client_id_counter_(1)
-      , l_(l) {
+      , client_id_counter_(1) {
     if (my_opt_.enable_ssl_) {
 #ifdef SSL_LIBRARY_NOT_FOUND
         assert(0); // Should not reach here.
@@ -2107,7 +2127,8 @@ xio_service_impl::xio_service_impl(const xio_service::options &opt,
 
         // Provider gives properly configured server contex
         if (!my_opt_.ssl_context_provider_server_) {
-            p_in("server SSL context method %d", DEFAULT_SERVER_CTX);
+            TLOG(INFO, "server SSL context method {}",
+                 ssl_context_method_to_string(DEFAULT_SERVER_CTX));
 
             // For server (listener)
             ssl_server_ctx_.set_options(ssl_context::default_workarounds |
@@ -2123,17 +2144,18 @@ xio_service_impl::xio_service_impl(const xio_service::options &opt,
             ssl_server_ctx_.use_private_key_file(my_opt_.server_key_file_,
                                                  ssl_context::pem);
         } else {
-            p_in("custom server SSL context is given");
+            TLOG(INFO, "custom server SSL context is given");
         }
 
         // Provider gives properly configured client contex
         if (!my_opt_.ssl_context_provider_client_) {
-            p_in("client SSL context method %d", DEFAULT_CLIENT_CTX);
+            TLOG(INFO, "client SSL context method {}",
+                 ssl_context_method_to_string(DEFAULT_CLIENT_CTX));
 
             // For client
             ssl_client_ctx_.load_verify_file(my_opt_.root_cert_file_);
         } else {
-            p_in("custom client SSL context is given");
+            TLOG(INFO, "custom client SSL context is given");
         }
 #endif
     }
@@ -2141,7 +2163,7 @@ xio_service_impl::xio_service_impl(const xio_service::options &opt,
     if (my_opt_.custom_io_context_) {
         // If the external io_context is provided, we should not create
         // internal threads.
-        p_in("custom io_context is provided, thread pool will not be created");
+        TLOG(INFO, "custom io_context is provided, thread pool will not be created");
         return;
     }
 
@@ -2197,7 +2219,7 @@ void xio_service_impl::worker_entry() {
     pthread_setname_np(thread_name.c_str());
 #endif
 
-    p_in("spawned xio worker thread %s, current threads: %u",
+    TLOG(INFO, "spawned xio worker thread {}, current threads: {}",
          thread_name.c_str(),
          num_active_workers_.load());
 
@@ -2218,10 +2240,10 @@ void xio_service_impl::worker_entry() {
             // LCOV_EXCL_START
             num_active_workers_.fetch_sub(1);
             exception_count++;
-            p_er("xio worker thread got exception: %s, "
-                 "current number of workers: %u, "
-                 "exception count (in 1-min window): %zu, "
-                 "stopping status %u",
+            TLOG(ERROR, "xio worker thread got exception: {}, "
+                 "current number of workers: {}, "
+                 "exception count (in 1-min window): {}, "
+                 "stopping status {}",
                  ee.what(),
                  num_active_workers_.load(),
                  exception_count.load(),
@@ -2233,7 +2255,7 @@ void xio_service_impl::worker_entry() {
         if (timer.timeout_and_reset()) {
             exception_count = 0;
         } else if (exception_count > MAX_COUNT) {
-            p_ft("too many exceptions (%zu) in 1-min time window.",
+            TLOG(FATAL, "too many exceptions ({}) in 1-min time window.",
                  exception_count.load());
             exception_count = 0;
             abort();
@@ -2245,7 +2267,7 @@ void xio_service_impl::worker_entry() {
         my_opt_.worker_stop_(worker_id);
     }
 
-    p_in("end of xio worker thread %s, remaining threads: %u",
+    TLOG(INFO, "end of xio worker thread {}, remaining threads: {}",
          thread_name.c_str(),
          num_active_workers_.load());
 }
@@ -2274,7 +2296,7 @@ void xio_service_impl::timer_handler(ERROR_CODE err) {
 void xio_service_impl::stop() {
     if (my_opt_.custom_io_context_) {
         // If custom io_context is provided, nothing to do here.
-        p_in("custom io_context is provided, no need to stop the xio service "
+        TLOG(INFO, "custom io_context is provided, no need to stop the xio service "
             "and worker threads");
         return;
     }
@@ -2307,9 +2329,8 @@ void xio_service_impl::stop() {
     }
 }
 
-xio_service::xio_service(const options &_opt, ptr<logger> _l)
-    : impl_(new xio_service_impl(_opt, _l))
-      , l_(_l) {
+xio_service::xio_service(const options &_opt)
+    : impl_(new xio_service_impl(_opt)) {
 }
 
 xio_service::~xio_service() {
@@ -2382,7 +2403,7 @@ ptr<rpc_client> xio_service::create_client(const std::string &endpoint) {
     } while (false);
 
     if (!valid_address) {
-        p_er("invalid endpoint: %s", endpoint.c_str());
+        TLOG(ERROR, "invalid endpoint: {}", endpoint.c_str());
         return ptr<rpc_client>();
     }
 
@@ -2392,23 +2413,20 @@ ptr<rpc_client> xio_service::create_client(const std::string &endpoint) {
      impl_->ssl_client_ctx_,
      hostname,
      port,
-     impl_->my_opt_.enable_ssl_,
-     l_);
+     impl_->my_opt_.enable_ssl_);
 }
 
-ptr<rpc_listener> xio_service::create_rpc_listener(ushort listening_port,
-                                                   ptr<logger> &l) {
+ptr<rpc_listener> xio_service::create_rpc_listener(ushort listening_port) {
     try {
         return cs_new<xio_rpc_listener>
         (impl_,
          impl_->get_io_svc(),
          impl_->ssl_server_ctx_,
          listening_port,
-         impl_->my_opt_.enable_ssl_,
-         l);
+         impl_->my_opt_.enable_ssl_);
     } catch (std::exception &ee) {
         // Most likely exception happens due to wrong endpoint.
-        p_er("got exception: %s", ee.what());
+        TLOG(ERROR, "got exception: {}", ee.what());
         return nullptr;
     }
 }
@@ -2419,15 +2437,14 @@ ptr<rpc_listener> xio_service::create_rpc_listener(ushort listening_port,
 //   to avoid unnecessary dependency requirements (e.g., SSL)
 //   for those who don't want to use Asio.
 ptr<xio_service> nuraft_global_mgr::init_xio_service
-(const xio_service_options &xio_opt,
- ptr<logger> logger_inst) {
+(const xio_service_options &xio_opt) {
     nuraft_global_mgr *mgr = get_instance();
     if (!mgr) return nullptr;
 
     std::lock_guard<std::mutex> l(mgr->xio_service_lock_);
     if (mgr->xio_service_) return mgr->xio_service_;
 
-    mgr->xio_service_ = cs_new<xio_service>(xio_opt, logger_inst);
+    mgr->xio_service_ = cs_new<xio_service>(xio_opt);
     return mgr->xio_service_;
 }
 

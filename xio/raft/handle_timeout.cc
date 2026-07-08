@@ -24,7 +24,7 @@ limitations under the License.
 #include <xio/raft/peer.h>
 #include <xio/raft/state_machine.h>
 #include <xio/raft/state_mgr.h>
-#include <xio/raft/tracer.h>
+#include <xio/logging.h>
 
 #include <cassert>
 #include <sstream>
@@ -33,7 +33,7 @@ namespace nuraft {
     void raft_server::enable_hb_for_peer(peer &p) {
         p.enable_hb(true);
         p.resume_hb_speed();
-        p_tr("peer %d, interval: %d\n", p.get_id(), p.get_current_hb_interval());
+        TLOG(TRACE, "peer {}, interval: {}\n", p.get_id(), p.get_current_hb_interval());
         schedule_task(p.get_hb_task(), p.get_current_hb_interval());
     }
 
@@ -44,7 +44,7 @@ namespace nuraft {
             (ulong) raft_server::raft_limits_.leave_limit_ *
             ctx_->get_params()->heart_beat_interval_) {
             // Timeout: remove peer.
-            p_wn("server to be removed %d, response timeout %" PRIu64 " ms. "
+            TLOG(WARNING, "server to be removed {}, response timeout {}" " ms. "
                  "force remove now",
                  srv_to_leave_->get_id(),
                  last_resp_ms);
@@ -63,7 +63,7 @@ namespace nuraft {
         timeout()
         )
         {
-            p_in("resign by timeout, %" PRIu64 " us elapsed, resign now",
+            TLOG(INFO, "resign by timeout, {}" " us elapsed, resign now",
                  reelection_timer_.get_us());
             leader_ = -1;
             become_follower();
@@ -80,15 +80,15 @@ namespace nuraft {
         get_id() == srv_id
         )
         {
-            p_in("retrying snapshot read for server %d", srv_id);
+            TLOG(INFO, "retrying snapshot read for server {}", srv_id);
             if (srv_to_join_->need_to_reconnect()) {
-                p_in("rpc client for %d needs reconnection", srv_id);
+                TLOG(INFO, "rpc client for {} needs reconnection", srv_id);
 
                 ptr<raft_params> params = ctx_->get_params();
                 uint64_t resp_timer_ms = srv_to_join_->get_resp_timer_us() / 1000;
                 if (resp_timer_ms >= (uint64_t) params->heart_beat_interval_ *
                     raft_server::raft_limits_.response_limit_) {
-                    p_in("response timeout: %" PRIu64 " ms, will not retry", resp_timer_ms);
+                    TLOG(INFO, "response timeout: {}" " ms, will not retry", resp_timer_ms);
                     clear_snapshot_sync_ctx(*srv_to_join_);
                     return;
                 }
@@ -98,7 +98,7 @@ namespace nuraft {
                 bool succ = srv_to_join_->recreate_rpc(s_config, *ctx_);
                 if (!succ) {
                     // Reconnection failed.
-                    p_wn("reconnection failed, will not retry");
+                    TLOG(WARNING, "reconnection failed, will not retry");
                     clear_snapshot_sync_ctx(*srv_to_join_);
                     return;
                 }
@@ -109,7 +109,7 @@ namespace nuraft {
 
         auto pit = peers_.find(srv_id);
         if (pit == peers_.end()) {
-            p_er("heartbeat handler error: server %d not exist", srv_id);
+            TLOG(ERROR, "heartbeat handler error: server {} not exist", srv_id);
             return;
         }
 
@@ -121,12 +121,12 @@ namespace nuraft {
             // increase the counter.
             p->inc_hb_cnt_since_leave();
             int32 cur_cnt = p->get_hb_cnt_since_leave();
-            p_in("peer %d is not responding for %d HBs since leave request",
+            TLOG(INFO, "peer {} is not responding for {} HBs since leave request",
                  p->get_id(), cur_cnt);
 
             if (cur_cnt >= raft_server::raft_limits_.leave_limit_) {
                 // Force remove the server.
-                p_er("force remove peer %d", p->get_id());
+                TLOG(ERROR, "force remove peer {}", p->get_id());
                 handle_join_leave_rpc_err(msg_type::leave_cluster_request, p);
                 return;
             }
@@ -140,13 +140,13 @@ namespace nuraft {
 
         // Server is being shut down.
         if (stopping_) {
-            p_wn("Triggered HB timer but server is shutting down");
+            TLOG(WARNING, "Triggered HB timer but server is shutting down");
             return;
         }
 
         if (!check_leadership_validity()) return;
 
-        p_db("heartbeat timeout for %d", p->get_id());
+        TLOG(DEBUG, "heartbeat timeout for {}", p->get_id());
         if (role_ == srv_role::leader) {
             update_target_priority();
             request_append_entries(p);
@@ -155,13 +155,13 @@ namespace nuraft {
                 if (p->is_hb_enabled()) {
                     // Schedule another heartbeat if heartbeat is still enabled
                     schedule_task(p->get_hb_task(), p->get_current_hb_interval());
-                    p_tr("reschedule heartbeat for peer %d", p->get_id());
+                    TLOG(TRACE, "reschedule heartbeat for peer {}", p->get_id());
                 } else {
-                    p_db("heartbeat is disabled for peer %d", p->get_id());
+                    TLOG(DEBUG, "heartbeat is disabled for peer {}", p->get_id());
                 }
             }
         } else {
-            p_wn("Receive a heartbeat event for %d "
+            TLOG(WARNING, "Receive a heartbeat event for {} "
                  "while no longer as a leader", p->get_id());
         }
     }
@@ -181,7 +181,7 @@ namespace nuraft {
         }
 
         if (election_task_) {
-            p_tr("cancel existing timer");
+            TLOG(TRACE, "cancel existing timer");
             cancel_task(election_task_);
         } else {
             election_task_ = cs_new<timer_task<void> >
@@ -189,7 +189,7 @@ namespace nuraft {
              timer_task_type::election_timer);
         }
 
-        p_tr("re-schedule election timer");
+        TLOG(TRACE, "re-schedule election timer");
         last_election_timer_reset_.reset();
 
         schedule_task(election_task_, rand_timeout_());
@@ -197,26 +197,26 @@ namespace nuraft {
 
     void raft_server::stop_election_timer() {
         if (!election_task_) {
-            p_wn("Election Timer is never started but is "
+            TLOG(WARNING, "Election Timer is never started but is "
                 "requested to stop, protential a bug");
             return;
         }
 
-        p_tr("stop election timer");
+        TLOG(TRACE, "stop election timer");
         cancel_task(election_task_);
     }
 
     void raft_server::handle_election_timeout() {
-        p_tr("election timeout");
+        TLOG(TRACE, "election timeout");
         recur_lock(lock_);
         if (stopping_) {
-            p_wn("Triggered election timer but server is shutting down");
+            TLOG(WARNING, "Triggered election timer but server is shutting down");
             return;
         }
 
         if (steps_to_down_ > 0) {
             if (--steps_to_down_ == 0) {
-                p_in("no hearing further news from leader, "
+                TLOG(INFO, "no hearing further news from leader, "
                     "remove this server from cluster and step down");
                 // Modified by Jung-Sang Ahn (Oct 25, 2017):
                 // Should maintain the info of itself in the config,
@@ -243,7 +243,7 @@ namespace nuraft {
                 return;
             }
 
-            p_in("stepping down (cycles left: %d), "
+            TLOG(INFO, "stepping down (cycles left: {}), "
                  "skip this election timeout event",
                  steps_to_down_);
             restart_election_timer();
@@ -253,20 +253,20 @@ namespace nuraft {
         if (state_->is_catching_up()) {
             // this is a new server for the cluster, will not send out vote req
             // until conf that includes this srv is committed
-            p_in("election timeout while joining the cluster, ignore it.");
+            TLOG(INFO, "election timeout while joining the cluster, ignore it.");
             restart_election_timer();
             return;
         }
 
         if (out_of_log_range_) {
-            p_wn("Triggered election timer but server is out of log range");
+            TLOG(WARNING, "Triggered election timer but server is out of log range");
             return;
         }
 
         if (state_->is_receiving_snapshot()) {
             // If this node is receiving snapshot, it should never initiate election.
             et_cnt_receiving_snapshot_.fetch_add(1);
-            p_wn("election timeout while receiving snapshot, count %" PRIu64 ", "
+            TLOG(WARNING, "election timeout while receiving snapshot, count {}" ", "
                  "ignore it.", et_cnt_receiving_snapshot_.load());
             restart_election_timer();
             return;
@@ -278,20 +278,20 @@ namespace nuraft {
             // Handling appending entries is now taking long time,
             // so that server keeps skipping sending heartbeat.
             // It doesn't mean server is gone. Just ignore.
-            p_in("election timeout while serving append entries, ignore it.");
+            TLOG(INFO, "election timeout while serving append entries, ignore it.");
             restart_election_timer();
             return;
         }
 
         if (role_ == srv_role::leader) {
-            p_er("A leader should never encounter election timeout, "
+            TLOG(ERROR, "A leader should never encounter election timeout, "
                 "illegal application state, ignore it.");
             return;
         }
 
         // Only voting member can suggest vote.
         if (!im_learner_) {
-            p_wn("Election timeout, initiate leader election");
+            TLOG(WARNING, "Election timeout, initiate leader election");
             if (!hb_alive_) {
                 // Not the first election timeout, decay the target priority.
                 decay_target_priority();
@@ -308,8 +308,8 @@ namespace nuraft {
 
             ulong state_term = state_->get_term();
 
-            p_in("[ELECTION TIMEOUT] current role: %s, log last term %" PRIu64 ", "
-                 "state term %" PRIu64 ", target p %d, my p %d, %s, %s",
+            TLOG(INFO, "[ELECTION TIMEOUT] current role: {}, log last term {}" ", "
+                 "state term {}" ", target p {}, my p {}, {}, {}",
                  srv_role_to_string(role_).c_str(), last_log_term, state_term,
                  target_priority_, my_priority_,
                  (hb_alive_) ? "hb alive" : "hb dead",
@@ -317,7 +317,7 @@ namespace nuraft {
 
             // `term` changed, cannot use previous pre-vote result.
             if (pre_vote_.term_ != state_term) {
-                p_in("pre-vote term (%" PRIu64 ") is different, reset it to %" PRIu64 "",
+                TLOG(INFO, "pre-vote term ({}" ") is different, reset it to {}" "",
                      pre_vote_.term_, state_term);
                 pre_vote_.reset(state_term);
             }

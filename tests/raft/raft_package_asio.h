@@ -17,7 +17,9 @@ limitations under the License.
 
 #pragma once
 
-#include <xio/raft/asio_service_options.h>
+#include <xio/logging.h>
+
+#include <xio/raft/xio_service_options.h>
 #include <tests/raft/raft_functional_common.h>
 #include <xio/raft/internal_timer.h>
 
@@ -35,11 +37,11 @@ public:
     static const int HEARTBEAT_MS = 100;
 
     using READ_META_FUNC = std::function
-                               < bool( const asio_service::meta_cb_params&,
+                               < bool( const xio_service::meta_cb_params&,
                                        const std::string& ) >;
 
     using WRITE_META_FUNC = std::function
-                               < std::string(const asio_service::meta_cb_params&) >;
+                               < std::string(const xio_service::meta_cb_params&) >;
 
 
     RaftAsioPkg(int srv_id,
@@ -58,8 +60,6 @@ public:
         , useLogTimestamp(false)
         , useCrcOnEntireMessage(false)
         , customIoContext(nullptr)
-        , myLogWrapper(nullptr)
-        , myLog(nullptr)
         {}
 
     ~RaftAsioPkg() {
@@ -96,13 +96,11 @@ public:
                     const raft_server::init_options& opt = raft_server::init_options(),
                     bool use_stream_asio = false) {
         std::string log_file_name = "./srv" + std::to_string(myId) + ".log";
-        myLogWrapper = cs_new<logger_wrapper>(log_file_name);
-        myLog = myLogWrapper;
-
+        (void)log_file_name;
         sMgr = cs_new<TestMgr>(myId, myEndpoint);
-        sm = cs_new<TestSm>( myLogWrapper->getLogger() );
+        sm = cs_new<TestSm>();
 
-        asio_service::options asio_opt;
+        xio_service::options asio_opt;
         asio_opt.thread_pool_size_  = 4;
         if (use_stream_asio) {
             asio_opt.streaming_mode_ = true;
@@ -120,7 +118,7 @@ public:
             asio_opt.custom_resolver_ =
                 []( const std::string& host,
                     const std::string& port,
-                    asio_service_custom_resolver_response when_done ) {
+                    xio_service_custom_resolver_response when_done ) {
                     if (host.substr(0, 2) == "S1") {
                         when_done("127.0.0.1", "20010", std::error_code());
                     } else if (host.substr(0, 2) == "S2") {
@@ -156,12 +154,12 @@ public:
             asio_opt.custom_io_context_ = customIoContext;
         }
         asioSvc = use_global_asio
-                  ? nuraft_global_mgr::init_asio_service(asio_opt, myLog)
-                  : cs_new<asio_service>(asio_opt, myLog);
+                  ? nuraft_global_mgr::init_xio_service(asio_opt)
+                  : cs_new<xio_service>(asio_opt);
 
         int raft_port = 20000 + myId * 10;
         ptr<rpc_listener> listener
-                          ( asioSvc->create_rpc_listener(raft_port, myLog) );
+                          ( asioSvc->create_rpc_listener(raft_port) );
         ptr<delayed_task_scheduler> scheduler = asioSvc;
         ptr<rpc_client_factory> rpc_cli_factory = asioSvc;
 
@@ -173,7 +171,7 @@ public:
         params.with_snapshot_enabled(5);
         params.with_client_req_timeout(10000);
         params.use_bg_thread_for_snapshot_io_ = use_bg_snapshot_io;
-        context* ctx( new context( sMgr, sm, listener, myLog,
+        context* ctx( new context( sMgr, sm, listener,
                                    rpc_cli_factory, scheduler, params ) );
         raftServer = cs_new<raft_server>(ctx, opt);
 
@@ -190,7 +188,7 @@ public:
             bool enable_ssl = false,
             bool use_global_asio = false,
             const raft_server::init_options& opt = raft_server::init_options()) {
-        asio_service::options asio_opt;
+        xio_service::options asio_opt;
         asio_opt.thread_pool_size_  = 4;
         if (enable_ssl) {
             asio_opt.enable_ssl_        = enable_ssl;
@@ -201,12 +199,12 @@ public:
         }
 
         asioSvc = use_global_asio
-                  ? nuraft_global_mgr::init_asio_service(asio_opt, myLog)
-                  : cs_new<asio_service>(asio_opt, myLog);
+                  ? nuraft_global_mgr::init_xio_service(asio_opt)
+                  : cs_new<xio_service>(asio_opt);
 
         int raft_port = 20000 + myId * 10;
         ptr<rpc_listener> listener
-                          ( asioSvc->create_rpc_listener(raft_port, myLog) );
+                          ( asioSvc->create_rpc_listener(raft_port) );
         ptr<delayed_task_scheduler> scheduler = asioSvc;
         ptr<rpc_client_factory> rpc_cli_factory = asioSvc;
 
@@ -221,7 +219,7 @@ public:
             params.with_snapshot_enabled(5);
             params.with_client_req_timeout(10000);
         }
-        context* ctx( new context( sMgr, sm, listener, myLog,
+        context* ctx( new context( sMgr, sm, listener,
                                    rpc_cli_factory, scheduler, params ) );
         raftServer = cs_new<raft_server>(ctx, opt);
 
@@ -247,7 +245,7 @@ public:
     }
 
     void dbgLog(const std::string& msg) {
-        _s_info(myLogWrapper->getLogger()) << msg;
+        TLOG(INFO, "{}", msg);
     }
 
     TestMgr* getTestMgr() const {
@@ -264,7 +262,7 @@ public:
     ptr<state_mgr> sMgr;
     ptr<state_machine> sm;
 
-    ptr<asio_service> asioSvc;
+    ptr<xio_service> asioSvc;
     ptr<rpc_listener> asioListener;
 
     ptr<raft_server> raftServer;
@@ -294,8 +292,5 @@ public:
 #else
     asio::io_context* customIoContext;
 #endif
-
-    ptr<logger_wrapper> myLogWrapper;
-    ptr<logger> myLog;
 };
 

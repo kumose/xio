@@ -61,7 +61,10 @@ find_package(ZLIB REQUIRED)
 find_package(lz4 CONFIG REQUIRED)
 find_package(Snappy CONFIG REQUIRED)
 find_package(zstd CONFIG REQUIRED)
+find_package(OpenSSL REQUIRED)
 
+find_path(XLOG_DIR xlog/logging.h)
+include_directories(${XLOG_DIR})
 if (XIO_ENABLE_URING)
     if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
         find_path(URING_INCLUDE_DIR NAMES liburing.h)
@@ -84,6 +87,8 @@ endif ()
 # KMCMAKE_SYSTEM_DYLINK, using it for fun.
 ##########################################################
 set(KMCMAKE_DEPS_LINK
+        ${OPENSSL_SSL_LIBRARY}
+        ${OPENSSL_CRYPTO_LIBRARY}
         ${URING_LIBRARY}
         xlog::xlog_static
         ZLIB::ZLIB

@@ -33,7 +33,7 @@ void timer_invoke_handler(std::atomic<size_t>* counter) {
 }
 
 int timer_basic_test() {
-    asio_service svc;
+    xio_service svc;
     std::atomic<size_t> counter(0);
     timer_task<void>::executor handler = std::bind( timer_invoke_handler,
                                                     &counter );
@@ -58,7 +58,7 @@ int timer_basic_test() {
 }
 
 int timer_cancel_test() {
-    asio_service svc;
+    xio_service svc;
     std::atomic<size_t> counter(0);
     timer_task<void>::executor handler = std::bind( timer_invoke_handler,
                                                     &counter );

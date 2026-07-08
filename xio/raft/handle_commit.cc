@@ -30,7 +30,7 @@ limitations under the License.
 #include <xio/raft/snapshot.h>
 #include <xio/raft/state_machine.h>
 #include <xio/raft/state_mgr.h>
-#include <xio/raft/tracer.h>
+#include <xio/logging.h>
 
 #include <cassert>
 #include <list>
@@ -41,7 +41,7 @@ namespace nuraft {
     void raft_server::commit(ulong target_idx) {
         bool track_peers_sm_commit_idx = ctx_->get_params()->track_peers_sm_commit_idx_;
         if (target_idx > quick_commit_index_) {
-            p_db("trigger commit upto %" PRIu64 ", current quick commit index %" PRIu64,
+            TLOG(DEBUG, "trigger commit upto {}" ", current quick commit index {}",
                  target_idx, quick_commit_index_.load());
             quick_commit_index_ = target_idx;
             lagging_sm_target_index_ = target_idx;
@@ -65,8 +65,8 @@ namespace nuraft {
             }
         }
 
-        p_tr("local log idx %" PRIu64 ", target_commit_idx %" PRIu64 ", "
-             "quick_commit_index_ %" PRIu64 ", state_->get_commit_idx() %" PRIu64 "",
+        TLOG(TRACE, "local log idx {}" ", target_commit_idx {}" ", "
+             "quick_commit_index_ {}" ", state_->get_commit_idx() {}" "",
              log_store_->next_slot() - 1, target_idx,
              quick_commit_index_.load(), sm_commit_index_.load());
 
@@ -75,10 +75,10 @@ namespace nuraft {
             global_mgr *mgr = get_global_mgr();
             if (mgr) {
                 // Global thread pool exists, request it.
-                p_tr("request commit to global thread pool");
+                TLOG(TRACE, "request commit to global thread pool");
                 mgr->request_commit(this->shared_from_this());
             } else {
-                p_tr("commit_cv_ notify (local thread)");
+                TLOG(TRACE, "commit_cv_ notify (local thread)");
                 std::unique_lock<std::mutex> lock(commit_cv_lock_);
                 commit_cv_.notify_one();
             }
@@ -136,10 +136,10 @@ namespace nuraft {
                         return (log_store_->next_slot() - 1 > sm_commit_index_ &&
                                 quick_commit_index_ > sm_commit_index_);
                     };
-                    p_tr("commit_cv_ sleep\n");
+                    TLOG(TRACE, "commit_cv_ sleep\n");
                     commit_cv_.wait(lock, wait_check);
 
-                    p_tr("commit_cv_ wake up\n");
+                    TLOG(TRACE, "commit_cv_ wake up\n");
                     if (stopping_) {
                         lock.unlock();
                         lock.release();
@@ -168,7 +168,7 @@ namespace nuraft {
             } catch (std::exception &err) {
                 // LCOV_EXCL_START
                 commit_bg_stopped_ = true;
-                p_er("background committing thread encounter err %s, "
+                TLOG(ERROR, "background committing thread encounter err {}, "
                      "exiting to protect the system",
                      err.what());
                 ctx_->state_mgr_->system_exit(raft_err::N20_background_commit_err);
@@ -205,14 +205,14 @@ namespace nuraft {
             ea_sm_commit_exec_in_progress_->invoke();
         });
 
-        p_db("commit upto %" PRIu64 ", current idx %" PRIu64,
+        TLOG(DEBUG, "commit upto {}" ", current idx {}",
              quick_commit_index_.load(), sm_commit_index_.load());
 
         ulong log_start_idx = log_store_->start_index();
         if (log_start_idx &&
             sm_commit_index_ < log_start_idx - 1) {
-            p_wn("current commit idx %" PRIu64 " is smaller than log start idx %" PRIu64 " - 1, "
-                 "adjust it to %" PRIu64 "",
+            TLOG(WARNING, "current commit idx {}" " is smaller than log start idx {}" " - 1, "
+                 "adjust it to {}" "",
                  sm_commit_index_.load(),
                  log_start_idx,
                  log_start_idx - 1);
@@ -230,7 +230,7 @@ namespace nuraft {
                sm_commit_index_ < log_store_->next_slot() - 1) {
             // NOTE: Skip timeout checking for the first loop execution.
             if (!first_loop_exec && timeout_ms && tt.timeout()) {
-                p_wn("abort commit due to timeout (%zu ms), %" PRIu64 " ms elapsed",
+                TLOG(WARNING, "abort commit due to timeout ({} ms), {}" " ms elapsed",
                      timeout_ms, tt.get_ms());
                 finished_in_time = false;
                 break;
@@ -243,13 +243,13 @@ namespace nuraft {
             }
 
             ulong index_to_commit = sm_commit_index_ + 1;
-            p_tr("commit upto %" PRIu64 ", current idx %" PRIu64 "\n",
+            TLOG(TRACE, "commit upto {}" ", current idx {}" "\n",
                  quick_commit_index_.load(), index_to_commit);
 
             ptr<log_entry> le = log_store_->entry_at(index_to_commit);
             if (!le) {
                 // LCOV_EXCL_START
-                p_ft("failed to get log entry with idx %" PRIu64 "", index_to_commit);
+                TLOG(FATAL, "failed to get log entry with idx {}" "", index_to_commit);
                 ctx_->state_mgr_->system_exit(raft_err::N19_bad_log_idx_for_term);
                 _sys_exit(-1);
                 // LCOV_EXCL_STOP
@@ -259,7 +259,7 @@ namespace nuraft {
                 // LCOV_EXCL_START
                 // Zero term means that log store is corrupted
                 // (failed to read log).
-                p_ft("empty log at idx %" PRIu64 ", must be log corruption",
+                TLOG(FATAL, "empty log at idx {}" ", must be log corruption",
                      index_to_commit);
                 ctx_->state_mgr_->system_exit(raft_err::N19_bad_log_idx_for_term);
                 _sys_exit(-1);
@@ -282,8 +282,8 @@ namespace nuraft {
                 param.ctx = &log_idx;
                 ctx_->cb_func_.call(cb_func::StateMachineExecution, &param);
             } else {
-                p_er("sm_commit_index_ has been changed from %" PRIu64 " to %" PRIu64 ", "
-                     "this thread attempted %" PRIu64,
+                TLOG(ERROR, "sm_commit_index_ has been changed from {}" " to {}" ", "
+                     "this thread attempted {}",
                      index_to_commit - 1,
                      exp_idx,
                      index_to_commit);
@@ -293,7 +293,7 @@ namespace nuraft {
             {
                 // Notify watchers for the state machine commit.
                 std::unique_lock<std::mutex> lock(sm_watchers_lock_);
-                p_tr("total watchers: %zu", sm_watchers_.size());
+                TLOG(TRACE, "total watchers: {}", sm_watchers_.size());
                 auto entry = sm_watchers_.find(index_to_commit);
                 if (entry != sm_watchers_.end()) {
                     // If found, notify the watcher.
@@ -304,7 +304,7 @@ namespace nuraft {
             }
             // Notify the watchers outside the lock.
             for (auto &w_elem: watcher_elems_to_notify) {
-                p_tr("notify sm watcher for idx %" PRIu64 ", %zu watchers",
+                TLOG(TRACE, "notify sm watcher for idx {}" ", {} watchers",
                      w_elem.idx_, w_elem.watchers_.size());
                 for (auto &watcher: w_elem.watchers_) {
                     // Notify the watcher.
@@ -315,7 +315,7 @@ namespace nuraft {
             }
         }
 
-        p_db("DONE: commit upto %" PRIu64 ", current idx %" PRIu64,
+        TLOG(DEBUG, "DONE: commit upto {}" ", current idx {}",
              quick_commit_index_.load(), sm_commit_index_.load());
         if (role_ == srv_role::follower) {
             ulong leader_idx = leader_commit_index_.load();
@@ -339,8 +339,8 @@ namespace nuraft {
             uint64_t target_idx = find_sm_commit_idx_to_notify();
             uint64_t target_idx2 = update_sm_commit_notifier_target_idx(target_idx);
             if (target_idx != target_idx2) {
-                p_tr("sm commit notify ready: %" PRIu64 ", target idx: %" PRIu64
-                     ", notified idx: %" PRIu64,
+                TLOG(TRACE, "sm commit notify ready: {}" ", target idx: {}"
+                     ", notified idx: {}",
                      target_idx, target_idx2, sm_commit_notifier_notified_idx_.load());
             }
         }
@@ -358,7 +358,7 @@ namespace nuraft {
         ulong pc_idx = precommit_index_.load();
         if (pc_idx < sm_idx) {
             // Pre-commit should have been invoked, must be a bug.
-            p_ft("pre-commit index %" PRIu64 " is smaller than commit index %" PRIu64,
+            TLOG(FATAL, "pre-commit index {}" " is smaller than commit index {}",
                  pc_idx, sm_idx);
             ctx_->state_mgr_->system_exit(raft_err::N23_precommit_order_inversion);
             _sys_exit(-1);
@@ -399,7 +399,7 @@ namespace nuraft {
                         // It will be handled later in `commit_in_bg_exec`.
                     } else {
                         // Respond upon the leader's SM commit.
-                        p_dv("notify cb %" PRIu64 " %p", sm_idx, &elem->awaiter_);
+                        TLOG(DEBUG, "notify cb {}" " {}", sm_idx, static_cast<const void*>(&elem->awaiter_));
                         switch (params->return_method_) {
                             case raft_params::blocking:
                             default:
@@ -430,8 +430,8 @@ namespace nuraft {
                 elem->idx_ = sm_idx;
                 elem->result_code_ = cmd_result_code::OK;
                 elem->ret_value_ = ret_value;
-                p_tr("commit thread is invoked earlier than user thread, "
-                     "log %" PRIu64 ", elem %p", sm_idx, elem.get());
+                TLOG(TRACE, "commit thread is invoked earlier than user thread, "
+                     "log {}" ", elem {}", sm_idx, static_cast<const void*>(elem.get()));
 
                 if (params->track_peers_sm_commit_idx_) {
                     // Ditto.
@@ -475,7 +475,7 @@ namespace nuraft {
                 cluster_config::deserialize(le->get_buf());
 
         ptr<cluster_config> cur_conf = get_config();
-        p_in("config at index %" PRIu64 " is committed, prev config log idx %" PRIu64 "",
+        TLOG(INFO, "config at index {}" " is committed, prev config log idx {}" "",
              new_conf->get_log_idx(), cur_conf->get_log_idx());
 
         config_changing_ = false;
@@ -484,7 +484,7 @@ namespace nuraft {
             ctx_->state_mgr_->save_config(*new_conf);
             reconfigure(new_conf);
         } else {
-            p_in("skipped config %" PRIu64 ", latest config %" PRIu64 "",
+            TLOG(INFO, "skipped config {}" ", latest config {}" "",
                  new_conf->get_log_idx(), cur_conf->get_log_idx());
         }
 
@@ -503,7 +503,7 @@ namespace nuraft {
         //   means that catch-up process is already done.
         //
         // if (catching_up_ && new_conf->get_server(id_) != nilptr) {
-        //     p_in("this server is committed as one of cluster members");
+        //     TLOG(INFO, "this server is committed as one of cluster members");
         //     catching_up_ = false;
         // }
     }
@@ -514,7 +514,7 @@ namespace nuraft {
             return;
         }
 
-        p_tr("sm commit notifier scan start, upto %" PRIu64, idx_upto);
+        TLOG(TRACE, "sm commit notifier scan start, upto {}", idx_upto);
 
         std::list<ptr<commit_ret_elem> > async_elems;
 
@@ -530,7 +530,7 @@ namespace nuraft {
             }
             ptr<commit_ret_elem> elem = entry->second;
 
-            p_tr("notify cb %" PRIu64 " %p", entry->first, &elem->awaiter_);
+            TLOG(TRACE, "notify cb {}" " {}", entry->first, static_cast<const void*>(&elem->awaiter_));
             switch (params->return_method_) {
                 case raft_params::blocking:
                 default:
@@ -564,7 +564,7 @@ namespace nuraft {
         }
 
         sm_commit_notifier_notified_idx_ = idx_upto;
-        p_tr("sm commit notifier scan done, notified index %" PRIu64,
+        TLOG(TRACE, "sm commit notifier scan done, notified index {}",
              sm_commit_notifier_notified_idx_.load());
     }
 
@@ -653,7 +653,7 @@ namespace nuraft {
     ulong raft_server::create_snapshot(const create_snapshot_options &options) {
         auto exec_internal = [&]() {
             uint64_t committed_idx = sm_commit_index_;
-            p_in("manually create a snapshot on %" PRIu64 "", committed_idx);
+            TLOG(INFO, "manually create a snapshot on {}" "", committed_idx);
             return snapshot_and_compact(committed_idx, true) ? committed_idx : 0;
         };
 
@@ -668,12 +668,12 @@ namespace nuraft {
     ptr<cmd_result<uint64_t> > raft_server::schedule_snapshot_creation() {
         bool exp = false;
         if (!snp_creation_scheduled_.compare_exchange_strong(exp, true)) {
-            p_wn("snapshot creation is already scheduled");
+            TLOG(WARNING, "snapshot creation is already scheduled");
             return nilptr;
         }
 
         sched_snp_creation_result_ = cs_new<cmd_result<uint64_t> >();
-        p_in("schedule snapshot creation");
+        TLOG(INFO, "schedule snapshot creation");
         return sched_snp_creation_result_;
     }
 
@@ -724,7 +724,7 @@ namespace nuraft {
             cb_func::Param param(id_, leader_, -1, &committed_idx);
             CbReturnCode rc = invoke_callback(cb_func::SnapshotCreationBegin, &param);
             if (rc != CbReturnCode::Ok) {
-                p_wn("creating a snapshot %" PRIu64 " is rejected by user callback",
+                TLOG(WARNING, "creating a snapshot {}" " is rejected by user callback",
                      committed_idx);
                 return false;
             }
@@ -753,7 +753,7 @@ namespace nuraft {
                 }
 
                 snapshot_in_action = true;
-                p_in("creating a snapshot for index %" PRIu64 "", committed_idx);
+                TLOG(INFO, "creating a snapshot for index {}" "", committed_idx);
 
                 // NOTE:
                 //   Due to the public API `raft_server::create_snapshot()`,
@@ -763,9 +763,9 @@ namespace nuraft {
                 //   To avoid such a case, while `snp_in_progress_` is true,
                 //   we re-check the latest snapshot index here.
                 if (local_snp && local_snp->get_last_log_idx() >= committed_idx) {
-                    p_wn("snapshot index inversion detected, "
-                         "skip snapshot creation for index %" PRIu64 ", "
-                         "latest snapshot index %" PRIu64 "",
+                    TLOG(WARNING, "snapshot index inversion detected, "
+                         "skip snapshot creation for index {}" ", "
+                         "latest snapshot index {}" "",
                          committed_idx, local_snp->get_last_log_idx());
                     snp_in_progress_ = false;
                     return false;
@@ -776,7 +776,7 @@ namespace nuraft {
                     // User scheduled a new snapshot creation.
                     // Due to `snp_in_progress_` it will happen only once.
                     manual_creation_cb = sched_snp_creation_result_;
-                    p_in("snapshot creation is scheduled by user");
+                    TLOG(INFO, "snapshot creation is scheduled by user");
                 }
 
                 while (conf->get_log_idx() > committed_idx &&
@@ -791,7 +791,7 @@ namespace nuraft {
                     conf->get_prev_log_idx() < log_store_->start_index()) {
                     if (!local_snp) {
                         // LCOV_EXCL_START
-                        p_er("No snapshot could be found while no configuration "
+                        TLOG(ERROR, "No snapshot could be found while no configuration "
                             "cannot be found in current committed logs, "
                             "this is a system error, exiting");
                         ctx_->state_mgr_->system_exit(raft_err::N6_no_snapshot_found);
@@ -806,9 +806,9 @@ namespace nuraft {
                     //  Since we remove configure from state machine
                     //  (necessary when we clone a node to another node),
                     //  config at log idx 1 may not be visiable in some condition.
-                    p_wn("config at log idx 1 is not availabe, "
-                         "config log idx %" PRIu64 ", prev log idx %" PRIu64
-                         ", committed idx %" PRIu64,
+                    TLOG(WARNING, "config at log idx 1 is not availabe, "
+                         "config log idx {}" ", prev log idx {}"
+                         ", committed idx {}",
                          conf->get_log_idx(), conf->get_prev_log_idx(), committed_idx);
                     //ctx_->state_mgr_->system_exit(raft_err::N7_no_config_at_idx_one);
                     //_sys_exit(-1);
@@ -818,7 +818,7 @@ namespace nuraft {
                 ulong log_term_to_compact = log_store_->term_at(committed_idx);
                 ptr<snapshot> new_snapshot
                         (cs_new<snapshot>(committed_idx, log_term_to_compact, conf));
-                p_in("create snapshot idx %" PRIu64 " log_term %" PRIu64,
+                TLOG(INFO, "create snapshot idx {}" " log_term {}",
                      committed_idx, log_term_to_compact);
                 cmd_result<bool>::handler_type handler =
                         (cmd_result<bool>::handler_type)
@@ -830,8 +830,8 @@ namespace nuraft {
                                   std::placeholders::_2);
                 timer_helper tt;
                 state_machine_->create_snapshot(*new_snapshot, handler);
-                p_in("create snapshot idx %" PRIu64 " log_term %" PRIu64
-                     " done: %" PRIu64 " us elapsed",
+                TLOG(INFO, "create snapshot idx {}" " log_term {}"
+                     " done: {}" " us elapsed",
                      committed_idx, log_term_to_compact, tt.get_us());
 
                 snapshot_in_action = false;
@@ -839,7 +839,7 @@ namespace nuraft {
             }
             return false;
         } catch (std::exception &e) {
-            p_er("failed to compact logs at index %" PRIu64 " due to errors %s",
+            TLOG(ERROR, "failed to compact logs at index {}" " due to errors {}",
                  committed_idx, e.what());
             if (snapshot_in_action) {
                 bool val = true;
@@ -857,19 +857,19 @@ namespace nuraft {
         do {
             // Dummy loop
             if (err != nilptr) {
-                p_er("failed to create a snapshot due to %s",
+                TLOG(ERROR, "failed to create a snapshot due to {}",
                      err->what());
                 break;
             }
 
             if (!result) {
-                p_in("the state machine rejects to create the snapshot");
+                TLOG(INFO, "the state machine rejects to create the snapshot");
                 break;
             }
 
             {
                 recur_lock(lock_);
-                p_in("snapshot idx %" PRIu64 " log_term %" PRIu64 " created, "
+                TLOG(INFO, "snapshot idx {}" " log_term {}" " created, "
                      "compact the log store if needed",
                      s->get_last_log_idx(), s->get_last_log_term());
 
@@ -880,7 +880,7 @@ namespace nuraft {
                     (ulong) params->reserved_log_items_) {
                     ulong compact_upto = new_snp->get_last_log_idx() -
                                          (ulong) params->reserved_log_items_;
-                    p_in("log_store_ compact upto %" PRIu64 "", compact_upto);
+                    TLOG(INFO, "log_store_ compact upto {}" "", compact_upto);
 
                     cmd_result<bool>::handler_type handler =
                             (cmd_result<bool>::handler_type)
@@ -919,12 +919,12 @@ namespace nuraft {
 
     void raft_server::reconfigure(const ptr<cluster_config> &new_config) {
         ptr<cluster_config> cur_config = get_config();
-        p_in("new config log idx %" PRIu64 ", prev log idx %" PRIu64 ", "
-             "cur config log idx %" PRIu64 ", prev log idx %" PRIu64,
+        TLOG(INFO, "new config log idx {}" ", prev log idx {}" ", "
+             "cur config log idx {}" ", prev log idx {}",
              new_config->get_log_idx(), new_config->get_prev_log_idx(),
              cur_config->get_log_idx(), cur_config->get_prev_log_idx());
-        p_db("system is reconfigured to have %zu servers, "
-             "last config index: %" PRIu64 ", this config index: %" PRIu64 "",
+        TLOG(DEBUG, "system is reconfigured to have {} servers, "
+             "last config index: {}" ", this config index: {}" "",
              new_config->get_servers().size(),
              new_config->get_prev_log_idx(),
              new_config->get_log_idx());
@@ -961,7 +961,7 @@ namespace nuraft {
                     // If this server is a new joiner, `catching_up_` flag
                     // will be cleared when it becomes a regular member,
                     // that is also notified by a new cluster config.
-                    p_in("now this node is the part of cluster, "
+                    TLOG(INFO, "now this node is the part of cluster, "
                         "catch-up process is done, clearing the flag");
                     state_->set_catching_up(false);
                     ctx_->state_mgr_->save_state(*state_);
@@ -992,9 +992,8 @@ namespace nuraft {
             ptr<peer> p = cs_new<peer,
                         ptr<srv_config> &,
                         context &,
-                        timer_task<int32>::executor &,
-                        ptr<logger> &>
-                    (srv_added, *ctx_, exec, l_);
+                        timer_task<int32>::executor &>
+                    (srv_added, *ctx_, exec);
             p->set_next_log_idx(log_store_->next_slot());
 
             str_buf << "add peer " << srv_added->get_id()
@@ -1004,11 +1003,11 @@ namespace nuraft {
                     << std::endl;
 
             peers_.insert(std::make_pair(srv_added->get_id(), p));
-            p_in("server %d is added to cluster", srv_added->get_id());
+            TLOG(INFO, "server {} is added to cluster", srv_added->get_id());
             if (role_ == srv_role::leader) {
                 // Suppress following RPC error as it is expected.
                 p->set_suppress_following_error();
-                p_in("enable heartbeating for server %d", srv_added->get_id());
+                TLOG(INFO, "enable heartbeating for server {}", srv_added->get_id());
                 enable_hb_for_peer(*p);
                 if (srv_to_join_ &&srv_to_join_
                 ->
@@ -1026,8 +1025,8 @@ namespace nuraft {
              it != srvs_removed.end(); ++it) {
             int32 srv_removed = *it;
             if (srv_removed == id_ && !state_->is_catching_up()) {
-                p_in("this server (%d) has been removed from the cluster, "
-                     "will step down itself soon. config log idx %" PRIu64,
+                TLOG(INFO, "this server ({}) has been removed from the cluster, "
+                     "will step down itself soon. config log idx {}",
                      id_,
                      new_config->get_log_idx());
                 // this server is removed from cluster
@@ -1077,13 +1076,13 @@ namespace nuraft {
                 if (role_ == srv_role::leader && srv_to_leave_) {
                     // If leader, keep the to-be-removed server in peer list
                     // until 1) catch-up is done, or 2) timeout.
-                    p_in("srv_to_leave_: %d", srv_to_leave_->get_id());
+                    TLOG(INFO, "srv_to_leave_: {}", srv_to_leave_->get_id());
                     ptr<snapshot_sync_ctx> snp_ctx = srv_to_leave_->get_snapshot_sync_ctx();
                     if (snp_ctx) {
                         void *user_ctx = snp_ctx->get_user_snp_ctx();
-                        p_in("srv_to_leave_ has snapshot context %p and user context %p, "
+                        TLOG(INFO, "srv_to_leave_ has snapshot context {} and user context {}, "
                              "destroy them",
-                             snp_ctx.get(), user_ctx);
+                             static_cast<const void*>(snp_ctx.get()), user_ctx);
                         clear_snapshot_sync_ctx(*srv_to_leave_);
                     }
 
@@ -1092,8 +1091,8 @@ namespace nuraft {
                     // immediately without setting `srv_to_leave_`.
                 } else {
                     if (!srv_to_leave_) {
-                        p_in("srv_to_leave_ is currently empty "
-                             "on config for removing %d",
+                        TLOG(INFO, "srv_to_leave_ is currently empty "
+                             "on config for removing {}",
                              pp->get_id());
                     }
                     remove_peer_from_peers(pp);
@@ -1101,12 +1100,12 @@ namespace nuraft {
                     str_buf << "remove peer " << srv_removed << std::endl;
                 }
             } else {
-                p_in("peer %d cannot be found, no action for removing", srv_removed);
+                TLOG(INFO, "peer {} cannot be found, no action for removing", srv_removed);
             }
         }
 
         if (!str_buf.str().empty()) {
-            p_in("%s", str_buf.str().c_str());
+            TLOG(INFO, "{}", str_buf.str().c_str());
         }
 
         set_config(new_config);
@@ -1118,7 +1117,7 @@ namespace nuraft {
         )
         {
             // All configs are committed.
-            p_in("clearing uncommitted config at log %" PRIu64 ", prev %" PRIu64,
+            TLOG(INFO, "clearing uncommitted config at log {}" ", prev {}",
                  uncommitted_config_->get_log_idx(),
                  uncommitted_config_->get_prev_log_idx());
             uncommitted_config_.reset();
@@ -1153,8 +1152,8 @@ namespace nuraft {
                     << ", " << s_conf->get_priority()
                     << std::endl;
         }
-        p_in("new configuration: log idx %" PRIu64 ", prev log idx %" PRIu64 "\n"
-             "%smy id: %d, leader: %d, term: %" PRIu64,
+        TLOG(INFO, "new configuration: log idx {}" ", prev log idx {}" "\n"
+             "{}my id: {}, leader: {}, term: {}",
              new_config->get_log_idx(), new_config->get_prev_log_idx(),
              str_buf2.str().c_str(), id_, leader_.load(), state_->get_term());
 
@@ -1162,15 +1161,15 @@ namespace nuraft {
     }
 
     void raft_server::remove_peer_from_peers(const ptr<peer> &pp) {
-        p_in("server %d is removed from cluster", pp->get_id());
+        TLOG(INFO, "server {} is removed from cluster", pp->get_id());
         pp->enable_hb(false);
         clear_snapshot_sync_ctx(*pp);
         peers_.erase(pp->get_id());
     }
 
     void raft_server::pause_state_machine_execution(size_t timeout_ms) {
-        p_in("pause state machine execution, previously %s, state machine %s, "
-             "timeout %zu ms",
+        TLOG(INFO, "pause state machine execution, previously {}, state machine {}, "
+             "timeout {} ms",
              sm_commit_paused_ ? "PAUSED" : "ACTIVE",
              sm_commit_exec_in_progress_ ? "RUNNING" : "SLEEPING",
              timeout_ms);
@@ -1182,13 +1181,13 @@ namespace nuraft {
 
         timer_helper timer;
         wait_for_state_machine_pause(timeout_ms);
-        p_in("waited %" PRIu64 " ms, state machine %s",
+        TLOG(INFO, "waited {}" " ms, state machine {}",
              timer.get_ms(),
              sm_commit_exec_in_progress_ ? "RUNNING" : "SLEEPING");
     }
 
     void raft_server::resume_state_machine_execution() {
-        p_in("resume state machine execution, previously %s, state machine %s",
+        TLOG(INFO, "resume state machine execution, previously {}, state machine {}",
              sm_commit_paused_ ? "PAUSED" : "ACTIVE",
              sm_commit_exec_in_progress_ ? "RUNNING" : "SLEEPING");
         sm_commit_paused_ = false;

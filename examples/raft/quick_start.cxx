@@ -27,13 +27,11 @@ limitations under the License.
 using namespace nuraft;
 
 int main(int argc, char** argv) {
-    // Replace with your logger, state machine, and state manager.
-    ptr<logger>         my_logger = nullptr;
     ptr<state_machine>  my_state_machine = cs_new<echo_state_machine>();
     ptr<state_mgr>      my_state_manager =
         cs_new<inmem_state_mgr>(1, "localhost:12345");
 
-    asio_service::options   asio_opt;   // your Asio options
+    xio_service::options    asio_opt;   // your Asio options
     raft_params             params;     // your Raft parameters
 
     // Initialize Raft server listening on port 12345.
@@ -42,7 +40,6 @@ int main(int argc, char** argv) {
     int                 port_number = 12345;
     ptr<raft_server>    server = launcher.init(my_state_machine,
                                                my_state_manager,
-                                               my_logger,
                                                port_number,
                                                asio_opt,
                                                params);

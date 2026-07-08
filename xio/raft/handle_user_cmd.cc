@@ -24,7 +24,7 @@ limitations under the License.
 #include <xio/raft/context.h>
 #include <xio/raft/event_awaiter.h>
 #include <xio/raft/rpc_cli_factory.h>
-#include <xio/raft/tracer.h>
+#include <xio/logging.h>
 
 #include <cassert>
 #include <sstream>
@@ -85,7 +85,7 @@ namespace nuraft {
      const req_ext_params &ext_params) {
         if (logs.size() == 0) {
             ptr<buffer> result(nullptr);
-            p_in("return null as log size is zero\n");
+            TLOG(INFO, "return null as log size is zero\n");
             return cs_new<cmd_result<ptr<buffer> > >(result);
         }
 
@@ -108,12 +108,12 @@ namespace nuraft {
     ptr<cmd_result<ptr<buffer> > > raft_server::flip_learner_flag(int32 srv_id, bool to) {
         ptr<cmd_result<ptr<buffer> > > ret = cs_new<cmd_result<ptr<buffer> > >(nullptr);
         if (role_ != srv_role::leader || write_paused_) {
-            p_er("this is not a leader, cannot handle flip_learner_flag");
+            TLOG(ERROR, "this is not a leader, cannot handle flip_learner_flag");
             ret->set_result_code(cmd_result_code::NOT_LEADER);
             return ret;
         }
         if (config_changing_) {
-            p_wn("previous config has not committed yet");
+            TLOG(WARNING, "previous config has not committed yet");
             ret->set_result_code(cmd_result_code::CONFIG_CHANGING);
             return ret;
         }
@@ -130,23 +130,23 @@ namespace nuraft {
             }
             found = true;
             if (ss->is_learner() == to) {
-                p_in("server %d already has learner flag set to %s\n",
+                TLOG(INFO, "server {} already has learner flag set to {}\n",
                      srv_id,
                      to ? "true" : "false");
                 ret->set_result_code(cmd_result_code::OK);
                 return ret;
             }
-            p_in("set learner flag to %s for server %d",
+            TLOG(INFO, "set learner flag to {} for server {}",
                  to ? "true" : "false", srv_id);
             ss->set_learner(to);
             break;
         }
         if (!found) {
-            p_er("server %d not found", srv_id);
+            TLOG(ERROR, "server {} not found", srv_id);
             ret->set_result_code(SERVER_NOT_FOUND);
             return ret;
         }
-        p_in("copy new conf buf");
+        TLOG(INFO, "copy new conf buf");
         ptr<buffer> new_conf_buf(new_conf->serialize());
         ptr<log_entry> entry(cs_new<log_entry>(state_->get_term(),
                                                new_conf_buf,
@@ -155,7 +155,7 @@ namespace nuraft {
         store_log_entry(entry);
         config_changing_ = true;
         uncommitted_config_ = new_conf;
-        p_in("request append entries");
+        TLOG(INFO, "request append entries");
         request_append_entries();
         ret->set_result_code(OK);
         return ret;
@@ -167,7 +167,7 @@ namespace nuraft {
         int32 leader_id = leader_;
         ptr<buffer> result = nullptr;
         if (leader_id == -1) {
-            p_in("return null as leader does not exist in the current group");
+            TLOG(INFO, "return null as leader does not exist in the current group");
             ptr<cmd_result<ptr<buffer> > > ret =
                     cs_new<cmd_result<ptr<buffer> > >(result, cmd_result_code::NOT_LEADER);
             return ret;
@@ -176,7 +176,7 @@ namespace nuraft {
         if (leader_id == id_) {
             ptr<resp_msg> resp = process_req(*req, ext_params);
             if (!resp) {
-                p_in("server returns null");
+                TLOG(INFO, "server returns null");
                 ptr<cmd_result<ptr<buffer> > > ret =
                         cs_new<cmd_result<ptr<buffer> > >(result, cmd_result_code::BAD_REQUEST);
                 return ret;
@@ -234,12 +234,12 @@ namespace nuraft {
             if (entry == auto_fwd_pkgs_.end()) {
                 cur_pkg = cs_new<auto_fwd_pkg>();
                 auto_fwd_pkgs_[leader_id] = cur_pkg;
-                p_tr("auto forwarding pkg for leader %d not found, created %p",
-                     leader_id, cur_pkg.get());
+                TLOG(TRACE, "auto forwarding pkg for leader {} not found, created {}",
+                     leader_id, static_cast<const void*>(cur_pkg.get()));
             } else {
                 cur_pkg = entry->second;
-                p_tr("auto forwarding pkg for leader %d exists %p",
-                     leader_id, cur_pkg.get());
+                TLOG(TRACE, "auto forwarding pkg for leader {} exists {}",
+                     leader_id, static_cast<const void*>(cur_pkg.get()));
             }
         }
 
@@ -251,7 +251,7 @@ namespace nuraft {
             if (e_rpc == cur_pkg->rpc_client_idle_.end()) {
                 // Idle connection doesn't exist,
                 // check the total number of connections.
-                p_tr("no connection available, idle %zu, in-use %zu, max %zu",
+                TLOG(TRACE, "no connection available, idle {}, in-use {}, max {}",
                      cur_pkg->rpc_client_idle_.size(),
                      cur_pkg->rpc_client_in_use_.size(),
                      max_conns);
@@ -262,16 +262,16 @@ namespace nuraft {
                     rpc_cli = ctx_->rpc_cli_factory_->create_client
                             (srv_conf->get_endpoint());
                     cur_pkg->rpc_client_in_use_.insert(rpc_cli);
-                    p_tr("created a new connection %p", rpc_cli.get());
+                    TLOG(TRACE, "created a new connection {}", static_cast<const void*>(rpc_cli.get()));
                 } else {
                     // Already reached the max, wait for idle connection.
                     if (is_blocking_mode) {
                         // Blocking mode, sleep here.
                         l.unlock();
-                        p_tr("reached max connection, wait");
+                        TLOG(TRACE, "reached max connection, wait");
                         cur_pkg->ea_.wait_ms(params->client_req_timeout_);
                         cur_pkg->ea_.reset();
-                        p_tr("wake up, find an available connection");
+                        TLOG(TRACE, "wake up, find an available connection");
                         continue;
                     } else {
                         // Async mode, put it into the queue, and return immediately.
@@ -281,7 +281,7 @@ namespace nuraft {
 
                         auto_lock(auto_fwd_reqs_lock_);
                         auto_fwd_reqs_.push_back(req_resp_pair);
-                        p_tr("reached max connection, put into the queue, %zu elems",
+                        TLOG(TRACE, "reached max connection, put into the queue, {} elems",
                              auto_fwd_reqs_.size());
                         return req_resp_pair.resp;
                     }
@@ -297,7 +297,7 @@ namespace nuraft {
                 }
                 cur_pkg->rpc_client_idle_.pop_front();
                 cur_pkg->rpc_client_in_use_.insert(rpc_cli);
-                p_tr("idle connection %p", rpc_cli.get());
+                TLOG(TRACE, "idle connection {}", static_cast<const void*>(rpc_cli.get()));
             }
             break;
         } while (true);
@@ -335,8 +335,8 @@ namespace nuraft {
         auto put_back_to_idle_list = [&cur_pkg, &rpc_cli, max_conns, this]() {
             cur_pkg->rpc_client_in_use_.erase(rpc_cli);
             cur_pkg->rpc_client_idle_.push_front(rpc_cli);
-            p_tr("release connection %p, idle %zu, in-use %zu, max %zu",
-                 rpc_cli.get(),
+            TLOG(TRACE, "release connection {}, idle {}, in-use {}, max {}",
+                 static_cast<const void*>(rpc_cli.get()),
                  cur_pkg->rpc_client_idle_.size(),
                  cur_pkg->rpc_client_in_use_.size(),
                  max_conns);
@@ -354,7 +354,7 @@ namespace nuraft {
             if (!auto_fwd_reqs_.empty()) {
                 auto_fwd_req_resp entry = *auto_fwd_reqs_.begin();
                 auto_fwd_reqs_.pop_front();
-                p_tr("found waiting request in the queue, remaining elems %zu",
+                TLOG(TRACE, "found waiting request in the queue, remaining elems {}",
                      auto_fwd_reqs_.size());
                 ll.unlock();
 
@@ -408,15 +408,15 @@ namespace nuraft {
             ptr<auto_fwd_pkg> pkg = entry.second;
             pkg->ea_.invoke();
             auto_lock(pkg->lock_);
-            p_in("srv %d, in-use %zu, idle %zu",
+            TLOG(INFO, "srv {}, in-use {}, idle {}",
                  entry.first,
                  pkg->rpc_client_in_use_.size(),
                  pkg->rpc_client_idle_.size());
             for (auto &ee: pkg->rpc_client_in_use_) {
-                p_tr("use count %zu", ee.use_count());
+                TLOG(TRACE, "use count {}", ee.use_count());
             }
             for (auto &ee: pkg->rpc_client_idle_) {
-                p_tr("use count %zu", ee.use_count());
+                TLOG(TRACE, "use count {}", ee.use_count());
             }
             pkg->rpc_client_idle_.clear();
             pkg->rpc_client_in_use_.clear();

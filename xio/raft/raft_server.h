@@ -47,7 +47,6 @@ namespace nuraft {
     class delayed_task_scheduler;
     class global_mgr;
     class EventAwaiter;
-    class logger;
     class peer;
     class rpc_client;
     class raft_server_handler;
@@ -1617,12 +1616,6 @@ namespace nuraft {
      * The first snapshot distance.
      */
         uint32_t first_snapshot_distance_;
-
-        /**
-     * (Read-only)
-     * Logger instance.
-     */
-        ptr<logger> l_;
 
         /**
      * (Read-only)

@@ -19,7 +19,6 @@ limitations under the License.
 
 #include <xio/raft/attr_unused.h>
 #include <xio/raft/in_memory_log_store.h>
-#include <xio/raft/logger_wrapper.h>
 
 #include <tests/raft/test_common.h>
 
@@ -51,15 +50,13 @@ inline std::ostream& operator<<(std::ostream& os, raft_server::PrioritySetResult
 
 class TestSm : public state_machine {
 public:
-    TestSm(SimpleLogger* logger = nullptr)
+    TestSm()
         : customBatchSize(0)
         , lastCommittedConfigIdx(0)
         , targetSnpReadFailures(0)
         , snpDelayMs(0)
         , numSnapshotCreations(0)
-        , myLog(logger)
     {
-        (void)myLog;
     }
 
     ~TestSm() {}
@@ -415,8 +412,6 @@ private:
     mutable std::mutex serversForCommitLock;
 
     std::atomic<uint64_t> numSnapshotCreations;
-
-    SimpleLogger* myLog;
 };
 
 class TestMgr : public state_mgr {

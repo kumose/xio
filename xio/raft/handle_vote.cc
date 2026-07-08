@@ -26,7 +26,7 @@ limitations under the License.
 #include <xio/raft/handle_custom_notification.h>
 #include <xio/raft/peer.h>
 #include <xio/raft/state_mgr.h>
-#include <xio/raft/tracer.h>
+#include <xio/logging.h>
 
 #include <cassert>
 #include <sstream>
@@ -66,7 +66,7 @@ namespace nuraft {
                     if (last_active_time_ms >
                         params->heart_beat_interval_ *
                         raft_server::raft_limits_.reconnect_limit_) {
-                        p_wn("connection to peer %d is not active long time: %d ms, "
+                        TLOG(WARNING, "connection to peer {} is not active long time: {} ms, "
                              "need reconnection for prevote",
                              pp->get_id(),
                              last_active_time_ms);
@@ -75,7 +75,7 @@ namespace nuraft {
                 }
 
                 if (recreate) {
-                    p_in("reset RPC client for peer %d", s_config->get_id());
+                    TLOG(INFO, "reset RPC client for peer {}", s_config->get_id());
                     pp->recreate_rpc(s_config, *ctx_);
                 }
             }
@@ -86,9 +86,9 @@ namespace nuraft {
             if (pre_vote_.live_ + pre_vote_.dead_ < quorum_size + 1) {
                 // Pre-vote failed due to non-responding voters.
                 pre_vote_.no_response_failure_count_++;
-                p_wn("total %d nodes (including this node) responded for pre-vote "
-                     "(term %" PRIu64 ", live %d, dead %d), at least %d nodes should "
-                     "respond. failure count %d",
+                TLOG(WARNING, "total {} nodes (including this node) responded for pre-vote "
+                     "(term {}" ", live {}, dead {}), at least {} nodes should "
+                     "respond. failure count {}",
                      pre_vote_.live_.load() + pre_vote_.dead_.load(),
                      pre_vote_.term_,
                      pre_vote_.live_.load(),
@@ -104,7 +104,7 @@ namespace nuraft {
             num_voting_members == 2 &&
             pre_vote_.no_response_failure_count_ > raft_server::raft_limits_.vote_limit_) {
             // 2-node cluster's pre-vote failed due to offline node.
-            p_wn("2-node cluster's pre-vote is failing long time, "
+            TLOG(WARNING, "2-node cluster's pre-vote is failing long time, "
                 "adjust quorum to 1");
 
             cb_func::Param cb_param(id_, leader_, -1);
@@ -112,7 +112,7 @@ namespace nuraft {
                     ctx_->cb_func_.call(cb_func::AutoAdjustQuorum, &cb_param);
             if (rc == CbReturnCode::ReturnNull) {
                 // Callback function rejected the adjustment.
-                p_wn("quorum size adjustment was declined by callback");
+                TLOG(WARNING, "quorum size adjustment was declined by callback");
             } else {
                 ptr<raft_params> clone = cs_new<raft_params>(*params);
                 clone->custom_commit_quorum_size_ = 1;
@@ -131,17 +131,17 @@ namespace nuraft {
 
         if (my_priority_ < target_priority_) {
             if (check_cond_for_zp_election()) {
-                p_in("[PRIORITY] temporarily allow election for zero-priority member");
+                TLOG(INFO, "[PRIORITY] temporarily allow election for zero-priority member");
             } else {
-                p_in("[PRIORITY] will not initiate pre-vote due to priority: "
-                     "target %d, mine %d", target_priority_, my_priority_);
+                TLOG(INFO, "[PRIORITY] will not initiate pre-vote due to priority: "
+                     "target {}, mine {}", target_priority_, my_priority_);
                 restart_election_timer();
                 return;
             }
         }
 
-        p_in("[PRE-VOTE INIT] my id %d, my role %s, term %" PRIu64 ", log idx %" PRIu64 ", "
-             "log term %" PRIu64 ", priority (target %d / mine %d)\n",
+        TLOG(INFO, "[PRE-VOTE INIT] my id {}, my role {}, term {}" ", log idx {}" ", "
+             "log term {}" ", priority (target {} / mine {})\n",
              id_, srv_role_to_string(role_).c_str(),
              state_->get_term(), log_store_->next_slot() - 1,
              term_for_log(log_store_->next_slot() - 1),
@@ -166,7 +166,7 @@ namespace nuraft {
                 pp->send_req(pp, req, resp_handler_);
             } else {
                 pre_vote_.connection_busy_++;
-                p_wn("failed to send prevote request: peer %d (%s) is busy, count %d",
+                TLOG(WARNING, "failed to send prevote request: peer {} ({}) is busy, count {}",
                      pp->get_id(), pp->get_endpoint().c_str(),
                      pre_vote_.connection_busy_.load());
             }
@@ -177,8 +177,8 @@ namespace nuraft {
             // Couldn't send pre-vote request to majority of peers,
             // no hope to get quorum.
             pre_vote_.busy_connection_failure_count_++;
-            p_wn("too many busy connections: %d, num voting members: %d, quorum size: %d, "
-                 "no hope to get quorum, count: %d",
+            TLOG(WARNING, "too many busy connections: {}, num voting members: {}, quorum size: {}, "
+                 "no hope to get quorum, count: {}",
                  pre_vote_.connection_busy_.load(),
                  num_voting_members,
                  election_quorum_size,
@@ -187,7 +187,7 @@ namespace nuraft {
             if (busy_conn_limit &&
                 pre_vote_.busy_connection_failure_count_ > busy_conn_limit) {
                 // LCOV_EXCL_START
-                p_ft("too many pre-vote failures due to busy connection!");
+                TLOG(FATAL, "too many pre-vote failures due to busy connection!");
                 ctx_->state_mgr_->system_exit(N22_unrecoverable_isolation);
                 // LCOV_EXCL_STOP
             }
@@ -200,12 +200,12 @@ namespace nuraft {
         if (!force_vote &&
             grace_period &&
             sm_commit_index_ < lagging_sm_target_index_) {
-            p_in("grace period option is enabled, and state machine needs catch-up: "
-                 "%" PRIu64 " vs. %" PRIu64 "",
+            TLOG(INFO, "grace period option is enabled, and state machine needs catch-up: "
+                 "{}" " vs. {}" "",
                  sm_commit_index_.load(),
                  lagging_sm_target_index_.load());
             if (vote_init_timer_term_ != cur_term) {
-                p_in("grace period: %d, term increment detected %" PRIu64 " vs. %" PRIu64
+                TLOG(INFO, "grace period: {}, term increment detected {}" " vs. {}"
                      ", reset timer",
                      grace_period, vote_init_timer_term_.load(), cur_term);
                 vote_init_timer_.set_duration_ms(grace_period);
@@ -216,13 +216,13 @@ namespace nuraft {
             if (vote_init_timer_term_ == cur_term &&
                 !vote_init_timer_.timeout()) {
                 // Grace period, do not initiate vote.
-                p_in("grace period: %d, term %" PRIu64 ", waited %" PRIu64
+                TLOG(INFO, "grace period: {}, term {}" ", waited {}"
                      " ms, skip initiating vote",
                      grace_period, cur_term, vote_init_timer_.get_ms());
                 return;
             } else {
-                p_in("grace period: %d, no new leader detected for term %" PRIu64
-                     " for %" PRIu64 " ms",
+                TLOG(INFO, "grace period: {}, no new leader detected for term {}"
+                     " for {}" " ms",
                      grace_period, cur_term, vote_init_timer_.get_ms());
             }
         }
@@ -258,8 +258,8 @@ namespace nuraft {
         ctx_->state_mgr_->save_state(*state_);
         votes_granted_ += 1;
         votes_responded_ += 1;
-        p_in("[VOTE INIT] my id %d, my role %s, term %" PRIu64 ", log idx %" PRIu64 ", "
-             "log term %" PRIu64 ", priority (target %d / mine %d)\n",
+        TLOG(INFO, "[VOTE INIT] my id {}, my role {}, term {}" ", log idx {}" ", "
+             "log term {}" ", priority (target {} / mine {})\n",
              id_, srv_role_to_string(role_).c_str(),
              state_->get_term(), log_store_->next_slot() - 1,
              term_for_log(log_store_->next_slot() - 1),
@@ -297,25 +297,25 @@ namespace nuraft {
                 // Ship it.
                 req->log_entries().push_back(fv_msg_le);
             }
-            p_db("send %s to server %d with term %" PRIu64 "",
+            TLOG(DEBUG, "send {} to server {} with term {}" "",
                  msg_type_to_string(req->get_type()).c_str(),
                  it->second->get_id(),
                  state_->get_term());
             if (pp->make_busy()) {
                 pp->send_req(pp, req, resp_handler_);
             } else {
-                p_wn("failed to send vote request: peer %d (%s) is busy",
+                TLOG(WARNING, "failed to send vote request: peer {} ({}) is busy",
                      pp->get_id(), pp->get_endpoint().c_str());
             }
         }
     }
 
     ptr<resp_msg> raft_server::handle_vote_req(req_msg &req) {
-        p_in("[VOTE REQ] my role %s, from peer %d, "
-             "log term: req %" PRIu64 " / mine %" PRIu64 "\n"
-             "last idx: req %" PRIu64 " / mine %" PRIu64
-             ", term: req %" PRIu64 " / mine %" PRIu64 "\n"
-             "priority: target %d / mine %d, voted_for %d",
+        TLOG(INFO, "[VOTE REQ] my role {}, from peer {}, "
+             "log term: req {}" " / mine {}" "\n"
+             "last idx: req {}" " / mine {}"
+             ", term: req {}" " / mine {}" "\n"
+             "priority: target {} / mine {}, voted_for {}",
              srv_role_to_string(role_).c_str(),
              req.get_src(), req.get_last_log_term(), log_store_->last_entry()->get_term(),
              req.get_last_log_idx(), log_store_->next_slot() - 1,
@@ -341,11 +341,11 @@ namespace nuraft {
 
         bool ignore_priority = false;
         if (req.log_entries().size() > 0) {
-            p_in("[VOTE REQ] force vote request, will ignore priority");
+            TLOG(INFO, "[VOTE REQ] force vote request, will ignore priority");
             ignore_priority = true;
         }
         if (state_->is_catching_up()) {
-            p_in("[VOTE REQ] this server is catching-up with leader, "
+            TLOG(INFO, "[VOTE REQ] this server is catching-up with leader, "
                 "will ignore priority");
             ignore_priority = true;
         }
@@ -363,22 +363,22 @@ namespace nuraft {
                     //   that is intentionally triggered by the flag in
                     //   `raft_params`. In such case, we don't check the
                     //   priority.
-                    p_in("I (%d) could vote for peer %d, "
-                         "but priority %d is lower than %d",
+                    TLOG(INFO, "I ({}) could vote for peer {}, "
+                         "but priority {} is lower than {}",
                          id_, s_conf->get_id(),
                          s_conf->get_priority(), target_priority_);
-                    p_in("decision: X (deny)\n");
+                    TLOG(INFO, "decision: X (deny)\n");
                     return resp;
                 }
             }
 
-            p_in("decision: O (grant), voted_for %d, term %" PRIu64,
+            TLOG(INFO, "decision: O (grant), voted_for {}, term {}",
                  req.get_src(), resp->get_term());
             resp->accept(log_store_->next_slot());
             state_->set_voted_for(req.get_src());
             ctx_->state_mgr_->save_state(*state_);
         } else {
-            p_in("decision: X (deny), term %" PRIu64, resp->get_term());
+            TLOG(INFO, "decision: X (deny), term {}", resp->get_term());
         }
 
         return resp;
@@ -386,14 +386,14 @@ namespace nuraft {
 
     void raft_server::handle_vote_resp(resp_msg &resp) {
         if (election_completed_) {
-            p_in("Election completed, will ignore the voting result from this server");
+            TLOG(INFO, "Election completed, will ignore the voting result from this server");
             return;
         }
 
         if (resp.get_term() != state_->get_term()) {
             // Vote response for other term. Should ignore it.
-            p_in("[VOTE RESP] from peer %d, my role %s, "
-                 "but different resp term %" PRIu64 ". ignore it.",
+            TLOG(INFO, "[VOTE RESP] from peer {}, my role {}, "
+                 "but different resp term {}" ". ignore it.",
                  resp.get_src(), srv_role_to_string(role_).c_str(), resp.get_term());
             return;
         }
@@ -409,19 +409,19 @@ namespace nuraft {
 
         int32 election_quorum_size = get_quorum_for_election() + 1;
 
-        p_in("[VOTE RESP] peer %d (%s), resp term %" PRIu64 ", my role %s, "
-             "granted %d, responded %d, "
-             "num voting members %d, quorum %d\n",
+        TLOG(INFO, "[VOTE RESP] peer {} ({}), resp term {}" ", my role {}, "
+             "granted {}, responded {}, "
+             "num voting members {}, quorum {}\n",
              resp.get_src(), (resp.get_accepted()) ? "O" : "X", resp.get_term(),
              srv_role_to_string(role_).c_str(),
              (int) votes_granted_, (int) votes_responded_,
              get_num_voting_members(), election_quorum_size);
 
         if (votes_granted_ >= election_quorum_size) {
-            p_in("Server is elected as leader for term %" PRIu64, state_->get_term());
+            TLOG(INFO, "Server is elected as leader for term {}", state_->get_term());
             election_completed_ = true;
             become_leader();
-            p_in("  === LEADER (term %" PRIu64 ") ===\n", state_->get_term());
+            TLOG(INFO, "  === LEADER (term {}" ") ===\n", state_->get_term());
         }
     }
 
@@ -433,11 +433,11 @@ namespace nuraft {
             next_idx_for_resp = std::numeric_limits<ulong>::max();
         }
 
-        p_in("[PRE-VOTE REQ] my role %s, from peer %d, "
-             "log term: req %" PRIu64 " / mine %" PRIu64 "\n"
-             "last idx: req %" PRIu64 " / mine %" PRIu64
-             ", term: req %" PRIu64 " / mine %" PRIu64 "\n"
-             "%s",
+        TLOG(INFO, "[PRE-VOTE REQ] my role {}, from peer {}, "
+             "log term: req {}" " / mine {}" "\n"
+             "last idx: req {}" " / mine {}"
+             ", term: req {}" " / mine {}" "\n"
+             "{}",
              srv_role_to_string(role_).c_str(),
              req.get_src(), req.get_last_log_term(),
              log_store_->last_entry()->get_term(),
@@ -459,16 +459,16 @@ namespace nuraft {
         //   be cleared properly. Hence, it should accept any pre-vote
         //   requests.
         if (state_->is_catching_up()) {
-            p_in("this server is catching up, always accept pre-vote");
+            TLOG(INFO, "this server is catching up, always accept pre-vote");
         }
         if (!hb_alive_ || state_->is_catching_up()) {
-            p_in("pre-vote decision: O (grant)");
+            TLOG(INFO, "pre-vote decision: O (grant)");
             resp->accept(log_store_->next_slot());
         } else {
             if (next_idx_for_resp != std::numeric_limits<ulong>::max()) {
-                p_in("pre-vote decision: X (deny)");
+                TLOG(INFO, "pre-vote decision: X (deny)");
             } else {
-                p_in("pre-vote decision: XX (strong deny, non-existing node)");
+                TLOG(INFO, "pre-vote decision: XX (strong deny, non-existing node)");
             }
         }
 
@@ -478,8 +478,8 @@ namespace nuraft {
     void raft_server::handle_prevote_resp(resp_msg &resp) {
         if (resp.get_term() != pre_vote_.term_) {
             // Vote response for other term. Should ignore it.
-            p_in("[PRE-VOTE RESP] from peer %d, my role %s, "
-                 "but different resp term %" PRIu64 " (pre-vote term %" PRIu64 "). "
+            TLOG(INFO, "[PRE-VOTE RESP] from peer {}, my role {}, "
+                 "but different resp term {}" " (pre-vote term {}" "). "
                  "ignore it.",
                  resp.get_src(), srv_role_to_string(role_).c_str(),
                  resp.get_term(), pre_vote_.term_);
@@ -502,9 +502,9 @@ namespace nuraft {
 
         int32 election_quorum_size = get_quorum_for_election() + 1;
 
-        p_in("[PRE-VOTE RESP] peer %d (%s), term %" PRIu64 ", resp term %" PRIu64 ", "
-             "my role %s, dead %d, live %d, abandoned %d, "
-             "num voting members %d, quorum %d\n",
+        TLOG(INFO, "[PRE-VOTE RESP] peer {} ({}), term {}" ", resp term {}" ", "
+             "my role {}, dead {}, live {}, abandoned {}, "
+             "num voting members {}, quorum {}\n",
              resp.get_src(), (resp.get_accepted()) ? "O" : "X",
              pre_vote_.term_, resp.get_term(),
              srv_role_to_string(role_).c_str(),
@@ -512,12 +512,12 @@ namespace nuraft {
              get_num_voting_members(), election_quorum_size);
 
         if (pre_vote_.dead_ >= election_quorum_size) {
-            p_in("[PRE-VOTE DONE] SUCCESS, term %" PRIu64, pre_vote_.term_);
+            TLOG(INFO, "[PRE-VOTE DONE] SUCCESS, term {}", pre_vote_.term_);
 
             bool exp = false;
             bool val = true;
             if (pre_vote_.done_.compare_exchange_strong(exp, val)) {
-                p_in("[PRE-VOTE DONE] initiate actual vote");
+                TLOG(INFO, "[PRE-VOTE DONE] initiate actual vote");
 
                 // Immediately initiate actual vote.
                 initiate_vote();
@@ -527,17 +527,17 @@ namespace nuraft {
                     restart_election_timer();
                 }
             } else {
-                p_in("[PRE-VOTE DONE] actual vote is already initiated, do nothing");
+                TLOG(INFO, "[PRE-VOTE DONE] actual vote is already initiated, do nothing");
             }
         }
 
         if (pre_vote_.live_ >= election_quorum_size) {
             pre_vote_.quorum_reject_count_.fetch_add(1);
-            p_wn("[PRE-VOTE] rejected by quorum, count %d",
+            TLOG(WARNING, "[PRE-VOTE] rejected by quorum, count {}",
                  pre_vote_.quorum_reject_count_.load());
             if (pre_vote_.quorum_reject_count_ >=
                 raft_server::raft_limits_.pre_vote_rejection_limit_) {
-                p_ft("too many pre-vote rejections, probably this node is not "
+                TLOG(FATAL, "too many pre-vote rejections, probably this node is not "
                     "receiving heartbeat from leader. "
                     "we should re-establish the network connection");
                 send_reconnect_request();
@@ -545,7 +545,7 @@ namespace nuraft {
         }
 
         if (pre_vote_.abandoned_ >= election_quorum_size) {
-            p_er("[PRE-VOTE DONE] this node has been removed, stepping down");
+            TLOG(ERROR, "[PRE-VOTE DONE] this node has been removed, stepping down");
             cb_func::Param param(id_, leader_);
             CbReturnCode rc = ctx_->cb_func_.call(cb_func::RemovedFromCluster,
                                                   &param);

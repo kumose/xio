@@ -35,7 +35,7 @@ limitations under the License.
 #include <xio/raft/stat_mgr.h>
 #include <xio/raft/state_machine.h>
 #include <xio/raft/state_mgr.h>
-#include <xio/raft/tracer.h>
+#include <xio/logging.h>
 
 #include <cassert>
 #include <random>
@@ -89,7 +89,6 @@ namespace nuraft {
           , state_machine_(ctx->state_machine_)
           , et_cnt_receiving_snapshot_(0)
           , first_snapshot_distance_(0)
-          , l_(ctx->logger_)
           , stale_config_(nullptr)
           , config_(ctx->state_mgr_->load_config())
           , uncommitted_config_(nullptr)
@@ -118,7 +117,7 @@ namespace nuraft {
         last_rcvd_valid_append_entries_req_.reset(
             -1 * ctx_->get_params()->heart_beat_interval_ *
             std::max(100, raft_limits_.full_consensus_follower_limit_.load()));
-        p_in("last_rcvd_valid_append_entries_req_ get ms: %lu",
+        TLOG(INFO, "last_rcvd_valid_append_entries_req_ get ms: {}",
              last_rcvd_valid_append_entries_req_.get_ms());
 
         if (opt.raft_callback_) {
@@ -146,7 +145,7 @@ namespace nuraft {
                                           params->snapshot_distance_ - 1));
 
             first_snapshot_distance_ = distribution(engine);
-            p_in("First snapshot creation log distance %u", first_snapshot_distance_);
+            TLOG(INFO, "First snapshot creation log distance {}", first_snapshot_distance_);
         }
 
         apply_and_log_current_params();
@@ -179,7 +178,7 @@ namespace nuraft {
         if (c_conf->is_async_replication()) {
             init_msg << " -- ASYNC REPLICATION --\n";
         }
-        p_in("%s", init_msg.str().c_str());
+        TLOG(INFO, "{}", init_msg.str().c_str());
 
         /**
      * I found this implementation is also a victim of bug
@@ -214,8 +213,8 @@ namespace nuraft {
              ++i) {
             auto const entry = log_store_->entry_at(i);
             if (entry->get_val_type() == log_val_type::conf) {
-                p_in("detect a configuration change "
-                     "that is not committed yet at index %" PRIu64 "", i);
+                TLOG(INFO, "detect a configuration change "
+                     "that is not committed yet at index {}" "", i);
                 config_changing_ = true;
                 break;
             }
@@ -236,9 +235,8 @@ namespace nuraft {
                      cs_new<peer,
                          ptr<srv_config> &,
                          context &,
-                         timer_task<int32>::executor &,
-                         ptr<logger> &>
-                     (cur_srv, *ctx_, exec, l_)));
+                         timer_task<int32>::executor &>
+                     (cur_srv, *ctx_, exec)));
             } else {
                 // Myself.
                 im_learner_ = cur_srv->is_learner();
@@ -270,7 +268,7 @@ namespace nuraft {
                 << ", " << ((im_learner_) ? "learner" : "voting_member")
                 << std::endl;
         peer_info_msg << "num peers: " << peers_.size() << std::endl;
-        p_in("%s", peer_info_msg.str().c_str());
+        TLOG(INFO, "{}", peer_info_msg.str().c_str());
 
         if (opt.start_server_in_constructor_) {
             start_server(opt.skip_initial_election_timeout_);
@@ -283,12 +281,12 @@ namespace nuraft {
         sm_commit_notifier_notified_idx_ = 0;
         global_mgr *mgr = get_global_mgr();
         if (mgr) {
-            p_in("global manager is detected. will use shared thread pool");
+            TLOG(INFO, "global manager is detected. will use shared thread pool");
             commit_bg_stopped_ = true;
             append_bg_stopped_ = true;
             mgr->init_raft_server(this);
         } else {
-            p_in("global manager does not exist. "
+            TLOG(INFO, "global manager does not exist. "
                 "will use local thread for commit and append");
             bg_commit_thread_ = std::thread(std::bind(&raft_server::commit_in_bg, this));
 
@@ -301,17 +299,17 @@ namespace nuraft {
             //   During remediation, the node (to be added) shouldn't be
             //   even a temp leader (to avoid local commit). We provide
             //   this option for that purpose.
-            p_in("skip initialization of election timer by given parameter, "
+            TLOG(INFO, "skip initialization of election timer by given parameter, "
                 "waiting for the first heartbeat");
             // Make this status persistent, so as to make it not
             // trigger any election even after process restart.
             state_->allow_election_timer(false);
             ctx_->state_mgr_->save_state(*state_);
         } else if (!state_->is_election_timer_allowed()) {
-            p_in("skip initialization of election timer by previously saved state, "
+            TLOG(INFO, "skip initialization of election timer by previously saved state, "
                 "waiting for the first heartbeat");
         } else {
-            p_in("wait for HB, for %d + [%d, %d] ms",
+            TLOG(INFO, "wait for HB, for {} + [{}, {}] ms",
                  params->rpc_failure_backoff_,
                  params->election_timeout_lower_bound_,
                  params->election_timeout_upper_bound_);
@@ -323,7 +321,7 @@ namespace nuraft {
         vote_init_timer_.set_duration_ms(params->grace_period_of_lagging_state_machine_);
         vote_init_timer_.reset();
         self_mark_down_ = excluded_from_the_quorum_ = stopping_ = false;
-        p_db("server %d started", id_);
+        TLOG(DEBUG, "server {} started", id_);
     }
 
     raft_server::~raft_server() {
@@ -356,7 +354,7 @@ namespace nuraft {
                 distribution(params->election_timeout_lower_bound_,
                              params->election_timeout_upper_bound_);
         rand_timeout_ = std::bind(distribution, engine);
-        p_in("new timeout range: %d -- %d",
+        TLOG(INFO, "new timeout range: {} -- {}",
              params->election_timeout_lower_bound_,
              params->election_timeout_upper_bound_);
     }
@@ -386,37 +384,37 @@ namespace nuraft {
         if (!test_mode_flag_) {
             if (params->heart_beat_interval_ >= params->election_timeout_lower_bound_) {
                 params->election_timeout_lower_bound_ = params->heart_beat_interval_ * 2;
-                p_wn("invalid election timeout lower bound detected, adjusted to %d",
+                TLOG(WARNING, "invalid election timeout lower bound detected, adjusted to {}",
                      params->election_timeout_lower_bound_);
             }
             if (params->election_timeout_lower_bound_
                 >= params->election_timeout_upper_bound_) {
                 params->election_timeout_upper_bound_ =
                         params->election_timeout_lower_bound_ * 2;
-                p_wn("invalid election timeout upper bound detected, adjusted to %d",
+                TLOG(WARNING, "invalid election timeout upper bound detected, adjusted to {}",
                      params->election_timeout_upper_bound_);
             }
         }
 
-        p_in("parameters: "
-             "timeout %d - %d, heartbeat %d, "
-             "leadership expiry %d, "
-             "max batch %d, backoff %d, snapshot distance %d, "
-             "enable randomized snapshot creation %s, "
-             "log sync stop gap %d, "
-             "use new joiner type %s, "
-             "reserved logs %d, client timeout %d, "
-             "auto forwarding %s, API call type %s, "
-             "custom commit quorum size %d, "
-             "custom election quorum size %d, "
-             "snapshot receiver %s, "
-             "leadership transfer wait time %d, "
-             "grace period of lagging state machine %d, "
-             "snapshot IO: %s, "
-             "parallel log appending: %s, "
-             "streaming mode max log gap %d, max bytes %" PRIu64 ", "
-             "full consensus mode: %s, "
-             "tracking peer sm committed index: %s",
+        TLOG(INFO, "parameters: "
+             "timeout {} - {}, heartbeat {}, "
+             "leadership expiry {}, "
+             "max batch {}, backoff {}, snapshot distance {}, "
+             "enable randomized snapshot creation {}, "
+             "log sync stop gap {}, "
+             "use new joiner type {}, "
+             "reserved logs {}, client timeout {}, "
+             "auto forwarding {}, API call type {}, "
+             "custom commit quorum size {}, "
+             "custom election quorum size {}, "
+             "snapshot receiver {}, "
+             "leadership transfer wait time {}, "
+             "grace period of lagging state machine {}, "
+             "snapshot IO: {}, "
+             "parallel log appending: {}, "
+             "streaming mode max log gap {}, max bytes {}" ", "
+             "full consensus mode: {}, "
+             "tracking peer sm committed index: {}",
              params->election_timeout_lower_bound_,
              params->election_timeout_upper_bound_,
              params->heart_beat_interval_,
@@ -475,7 +473,7 @@ namespace nuraft {
     }
 
     void raft_server::shutdown() {
-        p_in("shutting down raft core");
+        TLOG(INFO, "shutting down raft core");
 
         // If the global manager exists, cancel all pending requests.
         cancel_global_requests();
@@ -496,13 +494,13 @@ namespace nuraft {
             }
         }
 
-        p_in("sent stop signal to the commit thread.");
+        TLOG(INFO, "sent stop signal to the commit thread.");
 
         // Cancel all scheduler tasks.
         // TODO: how do we guarantee all tasks are done?
         cancel_schedulers();
 
-        p_in("cancelled all schedulers.");
+        TLOG(INFO, "cancelled all schedulers.");
 
         // Wait until background commit thread terminates.
         while (!commit_bg_stopped_) {
@@ -513,26 +511,25 @@ namespace nuraft {
             std::this_thread::yield();
         }
 
-        p_in("commit thread stopped.");
+        TLOG(INFO, "commit thread stopped.");
 
         drop_all_pending_commit_elems();
 
-        p_in("all pending commit elements dropped.");
+        TLOG(INFO, "all pending commit elements dropped.");
 
         drop_all_sm_watcher_elems();
 
-        p_in("all state machine watchers dropped.");
+        TLOG(INFO, "all state machine watchers dropped.");
 
         // Clear shared_ptrs that the current server is holding.
         {
             std::lock_guard<std::mutex> l(ctx_->ctx_lock_);
-            ctx_->logger_.reset();
             ctx_->rpc_listener_.reset();
             ctx_->rpc_cli_factory_.reset();
             ctx_->scheduler_.reset();
         }
 
-        p_in("reset all pointers.");
+        TLOG(INFO, "reset all pointers.");
 
         // Server to join/leave.
         if (srv_to_join_) {
@@ -547,14 +544,14 @@ namespace nuraft {
             bg_commit_thread_.join();
         }
 
-        p_in("joined terminated commit thread.");
+        TLOG(INFO, "joined terminated commit thread.");
 
         while (bg_append_ea_ && !append_bg_stopped_) {
             bg_append_ea_->invoke();
             std::this_thread::yield();
         }
 
-        p_in("sent stop signal to background append thread.");
+        TLOG(INFO, "sent stop signal to background append thread.");
 
         if (bg_append_thread_.joinable()) {
             bg_append_thread_.join();
@@ -562,14 +559,14 @@ namespace nuraft {
 
         {
             auto_lock(auto_fwd_reqs_lock_);
-            p_in("clean up auto-forwarding queue: %zu elems", auto_fwd_reqs_.size());
+            TLOG(INFO, "clean up auto-forwarding queue: {} elems", auto_fwd_reqs_.size());
             auto_fwd_reqs_.clear();
         }
 
-        p_in("clean up auto-forwarding clients");
+        TLOG(INFO, "clean up auto-forwarding clients");
         cleanup_auto_fwd_pkgs();
 
-        p_in("raft_server shutdown completed.");
+        TLOG(INFO, "raft_server shutdown completed.");
     }
 
     bool raft_server::is_regular_member(const ptr<peer> &p) {
@@ -768,13 +765,13 @@ namespace nuraft {
         param.ctx = &req;
         CbReturnCode rc = ctx_->cb_func_.call(cb_func::ProcessReq, &param);
         if (rc == CbReturnCode::ReturnNull) {
-            p_wn("by callback, return null");
+            TLOG(WARNING, "by callback, return null");
             return nullptr;
         }
 
-        p_db("Receive a %s message from %d with LastLogIndex=%" PRIu64 ", "
-             "LastLogTerm %" PRIu64 ", EntriesLength=%zu, CommitIndex=%" PRIu64
-             ", Term=%" PRIu64 ", flags=%" PRIx64 "",
+        TLOG(DEBUG, "Receive a {} message from {} with LastLogIndex={}" ", "
+             "LastLogTerm {}" ", EntriesLength={}, CommitIndex={}"
+             ", Term={}" ", flags={}" "",
              msg_type_to_string(req.get_type()).c_str(),
              req.get_src(),
              req.get_last_log_idx(),
@@ -786,7 +783,7 @@ namespace nuraft {
 
         if (stopping_) {
             // Shutting down, ignore all incoming messages.
-            p_wn("stopping, return null");
+            TLOG(WARNING, "stopping, return null");
             return nullptr;
         }
 
@@ -844,7 +841,7 @@ namespace nuraft {
         } else if (req.get_type() == msg_type::pre_vote_request) {
             resp = handle_prevote_req(req);
         } else if (req.get_type() == msg_type::ping_request) {
-            p_in("got ping from %d", req.get_src());
+            TLOG(INFO, "got ping from {}", req.get_src());
             resp = cs_new<resp_msg>(state_->get_term(),
                                     msg_type::ping_response,
                                     id_,
@@ -857,8 +854,8 @@ namespace nuraft {
         }
 
         if (resp) {
-            p_db("Response back a %s message to %d with Accepted=%d, "
-                 "Term=%" PRIu64 ", NextIndex=%" PRIu64 "",
+            TLOG(DEBUG, "Response back a {} message to {} with Accepted={}, "
+                 "Term={}" ", NextIndex={}" "",
                  msg_type_to_string(resp->get_type()).c_str(),
                  resp->get_dst(),
                  resp->get_accepted() ? 1 : 0,
@@ -872,14 +869,14 @@ namespace nuraft {
     void raft_server::reset_peer_info() {
         ptr<cluster_config> c_config = get_config();
         auto const srv_cnt = c_config->get_servers().size();
-        p_db("servers: %zu\n", srv_cnt);
+        TLOG(DEBUG, "servers: {}\n", srv_cnt);
         if (srv_cnt > 1) {
             ptr<srv_config> my_srv_config = c_config->get_server(id_);
             if (!my_srv_config) {
                 // It means that this node was removed, and then
                 // added again (it shouldn't happen though).
                 // Just return.
-                p_wn("my_srv_config is NULL");
+                TLOG(WARNING, "my_srv_config is NULL");
                 return;
             }
 
@@ -921,9 +918,9 @@ namespace nuraft {
             }
 
             if (rpc_errs < raft_server::raft_limits_.warning_limit_) {
-                p_wn("peer (%d) response error: %s", peer_id, err->what());
+                TLOG(WARNING, "peer ({}) response error: {}", peer_id, err->what());
             } else if (rpc_errs == raft_server::raft_limits_.warning_limit_) {
-                p_wn("too verbose RPC error on peer (%d), "
+                TLOG(WARNING, "too verbose RPC error on peer ({}), "
                      "will suppress it from now", peer_id);
                 if (!pp || !pp->is_lost()) {
                     if (pp) {
@@ -945,13 +942,13 @@ namespace nuraft {
         }
 
         if (!resp.get()) {
-            p_wn("empty peer response");
+            TLOG(WARNING, "empty peer response");
             return;
         }
 
-        p_db("Receive a %s message from peer %d with "
-             "Result=%d, Term=%" PRIu64 ", NextIndex=%" PRIu64 ", "
-             "flags=%" PRIx64 "",
+        TLOG(DEBUG, "Receive a {} message from peer {} with "
+             "Result={}, Term={}" ", NextIndex={}" ", "
+             "flags={}" "",
              msg_type_to_string(resp->get_type()).c_str(),
              resp->get_src(),
              resp->get_accepted() ? 1 : 0,
@@ -959,7 +956,7 @@ namespace nuraft {
              resp->get_next_idx(),
              resp->get_extra_flags());
 
-        p_tr("src: %d, dst: %d, resp->get_term(): %d\n",
+        TLOG(TRACE, "src: {}, dst: {}, resp->get_term(): {}\n",
              (int) resp->get_src(), (int) resp->get_dst(), (int) resp->get_term());
 
         if (resp->get_accepted()) {
@@ -969,7 +966,7 @@ namespace nuraft {
                 peer *pp = entry->second.get();
                 int rpc_errs = pp->get_rpc_errs();
                 if (rpc_errs >= raft_server::raft_limits_.warning_limit_) {
-                    p_wn("recovered from RPC failure from peer %d, %d errors",
+                    TLOG(WARNING, "recovered from RPC failure from peer {}, {} errors",
                          resp->get_src(), rpc_errs);
                 }
                 pp->set_recovered();
@@ -1011,7 +1008,7 @@ namespace nuraft {
                 break;
 
             case msg_type::ping_response:
-                p_in("got ping response from %d", resp->get_src());
+                TLOG(INFO, "got ping response from {}", resp->get_src());
                 break;
 
             case msg_type::custom_notification_response:
@@ -1019,7 +1016,7 @@ namespace nuraft {
                 break;
 
             default:
-                p_er("received an unexpected response: %s, ignore it",
+                TLOG(ERROR, "received an unexpected response: {}, ignore it",
                      msg_type_to_string(resp->get_type()).c_str());
                 break;
         }
@@ -1029,7 +1026,7 @@ namespace nuraft {
         recur_lock(lock_);
 
         if (leader_ == id_) {
-            p_er("this node %d is leader, "
+            TLOG(ERROR, "this node {} is leader, "
                  "cannot send reconnect request",
                  id_);
             return;
@@ -1048,12 +1045,12 @@ namespace nuraft {
             if (p_leader->make_busy()) {
                 p_leader->send_req(p_leader, req, ex_resp_handler_);
             } else {
-                p_er("previous message to leader %d hasn't been responded yet",
+                TLOG(ERROR, "previous message to leader {} hasn't been responded yet",
                      p_leader->get_id());
             }
         } else {
             // LCOV_EXCL_START
-            p_ft("cannot find leader!");
+            TLOG(FATAL, "cannot find leader!");
             ctx_->state_mgr_->system_exit(N22_unrecoverable_isolation);
             // LCOV_EXCL_STOP
         }
@@ -1067,15 +1064,15 @@ namespace nuraft {
          id_,
          srv_id));
         if (role_ != srv_role::leader) {
-            p_er("this node is not a leader "
-                 "(upon re-connect req from peer %d)",
+            TLOG(ERROR, "this node is not a leader "
+                 "(upon re-connect req from peer {})",
                  srv_id);
             return resp;
         }
 
         auto entry = peers_.find(srv_id);
         if (entry == peers_.end()) {
-            p_er("cannot find peer %d to re-connect", srv_id);
+            TLOG(ERROR, "cannot find peer {} to re-connect", srv_id);
             return resp;
         }
 
@@ -1083,14 +1080,14 @@ namespace nuraft {
         ptr<peer> pp = entry->second;
         pp->schedule_reconnection();
         resp->accept(log_store_->next_slot());
-        p_in("re-connection to peer %d scheduled", srv_id);
+        TLOG(INFO, "re-connection to peer {} scheduled", srv_id);
 
         return resp;
     }
 
     void raft_server::handle_reconnect_resp(resp_msg &resp) {
-        p_in("got re-connection scheduling response "
-             "from leader %d to my id %d, result %s",
+        TLOG(INFO, "got re-connection scheduling response "
+             "from leader {} to my id {}, result {}",
              resp.get_src(), resp.get_dst(),
              resp.get_accepted() ? "accepted" : "rejected");
     }
@@ -1109,7 +1106,7 @@ namespace nuraft {
         }
 
         if (s_config) {
-            p_db("reset RPC client for peer %d",
+            TLOG(DEBUG, "reset RPC client for peer {}",
                  p.get_id());
             return p.recreate_rpc(s_config, *ctx_);
         }
@@ -1121,7 +1118,7 @@ namespace nuraft {
 
         {
             auto_lock(commit_ret_elems_lock_);
-            p_in("number of pending commit elements: %zu",
+            TLOG(INFO, "number of pending commit elements: {}",
                  commit_ret_elems_.size());
         }
 
@@ -1136,8 +1133,8 @@ namespace nuraft {
                     (params->leadership_transfer_min_wait_time_);
             leadership_transfer_timer_.reset();
             precommit_index_ = log_store_->next_slot() - 1;
-            p_in("state machine commit index %" PRIu64 ", "
-                 "precommit index %" PRIu64 ", last log index %" PRIu64,
+            TLOG(INFO, "state machine commit index {}" ", "
+                 "precommit index {}" ", last log index {}",
                  sm_commit_index_.load(),
                  precommit_index_.load(),
                  log_store_->next_slot() - 1);
@@ -1173,7 +1170,7 @@ namespace nuraft {
                 ptr<log_entry> le = log_store_->entry_at(ii);
                 if (le->get_val_type() != log_val_type::conf) continue;
 
-                p_in("found uncommitted config at %" PRIu64 ", size %zu",
+                TLOG(INFO, "found uncommitted config at {}" ", size {}",
                      ii, le->get_buf().size());
                 last_config = cluster_config::deserialize(le->get_buf());
             }
@@ -1190,7 +1187,7 @@ namespace nuraft {
              log_val_type::conf,
              timer_helper::get_timeofday_us()));
             index_at_becoming_leader_ = store_log_entry(entry);
-            p_in("[BECOME LEADER] appended new config at %" PRIu64,
+            TLOG(INFO, "[BECOME LEADER] appended new config at {}",
                  index_at_becoming_leader_.load());
             config_changing_ = true;
         }
@@ -1213,7 +1210,7 @@ namespace nuraft {
         if (my_priority_ == 0 && get_num_voting_members() > 1) {
             // If this member's priority is zero, this node owns a temporary
             // leadership. Let other node takeover shortly.
-            p_in("[BECOME LEADER] my priority is 0, will resign shortly");
+            TLOG(INFO, "[BECOME LEADER] my priority is 0, will resign shortly");
             yield_leadership();
         }
     }
@@ -1239,9 +1236,9 @@ namespace nuraft {
 
         int32 min_quorum_size = get_quorum_for_commit() + 1;
         if ((num_voting_members - nr_peers) < min_quorum_size) {
-            p_er("%d nodes (out of %d, %zu including learners) are not "
-                 "responding longer than %d ms, "
-                 "at least %d nodes (including leader) should be alive "
+            TLOG(ERROR, "{} nodes (out of {}, {} including learners) are not "
+                 "responding longer than {} ms, "
+                 "at least {} nodes (including leader) should be alive "
                  "to proceed commit",
                  nr_peers,
                  num_voting_members,
@@ -1271,11 +1268,11 @@ namespace nuraft {
             //   as the size of quorum, we should not expire leadership,
             //   since it will block the cluster doing any further actions.
             if (num_voting_members <= min_quorum_size) {
-                p_wn("we cannot yield the leadership of this small cluster");
+                TLOG(WARNING, "we cannot yield the leadership of this small cluster");
                 return true;
             }
 
-            p_er("will yield the leadership of this node");
+            TLOG(ERROR, "will yield the leadership of this node");
             yield_leadership(true);
             return false;
         }
@@ -1286,12 +1283,12 @@ namespace nuraft {
         ptr<raft_params> params = ctx_->get_params();
         if (!params->leadership_transfer_min_wait_time_) {
             // Transferring leadership is disabled.
-            p_tr("leadership transfer is disabled");
+            TLOG(TRACE, "leadership transfer is disabled");
             return;
         }
         if (!leadership_transfer_timer_.timeout()) {
             // Leadership period is too short.
-            p_tr("leadership period is too short: %zu ms",
+            TLOG(TRACE, "leadership period is too short: {} ms",
                  leadership_transfer_timer_.get_duration_us() / 1000);
             return;
         }
@@ -1315,7 +1312,7 @@ namespace nuraft {
             if (peer_elem->get_matched_idx() + params->stale_log_gap_ <
                 cur_commit_idx) {
                 // This peer is lagging behind.
-                p_tr("peer %d is lagging behind, %" PRIu64 " < %" PRIu64,
+                TLOG(TRACE, "peer {} is lagging behind, {}" " < {}",
                      s_conf.get_id(), peer_elem->get_matched_idx(),
                      cur_commit_idx);
                 return;
@@ -1324,7 +1321,7 @@ namespace nuraft {
             uint64_t last_resp_ms = peer_elem->get_resp_timer_us() / 1000;
             if (last_resp_ms > election_lower) {
                 // This replica is not responding.
-                p_tr("peer %d is not responding, %" PRIu64 " ms ago",
+                TLOG(TRACE, "peer {} is not responding, {}" " ms ago",
                      s_conf.get_id(), last_resp_ms);
                 return;
             }
@@ -1332,20 +1329,20 @@ namespace nuraft {
 
         if (my_priority_ >= max_priority || successor_id == -1) {
             // This leader already has the highest priority.
-            p_tr("my priority %d is already the highest", my_priority_);
+            TLOG(TRACE, "my priority {} is already the highest", my_priority_);
             return;
         }
 
         if (!state_machine_->allow_leadership_transfer()) {
             // Although all conditions are met,
             // user does not want to transfer the leadership.
-            p_tr("state machine does not allow leadership transfer");
+            TLOG(TRACE, "state machine does not allow leadership transfer");
             return;
         }
 
-        p_in("going to transfer leadership to %d, "
-             "my priority %d, max priority %d, "
-             "has been leader for %" PRIu64 " sec",
+        TLOG(INFO, "going to transfer leadership to {}, "
+             "my priority {}, max priority {}, "
+             "has been leader for {}" " sec",
              successor_id, my_priority_, max_priority,
              leadership_transfer_timer_.get_sec());
         yield_leadership(false, successor_id);
@@ -1361,7 +1358,7 @@ namespace nuraft {
 
         // This node is the only node, do nothing.
         if (get_num_voting_members() <= 1) {
-            p_er("this node is the only node in the cluster, will do nothing");
+            TLOG(ERROR, "this node is the only node in the cluster, will do nothing");
             return;
         }
 
@@ -1372,14 +1369,14 @@ namespace nuraft {
 
         // If callback function decided to refuse this request, return here.
         if (cb_ret != cb_func::Ok) {
-            p_in("[RESIGNATION REQUEST] refused by callback function");
+            TLOG(INFO, "[RESIGNATION REQUEST] refused by callback function");
             return;
         }
 
         recur_lock(lock_);
 
         if (immediate_yield) {
-            p_in("got immediate re-elect request, resign now");
+            TLOG(INFO, "got immediate re-elect request, resign now");
             leader_ = -1;
             become_follower();
             // Clear live flag to avoid pre-vote rejection.
@@ -1426,24 +1423,24 @@ namespace nuraft {
         }
 
         if (successor_id >= 0) {
-            p_in("got graceful re-elect request (designated successor %d), "
+            TLOG(INFO, "got graceful re-elect request (designated successor {}), "
                  "pause write from now",
                  successor_id);
 
             if (successor_id >= 0 &&
                 successor_id != candidate_id) {
-                p_wn("could not find given successor %d", successor_id);
+                TLOG(WARNING, "could not find given successor {}", successor_id);
             }
         } else {
-            p_in("got graceful re-elect request, pause write from now");
+            TLOG(INFO, "got graceful re-elect request, pause write from now");
         }
 
         // Pause write.
         write_paused_ = true;
 
         if (candidate_id > -1) {
-            p_in("next leader candidate: id %d endpoint %s priority %d "
-                 "last response %" PRIu64 " ms ago",
+            TLOG(INFO, "next leader candidate: id {} endpoint {} priority {} "
+                 "last response {}" " ms ago",
                  candidate_id, candidate_endpoint.c_str(), max_priority,
                  last_resp_ms);
             next_leader_candidate_ = candidate_id;;
@@ -1451,13 +1448,13 @@ namespace nuraft {
             // Send a dummy append entries request to the candidate to trigger its election.
             auto pit = peers_.find(candidate_id);
             if (pit != peers_.end()) {
-                p_in("send dummy append entries request to candidate %d", candidate_id);
+                TLOG(INFO, "send dummy append entries request to candidate {}", candidate_id);
                 request_append_entries(pit->second);
             } else {
-                p_wn("could not find candidate %d in peers", candidate_id);
+                TLOG(WARNING, "could not find candidate {} in peers", candidate_id);
             }
         } else {
-            p_wn("cannot find valid candidate for next leader, will proceed anyway");
+            TLOG(WARNING, "cannot find valid candidate for next leader, will proceed anyway");
         }
 
         // Wait until election timeout upper bound.
@@ -1469,19 +1466,19 @@ namespace nuraft {
     bool raft_server::request_leadership() {
         // If this server is already a leader, do nothing.
         if (id_ == leader_ || is_leader()) {
-            p_er("cannot request leadership: this server is already a leader");
+            TLOG(ERROR, "cannot request leadership: this server is already a leader");
             return false;
         }
         if (leader_ == -1) {
-            p_er("cannot request leadership: cannot find leader");
+            TLOG(ERROR, "cannot request leadership: cannot find leader");
             return false;
         }
 
         recur_lock(lock_);
         auto entry = peers_.find(leader_);
         if (entry == peers_.end()) {
-            p_er("cannot request leadership: cannot find peer for "
-                 "leader id %d", leader_.load());
+            TLOG(ERROR, "cannot request leadership: cannot find peer for "
+                 "leader id {}", leader_.load());
             return false;
         }
         ptr<peer> pp = entry->second;
@@ -1506,13 +1503,13 @@ namespace nuraft {
 
         req->log_entries().push_back(custom_noti_le);
         pp->send_req(pp, req, resp_handler_);
-        p_in("sent leadership request to leader %d", leader_.load());
+        TLOG(INFO, "sent leadership request to leader {}", leader_.load());
         return true;
     }
 
     void raft_server::become_follower() {
         // stop hb for all peers
-        p_in("[BECOME FOLLOWER] term %" PRIu64 "", state_->get_term());
+        TLOG(INFO, "[BECOME FOLLOWER] term {}" "", state_->get_term());
         {
             std::lock_guard<std::recursive_mutex> ll(cli_lock_);
             for (peer_itor it = peers_.begin(); it != peers_.end(); ++it) {
@@ -1540,7 +1537,7 @@ namespace nuraft {
             if (params->auto_adjust_quorum_for_small_cluster_ &&
                 peers_.size() == 1 &&
                 params->custom_commit_quorum_size_ == 1) {
-                p_wn("became 2-node cluster's follower, "
+                TLOG(WARNING, "became 2-node cluster's follower, "
                     "restore quorum with default value");
                 ptr<raft_params> clone = cs_new<raft_params>(*params);
                 clone->custom_commit_quorum_size_ = 0;
@@ -1618,7 +1615,7 @@ namespace nuraft {
                 return handle_custom_notification_req(req);
 
             default:
-                p_er("received request: %s, ignore it",
+                TLOG(ERROR, "received request: {}, ignore it",
                      msg_type_to_string(req.get_type()).c_str());
                 break;
         }
@@ -1632,10 +1629,10 @@ namespace nuraft {
             handle_ext_resp_err(*err);
             return;
         }
-        p_db("type: %d, err %p\n", (int) resp->get_type(), err.get());
+        TLOG(DEBUG, "type: {}, err {}\n", (int) resp->get_type(), static_cast<const void*>(err.get()));
 
-        p_db("Receive an extended %s message from peer %d with Result=%d, "
-             "Term=%" PRIu64 ", NextIndex=%" PRIu64 "",
+        TLOG(DEBUG, "Receive an extended {} message from peer {} with Result={}, "
+             "Term={}" ", NextIndex={}" "",
              msg_type_to_string(resp->get_type()).c_str(),
              resp->get_src(),
              resp->get_accepted() ? 1 : 0,
@@ -1664,7 +1661,7 @@ namespace nuraft {
                 break;
 
             default:
-                p_er("received an unexpected response message type %s",
+                TLOG(ERROR, "received an unexpected response message type {}",
                      msg_type_to_string(resp->get_type()).c_str());
                 break;
         }
@@ -1672,8 +1669,8 @@ namespace nuraft {
 
     void raft_server::handle_ext_resp_err(rpc_exception &err) {
         ptr<req_msg> req = err.req();
-        p_in("receive an rpc error response from peer server, %s %d",
-             err.what(), req->get_type());
+        TLOG(INFO, "receive an rpc error response from peer server, {} {}",
+             err.what(),msg_type_to_string(req->get_type()));
 
         if (req->get_type() == msg_type::install_snapshot_request) {
             if (srv_to_join_ &&srv_to_join_
@@ -1684,7 +1681,7 @@ namespace nuraft {
                 bool timed_out = check_snapshot_timeout(srv_to_join_);
                 if (!timed_out) {
                     // Enable temp HB to retry snapshot.
-                    p_wn("sending snapshot to joining server %d failed, "
+                    TLOG(WARNING, "sending snapshot to joining server {} failed, "
                          "retry with temp heartbeat", srv_to_join_->get_id());
                     srv_to_join_snp_retry_required_ = true;
                     enable_hb_for_peer(*srv_to_join_);
@@ -1716,7 +1713,7 @@ namespace nuraft {
         } else {
             // reuse the heartbeat interval value to indicate
             // when to stop retrying, as rpc backoff is the same.
-            p_db("retry the request");
+            TLOG(DEBUG, "retry the request");
             p->slow_down_hb();
             timer_task<void>::executor exec =
                     (timer_task<void>::executor)
@@ -1727,13 +1724,13 @@ namespace nuraft {
     }
 
     void raft_server::on_retryable_req_err(ptr<peer> &p, ptr<req_msg> &req) {
-        p_db("retry the request %s for %d",
+        TLOG(DEBUG, "retry the request {} for {}",
              msg_type_to_string(req->get_type()).c_str(), p->get_id());
         if (p->make_busy()) {
             p->send_req(p, req, ex_resp_handler_);
         } else {
-            p_er("retry request %d failed: peer %d is busy",
-                 req->get_type(), p->get_id());
+            TLOG(ERROR, "retry request {} failed: peer {} is busy",
+                 msg_type_to_string(req->get_type()), p->get_id());
         }
     }
 
@@ -1751,14 +1748,86 @@ namespace nuraft {
             static timer_helper bad_log_timer(1000000, true);
             int log_lv = bad_log_timer.timeout_and_reset() ? L_ERROR : L_TRACE;
 
-            p_lv(log_lv, "bad log_idx %" PRIu64 " for retrieving the term value, "
+            switch (log_lv) {
+case L_FATAL:
+    TLOG(FATAL, "bad log_idx {}" " for retrieving the term value, "
                  "will ignore this log req", log_idx);
+    break;
+case L_ERROR:
+    TLOG(ERROR, "bad log_idx {}" " for retrieving the term value, "
+                 "will ignore this log req", log_idx);
+    break;
+case L_WARN:
+    TLOG(WARNING, "bad log_idx {}" " for retrieving the term value, "
+                 "will ignore this log req", log_idx);
+    break;
+case L_INFO:
+    TLOG(INFO, "bad log_idx {}" " for retrieving the term value, "
+                 "will ignore this log req", log_idx);
+    break;
+case L_DEBUG:
+    TLOG(DEBUG, "bad log_idx {}" " for retrieving the term value, "
+                 "will ignore this log req", log_idx);
+    break;
+case L_TRACE:
+    TLOG(TRACE, "bad log_idx {}" " for retrieving the term value, "
+                 "will ignore this log req", log_idx);
+    break;
+default:
+    break;
+};
             if (last_snapshot) {
-                p_lv(log_lv, "last snapshot %p, log_idx %" PRIu64
-                     ", snapshot last_log_idx %" PRIu64 "\n",
-                     last_snapshot.get(), log_idx, last_snapshot->get_last_log_idx());
+                switch (log_lv) {
+case L_FATAL:
+    TLOG(FATAL, "last snapshot {}, log_idx {}"
+                     ", snapshot last_log_idx {}" "\n", static_cast<const void*>(last_snapshot.get()), log_idx, last_snapshot->get_last_log_idx());
+    break;
+case L_ERROR:
+    TLOG(ERROR, "last snapshot {}, log_idx {}"
+                     ", snapshot last_log_idx {}" "\n", static_cast<const void*>(last_snapshot.get()), log_idx, last_snapshot->get_last_log_idx());
+    break;
+case L_WARN:
+    TLOG(WARNING, "last snapshot {}, log_idx {}"
+                     ", snapshot last_log_idx {}" "\n", static_cast<const void*>(last_snapshot.get()), log_idx, last_snapshot->get_last_log_idx());
+    break;
+case L_INFO:
+    TLOG(INFO, "last snapshot {}, log_idx {}"
+                     ", snapshot last_log_idx {}" "\n", static_cast<const void*>(last_snapshot.get()), log_idx, last_snapshot->get_last_log_idx());
+    break;
+case L_DEBUG:
+    TLOG(DEBUG, "last snapshot {}, log_idx {}"
+                     ", snapshot last_log_idx {}" "\n", static_cast<const void*>(last_snapshot.get()), log_idx, last_snapshot->get_last_log_idx());
+    break;
+case L_TRACE:
+    TLOG(TRACE, "last snapshot {}, log_idx {}"
+                     ", snapshot last_log_idx {}" "\n", static_cast<const void*>(last_snapshot.get()), log_idx, last_snapshot->get_last_log_idx());
+    break;
+default:
+    break;
+};
             }
-            p_lv(log_lv, "log_store_->start_index() %" PRIu64, log_store_->start_index());
+            switch (log_lv) {
+case L_FATAL:
+    TLOG(FATAL, "log_store_->start_index() {}", log_store_->start_index());
+    break;
+case L_ERROR:
+    TLOG(ERROR, "log_store_->start_index() {}", log_store_->start_index());
+    break;
+case L_WARN:
+    TLOG(WARNING, "log_store_->start_index() {}", log_store_->start_index());
+    break;
+case L_INFO:
+    TLOG(INFO, "log_store_->start_index() {}", log_store_->start_index());
+    break;
+case L_DEBUG:
+    TLOG(DEBUG, "log_store_->start_index() {}", log_store_->start_index());
+    break;
+case L_TRACE:
+    TLOG(TRACE, "log_store_->start_index() {}", log_store_->start_index());
+    break;
+default:
+    break;
+};
             //ctx_->state_mgr_->system_exit(raft_err::N19_bad_log_idx_for_term);
             //_sys_exit(-1);
             return 0L;
@@ -1829,7 +1898,7 @@ namespace nuraft {
 
     bool raft_server::update_srv_config(const srv_config &new_config) {
         if (!is_leader()) {
-            p_er("cannot update server config: this node is not a leader");
+            TLOG(ERROR, "cannot update server config: this node is not a leader");
             return false;
         }
 
@@ -1845,22 +1914,22 @@ namespace nuraft {
         ptr<srv_config> prev_srv_config = cloned_config->get_server(new_config.get_id());
 
         if (!prev_srv_config) {
-            p_er("cannot update server config: server %d does not exist",
+            TLOG(ERROR, "cannot update server config: server {} does not exist",
                  new_config.get_id());
             return false;
         }
 
         if (prev_srv_config->is_new_joiner()) {
             // If this server is a new joiner, we cannot update it.
-            p_er("cannot update server config: server %d is a new joiner",
+            TLOG(ERROR, "cannot update server config: server {} is a new joiner",
                  new_config.get_id());
             return false;
         }
 
         if (prev_srv_config->get_endpoint() != new_config.get_endpoint()) {
             // Endpoint change will not be accepted.
-            p_er("cannot update server config: endpoint change is not allowed, "
-                 "server %d endpoint %s -> %s",
+            TLOG(ERROR, "cannot update server config: endpoint change is not allowed, "
+                 "server {} endpoint {} -> {}",
                  new_config.get_id(),
                  prev_srv_config->get_endpoint().c_str(),
                  new_config.get_endpoint().c_str());
@@ -1886,7 +1955,7 @@ namespace nuraft {
         store_log_entry(entry);
         request_append_entries();
 
-        p_in("appended new server config for server %d",
+        TLOG(INFO, "appended new server config for server {}",
              new_config.get_id());
 
         return true;
@@ -1960,7 +2029,7 @@ namespace nuraft {
             // entries may lead to split brain.
             if (!log_store_->flush()) {
                 // LCOV_EXCL_START
-                p_ft("log store flush failed");
+                TLOG(FATAL, "log store flush failed");
                 ctx_->state_mgr_->system_exit(N21_log_flush_failed);
                 // LCOV_EXCL_STOP
             }
@@ -2037,7 +2106,7 @@ namespace nuraft {
 
     bool raft_server::set_self_mark_down(bool to) {
         if (is_leader()) {
-            p_er("cannot set self mark down to %s: "
+            TLOG(ERROR, "cannot set self mark down to {}: "
                  "this node is a leader",
                  to ? "true" : "false");
             return self_mark_down_;
@@ -2045,7 +2114,7 @@ namespace nuraft {
 
         bool old = self_mark_down_;
         self_mark_down_ = to;
-        p_in("self mark down set from %s to %s",
+        TLOG(INFO, "self mark down set from {} to {}",
              old ? "true" : "false",
              self_mark_down_.load() ? "true" : "false");
         return old;

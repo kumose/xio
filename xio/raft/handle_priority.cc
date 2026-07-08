@@ -24,7 +24,7 @@ limitations under the License.
 #include <xio/raft/cluster_config.h>
 #include <xio/raft/event_awaiter.h>
 #include <xio/raft/peer.h>
-#include <xio/raft/tracer.h>
+#include <xio/logging.h>
 
 #include <cassert>
 #include <list>
@@ -38,15 +38,15 @@ namespace nuraft {
         recur_lock(lock_);
 
         if (id_ != leader_) {
-            p_in("Got set_priority request but I'm not a leader: my ID %d, leader %d",
+            TLOG(INFO, "Got set_priority request but I'm not a leader: my ID {}, leader {}",
                  id_, leader_.load());
 
             if (!is_leader_alive()) {
-                p_wn("No live leader now, broadcast priority change");
+                TLOG(WARNING, "No live leader now, broadcast priority change");
                 broadcast_priority_change(srv_id, new_priority);
                 return PrioritySetResult::BROADCAST;
             } else if (broadcast_when_leader_exists) {
-                p_wn("Leader is present but broadcasting priority change as requested");
+                TLOG(WARNING, "Leader is present but broadcasting priority change as requested");
                 broadcast_priority_change(srv_id, new_priority);
                 return PrioritySetResult::BROADCAST;
             }
@@ -69,7 +69,7 @@ namespace nuraft {
         // NOTE: Need to honor uncommitted config,
         //       refer to comment in `sync_log_to_new_srv()`
         if (uncommitted_config_) {
-            p_in("uncommitted config exists at log %" PRIu64 ", prev log %" PRIu64,
+            TLOG(INFO, "uncommitted config exists at log {}" ", prev log {}",
                  uncommitted_config_->get_log_idx(),
                  uncommitted_config_->get_prev_log_idx());
             cur_config = uncommitted_config_;
@@ -83,7 +83,7 @@ namespace nuraft {
         for (auto &entry: s_confs) {
             srv_config *s_conf = entry.get();
             if (s_conf->get_id() == srv_id) {
-                p_in("Change server %d priority %d -> %d",
+                TLOG(INFO, "Change server {} priority {} -> {}",
                      srv_id, s_conf->get_priority(), new_priority);
                 s_conf->set_priority(new_priority);
             }
@@ -115,7 +115,7 @@ namespace nuraft {
         for (auto &entry: cur_config->get_servers()) {
             srv_config *s_conf = entry.get();
             if (s_conf->get_id() == srv_id) {
-                p_in("Change server %d priority %d -> %d",
+                TLOG(INFO, "Change server {} priority {} -> {}",
                      srv_id, s_conf->get_priority(), new_priority);
                 s_conf->set_priority(new_priority);
             }
@@ -149,7 +149,7 @@ namespace nuraft {
             if (pp->make_busy()) {
                 pp->send_req(pp, req, resp_handler_);
             } else {
-                p_er("peer %d is currently busy, cannot send request",
+                TLOG(ERROR, "peer {} is currently busy, cannot send request",
                      pp->get_id());
             }
         }
@@ -166,18 +166,18 @@ namespace nuraft {
 
         std::vector<ptr<log_entry> > &v = req.log_entries();
         if (!v.size()) {
-            p_wn("no log entry");
+            TLOG(WARNING, "no log entry");
             return resp;
         }
         if (v[0]->is_buf_null()) {
-            p_wn("empty buffer");
+            TLOG(WARNING, "empty buffer");
             return resp;
         }
 
         buffer &buf = v[0]->get_buf();
         buf.pos(0);
         if (buf.size() < sz_int * 2) {
-            p_wn("wrong buffer size: %zu", buf.size());
+            TLOG(WARNING, "wrong buffer size: {}", buf.size());
             return resp;
         }
 
@@ -193,19 +193,19 @@ namespace nuraft {
             srv_config *s_conf = entry.get();
             if (s_conf->get_id() == t_id) {
                 resp->accept(log_store_->next_slot());
-                p_in("change peer %d priority: %d -> %d",
+                TLOG(INFO, "change peer {} priority: {} -> {}",
                      t_id, s_conf->get_priority(), t_priority);
                 s_conf->set_priority(t_priority);
                 return resp;
             }
         }
-        p_wn("cannot find peer %d", t_id);
+        TLOG(WARNING, "cannot find peer {}", t_id);
 
         return resp;
     }
 
     void raft_server::handle_priority_change_resp(resp_msg &resp) {
-        p_in("got response from peer %d: %s",
+        TLOG(INFO, "got response from peer {}: {}",
              resp.get_src(),
              resp.get_accepted() ? "success" : "fail");
     }
@@ -217,7 +217,7 @@ namespace nuraft {
         // Should be bigger than 0.
         int32 prev_priority = target_priority_;
         target_priority_ = std::max(1, target_priority_ - gap);
-        p_in("[PRIORITY] decay, target %d -> %d, mine %d",
+        TLOG(INFO, "[PRIORITY] decay, target {} -> {}, mine {}",
              prev_priority, target_priority_, my_priority_);
 
         // Once `target_priority_` becomes 1,
@@ -243,7 +243,7 @@ namespace nuraft {
 
         hb_alive_ = true;
         pre_vote_.reset(state_->get_term());
-        p_tr("(update) new target priority: %d", target_priority_);
+        TLOG(TRACE, "(update) new target priority: {}", target_priority_);
     }
 } // namespace nuraft;
 

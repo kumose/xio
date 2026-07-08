@@ -18,7 +18,7 @@ limitations under the License.
 #include <tests/raft/fake_network.h>
 #include <xio/raft/strfmt.h>
 
-#include "logger.h"
+#include <xio/logging.h>
 
 #include <cassert>
 
@@ -26,23 +26,10 @@ namespace nuraft {
 
 // === FakeNetworkBase
 
-FakeNetworkBase::FakeNetworkBase() {
-    myLog = new SimpleLogger("./base.log", 1024, 32*1024*1024, 10);
-    myLog->setLogLevel(6);
-    myLog->setDispLevel(-1);
-    myLog->setCrashDumpPath("./", true);
-    myLog->start();
-}
+FakeNetworkBase::FakeNetworkBase() {}
 
 void FakeNetworkBase::destroy() {
-    if (myLog) {
-        myLog->flushAll();
-        myLog->stop();
-        delete myLog;
-        myLog = nullptr;
-    }
     nets.clear();
-    SimpleLogger::shutdown();
 }
 
 void FakeNetworkBase::addNetwork(ptr<FakeNetwork>& net) {
@@ -149,15 +136,13 @@ ptr<FakeClient> FakeNetwork::findClient(const std::string& endpoint) {
 bool FakeNetwork::delieverReqTo(const std::string& endpoint,
                                 bool random_order)
 {
-    SimpleLogger* ll = base->getLogger();
-
     // this:                    source (sending request)
     // conn->dstNet (endpoint): destination (sending response)
     ptr<FakeClient> conn = findClient(endpoint);
 
     // If destination is offline, make failure.
     if (!conn->isDstOnline()) {
-        _log_info(ll, "destination %s is offline", endpoint.c_str());
+        TLOG(INFO, "destination {} is offline", endpoint.c_str());
         return makeReqFail(endpoint, random_order);
     }
 
@@ -166,12 +151,12 @@ bool FakeNetwork::delieverReqTo(const std::string& endpoint,
 
     ReqPkg& pkg = *pkg_entry;
 
-    _log_info(ll, "[BEGIN] send/process %s -> %s, %s",
+    TLOG(INFO, "[BEGIN] send/process {} -> {}, {}",
               myEndpoint.c_str(), endpoint.c_str(),
               msg_type_to_string( pkg.req->get_type() ).c_str() );
 
     ptr<resp_msg> resp = conn->dstNet->gotMsg( pkg.req );
-    _log_info(ll, "[END] send/process %s -> %s, %s",
+    TLOG(INFO, "[END] send/process {} -> {}, {}",
               myEndpoint.c_str(), endpoint.c_str(),
               msg_type_to_string( pkg.req->get_type() ).c_str() );
 
@@ -182,8 +167,6 @@ bool FakeNetwork::delieverReqTo(const std::string& endpoint,
 
 bool FakeNetwork::delieverStaleReqTo(const std::string& endpoint)
 {
-    SimpleLogger* ll = base->getLogger();
-
     // this:                    source (sending request)
     // conn->dstNet (endpoint): destination (sending response)
 
@@ -195,7 +178,7 @@ bool FakeNetwork::delieverStaleReqTo(const std::string& endpoint)
         }
     }
     if (!conn) {
-        _log_info(ll, "no stale connection to %s is available", endpoint.c_str());
+        TLOG(INFO, "no stale connection to {} is available", endpoint.c_str());
         return false;
     }
     auto pkg_entry = conn->pendingReqs.begin();
@@ -203,12 +186,12 @@ bool FakeNetwork::delieverStaleReqTo(const std::string& endpoint)
 
     ReqPkg& pkg = *pkg_entry;
 
-    _log_info(ll, "[STALE BEGIN] send/process %s -> %s, %s",
+    TLOG(INFO, "[STALE BEGIN] send/process {} -> {}, {}",
               myEndpoint.c_str(), endpoint.c_str(),
               msg_type_to_string( pkg.req->get_type() ).c_str() );
 
     ptr<resp_msg> resp = conn->dstNet->gotMsg( pkg.req );
-    _log_info(ll, "[STALE END] send/process %s -> %s, %s",
+    TLOG(INFO, "[STALE END] send/process {} -> {}, {}",
               myEndpoint.c_str(), endpoint.c_str(),
               msg_type_to_string( pkg.req->get_type() ).c_str() );
 
@@ -232,21 +215,19 @@ bool FakeNetwork::makeReqFail(const std::string& endpoint,
     if (pkg_entry == conn->pendingReqs.end()) return false;
 
     ReqPkg& pkg = *pkg_entry;
-
-    SimpleLogger* ll = base->getLogger();
-    _log_info(ll, "[BEGIN] make request %s -> %s failed, %s",
+    TLOG(INFO, "[BEGIN] make request {} -> {} failed, {}",
               myEndpoint.c_str(), endpoint.c_str(),
               msg_type_to_string( pkg.req->get_type() ).c_str() );
 
     ptr<resp_msg> rsp; // empty.
     ptr<rpc_exception> exp
         ( cs_new<rpc_exception>
-          ( sstrfmt( "failed to send request to peer %d" )
+          ( sstrfmt( "failed to send request to peer {}" )
                    .fmt( pkg.req->get_dst() ),
             pkg.req ) );
     pkg.whenDone( rsp, exp );
 
-    _log_info(ll, "[END] make request %s -> %s failed, %s",
+    TLOG(INFO, "[END] make request {} -> {} failed, {}",
               myEndpoint.c_str(), endpoint.c_str(),
               msg_type_to_string( pkg.req->get_type() ).c_str() );
 
@@ -267,25 +248,22 @@ bool FakeNetwork::handleRespFrom(const std::string& endpoint,
 
     auto pkg_entry = conn->pendingResps.begin();
     if (pkg_entry == conn->pendingResps.end()) return false;
-
-    SimpleLogger* ll = base->getLogger();
-
     // Copy shared pointer for the case of reconnection,
     // as it drops all resps.
     RespPkg pkg = *pkg_entry;
     if (!pkg.resp) {
-        _log_info(ll, "empty response from %s", endpoint.c_str());
+        TLOG(INFO, "empty response from {}", endpoint.c_str());
         return false;
     }
 
-    _log_info(ll, "[BEGIN] deliver response %s -> %s, %s",
+    TLOG(INFO, "[BEGIN] deliver response {} -> {}, {}",
               endpoint.c_str(), myEndpoint.c_str(),
               msg_type_to_string( pkg.resp->get_type() ).c_str() );
 
     ptr<rpc_exception> exp;
     pkg.whenDone( pkg.resp, exp );
 
-    _log_info(ll, "[END] deliver response %s -> %s, %s",
+    TLOG(INFO, "[END] deliver response {} -> {}, {}",
               endpoint.c_str(), myEndpoint.c_str(),
               msg_type_to_string( pkg.resp->get_type() ).c_str() );
 
@@ -350,8 +328,7 @@ void FakeClient::send(ptr<req_msg>& req,
                       rpc_handler& when_done,
                       uint64_t /*send_timeout_ms*/)
 {
-    SimpleLogger* ll = motherNet->getBase()->getLogger();
-    _log_info(ll, "got request %s -> %s, %s",
+    TLOG(INFO, "got request {} -> {}, {}",
               motherNet->getEndpoint().c_str(),
               dstNet->getEndpoint().c_str(),
               msg_type_to_string( req->get_type() ).c_str() );
@@ -379,16 +356,14 @@ bool FakeClient::is_abandoned() const {
 
 // === FakeTimer
 
-FakeTimer::FakeTimer(const std::string& endpoint,
-                     SimpleLogger* logger)
+FakeTimer::FakeTimer(const std::string& endpoint)
     : myEndpoint(endpoint)
-    , myLog(logger)
-    {}
+{}
 
 void FakeTimer::schedule(ptr<delayed_task>& task, int32 milliseconds) {
     std::lock_guard<std::mutex> l(tasksLock);
-    _log_info( myLog, " --- schedule timer for %s %d %p ---",
-               myEndpoint.c_str(), task->get_type(), task.get() );
+    TLOG(INFO, " --- schedule timer for {} {} {} ---",
+               myEndpoint.c_str(), task->get_type(), (void*)task.get() );
     task->reset();
     tasks.push_back(task);
 }
@@ -398,7 +373,7 @@ void FakeTimer::cancel(ptr<delayed_task>& task) {
 }
 
 void FakeTimer::invoke(int type) {
-    _log_info( myLog, " --- invoke timer tasks for %s %d ---",
+    TLOG(INFO, " --- invoke timer tasks for {} {} ---",
                myEndpoint.c_str(), type);
 
     std::list< ptr<delayed_task> > tasks_to_invoke;
@@ -445,10 +420,10 @@ void FakeTimer::cancel_impl(ptr<delayed_task>& task) {
         if (cur_task.get() == task.get()) {
             entry = tasks.erase(entry);
             cur_task->cancel();
-            _log_info( myLog, " --- cancel timer for %s %d %p ---",
+            TLOG(INFO, " --- cancel timer for {} {} {} ---",
                        myEndpoint.c_str(),
                        cur_task->get_type(),
-                       cur_task.get() );
+                       (void*)cur_task.get() );
 
         } else {
             entry++;

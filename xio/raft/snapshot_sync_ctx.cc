@@ -21,7 +21,7 @@ limitations under the License.
 #include <xio/raft/peer.h>
 #include <xio/raft/raft_server.h>
 #include <xio/raft/state_machine.h>
-#include <xio/raft/tracer.h>
+#include <xio/logging.h>
 
 namespace nuraft {
     class raft_server;
@@ -76,19 +76,17 @@ namespace nuraft {
 
     bool snapshot_io_mgr::push(ptr<snapshot_io_mgr::io_queue_elem> &elem) {
         auto_lock(queue_lock_);
-        logger *l_ = elem->raft_->l_.get();
-
         // If there is existing one for the same peer, ignore it.
         for (auto &entry: queue_) {
             if (entry->raft_ == elem->raft_ &&
                 entry->dst_->get_id() == elem->dst_->get_id()) {
-                p_tr("snapshot request for peer %d already exists, do nothing",
+                TLOG(TRACE, "snapshot request for peer {} already exists, do nothing",
                      elem->dst_->get_id());
                 return false;
             }
         }
         queue_.push_back(elem);
-        p_tr("added snapshot request for peer %d", elem->dst_->get_id());
+        TLOG(TRACE, "added snapshot request for peer {}", elem->dst_->get_id());
 
         return true;
     }
@@ -111,12 +109,11 @@ namespace nuraft {
 
     void snapshot_io_mgr::drop_reqs(raft_server *r) {
         auto_lock(queue_lock_);
-        logger *l_ = r->l_.get();
         auto entry = queue_.begin();
         while (entry != queue_.end()) {
             if ((*entry)->raft_.get() == r) {
-                p_tr("drop snapshot request for peer %d, raft server %p",
-                     (*entry)->dst_->get_id(), r);
+                TLOG(TRACE, "drop snapshot request for peer {}, raft server {}",
+                     (*entry)->dst_->get_id(), (void*)r);
                 entry = queue_.erase(entry);
             } else {
                 entry++;
@@ -174,10 +171,9 @@ namespace nuraft {
 
                 std::unique_lock<std::mutex> lock(elem->dst_->get_lock());
                 // ---- lock acquired
-                logger *l_ = elem->raft_->l_.get();
                 ulong obj_idx = elem->sync_ctx_->get_offset();
                 void *&user_snp_ctx = elem->sync_ctx_->get_user_snp_ctx();
-                p_db("peer: %d, obj_idx: %" PRIu64 ", user_snp_ctx %p",
+                TLOG(DEBUG, "peer: {}, obj_idx: {}" ", user_snp_ctx {}",
                      dst_id, obj_idx, user_snp_ctx);
 
                 ulong snp_log_idx = elem->snapshot_->get_last_log_idx();
@@ -193,9 +189,9 @@ namespace nuraft {
                  data, is_last_request);
                 if (rc < 0) {
                     // Snapshot read failed.
-                    p_wn("reading snapshot (idx %" PRIu64 ", term %" PRIu64
-                         ", object %" PRIu64 ") "
-                         "for peer %d failed: %d",
+                    TLOG(WARNING, "reading snapshot (idx {}" ", term {}"
+                         ", object {}" ") "
+                         "for peer {} failed: {}",
                          snp_log_idx, snp_log_term, obj_idx, dst_id, rc);
 
                     recur_lock(elem->raft_->lock_);
@@ -213,7 +209,7 @@ namespace nuraft {
                         // This means this server has been removed from the cluster,
                         // but a stale snapshot request is still in the queue.
                         // Ignore it.
-                        p_wn("stale snapshot request in queue for peer %d, ignore it",
+                        TLOG(WARNING, "stale snapshot request in queue for peer {}, ignore it",
                              dst_id);
                     }
 
@@ -245,9 +241,9 @@ namespace nuraft {
                     elem->dst_->set_rsv_msg(nullptr, nullptr);
                     elem->dst_->send_req(elem->dst_, req, elem->handler_);
                     elem->dst_->reset_ls_timer();
-                    p_tr("bg thread sent message to peer %d", dst_id);
+                    TLOG(TRACE, "bg thread sent message to peer {}", dst_id);
                 } else {
-                    p_db("peer %d is busy, push the request back to queue", dst_id);
+                    TLOG(DEBUG, "peer {} is busy, push the request back to queue", dst_id);
                     reqs_to_return.push_back(elem);
                 }
             }

@@ -32,7 +32,6 @@ namespace nuraft {
      * from root header file, which can boost the compilation time.
      */
     class xio_service_impl;
-    class logger;
     class rpc_listener;
 
     class xio_service
@@ -42,8 +41,7 @@ namespace nuraft {
         using meta_cb_params = xio_service_meta_cb_params;
         using options = xio_service_options;
 
-        xio_service(const options &_opt = options(),
-                    ptr<logger> _l = nullptr);
+        xio_service(const options &_opt = options());
 
         ~xio_service();
 
@@ -56,8 +54,7 @@ namespace nuraft {
         virtual ptr<rpc_client> create_client(const std::string &endpoint)
         __override__;
 
-        ptr<rpc_listener> create_rpc_listener(ushort listening_port,
-                                              ptr<logger> &l);
+        ptr<rpc_listener> create_rpc_listener(ushort listening_port);
 
         void stop();
 
@@ -67,8 +64,6 @@ namespace nuraft {
         void cancel_impl(ptr<delayed_task> &task) override;
 
         xio_service_impl *impl_;
-
-        ptr<logger> l_;
     };
 };
 

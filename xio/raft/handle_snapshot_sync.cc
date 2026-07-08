@@ -30,7 +30,7 @@ limitations under the License.
 #include <xio/raft/snapshot_sync_ctx.h>
 #include <xio/raft/state_machine.h>
 #include <xio/raft/state_mgr.h>
-#include <xio/raft/tracer.h>
+#include <xio/logging.h>
 
 #include <cassert>
 #include <sstream>
@@ -46,9 +46,9 @@ namespace nuraft {
         if (!sync_ctx) return false;
 
         if (sync_ctx->get_timer().timeout()) {
-            p_wn("snapshot install task for peer %d timed out: %" PRIu64 " ms, "
-                 "reset snapshot sync context %p",
-                 pp->get_id(), sync_ctx->get_timer().get_ms(), sync_ctx.get());
+            TLOG(WARNING, "snapshot install task for peer {} timed out: {}" " ms, "
+                 "reset snapshot sync context {}",
+                 pp->get_id(), sync_ctx->get_timer().get_ms(), static_cast<const void*>(sync_ctx.get()));
             clear_snapshot_sync_ctx(*pp);
             return true;
         }
@@ -58,7 +58,7 @@ namespace nuraft {
     void raft_server::destroy_user_snp_ctx(ptr<snapshot_sync_ctx> sync_ctx) {
         if (!sync_ctx) return;
         void *&user_ctx = sync_ctx->get_user_snp_ctx();
-        p_tr("destroy user ctx %p", user_ctx);
+        TLOG(TRACE, "destroy user ctx {}", user_ctx);
         state_machine_->free_user_snp_ctx(user_ctx);
     }
 
@@ -66,7 +66,7 @@ namespace nuraft {
         ptr<snapshot_sync_ctx> snp_ctx = pp.get_snapshot_sync_ctx();
         if (snp_ctx) {
             destroy_user_snp_ctx(snp_ctx);
-            p_tr("destroy snapshot sync ctx %p", snp_ctx.get());
+            TLOG(TRACE, "destroy snapshot sync ctx {}", static_cast<const void*>(snp_ctx.get()));
         }
         pp.set_snapshot_in_sync(nullptr);
     }
@@ -85,16 +85,16 @@ namespace nuraft {
         ulong prev_sync_snp_log_idx = 0;
         if (sync_ctx) {
             snp = sync_ctx->get_snapshot();
-            p_db("previous sync_ctx exists %p, offset %" PRIu64 ", snp idx %" PRIu64
-                 ", user_ctx %p",
-                 sync_ctx.get(),
+            TLOG(DEBUG, "previous sync_ctx exists {}, offset {}" ", snp idx {}"
+                 ", user_ctx {}",
+                 static_cast<const void*>(sync_ctx.get()),
                  sync_ctx->get_offset(),
                  snp->get_last_log_idx(),
                  sync_ctx->get_user_snp_ctx());
             prev_sync_snp_log_idx = snp->get_last_log_idx();
 
             if (sync_ctx->get_timer().timeout()) {
-                p_in("previous sync_ctx %p timed out, reset it", sync_ctx.get());
+                TLOG(INFO, "previous sync_ctx {} timed out, reset it", static_cast<const void*>(sync_ctx.get()));
                 destroy_user_snp_ctx(sync_ctx);
                 sync_ctx.reset();
                 snp.reset();
@@ -114,13 +114,13 @@ namespace nuraft {
             if (snp == nilptr ||
                 last_log_idx > snp->get_last_log_idx()) {
                 // LCOV_EXCL_START
-                p_er("system is running into fatal errors, failed to find a "
-                     "snapshot for peer %d (snapshot null: %d, snapshot "
-                     "doesn't contais lastLogIndex: %d)",
+                TLOG(ERROR, "system is running into fatal errors, failed to find a "
+                     "snapshot for peer {} (snapshot null: {}, snapshot "
+                     "doesn't contais lastLogIndex: {})",
                      p.get_id(), snp == nilptr ? 1 : 0,
                      last_log_idx > snp->get_last_log_idx() ? 1 : 0);
                 if (snp) {
-                    p_er("last log idx %" PRIu64 ", snp last log idx %" PRIu64,
+                    TLOG(ERROR, "last log idx {}" ", snp last log idx {}",
                          last_log_idx, snp->get_last_log_idx());
                 }
                 ctx_->state_mgr_->system_exit(raft_err::N16_snapshot_for_peer_not_found);
@@ -132,7 +132,7 @@ namespace nuraft {
             if (snp->get_type() == snapshot::raw_binary &&
                 snp->size() < 1L) {
                 // LCOV_EXCL_START
-                p_er("invalid snapshot, this usually means a bug from state "
+                TLOG(ERROR, "invalid snapshot, this usually means a bug from state "
                     "machine implementation, stop the system to prevent "
                     "further errors");
                 ctx_->state_mgr_->system_exit(raft_err::N17_empty_snapshot);
@@ -142,9 +142,9 @@ namespace nuraft {
             }
 
             if (snp->get_last_log_idx() != prev_sync_snp_log_idx) {
-                p_in("trying to sync snapshot with last index %" PRIu64 " to peer %d, "
-                     "its last log idx %" PRIu64 ", my start index %" PRIu64
-                     ", my last log idx %" PRIu64,
+                TLOG(INFO, "trying to sync snapshot with last index {}" " to peer {}, "
+                     "its last log idx {}" ", my start index {}"
+                     ", my last log idx {}",
                      snp->get_last_log_idx(), p.get_id(), last_log_idx,
                      log_store_->start_index(), log_store_->next_slot() - 1);
             }
@@ -182,7 +182,7 @@ namespace nuraft {
             data = buffer::alloc((size_t) (std::min((ulong) blk_sz, sz_left)));
             int32 sz_rd = state_machine_->read_snapshot_data(*snp, offset, *data);
             if ((size_t) sz_rd < data->size()) {
-                p_er("only %d bytes could be read from snapshot while %zu "
+                TLOG(ERROR, "only {} bytes could be read from snapshot while {} "
                      "bytes are expected, must be something wrong, exit.",
                      sz_rd, data->size());
                 ctx_->state_mgr_->system_exit(raft_err::N18_partial_snapshot_block);
@@ -197,14 +197,14 @@ namespace nuraft {
             sync_ctx = p.get_snapshot_sync_ctx();
             ulong obj_idx = sync_ctx->get_offset();
             void *&user_snp_ctx = sync_ctx->get_user_snp_ctx();
-            p_dv("peer: %d, obj_idx: %" PRIu64 ", user_snp_ctx %p",
+            TLOG(DEBUG, "peer: {}, obj_idx: {}" ", user_snp_ctx {}",
                  (int) p.get_id(), obj_idx, user_snp_ctx);
 
             int rc = state_machine_->read_logical_snp_obj(*snp, user_snp_ctx, obj_idx,
                                                           data, last_request);
             if (rc < 0) {
-                p_wn("reading snapshot (idx %" PRIu64 ", term %" PRIu64
-                     ", object %" PRIu64 ") failed: %d",
+                TLOG(WARNING, "reading snapshot (idx {}" ", term {}"
+                     ", object {}" ") failed: {}",
                      snp->get_last_log_idx(),
                      snp->get_last_log_term(),
                      obj_idx,
@@ -243,7 +243,7 @@ namespace nuraft {
                 become_follower();
             } else if (role_ == srv_role::leader) {
                 // LCOV_EXCL_START
-                p_er("Receive InstallSnapshotRequest from another leader(%d) "
+                TLOG(ERROR, "Receive InstallSnapshotRequest from another leader({}) "
                      "with same term, there must be a bug, server exits",
                      req.get_src());
                 ctx_->state_mgr_->system_exit
@@ -264,8 +264,8 @@ namespace nuraft {
          log_store_->next_slot());
 
         if (!state_->is_catching_up() && req.get_term() < state_->get_term()) {
-            p_wn("received an install snapshot request (%" PRIu64 ") which has lower term "
-                 "than this server (%" PRIu64 "), decline the request",
+            TLOG(WARNING, "received an install snapshot request ({}" ") which has lower term "
+                 "than this server ({}" "), decline the request",
                  req.get_term(), state_->get_term());
             return resp;
         }
@@ -273,7 +273,7 @@ namespace nuraft {
         std::vector<ptr<log_entry> > &entries(req.log_entries());
         if (entries.size() != 1 ||
             entries[0]->get_val_type() != log_val_type::snp_sync_req) {
-            p_wn("Receive an invalid InstallSnapshotRequest due to "
+            TLOG(WARNING, "Receive an invalid InstallSnapshotRequest due to "
                 "bad log entries or bad log entry value");
             return resp;
         }
@@ -281,8 +281,8 @@ namespace nuraft {
         ptr<snapshot_sync_req> sync_req =
                 snapshot_sync_req::deserialize(entries[0]->get_buf());
         if (sync_req->get_snapshot().get_last_log_idx() <= quick_commit_index_) {
-            p_wn("received a snapshot (%" PRIu64 ") that is older than "
-                 "current commit idx (%" PRIu64 "), last log idx %" PRIu64,
+            TLOG(WARNING, "received a snapshot ({}" ") that is older than "
+                 "current commit idx ({}" "), last log idx {}",
                  sync_req->get_snapshot().get_last_log_idx(),
                  quick_commit_index_.load(),
                  log_store_->next_slot() - 1);
@@ -320,10 +320,10 @@ namespace nuraft {
     }
 
     void raft_server::handle_install_snapshot_resp(resp_msg &resp) {
-        p_db("%s\n", resp.get_accepted() ? "accepted" : "not accepted");
+        TLOG(DEBUG, "{}\n", resp.get_accepted() ? "accepted" : "not accepted");
         peer_itor it = peers_.find(resp.get_src());
         if (it == peers_.end()) {
-            p_in("the response is from an unknown peer %d", resp.get_src());
+            TLOG(INFO, "the response is from an unknown peer {}", resp.get_src());
             return;
         }
 
@@ -335,13 +335,13 @@ namespace nuraft {
             std::lock_guard<std::mutex> guard(p->get_lock());
             ptr<snapshot_sync_ctx> sync_ctx = p->get_snapshot_sync_ctx();
             if (sync_ctx == nullptr) {
-                p_in("no snapshot sync context for this peer, drop the response");
+                TLOG(INFO, "no snapshot sync context for this peer, drop the response");
                 need_to_catchup = false;
             } else {
                 ptr<snapshot> snp = sync_ctx->get_snapshot();
                 if (snp->get_type() == snapshot::raw_binary) {
                     // LCOV_EXCL_START
-                    p_db("resp.get_next_idx(): %" PRIu64 ", snp->size(): %" PRIu64,
+                    TLOG(DEBUG, "resp.get_next_idx(): {}" ", snp->size(): {}",
                          resp.get_next_idx(), snp->size());
                     // LCOV_EXCL_STOP
                 }
@@ -353,30 +353,30 @@ namespace nuraft {
                          resp.get_ctx());
 
                 if (snp_install_done) {
-                    p_db("snapshot sync is done (raw type)");
+                    TLOG(DEBUG, "snapshot sync is done (raw type)");
                     p->set_next_log_idx(sync_ctx->get_snapshot()->get_last_log_idx() + 1);
                     p->set_matched_idx(sync_ctx->get_snapshot()->get_last_log_idx());
                     clear_snapshot_sync_ctx(*p);
 
                     if (p->is_snapshot_sync_needed()) {
                         p->set_snapshot_sync_is_needed(false);
-                        p_in("peer %d is no longer in snapshot sync mode",
+                        TLOG(INFO, "peer {} is no longer in snapshot sync mode",
                              p->get_id());
                     }
 
                     need_to_catchup = p->clear_pending_commit() ||
                                       p->get_next_log_idx() < log_store_->next_slot();
-                    p_in("snapshot done %" PRIu64 ", %" PRIu64 ", %d",
+                    TLOG(INFO, "snapshot done {}" ", {}" ", {}",
                          p->get_next_log_idx(), p->get_matched_idx(), need_to_catchup);
                 } else {
-                    p_db("continue to sync snapshot at offset %" PRIu64,
+                    TLOG(DEBUG, "continue to sync snapshot at offset {}",
                          resp.get_next_idx());
                     sync_ctx->set_offset(resp.get_next_idx());
                 }
             }
         } else {
-            p_wn("peer %d declined snapshot: p->get_next_log_idx(): %" PRIu64 ", "
-                 "log_store_->next_slot(): %" PRIu64,
+            TLOG(WARNING, "peer {} declined snapshot: p->get_next_log_idx(): {}" ", "
+                 "log_store_->next_slot(): {}",
                  p->get_id(), p->get_next_log_idx(), log_store_->next_slot());
             p->set_next_log_idx(resp.get_next_idx());
 
@@ -401,13 +401,13 @@ namespace nuraft {
 
     void raft_server::handle_install_snapshot_resp_new_member(resp_msg &resp) {
         if (!srv_to_join_) {
-            p_in("no server to join, the response must be very old.");
+            TLOG(INFO, "no server to join, the response must be very old.");
             return;
         }
 
         if (!resp.get_accepted()) {
-            p_wn("peer doesn't accept the snapshot installation request, "
-                 "next log idx %" PRIu64 ", "
+            TLOG(WARNING, "peer doesn't accept the snapshot installation request, "
+                 "next log idx {}" ", "
                  "but we can move forward",
                  resp.get_next_idx());
             srv_to_join_->set_next_log_idx(resp.get_next_idx());
@@ -416,8 +416,8 @@ namespace nuraft {
 
         ptr<snapshot_sync_ctx> sync_ctx = srv_to_join_->get_snapshot_sync_ctx();
         if (sync_ctx == nullptr) {
-            p_ft("SnapshotSyncContext must not be null: "
-                 "src %d dst %d my id %d leader id %d, "
+            TLOG(FATAL, "SnapshotSyncContext must not be null: "
+                 "src {} dst {} my id {} leader id {}, "
                  "maybe leader election happened in the meantime. "
                  "next heartbeat or append request will cover it up.",
                  resp.get_src(), resp.get_dst(), id_, leader_.load());
@@ -433,7 +433,7 @@ namespace nuraft {
 
         if (snp_install_done) {
             // snapshot is done
-            p_in("snapshot install is done\n");
+            TLOG(INFO, "snapshot install is done\n");
             srv_to_join_->set_next_log_idx
                     (sync_ctx->get_snapshot()->get_last_log_idx() + 1);
             srv_to_join_->set_matched_idx
@@ -441,14 +441,14 @@ namespace nuraft {
 
             clear_snapshot_sync_ctx(*srv_to_join_);
 
-            p_in("snapshot has been copied and applied to new server, "
+            TLOG(INFO, "snapshot has been copied and applied to new server, "
                  "continue to sync logs after snapshot, "
-                 "next log idx %" PRIu64 ", matched idx %" PRIu64 "",
+                 "next log idx {}" ", matched idx {}" "",
                  srv_to_join_->get_next_log_idx(),
                  srv_to_join_->get_matched_idx());
         } else {
             sync_ctx->set_offset(resp.get_next_idx());
-            p_db("continue to send snapshot to new server at offset %" PRIu64 "",
+            TLOG(DEBUG, "continue to send snapshot to new server at offset {}" "",
                  resp.get_next_idx());
         }
 
@@ -462,8 +462,8 @@ namespace nuraft {
             bool is_last_obj = req.is_done();
             if (is_first_obj || is_last_obj) {
                 // INFO level: log only first and last object.
-                p_in("save snapshot (idx %" PRIu64 ", term %" PRIu64 ") offset 0x%" PRIx64
-                     ", %s %s",
+                TLOG(INFO, "save snapshot (idx {}" ", term {}" ") offset 0x{}"
+                     ", {} {}",
                      req.get_snapshot().get_last_log_idx(),
                      req.get_snapshot().get_last_log_term(),
                      req.get_offset(),
@@ -471,8 +471,8 @@ namespace nuraft {
                      (is_last_obj) ? "last obj" : "");
             } else {
                 // above DEBUG: log all.
-                p_db("save snapshot (idx %" PRIu64 ", term %" PRIu64 ") offset 0x%" PRIx64
-                     ", %s %s",
+                TLOG(DEBUG, "save snapshot (idx {}" ", term {}" ") offset 0x{}"
+                     ", {} {}",
                      req.get_snapshot().get_last_log_idx(),
                      req.get_snapshot().get_last_log_term(),
                      req.get_offset(),
@@ -484,7 +484,7 @@ namespace nuraft {
             param.ctx = &req;
             CbReturnCode rc = ctx_->cb_func_.call(cb_func::SaveSnapshot, &param);
             if (rc == CbReturnCode::ReturnNull) {
-                p_wn("by callback, return false");
+                TLOG(WARNING, "by callback, return false");
                 return false;
             }
 
@@ -492,7 +492,7 @@ namespace nuraft {
             if (!state_->is_receiving_snapshot()) {
                 state_->set_receiving_snapshot(true);
                 ctx_->state_mgr_->save_state(*state_);
-                p_in("set receiving snapshot flag");
+                TLOG(INFO, "set receiving snapshot flag");
             }
             et_cnt_receiving_snapshot_ = 0;
 
@@ -526,7 +526,7 @@ namespace nuraft {
                 pause_state_machine_execution();
                 size_t wait_count = 0;
                 while (!wait_for_state_machine_pause(500)) {
-                    p_in("waiting for state machine pause before applying snapshot: count %zu",
+                    TLOG(INFO, "waiting for state machine pause before applying snapshot: count {}",
                          ++wait_count);
                 }
                 guard.lock();
@@ -541,18 +541,18 @@ namespace nuraft {
 
                 state_->set_receiving_snapshot(false);
                 ctx_->state_mgr_->save_state(*state_);
-                p_in("clear receiving snapshot flag");
+                TLOG(INFO, "clear receiving snapshot flag");
 
                 // Only follower will run this piece of code, but let's check it again
                 if (role_ != srv_role::follower) {
                     // LCOV_EXCL_START
-                    p_er("bad server role for applying a snapshot, exit for debugging");
+                    TLOG(ERROR, "bad server role for applying a snapshot, exit for debugging");
                     ctx_->state_mgr_->system_exit(raft_err::N11_not_follower_for_snapshot);
                     _sys_exit(-1);
                     // LCOV_EXCL_STOP
                 }
 
-                p_in("successfully receive a snapshot (idx %" PRIu64 " term %" PRIu64
+                TLOG(INFO, "successfully receive a snapshot (idx {}" " term {}"
                      ") from leader",
                      req.get_snapshot().get_last_log_idx(),
                      req.get_snapshot().get_last_log_term());
@@ -562,11 +562,11 @@ namespace nuraft {
                     // timer stopped as usually applying a snapshot may take a very
                     // long time
                     stop_election_timer();
-                    p_in("successfully compact the log store, will now ask the "
+                    TLOG(INFO, "successfully compact the log store, will now ask the "
                         "statemachine to apply the snapshot");
                     if (!state_machine_->apply_snapshot(req.get_snapshot())) {
                         // LCOV_EXCL_START
-                        p_er("failed to apply the snapshot after log compacted, "
+                        TLOG(ERROR, "failed to apply the snapshot after log compacted, "
                             "to ensure the safety, will shutdown the system");
                         ctx_->state_mgr_->system_exit(raft_err::N12_apply_snapshot_failed);
                         _sys_exit(-1);
@@ -581,9 +581,9 @@ namespace nuraft {
                         reconfigure(snap_conf);
                         c_conf = get_config();
                     } else {
-                        p_in("snapshot config idx %" PRIu64 " prev idx %" PRIu64
+                        TLOG(INFO, "snapshot config idx {}" " prev idx {}"
                              " is not newer than "
-                             "current config idx %" PRIu64 " prev idx %" PRIu64
+                             "current config idx {}" " prev idx {}"
                              ", will not apply it",
                              snap_conf->get_log_idx(),
                              snap_conf->get_prev_log_idx(),
@@ -607,21 +607,21 @@ namespace nuraft {
                     set_last_snapshot(new_snp);
 
                     restart_election_timer();
-                    p_in("snapshot idx %" PRIu64 " term %" PRIu64 " is successfully applied, "
-                         "log start %" PRIu64 " last idx %" PRIu64,
+                    TLOG(INFO, "snapshot idx {}" " term {}" " is successfully applied, "
+                         "log start {}" " last idx {}",
                          new_snp->get_last_log_idx(),
                          new_snp->get_last_log_term(),
                          log_store_->start_index(),
                          log_store_->next_slot() - 1);
                 } else {
-                    p_er("failed to compact the log store after a snapshot is received, "
+                    TLOG(ERROR, "failed to compact the log store after a snapshot is received, "
                         "will ask the leader to retry");
                     return false;
                 }
             }
         } catch (...) {
             // LCOV_EXCL_START
-            p_er("failed to handle snapshot installation due to system errors");
+            TLOG(ERROR, "failed to handle snapshot installation due to system errors");
             ctx_->state_mgr_->system_exit(raft_err::N13_snapshot_install_failed);
             _sys_exit(-1);
             return false;

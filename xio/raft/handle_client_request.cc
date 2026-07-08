@@ -27,7 +27,7 @@ limitations under the License.
 #include <xio/raft/global_mgr.h>
 #include <xio/raft/state_machine.h>
 #include <xio/raft/state_mgr.h>
-#include <xio/raft/tracer.h>
+#include <xio/logging.h>
 
 #include <cassert>
 #include <chrono>
@@ -68,7 +68,7 @@ namespace nuraft {
             global_mgr *mgr = get_global_mgr();
             if (mgr) {
                 // Global thread pool exists, request it.
-                p_tr("found global thread pool");
+                TLOG(TRACE, "found global thread pool");
                 mgr->request_append(this->shared_from_this());
             } else {
                 bg_append_ea_->invoke();
@@ -116,7 +116,7 @@ namespace nuraft {
             entries.at(i)->set_timestamp(timestamp_us);
 
             ulong next_slot = store_log_entry(entries.at(i));
-            p_tr("append at log_idx %" PRIu64 ", timestamp %" PRIu64,
+            TLOG(TRACE, "append at log_idx {}" ", timestamp {}",
                  next_slot, timestamp_us);
             last_idx = next_slot;
 
@@ -165,7 +165,7 @@ namespace nuraft {
                 if (entry != commit_ret_elems_.end()) {
                     // Commit thread was faster than this.
                     elem = entry->second;
-                    p_tr("commit thread was faster than this thread: %p", elem.get());
+                    TLOG(TRACE, "commit thread was faster than this thread: {}", static_cast<const void*>(elem.get()));
                 } else {
                     commit_ret_elems_.insert(std::make_pair(last_idx, elem));
                 }
@@ -195,8 +195,8 @@ namespace nuraft {
         } else {
             // Async replication:
             //   Immediately return with the result of pre-commit.
-            p_dv("asynchronously replicated %" PRIu64 ", return value %p",
-                 last_idx, ret_value.get());
+            TLOG(DEBUG, "asynchronously replicated {}" ", return value {}",
+                 last_idx, static_cast<const void*>(ret_value.get()));
             resp->set_ctx(ret_value);
         }
 
@@ -206,7 +206,7 @@ namespace nuraft {
 
     ptr<resp_msg> raft_server::handle_cli_req_callback(ptr<commit_ret_elem> elem,
                                                        ptr<resp_msg> resp) {
-        p_dv("commit_ret_cv %" PRIu64 " %p sleep", elem->idx_, &elem->awaiter_);
+        TLOG(DEBUG, "commit_ret_cv {}" " {} sleep", elem->idx_, static_cast<const void*>(&elem->awaiter_));
 
         // Will wake up after timeout.
         elem->awaiter_.wait_ms(ctx_->get_params()->client_req_timeout_);
@@ -223,25 +223,26 @@ namespace nuraft {
             if (elem->result_code_ != cmd_result_code::TIMEOUT) {
                 commit_ret_elems_.erase(elem->idx_);
             } else {
-                p_dv("Client timeout leave commit thread to remove commit_ret_elem %" PRIu64,
+                TLOG(DEBUG, "Client timeout leave commit thread to remove commit_ret_elem {}",
                      idx);
             }
-            p_dv("remaining elems in waiting queue: %zu", commit_ret_elems_.size());
+            TLOG(DEBUG, "remaining elems in waiting queue: {}", commit_ret_elems_.size());
         }
 
         if (elem->result_code_ == cmd_result_code::OK) {
-            p_dv("[OK] commit_ret_cv %" PRIu64 " wake up (%" PRIu64 " us), return value %p",
-                 idx, elapsed_us, ret_value.get());
+            TLOG(DEBUG, "[OK] commit_ret_cv {}" " wake up ({}" " us), return value {}",
+                 idx, elapsed_us, static_cast<const void*>(ret_value.get()));
         } else {
             // Null `ret_value`, most likely timeout.
-            p_wn("[NOT OK] commit_ret_cv %" PRIu64 " wake up (%" PRIu64 " us), "
-                 "return value %p, result code %d",
-                 idx, elapsed_us, ret_value.get(), elem->result_code_);
+            TLOG(WARNING, "[NOT OK] commit_ret_cv {}" " wake up ({}" " us), "
+                 "return value {}, result code {}",
+                 idx, elapsed_us, static_cast<const void*>(ret_value.get()),
+                 cmd_result_code_to_string(elem->result_code_));
             bool valid_leader = check_leadership_validity();
             if (valid_leader) {
-                p_in("leadership is still valid");
+                TLOG(INFO, "leadership is still valid");
             } else {
-                p_er("leadership is invalid");
+                TLOG(ERROR, "leadership is invalid");
             }
         }
         resp->set_ctx(ret_value);
@@ -274,12 +275,12 @@ namespace nuraft {
                 if (max_idx < elem->idx_) {
                     max_idx = elem->idx_;
                 }
-                p_db("cancelled blocking client request %" PRIu64 ", waited %" PRIu64 " us",
+                TLOG(DEBUG, "cancelled blocking client request {}" ", waited {}" " us",
                      elem->idx_, elem->timer_.get_us());
             }
             if (!commit_ret_elems_.empty()) {
-                p_wn("cancelled %zu blocking client requests from %" PRIu64
-                     " to %" PRIu64 ".",
+                TLOG(WARNING, "cancelled {} blocking client requests from {}"
+                     " to {}" ".",
                      commit_ret_elems_.size(), min_idx, max_idx);
             }
             commit_ret_elems_.clear();
@@ -302,7 +303,7 @@ namespace nuraft {
         // Calling handler should be done outside the mutex.
         for (auto &entry: elems) {
             ptr<commit_ret_elem> &ee = entry;
-            p_wn("cancelled non-blocking client request %" PRIu64, ee->idx_);
+            TLOG(WARNING, "cancelled non-blocking client request {}", ee->idx_);
 
             ptr<buffer> result = nullptr;
             ptr<std::exception> err =
@@ -326,7 +327,7 @@ namespace nuraft {
         // Calling handler should be done outside the mutex.
         for (auto &entry: elems) {
             sm_watcher_elem &ee = entry;
-            p_wn("cancelled state machine watcher for idx %" PRIu64, ee.idx_);
+            TLOG(WARNING, "cancelled state machine watcher for idx {}", ee.idx_);
 
             for (auto &watcher: ee.watchers_) {
                 bool ret_bool = false;
@@ -344,7 +345,7 @@ namespace nuraft {
         uint64_t sm_commit_index = sm_commit_index_;
         if (target_idx <= sm_commit_index) {
             // If the target index is already committed, return immediately.
-            p_tr("sm watcher for idx %" PRIu64 " already committed, return true",
+            TLOG(TRACE, "sm watcher for idx {}" " already committed, return true",
                  target_idx);
             bool ret_bool = true;
             ptr<std::exception> exp = nullptr;
@@ -355,12 +356,12 @@ namespace nuraft {
         auto entry = sm_watchers_.find(target_idx);
         if (entry != sm_watchers_.end()) {
             // If watcher already exists, add it to the list.
-            p_tr("sm watcher for idx %" PRIu64 " already exists, add to the list",
+            TLOG(TRACE, "sm watcher for idx {}" " already exists, add to the list",
                  target_idx);
             entry->second.watchers_.push_back(ret);
         } else {
             // If watcher does not exist, create a new one.
-            p_tr("sm watcher for idx %" PRIu64 " does not exist, create a new one",
+            TLOG(TRACE, "sm watcher for idx {}" " does not exist, create a new one",
                  target_idx);
             sm_watcher_elem elem;
             elem.idx_ = target_idx;

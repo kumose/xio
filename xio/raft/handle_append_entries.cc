@@ -32,7 +32,7 @@ limitations under the License.
 #include <xio/raft/snapshot.h>
 #include <xio/raft/state_machine.h>
 #include <xio/raft/state_mgr.h>
-#include <xio/raft/tracer.h>
+#include <xio/logging.h>
 
 #include <algorithm>
 #include <cassert>
@@ -135,7 +135,7 @@ namespace nuraft {
         pthread_setname_np(thread_name.c_str());
 #endif
 
-        p_in("bg append_entries thread initiated");
+        TLOG(INFO, "bg append_entries thread initiated");
         do {
             bg_append_ea_->wait();
             bg_append_ea_->reset();
@@ -144,7 +144,7 @@ namespace nuraft {
             append_entries_in_bg_exec();
         } while (!stopping_);
         append_bg_stopped_ = true;
-        p_in("bg append_entries thread terminated");
+        TLOG(INFO, "bg append_entries thread terminated");
     }
 
     void raft_server::append_entries_in_bg_exec() {
@@ -185,7 +185,7 @@ namespace nuraft {
         cb_func::Param cb_param(id_, leader_, p->get_id());
         CbReturnCode rc = ctx_->cb_func_.call(cb_func::RequestAppendEntries, &cb_param);
         if (rc == CbReturnCode::ReturnNull) {
-            p_wn("by callback, abort request_append_entries");
+            TLOG(WARNING, "by callback, abort request_append_entries");
             return true;
         }
 
@@ -202,11 +202,11 @@ namespace nuraft {
             if (cur_quorum_size >= 1) {
                 bool do_adjustment = false;
                 if (num_not_responding_peers) {
-                    p_wn("2-node cluster's follower is not responding long time, "
+                    TLOG(WARNING, "2-node cluster's follower is not responding long time, "
                         "adjust quorum to 1");
                     do_adjustment = true;
                 } else if (num_stale_peers) {
-                    p_wn("2-node cluster's follower is lagging behind, "
+                    TLOG(WARNING, "2-node cluster's follower is lagging behind, "
                         "adjust quorum to 1");
                     do_adjustment = true;
                 }
@@ -216,7 +216,7 @@ namespace nuraft {
                             ctx_->cb_func_.call(cb_func::AutoAdjustQuorum, &cb_param);
                     if (rc == CbReturnCode::ReturnNull) {
                         // Callback function rejected the adjustment.
-                        p_wn("quorum size adjustment was declined by callback");
+                        TLOG(WARNING, "quorum size adjustment was declined by callback");
                     } else {
                         ptr<raft_params> clone = cs_new<raft_params>(*params);
                         clone->custom_commit_quorum_size_ = 1;
@@ -232,7 +232,7 @@ namespace nuraft {
                        num_stale_peers == 0 &&
                        params->custom_commit_quorum_size_ == 1) {
                 // Recovered, both cases should be clear.
-                p_wn("2-node cluster's follower is responding now, "
+                TLOG(WARNING, "2-node cluster's follower is responding now, "
                     "restore quorum with default value");
                 ptr<raft_params> clone = cs_new<raft_params>(*params);
                 clone->custom_commit_quorum_size_ = 0;
@@ -254,14 +254,14 @@ namespace nuraft {
                 // We should not re-establish the connection to
                 // to-be-removed server, as it will block removing it
                 // from `peers_` list.
-                p_wn("connection to peer %d is not active long time: %d ms, "
+                TLOG(WARNING, "connection to peer {} is not active long time: {} ms, "
                      "but this peer should be removed. do nothing",
                      p->get_id(),
                      last_active_time_ms);
             }
             else
             {
-                p_wn("connection to peer %d is not active long time: %d ms, "
+                TLOG(WARNING, "connection to peer {} is not active long time: {} ms, "
                      "force re-connect",
                      p->get_id(),
                      last_active_time_ms);
@@ -292,8 +292,8 @@ namespace nuraft {
                 //   eventually have the same impact of removing and then
                 //   re-adding the peer.
                 //
-                p_tr("new rpc for peer %d is created, "
-                     "reset next log idx (%" PRIu64 ") and matched log idx (%" PRIu64 ")",
+                TLOG(TRACE, "new rpc for peer {} is created, "
+                     "reset next log idx ({}" ") and matched log idx ({}" ")",
                      p->get_id(), p_next_log_idx, p->get_matched_idx());
                 p->set_next_log_idx(0);
                 p->set_matched_idx(0);
@@ -304,7 +304,7 @@ namespace nuraft {
         if (params->use_bg_thread_for_snapshot_io_) {
             // Check the current queue if previous request exists.
             if (snapshot_io_mgr::instance().has_pending_request(this, p->get_id())) {
-                p_tr("previous snapshot request for peer %d already exists",
+                TLOG(TRACE, "previous snapshot request for peer {} already exists",
                      p->get_id());
                 return true;
             }
@@ -317,16 +317,16 @@ namespace nuraft {
             if (p->make_busy()) {
                 // Clear the reserved message.
                 p->set_rsv_msg(nullptr, nullptr);
-                p_in("found reserved message to peer %d, type %d",
-                     p->get_id(), msg->get_type());
+                TLOG(INFO, "found reserved message to peer {}, type {}",
+                     p->get_id(), msg_type_to_string(msg->get_type()));
                 return send_request(p, msg, m_handler);
             }
         } else {
             ulong last_streamed_log_idx = p->get_last_streamed_log_idx();
             int32 max_gap_in_stream = params->max_log_gap_in_stream_;
             if (last_streamed_log_idx > 0 && max_gap_in_stream == 0) {
-                p_in("disable stream mode for peer %d at runtime, "
-                     "current streamed log: %" PRIu64 "", p->get_id(),
+                TLOG(INFO, "disable stream mode for peer {} at runtime, "
+                     "current streamed log: {}" "", p->get_id(),
                      last_streamed_log_idx);
                 last_streamed_log_idx = 0;
                 p->reset_stream();
@@ -334,7 +334,7 @@ namespace nuraft {
             bool streaming = last_streamed_log_idx > 0;
 
             if (streaming || p->make_busy()) {
-                p_tr("send request to %d, streaming: %d, is_busy: %d\n", (int) p->get_id(),
+                TLOG(TRACE, "send request to {}, streaming: {}, is_busy: {}\n", (int) p->get_id(),
                      streaming, p->is_busy());
                 msg = create_append_entries_req(p, last_streamed_log_idx);
                 m_handler = resp_handler_;
@@ -356,8 +356,8 @@ namespace nuraft {
                              p->get_bytes_in_flight() > max_stream_bytes)) {
                             streaming = false;
                         } else {
-                            p_tr("send following request to %d in stream mode, "
-                                 "start idx: %" PRIu64 "", (int) p->get_id(),
+                            TLOG(TRACE, "send following request to {} in stream mode, "
+                                 "start idx: {}" "", (int) p->get_id(),
                                  msg->get_last_log_idx());
                             p->set_last_streamed_log_idx(
                                 last_streamed_log_idx,
@@ -385,7 +385,7 @@ namespace nuraft {
             }
         }
 
-        p_db("Server %d is busy, skip the request", p->get_id());
+        TLOG(DEBUG, "Server {} is busy, skip the request", p->get_id());
         check_snapshot_timeout(p);
 
         int32 last_ts_ms = p->get_ls_timer_us() / 1000;
@@ -393,16 +393,16 @@ namespace nuraft {
             // Waiting time becomes longer than HB interval, warning.
             p->inc_long_pause_warnings();
             if (p->get_long_puase_warnings() < raft_server::raft_limits_.warning_limit_) {
-                p_wn("skipped sending msg to %d too long time, "
-                     "last streamed idx: %" PRIu64 ", "
-                     "next log idx: %" PRIu64 ", "
-                     "in-flight: %" PRIu64 " bytes, "
-                     "last msg sent %d ms ago",
+                TLOG(WARNING, "skipped sending msg to {} too long time, "
+                     "last streamed idx: {}" ", "
+                     "next log idx: {}" ", "
+                     "in-flight: {}" " bytes, "
+                     "last msg sent {} ms ago",
                      p->get_id(), p->get_last_streamed_log_idx(),
                      p->get_next_log_idx(), p->get_bytes_in_flight(), last_ts_ms);
             } else if (p->get_long_puase_warnings() ==
                        raft_server::raft_limits_.warning_limit_) {
-                p_wn("long pause warning to %d is too verbose, "
+                TLOG(WARNING, "long pause warning to {} is too verbose, "
                      "will suppress it from now", p->get_id());
             }
         }
@@ -419,8 +419,8 @@ namespace nuraft {
                 raft_server::raft_limits_.warning_limit_) {
                 int32 last_ts_ms = p->get_ls_timer_us() / 1000;
                 p->inc_recovery_cnt();
-                p_wn("recovered from long pause to peer %d, %d warnings, "
-                     "%d ms, %d times",
+                TLOG(WARNING, "recovered from long pause to peer {}, {} warnings, "
+                     "{} ms, {} times",
                      p->get_id(),
                      p->get_long_puase_warnings(),
                      last_ts_ms,
@@ -460,14 +460,14 @@ namespace nuraft {
             // the target log index number, step down and remove it
             // as soon as we get the corresponding response.
             srv_to_leave_->step_down();
-            p_in("srv_to_leave_ %d is safe to be erased from peer list, "
-                 "log idx %" PRIu64 " commit idx %" PRIu64 ", set flag",
+            TLOG(INFO, "srv_to_leave_ {} is safe to be erased from peer list, "
+                 "log idx {}" " commit idx {}" ", set flag",
                  srv_to_leave_->get_id(),
                  msg->get_last_log_idx(),
                  msg->get_commit_idx());
         }
 
-        p_tr("sent\n");
+        TLOG(TRACE, "sent\n");
         return true;
     }
 
@@ -503,7 +503,7 @@ namespace nuraft {
 
         if (last_log_idx >= cur_nxt_idx) {
             // LCOV_EXCL_START
-            p_er("Peer's lastLogIndex is too large %" PRIu64 " v.s. %" PRIu64 ", ",
+            TLOG(ERROR, "Peer's lastLogIndex is too large {}" " v.s. {}" ", ",
                  last_log_idx, cur_nxt_idx);
             ctx_->state_mgr_->system_exit(raft_err::N8_peer_last_log_idx_too_large);
             _sys_exit(-1);
@@ -516,8 +516,8 @@ namespace nuraft {
         // last_log_idx: last log index of replica (follower).
         // end_idx: if (cur_nxt_idx - last_log_idx) > max_append_size, limit it.
 
-        p_tr("last_log_idx: %" PRIu64 ", starting_idx: %" PRIu64
-             ", cur_nxt_idx: %" PRIu64 "\n",
+        TLOG(TRACE, "last_log_idx: {}" ", starting_idx: {}"
+             ", cur_nxt_idx: {}" "\n",
              last_log_idx, starting_idx, cur_nxt_idx);
 
         // Verify log index range.
@@ -541,12 +541,12 @@ namespace nuraft {
         if (last_log_idx + 1 == peer_last_sent_idx &&
             last_log_idx + 2 < end_idx) {
             int32 cur_cnt = p.inc_cnt_not_applied();
-            p_db("last sent log (%" PRIu64 ") to peer %d is not applied, cnt %d",
+            TLOG(DEBUG, "last sent log ({}" ") to peer {} is not applied, cnt {}",
                  peer_last_sent_idx, p.get_id(), cur_cnt);
             if (cur_cnt >= 5) {
                 ulong prev_end_idx = end_idx;
                 end_idx = std::min(cur_nxt_idx, last_log_idx + 1 + 1);
-                p_db("reduce end_idx %" PRIu64 " -> %" PRIu64, prev_end_idx, end_idx);
+                TLOG(DEBUG, "reduce end_idx {}" " -> {}", prev_end_idx, end_idx);
             }
         } else {
             p.reset_cnt_not_applied();
@@ -559,7 +559,7 @@ namespace nuraft {
             log_entries = log_store_->log_entries_ext(last_log_idx + 1, end_idx,
                                                       p.get_next_batch_size_hint_in_bytes());
             if (log_entries == nullptr) {
-                p_wn("failed to retrieve log entries: %" PRIu64 " - %" PRIu64,
+                TLOG(WARNING, "failed to retrieve log entries: {}" " - {}",
                      last_log_idx + 1, end_idx);
                 entries_valid = false;
             }
@@ -578,10 +578,10 @@ namespace nuraft {
                 (pp->is_snapshot_sync_needed() ||
                  (last_log_idx < starting_idx &&
                   last_log_idx < snp_local->get_last_log_idx()))) {
-                p_db("send snapshot peer %d, peer log idx: %" PRIu64
-                     ", my starting idx: %" PRIu64 ", "
-                     "my log idx: %" PRIu64 ", last_snapshot_log_idx: %" PRIu64
-                     ", snapshot sync needed: %d",
+                TLOG(DEBUG, "send snapshot peer {}, peer log idx: {}"
+                     ", my starting idx: {}" ", "
+                     "my log idx: {}" ", last_snapshot_log_idx: {}"
+                     ", snapshot sync needed: {}",
                      p.get_id(),
                      last_log_idx, starting_idx, cur_nxt_idx,
                      snp_local->get_last_log_idx(),
@@ -595,10 +595,34 @@ namespace nuraft {
             // Cannot recover using snapshot. Return here to protect the leader.
             static timer_helper msg_timer(5000000);
             int log_lv = msg_timer.timeout_and_reset() ? L_ERROR : L_TRACE;
-            p_lv(log_lv,
-                 "neither snapshot nor log exists, peer %d, last log %" PRIu64 ", "
-                 "leader's start log %" PRIu64,
-                 p.get_id(), last_log_idx, starting_idx);
+            switch (log_lv) {
+case L_FATAL:
+    TLOG(FATAL, "neither snapshot nor log exists, peer {}, last log {}" ", "
+                 "leader's start log {}", p.get_id(), last_log_idx, starting_idx);
+    break;
+case L_ERROR:
+    TLOG(ERROR, "neither snapshot nor log exists, peer {}, last log {}" ", "
+                 "leader's start log {}", p.get_id(), last_log_idx, starting_idx);
+    break;
+case L_WARN:
+    TLOG(WARNING, "neither snapshot nor log exists, peer {}, last log {}" ", "
+                 "leader's start log {}", p.get_id(), last_log_idx, starting_idx);
+    break;
+case L_INFO:
+    TLOG(INFO, "neither snapshot nor log exists, peer {}, last log {}" ", "
+                 "leader's start log {}", p.get_id(), last_log_idx, starting_idx);
+    break;
+case L_DEBUG:
+    TLOG(DEBUG, "neither snapshot nor log exists, peer {}, last log {}" ", "
+                 "leader's start log {}", p.get_id(), last_log_idx, starting_idx);
+    break;
+case L_TRACE:
+    TLOG(TRACE, "neither snapshot nor log exists, peer {}, last log {}" ", "
+                 "leader's start log {}", p.get_id(), last_log_idx, starting_idx);
+    break;
+default:
+    break;
+};
 
             // Send out-of-log-range notification to this follower.
             ptr<req_msg> req = cs_new<req_msg>
@@ -627,22 +651,22 @@ namespace nuraft {
         ulong adjusted_end_idx = end_idx;
         if (log_entries) adjusted_end_idx = last_log_idx + 1 + log_entries->size();
         if (adjusted_end_idx != end_idx) {
-            p_tr("adjusted end_idx due to batch size hint: %" PRIu64 " -> %" PRIu64,
+            TLOG(TRACE, "adjusted end_idx due to batch size hint: {}" " -> {}",
                  end_idx, adjusted_end_idx);
         }
 
-        p_db("append_entries for %d with LastLogIndex=%" PRIu64 ", "
-             "LastLogTerm=%" PRIu64 ", EntriesLength=%zu, CommitIndex=%" PRIu64 ", "
-             "Term=%" PRIu64 ", peer_last_sent_idx %" PRIu64,
+        TLOG(DEBUG, "append_entries for {} with LastLogIndex={}" ", "
+             "LastLogTerm={}" ", EntriesLength={}, CommitIndex={}" ", "
+             "Term={}" ", peer_last_sent_idx {}",
              p.get_id(), last_log_idx, last_log_term,
              (log_entries ? log_entries->size() : 0), commit_idx, term,
              peer_last_sent_idx);
         if (last_log_idx + 1 == adjusted_end_idx) {
-            p_tr("EMPTY PAYLOAD");
+            TLOG(TRACE, "EMPTY PAYLOAD");
         } else if (last_log_idx + 1 + 1 == adjusted_end_idx) {
-            p_db("idx: %" PRIu64, last_log_idx + 1);
+            TLOG(DEBUG, "idx: {}", last_log_idx + 1);
         } else {
-            p_db("idx range: %" PRIu64 "-%" PRIu64, last_log_idx + 1, adjusted_end_idx - 1);
+            TLOG(DEBUG, "idx range: {}" "-{}", last_log_idx + 1, adjusted_end_idx - 1);
         }
 
         ptr<req_msg> req
@@ -695,8 +719,8 @@ namespace nuraft {
             //
             // If all the request have longer interval than the limit,
             // it is reasonable to say this follower is not healthy and excluded.
-            p_wn("heartbeat or append_entries request arrives after %" PRIu64 " ms, "
-                 "which is larger than the limit: %d ms, reject it",
+            TLOG(WARNING, "heartbeat or append_entries request arrives after {}" " ms, "
+                 "which is larger than the limit: {} ms, reject it",
                  time_gap_ms,
                  params->heart_beat_interval_ *
                  raft_limits_.full_consensus_follower_limit_);
@@ -715,7 +739,7 @@ namespace nuraft {
             ptr<cluster_config> cur_config = get_config();
             ptr<srv_config> my_config = cur_config->get_server(id_);
             if (my_config && !my_config->is_new_joiner()) {
-                p_in("catch-up process is done, clearing the flag");
+                TLOG(INFO, "catch-up process is done, clearing the flag");
                 state_->set_catching_up(false);
                 ctx_->state_mgr_->save_state(*state_);
             }
@@ -732,9 +756,9 @@ namespace nuraft {
         } _s_req(&serving_req_);
         timer_helper tt;
 
-        p_tr("from peer %d, req type: %d, req term: %" PRIu64 ", "
-             "req l idx: %" PRIu64 " (%zu), req c idx: %" PRIu64 ", "
-             "my term: %" PRIu64 ", my role: %d\n",
+        TLOG(TRACE, "from peer {}, req type: {}, req term: {}" ", "
+             "req l idx: {}" " ({}), req c idx: {}" ", "
+             "my term: {}" ", my role: {}\n",
              req.get_src(), (int) req.get_type(), req.get_term(),
              req.get_last_log_idx(), req.log_entries().size(), req.get_commit_idx(),
              state_->get_term(), (int) role_);
@@ -743,7 +767,7 @@ namespace nuraft {
             if (role_ == srv_role::candidate) {
                 become_follower();
             } else if (role_ == srv_role::leader) {
-                p_wn("Receive AppendEntriesRequest from another leader (%d) "
+                TLOG(WARNING, "Receive AppendEntriesRequest from another leader ({}) "
                      "with same term, there must be a bug. Invoking the callback.",
                      req.get_src());
 
@@ -753,9 +777,9 @@ namespace nuraft {
 
                 ctx_->cb_func_.call(cb_func::ReceivedMisbehavingMessage, &param);
                 if (!req_resp.resp.get()) {
-                    p_wn("callback function didn't return response, ignore this request");
+                    TLOG(WARNING, "callback function didn't return response, ignore this request");
                 } else {
-                    p_wn("callback function returned response, send it back");
+                    TLOG(WARNING, "callback function returned response, send it back");
                 }
                 return req_resp.resp;
             } else {
@@ -803,31 +827,101 @@ namespace nuraft {
                 log_lv = L_TRACE;
             }
         }
-        p_lv(log_lv,
-             "[LOG %s] req log idx: %" PRIu64 ", req log term: %" PRIu64
-             ", my last log idx: %" PRIu64 ", "
-             "my log (%" PRIu64 ") term: %" PRIu64,
-             (log_okay ? "OK" : "XX"),
-             req.get_last_log_idx(),
-             req.get_last_log_term(),
-             log_store_->next_slot() - 1,
-             req.get_last_log_idx(),
-             log_term);
+        switch (log_lv) {
+case L_FATAL:
+    TLOG(FATAL, "[LOG {}] req log idx: {}" ", req log term: {}"
+             ", my last log idx: {}" ", "
+             "my log ({}" ") term: {}", (log_okay ? "OK" : "XX"), req.get_last_log_idx(), req.get_last_log_term(), log_store_->next_slot() - 1, req.get_last_log_idx(), log_term);
+    break;
+case L_ERROR:
+    TLOG(ERROR, "[LOG {}] req log idx: {}" ", req log term: {}"
+             ", my last log idx: {}" ", "
+             "my log ({}" ") term: {}", (log_okay ? "OK" : "XX"), req.get_last_log_idx(), req.get_last_log_term(), log_store_->next_slot() - 1, req.get_last_log_idx(), log_term);
+    break;
+case L_WARN:
+    TLOG(WARNING, "[LOG {}] req log idx: {}" ", req log term: {}"
+             ", my last log idx: {}" ", "
+             "my log ({}" ") term: {}", (log_okay ? "OK" : "XX"), req.get_last_log_idx(), req.get_last_log_term(), log_store_->next_slot() - 1, req.get_last_log_idx(), log_term);
+    break;
+case L_INFO:
+    TLOG(INFO, "[LOG {}] req log idx: {}" ", req log term: {}"
+             ", my last log idx: {}" ", "
+             "my log ({}" ") term: {}", (log_okay ? "OK" : "XX"), req.get_last_log_idx(), req.get_last_log_term(), log_store_->next_slot() - 1, req.get_last_log_idx(), log_term);
+    break;
+case L_DEBUG:
+    TLOG(DEBUG, "[LOG {}] req log idx: {}" ", req log term: {}"
+             ", my last log idx: {}" ", "
+             "my log ({}" ") term: {}", (log_okay ? "OK" : "XX"), req.get_last_log_idx(), req.get_last_log_term(), log_store_->next_slot() - 1, req.get_last_log_idx(), log_term);
+    break;
+case L_TRACE:
+    TLOG(TRACE, "[LOG {}] req log idx: {}" ", req log term: {}"
+             ", my last log idx: {}" ", "
+             "my log ({}" ") term: {}", (log_okay ? "OK" : "XX"), req.get_last_log_idx(), req.get_last_log_term(), log_store_->next_slot() - 1, req.get_last_log_idx(), log_term);
+    break;
+default:
+    break;
+};
 
         if (req.get_term() < state_->get_term() ||
             log_okay == false ||
             state_->is_receiving_snapshot()) {
-            p_lv(log_lv,
-                 "deny, req term %" PRIu64 ", my term %" PRIu64
-                 ", req log idx %" PRIu64 ", my log idx %" PRIu64
-                 ", receiving snapshot %s",
-                 req.get_term(), state_->get_term(),
-                 req.get_last_log_idx(), log_store_->next_slot() - 1,
-                 (state_->is_receiving_snapshot() ? "TRUE" : "FALSE"));
+            switch (log_lv) {
+case L_FATAL:
+    TLOG(FATAL, "deny, req term {}" ", my term {}"
+                 ", req log idx {}" ", my log idx {}"
+                 ", receiving snapshot {}", req.get_term(), state_->get_term(), req.get_last_log_idx(), log_store_->next_slot() - 1, (state_->is_receiving_snapshot() ? "TRUE" : "FALSE"));
+    break;
+case L_ERROR:
+    TLOG(ERROR, "deny, req term {}" ", my term {}"
+                 ", req log idx {}" ", my log idx {}"
+                 ", receiving snapshot {}", req.get_term(), state_->get_term(), req.get_last_log_idx(), log_store_->next_slot() - 1, (state_->is_receiving_snapshot() ? "TRUE" : "FALSE"));
+    break;
+case L_WARN:
+    TLOG(WARNING, "deny, req term {}" ", my term {}"
+                 ", req log idx {}" ", my log idx {}"
+                 ", receiving snapshot {}", req.get_term(), state_->get_term(), req.get_last_log_idx(), log_store_->next_slot() - 1, (state_->is_receiving_snapshot() ? "TRUE" : "FALSE"));
+    break;
+case L_INFO:
+    TLOG(INFO, "deny, req term {}" ", my term {}"
+                 ", req log idx {}" ", my log idx {}"
+                 ", receiving snapshot {}", req.get_term(), state_->get_term(), req.get_last_log_idx(), log_store_->next_slot() - 1, (state_->is_receiving_snapshot() ? "TRUE" : "FALSE"));
+    break;
+case L_DEBUG:
+    TLOG(DEBUG, "deny, req term {}" ", my term {}"
+                 ", req log idx {}" ", my log idx {}"
+                 ", receiving snapshot {}", req.get_term(), state_->get_term(), req.get_last_log_idx(), log_store_->next_slot() - 1, (state_->is_receiving_snapshot() ? "TRUE" : "FALSE"));
+    break;
+case L_TRACE:
+    TLOG(TRACE, "deny, req term {}" ", my term {}"
+                 ", req log idx {}" ", my log idx {}"
+                 ", receiving snapshot {}", req.get_term(), state_->get_term(), req.get_last_log_idx(), log_store_->next_slot() - 1, (state_->is_receiving_snapshot() ? "TRUE" : "FALSE"));
+    break;
+default:
+    break;
+};
             if (local_snp) {
-                p_lv(log_lv, "snp idx %" PRIu64 " term %" PRIu64,
-                     local_snp->get_last_log_idx(),
-                     local_snp->get_last_log_term());
+                switch (log_lv) {
+case L_FATAL:
+    TLOG(FATAL, "snp idx {}" " term {}", local_snp->get_last_log_idx(), local_snp->get_last_log_term());
+    break;
+case L_ERROR:
+    TLOG(ERROR, "snp idx {}" " term {}", local_snp->get_last_log_idx(), local_snp->get_last_log_term());
+    break;
+case L_WARN:
+    TLOG(WARNING, "snp idx {}" " term {}", local_snp->get_last_log_idx(), local_snp->get_last_log_term());
+    break;
+case L_INFO:
+    TLOG(INFO, "snp idx {}" " term {}", local_snp->get_last_log_idx(), local_snp->get_last_log_term());
+    break;
+case L_DEBUG:
+    TLOG(DEBUG, "snp idx {}" " term {}", local_snp->get_last_log_idx(), local_snp->get_last_log_term());
+    break;
+case L_TRACE:
+    TLOG(TRACE, "snp idx {}" " term {}", local_snp->get_last_log_idx(), local_snp->get_last_log_term());
+    break;
+default:
+    break;
+};
             }
             if (state_->is_receiving_snapshot()) {
                 // If it is in `receiving_snapshot` status but received a normal
@@ -836,8 +930,28 @@ namespace nuraft {
                 resp_appendix appendix;
                 appendix.extra_order_ = resp_appendix::RECEIVING_SNAPSHOT;
                 resp->set_ctx(appendix.serialize());
-                p_lv(log_lv, "appended extra order %s",
-                     resp_appendix::extra_order_msg(appendix.extra_order_));
+                switch (log_lv) {
+case L_FATAL:
+    TLOG(FATAL, "appended extra order {}", resp_appendix::extra_order_msg(appendix.extra_order_));
+    break;
+case L_ERROR:
+    TLOG(ERROR, "appended extra order {}", resp_appendix::extra_order_msg(appendix.extra_order_));
+    break;
+case L_WARN:
+    TLOG(WARNING, "appended extra order {}", resp_appendix::extra_order_msg(appendix.extra_order_));
+    break;
+case L_INFO:
+    TLOG(INFO, "appended extra order {}", resp_appendix::extra_order_msg(appendix.extra_order_));
+    break;
+case L_DEBUG:
+    TLOG(DEBUG, "appended extra order {}", resp_appendix::extra_order_msg(appendix.extra_order_));
+    break;
+case L_TRACE:
+    TLOG(TRACE, "appended extra order {}", resp_appendix::extra_order_msg(appendix.extra_order_));
+    break;
+default:
+    break;
+};
             }
             resp->set_next_batch_size_hint_in_bytes(
                 state_machine_->get_next_batch_size_hint_in_bytes());
@@ -853,7 +967,7 @@ namespace nuraft {
         bool new_excluded_from_the_quorum_ =
                 req.get_extra_flags() & req_msg::EXCLUDED_FROM_THE_QUORUM;
         if (old_excluded_from_the_quorum_ != new_excluded_from_the_quorum_) {
-            p_in("excluded from the quorum changed from %s to %s",
+            TLOG(INFO, "excluded from the quorum changed from {} to {}",
                  old_excluded_from_the_quorum_ ? "true" : "false",
                  new_excluded_from_the_quorum_ ? "true" : "false");
             excluded_from_the_quorum_ = new_excluded_from_the_quorum_;
@@ -877,8 +991,28 @@ namespace nuraft {
 
             static timer_helper log_timer(1000 * 1000);
             int log_lv = log_timer.timeout_and_reset() ? L_INFO : L_TRACE;
-            p_lv(log_lv, "appended extra order %s",
-                 resp_appendix::extra_order_msg(appendix.extra_order_));
+            switch (log_lv) {
+case L_FATAL:
+    TLOG(FATAL, "appended extra order {}", resp_appendix::extra_order_msg(appendix.extra_order_));
+    break;
+case L_ERROR:
+    TLOG(ERROR, "appended extra order {}", resp_appendix::extra_order_msg(appendix.extra_order_));
+    break;
+case L_WARN:
+    TLOG(WARNING, "appended extra order {}", resp_appendix::extra_order_msg(appendix.extra_order_));
+    break;
+case L_INFO:
+    TLOG(INFO, "appended extra order {}", resp_appendix::extra_order_msg(appendix.extra_order_));
+    break;
+case L_DEBUG:
+    TLOG(DEBUG, "appended extra order {}", resp_appendix::extra_order_msg(appendix.extra_order_));
+    break;
+case L_TRACE:
+    TLOG(TRACE, "appended extra order {}", resp_appendix::extra_order_msg(appendix.extra_order_));
+    break;
+default:
+    break;
+};
 
             // Since this decline is on purpose, we should not let this server
             // initiaite leader election.
@@ -898,9 +1032,9 @@ namespace nuraft {
             // Local counter for iterating req.log_entries().
             size_t cnt = 0;
 
-            p_db("[INIT] log_idx: %" PRIu64 ", count: %zu, "
-                 "log_store_->next_slot(): %" PRIu64 ", "
-                 "req.log_entries().size(): %zu",
+            TLOG(DEBUG, "[INIT] log_idx: {}" ", count: {}, "
+                 "log_store_->next_slot(): {}" ", "
+                 "req.log_entries().size(): {}",
                  log_idx, cnt, log_store_->next_slot(), req.log_entries().size());
 
             // Skipping already existing (with the same term) logs.
@@ -914,7 +1048,7 @@ namespace nuraft {
                     break;
                 }
             }
-            p_db("[after SKIP] log_idx: %" PRIu64 ", count: %zu", log_idx, cnt);
+            TLOG(DEBUG, "[after SKIP] log_idx: {}" ", count: {}", log_idx, cnt);
 
             // Rollback (only if necessary).
             // WARNING:
@@ -926,9 +1060,9 @@ namespace nuraft {
             bool rollback_in_progress = false;
             if (my_last_log_idx >= log_idx &&
                 cnt < req.log_entries().size()) {
-                p_in("rollback logs: %" PRIu64 " - %" PRIu64
-                     ", commit idx req %" PRIu64 ", quick %" PRIu64 ", sm %" PRIu64 ", "
-                     "num log entries %zu, current count %zu",
+                TLOG(INFO, "rollback logs: {}" " - {}"
+                     ", commit idx req {}" ", quick {}" ", sm {}" ", "
+                     "num log entries {}, current count {}",
                      log_idx,
                      my_last_log_idx,
                      req.get_commit_idx(),
@@ -941,13 +1075,13 @@ namespace nuraft {
                 // should rollback commit index as well
                 // (should not happen in Raft though).
                 if (quick_commit_index_ >= log_idx) {
-                    p_wn("rollback quick commit index from %" PRIu64 " to %" PRIu64,
+                    TLOG(WARNING, "rollback quick commit index from {}" " to {}",
                          quick_commit_index_.load(),
                          log_idx - 1);
                     quick_commit_index_ = log_idx - 1;
                 }
                 if (sm_commit_index_ >= log_idx) {
-                    p_er("rollback sm commit index from %" PRIu64 " to %" PRIu64 ", "
+                    TLOG(ERROR, "rollback sm commit index from {}" " to {}" ", "
                          "it shouldn't happen and may indicate data loss",
                          sm_commit_index_.load(),
                          log_idx - 1);
@@ -962,13 +1096,13 @@ namespace nuraft {
                         buf->pos(0);
                         state_machine_->rollback_ext
                                 (state_machine::ext_op_params(idx, buf));
-                        p_in("rollback log %" PRIu64 ", term %" PRIu64,
+                        TLOG(INFO, "rollback log {}" ", term {}",
                              idx, old_entry->get_term());
                     } else if (old_entry->get_val_type() == log_val_type::conf) {
                         ptr<cluster_config> conf_to_rollback =
                                 cluster_config::deserialize(*buf);
                         state_machine_->rollback_config(idx, conf_to_rollback);
-                        p_in("revert from a prev config change to config at %" PRIu64,
+                        TLOG(INFO, "revert from a prev config change to config at {}",
                              get_config()->get_log_idx());
                         config_changing_ = false;
                     }
@@ -979,7 +1113,7 @@ namespace nuraft {
             while (log_idx < log_store_->next_slot() &&
                    cnt < req.log_entries().size()) {
                 ptr<log_entry> entry = req.log_entries().at(cnt);
-                p_in("overwrite at %" PRIu64 ", term %" PRIu64 ", timestamp %" PRIu64 "\n",
+                TLOG(INFO, "overwrite at {}" ", term {}" ", timestamp {}" "\n",
                      log_idx, entry->get_term(), entry->get_timestamp());
                 store_log_entry(entry, log_idx);
 
@@ -989,7 +1123,7 @@ namespace nuraft {
                     state_machine_->pre_commit_ext
                             (state_machine::ext_op_params(log_idx, buf));
                 } else if (entry->get_val_type() == log_val_type::conf) {
-                    p_in("receive a config change from leader at %" PRIu64, log_idx);
+                    TLOG(INFO, "receive a config change from leader at {}", log_idx);
                     config_changing_ = true;
                 }
 
@@ -998,21 +1132,21 @@ namespace nuraft {
 
                 if (stopping_) return resp;
             }
-            p_db("[after OVWR] log_idx: %" PRIu64 ", count: %zu", log_idx, cnt);
+            TLOG(DEBUG, "[after OVWR] log_idx: {}" ", count: {}", log_idx, cnt);
 
             if (rollback_in_progress) {
-                p_in("last log index after rollback and overwrite: %" PRIu64,
+                TLOG(INFO, "last log index after rollback and overwrite: {}",
                      log_store_->next_slot() - 1);
             }
 
             // Append new log entries
             while (cnt < req.log_entries().size()) {
                 ptr<log_entry> entry = req.log_entries().at(cnt++);
-                p_tr("append at %" PRIu64 ", term %" PRIu64 ", timestamp %" PRIu64 "\n",
+                TLOG(TRACE, "append at {}" ", term {}" ", timestamp {}" "\n",
                      log_store_->next_slot(), entry->get_term(), entry->get_timestamp());
                 ulong idx_for_entry = store_log_entry(entry);
                 if (entry->get_val_type() == log_val_type::conf) {
-                    p_in("receive a config change from leader at %" PRIu64,
+                    TLOG(INFO, "receive a config change from leader at {}",
                          idx_for_entry);
                     config_changing_ = true;
                 } else if (entry->get_val_type() == log_val_type::app_log) {
@@ -1034,7 +1168,7 @@ namespace nuraft {
                 while (last_durable_index <
                        req.get_last_log_idx() + req.log_entries().size()) {
                     // Some logs are not durable yet, wait here and block the thread.
-                    p_tr("durable index %" PRIu64
+                    TLOG(TRACE, "durable index {}"
                          ", sleep and wait for log appending completion",
                          last_durable_index);
                     ea_follower_log_append_->wait_ms(params->heart_beat_interval_);
@@ -1043,7 +1177,7 @@ namespace nuraft {
 
                     ea_follower_log_append_->reset();
                     last_durable_index = log_store_->last_durable_index();
-                    p_tr("wake up, durable index %" PRIu64, last_durable_index);
+                    TLOG(TRACE, "wake up, durable index {}", last_durable_index);
                 }
             }
         }
@@ -1101,10 +1235,10 @@ namespace nuraft {
         int32 time_ms = tt.get_us() / 1000;
         if (time_ms >= ctx_->get_params()->heart_beat_interval_) {
             // Append entries took longer than HB interval. Warning.
-            p_wn("appending entries from peer %d took long time (%d ms)\n"
-                 "req type: %d, req term: %" PRIu64 ", "
-                 "req l idx: %" PRIu64 " (%zu), req c idx: %" PRIu64 ", "
-                 "my term: %" PRIu64 ", my role: %d",
+            TLOG(WARNING, "appending entries from peer {} took long time ({} ms)\n"
+                 "req type: {}, req term: {}" ", "
+                 "req l idx: {}" " ({}), req c idx: {}" ", "
+                 "my term: {}" ", my role: {}",
                  req.get_src(), time_ms, (int) req.get_type(), req.get_term(),
                  req.get_last_log_idx(), req.log_entries().size(), req.get_commit_idx(),
                  state_->get_term(), (int) role_);
@@ -1132,12 +1266,12 @@ namespace nuraft {
             appendix.extra_order_ = resp_appendix::NOTIFYING_SM_COMMITTED_INDEX;
             appendix.sm_committed_idx_ = sm_commit_index_.load();
             resp->set_ctx(appendix.serialize());
-            p_tr("appended extra order %s, sm committed index: %" PRIu64,
+            TLOG(TRACE, "appended extra order {}, sm committed index: {}",
                  resp_appendix::extra_order_msg(appendix.extra_order_),
                  appendix.sm_committed_idx_);
         }
 
-        p_tr("batch size hint: %" PRId64 " bytes, flags: %" PRIx64,
+        TLOG(TRACE, "batch size hint: {}" " bytes, flags: {}",
              bs_hint, resp->get_extra_flags());
 
         out_of_log_range_ = false;
@@ -1162,8 +1296,8 @@ namespace nuraft {
         if (precommit_index_ >= desired) {
             return true;
         }
-        p_er("updating precommit_index_ failed after %zu/%zu attempts, "
-             "last seen precommit_index_ %" PRIu64 ", target %" PRIu64,
+        TLOG(ERROR, "updating precommit_index_ failed after {}/{} attempts, "
+             "last seen precommit_index_ {}" ", target {}",
              num_attempts, MAX_ATTEMPTS, prev_precommit_index, desired);
         return false;
     }
@@ -1171,7 +1305,7 @@ namespace nuraft {
     void raft_server::handle_append_entries_resp(resp_msg &resp) {
         peer_itor it = peers_.find(resp.get_src());
         if (it == peers_.end()) {
-            p_in("the response is from an unknown peer %d", resp.get_src());
+            TLOG(INFO, "the response is from an unknown peer {}", resp.get_src());
             return;
         }
 
@@ -1185,8 +1319,8 @@ namespace nuraft {
         )
         {
             // Catch-up is done.
-            p_in("server to be removed %d fully caught up the "
-                 "target config log %" PRIu64,
+            TLOG(INFO, "server to be removed {} fully caught up the "
+                 "target config log {}",
                  srv_to_leave_->get_id(),
                  srv_to_leave_target_idx_);
             remove_peer_from_peers(srv_to_leave_);
@@ -1199,11 +1333,11 @@ namespace nuraft {
         bool need_to_catchup = true;
 
         ptr<peer> p = it->second;
-        p_tr("handle append entries resp (from %d), resp.get_next_idx(): %" PRIu64,
+        TLOG(TRACE, "handle append entries resp (from {}), resp.get_next_idx(): {}",
              (int) p->get_id(), resp.get_next_idx());
 
         int64 bs_hint = resp.get_next_batch_size_hint_in_bytes();
-        p_tr("peer %d batch size hint: %" PRId64 " bytes, in-flight: %" PRId64 " bytes",
+        TLOG(TRACE, "peer {} batch size hint: {}" " bytes, in-flight: {}" " bytes",
              p->get_id(), bs_hint, p->get_bytes_in_flight());
         p->set_next_batch_size_hint_in_bytes(bs_hint);
 
@@ -1211,7 +1345,7 @@ namespace nuraft {
             bool new_mark_down_status = (resp.get_extra_flags() & resp_msg::SELF_MARK_DOWN);
             bool old_mark_down_status = p->set_self_mark_down(new_mark_down_status);
             if (old_mark_down_status != new_mark_down_status) {
-                p_in("peer %d self mark down status changed from %s to %s",
+                TLOG(INFO, "peer {} self mark down status changed from {} to {}",
                      p->get_id(),
                      (old_mark_down_status ? "true" : "false"),
                      (new_mark_down_status ? "true" : "false"));
@@ -1227,7 +1361,7 @@ namespace nuraft {
                 p->set_next_log_idx(resp.get_next_idx());
                 prev_matched_idx = p->get_matched_idx();
                 new_matched_idx = resp.get_next_idx() - 1;
-                p_tr("peer %d, prev matched idx: %" PRIu64 ", new matched idx: %" PRIu64,
+                TLOG(TRACE, "peer {}, prev matched idx: {}" ", new matched idx: {}",
                      p->get_id(), prev_matched_idx, new_matched_idx);
                 p->set_matched_idx(new_matched_idx);
                 p->set_last_accepted_log_idx(new_matched_idx);
@@ -1243,7 +1377,7 @@ namespace nuraft {
                     {
                         std::lock_guard<std::mutex> l(p->get_lock());
                         new_sm_committed_idx = appendix->sm_committed_idx_;
-                        p_tr("sm committed index of peer %d: %" PRIu64 " -> %" PRIu64,
+                        TLOG(TRACE, "sm committed index of peer {}: {}" " -> {}",
                              p->get_id(), prev_sm_committed_idx, new_sm_committed_idx);
                         p->set_sm_committed_idx(new_sm_committed_idx);
                         sm_committed_idx_updated = true;
@@ -1253,8 +1387,8 @@ namespace nuraft {
                         prev_sm_committed_idx < new_sm_committed_idx) {
                         uint64_t target_idx = find_sm_commit_idx_to_notify();
                         target_idx = update_sm_commit_notifier_target_idx(target_idx);
-                        p_tr("sm commit notify ready: %" PRIu64 ", target idx: %" PRIu64
-                             ", notified idx: %" PRIu64,
+                        TLOG(TRACE, "sm commit notify ready: {}" ", target idx: {}"
+                             ", notified idx: {}",
                              new_sm_committed_idx, target_idx,
                              sm_commit_notifier_notified_idx_.load());
                         global_mgr *mgr = get_global_mgr();
@@ -1283,9 +1417,9 @@ namespace nuraft {
             ulong acceptable_precommit_idx = resp.get_next_idx() +
                                              max_gap_in_stream;
             ulong last_streamed_log_idx = p->get_last_streamed_log_idx();
-            p_tr("peer %d, max gap: %d, acceptable_precommit_idx: %" PRIu64 ", "
-                 "last_streamed_log_idx: %" PRIu64 ", "
-                 "last_sent: %" PRIu64 ", next_idx: %" PRIu64 "", p->get_id(),
+            TLOG(TRACE, "peer {}, max gap: {}, acceptable_precommit_idx: {}" ", "
+                 "last_streamed_log_idx: {}" ", "
+                 "last_sent: {}" ", next_idx: {}" "", p->get_id(),
                  max_gap_in_stream, acceptable_precommit_idx, last_streamed_log_idx,
                  p->get_last_sent_idx(), resp.get_next_idx());
             if (max_gap_in_stream > 0 &&
@@ -1293,7 +1427,7 @@ namespace nuraft {
                 resp.get_next_idx() > 0 &&
                 p->get_last_sent_idx() < resp.get_next_idx() &&
                 precommit_index_ < acceptable_precommit_idx) {
-                p_in("start stream mode for peer %d at idx: %" PRIu64 "",
+                TLOG(INFO, "start stream mode for peer {} at idx: {}" "",
                      p->get_id(), resp.get_next_idx() - 1);
                 p->set_last_streamed_log_idx(0, resp.get_next_idx() - 1);
             }
@@ -1334,7 +1468,7 @@ namespace nuraft {
                     need_to_catchup = true;
                 }
             }
-            p_tr("need to catchup peer %d: %d", p->get_id(), need_to_catchup);
+            TLOG(TRACE, "need to catchup peer {}: {}", p->get_id(), need_to_catchup);
         } else {
             std::lock_guard<std::mutex> guard(p->get_lock());
             ulong prev_next_log = p->get_next_log_idx();
@@ -1350,15 +1484,35 @@ namespace nuraft {
                         do_log_rewind = false;
                     } else if (appendix->extra_order_ == resp_appendix::RECEIVING_SNAPSHOT) {
                         p->set_snapshot_sync_is_needed(true);
-                        p_in("peer %d was in snapshot sync mode, re-sending a snapshot. "
-                             "peers next log idx: %" PRIu64 ", resp next idx: %" PRIu64,
+                        TLOG(INFO, "peer {} was in snapshot sync mode, re-sending a snapshot. "
+                             "peers next log idx: {}" ", resp next idx: {}",
                              p->get_id(), prev_next_log, resp.get_next_idx());
                     }
 
                     static timer_helper extra_order_timer(1000 * 1000, true);
                     int log_lv = extra_order_timer.timeout_and_reset() ? L_INFO : L_TRACE;
-                    p_lv(log_lv, "received extra order: %s",
-                         resp_appendix::extra_order_msg(appendix->extra_order_));
+                    switch (log_lv) {
+case L_FATAL:
+    TLOG(FATAL, "received extra order: {}", resp_appendix::extra_order_msg(appendix->extra_order_));
+    break;
+case L_ERROR:
+    TLOG(ERROR, "received extra order: {}", resp_appendix::extra_order_msg(appendix->extra_order_));
+    break;
+case L_WARN:
+    TLOG(WARNING, "received extra order: {}", resp_appendix::extra_order_msg(appendix->extra_order_));
+    break;
+case L_INFO:
+    TLOG(INFO, "received extra order: {}", resp_appendix::extra_order_msg(appendix->extra_order_));
+    break;
+case L_DEBUG:
+    TLOG(DEBUG, "received extra order: {}", resp_appendix::extra_order_msg(appendix->extra_order_));
+    break;
+case L_TRACE:
+    TLOG(TRACE, "received extra order: {}", resp_appendix::extra_order_msg(appendix->extra_order_));
+    break;
+default:
+    break;
+};
                 }
                 // if not, move one log backward.
                 // WARNING: Make sure that `next_log_idx_` shouldn't be smaller than 0.
@@ -1376,19 +1530,46 @@ namespace nuraft {
                     log_lv = L_TRACE;
                 }
             }
-            p_lv(log_lv,
-                 "declined append: peer %d, prev next log idx %" PRIu64 ", "
-                 "resp next %" PRIu64 ", new next log idx %" PRIu64
-                 ", my start idx: %" PRIu64 ", my last idx: %" PRIu64,
-                 p->get_id(), prev_next_log,
-                 resp.get_next_idx(), p->get_next_log_idx(),
-                 log_store_->start_index(), log_store_->next_slot() - 1);
+            switch (log_lv) {
+case L_FATAL:
+    TLOG(FATAL, "declined append: peer {}, prev next log idx {}" ", "
+                 "resp next {}" ", new next log idx {}"
+                 ", my start idx: {}" ", my last idx: {}", p->get_id(), prev_next_log, resp.get_next_idx(), p->get_next_log_idx(), log_store_->start_index(), log_store_->next_slot() - 1);
+    break;
+case L_ERROR:
+    TLOG(ERROR, "declined append: peer {}, prev next log idx {}" ", "
+                 "resp next {}" ", new next log idx {}"
+                 ", my start idx: {}" ", my last idx: {}", p->get_id(), prev_next_log, resp.get_next_idx(), p->get_next_log_idx(), log_store_->start_index(), log_store_->next_slot() - 1);
+    break;
+case L_WARN:
+    TLOG(WARNING, "declined append: peer {}, prev next log idx {}" ", "
+                 "resp next {}" ", new next log idx {}"
+                 ", my start idx: {}" ", my last idx: {}", p->get_id(), prev_next_log, resp.get_next_idx(), p->get_next_log_idx(), log_store_->start_index(), log_store_->next_slot() - 1);
+    break;
+case L_INFO:
+    TLOG(INFO, "declined append: peer {}, prev next log idx {}" ", "
+                 "resp next {}" ", new next log idx {}"
+                 ", my start idx: {}" ", my last idx: {}", p->get_id(), prev_next_log, resp.get_next_idx(), p->get_next_log_idx(), log_store_->start_index(), log_store_->next_slot() - 1);
+    break;
+case L_DEBUG:
+    TLOG(DEBUG, "declined append: peer {}, prev next log idx {}" ", "
+                 "resp next {}" ", new next log idx {}"
+                 ", my start idx: {}" ", my last idx: {}", p->get_id(), prev_next_log, resp.get_next_idx(), p->get_next_log_idx(), log_store_->start_index(), log_store_->next_slot() - 1);
+    break;
+case L_TRACE:
+    TLOG(TRACE, "declined append: peer {}, prev next log idx {}" ", "
+                 "resp next {}" ", new next log idx {}"
+                 ", my start idx: {}" ", my last idx: {}", p->get_id(), prev_next_log, resp.get_next_idx(), p->get_next_log_idx(), log_store_->start_index(), log_store_->next_slot() - 1);
+    break;
+default:
+    break;
+};
 
             // disable stream
             uint64_t last_streamed_log_idx = p->get_last_streamed_log_idx();
             p->reset_stream();
             if (last_streamed_log_idx) {
-                p_in("stop stream mode for peer %d at idx: %" PRIu64 "",
+                TLOG(INFO, "stop stream mode for peer {} at idx: {}" "",
                      p->get_id(), last_streamed_log_idx);
             }
         }
@@ -1400,8 +1581,8 @@ namespace nuraft {
             uint64_t matched_idx = p->get_matched_idx();
             uint64_t next_slot = log_store_->next_slot();
             if (matched_idx + log_sync_stop_gap >= next_slot) {
-                p_in("peer %d is no longer a new joiner, matched index: %" PRIu64 ", "
-                     "next slot: %" PRIu64 ", sync stop gap: %" PRIu64
+                TLOG(INFO, "peer {} is no longer a new joiner, matched index: {}" ", "
+                     "next slot: {}" ", sync stop gap: {}"
                      ", set new joiner flag to false",
                      p->get_id(), matched_idx, next_slot, log_sync_stop_gap);
 
@@ -1450,9 +1631,9 @@ namespace nuraft {
             //   If `make_busy` fails (very unlikely to happen), next
             //   response handler (of heartbeat, append_entries ..) will
             //   retry this.
-            p_in("ready to resign, server id %d, "
-                 "latest log index %" PRIu64 ", "
-                 "%" PRIu64 " us elapsed, resign now",
+            TLOG(INFO, "ready to resign, server id {}, "
+                 "latest log index {}" ", "
+                 "{}" " us elapsed, resign now",
                  next_leader_candidate_.load(),
                  p_matched_idx,
                  reelection_timer_.get_us());
@@ -1506,7 +1687,7 @@ namespace nuraft {
         // Try to match up the logs for this peer
         if (role_ == srv_role::leader) {
             if (need_to_catchup) {
-                p_db("reqeust append entries need to catchup, p %d\n",
+                TLOG(DEBUG, "reqeust append entries need to catchup, p {}\n",
                      (int) p->get_id());
                 request_append_entries(p);
             }
@@ -1522,7 +1703,7 @@ namespace nuraft {
         if (params->parallel_log_appending_) {
             // For parallel appending, take the smaller one.
             uint64_t durable_index = log_store_->last_durable_index();
-            p_tr("last durable index %" PRIu64 ", precommit index %" PRIu64,
+            TLOG(TRACE, "last durable index {}" ", precommit index {}",
                  durable_index, precommit_index_.load());
             leader_index = std::min(precommit_index_.load(), durable_index);
         }
@@ -1587,23 +1768,19 @@ namespace nuraft {
                 // aggreed members should be bigger than regular quorum size.
                 size_t prev_quorum_idx = quorum_idx;
                 quorum_idx = voting_members - not_responding_peers - 1;
-                p_tr("full consensus mode: %zu peers are not responding out of %d, "
-                     "adjust quorum idx %zu -> %zu",
+                TLOG(TRACE, "full consensus mode: {} peers are not responding out of {}, "
+                     "adjust quorum idx {} -> {}",
                      not_responding_peers, voting_members,
                      prev_quorum_idx, quorum_idx);
             } else {
                 // Majority of voting members are not responding.
                 // We should not commit anything (regardless of full consensus mode).
-                p_tr("full consensus mode, but %zu peers are not responding, "
-                     "required quorum size %zu/%d",
+                TLOG(TRACE, "full consensus mode, but {} peers are not responding, "
+                     "required quorum size {}/{}",
                      not_responding_peers, quorum_idx + 1, voting_members);
             }
         }
 
-        if (l_ &&l_
-        ->
-        get_level() >= 6
-        )
         {
             std::string tmp_str = "[";
             for (size_t ii = 0; ii < matched_indexes.size(); ++ii) {
@@ -1614,27 +1791,27 @@ namespace nuraft {
                     tmp_str += " ";
                 }
             }
-            p_tr("quorum idx %zu, %s", quorum_idx, tmp_str.c_str());
+            TLOG(TRACE, "quorum idx {}, {}", quorum_idx, tmp_str.c_str());
         }
 
         aci_params.current_commit_index_ = quick_commit_index_;
         aci_params.expected_commit_index_ = matched_indexes[quorum_idx];
         uint64_t adjusted_commit_index = state_machine_->adjust_commit_index(aci_params);
         if (aci_params.expected_commit_index_ != adjusted_commit_index) {
-            p_tr("commit index adjusted: %" PRIu64 " -> %" PRIu64,
+            TLOG(TRACE, "commit index adjusted: {}" " -> {}",
                  aci_params.expected_commit_index_, adjusted_commit_index);
         }
         return adjusted_commit_index;
     }
 
     void raft_server::notify_log_append_completion(bool ok) {
-        p_tr("got log append completion notification: %s", ok ? "OK" : "FAILED");
+        TLOG(TRACE, "got log append completion notification: {}", ok ? "OK" : "FAILED");
 
         if (role_ == srv_role::leader) {
             recur_lock(lock_);
             if (!ok) {
                 // If log appending fails, leader should resign immediately.
-                p_er("log appending failed, resign immediately");
+                TLOG(ERROR, "log appending failed, resign immediately");
                 leader_ = -1;
                 become_follower();
 
@@ -1658,7 +1835,7 @@ namespace nuraft {
                 // If log appending fails for follower, there is no way to proceed it.
                 // We should stop the server immediately.
                 recur_lock(lock_);
-                p_ft("log appending failed, stop this server");
+                TLOG(FATAL, "log appending failed, stop this server");
                 ctx_->state_mgr_->system_exit(N21_log_flush_failed);
                 return;
             }

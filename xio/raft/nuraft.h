@@ -34,7 +34,6 @@ limitations under the License.
 #include <xio/raft/global_mgr.h>
 #include <xio/raft/log_entry.h>
 #include <xio/raft/log_store.h>
-#include <xio/raft/logger.h>
 #include <xio/raft/ptr.h>
 #include <xio/raft/raft_params.h>
 #include <xio/raft/raft_server.h>

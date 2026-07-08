@@ -39,8 +39,7 @@ namespace nuraft {
     public:
         peer(ptr<srv_config> &config,
              const context &ctx,
-             timer_task<int32>::executor &hb_exec,
-             ptr<logger> &logger)
+             timer_task<int32>::executor &hb_exec)
             : config_(config)
               , scheduler_(ctx.scheduler_)
               , rpc_(ctx.rpc_cli_factory_->create_client(config->get_endpoint()))
@@ -83,8 +82,7 @@ namespace nuraft {
               , last_streamed_log_idx_(0)
               , bytes_in_flight_(0)
               , snapshot_sync_is_needed_(false)
-              , self_mark_down_(false)
-              , l_(logger) {
+              , self_mark_down_(false) {
             reset_ls_timer();
             reset_resp_timer();
             reset_active_timer();
@@ -633,11 +631,6 @@ namespace nuraft {
      * If `true`, this peer marks itself down.
      */
         std::atomic<bool> self_mark_down_;
-
-        /**
-     * Logger instance.
-     */
-        ptr<logger> l_;
     };
 }
 

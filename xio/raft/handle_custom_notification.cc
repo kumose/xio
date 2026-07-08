@@ -26,7 +26,7 @@ limitations under the License.
 #include <xio/raft/raft_server.h>
 #include <xio/raft/req_msg.h>
 #include <xio/raft/resp_msg.h>
-#include <xio/raft/tracer.h>
+#include <xio/logging.h>
 
 #include <cassert>
 #include <cstring>
@@ -186,10 +186,34 @@ namespace nuraft {
         out_of_log_range_ = true;
 
         ptr<out_of_log_msg> ool_msg = out_of_log_msg::deserialize(*msg->ctx_);
-        p_lv(log_lv, "this node is out of log range. leader's start index: %" PRIu64 ", "
-             "my last index: %" PRIu64,
-             ool_msg->start_idx_of_leader_,
-             log_store_->next_slot() - 1);
+        switch (log_lv) {
+case L_FATAL:
+    TLOG(FATAL, "this node is out of log range. leader's start index: {}" ", "
+             "my last index: {}", ool_msg->start_idx_of_leader_, log_store_->next_slot() - 1);
+    break;
+case L_ERROR:
+    TLOG(ERROR, "this node is out of log range. leader's start index: {}" ", "
+             "my last index: {}", ool_msg->start_idx_of_leader_, log_store_->next_slot() - 1);
+    break;
+case L_WARN:
+    TLOG(WARNING, "this node is out of log range. leader's start index: {}" ", "
+             "my last index: {}", ool_msg->start_idx_of_leader_, log_store_->next_slot() - 1);
+    break;
+case L_INFO:
+    TLOG(INFO, "this node is out of log range. leader's start index: {}" ", "
+             "my last index: {}", ool_msg->start_idx_of_leader_, log_store_->next_slot() - 1);
+    break;
+case L_DEBUG:
+    TLOG(DEBUG, "this node is out of log range. leader's start index: {}" ", "
+             "my last index: {}", ool_msg->start_idx_of_leader_, log_store_->next_slot() - 1);
+    break;
+case L_TRACE:
+    TLOG(TRACE, "this node is out of log range. leader's start index: {}" ", "
+             "my last index: {}", ool_msg->start_idx_of_leader_, log_store_->next_slot() - 1);
+    break;
+default:
+    break;
+};
 
         // Should restart election timer to avoid initiating false vote.
         if (req.get_term() == state_->get_term() &&
@@ -210,11 +234,11 @@ namespace nuraft {
      ptr<custom_notification_msg> msg,
      ptr<resp_msg> resp) {
         if (is_leader()) {
-            p_er("got leadership takeover request from peer %d, "
+            TLOG(ERROR, "got leadership takeover request from peer {}, "
                  "I'm already a leader", req.get_src());
             return resp;
         }
-        p_in("[LEADERSHIP TAKEOVER] got request");
+        TLOG(INFO, "[LEADERSHIP TAKEOVER] got request");
 
         // Initiate force vote (ignoring priority).
         initiate_vote(true);
@@ -232,11 +256,11 @@ namespace nuraft {
      ptr<custom_notification_msg> msg,
      ptr<resp_msg> resp) {
         if (!is_leader()) {
-            p_er("got resignation request from peer %d, "
+            TLOG(ERROR, "got resignation request from peer {}, "
                  "but I'm not a leader", req.get_src());
             return resp;
         }
-        p_in("[RESIGNATION REQUEST] got request");
+        TLOG(INFO, "[RESIGNATION REQUEST] got request");
 
         yield_leadership(false, req.get_src());
         return resp;
@@ -247,7 +271,7 @@ namespace nuraft {
 
         peer_itor it = peers_.find(resp.get_src());
         if (it == peers_.end()) {
-            p_in("the response is from an unknown peer %d", resp.get_src());
+            TLOG(INFO, "the response is from an unknown peer {}", resp.get_src());
             return;
         }
         ptr<peer> p = it->second;

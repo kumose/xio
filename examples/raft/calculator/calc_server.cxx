@@ -17,7 +17,6 @@ limitations under the License.
 
 #include <xio/raft/calc_state_machine.h>
 #include <xio/raft/in_memory_state_mgr.h>
-#include <xio/raft/logger_wrapper.h>
 
 #include <xio/raft/nuraft.h>
 

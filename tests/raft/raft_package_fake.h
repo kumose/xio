@@ -17,6 +17,8 @@ limitations under the License.
 
 #pragma once
 
+#include <xio/logging.h>
+
 #include <tests/raft/fake_network.h>
 #include <tests/raft/raft_functional_common.h>
 
@@ -40,8 +42,6 @@ public:
         , fTimer(nullptr)
         , sMgr(nullptr)
         , sm(nullptr)
-        , myLogWrapper(nullptr)
-        , myLog(nullptr)
         , listener(nullptr)
         , rpcCliFactory(nullptr)
         , scheduler(nullptr)
@@ -50,7 +50,6 @@ public:
         {}
 
     ~RaftPkg() {
-        if (myLogWrapper) myLogWrapper->destroy();
         if (fNet) fNet->shutdown();
     }
 
@@ -62,13 +61,9 @@ public:
         fNet = cs_new<FakeNetwork>( myEndpoint, fBase );
         fBase->addNetwork(fNet);
 
-        fTimer = cs_new<FakeTimer>( myEndpoint, fBase->getLogger() );
+        fTimer = cs_new<FakeTimer>(myEndpoint);
         sMgr = cs_new<TestMgr>(myId, myEndpoint);
-        sm = cs_new<TestSm>( fBase->getLogger() );
-
-        std::string log_file_name = "./srv" + std::to_string(myId) + ".log";
-        myLogWrapper = cs_new<logger_wrapper>(log_file_name);
-        myLog = myLogWrapper;
+        sm = cs_new<TestSm>();
 
         listener = fNet;
         rpcCliFactory = fNet;
@@ -88,8 +83,7 @@ public:
         // For deterministic test, we should not use BG thread.
         params.use_bg_thread_for_urgent_commit_ = false;
 
-        ctx = new context( sMgr, sm, listener, myLog,
-                           rpcCliFactory, scheduler, params );
+        ctx = new context(sMgr, sm, listener, rpcCliFactory, scheduler, params);
 
         if (init_cb) {
             // Before initialization, invoke the callback.
@@ -122,8 +116,7 @@ public:
         // For deterministic test, we should not use BG thread.
         params.use_bg_thread_for_urgent_commit_ = false;
 
-        ctx = new context( sMgr, sm, listener, myLog,
-                           rpcCliFactory, scheduler, params );
+        ctx = new context(sMgr, sm, listener, rpcCliFactory, scheduler, params);
         raftServer = cs_new<raft_server>(ctx, opt);
     }
 
@@ -143,13 +136,11 @@ public:
     }
 
     void dbgLog(const std::string& msg) {
-        SimpleLogger* ll = fBase->getLogger();
-        _s_info(ll) << msg;
+        TLOG(INFO, "{}", msg);
     }
 
     void localLog(const std::string& msg) {
-        SimpleLogger* ll = myLogWrapper->getLogger();
-        _s_info(ll) << msg;
+        TLOG(INFO, "{}", msg);
     }
 
     int myId;
@@ -159,8 +150,6 @@ public:
     ptr<FakeTimer> fTimer;
     ptr<state_mgr> sMgr;
     ptr<state_machine> sm;
-    ptr<logger_wrapper> myLogWrapper;
-    ptr<logger> myLog;
     ptr<rpc_listener> listener;
     ptr<rpc_client_factory> rpcCliFactory;
     ptr<delayed_task_scheduler> scheduler;

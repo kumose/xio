@@ -27,7 +27,7 @@ limitations under the License.
 #include <xio/raft/snapshot_sync_ctx.h>
 #include <xio/raft/state_machine.h>
 #include <xio/raft/state_mgr.h>
-#include <xio/raft/tracer.h>
+#include <xio/logging.h>
 
 #include <cassert>
 #include <set>
@@ -44,14 +44,14 @@ namespace nuraft {
 
         if (entries.size() != 1 ||
             entries[0]->get_val_type() != log_val_type::cluster_server) {
-            p_db("bad add server request as we are expecting one log entry "
+            TLOG(DEBUG, "bad add server request as we are expecting one log entry "
                 "with value type of ClusterServer");
             resp->set_result_code(cmd_result_code::BAD_REQUEST);
             return resp;
         }
 
         if (role_ != srv_role::leader || write_paused_) {
-            p_er("this is not a leader, cannot handle AddServerRequest");
+            TLOG(ERROR, "this is not a leader, cannot handle AddServerRequest");
             resp->set_result_code(cmd_result_code::NOT_LEADER);
             return resp;
         }
@@ -67,8 +67,8 @@ namespace nuraft {
 
         if (peers_.find(srv_conf->get_id()) != peers_.end() ||
             id_ == srv_conf->get_id()) {
-            p_wn("the server to be added has a duplicated "
-                 "id with existing server %d",
+            TLOG(WARNING, "the server to be added has a duplicated "
+                 "id with existing server {}",
                  srv_conf->get_id());
             resp->set_result_code(cmd_result_code::SERVER_ALREADY_EXISTS);
             return resp;
@@ -76,7 +76,7 @@ namespace nuraft {
 
         if (config_changing_) {
             // the previous config has not committed yet
-            p_wn("previous config has not committed yet");
+            TLOG(WARNING, "previous config has not committed yet");
             resp->set_result_code(cmd_result_code::CONFIG_CHANGING);
             return resp;
         }
@@ -86,8 +86,8 @@ namespace nuraft {
 
             // Check the last active time of that server.
             ulong last_active_ms = srv_to_join_->get_active_timer_us() / 1000;
-            p_wn("previous adding server (%d) is in progress, "
-                 "last activity: %" PRIu64 " ms ago",
+            TLOG(WARNING, "previous adding server ({}) is in progress, "
+                 "last activity: {}" " ms ago",
                  srv_to_join_->get_id(),
                  last_active_ms);
 
@@ -105,7 +105,7 @@ namespace nuraft {
                 return resp;
             }
             // Otherwise: activity timeout, reset the server.
-            p_wn("activity timeout (last activity %" PRIu64 " ms ago), start over",
+            TLOG(WARNING, "activity timeout (last activity {}" " ms ago), start over",
                  last_active_ms);
 
             cb_func::Param param(id_, leader_, srv_to_join_->get_id());
@@ -123,9 +123,8 @@ namespace nuraft {
         srv_to_join_ = cs_new<peer,
                     ptr<srv_config> &,
                     context &,
-                    timer_task<int32>::executor &,
-                    ptr<logger> &>
-                (conf_to_add_, *ctx_, exec, l_);
+                    timer_task<int32>::executor &>
+                (conf_to_add_, *ctx_, exec);
         invite_srv_to_join_cluster();
         resp->accept(log_store_->next_slot());
         return resp;
@@ -146,7 +145,7 @@ namespace nuraft {
         (cs_new<log_entry>
             (state_->get_term(), c_conf->serialize(), log_val_type::conf));
         srv_to_join_->send_req(srv_to_join_, req, ex_resp_handler_);
-        p_in("sent join request to peer %d, %s",
+        TLOG(INFO, "sent join request to peer {}, {}",
              srv_to_join_->get_id(),
              srv_to_join_->get_endpoint().c_str());
     }
@@ -160,7 +159,7 @@ namespace nuraft {
          req.get_src());
         if (entries.size() != 1 ||
             entries[0]->get_val_type() != log_val_type::conf) {
-            p_in("receive an invalid JoinClusterRequest as the log entry value "
+            TLOG(INFO, "receive an invalid JoinClusterRequest as the log entry value "
                 "doesn't meet the requirements");
             return resp;
         }
@@ -199,7 +198,7 @@ namespace nuraft {
             if (server_ids_from_req == server_ids_of_mine) {
                 // If two configs are the same, probably this is a duplicate
                 // request. Accept it again.
-                p_in("this server is already in the cluster and request is from the same "
+                TLOG(INFO, "this server is already in the cluster and request is from the same "
                     "cluster, accepting");
                 resp->accept(quick_commit_index_.load() + 1);
                 return resp;
@@ -207,7 +206,7 @@ namespace nuraft {
 
             // Otherwise, the join request came from a different cluster.
             // Such request should never be accepted.
-            p_in("this server is already in a cluster and request is from a different "
+            TLOG(INFO, "this server is already in a cluster and request is from a different "
                 "cluster, rejecting");
             return resp;
         }
@@ -221,16 +220,16 @@ namespace nuraft {
             // Symmetry Breaking: Compare IDs.
             // Rule: Higher ID yields to Lower ID.
             if (id_ > req.get_src()) {
-                p_wn("Race condition detected: I (id %d) am adding server %d, "
-                     "but detected incoming join request from lower ID %d. "
+                TLOG(WARNING, "Race condition detected: I (id {}) am adding server {}, "
+                     "but detected incoming join request from lower ID {}. "
                      "Yielding (cancelling my operation) to join them.",
                      id_, srv_to_join_->get_id(), req.get_src());
 
                 // Cancel my attempt to add them, so I can become their follower.
                 reset_srv_to_join();
             } else {
-                p_wn("Race condition detected: I (id %d) am adding server %d, "
-                     "and detected incoming join request from higher ID %d. "
+                TLOG(WARNING, "Race condition detected: I (id {}) am adding server {}, "
+                     "and detected incoming join request from higher ID {}. "
                      "Rejecting them so they can yield and join me.",
                      id_, srv_to_join_->get_id(), req.get_src());
 
@@ -246,15 +245,15 @@ namespace nuraft {
         //   not ruin the current request.
         bool reset_commit_idx = true;
         if (state_->is_catching_up()) {
-            p_wn("this server is already in log syncing mode, "
-                 "but let's do it again: sm idx %" PRIu64 ", quick commit idx %" PRIu64 ", "
+            TLOG(WARNING, "this server is already in log syncing mode, "
+                 "but let's do it again: sm idx {}" ", quick commit idx {}" ", "
                  "will not reset commit index",
                  sm_commit_index_.load(),
                  quick_commit_index_.load());
             reset_commit_idx = false;
         }
 
-        p_in("got join cluster req from leader %d", req.get_src());
+        TLOG(INFO, "got join cluster req from leader {}", req.get_src());
         state_->set_catching_up(true);
         role_ = srv_role::follower;
         index_at_becoming_leader_ = 0;
@@ -295,22 +294,22 @@ namespace nuraft {
         )
         {
             if (resp.get_accepted()) {
-                p_in("new server (%d) confirms it will join, "
+                TLOG(INFO, "new server ({}) confirms it will join, "
                      "start syncing logs to it", srv_to_join_->get_id());
                 sync_log_to_new_srv(resp.get_next_idx());
             } else {
-                p_wn("new server (%d) cannot accept the invitation, give up",
+                TLOG(WARNING, "new server ({}) cannot accept the invitation, give up",
                      srv_to_join_->get_id());
             }
         }
         else
         {
-            p_wn("no server to join, drop the message");
+            TLOG(WARNING, "no server to join, drop the message");
         }
     }
 
     void raft_server::sync_log_to_new_srv(ulong start_idx) {
-        p_db("[SYNC LOG] peer %d start idx %" PRIu64 ", my log start idx %" PRIu64,
+        TLOG(DEBUG, "[SYNC LOG] peer {} start idx {}" ", my log start idx {}",
              srv_to_join_->get_id(), start_idx, log_store_->start_index());
         // only sync committed logs
         ulong gap = (quick_commit_index_ > start_idx)
@@ -321,8 +320,8 @@ namespace nuraft {
              gap < (ulong) params->log_sync_stop_gap_) ||
             params->log_sync_stop_gap_ == 0 ||
             params->use_new_joiner_type_) {
-            p_in("[SYNC LOG] LogSync is done for server %d "
-                 "with log gap %" PRIu64 " (%" PRIu64 " - %" PRIu64 ", limit %d), "
+            TLOG(INFO, "[SYNC LOG] LogSync is done for server {} "
+                 "with log gap {}" " ({}" " - {}" ", limit {}), "
                  "now put the server into cluster",
                  srv_to_join_->get_id(),
                  gap, quick_commit_index_.load(), start_idx,
@@ -334,7 +333,7 @@ namespace nuraft {
             //   If there is any uncommitted changed config,
             //   new config should be generated on top of it.
             if (uncommitted_config_) {
-                p_in("uncommitted config exists at log %" PRIu64 ", prev log %" PRIu64,
+                TLOG(INFO, "uncommitted config exists at log {}" ", prev log {}",
                      uncommitted_config_->get_log_idx(),
                      uncommitted_config_->get_prev_log_idx());
                 cur_conf = uncommitted_config_;
@@ -385,7 +384,7 @@ namespace nuraft {
         } else {
             int32 size_to_sync = std::min(gap, (ulong) params->log_sync_batch_size_);
             ptr<buffer> log_pack = log_store_->pack(start_idx, size_to_sync);
-            p_db("size to sync: %d, log_pack size %zu\n",
+            TLOG(DEBUG, "size to sync: {}, log_pack size {}\n",
                  size_to_sync, log_pack->size());
             req = cs_new<req_msg>(state_->get_term(),
                                   msg_type::sync_log_request,
@@ -415,25 +414,25 @@ namespace nuraft {
         (state_->get_term(), msg_type::sync_log_response, id_,
          req.get_src(), log_store_->next_slot()));
 
-        p_db("entries size %d, type %d, catching_up %s\n",
+        TLOG(DEBUG, "entries size {}, type {}, catching_up {}\n",
              (int) entries.size(), (int) entries[0]->get_val_type(),
              state_->is_catching_up() ? "true" : "false");
         if (entries.size() != 1 ||
             entries[0]->get_val_type() != log_val_type::log_pack) {
-            p_wn("receive an invalid LogSyncRequest as the log entry value "
-                 "doesn't meet the requirements: entries size %zu",
+            TLOG(WARNING, "receive an invalid LogSyncRequest as the log entry value "
+                 "doesn't meet the requirements: entries size {}",
                  entries.size());
             return resp;
         }
 
         if (!state_->is_catching_up()) {
-            p_wn("This server is ready for cluster, ignore the request, "
-                 "my next log idx %" PRIu64 "", resp->get_next_idx());
+            TLOG(WARNING, "This server is ready for cluster, ignore the request, "
+                 "my next log idx {}" "", resp->get_next_idx());
             return resp;
         }
 
         log_store_->apply_pack(req.get_last_log_idx() + 1, entries[0]->get_buf());
-        p_db("last log %" PRIu64, log_store_->next_slot() - 1);
+        TLOG(DEBUG, "last log {}", log_store_->next_slot() - 1);
         precommit_index_ = log_store_->next_slot() - 1;
         commit(log_store_->next_slot() - 1);
         resp->accept(log_store_->next_slot());
@@ -442,14 +441,14 @@ namespace nuraft {
 
     void raft_server::handle_log_sync_resp(resp_msg &resp) {
         if (srv_to_join_) {
-            p_db("srv_to_join: %d\n", srv_to_join_->get_id());
+            TLOG(DEBUG, "srv_to_join: {}\n", srv_to_join_->get_id());
             // we are reusing heartbeat interval value to indicate when to stop retry
             srv_to_join_->resume_hb_speed();
             srv_to_join_->set_next_log_idx(resp.get_next_idx());
             srv_to_join_->set_matched_idx(resp.get_next_idx() - 1);
             sync_log_to_new_srv(resp.get_next_idx());
         } else {
-            p_wn("got log sync resp while srv_to_join is null");
+            TLOG(WARNING, "got log sync resp while srv_to_join is null");
         }
     }
 
@@ -462,21 +461,21 @@ namespace nuraft {
          leader_);
 
         if (entries.size() != 1 || entries[0]->get_buf().size() != sz_int) {
-            p_wn("bad remove server request as we are expecting "
+            TLOG(WARNING, "bad remove server request as we are expecting "
                 "one log entry with value type of int");
             resp->set_result_code(cmd_result_code::BAD_REQUEST);
             return resp;
         }
 
         if (role_ != srv_role::leader || write_paused_) {
-            p_wn("this is not a leader, cannot handle RemoveServerRequest");
+            TLOG(WARNING, "this is not a leader, cannot handle RemoveServerRequest");
             resp->set_result_code(cmd_result_code::NOT_LEADER);
             return resp;
         }
 
         check_srv_to_leave_timeout();
         if (srv_to_leave_) {
-            p_wn("previous to-be-removed server %d has not left yet",
+            TLOG(WARNING, "previous to-be-removed server {} has not left yet",
                  srv_to_leave_->get_id());
             resp->set_result_code(cmd_result_code::SERVER_IS_LEAVING);
             return resp;
@@ -487,7 +486,7 @@ namespace nuraft {
         for (auto &entry: peers_) {
             ptr<peer> pp = entry.second;
             if (pp->is_leave_flag_set()) {
-                p_wn("leave flag of server %d is set, but the server "
+                TLOG(WARNING, "leave flag of server {} is set, but the server "
                      "has not left yet",
                      pp->get_id());
                 resp->set_result_code(cmd_result_code::SERVER_IS_LEAVING);
@@ -497,21 +496,21 @@ namespace nuraft {
 
         if (config_changing_) {
             // the previous config has not committed yet
-            p_wn("previous config has not committed yet");
+            TLOG(WARNING, "previous config has not committed yet");
             resp->set_result_code(cmd_result_code::CONFIG_CHANGING);
             return resp;
         }
 
         int32 srv_id = entries[0]->get_buf().get_int();
         if (srv_id == id_) {
-            p_wn("cannot request to remove leader");
+            TLOG(WARNING, "cannot request to remove leader");
             resp->set_result_code(cmd_result_code::CANNOT_REMOVE_LEADER);
             return resp;
         }
 
         peer_itor pit = peers_.find(srv_id);
         if (pit == peers_.end()) {
-            p_wn("server %d does not exist", srv_id);
+            TLOG(WARNING, "server {} does not exist", srv_id);
             resp->set_result_code(cmd_result_code::SERVER_NOT_FOUND);
             return resp;
         }
@@ -531,10 +530,10 @@ namespace nuraft {
 
         if (p->make_busy()) {
             p->send_req(p, leave_req, ex_resp_handler_);
-            p_in("sent leave request to peer %d", p->get_id());
+            TLOG(INFO, "sent leave request to peer {}", p->get_id());
         } else {
             p->set_rsv_msg(leave_req, ex_resp_handler_);
-            p_in("peer %d is currently busy, keep the message", p->get_id());
+            TLOG(INFO, "peer {} is currently busy, keep the message", p->get_id());
         }
 
         resp->accept(log_store_->next_slot());
@@ -548,7 +547,7 @@ namespace nuraft {
                           id_,
                           req.get_src()));
         if (!config_changing_) {
-            p_db("leave cluster, set steps to down to 2");
+            TLOG(DEBUG, "leave cluster, set steps to down to 2");
             // NOTE: We don't call `RemovedFromCluster` callback here,
             //       as cluster config still contains this server.
             //       The callback will be called by either `reconfigure()` (normal path)
@@ -566,18 +565,18 @@ namespace nuraft {
 
     void raft_server::handle_leave_cluster_resp(resp_msg &resp) {
         if (!resp.get_accepted()) {
-            p_db("peer doesn't accept to stepping down, stop proceeding");
+            TLOG(DEBUG, "peer doesn't accept to stepping down, stop proceeding");
             return;
         }
 
-        p_db("peer accepted to stepping down, removing this server from cluster");
+        TLOG(DEBUG, "peer accepted to stepping down, removing this server from cluster");
         rm_srv_from_cluster(resp.get_src());
     }
 
     void raft_server::rm_srv_from_cluster(int32 srv_id) {
         if (srv_to_leave_) {
-            p_wn("to-be-removed server %d already exists, "
-                 "cannot remove server %d for now",
+            TLOG(WARNING, "to-be-removed server {} already exists, "
+                 "cannot remove server {} for now",
                  srv_to_leave_->get_id(), srv_id);
             return;
         }
@@ -587,7 +586,7 @@ namespace nuraft {
         // NOTE: Need to honor uncommitted config,
         //       refer to comment in `sync_log_to_new_srv()`
         if (uncommitted_config_) {
-            p_in("uncommitted config exists at log %" PRIu64 ", prev log %" PRIu64,
+            TLOG(INFO, "uncommitted config exists at log {}" ", prev log {}",
                  uncommitted_config_->get_log_idx(),
                  uncommitted_config_->get_prev_log_idx());
             cur_conf = uncommitted_config_;
@@ -607,8 +606,8 @@ namespace nuraft {
         new_conf->set_async_replication
                 (cur_conf->is_async_replication());
 
-        p_in("removed server %d from configuration and "
-             "save the configuration to log store at %" PRIu64,
+        TLOG(INFO, "removed server {} from configuration and "
+             "save the configuration to log store at {}",
              srv_id,
              new_conf->get_log_idx());
 
@@ -626,8 +625,8 @@ namespace nuraft {
             ptr<peer> pp = p_entry->second;
             srv_to_leave_ = pp;
             srv_to_leave_target_idx_ = new_conf->get_log_idx();
-            p_in("set srv_to_leave_, "
-                 "server %d will be removed from cluster, config %" PRIu64,
+            TLOG(INFO, "set srv_to_leave_, "
+                 "server {} will be removed from cluster, config {}",
                  srv_id, srv_to_leave_target_idx_);
         }
 
@@ -636,7 +635,7 @@ namespace nuraft {
 
     void raft_server::handle_join_leave_rpc_err(msg_type t_msg, ptr<peer> p) {
         if (t_msg == msg_type::leave_cluster_request) {
-            p_in("rpc failed for removing server (%d), "
+            TLOG(INFO, "rpc failed for removing server ({}), "
                  "will remove this server directly",
                  p->get_id());
 
@@ -659,7 +658,7 @@ namespace nuraft {
                 if (pit != peers_.end()) {
                     remove_peer_from_peers(pit->second);
                 } else {
-                    p_in("peer %d cannot be found, no action for removing",
+                    TLOG(INFO, "peer {} cannot be found, no action for removing",
                          p->get_id());
                 }
 
@@ -675,7 +674,7 @@ namespace nuraft {
                 //   to be removed does not respond while the leader already
                 //   generated the log for the configuration change. We should
                 //   abandon the peer entry from `peers_`.
-                p_wn("srv_to_leave_ is already set to %d, will remove it from "
+                TLOG(WARNING, "srv_to_leave_ is already set to {}, will remove it from "
                      "peer list", srv_to_leave_->get_id());
                 remove_peer_from_peers(srv_to_leave_);
                 reset_srv_to_leave();
@@ -684,7 +683,7 @@ namespace nuraft {
                 rm_srv_from_cluster(p->get_id());
             }
         } else {
-            p_in("rpc failed again for the new coming server (%d), "
+            TLOG(INFO, "rpc failed again for the new coming server ({}), "
                  "will stop retry for this server",
                  p->get_id());
             config_changing_ = false;
@@ -705,7 +704,7 @@ namespace nuraft {
         srv_to_leave_->shutdown();
         srv_to_leave_.reset();
         srv_to_leave_target_idx_ = 0;
-        p_in("clearing srv_to_leave_");
+        TLOG(INFO, "clearing srv_to_leave_");
     }
 } // namespace nuraft;
 

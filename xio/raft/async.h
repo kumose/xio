@@ -54,6 +54,30 @@ namespace nuraft {
         FAILED = -32768,
     };
 
+    // NOTE:
+    //   need to change `cmd_result_code_to_string()` as well
+    //   whenever modify this enum.
+    inline std::string cmd_result_code_to_string(cmd_result_code code) {
+        switch (code) {
+            case OK: return "OK";
+            case CANCELLED: return "CANCELLED";
+            case TIMEOUT: return "TIMEOUT";
+            case NOT_LEADER: return "NOT_LEADER";
+            case BAD_REQUEST: return "BAD_REQUEST";
+            case SERVER_ALREADY_EXISTS: return "SERVER_ALREADY_EXISTS";
+            case CONFIG_CHANGING: return "CONFIG_CHANGING";
+            case SERVER_IS_JOINING: return "SERVER_IS_JOINING";
+            case SERVER_NOT_FOUND: return "SERVER_NOT_FOUND";
+            case CANNOT_REMOVE_LEADER: return "CANNOT_REMOVE_LEADER";
+            case SERVER_IS_LEAVING: return "SERVER_IS_LEAVING";
+            case TERM_MISMATCH: return "TERM_MISMATCH";
+            case RESULT_NOT_EXIST_YET: return "RESULT_NOT_EXIST_YET";
+            case FAILED: return "FAILED";
+            default:
+                return "unknown (" + std::to_string(static_cast<int>(code)) + ")";
+        }
+    }
+
     template<typename T,
         typename TE = ptr<std::exception> >
     class cmd_result {

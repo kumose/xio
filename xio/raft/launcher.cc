@@ -28,13 +28,12 @@ namespace nuraft {
 
     ptr<raft_server> raft_launcher::init(ptr<state_machine> sm,
                                          ptr<state_mgr> smgr,
-                                         ptr<logger> lg,
                                          int port_number,
                                          const xio_service::options &xio_options,
                                          const raft_params &params_given,
                                          const raft_server::init_options &opt) {
-        xio_svc_ = cs_new<xio_service>(xio_options, lg);
-        xio_listener_ = xio_svc_->create_rpc_listener(port_number, lg);
+        xio_svc_ = cs_new<xio_service>(xio_options);
+        xio_listener_ = xio_svc_->create_rpc_listener(port_number);
         if (!xio_listener_) return nullptr;
 
         ptr<delayed_task_scheduler> scheduler = xio_svc_;
@@ -43,7 +42,6 @@ namespace nuraft {
         context *ctx = new context(smgr,
                                    sm,
                                    xio_listener_,
-                                   lg,
                                    rpc_cli_factory,
                                    scheduler,
                                    params_given);

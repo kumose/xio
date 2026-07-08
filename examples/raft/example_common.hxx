@@ -26,14 +26,12 @@ struct server_stuff {
         : server_id_(1)
         , addr_("localhost")
         , port_(25000)
-        , raft_logger_(nullptr)
         , sm_(nullptr)
         , smgr_(nullptr)
         , raft_instance_(nullptr)
         {}
 
     void reset() {
-        raft_logger_.reset();
         sm_.reset();
         smgr_.reset();
         raft_instance_.reset();
@@ -50,9 +48,6 @@ struct server_stuff {
 
     // Endpoint: `<addr>:<port>`.
     std::string endpoint_;
-
-    // Logger.
-    ptr<logger> raft_logger_;
 
     // State machine.
     ptr<state_machine> sm_;
@@ -148,13 +143,6 @@ void loop() {
 }
 
 void init_raft(ptr<state_machine> sm_instance) {
-    // Logger.
-    std::string log_file_name = "./srv" +
-                                std::to_string( stuff.server_id_ ) +
-                                ".log";
-    ptr<logger_wrapper> log_wrap = cs_new<logger_wrapper>( log_file_name, 4 );
-    stuff.raft_logger_ = log_wrap;
-
     // State machine.
     stuff.smgr_ = cs_new<inmem_state_mgr>( stuff.server_id_,
                                            stuff.endpoint_ );
@@ -162,7 +150,7 @@ void init_raft(ptr<state_machine> sm_instance) {
     stuff.sm_ = sm_instance;
 
     // ASIO options.
-    asio_service::options asio_opt;
+    xio_service::options asio_opt;
     asio_opt.thread_pool_size_ = 4;
 
     // Raft parameters.
@@ -191,14 +179,12 @@ void init_raft(ptr<state_machine> sm_instance) {
     // Initialize Raft server.
     stuff.raft_instance_ = stuff.launcher_.init(stuff.sm_,
                                                 stuff.smgr_,
-                                                stuff.raft_logger_,
                                                 stuff.port_,
                                                 asio_opt,
                                                 params);
     if (!stuff.raft_instance_) {
         std::cerr << "Failed to initialize launcher (see the message "
                      "in the log file)." << std::endl;
-        log_wrap.reset();
         exit(-1);
     }
 
@@ -215,7 +201,6 @@ void init_raft(ptr<state_machine> sm_instance) {
         TestSuite::sleep_ms(250);
     }
     std::cout << " FAILED" << std::endl;
-    log_wrap.reset();
     exit(-1);
 }
 

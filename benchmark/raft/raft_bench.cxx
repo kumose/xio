@@ -150,17 +150,13 @@ struct server_stuff {
     // Endpoint: `tcp://<addr>:<port>`.
     std::string endpoint_;
 
-    // Logger.
-    ptr<logger_wrapper> log_wrap_;
-    ptr<logger> raft_logger_;
-
     // State machine.
     ptr<state_machine> sm_;
     // State manager.
     ptr<state_mgr> smgr_;
 
     // ASIO things.
-    ptr<asio_service> asio_svc_;
+    ptr<xio_service> asio_svc_;
     ptr<rpc_listener> asio_listener_;
 
     // Raft server instance.
@@ -168,26 +164,18 @@ struct server_stuff {
 };
 
 int init_raft(server_stuff& stuff) {
-    // Create logger for this server.
-    std::string log_file_name = "./srv" +
-                                std::to_string( stuff.server_id_ ) +
-                                ".log";
-    stuff.log_wrap_ = cs_new<logger_wrapper>( log_file_name, 4 );
-    stuff.raft_logger_ = stuff.log_wrap_;
-
     // Create state manager and state machine.
     stuff.smgr_ = cs_new<TestMgr>( stuff.server_id_,
                                    stuff.endpoint_ );
     stuff.sm_ = cs_new<dummy_sm>();
 
     // Start ASIO service.
-    asio_service::options asio_opt;
+    xio_service::options asio_opt;
     asio_opt.thread_pool_size_ = 32;
-    stuff.asio_svc_ = cs_new<asio_service>(asio_opt, stuff.raft_logger_);
+    stuff.asio_svc_ = cs_new<xio_service>(asio_opt);
 
     stuff.asio_listener_ =
-        stuff.asio_svc_->create_rpc_listener( stuff.port_,
-                                              stuff.raft_logger_ );
+        stuff.asio_svc_->create_rpc_listener( stuff.port_ );
     ptr<delayed_task_scheduler> scheduler = stuff.asio_svc_;
     ptr<rpc_client_factory> rpc_cli_factory = stuff.asio_svc_;
 
@@ -203,7 +191,6 @@ int init_raft(server_stuff& stuff) {
     context* ctx = new context( stuff.smgr_,
                                 stuff.sm_,
                                 stuff.asio_listener_,
-                                stuff.raft_logger_,
                                 rpc_cli_factory,
                                 scheduler,
                                 params );

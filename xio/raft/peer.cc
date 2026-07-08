@@ -22,7 +22,7 @@ limitations under the License.
 
 #include <xio/raft/debugging_options.h>
 #include <xio/raft/raft_server.h>
-#include <xio/raft/tracer.h>
+#include <xio/logging.h>
 
 #include <unordered_set>
 
@@ -32,13 +32,13 @@ namespace nuraft {
                         rpc_handler &handler,
                         bool streaming) {
         if (abandoned_) {
-            p_er("peer %d has been shut down, cannot send request",
+            TLOG(ERROR, "peer {} has been shut down, cannot send request",
                  config_->get_id());
             return;
         }
 
         if (req) {
-            p_tr("send req %d -> %d, type %s",
+            TLOG(TRACE, "send req {} -> {}, type {}",
                  req->get_src(),
                  req->get_dst(),
                  msg_type_to_string(req->get_type()).c_str());
@@ -51,7 +51,7 @@ namespace nuraft {
             if (!rpc_) {
                 // Nothing will be sent, immediately free it
                 // to serve next operation.
-                p_tr("rpc local is null");
+                TLOG(TRACE, "rpc local is null");
                 set_free();
                 return;
             }
@@ -97,12 +97,12 @@ namespace nuraft {
                                  ptr<resp_msg> &resp,
                                  ptr<rpc_exception> &err) {
         if (abandoned_) {
-            p_in("peer %d has been shut down, ignore response.", config_->get_id());
+            TLOG(INFO, "peer {} has been shut down, ignore response.", config_->get_id());
             return;
         }
 
         if (req) {
-            p_tr("resp of req %d -> %d, type %s, %s",
+            TLOG(TRACE, "resp of req {} -> {}, type {}, {}",
                  req->get_src(),
                  req->get_dst(),
                  msg_type_to_string(req->get_type()).c_str(),
@@ -121,21 +121,21 @@ namespace nuraft {
                     int32_t stale_resps = inc_stale_rpc_responses();
                     int32_t limit = raft_server::get_raft_limits().response_limit_;
                     if (stale_resps < limit) {
-                        p_wn("[EDGE CASE] got stale RPC response from %d: "
-                             "current %p (%" PRIu64 "), from parameter %p (%" PRIu64 "). "
+                        TLOG(WARNING, "[EDGE CASE] got stale RPC response from {}: "
+                             "current {} ({}" "), from parameter {} ({}" "). "
                              "will ignore this response."
-                             "Currently, stale_resps: %d, response_limit: %d",
+                             "Currently, stale_resps: {}, response_limit: {}",
                              config_->get_id(),
-                             rpc_.get(),
+                             static_cast<const void*>(rpc_.get()),
                              cur_rpc_id,
-                             my_rpc_client.get(),
+                             static_cast<const void*>(my_rpc_client.get()),
                              given_rpc_id,
                              stale_resps,
                              limit);
                     } else if (stale_resps == limit) {
-                        p_wn("[EDGE CASE] too verbose stale RPC response from peer %d, "
+                        TLOG(WARNING, "[EDGE CASE] too verbose stale RPC response from peer {}, "
                              "will suppress it from now."
-                             "Currently, stale_resps: %d, response_limit: %d",
+                             "Currently, stale_resps: {}, response_limit: {}",
                              config_->get_id(),
                              stale_resps,
                              limit);
@@ -185,7 +185,7 @@ namespace nuraft {
                     uint64_t last_streamed_log_idx = get_last_streamed_log_idx();
                     reset_stream();
                     if (last_streamed_log_idx) {
-                        p_in("stop stream mode for peer %d at idx: %" PRIu64 "",
+                        TLOG(INFO, "stop stream mode for peer {} at idx: {}" "",
                              config_->get_id(), last_streamed_log_idx);
                     }
                     reset_stale_rpc_responses();
@@ -208,21 +208,21 @@ namespace nuraft {
                     int32_t stale_resps = inc_stale_rpc_responses();
                     int32_t limit = raft_server::get_raft_limits().response_limit_;
                     if (stale_resps < limit) {
-                        p_wn("[EDGE CASE] RPC for %d has been reset before "
-                             "returning error: current %p (%" PRIu64
-                             "), from parameter %p (%" PRIu64 ")."
-                             "Currently, stale_resps: %d, response_limit: %d",
+                        TLOG(WARNING, "[EDGE CASE] RPC for {} has been reset before "
+                             "returning error: current {} ({}"
+                             "), from parameter {} ({}" ")."
+                             "Currently, stale_resps: {}, response_limit: {}",
                              config_->get_id(),
-                             rpc_.get(),
+                             static_cast<const void*>(rpc_.get()),
                              cur_rpc_id,
-                             my_rpc_client.get(),
+                             static_cast<const void*>(my_rpc_client.get()),
                              given_rpc_id,
                              stale_resps,
                              limit);
                     } else if (stale_resps == limit) {
-                        p_wn("[EDGE CASE] too verbose stale RPC response from peer %d, "
+                        TLOG(WARNING, "[EDGE CASE] too verbose stale RPC response from peer {}, "
                              "will suppress it from now."
-                             "Currently, stale_resps: %d, response_limit: %d",
+                             "Currently, stale_resps: {}, response_limit: {}",
                              config_->get_id(),
                              stale_resps,
                              limit);
@@ -257,7 +257,7 @@ namespace nuraft {
     bool peer::recreate_rpc(ptr<srv_config> &config,
                             context &ctx) {
         if (abandoned_) {
-            p_tr("peer %d is abandoned", config->get_id());
+            TLOG(TRACE, "peer {} is abandoned", config->get_id());
             return false;
         }
 
@@ -267,7 +267,7 @@ namespace nuraft {
             factory = ctx.rpc_cli_factory_;
         }
         if (!factory) {
-            p_tr("client factory is empty");
+            TLOG(TRACE, "client factory is empty");
             return false;
         }
 
@@ -277,7 +277,7 @@ namespace nuraft {
                 debugging_options::get_instance()
                 .disable_reconn_backoff_.load(std::memory_order_relaxed);
         if (backoff_timer_disabled) {
-            p_tr("reconnection back-off timer is disabled");
+            TLOG(TRACE, "reconnection back-off timer is disabled");
         }
 
         // To avoid too frequent reconnection attempt,
@@ -290,7 +290,7 @@ namespace nuraft {
             reconn_backoff_.set_duration_ms(new_duration_ms);
 
             rpc_ = factory->create_client(config->get_endpoint());
-            p_tr("%p reconnect peer %d", rpc_.get(), config_->get_id());
+            TLOG(TRACE, "{} reconnect peer {}", static_cast<const void*>(rpc_.get()), config_->get_id());
 
             // WARNING:
             //   A reconnection attempt should be treated as an activity,
@@ -303,7 +303,7 @@ namespace nuraft {
             set_manual_free();
             return true;
         } else {
-            p_tr("skip reconnect this time");
+            TLOG(TRACE, "skip reconnect this time");
         }
         return false;
     }

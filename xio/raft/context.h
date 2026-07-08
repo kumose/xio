@@ -31,7 +31,6 @@ limitations under the License.
 
 namespace nuraft {
     class delayed_task_scheduler;
-    class logger;
     class rpc_client_factory;
     class rpc_listener;
     class state_machine;
@@ -43,7 +42,6 @@ namespace nuraft {
         context(ptr<state_mgr> mgr,
                 ptr<state_machine> m,
                 ptr<rpc_listener> listener,
-                ptr<logger> l,
                 ptr<rpc_client_factory> cli_factory,
                 ptr<delayed_task_scheduler> scheduler,
                 const raft_params &params,
@@ -51,7 +49,6 @@ namespace nuraft {
             : state_mgr_(std::move(mgr))
               , state_machine_(std::move(m))
               , rpc_listener_(std::move(listener))
-              , logger_(std::move(l))
               , rpc_cli_factory_(std::move(cli_factory))
               , scheduler_(std::move(scheduler))
               , params_(cs_new<raft_params>(params))
@@ -106,11 +103,6 @@ namespace nuraft {
      * RPC listener instance.
      */
         ptr<rpc_listener> rpc_listener_;
-
-        /**
-     * System logger instance.
-     */
-        ptr<logger> logger_;
 
         /**
      * RPC client factory.

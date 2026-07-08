@@ -18,77 +18,28 @@ See the License for the specific language governing permissions and
 limitations under the License.
 **************************************************************************/
 
-#include <xio/raft/libnuraft/logger.h>
-#include <xio/raft/tracer.h>
+#include <xio/logging.h>
 
 #include <tests/raft/test_common.h>
-#include <cstddef>
-#include <iostream>
-#include <sstream>
-#include <string>
 
-using namespace nuraft;
+#include <string>
 
 namespace logger_test {
 
-class ToStringStreamLogger : public nuraft::logger {
-public:
-    ToStringStreamLogger() = default;
-
-    ~ToStringStreamLogger() = default;
-
-    void put_details(int level,
-                     const char* source_file,
-                     const char* func_name,
-                     size_t line_number,
-                     const std::string& msg) override {
-
-        static const char* const lv_names[7] = {
-            "====", "FATL", "ERRO", "WARN", "INFO", "DEBG", "TRAC"};
-
-        ss << lv_names[level] << " [" << source_file << ":" << line_number << ", "
-           << func_name << "]" << msg << "\n";
-    }
-
-    std::string to_str() const { return ss.str(); }
-
-    std::stringstream ss;
-};
-
 int logger_basic_test() {
-
-    ToStringStreamLogger logger;
-    nuraft::logger* l_ = &logger;
-    p_db("hello %s", "world");
-
-    std::cout << logger.to_str();
+    TLOG(DEBUG, "hello {}", "world");
     return 0;
 }
 
 int logger_long_line_test() {
-
     for (int i = 1800; i < 4096; ++i) {
         const std::string str(i, 'a');
-
-        ToStringStreamLogger logger;
-        nuraft::logger* l_ = &logger;
-        p_db("long string: %s", str.c_str());
-
-        const std::string log_str = logger.to_str();
-        CHK_GT(log_str.size(), str.size());
-        // std::cout << log_str;
+        TLOG(DEBUG, "long string: {}", str);
     }
 
     for (int i = 1; i < 1024; i *= 2) {
         const std::string str(1024UL * i, 'a');
-
-        ToStringStreamLogger logger;
-        nuraft::logger* l_ = &logger;
-        p_db("long string: %s", str.c_str());
-
-        const std::string log_str = logger.to_str();
-        CHK_GT(log_str.size(), str.size());
-        // std::cout << log_str;
+        TLOG(DEBUG, "long string: {}", str);
     }
 
     return 0;
@@ -108,4 +59,3 @@ int main(int argc, char** argv) {
 
     return 0;
 }
-

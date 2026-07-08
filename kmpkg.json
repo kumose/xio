@@ -13,8 +13,9 @@
         "rtti"
       ]
     },
+    "xlog",
     "zlib",
     "zstd",
-    "xlog"
+    "openssl"
   ]
 }

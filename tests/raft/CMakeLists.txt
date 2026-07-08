@@ -29,7 +29,7 @@ set(RAFT_TESTS
 
 foreach(t ${RAFT_TESTS})
     kmcmake_cc_test(NAME ${t} MODULE raft
-            SOURCES ${t}_test.cc
+            SOURCES ${t}_test.cc fake_network.cc
             LINKS xio::xio_static
             ${KMCMAKE_DEPS_LINK}
     )

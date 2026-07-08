@@ -33,7 +33,6 @@ limitations under the License.
 
 namespace nuraft {
     class xio_service;
-    class logger;
     class raft_server;
 
     class global_mgr {
@@ -138,12 +137,10 @@ namespace nuraft {
          * Return the existing one if already initialized.
          *
          * @param xio_opt Asio service options.
-         * @param logger_inst Logger instance.
          * @return Asio service instance.
          */
         static ptr<xio_service> init_xio_service(
-            const xio_service_options &xio_opt = xio_service_options(),
-            ptr<logger> logger_inst = nullptr);
+            const xio_service_options &xio_opt = xio_service_options());
 
         /**
          * Get the global Asio service instance.

@@ -32,7 +32,6 @@ namespace nuraft {
          *
          * @param sm State machine.
          * @param smgr State manager.
-         * @param lg Logger.
          * @param port_number Port number.
          * @param xio_options ASIO options.
          * @param params Raft parameters.
@@ -43,7 +42,6 @@ namespace nuraft {
          */
         ptr<raft_server> init(ptr<state_machine> sm,
                               ptr<state_mgr> smgr,
-                              ptr<logger> lg,
                               int port_number,
                               const xio_service::options &xio_options,
                               const raft_params &params,
