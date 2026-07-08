@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 **************************************************************************/
 
-#include <xio/raft/calc_state_machine.h>
+#include "calc_state_machine.h"
 #include <xio/raft/in_memory_state_mgr.h>
 
 #include <xio/raft/raft.h>
@@ -37,7 +37,7 @@ static raft_params::return_method_type CALL_TYPE
 
 static bool ASYNC_SNAPSHOT_CREATION = false;
 
-#include <xio/raft/example_common.h>
+#include "example_common.h"
 
 calc_state_machine* get_sm() {
     return static_cast<calc_state_machine*>( stuff.sm_.get() );

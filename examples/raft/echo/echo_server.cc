@@ -35,7 +35,7 @@ static const raft_params::return_method_type CALL_TYPE
     = raft_params::blocking;
 //  = raft_params::async_handler;
 
-#include <xio/raft/example_common.h>
+#include "example_common.h"
 
 void handle_result(ptr<TestSuite::Timer> timer,
                    raft_result& result,

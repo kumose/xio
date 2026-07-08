@@ -61,7 +61,8 @@ find_package(ZLIB REQUIRED)
 find_package(lz4 CONFIG REQUIRED)
 find_package(Snappy CONFIG REQUIRED)
 find_package(zstd CONFIG REQUIRED)
-find_package(OpenSSL REQUIRED)
+find_package(OpenSSL REQUIRED CONFIG)
+kmcmake_private_find_package(OpenSSL REQUIRED CONFIG)
 
 find_path(XLOG_DIR xlog/logging.h)
 include_directories(${XLOG_DIR})
@@ -87,8 +88,8 @@ endif ()
 # KMCMAKE_SYSTEM_DYLINK, using it for fun.
 ##########################################################
 set(KMCMAKE_DEPS_LINK
-        ${OPENSSL_SSL_LIBRARY}
-        ${OPENSSL_CRYPTO_LIBRARY}
+        OpenSSL::SSL
+        OpenSSL::Crypto
         ${URING_LIBRARY}
         xlog::xlog_static
         ZLIB::ZLIB

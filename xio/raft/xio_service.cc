@@ -1124,8 +1124,8 @@ namespace xio::raft {
               , num_send_fails_(0)
               , abandoned_(false)
               , socket_busy_(false)
-              , operation_timer_(io_svc)
-              , client_id_(impl_->assign_client_id()) {
+              , client_id_(impl_->assign_client_id())
+              , operation_timer_(io_svc) {
             if (ssl_enabled_) {
 #ifdef SSL_LIBRARY_NOT_FOUND
                 assert(0); // Should not reach here.
@@ -1198,7 +1198,7 @@ namespace xio::raft {
                 }
                 abandoned_ = true;
                 std::string err_msg =
-                        lstrfmt("timeout while connecting to {}").fmt(host_.c_str());
+                        lstrfmt("timeout while connecting to %s").fmt(host_.c_str());
                 handle_error(req, err_msg, when_done);
                 return;
             }
@@ -1257,7 +1257,7 @@ namespace xio::raft {
                 TLOG(ERROR, "client {} to {}:{} is already stale (SSL {})",
                      (void*)this, host_.c_str(), port_.c_str(),
                      ( ssl_enabled_ ? "enabled" : "disabled" ));
-                std::string err_msg = lstrfmt("abandoned client to {}").fmt(host_.c_str());
+                std::string err_msg = lstrfmt("abandoned client to %s").fmt(host_.c_str());
                 handle_error(req, err_msg, when_done);
                 return;
             }
@@ -1320,9 +1320,9 @@ namespace xio::raft {
                                                  when_done, send_timeout_ms);
                             } else {
                                 std::string err_msg = lstrfmt("failed to resolve "
-                                            "host {} by given "
+                                            "host %s by given "
                                             "custom resolver "
-                                            "due to error {}, {}")
+                                            "due to error %d, %s")
                                         .fmt(host_.c_str(),
                                              err.value(),
                                              err.message().c_str());
@@ -1554,8 +1554,8 @@ namespace xio::raft {
                                    std::placeholders::_1,
                                    std::placeholders::_2));
                     } else {
-                        std::string err_msg = lstrfmt("failed to resolve host {} "
-                                    "due to error {}, {}")
+                        std::string err_msg = lstrfmt("failed to resolve host %s "
+                                    "due to error %d, %s")
                                 .fmt(host.c_str(),
                                      err.value(),
                                      err.message().c_str());
@@ -1627,7 +1627,7 @@ namespace xio::raft {
             for (auto &pkg: reqs_to_cancel) {
                 ptr<resp_msg> rsp;
                 if (err_msg.empty()) {
-                    err_msg = lstrfmt("socket to host {} is closed").fmt(host_.c_str());
+                    err_msg = lstrfmt("socket to host %s is closed").fmt(host_.c_str());
                 }
                 ptr<rpc_exception> except(cs_new<rpc_exception>(err_msg, pkg->req_));
                 pkg->when_done_(rsp, except);
@@ -1679,7 +1679,7 @@ namespace xio::raft {
             } else {
                 abandoned_ = true;
                 std::string err_msg = sstrfmt("failed to connect to "
-                            "peer {}, {}:{}, error {}, {}")
+                            "peer %d, %s:%s, error %d, %s")
                         .fmt(req->get_dst(), host_.c_str(),
                              port_.c_str(), err.value(),
                              err.message().c_str());
@@ -1705,8 +1705,8 @@ namespace xio::raft {
                      err.message().c_str());
 
                 // Immediately stop.
-                std::string err_msg = sstrfmt("failed SSL handshake with peer {}, {}:{}, "
-                            "error {}, {}")
+                std::string err_msg = sstrfmt("failed SSL handshake with peer %d, %s:%s, "
+                            "error %d, %s")
                         .fmt(req->get_dst(), host_.c_str(),
                              port_.c_str(), err.value(),
                              err.message().c_str());
@@ -1730,8 +1730,8 @@ namespace xio::raft {
             } else {
                 operation_timer_.cancel();
                 abandoned_ = true;
-                std::string err_msg = sstrfmt("failed to send request to peer {}, {}:{}, "
-                            "error {}, {}")
+                std::string err_msg = sstrfmt("failed to send request to peer %d, %s:%s, "
+                            "error %d, %s")
                         .fmt(req->get_dst(), host_.c_str(),
                              port_.c_str(), err.value(),
                              err.message().c_str());
@@ -1747,8 +1747,8 @@ namespace xio::raft {
             ptr<xio_rpc_client> self(this->shared_from_this());
             if (err) {
                 abandoned_ = true;
-                std::string err_msg = sstrfmt("failed to read response to peer {}, {}:{}, "
-                            "error {}, {}")
+                std::string err_msg = sstrfmt("failed to read response to peer %d, %s:%s, "
+                            "error %d, %s")
                         .fmt(req->get_dst(), host_.c_str(),
                              port_.c_str(), err.value(),
                              err.message().c_str());
@@ -1767,8 +1767,8 @@ namespace xio::raft {
 
             if (crc_local != crc_buf) {
                 std::string err_msg = sstrfmt("CRC mismatch in response from "
-                            "peer {}, {}:{}, "
-                            "local calculation {}, from buffer {}")
+                            "peer %d, %s:%s, "
+                            "local calculation %u, from buffer %u")
                         .fmt(req->get_dst(), host_.c_str(),
                              port_.c_str(), crc_local, crc_buf);
                 handle_error(req, err_msg, when_done);
@@ -1920,7 +1920,7 @@ namespace xio::raft {
             if (!meta_ok) {
                 // Callback function returns false, should return failure.
                 std::string err_msg = sstrfmt("response meta verification failed: "
-                            "from peer {}, {}:{}")
+                            "from peer %d, %s:%s")
                         .fmt(req->get_dst(), host_.c_str(),
                              port_.c_str());
                 handle_error(req, err_msg, when_done);

@@ -222,7 +222,7 @@ bool FakeNetwork::makeReqFail(const std::string& endpoint,
     ptr<resp_msg> rsp; // empty.
     ptr<rpc_exception> exp
         ( cs_new<rpc_exception>
-          ( sstrfmt( "failed to send request to peer {}" )
+          ( sstrfmt( "failed to send request to peer %d" )
                    .fmt( pkg.req->get_dst() ),
             pkg.req ) );
     pkg.whenDone( rsp, exp );
