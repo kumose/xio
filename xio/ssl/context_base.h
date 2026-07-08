@@ -25,7 +25,7 @@ namespace xio {
 
     namespace ssl {
         /// The context_base class is used as a base for the basic_context class
-/// template so that we have a common place to define various enums.
+        /// template so that we have a common place to define various enums.
         class context_base {
         public:
             /// Different methods supported by a context.

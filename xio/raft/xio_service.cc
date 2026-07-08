@@ -2297,7 +2297,7 @@ void xio_service_impl::stop() {
     if (my_opt_.custom_io_context_) {
         // If custom io_context is provided, nothing to do here.
         TLOG(INFO, "custom io_context is provided, no need to stop the xio service "
-            "and worker threads");
+             "and worker threads");
         return;
     }
 

@@ -14,9 +14,4 @@
 # limitations under the License.
 #
 
-kmcmake_cc_binary(
-        NAME foo_ex
-        SOURCES foo_ex.cc
-        DEPS ${PROJECT_NAME}::foo ${KMCMAKE_DEPS_LINK}
-        COPTS ${USER_CXX_FLAGS}
-)
+add_subdirectory(raft)

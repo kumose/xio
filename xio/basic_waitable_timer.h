@@ -290,7 +290,7 @@ namespace xio {
    * constructed using the @c basic_waitable_timer(const executor_type&)
    * constructor.
    */
-        basic_waitable_timer(basic_waitable_timer &&other)
+        basic_waitable_timer(basic_waitable_timer &&other) noexcept
             : impl_(std::move(other.impl_)) {
         }
 
