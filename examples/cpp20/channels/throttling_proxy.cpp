@@ -1,0 +1,132 @@
+//
+// throttling_proxy.cpp
+// ~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#include <xio/xio.h>
+#include <xio/experimental/awaitable_operators.h>
+#include <xio/experimental/channel.h>
+#include <iostream>
+
+using xio::as_tuple;
+using xio::awaitable;
+using xio::buffer;
+using xio::co_spawn;
+using xio::detached;
+using xio::experimental::channel;
+using xio::io_context;
+using xio::ip::tcp;
+using xio::steady_timer;
+namespace this_coro = xio::this_coro;
+using namespace xio::experimental::awaitable_operators;
+using namespace std::literals::chrono_literals;
+
+using token_channel = channel<void(xio::error_code, std::size_t)>;
+
+awaitable<void> produce_tokens(std::size_t bytes_per_token,
+    steady_timer::duration token_interval, token_channel& tokens)
+{
+  steady_timer timer(co_await this_coro::executor);
+  for (;;)
+  {
+    co_await tokens.async_send(xio::error_code{}, bytes_per_token);
+
+    timer.expires_after(token_interval);
+    co_await timer.async_wait();
+  }
+}
+
+awaitable<void> transfer(tcp::socket& from,
+    tcp::socket& to, token_channel& tokens)
+{
+  std::array<unsigned char, 4096> data;
+  for (;;)
+  {
+    std::size_t bytes_available = co_await tokens.async_receive();
+    while (bytes_available > 0)
+    {
+      std::size_t n = co_await from.async_read_some(
+          buffer(data, bytes_available));
+
+      co_await async_write(to, buffer(data, n));
+
+      bytes_available -= n;
+    }
+  }
+}
+
+awaitable<void> proxy(tcp::socket client, tcp::endpoint target)
+{
+  constexpr std::size_t number_of_tokens = 100;
+  constexpr size_t bytes_per_token = 20 * 1024;
+  constexpr steady_timer::duration token_interval = 100ms;
+
+  auto ex = client.get_executor();
+  tcp::socket server(ex);
+  token_channel client_tokens(ex, number_of_tokens);
+  token_channel server_tokens(ex, number_of_tokens);
+
+  co_await server.async_connect(target);
+  co_await (
+      produce_tokens(bytes_per_token, token_interval, client_tokens) &&
+      transfer(client, server, client_tokens) &&
+      produce_tokens(bytes_per_token, token_interval, server_tokens) &&
+      transfer(server, client, server_tokens)
+    );
+}
+
+awaitable<void> listen(tcp::acceptor& acceptor, tcp::endpoint target)
+{
+  for (;;)
+  {
+    auto [e, client] = co_await acceptor.async_accept(as_tuple);
+    if (!e)
+    {
+      auto ex = client.get_executor();
+      co_spawn(ex, proxy(std::move(client), target), detached);
+    }
+    else
+    {
+      std::cerr << "Accept failed: " << e.message() << "\n";
+      steady_timer timer(co_await this_coro::executor);
+      timer.expires_after(100ms);
+      co_await timer.async_wait();
+    }
+  }
+}
+
+int main(int argc, char* argv[])
+{
+  try
+  {
+    if (argc != 5)
+    {
+      std::cerr << "Usage: throttling_proxy";
+      std::cerr << " <listen_address> <listen_port>";
+      std::cerr << " <target_address> <target_port>\n";
+      return 1;
+    }
+
+    io_context ctx;
+
+    auto listen_endpoint =
+      *tcp::resolver(ctx).resolve(argv[1], argv[2],
+          tcp::resolver::passive).begin();
+
+    auto target_endpoint =
+      *tcp::resolver(ctx).resolve(argv[3], argv[4]).begin();
+
+    tcp::acceptor acceptor(ctx, listen_endpoint);
+    co_spawn(ctx, listen(acceptor, target_endpoint), detached);
+    ctx.run();
+  }
+  catch (std::exception& e)
+  {
+    std::cerr << "Exception: " << e.what() << "\n";
+  }
+}

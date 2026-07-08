@@ -1,0 +1,113 @@
+//
+// experimental/coro/executor.cpp
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2021-2023 Klemens D. Morgenstern
+//                         (klemens dot morgenstern at gmx dot net)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+
+
+// Test that header file is self-contained.
+#include <xio/experimental/coro.h>
+
+#include <xio/thread_pool.h>
+#include <xio/io_context.h>
+#include "../../unit_test.hpp"
+
+using namespace xio::experimental;
+
+namespace coro {
+
+#define XIO_CHECKPOINT() \
+  XIO_TEST_IOSTREAM << __FILE__ << "(" << __LINE__ << "): " \
+  << xio::detail::test_name() << ": " \
+  << "Checkpoint" << std::endl;
+
+template <typename T>
+void different_execs()
+{
+  xio::thread_pool th_ctx{1u};
+  xio::io_context ctx;
+
+  auto o = std::make_optional(
+      xio::prefer(th_ctx.get_executor(),
+        xio::execution::outstanding_work.tracked));
+
+  static bool ran_inner = false, ran_outer = false;
+
+  struct c_inner_t
+  {
+    auto operator()(xio::any_io_executor e) -> xio::experimental::coro<T>
+    {
+      auto p = e.target<xio::thread_pool::executor_type>();
+      XIO_CHECKPOINT();
+      XIO_CHECK(p);
+      XIO_CHECK(p->running_in_this_thread());
+      ran_inner = true;
+      co_return;
+    };
+
+  };
+
+  c_inner_t c_inner;
+
+  struct c_outer_t
+  {
+
+    auto operator()(xio::any_io_executor e, int,
+        xio::experimental::coro<T> tp)
+      -> xio::experimental::coro<void>
+    {
+      auto p = e.target<xio::io_context::executor_type>();
+
+      XIO_CHECK(p);
+      XIO_CHECK(p->running_in_this_thread());
+      XIO_CHECKPOINT();
+
+      co_await tp;
+
+      XIO_CHECKPOINT();
+      XIO_CHECK(p->running_in_this_thread());
+
+      ran_outer = true;
+    };
+  };
+
+  c_outer_t c_outer;
+
+  bool ran = false;
+  std::exception_ptr ex;
+
+  auto c = c_outer(ctx.get_executor(), 10, c_inner(th_ctx.get_executor()));
+  c.async_resume(
+      [&](std::exception_ptr e)
+      {
+        XIO_CHECK(!e);
+        XIO_CHECKPOINT();
+        ran = true;
+      });
+
+  XIO_CHECK(!ran);
+  ctx.run();
+  o.reset();
+  XIO_CHECK(ran);
+  XIO_CHECK(ran_inner);
+  XIO_CHECK(ran_outer);
+  XIO_CHECK(!ex);
+
+  th_ctx.stop();
+  th_ctx.join();
+}
+
+} // namespace coro
+
+XIO_TEST_SUITE
+(
+  "coro/partial",
+  XIO_TEST_CASE(::coro::different_execs<void>)
+  XIO_TEST_CASE(::coro::different_execs<int()>)
+)

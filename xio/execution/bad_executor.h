@@ -1,0 +1,49 @@
+//
+// execution/bad_executor.hpp
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef XIO_EXECUTION_BAD_EXECUTOR_HPP
+#define XIO_EXECUTION_BAD_EXECUTOR_HPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+
+#include <xio/detail/config.h>
+#include <exception>
+#include <xio/detail/push_options.h>
+
+namespace xio {
+
+
+    namespace execution {
+        /// Exception thrown when trying to access an empty polymorphic executor.
+        class bad_executor
+                : public std::exception {
+        public:
+            /// Constructor.
+            bad_executor() noexcept {
+            }
+
+            /// Destructor.
+            virtual ~bad_executor() noexcept {
+            }
+
+            /// Obtain message associated with exception.
+            virtual const char *what() const noexcept {
+                return "bad executor";
+            }
+        };
+    } // namespace execution
+
+} // namespace xio
+
+#include <xio/detail/pop_options.h>
+
+#endif // XIO_EXECUTION_BAD_EXECUTOR_HPP

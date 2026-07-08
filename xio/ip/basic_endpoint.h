@@ -1,0 +1,243 @@
+//
+// ip/basic_endpoint.hpp
+// ~~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef XIO_IP_BASIC_ENDPOINT_HPP
+#define XIO_IP_BASIC_ENDPOINT_HPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+
+#include <xio/detail/config.h>
+#include <functional>
+#include <cstdint>
+#include <xio/ip/address.h>
+#include <xio/ip/detail/endpoint.h>
+#include <iosfwd>
+#include <xio/detail/push_options.h>
+
+namespace xio {
+    namespace ip {
+        /// Type used for storing port numbers.
+        typedef uint_least16_t port_type;
+
+        /// Describes an endpoint for a version-independent IP socket.
+        /**
+         * The xio::ip::basic_endpoint class template describes an endpoint that
+         * may be associated with a particular socket.
+         *
+         * @par Thread Safety
+         * @e Distinct @e objects: Safe.@n
+         * @e Shared @e objects: Unsafe.
+         *
+         * @par Concepts:
+         * Endpoint.
+         */
+        template<typename InternetProtocol>
+        class basic_endpoint {
+        public:
+            /// The protocol type associated with the endpoint.
+            typedef InternetProtocol protocol_type;
+
+            /// The type of the endpoint structure. This type is dependent on the
+            /// underlying implementation of the socket layer.
+
+            typedef xio::detail::socket_addr_type data_type;
+
+            /// Default constructor.
+            basic_endpoint() noexcept
+                : impl_() {
+            }
+
+            /// Construct an endpoint using a port number, specified in the host's byte
+            /// order. The IP address will be the any address (i.e. INADDR_ANY or
+            /// in6addr_any). This constructor would typically be used for accepting new
+            /// connections.
+            /**
+               * @par Examples
+               * To initialise an IPv4 TCP endpoint for port 1234, use:
+               * @code
+               * xio::ip::tcp::endpoint ep(xio::ip::tcp::v4(), 1234);
+               * @endcode
+               *
+               * To specify an IPv6 UDP endpoint for port 9876, use:
+               * @code
+               * xio::ip::udp::endpoint ep(xio::ip::udp::v6(), 9876);
+               * @endcode
+               */
+            basic_endpoint(const InternetProtocol &internet_protocol,
+                           port_type port_num) noexcept
+                : impl_(internet_protocol.family(), port_num) {
+            }
+
+            /// Construct an endpoint using a port number and an IP address. This
+            /// constructor may be used for accepting connections on a specific interface
+            /// or for making a connection to a remote endpoint.
+            basic_endpoint(const xio::ip::address &addr,
+                           port_type port_num) noexcept
+                : impl_(addr, port_num) {
+            }
+
+            /// Copy constructor.
+            basic_endpoint(const basic_endpoint &other) noexcept
+                : impl_(other.impl_) {
+            }
+
+            /// Move constructor.
+            basic_endpoint(basic_endpoint &&other) noexcept
+                : impl_(other.impl_) {
+            }
+
+            /// Assign from another endpoint.
+            basic_endpoint &operator=(const basic_endpoint &other) noexcept {
+                impl_ = other.impl_;
+                return *this;
+            }
+
+            /// Move-assign from another endpoint.
+            basic_endpoint &operator=(basic_endpoint &&other) noexcept {
+                impl_ = other.impl_;
+                return *this;
+            }
+
+            /// The protocol associated with the endpoint.
+            protocol_type protocol() const noexcept {
+                if (impl_.is_v4())
+                    return InternetProtocol::v4();
+                return InternetProtocol::v6();
+            }
+
+            /// Get the underlying endpoint in the native type.
+            data_type *data() noexcept {
+                return impl_.data();
+            }
+
+            /// Get the underlying endpoint in the native type.
+            const data_type *data() const noexcept {
+                return impl_.data();
+            }
+
+            /// Get the underlying size of the endpoint in the native type.
+            std::size_t size() const noexcept {
+                return impl_.size();
+            }
+
+            /// Set the underlying size of the endpoint in the native type.
+            void resize(std::size_t new_size) {
+                impl_.resize(new_size);
+            }
+
+            /// Get the capacity of the endpoint in the native type.
+            std::size_t capacity() const noexcept {
+                return impl_.capacity();
+            }
+
+            /// Get the port associated with the endpoint. The port number is always in
+  /// the host's byte order.
+            port_type port() const noexcept {
+                return impl_.port();
+            }
+
+            /// Set the port associated with the endpoint. The port number is always in
+  /// the host's byte order.
+            void port(port_type port_num) noexcept {
+                impl_.port(port_num);
+            }
+
+            /// Get the IP address associated with the endpoint.
+            xio::ip::address address() const noexcept {
+                return impl_.address();
+            }
+
+            /// Set the IP address associated with the endpoint.
+            void address(const xio::ip::address &addr) noexcept {
+                impl_.address(addr);
+            }
+
+            /// Compare two endpoints for equality.
+            friend bool operator==(const basic_endpoint<InternetProtocol> &e1,
+                                   const basic_endpoint<InternetProtocol> &e2) noexcept {
+                return e1.impl_ == e2.impl_;
+            }
+
+            /// Compare two endpoints for inequality.
+            friend bool operator!=(const basic_endpoint<InternetProtocol> &e1,
+                                   const basic_endpoint<InternetProtocol> &e2) noexcept {
+                return !(e1 == e2);
+            }
+
+            /// Compare endpoints for ordering.
+            friend bool operator<(const basic_endpoint<InternetProtocol> &e1,
+                                  const basic_endpoint<InternetProtocol> &e2) noexcept {
+                return e1.impl_ < e2.impl_;
+            }
+
+            /// Compare endpoints for ordering.
+            friend bool operator>(const basic_endpoint<InternetProtocol> &e1,
+                                  const basic_endpoint<InternetProtocol> &e2) noexcept {
+                return e2.impl_ < e1.impl_;
+            }
+
+            /// Compare endpoints for ordering.
+            friend bool operator<=(const basic_endpoint<InternetProtocol> &e1,
+                                   const basic_endpoint<InternetProtocol> &e2) noexcept {
+                return !(e2 < e1);
+            }
+
+            /// Compare endpoints for ordering.
+            friend bool operator>=(const basic_endpoint<InternetProtocol> &e1,
+                                   const basic_endpoint<InternetProtocol> &e2) noexcept {
+                return !(e1 < e2);
+            }
+
+        private:
+            // The underlying IP endpoint.
+            xio::ip::detail::endpoint impl_;
+        };
+
+
+        /// Output an endpoint as a string.
+        /**
+ * Used to output a human-readable string for a specified endpoint.
+ *
+ * @param os The output stream to which the string will be written.
+ *
+ * @param endpoint The endpoint to be written.
+ *
+ * @return The output stream.
+ *
+ * @relates xio::ip::basic_endpoint
+ */
+        template<typename Elem, typename Traits, typename InternetProtocol>
+        std::basic_ostream<Elem, Traits> &operator<<(
+            std::basic_ostream<Elem, Traits> &os,
+            const basic_endpoint<InternetProtocol> &endpoint);
+
+    } // namespace ip
+} // namespace xio
+
+namespace std {
+    template<typename InternetProtocol>
+    struct hash<xio::ip::basic_endpoint<InternetProtocol> > {
+        std::size_t operator()(
+            const xio::ip::basic_endpoint<InternetProtocol> &ep)
+        const noexcept {
+            std::size_t hash1 = std::hash<xio::ip::address>()(ep.address());
+            std::size_t hash2 = std::hash<unsigned short>()(ep.port());
+            return hash1 ^ (hash2 + 0x9e3779b9 + (hash1 << 6) + (hash1 >> 2));
+        }
+    };
+} // namespace std
+
+#include <xio/detail/pop_options.h>
+
+#include <xio/ip/impl/basic_endpoint.h>
+
+#endif // XIO_IP_BASIC_ENDPOINT_HPP

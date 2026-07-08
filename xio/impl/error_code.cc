@@ -1,0 +1,134 @@
+//
+// impl/error_code.ipp
+// ~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef XIO_IMPL_ERROR_CODE_IPP
+#define XIO_IMPL_ERROR_CODE_IPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+
+#include <xio/detail/config.h>
+#if defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
+# include <winerror.h>
+#elif defined(XIO_WINDOWS_RUNTIME)
+# include <windows.h>
+#else
+# include <cerrno>
+# include <cstring>
+# include <string>
+#endif
+#include <xio/detail/local_free_on_block_exit.h>
+#include <xio/detail/socket_types.h>
+#include <xio/error_code.h>
+
+#include <xio/detail/push_options.h>
+
+namespace xio {
+
+
+    namespace error {
+        namespace detail {
+            XIO_DECL std::error_condition error_number_to_condition(int ev);
+        } // namespace detail
+    } // namespace error
+    namespace detail {
+        class system_category : public error_category {
+        public:
+            const char *name() const noexcept {
+                return "xio.system";
+            }
+
+            std::string message(int value) const {
+#if defined(XIO_WINDOWS_RUNTIME) || defined(XIO_WINDOWS_APP)
+                std::wstring wmsg(128, wchar_t());
+                for (;;) {
+                    DWORD wlength = ::FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM
+                                                     | FORMAT_MESSAGE_IGNORE_INSERTS, 0, value,
+                                                     MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                                                     &wmsg[0], static_cast<DWORD>(wmsg.size()), 0);
+                    if (wlength == 0 && ::GetLastError() == ERROR_INSUFFICIENT_BUFFER) {
+                        wmsg.resize(wmsg.size() + wmsg.size() / 2);
+                        continue;
+                    }
+                    if (wlength && wmsg[wlength - 1] == '\n')
+                        --wlength;
+                    if (wlength && wmsg[wlength - 1] == '\r')
+                        --wlength;
+                    if (wlength) {
+                        std::string msg(wlength * 2, char());
+                        int length = ::WideCharToMultiByte(CP_ACP, 0,
+                                                           wmsg.c_str(), static_cast<int>(wlength),
+                                                           &msg[0], static_cast<int>(wlength * 2), 0, 0);
+                        if (length <= 0)
+                            return "xio.system error";
+                        msg.resize(static_cast<std::size_t>(length));
+                        return msg;
+                    } else
+                        return "xio.system error";
+                }
+#elif defined(XIO_WINDOWS) || defined(XIO_CYGWIN_W32_SOCKETS)
+                char *msg = 0;
+                DWORD length = ::FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER
+                                                | FORMAT_MESSAGE_FROM_SYSTEM
+                                                | FORMAT_MESSAGE_IGNORE_INSERTS, 0, value,
+                                                MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (char *) &msg, 0, 0);
+                detail::local_free_on_block_exit local_free_obj(msg);
+                if (length && msg[length - 1] == '\n')
+                    msg[--length] = '\0';
+                if (length && msg[length - 1] == '\r')
+                    msg[--length] = '\0';
+                if (length)
+                    return msg;
+                else
+                    return "xio.system error";
+#else // defined(XIO_WINDOWS_DESKTOP)
+                //   || defined(XIO_CYGWIN_W32_SOCKETS)
+#if !defined(__sun)
+                if (value == ECANCELED)
+                    return "Operation aborted.";
+#endif // !defined(__sun)
+#if defined(__sun) || defined(__QNX__) || defined(__SYMBIAN32__)
+                using namespace std;
+                return strerror(value);
+#else
+                char buf[256] = "";
+                using namespace std;
+                return strerror_result(strerror_r(value, buf, sizeof(buf)), buf);
+#endif
+#endif // defined(XIO_WINDOWS_DESKTOP)
+                //   || defined(XIO_CYGWIN_W32_SOCKETS)
+            }
+
+            std::error_condition default_error_condition(int ev) const noexcept {
+                return error::detail::error_number_to_condition(ev);
+            }
+
+        private:
+            // Helper function to adapt the result from glibc's variant of strerror_r.
+            static const char *strerror_result(int, const char *s) { return s; }
+            static const char *strerror_result(const char *s, const char *) { return s; }
+        };
+    } // namespace detail
+
+    const error_category &system_category() {
+        static detail::system_category instance;
+        return instance;
+    }
+
+
+} // namespace xio
+
+#include <xio/detail/pop_options.h>
+
+// For implementation of xio::error::detail::error_number_to_condition.
+#include <xio/error.h>
+
+#endif // XIO_IMPL_ERROR_CODE_IPP

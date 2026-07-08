@@ -1,0 +1,103 @@
+//
+// experimental/use_promise.hpp
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2021-2023 Klemens D. Morgenstern
+//                         (klemens dot morgenstern at gmx dot net)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef XIO_EXPERIMENTAL_USE_PROMISE_HPP
+#define XIO_EXPERIMENTAL_USE_PROMISE_HPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+
+#include <xio/detail/config.h>
+#include <memory>
+#include <xio/detail/type_traits.h>
+
+#include <xio/detail/push_options.h>
+
+namespace xio {
+
+
+    namespace experimental {
+        template<typename Allocator = std::allocator<void> >
+        struct use_promise_t {
+            /// The allocator type. The allocator is used when constructing the
+  /// @c promise object for a given asynchronous operation.
+            typedef Allocator allocator_type;
+
+            /// Construct using default-constructed allocator.
+            constexpr use_promise_t() {
+            }
+
+            /// Construct using specified allocator.
+            explicit use_promise_t(const Allocator &allocator)
+                : allocator_(allocator) {
+            }
+
+            /// Obtain allocator.
+            allocator_type get_allocator() const noexcept {
+                return allocator_;
+            }
+
+            /// Adapts an executor to add the @c use_promise_t completion token as the
+  /// default.
+            template<typename InnerExecutor>
+            struct executor_with_default : InnerExecutor {
+                /// Specify @c use_promise_t as the default completion token type.
+                typedef use_promise_t<Allocator> default_completion_token_type;
+
+                /// Construct the adapted executor from the inner executor type.
+                executor_with_default(const InnerExecutor &ex) noexcept
+                    : InnerExecutor(ex) {
+                }
+
+                /// Convert the specified executor to the inner executor type, then use
+    /// that to construct the adapted executor.
+                template<typename OtherExecutor>
+                executor_with_default(const OtherExecutor &ex,
+                                      constraint_t<
+                                          std::is_convertible<OtherExecutor, InnerExecutor>::value
+                                      > = 0) noexcept
+                    : InnerExecutor(ex) {
+                }
+            };
+
+            /// Function helper to adapt an I/O object to use @c use_promise_t as its
+  /// default completion token type.
+            template<typename T>
+            static typename std::decay_t<T>::template rebind_executor<
+                executor_with_default<typename std::decay_t<T>::executor_type>
+            >::other
+            as_default_on(T &&object) {
+                return typename std::decay_t<T>::template rebind_executor<
+                    executor_with_default<typename std::decay_t<T>::executor_type>
+                >::other(static_cast<T &&>(object));
+            }
+
+            /// Specify an alternate allocator.
+            template<typename OtherAllocator>
+            use_promise_t<OtherAllocator> rebind(const OtherAllocator &allocator) const {
+                return use_promise_t<OtherAllocator>(allocator);
+            }
+
+        private:
+            Allocator allocator_;
+        };
+
+        inline constexpr use_promise_t<> use_promise;
+    } // namespace experimental
+
+} // namespace xio
+
+#include <xio/detail/pop_options.h>
+
+#include <xio/experimental/impl/use_promise.h>
+
+#endif // XIO_EXPERIMENTAL_USE_CORO_HPP

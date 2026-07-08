@@ -1,0 +1,385 @@
+//
+// execution/outstanding_work.hpp
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef XIO_EXECUTION_OUTSTANDING_WORK_HPP
+#define XIO_EXECUTION_OUTSTANDING_WORK_HPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+
+#include <xio/detail/config.h>
+#include <xio/detail/type_traits.h>
+#include <xio/execution/executor.h>
+#include <xio/is_applicable_property.h>
+#include <xio/query.h>
+#include <xio/traits/query_free.h>
+#include <xio/traits/query_member.h>
+#include <xio/traits/query_static_constexpr_member.h>
+#include <xio/traits/static_query.h>
+#include <xio/traits/static_require.h>
+
+#include <xio/detail/push_options.h>
+
+namespace xio {
+    namespace execution {
+        namespace detail {
+            namespace outstanding_work {
+                template<int I>
+                struct untracked_t;
+                template<int I>
+                struct tracked_t;
+            } // namespace outstanding_work
+
+            template<int I = 0>
+            struct outstanding_work_t {
+                template<typename T>
+                static constexpr bool is_applicable_property_v = is_executor<T>::value;
+
+                static constexpr bool is_requirable = false;
+                static constexpr bool is_preferable = false;
+                typedef outstanding_work_t polymorphic_query_result_type;
+
+                typedef detail::outstanding_work::untracked_t<I> untracked_t;
+                typedef detail::outstanding_work::tracked_t<I> tracked_t;
+
+                constexpr outstanding_work_t()
+                    : value_(-1) {
+                }
+
+                constexpr outstanding_work_t(untracked_t)
+                    : value_(0) {
+                }
+
+                constexpr outstanding_work_t(tracked_t)
+                    : value_(1) {
+                }
+
+                template<typename T>
+                struct proxy {
+                    struct type {
+                        template<typename P>
+                        auto query(P &&p) const
+                            noexcept(
+                                noexcept(
+                                    std::declval<std::conditional_t<true, T, P> >().query(static_cast<P &&>(p))
+                                )
+                            )
+                            -> decltype(
+                                std::declval<std::conditional_t<true, T, P> >().query(static_cast<P &&>(p))
+                            );
+                    };
+                };
+
+                template<typename T>
+                struct static_proxy {
+                    struct type {
+                        template<typename P>
+                        static constexpr auto query(P &&p)
+                            noexcept(
+                                noexcept(
+                                    std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
+                                )
+                            )
+                            -> decltype(
+                                std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
+                            ) {
+                            return T::query(static_cast<P &&>(p));
+                        }
+                    };
+                };
+
+                template<typename T>
+                struct query_member :
+                        traits::query_member<typename proxy<T>::type, outstanding_work_t> {
+                };
+
+                template<typename T>
+                struct query_static_constexpr_member :
+                        traits::query_static_constexpr_member<
+                            typename static_proxy<T>::type, outstanding_work_t> {
+                };
+
+                template<typename T>
+                static constexpr
+                typename query_static_constexpr_member<T>::result_type
+                static_query()
+                    noexcept(query_static_constexpr_member<T>::is_noexcept) {
+                    return query_static_constexpr_member<T>::value();
+                }
+
+                template<typename T>
+                static constexpr
+                typename traits::static_query<T, untracked_t>::result_type
+                static_query(
+                    std::enable_if_t<
+                        !query_static_constexpr_member<T>::is_valid
+                    > * = 0,
+                    std::enable_if_t<
+                        !query_member<T>::is_valid
+                    > * = 0,
+                    std::enable_if_t<
+                        traits::static_query<T, untracked_t>::is_valid
+                    > * = 0) noexcept {
+                    return traits::static_query<T, untracked_t>::value();
+                }
+
+                template<typename T>
+                static constexpr
+                typename traits::static_query<T, tracked_t>::result_type
+                static_query(
+                    std::enable_if_t<
+                        !query_static_constexpr_member<T>::is_valid
+                    > * = 0,
+                    std::enable_if_t<
+                        !query_member<T>::is_valid
+                    > * = 0,
+                    std::enable_if_t<
+                        !traits::static_query<T, untracked_t>::is_valid
+                    > * = 0,
+                    std::enable_if_t<
+                        traits::static_query<T, tracked_t>::is_valid
+                    > * = 0) noexcept {
+                    return traits::static_query<T, tracked_t>::value();
+                }
+
+                template<typename E,
+                    typename T = decltype(outstanding_work_t::static_query<E>())>
+                static constexpr const T static_query_v
+                        = outstanding_work_t::static_query<E>();
+
+                friend constexpr bool operator==(
+                    const outstanding_work_t &a, const outstanding_work_t &b) {
+                    return a.value_ == b.value_;
+                }
+
+                friend constexpr bool operator!=(
+                    const outstanding_work_t &a, const outstanding_work_t &b) {
+                    return a.value_ != b.value_;
+                }
+
+                struct convertible_from_outstanding_work_t {
+                    constexpr convertible_from_outstanding_work_t(outstanding_work_t) {
+                    }
+                };
+
+                template<typename Executor>
+                friend constexpr outstanding_work_t query(
+                    const Executor &ex, convertible_from_outstanding_work_t,
+                    std::enable_if_t<
+                        can_query<const Executor &, untracked_t>::value
+                    > * = 0)
+#if !defined(__clang__) // Clang crashes if noexcept is used here.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
+                noexcept(is_nothrow_query<const Executor &,
+                    outstanding_work_t<>::untracked_t>::value)
+#else // defined(XIO_MSVC)
+                    noexcept(is_nothrow_query<const Executor &, untracked_t>::value)
+#endif // defined(XIO_MSVC)
+#endif // !defined(__clang__)
+                {
+                    return xio::query(ex, untracked_t());
+                }
+
+                template<typename Executor>
+                friend constexpr outstanding_work_t query(
+                    const Executor &ex, convertible_from_outstanding_work_t,
+                    std::enable_if_t<
+                        !can_query<const Executor &, untracked_t>::value
+                    > * = 0,
+                    std::enable_if_t<
+                        can_query<const Executor &, tracked_t>::value
+                    > * = 0)
+#if !defined(__clang__) // Clang crashes if noexcept is used here.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
+                noexcept(is_nothrow_query<const Executor &,
+                    outstanding_work_t<>::tracked_t>::value)
+#else // defined(XIO_MSVC)
+                    noexcept(is_nothrow_query<const Executor &, tracked_t>::value)
+#endif // defined(XIO_MSVC)
+#endif // !defined(__clang__)
+                {
+                    return xio::query(ex, tracked_t());
+                }
+
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(untracked_t, untracked);
+
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(tracked_t, tracked);
+
+            private:
+                int value_;
+            };
+
+            template<int I>
+            template<typename E, typename T>
+            const T outstanding_work_t<I>::static_query_v;
+
+
+            template<int I>
+            const typename outstanding_work_t<I>::untracked_t
+            outstanding_work_t<I>::untracked;
+
+            template<int I>
+            const typename outstanding_work_t<I>::tracked_t
+            outstanding_work_t<I>::tracked;
+
+            namespace outstanding_work {
+                template<int I = 0>
+                struct untracked_t {
+                    template<typename T>
+                    static constexpr bool is_applicable_property_v = is_executor<T>::value;
+
+                    static constexpr bool is_requirable = true;
+                    static constexpr bool is_preferable = true;
+                    typedef outstanding_work_t<I> polymorphic_query_result_type;
+
+                    constexpr untracked_t() {
+                    }
+
+                    template<typename T>
+                    struct query_member :
+                            traits::query_member<
+                                typename outstanding_work_t<I>::template proxy<T>::type, untracked_t> {
+                    };
+
+                    template<typename T>
+                    struct query_static_constexpr_member :
+                            traits::query_static_constexpr_member<
+                                typename outstanding_work_t<I>::template static_proxy<T>::type,
+                                untracked_t> {
+                    };
+
+                    template<typename T>
+                    static constexpr
+                    typename query_static_constexpr_member<T>::result_type
+                    static_query()
+                        noexcept(query_static_constexpr_member<T>::is_noexcept) {
+                        return query_static_constexpr_member<T>::value();
+                    }
+
+                    template<typename T>
+                    static constexpr untracked_t static_query(
+                        std::enable_if_t<
+                            !query_static_constexpr_member<T>::is_valid
+                        > * = 0,
+                        std::enable_if_t<
+                            !query_member<T>::is_valid
+                        > * = 0,
+                        std::enable_if_t<
+                            !traits::query_free<T, untracked_t>::is_valid
+                        > * = 0,
+                        std::enable_if_t<
+                            !can_query<T, tracked_t<I> >::value
+                        > * = 0) noexcept {
+                        return untracked_t();
+                    }
+
+                    template<typename E, typename T = decltype(untracked_t::static_query<E>())>
+                    static constexpr const T static_query_v = untracked_t::static_query<E>();
+
+
+                    static constexpr outstanding_work_t<I> value() {
+                        return untracked_t();
+                    }
+
+                    friend constexpr bool operator==(const untracked_t &, const untracked_t &) {
+                        return true;
+                    }
+
+                    friend constexpr bool operator!=(const untracked_t &, const untracked_t &) {
+                        return false;
+                    }
+
+                    friend constexpr bool operator==(const untracked_t &, const tracked_t<I> &) {
+                        return false;
+                    }
+
+                    friend constexpr bool operator!=(const untracked_t &, const tracked_t<I> &) {
+                        return true;
+                    }
+                };
+
+                template<int I>
+                template<typename E, typename T>
+                const T untracked_t<I>::static_query_v;
+
+                template<int I = 0>
+                struct tracked_t {
+                    template<typename T>
+                    static constexpr bool is_applicable_property_v = is_executor<T>::value;
+
+                    static constexpr bool is_requirable = true;
+                    static constexpr bool is_preferable = true;
+                    typedef outstanding_work_t<I> polymorphic_query_result_type;
+
+                    constexpr tracked_t() {
+                    }
+
+                    template<typename T>
+                    struct query_member :
+                            traits::query_member<
+                                typename outstanding_work_t<I>::template proxy<T>::type, tracked_t> {
+                    };
+
+                    template<typename T>
+                    struct query_static_constexpr_member :
+                            traits::query_static_constexpr_member<
+                                typename outstanding_work_t<I>::template static_proxy<T>::type,
+                                tracked_t> {
+                    };
+
+                    template<typename T>
+                    static constexpr
+                    typename query_static_constexpr_member<T>::result_type
+                    static_query()
+                        noexcept(query_static_constexpr_member<T>::is_noexcept) {
+                        return query_static_constexpr_member<T>::value();
+                    }
+
+                    template<typename E, typename T = decltype(tracked_t::static_query<E>())>
+                    static constexpr const T static_query_v = tracked_t::static_query<E>();
+
+
+                    static constexpr outstanding_work_t<I> value() {
+                        return tracked_t();
+                    }
+
+                    friend constexpr bool operator==(const tracked_t &, const tracked_t &) {
+                        return true;
+                    }
+
+                    friend constexpr bool operator!=(const tracked_t &, const tracked_t &) {
+                        return false;
+                    }
+
+                    friend constexpr bool operator==(const tracked_t &, const untracked_t<I> &) {
+                        return false;
+                    }
+
+                    friend constexpr bool operator!=(const tracked_t &, const untracked_t<I> &) {
+                        return true;
+                    }
+                };
+
+                template<int I>
+                template<typename E, typename T>
+                const T tracked_t<I>::static_query_v;
+            } // namespace outstanding_work
+        } // namespace detail
+
+        typedef detail::outstanding_work_t<> outstanding_work_t;
+
+        inline constexpr outstanding_work_t outstanding_work;
+    } // namespace execution
+} // namespace xio
+
+#include <xio/detail/pop_options.h>
+
+#endif // XIO_EXECUTION_OUTSTANDING_WORK_HPP

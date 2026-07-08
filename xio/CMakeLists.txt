@@ -12,15 +12,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-###########################################################################
-# below are examples, after initialization, modify it to your own.
-###########################################################################
-###kmcmake_example
+
+file(GLOB_RECURSE SRC "*.cc")
+
 kmcmake_cc_library(
         NAMESPACE ${PROJECT_NAME}
-        NAME foo
+        NAME xio
         SOURCES
-        foo.cc
+        ${SRC}
+        DEFINES
+        -DXIO_DYN_LINK
         CXXOPTS
         ${KMCMAKE_CXX_OPTIONS}
         PLINKS
@@ -28,30 +29,3 @@ kmcmake_cc_library(
         PUBLIC
 )
 
-kmcmake_cc_interface(
-        NAMESPACE ${PROJECT_NAME}
-        NAME api
-        HEADERS
-        api.h
-        CXXOPTS
-        ${KMCMAKE_CXX_OPTIONS}
-        PUBLIC
-)
-
-kmcmake_cc_binary(
-        NAMESPACE ${PROJECT_NAME}
-        NAME shared_main
-        SOURCES
-        main.cc
-        CXXOPTS
-        ${KMCMAKE_CXX_OPTIONS}
-        DEPS
-        ${PROJECT_NAME}::foo
-        LINKS
-        ${KMCMAKE_DEPS_LINK}
-        ${PROJECT_NAME}::foo
-        PUBLIC
-)
-
-
-###kmcmake_example

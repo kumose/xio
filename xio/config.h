@@ -1,0 +1,175 @@
+//
+// config.hpp
+// ~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef XIO_CONFIG_HPP
+#define XIO_CONFIG_HPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+
+#include <xio/detail/config.h>
+#include <xio/detail/throw_exception.h>
+#include <xio/detail/type_traits.h>
+#include <xio/execution_context.h>
+#include <cstddef>
+#include <string>
+
+#include <xio/detail/push_options.h>
+
+namespace xio {
+
+
+    /// Base class for configuration implementations.
+    class config_service :
+            public detail::execution_context_service_base<config_service>
+    {
+    public:
+
+        /// Constructor.
+        XIO_DECL explicit config_service(execution_context &ctx);
+
+        /// Shutdown the service.
+        XIO_DECL void shutdown() override;
+
+        /// Retrieve a configuration value.
+        XIO_DECL virtual const char *get_value(const char *section,
+                                                const char *key_name, char *value, std::size_t value_len) const;
+    };
+
+    /// Provides access to the configuration values associated with an execution
+/// context.
+    class config {
+    public:
+        /// Constructor.
+        /**
+   * This constructor initialises a @c config object to retrieve configuration
+   * values associated with the specified execution context.
+   */
+        explicit config(execution_context &context)
+            : service_(use_service<config_service>(context)) {
+        }
+
+        /// Copy constructor.
+        config(const config &other) noexcept
+            : service_(other.service_) {
+        }
+
+        /// Retrieve an integral configuration value.
+        template<typename T>
+        constraint_t<std::is_integral<T>::value, T>
+        get(const char *section, const char *key_name, T default_value) const;
+
+    private:
+        config_service &service_;
+    };
+
+    /// Configures an execution context based on a concurrency hint.
+    /**
+ * This configuration service is provided for backwards compatibility with
+ * the existing concurrency hint mechanism.
+ *
+ * @par Example
+ * @code xio::io_context my_io_context{
+ *     xio::config_from_concurrency_hint{1}}; @endcode
+ */
+    class config_from_concurrency_hint : public execution_context::service_maker {
+    public:
+        /// Construct with a default concurrency hint.
+        XIO_DECL config_from_concurrency_hint();
+
+        /// Construct with a specified concurrency hint.
+        explicit config_from_concurrency_hint(int concurrency_hint)
+            : concurrency_hint_(concurrency_hint) {
+        }
+
+        /// Add a concrete service to the specified execution context.
+        XIO_DECL void make(execution_context &ctx) const override;
+
+    private:
+        int concurrency_hint_;
+    };
+
+    /// Configures an execution context by reading variables from a string.
+    /**
+ * Each variable must be on a line of its own, and of the form:
+ *
+ * <tt>section.key=value</tt>
+ *
+ * or, if an optional prefix is specified:
+ *
+ * <tt>prefix.section.key=value</tt>
+ *
+ * Blank lines and lines starting with <tt>#</tt> are ignored. It is also
+ * permitted to include a comment starting with <tt>#</tt> after the value.
+ *
+ * @par Example
+ * @code xio::io_context my_io_context{
+ *     xio::config_from_string{
+ *       "scheduler.concurrency_hint=10\n"
+ *       "scheduler.locking=1"}}; @endcode
+ */
+    class config_from_string : public execution_context::service_maker {
+    public:
+        /// Construct with the default prefix "xio".
+        explicit config_from_string(std::string s)
+            : string_(static_cast<std::string &&>(s)),
+              prefix_() {
+        }
+
+        /// Construct with a specified prefix.
+        config_from_string(std::string s, std::string prefix)
+            : string_(static_cast<std::string &&>(s)),
+              prefix_(static_cast<std::string &&>(prefix)) {
+        }
+
+        /// Add a concrete service to the specified execution context.
+        XIO_DECL void make(execution_context &ctx) const override;
+
+    private:
+        std::string string_;
+        std::string prefix_;
+    };
+
+    /// Configures an execution context by reading environment variables.
+    /**
+ * The environment variable names are formed by concatenating the prefix,
+ * section, and key, with underscore as delimiter, and then converting the
+ * resulting string to upper case.
+ *
+ * @par Example
+ * @code xio::io_context my_io_context{
+ *     xio::config_from_env{"my_app"}}; @endcode
+ */
+    class config_from_env : public execution_context::service_maker {
+    public:
+        /// Construct with the default prefix "xio".
+        XIO_DECL config_from_env();
+
+        /// Construct with a specified prefix.
+        explicit config_from_env(std::string prefix)
+            : prefix_(static_cast<std::string &&>(prefix)) {
+        }
+
+        /// Add a concrete service to the specified execution context.
+        XIO_DECL void make(execution_context &ctx) const override;
+
+    private:
+        std::string prefix_;
+    };
+
+
+} // namespace xio
+
+#include <xio/detail/pop_options.h>
+
+#include <xio/impl/config.h>
+
+#endif // XIO_CONFIG_HPP

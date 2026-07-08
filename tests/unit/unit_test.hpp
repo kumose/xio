@@ -1,0 +1,179 @@
+//
+// unit_test.hpp
+// ~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef UNIT_TEST_HPP
+#define UNIT_TEST_HPP
+
+#include <xio/detail/config.h>
+#include <iostream>
+#include <xio/detail/atomic_count.h>
+
+#if defined(__sun)
+# include <stdlib.h> // Needed for lrand48.
+#endif // defined(__sun)
+
+#if defined(__BORLANDC__) && !defined(__clang__)
+
+// Prevent use of intrinsic for strcmp.
+# include <cstring>
+# undef strcmp
+
+// Suppress error about condition always being true.
+# pragma option -w-ccc
+
+#endif // defined(__BORLANDC__) && !defined(__clang__)
+
+#if defined(XIO_MSVC)
+# pragma warning (disable:4127)
+# pragma warning (push)
+# pragma warning (disable:4244)
+# pragma warning (disable:4702)
+#endif // defined(XIO_MSVC)
+
+#if !defined(XIO_TEST_IOSTREAM)
+# define XIO_TEST_IOSTREAM std::cerr
+#endif // !defined(XIO_TEST_IOSTREAM)
+
+namespace xio {
+    namespace detail {
+        inline const char *&test_name() {
+            static const char *name = 0;
+            return name;
+        }
+
+        inline atomic_count &test_errors() {
+            static atomic_count errors(0);
+            return errors;
+        }
+
+        inline void begin_test_suite(const char *name) {
+            xio::detail::test_name();
+            xio::detail::test_errors();
+            XIO_TEST_IOSTREAM << name << " test suite begins" << std::endl;
+        }
+
+        inline int end_test_suite(const char *name) {
+            XIO_TEST_IOSTREAM << name << " test suite ends" << std::endl;
+            XIO_TEST_IOSTREAM << "\n*** ";
+            long errors = xio::detail::test_errors();
+            if (errors == 0)
+                XIO_TEST_IOSTREAM << "No errors detected.";
+            else if (errors == 1)
+                XIO_TEST_IOSTREAM << "1 error detected.";
+            else
+                XIO_TEST_IOSTREAM << errors << " errors detected." << std::endl;
+            XIO_TEST_IOSTREAM << std::endl;
+            return errors == 0 ? 0 : 1;
+        }
+
+        template<void (*Test)()>
+        inline void run_test(const char *name) {
+            test_name() = name;
+            long errors_before = xio::detail::test_errors();
+            Test();
+            if (test_errors() == errors_before)
+                XIO_TEST_IOSTREAM << name << " passed" << std::endl;
+            else
+                XIO_TEST_IOSTREAM << name << " failed" << std::endl;
+        }
+
+        template<void (*)()>
+        inline void compile_test(const char *name) {
+            XIO_TEST_IOSTREAM << name << " passed" << std::endl;
+        }
+
+#if defined(XIO_NO_EXCEPTIONS)
+
+        template<typename T>
+        void throw_exception(const T &t) {
+            XIO_TEST_IOSTREAM << "Exception: " << t.what() << std::endl;
+            std::abort();
+        }
+
+#endif // defined(XIO_NO_EXCEPTIONS)
+    } // namespace detail
+} // namespace xio
+
+#define XIO_CHECK(expr) \
+  do { if (!(expr)) { \
+    XIO_TEST_IOSTREAM << __FILE__ << "(" << __LINE__ << "): " \
+      << xio::detail::test_name() << ": " \
+      << "check '" << #expr << "' failed" << std::endl; \
+    ++xio::detail::test_errors(); \
+  } } while (0)
+
+#define XIO_CHECK_MESSAGE(expr, msg) \
+  do { if (!(expr)) { \
+    XIO_TEST_IOSTREAM << __FILE__ << "(" << __LINE__ << "): " \
+      << xio::detail::test_name() << ": " \
+      << msg << std::endl; \
+    ++xio::detail::test_errors(); \
+  } } while (0)
+
+#define XIO_WARN_MESSAGE(expr, msg) \
+  do { if (!(expr)) { \
+    XIO_TEST_IOSTREAM << __FILE__ << "(" << __LINE__ << "): " \
+      << xio::detail::test_name() << ": " \
+      << msg << std::endl; \
+  } } while (0)
+
+#define XIO_ERROR(msg) \
+  do { \
+    XIO_TEST_IOSTREAM << __FILE__ << "(" << __LINE__ << "): " \
+      << xio::detail::test_name() << ": " \
+      << msg << std::endl; \
+    ++xio::detail::test_errors(); \
+  } while (0)
+
+#define XIO_TEST_SUITE(name, tests) \
+  int main() \
+  { \
+    xio::detail::begin_test_suite(name); \
+    tests \
+    return xio::detail::end_test_suite(name); \
+  }
+
+#define XIO_TEST_CASE(test) \
+  xio::detail::run_test<&test>(#test);
+
+#define XIO_TEST_CASE2(test1, test2) \
+  xio::detail::run_test<&test1, test2>(#test1 "," #test2);
+
+#define XIO_TEST_CASE3(test1, test2, test3) \
+  xio::detail::run_test<&test1, test2, test3>( \
+    #test1 "," #test2 "," #test3);
+
+#define XIO_TEST_CASE4(test1, test2, test3, test4) \
+  xio::detail::run_test<&test1, test2, test3, test4>( \
+    #test1 "," #test2 "," #test3 "," #test4);
+
+#define XIO_TEST_CASE5(test1, test2, test3, test4, test5) \
+  xio::detail::run_test<&test1, test2, test3, test4, test5>( \
+    #test1 "," #test2 "," #test3 "," #test4 "," #test5);
+
+#define XIO_COMPILE_TEST_CASE(test) \
+  xio::detail::compile_test<&test>(#test);
+
+inline void null_test() {
+}
+
+#if defined(__GNUC__) && defined(_AIX)
+
+// AIX needs this symbol defined in xio, even if it doesn't do anything.
+int test_main(int, char **) {
+}
+
+#endif // defined(__GNUC__) && defined(_AIX)
+
+#if defined(XIO_MSVC)
+# pragma warning (pop)
+#endif // defined(XIO_MSVC)
+
+#endif // UNIT_TEST_HPP

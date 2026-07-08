@@ -1,0 +1,141 @@
+/************************************************************************
+Modifications Copyright 2017-2019 eBay Inc.
+Author/Developer(s): Jung-Sang Ahn
+
+Original Copyright:
+See URL: https://github.com/datatechnology/cornerstone
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+**************************************************************************/
+
+#ifndef _CONTEXT_HXX_
+#define _CONTEXT_HXX_
+
+#include <xio/raft/callback.h>
+#include <xio/raft/pp_util.h>
+#include <xio/raft/ptr.h>
+#include <xio/raft/raft_params.h>
+
+#include <memory>
+#include <mutex>
+
+namespace xio::raft {
+    class delayed_task_scheduler;
+    class rpc_client_factory;
+    class rpc_listener;
+    class state_machine;
+    class state_mgr;
+    class global_mgr;
+
+    struct context {
+    public:
+        context(ptr<state_mgr> mgr,
+                ptr<state_machine> m,
+                ptr<rpc_listener> listener,
+                ptr<rpc_client_factory> cli_factory,
+                ptr<delayed_task_scheduler> scheduler,
+                const raft_params &params,
+                global_mgr *custom_global_mgr = nullptr)
+            : state_mgr_(std::move(mgr))
+              , state_machine_(std::move(m))
+              , rpc_listener_(std::move(listener))
+              , rpc_cli_factory_(std::move(cli_factory))
+              , scheduler_(std::move(scheduler))
+              , params_(cs_new<raft_params>(params))
+              , custom_global_mgr_(custom_global_mgr) {
+        }
+
+        /**
+     * Register an event callback function.
+     *
+     * @param func Callback function to register.
+     */
+        void set_cb_func(cb_func::func_type func) { cb_func_ = cb_func(func); }
+
+        /**
+     * Return the pointer to current Raft parameters.
+     *
+     * WARNING:
+     *   It is just a pointer so that the contents
+     *   shouldn't be changed directly.
+     *
+     * @return Pointer to parameter instance.
+     */
+        ptr<raft_params> get_params() const {
+            std::lock_guard<std::mutex> l(ctx_lock_);
+            return params_;
+        }
+
+        /**
+     * Update Raft parameters.
+     *
+     * @param to New Raft parameters to set.
+     */
+        void set_params(ptr<raft_params> &to) {
+            std::lock_guard<std::mutex> l(ctx_lock_);
+            params_ = to;
+        }
+
+        __nocopy__(context);
+
+    public:
+        /**
+     * State manager instance.
+     */
+        ptr<state_mgr> state_mgr_;
+
+        /**
+     * State machine instance.
+     */
+        ptr<state_machine> state_machine_;
+
+        /**
+     * RPC listener instance.
+     */
+        ptr<rpc_listener> rpc_listener_;
+
+        /**
+     * RPC client factory.
+     */
+        ptr<rpc_client_factory> rpc_cli_factory_;
+
+        /**
+     * Timer instance.
+     */
+        ptr<delayed_task_scheduler> scheduler_;
+
+        /**
+     * Raft parameters.
+     */
+        std::shared_ptr<raft_params> params_;
+
+        /**
+     * Callback function for hooking the operation.
+     */
+        cb_func cb_func_;
+
+        /**
+     *  User-provided global_mgr pointer.
+     *  Used in preference to xraft_global_mgr::get_instance().
+     *  The lifecycle of this object must be managed by the user externally.
+     */
+        global_mgr *custom_global_mgr_;
+
+        /**
+     * Lock.
+     */
+        mutable std::mutex ctx_lock_;
+    };
+} // namespace xio::raft
+
+#endif //_CONTEXT_HXX_

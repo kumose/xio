@@ -1,0 +1,12 @@
+{
+  "dependencies": [
+    "benchmark",
+    "gtest",
+    {
+      "name": "liburing",
+      "platform": "linux"
+    },
+    "xlog",
+    "openssl"
+  ]
+}

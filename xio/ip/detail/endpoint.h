@@ -1,0 +1,125 @@
+//
+// ip/detail/endpoint.hpp
+// ~~~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef XIO_IP_DETAIL_ENDPOINT_HPP
+#define XIO_IP_DETAIL_ENDPOINT_HPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+
+#include <xio/detail/config.h>
+#include <string>
+#include <xio/detail/socket_types.h>
+#include <xio/detail/winsock_init.h>
+#include <xio/error_code.h>
+#include <xio/ip/address.h>
+
+#include <xio/detail/push_options.h>
+
+namespace xio {
+    namespace ip {
+        namespace detail {
+            // Helper class for implementing an IP endpoint.
+            class endpoint {
+            public:
+                // Default constructor.
+                XIO_DECL endpoint() noexcept;
+
+                // Construct an endpoint using a family and port number.
+                XIO_DECL endpoint(int family,
+                                  unsigned short port_num) noexcept;
+
+                // Construct an endpoint using an address and port number.
+                XIO_DECL endpoint(const xio::ip::address &addr,
+                                  unsigned short port_num) noexcept;
+
+                // Copy constructor.
+                endpoint(const endpoint &other) noexcept
+                    : data_(other.data_) {
+                }
+
+                // Assign from another endpoint.
+                endpoint &operator=(const endpoint &other) noexcept {
+                    data_ = other.data_;
+                    return *this;
+                }
+
+                // Get the underlying endpoint in the native type.
+                xio::detail::socket_addr_type *data() noexcept {
+                    return &data_.base;
+                }
+
+                // Get the underlying endpoint in the native type.
+                const xio::detail::socket_addr_type *data() const noexcept {
+                    return &data_.base;
+                }
+
+                // Get the underlying size of the endpoint in the native type.
+                std::size_t size() const noexcept {
+                    if (is_v4())
+                        return sizeof(xio::detail::sockaddr_in4_type);
+                    else
+                        return sizeof(xio::detail::sockaddr_in6_type);
+                }
+
+                // Set the underlying size of the endpoint in the native type.
+                XIO_DECL void resize(std::size_t new_size);
+
+                // Get the capacity of the endpoint in the native type.
+                std::size_t capacity() const noexcept {
+                    return sizeof(data_);
+                }
+
+                // Get the port associated with the endpoint.
+                XIO_DECL unsigned short port() const noexcept;
+
+                // Set the port associated with the endpoint.
+                XIO_DECL void port(unsigned short port_num) noexcept;
+
+                // Get the IP address associated with the endpoint.
+                XIO_DECL xio::ip::address address() const noexcept;
+
+                // Set the IP address associated with the endpoint.
+                XIO_DECL void address(
+                    const xio::ip::address &addr) noexcept;
+
+                // Compare two endpoints for equality.
+                XIO_DECL friend bool operator==(const endpoint &e1,
+                                                const endpoint &e2) noexcept;
+
+                // Compare endpoints for ordering.
+                XIO_DECL friend bool operator<(const endpoint &e1,
+                                               const endpoint &e2) noexcept;
+
+                // Determine whether the endpoint is IPv4.
+                bool is_v4() const noexcept {
+                    return data_.base.sa_family == XIO_OS_DEF(AF_INET);
+                }
+
+                // Convert to a string.
+                XIO_DECL std::string to_string() const;
+
+            private:
+                // The underlying IP socket address.
+                union data_union {
+                    xio::detail::socket_addr_type base;
+                    xio::detail::sockaddr_in4_type v4;
+                    xio::detail::sockaddr_in6_type v6;
+                } data_;
+            };
+        } // namespace detail
+    } // namespace ip
+} // namespace xio
+
+#include <xio/detail/pop_options.h>
+
+
+#endif // XIO_IP_DETAIL_ENDPOINT_HPP

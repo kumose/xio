@@ -1,0 +1,46 @@
+//
+// detail/impl/throw_error.ipp
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef XIO_DETAIL_IMPL_THROW_ERROR_IPP
+#define XIO_DETAIL_IMPL_THROW_ERROR_IPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+
+#include <xio/detail/config.h>
+#include <xio/detail/throw_error.h>
+#include <system_error>
+
+#include <xio/detail/push_options.h>
+
+namespace xio {
+
+
+    namespace detail {
+        void do_throw_error(
+            const xio::error_code &err) {
+            std::system_error e(err);
+            xio::detail::throw_exception(e);
+        }
+
+        void do_throw_error(
+            const xio::error_code &err,
+            const char *location) {
+            std::system_error e(err, location);
+            xio::detail::throw_exception(e);
+        }
+    } // namespace detail
+
+} // namespace xio
+
+#include <xio/detail/pop_options.h>
+
+#endif // XIO_DETAIL_IMPL_THROW_ERROR_IPP

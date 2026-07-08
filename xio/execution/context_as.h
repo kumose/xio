@@ -1,0 +1,99 @@
+//
+// execution/context_as.hpp
+// ~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef XIO_EXECUTION_CONTEXT_AS_HPP
+#define XIO_EXECUTION_CONTEXT_AS_HPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+
+#include <xio/detail/config.h>
+#include <xio/detail/type_traits.h>
+#include <xio/execution/context.h>
+#include <xio/execution/executor.h>
+#include <xio/is_applicable_property.h>
+#include <xio/query.h>
+#include <xio/traits/query_static_constexpr_member.h>
+#include <xio/traits/static_query.h>
+
+#include <xio/detail/push_options.h>
+
+namespace xio {
+
+    namespace execution {
+        template<typename T>
+        struct context_as_t {
+            template<typename U>
+            static constexpr bool is_applicable_property_v = is_executor<U>::value;
+
+            static constexpr bool is_requirable = false;
+            static constexpr bool is_preferable = false;
+
+            typedef T polymorphic_query_result_type;
+
+            constexpr context_as_t() {
+            }
+
+            constexpr context_as_t (context_t)
+            {
+            }
+
+            template<typename E>
+            static constexpr
+            typename context_t::query_static_constexpr_member<E>::result_type
+            static_query()
+                noexcept(context_t::query_static_constexpr_member<E>::is_noexcept) {
+                return context_t::query_static_constexpr_member<E>::value();
+            }
+
+            template<typename E, typename U = decltype(context_as_t::static_query<E>())>
+            static constexpr const U static_query_v
+                    = context_as_t::static_query<E>();
+
+
+            template<typename Executor, typename U>
+            friend constexpr U query(
+                const Executor &ex, const context_as_t<U> &,
+                std::enable_if_t<
+                    std::is_same<T, U>::value
+                > * = 0,
+                std::enable_if_t<
+                    can_query<const Executor &, const context_t &>::value
+                > * = 0)
+#if !defined(__clang__) // Clang crashes if noexcept is used here.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
+            noexcept(is_nothrow_query<const Executor &, const context_t &>::value)
+#else // defined(XIO_MSVC)
+                noexcept(is_nothrow_query<const Executor &, const context_t &>::value)
+#endif // defined(XIO_MSVC)
+#endif // !defined(__clang__)
+            {
+                return xio::query(ex, context);
+            }
+        };
+
+
+        template<typename T>
+        template<typename E, typename U>
+        const U context_as_t<T>::static_query_v;
+
+
+        template<typename T>
+        constexpr context_as_t<T> context_as{};
+    } // namespace execution
+
+
+
+} // namespace xio
+
+#include <xio/detail/pop_options.h>
+
+#endif // XIO_EXECUTION_CONTEXT_AS_HPP

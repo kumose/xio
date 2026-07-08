@@ -1,0 +1,170 @@
+//
+// detail/win_thread.hpp
+// ~~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef XIO_DETAIL_WIN_THREAD_HPP
+#define XIO_DETAIL_WIN_THREAD_HPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+
+#include <xio/detail/config.h>
+
+#if defined(XIO_WINDOWS) \
+  && !defined(XIO_WINDOWS_APP) \
+  && !defined(UNDER_CE)
+
+#include <cstddef>
+#include <xio/detail/memory.h>
+#include <xio/detail/socket_types.h>
+
+#include <xio/detail/push_options.h>
+
+namespace xio {
+
+
+    namespace detail {
+XIO_DECL unsigned int __stdcall win_thread_function(void *arg);
+
+#if defined(WINVER) && (WINVER < 0x0500)
+XIO_DECL void __stdcall apc_function(ULONG data);
+#else
+XIO_DECL void __stdcall apc_function(ULONG_PTR data);
+#endif
+
+template<typename T>
+class win_thread_base {
+public:
+    static bool terminate_threads() {
+        return ::InterlockedExchangeAdd(&terminate_threads_, 0) != 0;
+    }
+
+    static void set_terminate_threads(bool b) {
+        ::InterlockedExchange(&terminate_threads_, b ? 1 : 0);
+    }
+
+private:
+    static long terminate_threads_;
+};
+
+template<typename T>
+long win_thread_base<T>::terminate_threads_ = 0;
+
+class win_thread
+        : public win_thread_base<win_thread> {
+public:
+    // Construct in a non-joinable state.
+    win_thread() noexcept
+        : arg_(0) {
+    }
+
+    // Constructor.
+    template<typename Function>
+    win_thread(Function f, unsigned int stack_size = 0)
+        : win_thread(std::allocator_arg, std::allocator<void>(), f, stack_size) {
+    }
+
+    // Construct with custom allocator.
+    template<typename Allocator, typename Function>
+    win_thread(allocator_arg_t, const Allocator &a,
+               Function f, unsigned int stack_size = 0)
+        : arg_(start_thread(allocate_object<func<Function, Allocator> >(a, f, a),
+                            stack_size)) {
+    }
+
+    // Move constructor.
+    win_thread(win_thread &&other) noexcept
+        : arg_(other.arg_) {
+        other.arg_ = 0;
+    }
+
+    // Destructor.
+    XIO_DECL ~win_thread();
+
+    // Move assignment.
+    win_thread &operator=(win_thread &&other) noexcept {
+        arg_ = other.arg_;
+        other.arg_ = 0;
+        return *this;
+    }
+
+    // Whether the thread can be joined.
+    bool joinable() const {
+        return !!arg_;
+    }
+
+    // Wait for the thread to exit.
+  XIO_DECL void join();
+
+    // Get number of CPUs.
+    XIO_DECL static std::size_t hardware_concurrency();
+
+private:
+    friend XIO_DECL unsigned int __stdcall win_thread_function(void *arg);
+
+#if defined(WINVER) && (WINVER < 0x0500)
+friend XIO_DECL void __stdcall apc_function(ULONG);
+#else
+friend XIO_DECL void __stdcall apc_function(ULONG_PTR);
+#endif
+
+class func_base {
+public:
+    virtual ~func_base() {
+    }
+
+    virtual void run() = 0;
+
+    virtual void destroy() = 0;
+
+    ::HANDLE thread_;
+    ::HANDLE entry_event_;
+    ::HANDLE exit_event_;
+};
+
+template<typename Function, typename Allocator>
+class func
+        : public func_base {
+public:
+    func(Function f, const Allocator &a)
+        : f_(f),
+          allocator_(a) {
+    }
+
+    virtual void run() {
+        f_();
+    }
+
+    virtual void destroy() {
+        deallocate_object(allocator_, this);
+    }
+
+private:
+    Function f_;
+    Allocator allocator_;
+};
+
+  XIO_DECL func_base *start_thread(
+    func_base *arg, unsigned int stack_size);
+
+func_base *arg_;
+};
+
+} // namespace detail
+} // namespace xio
+
+#include <xio/detail/pop_options.h>
+
+
+#endif // defined(XIO_WINDOWS)
+// && !defined(XIO_WINDOWS_APP)
+// && !defined(UNDER_CE)
+
+#endif // XIO_DETAIL_WIN_THREAD_HPP

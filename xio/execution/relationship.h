@@ -1,0 +1,386 @@
+//
+// execution/relationship.hpp
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef XIO_EXECUTION_RELATIONSHIP_HPP
+#define XIO_EXECUTION_RELATIONSHIP_HPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+
+#include <xio/detail/config.h>
+#include <xio/detail/type_traits.h>
+#include <xio/execution/executor.h>
+#include <xio/is_applicable_property.h>
+#include <xio/query.h>
+#include <xio/traits/query_free.h>
+#include <xio/traits/query_member.h>
+#include <xio/traits/query_static_constexpr_member.h>
+#include <xio/traits/static_query.h>
+#include <xio/traits/static_require.h>
+
+#include <xio/detail/push_options.h>
+
+namespace xio {
+    namespace execution {
+        namespace detail {
+            namespace relationship {
+                template<int I>
+                struct fork_t;
+                template<int I>
+                struct continuation_t;
+            } // namespace relationship
+
+            template<int I = 0>
+            struct relationship_t {
+                template<typename T>
+                static constexpr bool is_applicable_property_v = is_executor<T>::value;
+
+                static constexpr bool is_requirable = false;
+                static constexpr bool is_preferable = false;
+                typedef relationship_t polymorphic_query_result_type;
+
+                typedef detail::relationship::fork_t<I> fork_t;
+                typedef detail::relationship::continuation_t<I> continuation_t;
+
+                constexpr relationship_t()
+                    : value_(-1) {
+                }
+
+                constexpr relationship_t(fork_t)
+                    : value_(0) {
+                }
+
+                constexpr relationship_t(continuation_t)
+                    : value_(1) {
+                }
+
+                template<typename T>
+                struct proxy {
+                    struct type {
+                        template<typename P>
+                        auto query(P &&p) const
+                            noexcept(
+                                noexcept(
+                                    std::declval<std::conditional_t<true, T, P> >().query(static_cast<P &&>(p))
+                                )
+                            )
+                            -> decltype(
+                                std::declval<std::conditional_t<true, T, P> >().query(static_cast<P &&>(p))
+                            );
+                    };
+                };
+
+                template<typename T>
+                struct static_proxy {
+                    struct type {
+                        template<typename P>
+                        static constexpr auto query(P &&p)
+                            noexcept(
+                                noexcept(
+                                    std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
+                                )
+                            )
+                            -> decltype(
+                                std::conditional_t<true, T, P>::query(static_cast<P &&>(p))
+                            ) {
+                            return T::query(static_cast<P &&>(p));
+                        }
+                    };
+                };
+
+                template<typename T>
+                struct query_member :
+                        traits::query_member<typename proxy<T>::type, relationship_t> {
+                };
+
+                template<typename T>
+                struct query_static_constexpr_member :
+                        traits::query_static_constexpr_member<
+                            typename static_proxy<T>::type, relationship_t> {
+                };
+
+                template<typename T>
+                static constexpr
+                typename query_static_constexpr_member<T>::result_type
+                static_query()
+                    noexcept(query_static_constexpr_member<T>::is_noexcept) {
+                    return query_static_constexpr_member<T>::value();
+                }
+
+                template<typename T>
+                static constexpr
+                typename traits::static_query<T, fork_t>::result_type
+                static_query(
+                    std::enable_if_t<
+                        !query_static_constexpr_member<T>::is_valid
+                    > * = 0,
+                    std::enable_if_t<
+                        !query_member<T>::is_valid
+                    > * = 0,
+                    std::enable_if_t<
+                        traits::static_query<T, fork_t>::is_valid
+                    > * = 0) noexcept {
+                    return traits::static_query<T, fork_t>::value();
+                }
+
+                template<typename T>
+                static constexpr
+                typename traits::static_query<T, continuation_t>::result_type
+                static_query(
+                    std::enable_if_t<
+                        !query_static_constexpr_member<T>::is_valid
+                    > * = 0,
+                    std::enable_if_t<
+                        !query_member<T>::is_valid
+                    > * = 0,
+                    std::enable_if_t<
+                        !traits::static_query<T, fork_t>::is_valid
+                    > * = 0,
+                    std::enable_if_t<
+                        traits::static_query<T, continuation_t>::is_valid
+                    > * = 0) noexcept {
+                    return traits::static_query<T, continuation_t>::value();
+                }
+
+                template<typename E,
+                    typename T = decltype(relationship_t::static_query<E>())>
+                static constexpr const T static_query_v
+                        = relationship_t::static_query<E>();
+
+
+                friend constexpr bool operator==(
+                    const relationship_t &a, const relationship_t &b) {
+                    return a.value_ == b.value_;
+                }
+
+                friend constexpr bool operator!=(
+                    const relationship_t &a, const relationship_t &b) {
+                    return a.value_ != b.value_;
+                }
+
+                struct convertible_from_relationship_t {
+                    constexpr convertible_from_relationship_t(relationship_t) {
+                    }
+                };
+
+                template<typename Executor>
+                friend constexpr relationship_t query(
+                    const Executor &ex, convertible_from_relationship_t,
+                    std::enable_if_t<
+                        can_query<const Executor &, fork_t>::value
+                    > * = 0)
+#if !defined(__clang__) // Clang crashes if noexcept is used here.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
+                noexcept(is_nothrow_query<const Executor &, relationship_t<>::fork_t>::value)
+#else // defined(XIO_MSVC)
+                    noexcept(is_nothrow_query<const Executor &, fork_t>::value)
+#endif // defined(XIO_MSVC)
+#endif // !defined(__clang__)
+                {
+                    return xio::query(ex, fork_t());
+                }
+
+                template<typename Executor>
+                friend constexpr relationship_t query(
+                    const Executor &ex, convertible_from_relationship_t,
+                    std::enable_if_t<
+                        !can_query<const Executor &, fork_t>::value
+                    > * = 0,
+                    std::enable_if_t<
+                        can_query<const Executor &, continuation_t>::value
+                    > * = 0)
+#if !defined(__clang__) // Clang crashes if noexcept is used here.
+#if defined(XIO_MSVC) // Visual C++ wants the type to be qualified.
+                noexcept(is_nothrow_query<const Executor &,
+                    relationship_t<>::continuation_t>::value)
+#else // defined(XIO_MSVC)
+                    noexcept(is_nothrow_query<const Executor &, continuation_t>::value)
+#endif // defined(XIO_MSVC)
+#endif // !defined(__clang__)
+                {
+                    return xio::query(ex, continuation_t());
+                }
+
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(fork_t, fork);
+
+                XIO_STATIC_CONSTEXPR_DEFAULT_INIT(continuation_t, continuation);
+
+            private:
+                int value_;
+            };
+
+
+            template<int I>
+            template<typename E, typename T>
+            const T relationship_t<I>::static_query_v;
+
+            template<int I>
+            const typename relationship_t<I>::fork_t relationship_t<I>::fork;
+
+            template<int I>
+            const typename relationship_t<I>::continuation_t
+            relationship_t<I>::continuation;
+
+            namespace relationship {
+                template<int I = 0>
+                struct fork_t {
+                    template<typename T>
+                    static constexpr bool is_applicable_property_v = is_executor<T>::value;
+
+                    static constexpr bool is_requirable = true;
+                    static constexpr bool is_preferable = true;
+                    typedef relationship_t<I> polymorphic_query_result_type;
+
+                    constexpr fork_t() {
+                    }
+
+                    template<typename T>
+                    struct query_member :
+                            traits::query_member<
+                                typename relationship_t<I>::template proxy<T>::type, fork_t> {
+                    };
+
+                    template<typename T>
+                    struct query_static_constexpr_member :
+                            traits::query_static_constexpr_member<
+                                typename relationship_t<I>::template static_proxy<T>::type, fork_t> {
+                    };
+
+                    template<typename T>
+                    static constexpr typename query_static_constexpr_member<T>::result_type
+                    static_query()
+                        noexcept(query_static_constexpr_member<T>::is_noexcept) {
+                        return query_static_constexpr_member<T>::value();
+                    }
+
+                    template<typename T>
+                    static constexpr fork_t static_query(
+                        std::enable_if_t<
+                            !query_static_constexpr_member<T>::is_valid
+                        > * = 0,
+                        std::enable_if_t<
+                            !query_member<T>::is_valid
+                        > * = 0,
+                        std::enable_if_t<
+                            !traits::query_free<T, fork_t>::is_valid
+                        > * = 0,
+                        std::enable_if_t<
+                            !can_query<T, continuation_t<I> >::value
+                        > * = 0) noexcept {
+                        return fork_t();
+                    }
+
+                    template<typename E, typename T = decltype(fork_t::static_query<E>())>
+                    static constexpr const T static_query_v
+                            = fork_t::static_query<E>();
+
+
+                    static constexpr relationship_t<I> value() {
+                        return fork_t();
+                    }
+
+                    friend constexpr bool operator==(const fork_t &, const fork_t &) {
+                        return true;
+                    }
+
+                    friend constexpr bool operator!=(const fork_t &, const fork_t &) {
+                        return false;
+                    }
+
+                    friend constexpr bool operator==(const fork_t &, const continuation_t<I> &) {
+                        return false;
+                    }
+
+                    friend constexpr bool operator!=(const fork_t &, const continuation_t<I> &) {
+                        return true;
+                    }
+                };
+
+                template<int I>
+                template<typename E, typename T>
+                const T fork_t<I>::static_query_v;
+
+
+                template<int I = 0>
+                struct continuation_t {
+                    template<typename T>
+                    static constexpr bool is_applicable_property_v = is_executor<T>::value;
+
+                    static constexpr bool is_requirable = true;
+                    static constexpr bool is_preferable = true;
+                    typedef relationship_t<I> polymorphic_query_result_type;
+
+                    constexpr continuation_t() {
+                    }
+
+                    template<typename T>
+                    struct query_member :
+                            traits::query_member<
+                                typename relationship_t<I>::template proxy<T>::type, continuation_t> {
+                    };
+
+                    template<typename T>
+                    struct query_static_constexpr_member :
+                            traits::query_static_constexpr_member<
+                                typename relationship_t<I>::template static_proxy<T>::type,
+                                continuation_t> {
+                    };
+
+                    template<typename T>
+                    static constexpr typename query_static_constexpr_member<T>::result_type
+                    static_query()
+                        noexcept(query_static_constexpr_member<T>::is_noexcept) {
+                        return query_static_constexpr_member<T>::value();
+                    }
+
+                    template<typename E,
+                        typename T = decltype(continuation_t::static_query<E>())>
+                    static constexpr const T static_query_v
+                            = continuation_t::static_query<E>();
+
+
+                    static constexpr relationship_t<I> value() {
+                        return continuation_t();
+                    }
+
+                    friend constexpr bool operator==(const continuation_t &, const continuation_t &) {
+                        return true;
+                    }
+
+                    friend constexpr bool operator!=(const continuation_t &, const continuation_t &) {
+                        return false;
+                    }
+
+                    friend constexpr bool operator==(const continuation_t &, const fork_t<I> &) {
+                        return false;
+                    }
+
+                    friend constexpr bool operator!=(const continuation_t &, const fork_t<I> &) {
+                        return true;
+                    }
+                };
+
+
+                template<int I>
+                template<typename E, typename T>
+                const T continuation_t<I>::static_query_v;
+            } // namespace relationship
+        } // namespace detail
+
+        typedef detail::relationship_t<> relationship_t;
+
+        inline constexpr relationship_t relationship;
+    } // namespace execution
+} // namespace xio
+
+#include <xio/detail/pop_options.h>
+
+#endif // XIO_EXECUTION_RELATIONSHIP_HPP

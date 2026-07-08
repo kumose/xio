@@ -1,0 +1,166 @@
+//
+// impl/system_executor.hpp
+// ~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef XIO_IMPL_SYSTEM_EXECUTOR_HPP
+#define XIO_IMPL_SYSTEM_EXECUTOR_HPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+
+#include <xio/detail/executor_op.h>
+#include <xio/detail/global.h>
+#include <xio/detail/type_traits.h>
+#include <xio/system_context.h>
+
+#include <xio/detail/push_options.h>
+
+namespace xio {
+
+
+    template<typename Blocking, typename Relationship, typename Allocator>
+    inline system_context &
+    basic_system_executor<Blocking, Relationship, Allocator>::query(
+        execution::context_t) noexcept {
+        return detail::global<system_context>();
+    }
+
+    template<typename Blocking, typename Relationship, typename Allocator>
+    inline std::size_t
+    basic_system_executor<Blocking, Relationship, Allocator>::query(
+        execution::occupancy_t) const noexcept {
+        return detail::global<system_context>().num_threads_;
+    }
+
+    template<typename Blocking, typename Relationship, typename Allocator>
+    template<typename Function>
+    inline void
+    basic_system_executor<Blocking, Relationship, Allocator>::do_execute(
+        Function &&f, execution::blocking_t::possibly_t) const {
+        // Obtain a non-const instance of the function.
+        detail::non_const_lvalue<Function> f2(f);
+
+#if !defined(XIO_NO_EXCEPTIONS)
+        try {
+#endif// !defined(XIO_NO_EXCEPTIONS)
+            detail::fenced_block b(detail::fenced_block::full);
+            static_cast<std::decay_t<Function> &&>(f2.value)();
+#if !defined(XIO_NO_EXCEPTIONS)
+        } catch (...) {
+            std::terminate();
+        }
+#endif// !defined(XIO_NO_EXCEPTIONS)
+    }
+
+    template<typename Blocking, typename Relationship, typename Allocator>
+    template<typename Function>
+    inline void
+    basic_system_executor<Blocking, Relationship, Allocator>::do_execute(
+        Function &&f, execution::blocking_t::always_t) const {
+        // Obtain a non-const instance of the function.
+        detail::non_const_lvalue<Function> f2(f);
+
+#if !defined(XIO_NO_EXCEPTIONS)
+        try {
+#endif// !defined(XIO_NO_EXCEPTIONS)
+            detail::fenced_block b(detail::fenced_block::full);
+            static_cast<std::decay_t<Function> &&>(f2.value)();
+#if !defined(XIO_NO_EXCEPTIONS)
+        } catch (...) {
+            std::terminate();
+        }
+#endif// !defined(XIO_NO_EXCEPTIONS)
+    }
+
+    template<typename Blocking, typename Relationship, typename Allocator>
+    template<typename Function>
+    void basic_system_executor<Blocking, Relationship, Allocator>::do_execute(
+        Function &&f, execution::blocking_t::never_t) const {
+        system_context &ctx = detail::global<system_context>();
+
+        // Allocate and construct an operation to wrap the function.
+        typedef detail::executor_op<std::decay_t<Function>, Allocator> op;
+        typename op::ptr p = {
+            detail::addressof(allocator_),
+            op::ptr::allocate(allocator_), 0
+        };
+        p.p = new(p.v) op(static_cast<Function &&>(f), allocator_);
+
+        if (std::is_same<Relationship, execution::relationship_t::continuation_t>::value) {
+            XIO_HANDLER_CREATION((ctx, *p.p,
+                                   "system_executor", &ctx, 0, "execute(blk=never,rel=cont)"));
+        } else {
+            XIO_HANDLER_CREATION((ctx, *p.p,
+                                   "system_executor", &ctx, 0, "execute(blk=never,rel=fork)"));
+        }
+
+        ctx.scheduler_.post_immediate_completion(p.p,
+                                                 std::is_same<Relationship,
+                                                     execution::relationship_t::continuation_t>::value);
+        p.v = p.p = 0;
+    }
+
+#if !defined(XIO_NO_TS_EXECUTORS)
+    template<typename Blocking, typename Relationship, typename Allocator>
+    inline system_context &basic_system_executor<
+        Blocking, Relationship, Allocator>::context() const noexcept {
+        return detail::global<system_context>();
+    }
+
+    template<typename Blocking, typename Relationship, typename Allocator>
+    template<typename Function, typename OtherAllocator>
+    void basic_system_executor<Blocking, Relationship, Allocator>::dispatch(
+        Function &&f, const OtherAllocator &) const {
+        std::decay_t<Function>(static_cast<Function &&>(f))();
+    }
+
+    template<typename Blocking, typename Relationship, typename Allocator>
+    template<typename Function, typename OtherAllocator>
+    void basic_system_executor<Blocking, Relationship, Allocator>::post(
+        Function &&f, const OtherAllocator &a) const {
+        system_context &ctx = detail::global<system_context>();
+
+        // Allocate and construct an operation to wrap the function.
+        typedef detail::executor_op<std::decay_t<Function>, OtherAllocator> op;
+        typename op::ptr p = {detail::addressof(a), op::ptr::allocate(a), 0};
+        p.p = new(p.v) op(static_cast<Function &&>(f), a);
+
+        XIO_HANDLER_CREATION((ctx, *p.p,
+                               "system_executor", &this->context(), 0, "post"));
+
+        ctx.scheduler_.post_immediate_completion(p.p, false);
+        p.v = p.p = 0;
+    }
+
+    template<typename Blocking, typename Relationship, typename Allocator>
+    template<typename Function, typename OtherAllocator>
+    void basic_system_executor<Blocking, Relationship, Allocator>::defer(
+        Function &&f, const OtherAllocator &a) const {
+        system_context &ctx = detail::global<system_context>();
+
+        // Allocate and construct an operation to wrap the function.
+        typedef detail::executor_op<std::decay_t<Function>, OtherAllocator> op;
+        typename op::ptr p = {detail::addressof(a), op::ptr::allocate(a), 0};
+        p.p = new(p.v) op(static_cast<Function &&>(f), a);
+
+        XIO_HANDLER_CREATION((ctx, *p.p,
+                               "system_executor", &this->context(), 0, "defer"));
+
+        ctx.scheduler_.post_immediate_completion(p.p, true);
+        p.v = p.p = 0;
+    }
+#endif // !defined(XIO_NO_TS_EXECUTORS)
+
+
+} // namespace xio
+
+#include <xio/detail/pop_options.h>
+
+#endif // XIO_IMPL_SYSTEM_EXECUTOR_HPP

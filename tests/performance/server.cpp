@@ -1,0 +1,231 @@
+//
+// server.cpp
+// ~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#include <xio/xio.h>
+#include <algorithm>
+#include <functional>
+#include <iostream>
+#include <list>
+#include <thread>
+#include "handler_allocator.hpp"
+
+class session
+{
+public:
+  session(xio::io_context& ioc, size_t block_size)
+    : io_context_(ioc),
+      strand_(ioc.get_executor()),
+      socket_(ioc),
+      block_size_(block_size),
+      read_data_(new char[block_size]),
+      read_data_length_(0),
+      write_data_(new char[block_size]),
+      unsent_count_(0),
+      op_count_(0)
+  {
+  }
+
+  ~session()
+  {
+    delete[] read_data_;
+    delete[] write_data_;
+  }
+
+  xio::ip::tcp::socket& socket()
+  {
+    return socket_;
+  }
+
+  void start()
+  {
+    xio::error_code set_option_err;
+    xio::ip::tcp::no_delay no_delay(true);
+    socket_.set_option(no_delay, set_option_err);
+    if (!set_option_err)
+    {
+      ++op_count_;
+      socket_.async_read_some(xio::buffer(read_data_, block_size_),
+          xio::bind_executor(strand_,
+            make_custom_alloc_handler(read_allocator_,
+              std::bind(&session::handle_read, this,
+                xio::placeholders::error,
+                xio::placeholders::bytes_transferred))));
+    }
+    else
+    {
+      xio::post(io_context_, std::bind(&session::destroy, this));
+    }
+  }
+
+  void handle_read(const xio::error_code& err, size_t length)
+  {
+    --op_count_;
+
+    if (!err)
+    {
+      read_data_length_ = length;
+      ++unsent_count_;
+      if (unsent_count_ == 1)
+      {
+        op_count_ += 2;
+        std::swap(read_data_, write_data_);
+        async_write(socket_, xio::buffer(write_data_, read_data_length_),
+            xio::bind_executor(strand_,
+              make_custom_alloc_handler(write_allocator_,
+                std::bind(&session::handle_write, this,
+                  xio::placeholders::error))));
+        socket_.async_read_some(xio::buffer(read_data_, block_size_),
+            xio::bind_executor(strand_,
+              make_custom_alloc_handler(read_allocator_,
+                std::bind(&session::handle_read, this,
+                  xio::placeholders::error,
+                  xio::placeholders::bytes_transferred))));
+      }
+    }
+
+    if (op_count_ == 0)
+      xio::post(io_context_, std::bind(&session::destroy, this));
+  }
+
+  void handle_write(const xio::error_code& err)
+  {
+    --op_count_;
+
+    if (!err)
+    {
+      --unsent_count_;
+      if (unsent_count_ == 1)
+      {
+        op_count_ += 2;
+        std::swap(read_data_, write_data_);
+        async_write(socket_, xio::buffer(write_data_, read_data_length_),
+            xio::bind_executor(strand_,
+              make_custom_alloc_handler(write_allocator_,
+                std::bind(&session::handle_write, this,
+                  xio::placeholders::error))));
+        socket_.async_read_some(xio::buffer(read_data_, block_size_),
+            xio::bind_executor(strand_,
+              make_custom_alloc_handler(read_allocator_,
+                std::bind(&session::handle_read, this,
+                  xio::placeholders::error,
+                  xio::placeholders::bytes_transferred))));
+      }
+    }
+
+    if (op_count_ == 0)
+      xio::post(io_context_, std::bind(&session::destroy, this));
+  }
+
+  static void destroy(session* s)
+  {
+    delete s;
+  }
+
+private:
+  xio::io_context& io_context_;
+  xio::strand<xio::io_context::executor_type> strand_;
+  xio::ip::tcp::socket socket_;
+  size_t block_size_;
+  char* read_data_;
+  size_t read_data_length_;
+  char* write_data_;
+  int unsent_count_;
+  int op_count_;
+  handler_allocator read_allocator_;
+  handler_allocator write_allocator_;
+};
+
+class server
+{
+public:
+  server(xio::io_context& ioc, const xio::ip::tcp::endpoint& endpoint,
+      size_t block_size)
+    : io_context_(ioc),
+      acceptor_(ioc),
+      block_size_(block_size)
+  {
+    acceptor_.open(endpoint.protocol());
+    acceptor_.set_option(xio::ip::tcp::acceptor::reuse_address(1));
+    acceptor_.bind(endpoint);
+    acceptor_.listen();
+
+    start_accept();
+  }
+
+  void start_accept()
+  {
+    session* new_session = new session(io_context_, block_size_);
+    acceptor_.async_accept(new_session->socket(),
+        std::bind(&server::handle_accept, this, new_session,
+          xio::placeholders::error));
+  }
+
+  void handle_accept(session* new_session, const xio::error_code& err)
+  {
+    if (!err)
+    {
+      new_session->start();
+    }
+    else
+    {
+      delete new_session;
+    }
+
+    start_accept();
+  }
+
+private:
+  xio::io_context& io_context_;
+  xio::ip::tcp::acceptor acceptor_;
+  size_t block_size_;
+};
+
+int main(int argc, char* argv[])
+{
+  try
+  {
+    if (argc != 5)
+    {
+      std::cerr << "Usage: server <address> <port> <threads> <blocksize>\n";
+      return 1;
+    }
+
+    using namespace std; // For atoi.
+    xio::ip::address address = xio::ip::make_address(argv[1]);
+    short port = atoi(argv[2]);
+    int thread_count = atoi(argv[3]);
+    size_t block_size = atoi(argv[4]);
+
+    xio::io_context ioc{xio::config_from_env{}};
+
+    server s(ioc, xio::ip::tcp::endpoint(address, port), block_size);
+
+    std::list<std::thread> threads;
+    while (--thread_count > 0)
+    {
+      std::thread new_thread(std::bind(&xio::io_context::run, &ioc));
+      threads.push_back(std::move(new_thread));
+    }
+
+    ioc.run();
+
+    while (!threads.empty())
+    {
+      threads.front().join();
+      threads.pop_front();
+    }
+  }
+  catch (std::exception& e)
+  {
+    std::cerr << "Exception: " << e.what() << "\n";
+  }
+
+  return 0;
+}

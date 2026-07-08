@@ -1,0 +1,170 @@
+//
+// execution/prefer_only.hpp
+// ~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef XIO_EXECUTION_PREFER_ONLY_HPP
+#define XIO_EXECUTION_PREFER_ONLY_HPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+
+#include <xio/detail/config.h>
+#include <xio/detail/type_traits.h>
+#include <xio/is_applicable_property.h>
+#include <xio/prefer.h>
+#include <xio/query.h>
+#include <xio/traits/static_query.h>
+
+#include <xio/detail/push_options.h>
+
+namespace xio {
+
+
+    namespace execution {
+        namespace detail {
+            template<typename InnerProperty, typename = void>
+            struct prefer_only_is_preferable {
+                static constexpr bool is_preferable = false;
+            };
+
+            template<typename InnerProperty>
+            struct prefer_only_is_preferable<InnerProperty,
+                        std::enable_if_t<
+                            InnerProperty::is_preferable
+                        >
+                    > {
+                static constexpr bool is_preferable = true;
+            };
+
+            template<typename InnerProperty, typename = void>
+            struct prefer_only_polymorphic_query_result_type {
+            };
+
+            template<typename InnerProperty>
+            struct prefer_only_polymorphic_query_result_type<InnerProperty,
+                        void_t<
+                            typename InnerProperty::polymorphic_query_result_type
+                        >
+                    > {
+                typedef typename InnerProperty::polymorphic_query_result_type
+                polymorphic_query_result_type;
+            };
+
+            template<typename InnerProperty, typename = void>
+            struct prefer_only_property {
+                InnerProperty property;
+
+                prefer_only_property(const InnerProperty &p)
+                    : property(p) {
+                }
+            };
+
+            template<typename InnerProperty>
+            struct prefer_only_property<InnerProperty,
+                        void_t<
+                            decltype(std::declval<const InnerProperty>().value())
+                        >
+                    > {
+                InnerProperty property;
+
+                prefer_only_property(const InnerProperty &p)
+                    : property(p) {
+                }
+
+                constexpr auto value() const
+                    noexcept(noexcept(std::declval<const InnerProperty>().value()))
+                    -> decltype(std::declval<const InnerProperty>().value()) {
+                    return property.value();
+                }
+            };
+
+
+        } // namespace detail
+
+        template<typename InnerProperty>
+        struct prefer_only :
+                detail::prefer_only_is_preferable<InnerProperty>,
+                detail::prefer_only_polymorphic_query_result_type<InnerProperty>,
+                detail::prefer_only_property<InnerProperty> {
+            static constexpr bool is_requirable = false;
+
+            constexpr prefer_only(const InnerProperty &p)
+                : detail::prefer_only_property<InnerProperty>(p) {
+            }
+
+            template<typename T>
+            static constexpr
+            typename traits::static_query<T, InnerProperty>::result_type
+            static_query()
+                noexcept(traits::static_query<T, InnerProperty>::is_noexcept) {
+                return traits::static_query<T, InnerProperty>::value();
+            }
+
+            template<typename E, typename T = decltype(prefer_only::static_query<E>())>
+            static constexpr const T static_query_v
+                    = prefer_only::static_query<E>();
+
+            template<typename Executor, typename Property>
+            friend constexpr
+            prefer_result_t<const Executor &, const InnerProperty &>
+            prefer(const Executor &ex, const prefer_only<Property> &p,
+                   std::enable_if_t<
+                       std::is_same<Property, InnerProperty>::value
+                   > * = 0,
+                   std::enable_if_t<
+                       can_prefer<const Executor &, const InnerProperty &>::value
+                   > * = 0)
+#if !defined(XIO_MSVC) \
+  && !defined(__clang__) // Clang crashes if noexcept is used here.
+                noexcept(is_nothrow_prefer<const Executor &, const InnerProperty &>::value)
+#endif // !defined(XIO_MSVC)
+            //   && !defined(__clang__)
+            {
+                return xio::prefer(ex, p.property);
+            }
+
+            template<typename Executor, typename Property>
+            friend constexpr
+            query_result_t<const Executor &, const InnerProperty &>
+            query(const Executor &ex, const prefer_only<Property> &p,
+                  std::enable_if_t<
+                      std::is_same<Property, InnerProperty>::value
+                  > * = 0,
+                  std::enable_if_t<
+                      can_query<const Executor &, const InnerProperty &>::value
+                  > * = 0)
+#if !defined(XIO_MSVC) \
+  && !defined(__clang__) // Clang crashes if noexcept is used here.
+                noexcept(is_nothrow_query<const Executor &, const InnerProperty &>::value)
+#endif // !defined(XIO_MSVC)
+            //   && !defined(__clang__)
+            {
+                return xio::query(ex, p.property);
+            }
+        };
+
+
+        template<typename InnerProperty>
+        template<typename E, typename T>
+        const T prefer_only<InnerProperty>::static_query_v;
+
+    } // namespace execution
+
+    template<typename T, typename InnerProperty>
+    struct is_applicable_property<T, execution::prefer_only<InnerProperty> >
+            : is_applicable_property<T, InnerProperty> {
+    };
+
+
+} // namespace xio
+
+#include <xio/detail/pop_options.h>
+
+#endif // XIO_EXECUTION_PREFER_ONLY_HPP

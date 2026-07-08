@@ -1,0 +1,62 @@
+//
+// detail/winrt_async_op.hpp
+// ~~~~~~~~~~~~~~~~~~~~~~~~~
+//
+// Copyright (c) 2003-2026 Christopher M. Kohlhoff (chris at kohlhoff dot com)
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+//
+
+#ifndef XIO_DETAIL_WINRT_ASYNC_OP_HPP
+#define XIO_DETAIL_WINRT_ASYNC_OP_HPP
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1200)
+# pragma once
+#endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
+
+#include <xio/detail/config.h>
+#include <xio/detail/operation.h>
+
+#include <xio/detail/push_options.h>
+
+namespace xio {
+
+
+    namespace detail {
+        template<typename TResult>
+        class winrt_async_op
+                : public operation {
+        public:
+            // The error code to be passed to the completion handler.
+            xio::error_code ec_;
+
+            // The result of the operation, to be passed to the completion handler.
+            TResult result_;
+
+        protected:
+            winrt_async_op(func_type complete_func)
+                : operation(complete_func),
+                  result_() {
+            }
+        };
+
+        template<>
+        class winrt_async_op<void>
+                : public operation {
+        public:
+            // The error code to be passed to the completion handler.
+            xio::error_code ec_;
+
+        protected:
+            winrt_async_op(func_type complete_func)
+                : operation(complete_func) {
+            }
+        };
+    } // namespace detail
+
+} // namespace xio
+
+#include <xio/detail/pop_options.h>
+
+#endif // XIO_DETAIL_WINRT_ASYNC_OP_HPP
