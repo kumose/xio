@@ -6,16 +6,7 @@
       "name": "liburing",
       "platform": "linux"
     },
-    "lz4",
-    {
-      "name": "snappy",
-      "features": [
-        "rtti"
-      ]
-    },
     "xlog",
-    "zlib",
-    "zstd",
     "openssl"
   ]
 }

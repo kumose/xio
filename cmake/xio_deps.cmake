@@ -57,12 +57,7 @@ kmcmake_private_find_package(Threads REQUIRED)
 list(APPEND KMCMAKE_SYSTEM_DYLINK Threads::Threads)
 
 find_package(xlog REQUIRED)
-find_package(ZLIB REQUIRED)
-find_package(lz4 CONFIG REQUIRED)
-find_package(Snappy CONFIG REQUIRED)
-find_package(zstd CONFIG REQUIRED)
 find_package(OpenSSL REQUIRED CONFIG)
-kmcmake_private_find_package(OpenSSL REQUIRED CONFIG)
 
 find_path(XLOG_DIR xlog/logging.h)
 include_directories(${XLOG_DIR})
@@ -92,10 +87,6 @@ set(KMCMAKE_DEPS_LINK
         OpenSSL::Crypto
         ${URING_LIBRARY}
         xlog::xlog_static
-        ZLIB::ZLIB
-        lz4::lz4
-        Snappy::snappy
-        zstd::libzstd
         ${KMCMAKE_SYSTEM_DYLINK}
         )
 list(REMOVE_DUPLICATES KMCMAKE_DEPS_LINK)
