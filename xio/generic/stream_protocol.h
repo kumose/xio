@@ -101,10 +101,8 @@ namespace xio {
             /// The generic socket type.
             typedef basic_stream_socket<stream_protocol> socket;
 
-#if !defined(XIO_NO_IOSTREAM)
             /// The generic socket iostream type.
             typedef basic_socket_iostream<stream_protocol> iostream;
-#endif // !defined(XIO_NO_IOSTREAM)
 
         private:
             int family_;

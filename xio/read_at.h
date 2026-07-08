@@ -29,15 +29,11 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace detail {
         template<typename>
         class initiate_async_read_at;
-#if !defined(XIO_NO_IOSTREAM)
         template<typename>
         class initiate_async_read_at_streambuf;
-#endif // !defined(XIO_NO_IOSTREAM)
     } // namespace detail
 
     /**
@@ -250,7 +246,6 @@ namespace xio {
                         > = 0);
 
 #if !defined(XIO_NO_EXTENSIONS)
-#if !defined(XIO_NO_IOSTREAM)
 
     /// Attempt to read a certain amount of data at the specified offset before
 /// returning.
@@ -410,7 +405,6 @@ namespace xio {
                             is_completion_condition<CompletionCondition>::value
                         > = 0);
 
-#endif // !defined(XIO_NO_IOSTREAM)
 #endif // !defined(XIO_NO_EXTENSIONS)
 
     /*@}*/
@@ -500,7 +494,7 @@ namespace xio {
  */
     template<typename AsyncRandomAccessReadDevice, typename MutableBufferSequence,
         XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) ReadToken = default_completion_token_t<
+            std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncRandomAccessReadDevice::executor_type> >
     inline auto async_read_at(AsyncRandomAccessReadDevice &d,
                               uint64_t offset, const MutableBufferSequence &buffers,
@@ -605,7 +599,7 @@ namespace xio {
     template<typename AsyncRandomAccessReadDevice,
         typename MutableBufferSequence, typename CompletionCondition,
         XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) ReadToken = default_completion_token_t<
+            std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncRandomAccessReadDevice::executor_type> >
     inline auto async_read_at(AsyncRandomAccessReadDevice &d,
                               uint64_t offset, const MutableBufferSequence &buffers,
@@ -629,7 +623,6 @@ namespace xio {
     }
 
 #if !defined(XIO_NO_EXTENSIONS)
-#if !defined(XIO_NO_IOSTREAM)
 
     /// Start an asynchronous operation to read a certain amount of data at the
 /// specified offset.
@@ -695,7 +688,7 @@ namespace xio {
  */
     template<typename AsyncRandomAccessReadDevice, typename Allocator,
         XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) ReadToken = default_completion_token_t<
+            std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncRandomAccessReadDevice::executor_type> >
     inline auto async_read_at(AsyncRandomAccessReadDevice &d,
                               uint64_t offset, basic_streambuf<Allocator> &b,
@@ -789,7 +782,7 @@ namespace xio {
     template<typename AsyncRandomAccessReadDevice,
         typename Allocator, typename CompletionCondition,
         XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) ReadToken = default_completion_token_t<
+            std::size_t)) ReadToken = default_completion_token_t<
             typename AsyncRandomAccessReadDevice::executor_type> >
     inline auto async_read_at(AsyncRandomAccessReadDevice &d, uint64_t offset,
                               basic_streambuf<Allocator> &b, CompletionCondition completion_condition,
@@ -812,12 +805,9 @@ namespace xio {
             static_cast<CompletionCondition &&>(completion_condition));
     }
 
-#endif // !defined(XIO_NO_IOSTREAM)
 #endif // !defined(XIO_NO_EXTENSIONS)
 
     /*@}*/
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

@@ -17,9 +17,7 @@
 
 #include <xio/detail/config.h>
 #include <cstring>
-#if !defined(XIO_NO_IOSTREAM)
-# include <sstream>
-#endif // !defined(XIO_NO_IOSTREAM)
+#include <sstream>
 #include <xio/detail/socket_ops.h>
 #include <xio/detail/throw_error.h>
 #include <xio/error.h>
@@ -154,7 +152,6 @@ namespace xio {
                 return e1.port() < e2.port();
             }
 
-#if !defined(XIO_NO_IOSTREAM)
             std::string endpoint::to_string() const {
                 std::ostringstream tmp_os;
                 tmp_os.imbue(std::locale::classic());
@@ -166,7 +163,6 @@ namespace xio {
 
                 return tmp_os.str();
             }
-#endif // !defined(XIO_NO_IOSTREAM)
         } // namespace detail
     } // namespace ip
 

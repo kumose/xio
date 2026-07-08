@@ -34,8 +34,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace detail {
         template<typename SyncReadStream, typename MutableBufferSequence,
             typename MutableBufferIterator, typename CompletionCondition>
@@ -200,7 +198,6 @@ namespace xio {
     }
 
 #if !defined(XIO_NO_EXTENSIONS)
-#if !defined(XIO_NO_IOSTREAM)
 
     template<typename SyncReadStream, typename Allocator,
         typename CompletionCondition>
@@ -239,7 +236,6 @@ namespace xio {
                     static_cast<CompletionCondition &&>(completion_condition));
     }
 
-#endif // !defined(XIO_NO_IOSTREAM)
 #endif // !defined(XIO_NO_EXTENSIONS)
 #endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
@@ -408,8 +404,8 @@ namespace xio {
             return this_handler->start_ == 0
                        ? true
                        : XIO_VERSIONED_NAME(handler_cont_helpers)
-            ::is_continuation(
-                this_handler->handler_);
+                       ::is_continuation(
+                           this_handler->handler_);
         }
 
         template<typename AsyncReadStream, typename MutableBufferSequence,
@@ -587,8 +583,8 @@ namespace xio {
             return this_handler->start_ == 0
                        ? true
                        : XIO_VERSIONED_NAME(handler_cont_helpers)
-            ::is_continuation(
-                this_handler->handler_);
+                       ::is_continuation(
+                           this_handler->handler_);
         }
 
         template<typename AsyncReadStream>
@@ -761,8 +757,8 @@ namespace xio {
             return this_handler->start_ == 0
                        ? true
                        : XIO_VERSIONED_NAME(handler_cont_helpers)
-            ::is_continuation(
-                this_handler->handler_);
+                       ::is_continuation(
+                           this_handler->handler_);
         }
 
         template<typename AsyncReadStream>
@@ -825,8 +821,6 @@ namespace xio {
             return Associator<ReadHandler, DefaultCandidate>::get(h.handler_, c);
         }
     };
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

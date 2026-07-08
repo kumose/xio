@@ -24,16 +24,10 @@
 #include <string_view>
 #include <xio/detail/winsock_init.h>
 #include <xio/error_code.h>
-
-#if !defined(XIO_NO_IOSTREAM)
-# include <iosfwd>
-#endif // !defined(XIO_NO_IOSTREAM)
-
+#include <iosfwd>
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace ip {
         /// Implements IP version 4 style addresses.
         /**
@@ -107,10 +101,10 @@ namespace xio {
             }
 
             /// Get the address in bytes, in network byte order.
-  XIO_DECL bytes_type to_bytes() const noexcept;
+            XIO_DECL bytes_type to_bytes() const noexcept;
 
             /// Get the address as an unsigned integer in host byte order.
-  XIO_DECL uint_type to_uint() const noexcept;
+            XIO_DECL uint_type to_uint() const noexcept;
 
             /// Get the address as a string in dotted decimal format.
             XIO_DECL std::string to_string() const;
@@ -123,7 +117,7 @@ namespace xio {
    *
    * @returns <tt>(to_uint() & 0xFF000000) == 0x7F000000</tt>.
    */
-  XIO_DECL bool is_loopback() const noexcept;
+            XIO_DECL bool is_loopback() const noexcept;
 
             /// Determine whether the address is unspecified.
             /**
@@ -132,7 +126,7 @@ namespace xio {
    *
    * @returns <tt>to_uint() == 0</tt>.
    */
-  XIO_DECL bool is_unspecified() const noexcept;
+            XIO_DECL bool is_unspecified() const noexcept;
 
             /// Determine whether the address is a multicast address.
             /**
@@ -142,7 +136,7 @@ namespace xio {
    *
    * @returns <tt>(to_uint() & 0xF0000000) == 0xE0000000</tt>.
    */
-  XIO_DECL bool is_multicast() const noexcept;
+            XIO_DECL bool is_multicast() const noexcept;
 
             /// Compare two addresses for equality.
             friend bool operator==(const address_v4 &a1,
@@ -258,44 +252,42 @@ namespace xio {
         /**
  * @relates address_v4
  */
-XIO_DECL address_v4 make_address_v4(const char *str);
+        XIO_DECL address_v4 make_address_v4(const char *str);
 
         /// Create an IPv4 address from an IP address string in dotted decimal form.
         /**
  * @relates address_v4
  */
-XIO_DECL address_v4 make_address_v4(const char *str,
-                                     xio::error_code &ec) noexcept;
+        XIO_DECL address_v4 make_address_v4(const char *str,
+                                            xio::error_code &ec) noexcept;
 
         /// Create an IPv4 address from an IP address string in dotted decimal form.
         /**
  * @relates address_v4
  */
-XIO_DECL address_v4 make_address_v4(const std::string &str);
+        XIO_DECL address_v4 make_address_v4(const std::string &str);
 
         /// Create an IPv4 address from an IP address string in dotted decimal form.
         /**
  * @relates address_v4
  */
-XIO_DECL address_v4 make_address_v4(const std::string &str,
-                                     xio::error_code &ec) noexcept;
+        XIO_DECL address_v4 make_address_v4(const std::string &str,
+                                            xio::error_code &ec) noexcept;
 
 
         /// Create an IPv4 address from an IP address string in dotted decimal form.
         /**
  * @relates address_v4
  */
-XIO_DECL address_v4 make_address_v4(std::string_view str);
+        XIO_DECL address_v4 make_address_v4(std::string_view str);
 
         /// Create an IPv4 address from an IP address string in dotted decimal form.
         /**
  * @relates address_v4
  */
-XIO_DECL address_v4 make_address_v4(std::string_view str,
-                                     xio::error_code &ec) noexcept;
+        XIO_DECL address_v4 make_address_v4(std::string_view str,
+                                            xio::error_code &ec) noexcept;
 
-
-#if !defined(XIO_NO_IOSTREAM)
 
         /// Output an address as a string.
         /**
@@ -312,10 +304,7 @@ XIO_DECL address_v4 make_address_v4(std::string_view str,
         template<typename Elem, typename Traits>
         std::basic_ostream<Elem, Traits> &operator<<(
             std::basic_ostream<Elem, Traits> &os, const address_v4 &addr);
-
-#endif // !defined(XIO_NO_IOSTREAM)
     } // namespace ip
-
 } // namespace xio
 
 namespace std {

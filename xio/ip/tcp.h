@@ -82,10 +82,8 @@ namespace xio {
             /// The TCP resolver type.
             typedef basic_resolver<tcp> resolver;
 
-#if !defined(XIO_NO_IOSTREAM)
             /// The TCP iostream type.
             typedef basic_socket_iostream<tcp> iostream;
-#endif // !defined(XIO_NO_IOSTREAM)
 
             /// Socket option for disabling the Nagle algorithm.
             /**

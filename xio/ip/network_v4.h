@@ -203,7 +203,6 @@ namespace xio {
             std::string_view str, xio::error_code &ec);
 
 
-#if !defined(XIO_NO_IOSTREAM)
 
         /// Output a network as a string.
         /**
@@ -221,7 +220,6 @@ namespace xio {
         std::basic_ostream<Elem, Traits> &operator<<(
             std::basic_ostream<Elem, Traits> &os, const network_v4 &net);
 
-#endif // !defined(XIO_NO_IOSTREAM)
     } // namespace ip
 } // namespace xio
 

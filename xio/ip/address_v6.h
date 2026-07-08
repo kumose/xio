@@ -25,11 +25,7 @@
 #include <xio/detail/winsock_init.h>
 #include <xio/error_code.h>
 #include <xio/ip/address_v4.h>
-
-#if !defined(XIO_NO_IOSTREAM)
-# include <iosfwd>
-#endif // !defined(XIO_NO_IOSTREAM)
-
+#include <iosfwd>
 #include <xio/detail/push_options.h>
 
 namespace xio {
@@ -288,7 +284,6 @@ XIO_DECL address_v4 make_address_v4(
 XIO_DECL address_v6 make_address_v6(
             v4_mapped_t, const address_v4 &v4_addr);
 
-#if !defined(XIO_NO_IOSTREAM)
 
         /// Output an address as a string.
         /**
@@ -306,7 +301,6 @@ XIO_DECL address_v6 make_address_v6(
         std::basic_ostream<Elem, Traits> &operator<<(
             std::basic_ostream<Elem, Traits> &os, const address_v6 &addr);
 
-#endif // !defined(XIO_NO_IOSTREAM)
     } // namespace ip
 
 } // namespace xio

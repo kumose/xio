@@ -422,7 +422,6 @@ namespace xio {
                      > = 0);
 
 #if !defined(XIO_NO_EXTENSIONS)
-#if !defined(XIO_NO_IOSTREAM)
 
     /// Attempt to read a certain amount of data from a stream before returning.
     /**
@@ -570,7 +569,6 @@ namespace xio {
                          is_completion_condition<CompletionCondition>::value
                      > = 0);
 
-#endif // !defined(XIO_NO_IOSTREAM)
 #endif // !defined(XIO_NO_EXTENSIONS)
 #endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 
@@ -1152,7 +1150,6 @@ namespace xio {
     }
 
 #if !defined(XIO_NO_EXTENSIONS)
-#if !defined(XIO_NO_IOSTREAM)
 
     /// Start an asynchronous operation to read a certain amount of data from a
 /// stream.
@@ -1337,7 +1334,6 @@ namespace xio {
             static_cast<CompletionCondition &&>(completion_condition));
     }
 
-#endif // !defined(XIO_NO_IOSTREAM)
 #endif // !defined(XIO_NO_EXTENSIONS)
 #endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 

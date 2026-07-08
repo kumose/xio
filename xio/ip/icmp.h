@@ -26,20 +26,18 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace ip {
         /// Encapsulates the flags needed for ICMP.
         /**
- * The xio::ip::icmp class contains flags necessary for ICMP sockets.
- *
- * @par Thread Safety
- * @e Distinct @e objects: Safe.@n
- * @e Shared @e objects: Safe.
- *
- * @par Concepts:
- * Protocol, InternetProtocol.
- */
+         * The xio::ip::icmp class contains flags necessary for ICMP sockets.
+         *
+         * @par Thread Safety
+         * @e Distinct @e objects: Safe.@n
+         * @e Shared @e objects: Safe.
+         *
+         * @par Concepts:
+         * Protocol, InternetProtocol.
+         */
         class icmp {
         public:
             /// The type of a ICMP endpoint.
@@ -99,7 +97,6 @@ namespace xio {
             int family_;
         };
     } // namespace ip
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

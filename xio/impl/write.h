@@ -185,7 +185,6 @@ namespace xio {
     }
 
 #if !defined(XIO_NO_EXTENSIONS)
-#if !defined(XIO_NO_IOSTREAM)
 
     template<typename SyncWriteStream, typename Allocator,
         typename CompletionCondition>
@@ -224,7 +223,6 @@ namespace xio {
                      static_cast<CompletionCondition &&>(completion_condition));
     }
 
-#endif // !defined(XIO_NO_IOSTREAM)
 #endif // !defined(XIO_NO_EXTENSIONS)
 #endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 

@@ -102,7 +102,6 @@ namespace xio {
     }
 
 #if !defined(XIO_NO_EXTENSIONS)
-#if !defined(XIO_NO_IOSTREAM)
 
     template<typename SyncRandomAccessWriteDevice, typename Allocator,
         typename CompletionCondition>
@@ -149,7 +148,6 @@ namespace xio {
         return bytes_transferred;
     }
 
-#endif // !defined(XIO_NO_IOSTREAM)
 #endif // !defined(XIO_NO_EXTENSIONS)
 
     namespace detail {
@@ -327,7 +325,6 @@ namespace xio {
     };
 
 #if !defined(XIO_NO_EXTENSIONS)
-#if !defined(XIO_NO_IOSTREAM)
 
     namespace detail {
         template<typename Allocator, typename WriteHandler>
@@ -426,7 +423,6 @@ namespace xio {
     };
 
 
-#endif // !defined(XIO_NO_IOSTREAM)
 #endif // !defined(XIO_NO_EXTENSIONS)
 
 

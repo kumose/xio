@@ -289,7 +289,6 @@ namespace xio {
         }
     }
 
-#if !defined(XIO_NO_IOSTREAM)
 
     template<typename SyncReadStream, typename Allocator>
     inline std::size_t read_until(SyncReadStream &s,
@@ -335,7 +334,6 @@ namespace xio {
         return read_until(s, basic_streambuf_ref<Allocator>(b), match_condition, ec);
     }
 
-#endif // !defined(XIO_NO_IOSTREAM)
 #endif // !defined(XIO_NO_EXTENSIONS)
 #endif // !defined(XIO_NO_DYNAMIC_BUFFER_V1)
 

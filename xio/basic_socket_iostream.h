@@ -16,9 +16,6 @@
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include <xio/detail/config.h>
-
-#if !defined(XIO_NO_IOSTREAM)
-
 #include <istream>
 #include <ostream>
 #include <xio/basic_socket_streambuf.h>
@@ -229,7 +226,5 @@ namespace xio {
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
-
-#endif // !defined(XIO_NO_IOSTREAM)
 
 #endif // XIO_BASIC_SOCKET_IOSTREAM_HPP

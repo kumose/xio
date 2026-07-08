@@ -25,8 +25,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace ip {
         /// Represents an IPv6 network.
         /**
@@ -47,7 +45,7 @@ namespace xio {
 
             /// Construct a network based on the specified address and prefix length.
             XIO_DECL network_v6(const address_v6 &addr,
-                                 unsigned short prefix_len);
+                                unsigned short prefix_len);
 
             /// Copy constructor.
             network_v6(const network_v6 &other) noexcept
@@ -87,10 +85,10 @@ namespace xio {
             }
 
             /// Obtain an address object that represents the network address.
-  XIO_DECL address_v6 network() const noexcept;
+            XIO_DECL address_v6 network() const noexcept;
 
             /// Obtain an address range corresponding to the hosts in the network.
-  XIO_DECL address_v6_range hosts() const noexcept;
+            XIO_DECL address_v6_range hosts() const noexcept;
 
             /// Obtain the true network address, omitting any host bits.
             network_v6 canonical() const noexcept {
@@ -103,7 +101,7 @@ namespace xio {
             }
 
             /// Test if a network is a real subnet of another network.
-  XIO_DECL bool is_subnet_of(const network_v6 &other) const;
+            XIO_DECL bool is_subnet_of(const network_v6 &other) const;
 
             /// Get the network as an address in dotted decimal format.
             XIO_DECL std::string to_string() const;
@@ -140,14 +138,14 @@ namespace xio {
         /**
  * @relates network_v6
  */
-XIO_DECL network_v6 make_network_v6(const char *str);
+        XIO_DECL network_v6 make_network_v6(const char *str);
 
         /// Create an IPv6 network from a string containing IP address and prefix
 /// length.
         /**
  * @relates network_v6
  */
-XIO_DECL network_v6 make_network_v6(
+        XIO_DECL network_v6 make_network_v6(
             const char *str, xio::error_code &ec);
 
         /// Create an IPv6 network from a string containing IP address and prefix
@@ -155,53 +153,49 @@ XIO_DECL network_v6 make_network_v6(
         /**
  * @relates network_v6
  */
-XIO_DECL network_v6 make_network_v6(const std::string &str);
+        XIO_DECL network_v6 make_network_v6(const std::string &str);
 
         /// Create an IPv6 network from a string containing IP address and prefix
 /// length.
         /**
  * @relates network_v6
  */
-XIO_DECL network_v6 make_network_v6(
+        XIO_DECL network_v6 make_network_v6(
             const std::string &str, xio::error_code &ec);
 
 
         /// Create an IPv6 network from a string containing IP address and prefix
-/// length.
+        /// length.
         /**
- * @relates network_v6
- */
-XIO_DECL network_v6 make_network_v6(std::string_view str);
+         * @relates network_v6
+         */
+        XIO_DECL network_v6 make_network_v6(std::string_view str);
 
         /// Create an IPv6 network from a string containing IP address and prefix
-/// length.
+        /// length.
         /**
- * @relates network_v6
- */
-XIO_DECL network_v6 make_network_v6(
+         * @relates network_v6
+         */
+        XIO_DECL network_v6 make_network_v6(
             std::string_view str, xio::error_code &ec);
 
-#if !defined(XIO_NO_IOSTREAM)
 
         /// Output a network as a string.
         /**
- * Used to output a human-readable string for a specified network.
- *
- * @param os The output stream to which the string will be written.
- *
- * @param net The network to be written.
- *
- * @return The output stream.
- *
- * @relates xio::ip::address_v6
- */
+         * Used to output a human-readable string for a specified network.
+         *
+         * @param os The output stream to which the string will be written.
+         *
+         * @param net The network to be written.
+         *
+         * @return The output stream.
+         *
+         * @relates xio::ip::address_v6
+         */
         template<typename Elem, typename Traits>
         std::basic_ostream<Elem, Traits> &operator<<(
             std::basic_ostream<Elem, Traits> &os, const network_v6 &net);
-
-#endif // !defined(XIO_NO_IOSTREAM)
     } // namespace ip
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

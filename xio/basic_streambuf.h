@@ -16,9 +16,6 @@
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include <xio/detail/config.h>
-
-#if !defined(XIO_NO_IOSTREAM)
-
 #include <algorithm>
 #include <cstring>
 #include <stdexcept>
@@ -33,8 +30,6 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     /// Automatically resizable buffer class based on std::streambuf.
     /**
  * The @c basic_streambuf class is derived from @c std::streambuf to associate
@@ -221,11 +216,11 @@ namespace xio {
 
         /// Remove characters from the input sequence.
         /**
-   * Removes @c n characters from the beginning of the input sequence.
-   *
-   * @note If @c n is greater than the size of the input sequence, the entire
-   * input sequence is consumed and no error is issued.
-   */
+           * Removes @c n characters from the beginning of the input sequence.
+           *
+           * @note If @c n is greater than the size of the input sequence, the entire
+           * input sequence is consumed and no error is issued.
+           */
         void consume(std::size_t n) {
             if (egptr() < pptr())
                 setg(&buffer_[0], gptr(), pptr());
@@ -371,7 +366,7 @@ namespace xio {
         }
 
         /// Get a list of buffers that represents the output sequence, with the given
-  /// size.
+        /// size.
         mutable_buffers_type prepare(std::size_t n) {
             return sb_.prepare(n);
         }
@@ -389,12 +384,9 @@ namespace xio {
     private:
         basic_streambuf<Allocator> &sb_;
     };
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(XIO_NO_IOSTREAM)
 
 #endif // XIO_BASIC_STREAMBUF_HPP

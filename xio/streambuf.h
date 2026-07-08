@@ -16,9 +16,6 @@
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include <xio/detail/config.h>
-
-#if !defined(XIO_NO_IOSTREAM)
-
 #include <xio/basic_streambuf.h>
 
 namespace xio {
@@ -30,6 +27,5 @@ namespace xio {
 
 } // namespace xio
 
-#endif // !defined(XIO_NO_IOSTREAM)
 
 #endif // XIO_STREAMBUF_HPP

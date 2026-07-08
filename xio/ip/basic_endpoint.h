@@ -20,32 +20,26 @@
 #include <cstdint>
 #include <xio/ip/address.h>
 #include <xio/ip/detail/endpoint.h>
-
-#if !defined(XIO_NO_IOSTREAM)
-# include <iosfwd>
-#endif // !defined(XIO_NO_IOSTREAM)
-
+#include <iosfwd>
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace ip {
         /// Type used for storing port numbers.
         typedef uint_least16_t port_type;
 
         /// Describes an endpoint for a version-independent IP socket.
         /**
- * The xio::ip::basic_endpoint class template describes an endpoint that
- * may be associated with a particular socket.
- *
- * @par Thread Safety
- * @e Distinct @e objects: Safe.@n
- * @e Shared @e objects: Unsafe.
- *
- * @par Concepts:
- * Endpoint.
- */
+         * The xio::ip::basic_endpoint class template describes an endpoint that
+         * may be associated with a particular socket.
+         *
+         * @par Thread Safety
+         * @e Distinct @e objects: Safe.@n
+         * @e Shared @e objects: Unsafe.
+         *
+         * @par Concepts:
+         * Endpoint.
+         */
         template<typename InternetProtocol>
         class basic_endpoint {
         public:
@@ -63,29 +57,29 @@ namespace xio {
             }
 
             /// Construct an endpoint using a port number, specified in the host's byte
-  /// order. The IP address will be the any address (i.e. INADDR_ANY or
-  /// in6addr_any). This constructor would typically be used for accepting new
-  /// connections.
+            /// order. The IP address will be the any address (i.e. INADDR_ANY or
+            /// in6addr_any). This constructor would typically be used for accepting new
+            /// connections.
             /**
-   * @par Examples
-   * To initialise an IPv4 TCP endpoint for port 1234, use:
-   * @code
-   * xio::ip::tcp::endpoint ep(xio::ip::tcp::v4(), 1234);
-   * @endcode
-   *
-   * To specify an IPv6 UDP endpoint for port 9876, use:
-   * @code
-   * xio::ip::udp::endpoint ep(xio::ip::udp::v6(), 9876);
-   * @endcode
-   */
+               * @par Examples
+               * To initialise an IPv4 TCP endpoint for port 1234, use:
+               * @code
+               * xio::ip::tcp::endpoint ep(xio::ip::tcp::v4(), 1234);
+               * @endcode
+               *
+               * To specify an IPv6 UDP endpoint for port 9876, use:
+               * @code
+               * xio::ip::udp::endpoint ep(xio::ip::udp::v6(), 9876);
+               * @endcode
+               */
             basic_endpoint(const InternetProtocol &internet_protocol,
                            port_type port_num) noexcept
                 : impl_(internet_protocol.family(), port_num) {
             }
 
             /// Construct an endpoint using a port number and an IP address. This
-  /// constructor may be used for accepting connections on a specific interface
-  /// or for making a connection to a remote endpoint.
+            /// constructor may be used for accepting connections on a specific interface
+            /// or for making a connection to a remote endpoint.
             basic_endpoint(const xio::ip::address &addr,
                            port_type port_num) noexcept
                 : impl_(addr, port_num) {
@@ -208,7 +202,6 @@ namespace xio {
             xio::ip::detail::endpoint impl_;
         };
 
-#if !defined(XIO_NO_IOSTREAM)
 
         /// Output an endpoint as a string.
         /**
@@ -227,9 +220,7 @@ namespace xio {
             std::basic_ostream<Elem, Traits> &os,
             const basic_endpoint<InternetProtocol> &endpoint);
 
-#endif // !defined(XIO_NO_IOSTREAM)
     } // namespace ip
-
 } // namespace xio
 
 namespace std {

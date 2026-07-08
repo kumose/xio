@@ -29,15 +29,11 @@
 #include <xio/detail/push_options.h>
 
 namespace xio {
-
-
     namespace detail {
         template<typename>
         class initiate_async_write_at;
-#if !defined(XIO_NO_IOSTREAM)
         template<typename>
         class initiate_async_write_at_streambuf;
-#endif // !defined(XIO_NO_IOSTREAM)
     } // namespace detail
 
     /**
@@ -246,7 +242,6 @@ namespace xio {
                          > = 0);
 
 #if !defined(XIO_NO_EXTENSIONS)
-#if !defined(XIO_NO_IOSTREAM)
 
     /// Write all of the supplied data at the specified offset before returning.
     /**
@@ -409,7 +404,6 @@ namespace xio {
                              is_completion_condition<CompletionCondition>::value
                          > = 0);
 
-#endif // !defined(XIO_NO_IOSTREAM)
 #endif // !defined(XIO_NO_EXTENSIONS)
 
     /*@}*/
@@ -497,7 +491,7 @@ namespace xio {
  */
     template<typename AsyncRandomAccessWriteDevice, typename ConstBufferSequence,
         XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) WriteToken = default_completion_token_t<
+            std::size_t)) WriteToken = default_completion_token_t<
             typename AsyncRandomAccessWriteDevice::executor_type> >
     inline auto async_write_at(AsyncRandomAccessWriteDevice &d,
                                uint64_t offset, const ConstBufferSequence &buffers,
@@ -609,7 +603,7 @@ namespace xio {
     template<typename AsyncRandomAccessWriteDevice,
         typename ConstBufferSequence, typename CompletionCondition,
         XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) WriteToken = default_completion_token_t<
+            std::size_t)) WriteToken = default_completion_token_t<
             typename AsyncRandomAccessWriteDevice::executor_type> >
     inline auto async_write_at(AsyncRandomAccessWriteDevice &d,
                                uint64_t offset, const ConstBufferSequence &buffers,
@@ -634,7 +628,6 @@ namespace xio {
     }
 
 #if !defined(XIO_NO_EXTENSIONS)
-#if !defined(XIO_NO_IOSTREAM)
 
     /// Start an asynchronous operation to write all of the supplied data at the
 /// specified offset.
@@ -700,7 +693,7 @@ namespace xio {
  */
     template<typename AsyncRandomAccessWriteDevice, typename Allocator,
         XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) WriteToken = default_completion_token_t<
+            std::size_t)) WriteToken = default_completion_token_t<
             typename AsyncRandomAccessWriteDevice::executor_type> >
     inline auto async_write_at(AsyncRandomAccessWriteDevice &d,
                                uint64_t offset, basic_streambuf<Allocator> &b,
@@ -801,7 +794,7 @@ namespace xio {
     template<typename AsyncRandomAccessWriteDevice,
         typename Allocator, typename CompletionCondition,
         XIO_COMPLETION_TOKEN_FOR(void (xio::error_code,
-        std::size_t)) WriteToken = default_completion_token_t<
+            std::size_t)) WriteToken = default_completion_token_t<
             typename AsyncRandomAccessWriteDevice::executor_type> >
     inline auto async_write_at(AsyncRandomAccessWriteDevice &d, uint64_t offset,
                                basic_streambuf<Allocator> &b, CompletionCondition completion_condition,
@@ -825,12 +818,9 @@ namespace xio {
             static_cast<CompletionCondition &&>(completion_condition));
     }
 
-#endif // !defined(XIO_NO_IOSTREAM)
 #endif // !defined(XIO_NO_EXTENSIONS)
 
     /*@}*/
-
-
 } // namespace xio
 
 #include <xio/detail/pop_options.h>

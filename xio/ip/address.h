@@ -25,11 +25,7 @@
 #include <xio/ip/address_v4.h>
 #include <xio/ip/address_v6.h>
 #include <xio/ip/bad_address_cast.h>
-
-#if !defined(XIO_NO_IOSTREAM)
-# include <iosfwd>
-#endif // !defined(XIO_NO_IOSTREAM)
-
+#include <iosfwd>
 #include <xio/detail/push_options.h>
 
 namespace xio {
@@ -106,7 +102,7 @@ namespace xio {
 
             /// Compare two addresses for equality.
             XIO_DECL friend bool operator==(const address &a1,
-                                             const address &a2) noexcept;
+                                            const address &a2) noexcept;
 
             /// Compare two addresses for inequality.
             friend bool operator!=(const address &a1,
@@ -116,7 +112,7 @@ namespace xio {
 
             /// Compare addresses for ordering.
             XIO_DECL friend bool operator<(const address &a1,
-                                            const address &a2) noexcept;
+                                           const address &a2) noexcept;
 
             /// Compare addresses for ordering.
             friend bool operator>(const address &a1,
@@ -160,7 +156,7 @@ namespace xio {
  * @relates address
  */
         XIO_DECL address make_address(const char *str,
-                                       xio::error_code &ec) noexcept;
+                                      xio::error_code &ec) noexcept;
 
         /// Create an address from an IPv4 address string in dotted decimal form,
 /// or from an IPv6 address in hexadecimal notation.
@@ -175,7 +171,7 @@ namespace xio {
  * @relates address
  */
         XIO_DECL address make_address(const std::string &str,
-                                       xio::error_code &ec) noexcept;
+                                      xio::error_code &ec) noexcept;
 
 
         /// Create an address from an IPv4 address string in dotted decimal form,
@@ -191,10 +187,8 @@ namespace xio {
  * @relates address
  */
         XIO_DECL address make_address(std::string_view str,
-                                       xio::error_code &ec) noexcept;
+                                      xio::error_code &ec) noexcept;
 
-
-#if !defined(XIO_NO_IOSTREAM)
 
         /// Output an address as a string.
         /**
@@ -211,8 +205,6 @@ namespace xio {
         template<typename Elem, typename Traits>
         std::basic_ostream<Elem, Traits> &operator<<(
             std::basic_ostream<Elem, Traits> &os, const address &addr);
-
-#endif // !defined(XIO_NO_IOSTREAM)
     } // namespace ip
 } // namespace xio
 

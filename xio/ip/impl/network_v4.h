@@ -16,7 +16,6 @@
 # pragma once
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
-#if !defined(XIO_NO_IOSTREAM)
 
 #include <xio/detail/throw_error.h>
 
@@ -47,6 +46,5 @@ namespace xio {
 
 #include <xio/detail/pop_options.h>
 
-#endif // !defined(XIO_NO_IOSTREAM)
 
 #endif // XIO_IP_IMPL_NETWORK_V4_HPP

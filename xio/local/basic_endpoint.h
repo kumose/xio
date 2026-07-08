@@ -21,11 +21,7 @@
 #if defined(XIO_HAS_LOCAL_SOCKETS)
 
 #include <xio/local/detail/endpoint.h>
-
-#if !defined(XIO_NO_IOSTREAM)
-# include <iosfwd>
-#endif // !defined(XIO_NO_IOSTREAM)
-
+#include <iosfwd>
 #include <xio/detail/push_options.h>
 
 namespace xio {
