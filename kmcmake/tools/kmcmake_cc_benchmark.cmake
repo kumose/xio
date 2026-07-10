@@ -18,7 +18,7 @@
 # kmcmake_cc_benchmark
 ################################################################################################
 
-function(kmcmake_cc_bm)
+function(kmcmake_cc_benchmark)
     set(options
             DISABLED
             SKIP
@@ -49,7 +49,7 @@ function(kmcmake_cc_bm)
     )
 
     if (NOT KMCMAKE_CC_BM_MODULE)
-        kmcmake_error("no module name to the bm")
+        kmcmake_error("no module name to the benchmark")
     endif ()
 
     kmcmake_raw("-----------------------------------")
@@ -121,7 +121,7 @@ function(kmcmake_cc_bm)
 
 endfunction()
 
-function(kmcmake_cc_bm_ext)
+function(kmcmake_cc_benchmark_ext)
     set(options
             DISABLE
     )

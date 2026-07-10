@@ -42,10 +42,11 @@ set(${PROJECT_NAME}_VERSION ${PROJECT_VERSION})
 string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UP)
 
 option(PYTHON_EXTENSION "kmcmake set build shared library or not" OFF)
-set(KMCMAKE_VERSION 1.0.0)
+set(KMCMAKE_VERSION 1.2.0)
 
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/kmcmake)
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/kmcmake/tools)
+list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/kmcmake/arch)
 ##################################################################
 # add this for ${PROJECT_NAME} 's cmake include
 ##################################################################
@@ -67,7 +68,6 @@ include(xio_user_option OPTIONAL)
 
 include(xio_deps)
 include(xio_cxx_config)
-include(xio_test)
 
 string(TOUPPER ${CMAKE_BUILD_TYPE} UPPERCASE_BUILD_TYPE)
 configure_file(${PROJECT_SOURCE_DIR}/xio/version.h.in ${PROJECT_SOURCE_DIR}/xio/version.h @ONLY)
