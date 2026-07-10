@@ -16,10 +16,6 @@
 ################################################################################################
 # options
 ################################################################################################
-option(BUILD_STATIC_LIBRARY "kmcmake set build static library or not" ON)
-
-option(BUILD_SHARED_LIBRARY "kmcmake set build shared library or not" OFF)
-
 option(VERBOSE_KMCMAKE_BUILD "print kmcmake detail information" OFF)
 
 option(VERBOSE_CMAKE_BUILD "verbose cmake make debug" OFF)
@@ -34,15 +30,11 @@ option(KMCMAKE_BUILD_BENCHMARK "enable project benchmark or not" OFF)
 
 option(KMCMAKE_BUILD_EXAMPLES "enable project examples or not" OFF)
 
-option(KMCMAKE_ENABLE_CUDA "" OFF)
-
 option(KMCMAKE_STATUS_PRINT "kmcmake print or not, default on" ON)
 
 option(KMCMAKE_INSTALL_LIB "avoid centos install to lib64" OFF)
 
 option(KMCMAKE_ENABLE_SHARE "enable shared library" OFF)
-
-option(WITH_DEBUG_SYMBOLS "With debug symbols" ON)
 
 # Runtime SIMD target level used by dispatch/config logic.
 # Valid values:

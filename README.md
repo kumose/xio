@@ -24,12 +24,6 @@ Runtime dependencies are intentionally minimal:
 | [xlog](https://github.com/kumose/xlog) | Unified logging (TLOG) |
 | OpenSSL | TLS/SSL support |
 
-Optional:
-
-| Library | When needed |
-|---------|-------------|
-| liburing | Only when `XIO_ENABLE_URING=ON` (Linux disk async I/O) |
-
 Build-only (not required to link against xio in your app):
 
 | Library | When needed |
@@ -38,6 +32,8 @@ Build-only (not required to link against xio in your app):
 | benchmark | `KMCMAKE_BUILD_BENCHMARK=ON` |
 
 Compression libraries (zlib, lz4, snappy, zstd) are not used by xio.
+
+Disk and socket I/O use the traditional async model (epoll / kqueue / IOCP) by default. **liburing is not required** and is normally left off (`XIO_ENABLE_URING=OFF`).
 
 ## Requirements
 
@@ -78,7 +74,7 @@ Common kmcmake switches (set via `-D` on the cmake command line or in a preset):
 | `KMCMAKE_BUILD_TEST` | ON | Build unit tests under `tests/` |
 | `KMCMAKE_BUILD_EXAMPLES` | ON | Build examples under `examples/` |
 | `KMCMAKE_BUILD_BENCHMARK` | OFF | Build benchmarks under `benchmark/` |
-| `XIO_ENABLE_URING` | OFF | Enable io_uring for disk async I/O (Linux only) |
+| `XIO_ENABLE_URING` | OFF | Optional io_uring backend (Linux only; keep OFF — traditional I/O is enough) |
 
 Project-specific overrides can go in [`cmake/xio_user_option.cmake`](cmake/xio_user_option.cmake).
 

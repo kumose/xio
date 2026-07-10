@@ -49,13 +49,16 @@ if (KMCMAKE_BUILD_TEST)
     enable_testing()
 endif (KMCMAKE_BUILD_TEST)
 
-if (KMCMAKE_BUILD_BENCHMARK)
-endif ()
-
 find_package(Threads REQUIRED)
 kmcmake_private_find_package(Threads REQUIRED)
 list(APPEND KMCMAKE_SYSTEM_DYLINK Threads::Threads)
 
+############################################################
+#
+# add you libs to the KMCMAKE_DEPS_LINK variable eg as turbo
+# so you can and system pthread and rt, dl already add to
+# KMCMAKE_SYSTEM_DYLINK, using it for fun.
+##########################################################
 find_package(xlog REQUIRED)
 find_package(OpenSSL REQUIRED CONFIG)
 
@@ -76,12 +79,6 @@ else ()
     set(URING_LIBRARY)
 endif ()
 
-############################################################
-#
-# add you libs to the KMCMAKE_DEPS_LINK variable eg as turbo
-# so you can and system pthread and rt, dl already add to
-# KMCMAKE_SYSTEM_DYLINK, using it for fun.
-##########################################################
 set(KMCMAKE_DEPS_LINK
         OpenSSL::SSL
         OpenSSL::Crypto
@@ -99,3 +96,8 @@ set(KMCMAKE_STATIC_BIN_OPTION)
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     list(APPEND KMCMAKE_STATIC_BIN_OPTION -static-libgcc -static-libstdc++)
 endif ()
+
+
+
+
+

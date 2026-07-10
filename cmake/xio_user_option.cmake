@@ -18,7 +18,6 @@
 # This file is intentionally loaded before:
 #   - @CHANGEME@_deps.cmake
 #   - @CHANGEME@_cxx_config.cmake
-#   - @CHANGEME@_test.cmake
 #
 # Put your project-local overrides here, for example:
 #
