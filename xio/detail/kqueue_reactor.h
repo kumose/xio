@@ -24,6 +24,7 @@
 #include <sys/types.h>
 #include <sys/event.h>
 #include <sys/time.h>
+#include <xio/detail/atomic_count.h>
 #include <xio/detail/conditionally_enabled_mutex.h>
 #include <limits>
 #include <xio/detail/object_pool.h>
