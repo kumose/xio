@@ -8,16 +8,18 @@ on:
   workflow_dispatch:
 
 jobs:
-  linux:
+  linux-glibc:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Install deps
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq cmake g++ git python3
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq cmake g++ git python3 libssl-dev
       - name: Bootstrap kmpkg
         run: |
           git clone --depth 1 https://github.com/kumose/kmpkgcore.git /tmp/kmpkgcore
-          /tmp/kmpkgcore/kmpkgctl bootstrap
+          /tmp/kmpkgcore/kmpkgctl bootstrap --disable-metrics
           echo "KMPKG_HOME=/tmp/kmpkgcore" >> $GITHUB_ENV
           echo "/tmp/kmpkgcore" >> $GITHUB_PATH
           echo "KMPKG_CMAKE=/tmp/kmpkgcore/scripts/buildsystems/kmpkg.cmake" >> $GITHUB_ENV
@@ -28,16 +30,80 @@ jobs:
       - name: Test
         run: ctest --test-dir build --output-on-failure -j1
 
+  linux-musl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and test in Alpine
+        run: |
+          docker run --rm -v $PWD:/workspace -w /workspace \
+            alpine:3.20 \
+            sh -c "
+              set -ex
+              apk add --no-cache cmake g++ git python3 openssl-dev build-base
+              git clone --depth 1 https://github.com/kumose/kmpkgcore.git /tmp/kmpkgcore
+              /tmp/kmpkgcore/kmpkgctl bootstrap --disable-metrics
+              export KMPKG_HOME=/tmp/kmpkgcore
+              export KMPKG_CMAKE=\$KMPKG_HOME/scripts/buildsystems/kmpkg.cmake
+              cmake --preset=default -DKMCMAKE_BUILD_TEST=ON
+              cmake --build build -j\$(nproc)
+              ctest --test-dir build --output-on-failure -j1
+            "
+
+  linux-arm64:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install deps
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq cmake g++ git python3 libssl-dev
+      - name: Bootstrap kmpkg
+        run: |
+          git clone --depth 1 https://github.com/kumose/kmpkgcore.git /tmp/kmpkgcore
+          /tmp/kmpkgcore/kmpkgctl bootstrap --disable-metrics
+          echo "KMPKG_HOME=/tmp/kmpkgcore" >> $GITHUB_ENV
+          echo "/tmp/kmpkgcore" >> $GITHUB_PATH
+          echo "KMPKG_CMAKE=/tmp/kmpkgcore/scripts/buildsystems/kmpkg.cmake" >> $GITHUB_ENV
+      - name: Configure
+        run: cmake --preset=default -DKMCMAKE_BUILD_TEST=ON
+      - name: Build
+        run: cmake --build build -j$(nproc)
+      - name: Test
+        run: ctest --test-dir build --output-on-failure -j1
+
+  linux-centos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and test in CentOS
+        run: |
+          docker run --rm -v $PWD:/workspace -w /workspace \
+            quay.io/centos/centos:stream9 \
+            bash -c '
+              set -ex
+              dnf install -y epel-release
+              /usr/bin/crb enable
+              dnf install -y cmake gcc-c++ git python3 openssl-devel ninja-build
+              git clone --depth 1 https://github.com/kumose/kmpkgcore.git /tmp/kmpkgcore
+              /tmp/kmpkgcore/kmpkgctl bootstrap --disable-metrics
+              export KMPKG_HOME=/tmp/kmpkgcore
+              export KMPKG_CMAKE=$KMPKG_HOME/scripts/buildsystems/kmpkg.cmake
+              cmake --preset=default -DKMCMAKE_BUILD_TEST=ON
+              cmake --build build -j$(nproc)
+              ctest --test-dir build --output-on-failure -j1
+            '
+
   macos:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - name: Install deps
-        run: brew install cmake git python3
+        run: brew install cmake git python3 openssl
       - name: Bootstrap kmpkg
         run: |
           git clone --depth 1 https://github.com/kumose/kmpkgcore.git /tmp/kmpkgcore
-          /tmp/kmpkgcore/kmpkgctl bootstrap
+          /tmp/kmpkgcore/kmpkgctl bootstrap --disable-metrics
           echo "KMPKG_HOME=/tmp/kmpkgcore" >> $GITHUB_ENV
           echo "/tmp/kmpkgcore" >> $GITHUB_PATH
           echo "KMPKG_CMAKE=/tmp/kmpkgcore/scripts/buildsystems/kmpkg.cmake" >> $GITHUB_ENV
