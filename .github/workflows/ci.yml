@@ -20,3 +20,4 @@ jobs:
       deps-ubuntu: libssl-dev
       deps-alpine: openssl-dev
       deps-centos: openssl-devel
+      deps-windows: openssl
