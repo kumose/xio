@@ -576,6 +576,7 @@ namespace xio {
 #include <xio/detail/pop_options.h>
 
 #include <xio/impl/execution_context.h>
+#include <xio/detail/service_registry.h>
 
 
 #endif // XIO_EXECUTION_CONTEXT_HPP

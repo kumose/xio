@@ -16,9 +16,7 @@
 #endif // defined(_MSC_VER) && (_MSC_VER >= 1200)
 
 #include <cstring>
-#include <xio/detail/handler_type_requirements.h>
 #include <xio/detail/memory.h>
-#include <xio/detail/service_registry.h>
 #include <xio/detail/throw_exception.h>
 
 #include <xio/detail/push_options.h>
@@ -83,44 +81,6 @@ namespace xio {
             std::allocator_traits<decltype(alloc)>::deallocate(
                 alloc, base, size + align - 1 + sizeof(std::ptrdiff_t));
         }
-    }
-
-
-    template<typename Service>
-    inline Service &use_service(execution_context &e) {
-        // Check that Service meets the necessary type requirements.
-        (void) static_cast<execution_context::service *>(static_cast<Service *>(0));
-
-        return e.service_registry_->template use_service<Service>();
-    }
-
-    template<typename Service, typename... Args>
-    Service &make_service(execution_context &e, Args &&... args) {
-        // Check that Service meets the necessary type requirements.
-        (void) static_cast<execution_context::service *>(static_cast<Service *>(0));
-
-        return e.service_registry_->template make_service<Service>(
-            static_cast<Args &&>(args)...);
-    }
-
-    template<typename Service>
-    XIO_DEPRECATED_MSG (
-
-    "Use make_service()"
-    )
-    inline void add_service(execution_context &e, Service *svc) {
-        // Check that Service meets the necessary type requirements.
-        (void) static_cast<execution_context::service *>(static_cast<Service *>(0));
-
-        e.service_registry_->template add_service<Service>(svc);
-    }
-
-    template<typename Service>
-    inline bool has_service(execution_context &e) {
-        // Check that Service meets the necessary type requirements.
-        (void) static_cast<execution_context::service *>(static_cast<Service *>(0));
-
-        return e.service_registry_->template has_service<Service>();
     }
 
 
