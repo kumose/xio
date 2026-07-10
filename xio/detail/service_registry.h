@@ -162,6 +162,39 @@ namespace xio {
         };
     } // namespace detail
 
+    template<typename Service>
+    inline Service &use_service(execution_context &e) {
+        // Check that Service meets the necessary type requirements.
+        (void) static_cast<execution_context::service *>(static_cast<Service *>(0));
+
+        return e.service_registry_->template use_service<Service>();
+    }
+
+    template<typename Service, typename... Args>
+    inline Service &make_service(execution_context &e, Args &&... args) {
+        // Check that Service meets the necessary type requirements.
+        (void) static_cast<execution_context::service *>(static_cast<Service *>(0));
+
+        return e.service_registry_->template make_service<Service>(
+            static_cast<Args &&>(args)...);
+    }
+
+    template<typename Service>
+    inline void add_service(execution_context &e, Service *svc) {
+        // Check that Service meets the necessary type requirements.
+        (void) static_cast<execution_context::service *>(static_cast<Service *>(0));
+
+        e.service_registry_->template add_service<Service>(svc);
+    }
+
+    template<typename Service>
+    inline bool has_service(execution_context &e) {
+        // Check that Service meets the necessary type requirements.
+        (void) static_cast<execution_context::service *>(static_cast<Service *>(0));
+
+        return e.service_registry_->template has_service<Service>();
+    }
+
 } // namespace xio
 
 #include <xio/detail/pop_options.h>
