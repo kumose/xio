@@ -405,7 +405,7 @@ namespace xio {
                     return *this;
                 }
 
-                any_executor_base &operator=(std::std::nullptr_t) noexcept {
+                any_executor_base &operator=(std::nullptr_t) noexcept {
                     if (target_)
                         object_fns_->destroy(*this);
                     target_ = 0;
@@ -978,7 +978,7 @@ namespace xio {
                 : detail::any_executor_base() {
             }
 
-            any_executor(std::std::nullptr_t) noexcept
+            any_executor(std::nullptr_t) noexcept
                 : detail::any_executor_base() {
             }
 
@@ -1146,7 +1146,7 @@ namespace xio {
                   prop_fns_(prop_fns_table<void>()) {
             }
 
-            any_executor(std::std::nullptr_t) noexcept
+            any_executor(std::nullptr_t) noexcept
                 : detail::any_executor_base(),
                   prop_fns_(prop_fns_table<void>()) {
             }
