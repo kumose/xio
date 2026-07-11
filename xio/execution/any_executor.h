@@ -405,7 +405,7 @@ namespace xio {
                     return *this;
                 }
 
-                any_executor_base &operator=(std::nullptr_t) noexcept {
+                any_executor_base &operator=(std::std::nullptr_t) noexcept {
                     if (target_)
                         object_fns_->destroy(*this);
                     target_ = 0;
@@ -978,7 +978,7 @@ namespace xio {
                 : detail::any_executor_base() {
             }
 
-            any_executor(std::nullptr_t) noexcept
+            any_executor(std::std::nullptr_t) noexcept
                 : detail::any_executor_base() {
             }
 
@@ -1041,7 +1041,7 @@ namespace xio {
                 return *this;
             }
 
-            any_executor &operator=(nullptr_t p) noexcept {
+            any_executor &operator=(std::nullptr_t p) noexcept {
                 detail::any_executor_base::operator=(p);
                 return *this;
             }
@@ -1094,14 +1094,14 @@ namespace xio {
             template<typename AnyExecutor>
             friend std::enable_if_t<
                 std::is_same<AnyExecutor, any_executor>::value,
-                bool> operator==(const AnyExecutor &a, nullptr_t) noexcept {
+                bool> operator==(const AnyExecutor &a, std::nullptr_t) noexcept {
                 return !a;
             }
 
             template<typename AnyExecutor>
             friend std::enable_if_t<
                 std::is_same<AnyExecutor, any_executor>::value,
-                bool> operator==(nullptr_t, const AnyExecutor &b) noexcept {
+                bool> operator==(std::nullptr_t, const AnyExecutor &b) noexcept {
                 return !b;
             }
 
@@ -1117,14 +1117,14 @@ namespace xio {
             template<typename AnyExecutor>
             friend std::enable_if_t<
                 std::is_same<AnyExecutor, any_executor>::value,
-                bool> operator!=(const AnyExecutor &a, nullptr_t) noexcept {
+                bool> operator!=(const AnyExecutor &a, std::nullptr_t) noexcept {
                 return !!a;
             }
 
             template<typename AnyExecutor>
             friend std::enable_if_t<
                 std::is_same<AnyExecutor, any_executor>::value,
-                bool> operator!=(nullptr_t, const AnyExecutor &b) noexcept {
+                bool> operator!=(std::nullptr_t, const AnyExecutor &b) noexcept {
                 return !!b;
             }
         };
@@ -1146,7 +1146,7 @@ namespace xio {
                   prop_fns_(prop_fns_table<void>()) {
             }
 
-            any_executor(std::nullptr_t) noexcept
+            any_executor(std::std::nullptr_t) noexcept
                 : detail::any_executor_base(),
                   prop_fns_(prop_fns_table<void>()) {
             }
@@ -1249,7 +1249,7 @@ namespace xio {
                 return *this;
             }
 
-            any_executor &operator=(nullptr_t p) noexcept {
+            any_executor &operator=(std::nullptr_t p) noexcept {
                 prop_fns_ = prop_fns_table<void>();
                 detail::any_executor_base::operator=(p);
                 return *this;
@@ -1313,14 +1313,14 @@ namespace xio {
             template<typename AnyExecutor>
             friend std::enable_if_t<
                 std::is_same<AnyExecutor, any_executor>::value,
-                bool> operator==(const AnyExecutor &a, nullptr_t) noexcept {
+                bool> operator==(const AnyExecutor &a, std::nullptr_t) noexcept {
                 return !a;
             }
 
             template<typename AnyExecutor>
             friend std::enable_if_t<
                 std::is_same<AnyExecutor, any_executor>::value,
-                bool> operator==(nullptr_t, const AnyExecutor &b) noexcept {
+                bool> operator==(std::nullptr_t, const AnyExecutor &b) noexcept {
                 return !b;
             }
 
@@ -1336,14 +1336,14 @@ namespace xio {
             template<typename AnyExecutor>
             friend std::enable_if_t<
                 std::is_same<AnyExecutor, any_executor>::value,
-                bool> operator!=(const AnyExecutor &a, nullptr_t) noexcept {
+                bool> operator!=(const AnyExecutor &a, std::nullptr_t) noexcept {
                 return !!a;
             }
 
             template<typename AnyExecutor>
             friend std::enable_if_t<
                 std::is_same<AnyExecutor, any_executor>::value,
-                bool> operator!=(nullptr_t, const AnyExecutor &b) noexcept {
+                bool> operator!=(std::nullptr_t, const AnyExecutor &b) noexcept {
                 return !!b;
             }
 
