@@ -57,7 +57,7 @@ namespace xio {
         }
 
         /// Construct from nullptr.
-        executor(nullptr_t) noexcept
+        executor(std::nullptr_t) noexcept
             : impl_(0) {
         }
 
@@ -119,7 +119,7 @@ namespace xio {
         }
 
         /// Assignment operator for nullptr_t.
-        executor &operator=(nullptr_t) noexcept {
+        executor &operator=(std::nullptr_t) noexcept {
             destroy();
             impl_ = 0;
             return *this;

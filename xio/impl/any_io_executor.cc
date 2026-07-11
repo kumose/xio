@@ -30,8 +30,8 @@ namespace xio {
         : base_type() {
     }
 
-    any_io_executor::any_io_executor(nullptr_t) noexcept
-        : base_type(nullptr_t()) {
+    any_io_executor::any_io_executor(std::nullptr_t) noexcept
+        : base_type(std::nullptr_t()) {
     }
 
     any_io_executor::any_io_executor(const any_io_executor &e) noexcept
@@ -61,8 +61,8 @@ namespace xio {
         return *this;
     }
 
-    any_io_executor &any_io_executor::operator=(nullptr_t) {
-        base_type::operator=(nullptr_t());
+    any_io_executor &any_io_executor::operator=(std::nullptr_t) {
+        base_type::operator=(std::nullptr_t());
         return *this;
     }
 
