@@ -581,7 +581,7 @@ namespace xio {
 
         /// Construct an @c any_completion_handler in an empty state, without a target
         /// object.
-        constexpr any_completion_handler(nullptr_t)
+        constexpr any_completion_handler(std::nullptr_t)
             : fn_table_(nullptr),
               impl_(nullptr) {
         }
@@ -622,7 +622,7 @@ namespace xio {
         }
 
         /// Assignment operator that sets the polymorphic wrapper to the empty state.
-        any_completion_handler &operator=(nullptr_t) noexcept {
+        any_completion_handler &operator=(std::nullptr_t) noexcept {
             any_completion_handler().swap(*this);
             return *this;
         }

@@ -86,7 +86,7 @@ namespace xio {
         XIO_DECL any_io_executor() noexcept;
 
         /// Construct in an empty state. Equivalent effects to default constructor.
-        XIO_DECL any_io_executor(nullptr_t) noexcept;
+        XIO_DECL any_io_executor(std::nullptr_t) noexcept;
 
         /// Copy constructor.
         XIO_DECL any_io_executor(const any_io_executor &e) noexcept;
@@ -179,7 +179,7 @@ namespace xio {
         XIO_DECL any_io_executor &operator=(any_io_executor &&e) noexcept;
 
         /// Assignment operator that sets the polymorphic wrapper to the empty state.
-        XIO_DECL any_io_executor &operator=(nullptr_t);
+        XIO_DECL any_io_executor &operator=(std::nullptr_t);
 
         /// Destructor.
         XIO_DECL ~any_io_executor();
