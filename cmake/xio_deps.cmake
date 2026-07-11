@@ -64,25 +64,11 @@ find_package(OpenSSL REQUIRED CONFIG)
 
 find_path(XLOG_DIR xlog/logging.h)
 include_directories(${XLOG_DIR})
-if (XIO_ENABLE_URING)
-    if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-        find_path(URING_INCLUDE_DIR NAMES liburing.h)
-        find_library(URING_LIBRARY NAMES uring)
-        if (NOT URING_INCLUDE_DIR OR NOT URING_LIBRARY)
-            message(FATAL_ERROR "XIO_ENABLE_URING is ON but liburing was not found. "
-                    "Install liburing-dev (or similar) and ensure liburing.h and liburing.so are in standard paths.")
-        endif ()
-    else ()
-        message(FATAL_ERROR "XIO_ENABLE_URING is ON but io_uring is only supported on Linux.")
-    endif ()
-else ()
-    set(URING_LIBRARY)
-endif ()
+
 
 set(KMCMAKE_DEPS_LINK
         OpenSSL::SSL
         OpenSSL::Crypto
-        ${URING_LIBRARY}
         xlog::xlog_static
         ${KMCMAKE_SYSTEM_DYLINK}
         )
