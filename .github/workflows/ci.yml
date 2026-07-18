@@ -8,8 +8,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  linux-windows:
-    uses: kumose/kmpkgcore/.github/workflows/ci-template.yml@master
+  ci:
+    uses: kumose/x-ci/.github/workflows/ci-template.yml@v1
     with:
       config-command: |
         cmake --preset=default -DKMCMAKE_BUILD_TEST=ON
@@ -17,48 +17,5 @@ jobs:
         cmake --build build -j$(nproc)
       test-command: |
         ctest --test-dir build --output-on-failure -j1
-      deps-ubuntu: libssl-dev
-      deps-alpine: openssl-dev
-      deps-centos: openssl-devel
-      deps-windows: openssl
-
-  macos:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install deps
-        run: |
-          brew install git python3
-      - name: Bootstrap kmpkg
-        run: |
-          git clone --depth 1 https://github.com/kumose/kmpkgcore.git /tmp/kmpkgcore
-          /tmp/kmpkgcore/kmpkgctl bootstrap --disable-metrics
-          echo "KMPKG_HOME=/tmp/kmpkgcore" >> $GITHUB_ENV
-          echo "/tmp/kmpkgcore" >> $GITHUB_PATH
-          echo "KMPKG_CMAKE=/tmp/kmpkgcore/scripts/buildsystems/kmpkg.cmake" >> $GITHUB_ENV
-      - name: Configure
-        run: cmake --preset=default -DKMCMAKE_BUILD_TEST=ON
-      - name: Build
-        run: cmake --build build -j$(sysctl -n hw.logicalcpu)
-      - name: Test
-        run: ctest --test-dir build --output-on-failure -j1
-      - name: Gather kmpkg logs
-        if: failure()
-        run: |
-          mkdir -p /tmp/ci-logs
-          find /tmp/kmpkgcore/buildtrees -name "*.log" | while IFS= read -r f; do
-            rel="${f#/tmp/kmpkgcore/}"
-            mkdir -p "/tmp/ci-logs/$(dirname "$rel")"
-            cp "$f" "/tmp/ci-logs/$rel"
-          done
-      - name: Upload logs
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: macos-logs
-          path: |
-            build/CMakeFiles/CMakeOutput.log
-            build/CMakeFiles/CMakeError.log
-            build/Testing/Temporary/
-            /tmp/ci-logs/
-          if-no-files-found: ignore
+      skip-macos-x86: true
+      skip-windows-arm64: true
